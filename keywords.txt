@@ -343,6 +343,8 @@ setDataRate	KEYWORD2
 checkDataRate	KEYWORD2
 setModem	KEYWORD2
 getModem	KEYWORD2
+stageMode	KEYWORD2
+launchMode	KEYWORD2
 
 # LoRaWAN
 getBufferNonces	KEYWORD2
@@ -377,6 +379,7 @@ getLastToA	KEYWORD2
 dutyCycleInterval	KEYWORD2
 timeUntilUplink	KEYWORD2
 getMaxPayloadLen	KEYWORD2
+setSleepFunction	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

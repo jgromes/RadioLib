@@ -67,7 +67,6 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     return(RADIOLIB_ERR_NULL_POINTER);
   }
   int16_t state = RADIOLIB_ERR_UNKNOWN;
-  Module* mod = this->phyLayer->getMod();
   
   // if after (at) ADR_ACK_LIMIT frames no RekeyConf was received, revert to Join state
   if(this->fCntUp == (1UL << this->adrLimitExp)) {
@@ -147,7 +146,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     // RETRANSMIT_TIMEOUT is 2s +/- 1s (RP v1.0.4)
     // must be present after any confirmed frame, so we force this here
     if(isConfirmed) {
-      mod->hal->delay(this->phyLayer->random(1000, 3000));
+      this->sleepDelay(this->phyLayer->random(1000, 3000));
     }
 
     // if an error occured or a downlink was received, stop retransmission
@@ -906,25 +905,51 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RADIOLIB_ASSERT(state);
 
   // calculate JoinRequest time-on-air in milliseconds
+  RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
+
   if(this->dwellTimeUp) {
-    RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
     if(toa > this->dwellTimeUp) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Dwell time exceeded: ToA = %lu, max = %d", (unsigned long)toa, this->dwellTimeUp);
       return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
     }
   }
 
+  RadioModeConfig_t modeCfg;
+  modeCfg.transmit.data = joinRequestMsg;
+  modeCfg.transmit.len = RADIOLIB_LORAWAN_JOIN_REQUEST_LEN;
+  modeCfg.transmit.addr = 0;
+  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, &modeCfg);
+  RADIOLIB_ASSERT(state);
+
   // if requested, delay until transmitting JoinRequest
   RadioLibTime_t tNow = mod->hal->millis();
   if(this->tUplink > tNow) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow));
     if(this->tUplink > mod->hal->millis()) {
-      mod->hal->delay(this->tUplink - mod->hal->millis());
+      this->sleepDelay(this->tUplink - mod->hal->millis());
     }
   }
 
-  // send it
-  state = this->phyLayer->transmit(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN);
+  // start transmission
+  state = this->phyLayer->launchMode();
+  RADIOLIB_ASSERT(state);
+
+  // sleep for the duration of the transmission
+  this->sleepDelay(toa);
+  RadioLibTime_t txEnd = mod->hal->millis();
+
+  // wait for an additional transmission duration as Tx timeout period
+  while(!mod->hal->digitalRead(mod->getIrq())) {
+    // yield for multi-threaded platforms
+    mod->hal->yield();
+
+    if(mod->hal->millis() > txEnd + toa) {
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }
+  }
+  state = this->phyLayer->finishTransmit();
+
+  // set the timestamp so that we can measure when to start receiving
   this->rxDelayStart = mod->hal->millis();
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinRequest sent (DevNonce = %d) <-- Rx Delay start", this->devNonce);
@@ -935,7 +960,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_DEV_NONCE], this->devNonce);
 
   // set the Time on Air of the JoinRequest
-  this->lastToA = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
+  this->lastToA = toa;
 
   // configure Rx1 and Rx2 delay for JoinAccept message - these are re-configured once a valid JoinAccept is received
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
@@ -1270,7 +1295,6 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   Module* mod = this->phyLayer->getMod();
 
   // check if the Rx windows were closed after sending the previous uplink
-  // this FORCES a user to call downlink() after an uplink()
   if(this->rxDelayEnd < this->rxDelayStart) {
     // not enough time elapsed since the last uplink, we may still be in an Rx window
     return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
@@ -1295,24 +1319,57 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
                                  RADIOLIB_LORAWAN_UPLINK, 
                                  this->txPowerMax - 2*this->txPowerSteps);
   RADIOLIB_ASSERT(state);
+
+  // check whether dwell time limitation is exceeded
+  RadioLibTime_t toa = this->phyLayer->getTimeOnAir(len) / 1000;
+  if(this->dwellTimeUp) {
+    if(toa > this->dwellTimeUp) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Dwell time exceeded: ToA = %lu, max = %d", (unsigned long)toa, this->dwellTimeUp);
+      return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
+    }
+  }
+
+  RadioModeConfig_t modeCfg;
+  modeCfg.transmit.data = in;
+  modeCfg.transmit.len = len;
+  modeCfg.transmit.addr = 0;
+  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, &modeCfg);
+  RADIOLIB_ASSERT(state);
   
   // if requested, wait until transmitting uplink
   tNow = mod->hal->millis();
   if(this->tUplink > tNow) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow));
     if(this->tUplink > mod->hal->millis()) {
-      mod->hal->delay(this->tUplink - mod->hal->millis());
+      this->sleepDelay(this->tUplink - mod->hal->millis());
     }
   }
 
-  state = this->phyLayer->transmit(in, len);
+  // start transmission
+  state = this->phyLayer->launchMode();
+  RADIOLIB_ASSERT(state);
+
+  // sleep for the duration of the transmission
+  this->sleepDelay(toa);
+  RadioLibTime_t txEnd = mod->hal->millis();
+
+  // wait for an additional transmission duration as Tx timeout period
+  while(!mod->hal->digitalRead(mod->getIrq())) {
+    // yield for multi-threaded platforms
+    mod->hal->yield();
+
+    if(mod->hal->millis() > txEnd + toa) {
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }
+  }
+  state = this->phyLayer->finishTransmit();
 
   // set the timestamp so that we can measure when to start receiving
   this->rxDelayStart = mod->hal->millis();
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink sent <-- Rx Delay start");
 
   // increase Time on Air of the uplink sequence
-  this->lastToA += this->phyLayer->getTimeOnAir(len) / 1000;
+  this->lastToA += toa;
 
   return(state);
 }
@@ -1340,7 +1397,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     // if function was called while Rx windows are in progress,
     // wait until last window closes to prevent very bad stuff
     if(now < tReference + dlDelays[numWindows]) {
-      mod->hal->delay(dlDelays[numWindows] + tReference - now);
+      this->sleepDelay(dlDelays[numWindows] + tReference - now);
     }
     // update the end timestamp in case user got stuck between uplink and downlink
     this->rxDelayEnd = mod->hal->millis();
@@ -1364,8 +1421,17 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     RADIOLIB_ASSERT(state);
 
     // calculate the Rx timeout
-    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*this->scanGuard*1000;
+    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + this->scanGuard*1000;
     RadioLibTime_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
+    
+    // TODO remove default arguments
+    RadioModeConfig_t modeCfg;
+    modeCfg.receive.timeout = timeoutMod;
+    modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
+    modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
+    modeCfg.receive.len = 0;
+    state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
+    RADIOLIB_ASSERT(state);
 
     // wait for the start of the Rx window
     RadioLibTime_t waitLen = tReference + dlDelays[window] - mod->hal->millis();
@@ -1377,17 +1443,16 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     if(waitLen > this->scanGuard) {
       waitLen -= this->scanGuard;
     }
-    mod->hal->delay(waitLen);
+    this->sleepDelay(waitLen);
 
     // open Rx window by starting receive with specified timeout
-    // TODO remove default arguments
-    state = this->phyLayer->startReceive(timeoutMod, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0);
+    state = this->phyLayer->launchMode();
     tOpen = mod->hal->millis();
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + scanGuard / 2));
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + 2));
     
     // wait for the timeout to complete (and a small additional delay)
-    mod->hal->delay(timeoutHost / 1000 + this->scanGuard / 2);
+    this->sleepDelay(timeoutHost / 1000 + this->scanGuard / 2);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", window);
 
     // if the IRQ bit for Rx Timeout is not set, something is received, so stop the windows
@@ -3310,6 +3375,10 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
   return(curLen - 13 - this->fOptsUpLen);
 }
 
+void LoRaWANNode::setSleepFunction(SleepCb_t cb) {
+  this->sleepCb = cb;
+}
+
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
   int16_t state = this->phyLayer->standby();
   if(state != RADIOLIB_ERR_NONE) {
@@ -3432,6 +3501,18 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
     }
     remLen -= xorLen;
   }
+}
+
+void LoRaWANNode::sleepDelay(RadioLibTime_t ms) {
+  // if the user did not provide sleep callback, or the duration is short, just call delay
+  if((this->sleepCb == nullptr) || (ms <= RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD)) {
+    Module* mod = this->phyLayer->getMod();
+    mod->hal->delay(ms);
+    return;
+  }
+
+  // otherwise, call the user-provided callback
+  this->sleepCb(ms);
 }
 
 int16_t LoRaWANNode::checkBufferCommon(const uint8_t *buffer, uint16_t size) {

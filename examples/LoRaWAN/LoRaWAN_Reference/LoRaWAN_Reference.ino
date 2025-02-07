@@ -48,6 +48,9 @@ void setup() {
   // Override the default join rate
   uint8_t joinDR = 4;
 
+  // Optionally provide a custom sleep function - see config.h
+  //node.setSleepFunction(customDelay);
+
   // Setup the OTAA session information
   node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
 

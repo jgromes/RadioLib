@@ -142,4 +142,19 @@ void arrayDump(uint8_t *buffer, uint16_t len) {
   Serial.println();
 }
 
+// Custom delay function:
+// Communication over LoRaWAN includes a lot of delays.
+// By default, RadioLib will use the Arduino delay() function,
+// which will waste a lot of power. However, you can put your
+// microcontroller to sleep instead by customizing the function below,
+// and providing it to RadioLib via "node.setSleepFunction".
+// NOTE: You ahve to ensure that this function is timed precisely, and
+//       does actually wait for the amount of time specified!
+//       Failure to do so will result in missed downlinks or failed join!
+void customDelay(RadioLibTime_t ms) {
+  // this is just an example, so we use the Arduino delay() function,
+  // but you can put your microcontroller to sleep here
+  ::delay(ms);
+}
+
 #endif

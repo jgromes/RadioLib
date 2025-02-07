@@ -414,73 +414,6 @@ void LR11x0::clearPacketSentAction() {
   this->clearIrqAction();
 }
 
-int16_t LR11x0::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
-  // suppress unused variable warning
-  (void)addr;
-
-  // check packet length
-  if(len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
-  }
-
-  // maximum packet length is decreased by 1 when address filtering is active
-  if((this->addrComp != RADIOLIB_LR11X0_GFSK_ADDR_FILTER_DISABLED) && (len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH - 1)) {
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
-  }
-
-  // set packet Length
-  int16_t state = RADIOLIB_ERR_NONE;
-  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  state = getPacketType(&modem);
-  RADIOLIB_ASSERT(state);
-  if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, len, this->crcTypeLoRa, this->invertIQEnabled);
-  
-  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, len, this->crcTypeGFSK, this->whitening);
-  
-  } else if(modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    return(RADIOLIB_ERR_UNKNOWN);
-  
-  }
-  RADIOLIB_ASSERT(state);
-
-  // set DIO mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_TX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT);
-  RADIOLIB_ASSERT(state);
-
-  if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    // in LR-FHSS mode, the packet is built by the device
-    // TODO add configurable device offset
-    state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, const_cast<uint8_t*>(data), len);
-    RADIOLIB_ASSERT(state);
-
-  } else {
-    // write packet to buffer
-    state = writeBuffer8(const_cast<uint8_t*>(data), len);
-    RADIOLIB_ASSERT(state);
-
-  }
-
-  // clear interrupt flags
-  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
-  RADIOLIB_ASSERT(state);
-
-  // set RF switch (if present)
-  this->mod->setRfSwitchState(Module::MODE_TX);
-
-  // start transmission
-  state = setTx(RADIOLIB_LR11X0_TX_TIMEOUT_NONE);
-  RADIOLIB_ASSERT(state);
-
-  // wait for BUSY to go low (= PA ramp up done)
-  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
-    this->mod->hal->yield();
-  }
-
-  return(state);
-}
-
 int16_t LR11x0::finishTransmit() {
   // clear interrupt flags
   clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
@@ -491,46 +424,6 @@ int16_t LR11x0::finishTransmit() {
 
 int16_t LR11x0::startReceive() {
   return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
-}
-
-int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
-  (void)len;
-  
-  // check active modem
-  int16_t state = RADIOLIB_ERR_NONE;
-  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  state = getPacketType(&modem);
-  RADIOLIB_ASSERT(state);
-  if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  // set DIO mapping
-  uint32_t irq = irqMask;
-  if(timeout != RADIOLIB_LR11X0_RX_TIMEOUT_INF) {
-    irq |= (1UL << RADIOLIB_IRQ_TIMEOUT);
-  }
-  state = setDioIrqParams(getIrqMapped(irqFlags & irq));
-  RADIOLIB_ASSERT(state);
-
-  // clear interrupt flags
-  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
-  RADIOLIB_ASSERT(state);
-
-  // set implicit mode and expected len if applicable
-  if((this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA)) {
-    state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, this->invertIQEnabled);
-    RADIOLIB_ASSERT(state);
-  }
-
-  // set RF switch (if present)
-  this->mod->setRfSwitchState(Module::MODE_RX);
-
-  // set mode to receive
-  state = setRx(timeout);
-
-  return(state);
 }
 
 uint32_t LR11x0::getIrqStatus() {
@@ -2052,6 +1945,124 @@ int16_t LR11x0::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
+  int16_t state;
+
+  switch(mode) {
+    case(RADIOLIB_RADIO_MODE_RX): {
+      // check active modem
+      uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+      state = getPacketType(&modem);
+      RADIOLIB_ASSERT(state);
+      if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
+        (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
+        return(RADIOLIB_ERR_WRONG_MODEM);
+      }
+
+      // set DIO mapping
+      if(cfg->receive.timeout != RADIOLIB_LR11X0_RX_TIMEOUT_INF) {
+        cfg->receive.irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
+      }
+      state = setDioIrqParams(getIrqMapped(cfg->receive.irqFlags & cfg->receive.irqMask));
+      RADIOLIB_ASSERT(state);
+
+      // clear interrupt flags
+      state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+      RADIOLIB_ASSERT(state);
+
+      // set implicit mode and expected len if applicable
+      if((this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA)) {
+        state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, this->invertIQEnabled);
+        RADIOLIB_ASSERT(state);
+      }
+      this->rxTimeout = cfg->receive.timeout;
+    } break;
+  
+    case(RADIOLIB_RADIO_MODE_TX): {
+      // check packet length
+      if(cfg->transmit.len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
+        return(RADIOLIB_ERR_PACKET_TOO_LONG);
+      }
+
+      // maximum packet length is decreased by 1 when address filtering is active
+      if((this->addrComp != RADIOLIB_LR11X0_GFSK_ADDR_FILTER_DISABLED) && (cfg->transmit.len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH - 1)) {
+        return(RADIOLIB_ERR_PACKET_TOO_LONG);
+      }
+
+      // set packet Length
+      state = RADIOLIB_ERR_NONE;
+      uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+      state = getPacketType(&modem);
+      RADIOLIB_ASSERT(state);
+      if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+        state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, cfg->transmit.len, this->crcTypeLoRa, this->invertIQEnabled);
+      
+      } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+        state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
+      
+      } else if(modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+        return(RADIOLIB_ERR_UNKNOWN);
+      
+      }
+      RADIOLIB_ASSERT(state);
+
+      // set DIO mapping
+      state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_TX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT);
+      RADIOLIB_ASSERT(state);
+
+      if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+        // in LR-FHSS mode, the packet is built by the device
+        // TODO add configurable device offset
+        state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
+        RADIOLIB_ASSERT(state);
+
+      } else {
+        // write packet to buffer
+        state = writeBuffer8(cfg->transmit.data, cfg->transmit.len);
+        RADIOLIB_ASSERT(state);
+
+      }
+
+      // clear interrupt flags
+      state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+      RADIOLIB_ASSERT(state);
+    } break;
+    
+    default:
+      return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  this->stagedMode = mode;
+  return(state);
+}
+
+int16_t LR11x0::launchMode() {
+  int16_t state;
+  switch(this->stagedMode) {
+    case(RADIOLIB_RADIO_MODE_RX): {
+      this->mod->setRfSwitchState(Module::MODE_RX);
+      state = setRx(this->rxTimeout);
+    } break;
+  
+    case(RADIOLIB_RADIO_MODE_TX): {
+      this->mod->setRfSwitchState(Module::MODE_TX);
+      state = setTx(RADIOLIB_LR11X0_TX_TIMEOUT_NONE);
+      RADIOLIB_ASSERT(state);
+
+      // wait for BUSY to go low (= PA ramp up done)
+      while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+        this->mod->hal->yield();
+      }
+    } break;
+    
+    default:
+      return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  this->stagedMode = RADIOLIB_RADIO_MODE_NONE;
+  return(state);
+}
+
 int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -2334,12 +2345,12 @@ int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   return(state);
 }
 
-int16_t LR11x0::writeBuffer8(uint8_t* data, size_t len) {
+int16_t LR11x0::writeBuffer8(const uint8_t* data, size_t len) {
   // check maximum size
   if(len > RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_WRITE_BUFFER, true, data, len));
+  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_WRITE_BUFFER, true, const_cast<uint8_t*>(data), len));
 }
 
 int16_t LR11x0::readBuffer8(uint8_t* data, size_t len, size_t offset) {

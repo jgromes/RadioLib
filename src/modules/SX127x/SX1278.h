@@ -202,7 +202,7 @@ class SX1278: public SX127x {
     int16_t checkDataRate(DataRate_t dr) override;
 
     /*!
-      \brief Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
+      \brief Sets transmission output power. Allowed values range from -4 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
       High power +20 dBm operation is also supported, on the PA_BOOST pin. Defaults to PA_BOOST.
       \param power Transmission output power in dBm.
       \returns \ref status_codes
@@ -210,7 +210,7 @@ class SX1278: public SX127x {
     int16_t setOutputPower(int8_t power) override;
 
     /*!
-      \brief Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
+      \brief Sets transmission output power. Allowed values range from -4 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
       High power +20 dBm operation is also supported, on the PA_BOOST pin.
       \param power Transmission output power in dBm.
       \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
