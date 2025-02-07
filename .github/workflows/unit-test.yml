@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libboost-all-dev libfmt-dev lcov gcc-11 g++-11
+        sudo apt-get install -y libboost-all-dev libfmt-dev lcov
 
     - name: Run unit test
       run: |
