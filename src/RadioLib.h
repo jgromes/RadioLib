@@ -37,6 +37,7 @@
   - PhysicalLayer - FSK and LoRa radio modules
 
   \see https://github.com/jgromes/RadioLib
+  \see https://jgromes.github.io/RadioLib/coverage/src/index.html
 
   \copyright  Copyright (c) 2019 Jan Gromes
 */
