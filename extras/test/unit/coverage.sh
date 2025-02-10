@@ -10,4 +10,3 @@ lcov --remove "${filename}.info" "/usr/*/boost/*" "/usr/include/c++/*" --output-
 
 # generate HTML
 genhtml "${filename}.info" --output-directory "${filename}.report"
-zip -r "${filename}.report.zip" "${filename}.report"

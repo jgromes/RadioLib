@@ -35,4 +35,13 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: coverage_report
-        path: extras/test/unit/lcov.report.zip
+        path: extras/test/unit/lcov.report
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: extras/test/unit/lcov.report
+        destination_dir: coverage
+        keep_files: true
