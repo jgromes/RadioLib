@@ -240,7 +240,8 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_FSTXON);
 
   // Check MARCSTATE and wait until ready to tx
-  RadioLibTime_T start = this->mod->hal->micros();
+  // 724us is the longest time for callibrate per datasheet
+  RadioLibTime_t start = this->mod->hal->micros();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {
     if(this->mod->hal->micros() - start > 724) {
       standby();
@@ -308,8 +309,8 @@ int16_t CC1101::finishTransmit() {
   
   // Check MARCSTATE for Idle
   // Timeout is 2x FIFO transmit time
-  RadioLibTime_T timeout = (1.0f/(this->bitRate))*(RADIOLIB_CC1101_FIFO_SIZE*2.0f);
-  RadioLibTime_T start = this->mod->hal->millis();
+  RadioLibTime_t timeout = (1.0f/(this->bitRate))*(RADIOLIB_CC1101_FIFO_SIZE*2.0f);
+  RadioLibTime_t start = this->mod->hal->millis();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x01) {
     if(this->mod->hal->millis() - start > timeout) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
