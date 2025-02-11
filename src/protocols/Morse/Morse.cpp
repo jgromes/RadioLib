@@ -86,7 +86,7 @@ int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
     if((pauseLen >= low*(float)letterSpace) && (pauseLen <= high*(float)letterSpace)) {
       return(RADIOLIB_MORSE_CHAR_COMPLETE);
     } else if(pauseLen > wordSpace) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("\n<space>");
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN(RADIOLIB_LINE_FEED "<space>");
       return(RADIOLIB_MORSE_WORD_COMPLETE);
     }
 
@@ -164,7 +164,7 @@ size_t MorseClient::write(uint8_t b) {
   // letter space
   standby();
   mod->waitForMicroseconds(mod->hal->micros(), letterSpace*1000 - dotLength*1000);
-  RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG("\n");
+  RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG(RADIOLIB_LINE_FEED);
 
   return(1);
 }
