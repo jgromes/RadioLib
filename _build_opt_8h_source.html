@@ -649,13 +649,13 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span><span class="preprocessor">#define RADIOLIB_VALUE_TO_STRING(x) #x</span></div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span><span class="preprocessor">#define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)</span></div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span> </div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span><span class="preprocessor">#define RADIOLIB_INFO &quot;&quot; RADIOLIB_LINE_FEED &quot;RadioLib Info&quot; RADIOLIB_LINE_FEED &quot;Version:  \&quot;&quot; \</span></div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span><span class="preprocessor">#define RADIOLIB_INFO &quot;\r\nRadioLib Info\nVersion:  \&quot;&quot; \</span></div>
 <div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_MAJOR) &quot;.&quot; \</span></div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_MINOR) &quot;.&quot; \</span></div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_PATCH) &quot;.&quot; \</span></div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) &quot;\&quot;&quot; RADIOLIB_LINE_FEED \</span></div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="preprocessor">  &quot;Platform: &quot; RADIOLIB_VALUE(RADIOLIB_PLATFORM) &quot;&quot; RADIOLIB_LINE_FEED \</span></div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span><span class="preprocessor">  &quot;Compiled: &quot; RADIOLIB_VALUE(__DATE__) &quot; &quot; RADIOLIB_VALUE(__TIME__)</span></div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) &quot;\&quot;\r\n&quot; \</span></div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="preprocessor">  &quot;Platform: &quot; RADIOLIB_VALUE(RADIOLIB_PLATFORM) &quot;\r\n&quot; \</span></div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span><span class="preprocessor">  RADIOLIB_VALUE(__DATE__) &quot; &quot; RADIOLIB_VALUE(__TIME__)</span></div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span> </div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span><span class="preprocessor">#if RADIOLIB_VERBOSE_ASSERT</span></div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span><span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;%d at %s:%d&quot;, STATEVAR, __FILE__, __LINE__); return(STATEVAR); } }</span></div>
