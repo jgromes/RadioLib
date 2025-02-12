@@ -702,7 +702,10 @@ class CC1101: public PhysicalLayer {
     void clearPacketSentAction() override;
 
     /*!
-      \brief Interrupt-driven binary transmit method.
+      \brief Interrupt-driven binary transmit method for packets less than 64 bytes.
+      Method blocks for packets longer than 64 bytes up to a 255 byte limit, until 
+      the last bytes are placed in the FIFO. Some limitations and issues apply; see discussion: 
+      https://github.com/jgromes/RadioLib/discussions/1138
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
       \param len Number of bytes to send.
