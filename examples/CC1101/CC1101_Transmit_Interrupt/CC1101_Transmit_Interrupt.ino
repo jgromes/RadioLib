@@ -3,7 +3,7 @@
 
   This example transmits packets using CC1101 FSK radio module.
   Once a packet is transmitted, an interrupt is triggered.
-  Each packet contains up to 64 bytes of data, in the form of:
+  Each packet contains up to 255 bytes of data with some limitations (https://github.com/jgromes/RadioLib/discussions/1138), in the form of:
   - Arduino String
   - null-terminated char array (C-string)
   - arbitrary binary data (byte array)
@@ -73,10 +73,12 @@ void setup() {
   Serial.print(F("[CC1101] Sending first packet ... "));
 
   // you can transmit C-string or Arduino string up to
-  // 64 characters long
+  // 255 characters long
   transmissionState = radio.startTransmit("Hello World!");
 
-  // you can also transmit byte array up to 64 bytes long
+  // you can also transmit byte array up to 255 bytes long
+  // When transmitting more than 64 bytes startTransmit blocks to refill the FIFO.
+  // Blocking ceases once the last bytes have been placed in the FIFO
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                       0x78, 0xAB, 0xCD, 0xEF};
@@ -119,11 +121,11 @@ void loop() {
     Serial.print(F("[CC1101] Sending another packet ... "));
 
     // you can transmit C-string or Arduino string up to
-    // 64 characters long
+    // 255 characters long
     String str = "Hello World! #" + String(count++);
     transmissionState = radio.startTransmit(str);
 
-    // you can also transmit byte array up to 64 bytes long
+    // you can also transmit byte array up to 255 bytes long with limitations https://github.com/jgromes/RadioLib/discussions/1138
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
