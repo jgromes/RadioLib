@@ -8,7 +8,8 @@
 
 // CC1101 physical layer properties
 #define RADIOLIB_CC1101_FREQUENCY_STEP_SIZE                     396.7285156
-#define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       64
+#define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       255
+#define RADIOLIB_CC1101_FIFO_SIZE                               64
 #define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0f
 #define RADIOLIB_CC1101_DIV_EXPONENT                            16
 
@@ -701,7 +702,10 @@ class CC1101: public PhysicalLayer {
     void clearPacketSentAction() override;
 
     /*!
-      \brief Interrupt-driven binary transmit method.
+      \brief Interrupt-driven binary transmit method for packets less than 64 bytes.
+      Method blocks for packets longer than 64 bytes up to a 255 byte limit, until 
+      the last bytes are placed in the FIFO. Some limitations and issues apply; see discussion: 
+      https://github.com/jgromes/RadioLib/discussions/1138
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
       \param len Number of bytes to send.
