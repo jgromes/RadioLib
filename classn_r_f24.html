@@ -225,6 +225,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memitem:a0429a9d6524005065e6fac21aaebdcbf" id="r_a0429a9d6524005065e6fac21aaebdcbf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a0429a9d6524005065e6fac21aaebdcbf">setEncoding</a> (uint8_t encoding) override</td></tr>
 <tr class="memdesc:a0429a9d6524005065e6fac21aaebdcbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy encoding configuration method, to ensure <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="separator:a0429a9d6524005065e6fac21aaebdcbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e97c13373c6c8d5a86404646884dea3" id="r_a5e97c13373c6c8d5a86404646884dea3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a5e97c13373c6c8d5a86404646884dea3">setLNA</a> (bool enable)</td></tr>
+<tr class="memdesc:a5e97c13373c6c8d5a86404646884dea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable the low-noise amplifier. Improves receive performance at the cost of increased power consumption.  <br /></td></tr>
+<tr class="separator:a5e97c13373c6c8d5a86404646884dea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1205,6 +1208,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a5e97c13373c6c8d5a86404646884dea3" name="a5e97c13373c6c8d5a86404646884dea3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e97c13373c6c8d5a86404646884dea3">&#9670;&#160;</a></span>setLNA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t nRF24::setLNA </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable or disable the low-noise amplifier. Improves receive performance at the cost of increased power consumption. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>True to enable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

@@ -25,6 +25,7 @@ var classn_r_f24 =
     [ "setFrequency", "classn_r_f24.html#a18f24764b2ecffc076e72dce0b036116", null ],
     [ "setFrequencyDeviation", "classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4", null ],
     [ "setIrqAction", "classn_r_f24.html#abf9323748b1a850e6ddc6f6d48f4cfb3", null ],
+    [ "setLNA", "classn_r_f24.html#a5e97c13373c6c8d5a86404646884dea3", null ],
     [ "setOutputPower", "classn_r_f24.html#a4fa66ce5fb6d7b22bbb439c2f9103bf3", null ],
     [ "setPacketReceivedAction", "classn_r_f24.html#a60df9afa489eabe3a3ca193ab7709165", null ],
     [ "setPacketSentAction", "classn_r_f24.html#a26b5f873db167733df143a0608eea3ac", null ],
