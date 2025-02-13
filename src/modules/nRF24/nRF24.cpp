@@ -561,6 +561,10 @@ int16_t nRF24::setEncoding(uint8_t encoding) {
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t nRF24::setLNA(bool enable) {
+  return(this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, enable ? RADIOLIB_NRF24_RF_LNA_ON : RADIOLIB_NRF24_RF_LNA_OFF, 0, 0));
+}
+
 void nRF24::clearIRQ() {
   // clear status bits
   this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_STATUS, RADIOLIB_NRF24_RX_DR | RADIOLIB_NRF24_TX_DS | RADIOLIB_NRF24_MAX_RT, 6, 4);

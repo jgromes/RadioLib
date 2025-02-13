@@ -123,6 +123,8 @@
 #define RADIOLIB_NRF24_RF_PWR_12_DBM                            0b00000010  //  2     1                 -12 dBm
 #define RADIOLIB_NRF24_RF_PWR_6_DBM                             0b00000100  //  2     1                 -6 dBm
 #define RADIOLIB_NRF24_RF_PWR_0_DBM                             0b00000110  //  2     1                 0 dBm (default)
+#define RADIOLIB_NRF24_RF_LNA_OFF                               0b00000000  //  0     0   LNA gain: Off
+#define RADIOLIB_NRF24_RF_LNA_ON                                0b00000001  //  0     0             On
 
 // RADIOLIB_NRF24_REG_STATUS
 #define RADIOLIB_NRF24_RX_DR                                    0b01000000  //  6     6   Rx data ready
@@ -464,6 +466,14 @@ class nRF24: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setEncoding(uint8_t encoding) override;
+    
+    /*!
+      \brief Enable or disable the low-noise amplifier.
+      Improves receive performance at the cost of increased power consumption.
+      \param enable True to enable.
+      \returns \ref status_codes
+    */
+    int16_t setLNA(bool enable);
 
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
