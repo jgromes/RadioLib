@@ -890,27 +890,6 @@ class SX126x: public PhysicalLayer {
     int16_t setSyncBits(uint8_t *syncWord, uint8_t bitsLen);
 
     /*!
-      \brief Sets node address. Calling this method will also enable address filtering for node address only.
-      \param addr Node address to be set.
-      \returns \ref status_codes
-    */
-    int16_t setNodeAddress(uint8_t addr);
-
-    /*!
-      \brief Sets broadcast address. Calling this method will also enable address
-      filtering for node and broadcast address.
-      \param broadAddr Node address to be set.
-      \returns \ref status_codes
-    */
-    int16_t setBroadcastAddress(uint8_t broadAddr);
-
-    /*!
-      \brief Disables address filtering. Calling this method will also erase previously set addresses.
-      \returns \ref status_codes
-    */
-    int16_t disableAddressFiltering();
-
-    /*!
       \brief Sets CRC configuration.
       \param len CRC length in bytes, Allowed values are 1 or 2, set to 0 to disable CRC.
       \param initial Initial CRC value. FSK only. Defaults to 0x1D0F (CCIT CRC).
