@@ -266,15 +266,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac594fbb30c5010658c970a64654c7162" id="r_ac594fbb30c5010658c970a64654c7162"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ac594fbb30c5010658c970a64654c7162">setSyncBits</a> (uint8_t *syncWord, uint8_t bitsLen)</td></tr>
 <tr class="memdesc:ac594fbb30c5010658c970a64654c7162"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK sync word in the form of array of up to 8 bytes.  <br /></td></tr>
 <tr class="separator:ac594fbb30c5010658c970a64654c7162"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf54f7b83aa47ad0b803147622b3c580" id="r_adf54f7b83aa47ad0b803147622b3c580"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#adf54f7b83aa47ad0b803147622b3c580">setNodeAddress</a> (uint8_t addr)</td></tr>
-<tr class="memdesc:adf54f7b83aa47ad0b803147622b3c580"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets node address. Calling this method will also enable address filtering for node address only.  <br /></td></tr>
-<tr class="separator:adf54f7b83aa47ad0b803147622b3c580"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd8eea7e468db3d6064c19d4934d5034" id="r_abd8eea7e468db3d6064c19d4934d5034"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#abd8eea7e468db3d6064c19d4934d5034">setBroadcastAddress</a> (uint8_t broadAddr)</td></tr>
-<tr class="memdesc:abd8eea7e468db3d6064c19d4934d5034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets broadcast address. Calling this method will also enable address filtering for node and broadcast address.  <br /></td></tr>
-<tr class="separator:abd8eea7e468db3d6064c19d4934d5034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc3a7a42c401b6c44e00cb6c5b9696f2" id="r_afc3a7a42c401b6c44e00cb6c5b9696f2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afc3a7a42c401b6c44e00cb6c5b9696f2">disableAddressFiltering</a> ()</td></tr>
-<tr class="memdesc:afc3a7a42c401b6c44e00cb6c5b9696f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables address filtering. Calling this method will also erase previously set addresses.  <br /></td></tr>
-<tr class="separator:afc3a7a42c401b6c44e00cb6c5b9696f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95007639c2648a1dbb614493224606f1" id="r_a95007639c2648a1dbb614493224606f1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a95007639c2648a1dbb614493224606f1">setCRC</a> (uint8_t len, uint16_t initial=0x1D0F, uint16_t polynomial=0x1021, bool inverted=true)</td></tr>
 <tr class="memdesc:a95007639c2648a1dbb614493224606f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets CRC configuration.  <br /></td></tr>
 <tr class="separator:a95007639c2648a1dbb614493224606f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1037,26 +1028,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 <p>Clears interrupt service routine to call when a packet is sent. </p>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="afc3a7a42c401b6c44e00cb6c5b9696f2" name="afc3a7a42c401b6c44e00cb6c5b9696f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc3a7a42c401b6c44e00cb6c5b9696f2">&#9670;&#160;</a></span>disableAddressFiltering()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SX126x::disableAddressFiltering </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Disables address filtering. Calling this method will also erase previously set addresses. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -2090,33 +2061,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 
 </div>
 </div>
-<a id="abd8eea7e468db3d6064c19d4934d5034" name="abd8eea7e468db3d6064c19d4934d5034"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd8eea7e468db3d6064c19d4934d5034">&#9670;&#160;</a></span>setBroadcastAddress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SX126x::setBroadcastAddress </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>broadAddr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets broadcast address. Calling this method will also enable address filtering for node and broadcast address. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">broadAddr</td><td>Node address to be set. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
 <a id="aed0e7dcd60479c9db3d7a3408e7f396d" name="aed0e7dcd60479c9db3d7a3408e7f396d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed0e7dcd60479c9db3d7a3408e7f396d">&#9670;&#160;</a></span>setChannelScanAction()</h2>
 
@@ -2582,33 +2526,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
     <tr><td class="paramname">cr</td><td>LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values. </td></tr>
     <tr><td class="paramname">hdrCount</td><td>Header packet count, 1 - 4. Defaults to 3. </td></tr>
     <tr><td class="paramname">hopSeqId</td><td>9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="adf54f7b83aa47ad0b803147622b3c580" name="adf54f7b83aa47ad0b803147622b3c580"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf54f7b83aa47ad0b803147622b3c580">&#9670;&#160;</a></span>setNodeAddress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SX126x::setNodeAddress </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>addr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets node address. Calling this method will also enable address filtering for node address only. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">addr</td><td>Node address to be set. </td></tr>
   </table>
   </dd>
 </dl>
