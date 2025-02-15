@@ -31,7 +31,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   bitDuration = (RadioLibTime_t)1000000/rate;
 
   // calculate module carrier frequency resolution
-  uint32_t step = round(phyLayer->getFreqStep());
+  uint32_t step = round(phyLayer->freqStep);
 
   // check minimum shift value
   if(shift < step / 2) {
@@ -46,7 +46,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   }
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0f) / phyLayer->getFreqStep();
+  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
 
   // configure for direct mode
   return(phyLayer->startDirect());

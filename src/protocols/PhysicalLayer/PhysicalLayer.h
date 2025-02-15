@@ -216,14 +216,18 @@ enum RadioModeType_t {
 class PhysicalLayer {
   public:
 
+    /*! \brief  Frequency step of the synthesizer in Hz. */
+    float freqStep;
+
+    /*! \brief  Maximum length of packet that can be received by the module. */
+    size_t maxPacketLength;
+
     // constructor
 
     /*!
       \brief Default constructor.
-      \param step Frequency step of the synthesizer in Hz.
-      \param maxLen Maximum length of packet that can be received by the module.
     */
-    PhysicalLayer(float step, size_t maxLen);
+    PhysicalLayer();
 
     // basic methods
 
@@ -474,12 +478,6 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t checkDataRate(DataRate_t dr);
-
-    /*!
-      \brief Gets the module frequency step size that was set in constructor.
-      \returns Synthesizer frequency step size in Hz.
-    */
-    float getFreqStep() const;
 
     /*!
       \brief Query modem for the packet length of received payload. Must be implemented in module class.
@@ -778,8 +776,6 @@ class PhysicalLayer {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    float freqStep;
-    size_t maxPacketLength;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     uint8_t bufferBitPos = 0;

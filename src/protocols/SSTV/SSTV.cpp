@@ -219,7 +219,7 @@ int16_t SSTVClient::begin(float base, const SSTVMode_t& mode) {
   txMode = mode;
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0f) / phyLayer->getFreqStep();
+  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
 
   // configure for direct mode
   return(phyLayer->startDirect());
@@ -365,10 +365,10 @@ void SSTVClient::tone(float freq, RadioLibTime_t len) {
   if(audioClient != nullptr) {
     audioClient->tone(freq, false);
   } else {
-    phyLayer->transmitDirect(baseFreq + (freq / phyLayer->getFreqStep()));
+    phyLayer->transmitDirect(baseFreq + (freq / phyLayer->freqStep));
   }
   #else
-  phyLayer->transmitDirect(baseFreq + (freq / phyLayer->getFreqStep()));
+  phyLayer->transmitDirect(baseFreq + (freq / phyLayer->freqStep));
   #endif
   mod->waitForMicroseconds(start, len);
 }

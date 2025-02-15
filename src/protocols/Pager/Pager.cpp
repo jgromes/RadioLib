@@ -39,10 +39,10 @@ int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shi
 
   // calculate 24-bit frequency
   baseFreq = base;
-  baseFreqRaw = (baseFreq * 1000000.0f) / phyLayer->getFreqStep();
+  baseFreqRaw = (baseFreq * 1000000.0f) / phyLayer->freqStep;
 
   // calculate module carrier frequency resolution
-  uint16_t step = round(phyLayer->getFreqStep());
+  uint16_t step = round(phyLayer->freqStep);
 
   // calculate raw frequency shift
   shiftFreqHz = shift;
