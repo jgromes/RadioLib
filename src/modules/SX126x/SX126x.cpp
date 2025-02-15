@@ -3,7 +3,9 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_SX126X
 
-SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE, RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
+SX126x::SX126x(Module* mod) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_SX126X_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_SX126X_MAX_PACKET_LENGTH;
   this->mod = mod;
   this->XTAL = false;
   this->standbyXOSC = false;
