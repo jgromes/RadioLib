@@ -2,7 +2,9 @@
 #include <string.h>
 #if !RADIOLIB_EXCLUDE_NRF24
 
-nRF24::nRF24(Module* mod) : PhysicalLayer(RADIOLIB_NRF24_FREQUENCY_STEP_SIZE, RADIOLIB_NRF24_MAX_PACKET_LENGTH) {
+nRF24::nRF24(Module* mod) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_NRF24_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_NRF24_MAX_PACKET_LENGTH;
   this->mod = mod;
 }
 
