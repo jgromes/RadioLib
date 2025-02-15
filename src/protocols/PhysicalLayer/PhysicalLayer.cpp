@@ -3,6 +3,8 @@
 #include <string.h>
 
 PhysicalLayer::PhysicalLayer() {
+  this->freqStep = 1;
+  this->maxPacketLength = 1;
   #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   this->bufferBitPos = 0;
   this->bufferWritePos = 0;
