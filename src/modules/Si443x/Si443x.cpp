@@ -2,7 +2,9 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_SI443X
 
-Si443x::Si443x(Module* mod) : PhysicalLayer(RADIOLIB_SI443X_FREQUENCY_STEP_SIZE, RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
+Si443x::Si443x(Module* mod) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_SI443X_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_SI443X_MAX_PACKET_LENGTH;
   this->mod = mod;
 }
 
