@@ -2,7 +2,9 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_SX128X
 
-SX128x::SX128x(Module* mod) : PhysicalLayer(RADIOLIB_SX128X_FREQUENCY_STEP_SIZE, RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
+SX128x::SX128x(Module* mod) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_SX128X_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_SX128X_MAX_PACKET_LENGTH;
   this->mod = mod;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_SX128X_IRQ_TX_DONE;
   this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_SX128X_IRQ_RX_DONE;
