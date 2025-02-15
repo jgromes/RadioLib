@@ -8,7 +8,9 @@
 
 #if !RADIOLIB_EXCLUDE_LR11X0
 
-LR11x0::LR11x0(Module* mod) : PhysicalLayer(RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE, RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
+LR11x0::LR11x0(Module* mod) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_LR11X0_MAX_PACKET_LENGTH;
   this->mod = mod;
   this->XTAL = false;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR11X0_IRQ_TX_DONE;
