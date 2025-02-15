@@ -2,7 +2,9 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_RF69
 
-RF69::RF69(Module* module) : PhysicalLayer(RADIOLIB_RF69_FREQUENCY_STEP_SIZE, RADIOLIB_RF69_MAX_PACKET_LENGTH)  {
+RF69::RF69(Module* module) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_RF69_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_RF69_MAX_PACKET_LENGTH;
   this->mod = module;
 }
 
