@@ -1,6 +1,6 @@
 var class_physical_layer =
 [
-    [ "PhysicalLayer", "class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5", null ],
+    [ "PhysicalLayer", "class_physical_layer.html#afc972a84153977d6ccd9e116b6181ad4", null ],
     [ "available", "class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26", null ],
     [ "calculateRxTimeout", "class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9", null ],
     [ "checkDataRate", "class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba", null ],
@@ -14,7 +14,6 @@ var class_physical_layer =
     [ "dropSync", "class_physical_layer.html#a429796eb2e7ea86781a2e8ca42af43f3", null ],
     [ "finishTransmit", "class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18", null ],
     [ "getChannelScanResult", "class_physical_layer.html#a63979795a7b53557560bb95b65480906", null ],
-    [ "getFreqStep", "class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c", null ],
     [ "getIrqFlags", "class_physical_layer.html#af1caeed34b2e2ff0355467507106a1a2", null ],
     [ "getIrqMapped", "class_physical_layer.html#ae602ebd46d60da8670c9f353cef695d9", null ],
     [ "getModem", "class_physical_layer.html#af061879bf694735297593c048d04a196", null ],
@@ -65,5 +64,7 @@ var class_physical_layer =
     [ "startTransmit", "class_physical_layer.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "transmit", "class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "class_physical_layer.html#ada508497ee2e70170da3afe078e2fe0e", null ],
-    [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ]
+    [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ],
+    [ "freqStep", "class_physical_layer.html#aa949616080a463a82bb6ad5075a9e16e", null ],
+    [ "maxPacketLength", "class_physical_layer.html#a1c04f8fba5eef96e59972004e8abc623", null ]
 ];

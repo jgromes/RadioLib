@@ -14,7 +14,7 @@ var searchData=
   ['freqspace_11',['freqSpace',['../struct_bell_modem__t.html#a27c1a411df3d887ca0ce246c3b5521f7',1,'BellModem_t']]],
   ['freqspacereply_12',['freqSpaceReply',['../struct_bell_modem__t.html#a40fe8a17a9b4fae3f313fea34077eacc',1,'BellModem_t']]],
   ['freqstart_13',['freqStart',['../struct_lo_ra_w_a_n_channel_span__t.html#a1bfba15154185b75693542cd0547cb96',1,'LoRaWANChannelSpan_t']]],
-  ['freqstep_14',['freqStep',['../struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e',1,'LoRaWANChannelSpan_t']]],
+  ['freqstep_14',['freqstep',['../struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e',1,'LoRaWANChannelSpan_t::freqStep'],['../class_physical_layer.html#aa949616080a463a82bb6ad5075a9e16e',1,'PhysicalLayer::freqStep']]],
   ['frmpending_15',['frmPending',['../struct_lo_ra_w_a_n_event__t.html#afe256fb2ed02e2ffdf0ae85f92951778',1,'LoRaWANEvent_t']]],
   ['fromdistributionsystem_16',['fromDistributionSystem',['../struct_l_r11x0_wifi_result_full__t.html#a47cb77c1ccf8da32d3a4102518c0d72c',1,'LR11x0WifiResultFull_t']]],
   ['fsk_17',['fsk',['../union_data_rate__t.html#abfa0cbc4b33c49435e67662b6e6027cf',1,'DataRate_t']]],

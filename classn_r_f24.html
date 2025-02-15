@@ -247,9 +247,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <br /></td></tr>
 <tr class="separator:a3563453988a83d22dd07d4691543a300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
-<tr class="memitem:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer" id="r_add63d7d4fa8b14df5e185813794a49d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">PhysicalLayer</a> (float step, size_t maxLen)</td></tr>
-<tr class="memdesc:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc972a84153977d6ccd9e116b6181ad4 inherit pub_methods_class_physical_layer" id="r_afc972a84153977d6ccd9e116b6181ad4"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>PhysicalLayer</b> ()</td></tr>
+<tr class="memdesc:afc972a84153977d6ccd9e116b6181ad4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:afc972a84153977d6ccd9e116b6181ad4 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,9 +275,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memitem:a58d54eeb40fb586013ba48e15318abba inherit pub_methods_class_physical_layer" id="r_a58d54eeb40fb586013ba48e15318abba"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
 <tr class="memdesc:a58d54eeb40fb586013ba48e15318abba inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a58d54eeb40fb586013ba48e15318abba inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer" id="r_a977e5236693960bb1c79090a201e9e1c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
-<tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <br /></td></tr>
-<tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer" id="r_aabc94ab27a9ee6daaafa9b47dde5f75b"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">getRSSI</a> ()</td></tr>
 <tr class="memdesc:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <br /></td></tr>
 <tr class="separator:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -377,6 +375,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memitem:a5c5977bc9f54f21665b022a99e6c87cc inherit pub_methods_class_physical_layer" id="r_a5c5977bc9f54f21665b022a99e6c87cc"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5c5977bc9f54f21665b022a99e6c87cc">launchMode</a> ()</td></tr>
 <tr class="memdesc:a5c5977bc9f54f21665b022a99e6c87cc inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.  <br /></td></tr>
 <tr class="separator:a5c5977bc9f54f21665b022a99e6c87cc inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
+<tr class="memitem:aa949616080a463a82bb6ad5075a9e16e inherit pub_attribs_class_physical_layer" id="r_aa949616080a463a82bb6ad5075a9e16e"><td class="memItemLeft" align="right" valign="top">
+float&#160;</td><td class="memItemRight" valign="bottom"><b>freqStep</b></td></tr>
+<tr class="memdesc:aa949616080a463a82bb6ad5075a9e16e inherit pub_attribs_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frequency step of the synthesizer in Hz. <br /></td></tr>
+<tr class="separator:aa949616080a463a82bb6ad5075a9e16e inherit pub_attribs_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c04f8fba5eef96e59972004e8abc623 inherit pub_attribs_class_physical_layer" id="r_a1c04f8fba5eef96e59972004e8abc623"><td class="memItemLeft" align="right" valign="top">
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b></td></tr>
+<tr class="memdesc:a1c04f8fba5eef96e59972004e8abc623 inherit pub_attribs_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum length of packet that can be received by the module. <br /></td></tr>
+<tr class="separator:a1c04f8fba5eef96e59972004e8abc623 inherit pub_attribs_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Control class for nRF24 module. </p>

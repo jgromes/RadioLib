@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('class_physical_layer.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="class_physical_layer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">PhysicalLayer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
@@ -122,9 +123,10 @@ Inheritance diagram for PhysicalLayer:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:add63d7d4fa8b14df5e185813794a49d5" id="r_add63d7d4fa8b14df5e185813794a49d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">PhysicalLayer</a> (float step, size_t maxLen)</td></tr>
-<tr class="memdesc:add63d7d4fa8b14df5e185813794a49d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:add63d7d4fa8b14df5e185813794a49d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc972a84153977d6ccd9e116b6181ad4" id="r_afc972a84153977d6ccd9e116b6181ad4"><td class="memItemLeft" align="right" valign="top"><a id="afc972a84153977d6ccd9e116b6181ad4" name="afc972a84153977d6ccd9e116b6181ad4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PhysicalLayer</b> ()</td></tr>
+<tr class="memdesc:afc972a84153977d6ccd9e116b6181ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:afc972a84153977d6ccd9e116b6181ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,9 +205,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a58d54eeb40fb586013ba48e15318abba" id="r_a58d54eeb40fb586013ba48e15318abba"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
 <tr class="memdesc:a58d54eeb40fb586013ba48e15318abba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a58d54eeb40fb586013ba48e15318abba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a977e5236693960bb1c79090a201e9e1c" id="r_a977e5236693960bb1c79090a201e9e1c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
-<tr class="memdesc:a977e5236693960bb1c79090a201e9e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <br /></td></tr>
-<tr class="separator:a977e5236693960bb1c79090a201e9e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fe95169b5cdc8cabe1f2af66cad6ef6" id="r_a2fe95169b5cdc8cabe1f2af66cad6ef6"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a2fe95169b5cdc8cabe1f2af66cad6ef6">getPacketLength</a> (bool update=true)</td></tr>
 <tr class="memdesc:a2fe95169b5cdc8cabe1f2af66cad6ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload. Must be implemented in module class.  <br /></td></tr>
 <tr class="separator:a2fe95169b5cdc8cabe1f2af66cad6ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -322,6 +321,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memdesc:a5c5977bc9f54f21665b022a99e6c87cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.  <br /></td></tr>
 <tr class="separator:a5c5977bc9f54f21665b022a99e6c87cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa949616080a463a82bb6ad5075a9e16e" id="r_aa949616080a463a82bb6ad5075a9e16e"><td class="memItemLeft" align="right" valign="top"><a id="aa949616080a463a82bb6ad5075a9e16e" name="aa949616080a463a82bb6ad5075a9e16e"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>freqStep</b></td></tr>
+<tr class="memdesc:aa949616080a463a82bb6ad5075a9e16e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frequency step of the synthesizer in Hz. <br /></td></tr>
+<tr class="separator:aa949616080a463a82bb6ad5075a9e16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c04f8fba5eef96e59972004e8abc623" id="r_a1c04f8fba5eef96e59972004e8abc623"><td class="memItemLeft" align="right" valign="top"><a id="a1c04f8fba5eef96e59972004e8abc623" name="a1c04f8fba5eef96e59972004e8abc623"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b></td></tr>
+<tr class="memdesc:a1c04f8fba5eef96e59972004e8abc623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum length of packet that can be received by the module. <br /></td></tr>
+<tr class="separator:a1c04f8fba5eef96e59972004e8abc623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:acb94e5999123b5a1c63dd279b2a5a251" id="r_acb94e5999123b5a1c63dd279b2a5a251"><td class="memItemLeft" align="right" valign="top"><a id="acb94e5999123b5a1c63dd279b2a5a251" name="acb94e5999123b5a1c63dd279b2a5a251"></a>
@@ -363,45 +373,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="add63d7d4fa8b14df5e185813794a49d5" name="add63d7d4fa8b14df5e185813794a49d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add63d7d4fa8b14df5e185813794a49d5">&#9670;&#160;</a></span>PhysicalLayer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PhysicalLayer::PhysicalLayer </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>step</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>maxLen</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">step</td><td>Frequency step of the synthesizer in Hz. </td></tr>
-    <tr><td class="paramname">maxLen</td><td>Maximum length of packet that can be received by the module. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab57182d32646861ef0d865e2740d6b26" name="ab57182d32646861ef0d865e2740d6b26"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab57182d32646861ef0d865e2740d6b26">&#9670;&#160;</a></span>available()</h2>
 
@@ -779,26 +751,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f">LR11x0</a>, <a class="el" href="class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317">SX126x</a>, <a class="el" href="class_s_x127x.html#a81189ce77541d78fc8feb99c2a3f35b2">SX127x</a>, and <a class="el" href="class_s_x128x.html#ac39f77b77a2e4124cc30aeae08b4c653">SX128x</a>.</p>
-
-</div>
-</div>
-<a id="a977e5236693960bb1c79090a201e9e1c" name="a977e5236693960bb1c79090a201e9e1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a977e5236693960bb1c79090a201e9e1c">&#9670;&#160;</a></span>getFreqStep()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float PhysicalLayer::getFreqStep </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the module frequency step size that was set in constructor. </p>
-<dl class="section return"><dt>Returns</dt><dd>Synthesizer frequency step size in Hz. </dd></dl>
 
 </div>
 </div>
