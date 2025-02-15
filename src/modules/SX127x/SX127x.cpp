@@ -2,7 +2,9 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_SX127X
 
-SX127x::SX127x(Module* mod) : PhysicalLayer(RADIOLIB_SX127X_FREQUENCY_STEP_SIZE, RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
+SX127x::SX127x(Module* mod) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_SX127X_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_SX127X_MAX_PACKET_LENGTH;
   this->mod = mod;
 }
 
