@@ -2,7 +2,9 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_CC1101
 
-CC1101::CC1101(Module* module) : PhysicalLayer(RADIOLIB_CC1101_FREQUENCY_STEP_SIZE, RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
+CC1101::CC1101(Module* module) : PhysicalLayer() {
+  this->freqStep = RADIOLIB_CC1101_FREQUENCY_STEP_SIZE;
+  this->maxPacketLength = RADIOLIB_CC1101_MAX_PACKET_LENGTH;
   this->mod = module;
 }
 
