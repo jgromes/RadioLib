@@ -3541,11 +3541,11 @@ int16_t LR11x0::gnssReadDopplerSolverRes(uint8_t* error, uint8_t* nbSvUsed, floa
   if(error) { *error = buff[0]; }
   if(nbSvUsed) { *nbSvUsed = buff[1]; }
   if(lat) {
-    uint16_t latRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)buff[3];
+    int16_t latRaw = ((int16_t)(buff[2]) << 8) | (int16_t)buff[3];
     *lat = ((float)latRaw * 90.0f)/2048.0f;
   }
   if(lon) {
-    uint16_t lonRaw = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5];
+    int16_t lonRaw = ((int16_t)(buff[4]) << 8) | (int16_t)buff[5];
     *lon = ((float)lonRaw * 180.0f)/2048.0f;
   }
   if(accuracy) { *accuracy = ((uint16_t)(buff[6]) << 8) | (uint16_t)buff[7]; }
