@@ -279,8 +279,9 @@ int16_t SX1272::setOutputPower(int8_t power) {
   return(this->setOutputPower(power, false));
 }
 
-int16_t SX1272::setOutputPower(int8_t power, bool useRfo) {
+int16_t SX1272::setOutputPower(int8_t power, bool forceRfo) {
   // check if power value is configurable
+  bool useRfo = (power < 2) || forceRfo;
   int16_t state = checkOutputPower(power, NULL, useRfo);
   RADIOLIB_ASSERT(state);
 
