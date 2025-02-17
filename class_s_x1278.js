@@ -24,6 +24,6 @@ var class_s_x1278 =
     [ "setGain", "class_s_x1278.html#aa57b713988cfa224a6db2ff325052931", null ],
     [ "setModem", "class_s_x1278.html#a609dd3faf2036e8c2d046fd191e0137d", null ],
     [ "setOutputPower", "class_s_x1278.html#a69abc18e7fa0055e6b80024e8cde7db4", null ],
-    [ "setOutputPower", "class_s_x1278.html#aca58a6c2e8fcef6414fdf3bc1eb62082", null ],
+    [ "setOutputPower", "class_s_x1278.html#ab206a23ac93f5687ba5f6741fa690130", null ],
     [ "setSpreadingFactor", "class_s_x1278.html#af70c22fe38bc3b944070ccbc083fed08", null ]
 ];

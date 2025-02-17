@@ -151,9 +151,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec51f08c0902145ff5f11e27e7cab638" id="r_aec51f08c0902145ff5f11e27e7cab638"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#aec51f08c0902145ff5f11e27e7cab638">setOutputPower</a> (int8_t power) override</td></tr>
 <tr class="memdesc:aec51f08c0902145ff5f11e27e7cab638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin). High power +20 dBm operation is also supported, on the PA_BOOST pin. Defaults to PA_BOOST.  <br /></td></tr>
 <tr class="separator:aec51f08c0902145ff5f11e27e7cab638"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03f7073d710f18aad79b7d46f2fda659" id="r_a03f7073d710f18aad79b7d46f2fda659"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a03f7073d710f18aad79b7d46f2fda659">setOutputPower</a> (int8_t power, bool useRfo)</td></tr>
-<tr class="memdesc:a03f7073d710f18aad79b7d46f2fda659"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).  <br /></td></tr>
-<tr class="separator:a03f7073d710f18aad79b7d46f2fda659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac001c32a61d4eec0a49c472cac9ebc6" id="r_aac001c32a61d4eec0a49c472cac9ebc6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#aac001c32a61d4eec0a49c472cac9ebc6">setOutputPower</a> (int8_t power, bool forceRfo)</td></tr>
+<tr class="memdesc:aac001c32a61d4eec0a49c472cac9ebc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).  <br /></td></tr>
+<tr class="separator:aac001c32a61d4eec0a49c472cac9ebc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2510072152c936d9f62557f46a4248d0" id="r_a2510072152c936d9f62557f46a4248d0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a2510072152c936d9f62557f46a4248d0">checkOutputPower</a> (int8_t power, int8_t *clipped) override</td></tr>
 <tr class="memdesc:a2510072152c936d9f62557f46a4248d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. This method is needed for compatibility with <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536" title="Check if output power is configurable. Must be implemented in module class if the module supports it.">PhysicalLayer::checkOutputPower</a>.  <br /></td></tr>
 <tr class="separator:a2510072152c936d9f62557f46a4248d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1448,8 +1448,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a03f7073d710f18aad79b7d46f2fda659" name="a03f7073d710f18aad79b7d46f2fda659"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03f7073d710f18aad79b7d46f2fda659">&#9670;&#160;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
+<a id="aac001c32a61d4eec0a49c472cac9ebc6" name="aac001c32a61d4eec0a49c472cac9ebc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac001c32a61d4eec0a49c472cac9ebc6">&#9670;&#160;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1464,7 +1464,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>useRfo</em>&#160;</td>
+          <td class="paramname"><em>forceRfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1478,7 +1478,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">power</td><td>Transmission output power in dBm. </td></tr>
-    <tr><td class="paramname">useRfo</td><td>Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. </td></tr>
+    <tr><td class="paramname">forceRfo</td><td>Whether to force using the RFO pin for the RF output (true) or the lave the selection up to user (false) based on power output. </td></tr>
   </table>
   </dd>
 </dl>
