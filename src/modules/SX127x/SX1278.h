@@ -214,7 +214,7 @@ class SX1278: public SX127x {
       High power +20 dBm operation is also supported, on the PA_BOOST pin.
       \param power Transmission output power in dBm.
       \param forceRfo Whether to force using the RFO pin for the RF output (true)
-      or the lave the selection up to user (false) based on power output.
+      or to leave the selection up to user (false) based on power output.
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power, bool forceRfo);
