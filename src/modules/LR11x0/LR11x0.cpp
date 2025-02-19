@@ -3254,8 +3254,8 @@ int16_t LR11x0::gnssAssisted(uint32_t gpsTime, uint8_t effort, uint8_t resMask, 
 }
 
 int16_t LR11x0::gnssSetAssistancePosition(float lat, float lon) {
-  uint16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
-  uint16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
+  int16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
+  int16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
   uint8_t buff[4] = {
     (uint8_t)((latRaw >> 8) & 0xFF), (uint8_t)(latRaw & 0xFF),
     (uint8_t)((lonRaw >> 8) & 0xFF), (uint8_t)(lonRaw & 0xFF),
@@ -3269,11 +3269,11 @@ int16_t LR11x0::gnssReadAssistancePosition(float* lat, float* lon) {
 
   // pass the replies
   if(lat) {
-    uint16_t latRaw = ((uint16_t)(buff[0]) << 8) | (uint16_t)(buff[1]);
+    int16_t latRaw = ((int16_t)(buff[0]) << 8) | (int16_t)(buff[1]);
     *lat = ((float)latRaw*90.0f)/2048.0f;
   }
   if(lon) {
-    uint16_t lonRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)(buff[3]);
+    int16_t lonRaw = ((int16_t)(buff[2]) << 8) | (int16_t)(buff[3]);
     *lon = ((float)lonRaw*180.0f)/2048.0f;
   }
 
@@ -3403,8 +3403,8 @@ int16_t LR11x0::gnssAlmanacReadSV(uint8_t svId, uint8_t* almanac) {
 }
 
 int16_t LR11x0::gnssGetNbSvVisible(uint32_t time, float lat, float lon, uint8_t constellation, uint8_t* nbSv) {
-  uint16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
-  uint16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
+  int16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
+  int16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
   uint8_t reqBuff[9] = { 
     (uint8_t)((time >> 24) & 0xFF), (uint8_t)((time >> 16) & 0xFF),
     (uint8_t)((time >> 8) & 0xFF), (uint8_t)(time & 0xFF),
@@ -3541,21 +3541,21 @@ int16_t LR11x0::gnssReadDopplerSolverRes(uint8_t* error, uint8_t* nbSvUsed, floa
   if(error) { *error = buff[0]; }
   if(nbSvUsed) { *nbSvUsed = buff[1]; }
   if(lat) {
-    uint16_t latRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)buff[3];
+    int16_t latRaw = ((int16_t)(buff[2]) << 8) | (int16_t)buff[3];
     *lat = ((float)latRaw * 90.0f)/2048.0f;
   }
   if(lon) {
-    uint16_t lonRaw = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5];
+    int16_t lonRaw = ((int16_t)(buff[4]) << 8) | (int16_t)buff[5];
     *lon = ((float)lonRaw * 180.0f)/2048.0f;
   }
   if(accuracy) { *accuracy = ((uint16_t)(buff[6]) << 8) | (uint16_t)buff[7]; }
   if(xtal) { *xtal = ((uint16_t)(buff[8]) << 8) | (uint16_t)buff[9]; }
   if(latFilt) {
-    uint16_t latRaw = ((uint16_t)(buff[10]) << 8) | (uint16_t)buff[11];
+    int16_t latRaw = ((int16_t)(buff[10]) << 8) | (int16_t)buff[11];
     *latFilt = ((float)latRaw * 90.0f)/2048.0f;
   }
   if(lonFilt) {
-    uint16_t lonRaw = ((uint16_t)(buff[12]) << 8) | (uint16_t)buff[13];
+    int16_t lonRaw = ((int16_t)(buff[12]) << 8) | (int16_t)buff[13];
     *lonFilt = ((float)lonRaw * 180.0f)/2048.0f;
   }
   if(accuracyFilt) { *accuracyFilt = ((uint16_t)(buff[14]) << 8) | (uint16_t)buff[15]; }

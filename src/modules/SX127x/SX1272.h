@@ -201,10 +201,11 @@ class SX1272: public SX127x {
     /*!
       \brief Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).
       \param power Transmission output power in dBm.
-      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
+      \param forceRfo Whether to force using the RFO pin for the RF output (true)
+      or to leave the selection up to user (false) based on power output.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, bool useRfo);
+    int16_t setOutputPower(int8_t power, bool forceRfo);
 
     /*!
       \brief Check if output power is configurable.
