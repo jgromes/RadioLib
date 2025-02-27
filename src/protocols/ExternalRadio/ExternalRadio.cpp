@@ -35,9 +35,7 @@ ExternalRadio& ExternalRadio::operator=(const ExternalRadio& ext) {
 }
 
 ExternalRadio::~ExternalRadio() {
-  if(this->mod) {
-    delete this->mod;
-  }
+  delete this->mod;
 }
 
 Module* ExternalRadio::getMod() {
