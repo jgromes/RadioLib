@@ -6,6 +6,9 @@
 
 #include "BuildOpt.h"
 
+/*! \brief Global-scope function that returns timestamp since start (in microseconds). */
+RadioLibTime_t rlb_time_us();
+
 /*!
   \class RadioLibHal
   \brief Hardware abstraction library base interface.

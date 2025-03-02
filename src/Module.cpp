@@ -227,7 +227,7 @@ void Module::SPItransfer(uint16_t cmd, uint32_t reg, const uint8_t* dataOut, uin
     for(size_t n = 0; n < numBytes; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", debugBuffPtr[n]);
     }
-    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG();
+    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
   #endif
 
   #if !RADIOLIB_STATIC_ONLY
@@ -426,7 +426,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
     for(; n < cmdLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", cmd[n]);
     }
-    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG();
+    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
 
     // print data bytes
     RADIOLIB_DEBUG_SPI_PRINT("SI\t");
@@ -436,12 +436,12 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
     for(; n < buffLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", buffOut[n]);
     }
-    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG();
+    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
     RADIOLIB_DEBUG_SPI_PRINT("SO\t");
     for(n = 0; n < buffLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", buffIn[n]);
     }
-    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG();
+    RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
   #endif
 
   #if !RADIOLIB_STATIC_ONLY

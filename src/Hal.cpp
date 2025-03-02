@@ -1,12 +1,18 @@
 #include "Hal.h"
 
+static RadioLibHal* rlb_timestamp_hal = nullptr;
+
 RadioLibHal::RadioLibHal(const uint32_t input, const uint32_t output, const uint32_t low, const uint32_t high, const uint32_t rising, const uint32_t falling)
     : GpioModeInput(input),
       GpioModeOutput(output),
       GpioLevelLow(low),
       GpioLevelHigh(high),
       GpioInterruptRising(rising),
-      GpioInterruptFalling(falling) {}
+      GpioInterruptFalling(falling) {
+        if(!rlb_timestamp_hal) {
+          rlb_timestamp_hal = this;
+        }
+      }
 
 void RadioLibHal::init() {
 
@@ -32,4 +38,8 @@ void RadioLibHal::yield() {
 
 uint32_t RadioLibHal::pinToInterrupt(uint32_t pin) {
   return(pin);
+}
+
+RadioLibTime_t rlb_time_us() {
+  return(rlb_timestamp_hal == nullptr ? 0 : rlb_timestamp_hal->micros());
 }
