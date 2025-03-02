@@ -1,7 +1,9 @@
 #include "Utils.h"
+#include "Hal.h"
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
 
@@ -59,7 +61,7 @@ void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t of
       sprintf(strPtr++, "   ");
     }
     if(level) {
-      RADIOLIB_DEBUG_PRINT("%s", level);
+      RADIOLIB_DEBUG_PRINT_LVL("", "%s", level);
     }
     RADIOLIB_DEBUG_PRINT("%s", str);
     RADIOLIB_DEBUG_PRINTLN();
@@ -78,14 +80,20 @@ void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t of
   #endif
 }
 
-#if RADIOLIB_DEBUG && defined(RADIOLIB_BUILD_ARDUINO)
+#if RADIOLIB_DEBUG
 // https://github.com/esp8266/Arduino/blob/65579d29081cb8501e4d7f786747bf12e7b37da2/cores/esp8266/Print.cpp#L50
-size_t rlb_printf(const char* format, ...) {
+size_t rlb_printf(bool ts, const char* format, ...) {
   va_list arg;
   va_start(arg, format);
   char temp[64];
   char* buffer = temp;
-  size_t len = vsnprintf(temp, sizeof(temp), format, arg);
+  RadioLibTime_t timestamp = rlb_time_us();
+  unsigned long sec = timestamp/1000000UL;
+  unsigned long usec = timestamp%1000000UL;
+  size_t len_ts = 0;
+  if(ts) { len_ts = snprintf(temp, sizeof(temp), "[%lu.%06lu] ", sec, usec); }
+  size_t len_str = vsnprintf(&temp[len_ts], sizeof(temp) - len_ts, format, arg);
+  size_t len = len_ts + len_str;
   va_end(arg);
   if (len > sizeof(temp) - 1) {
     buffer = new char[len + 1];
@@ -93,10 +101,15 @@ size_t rlb_printf(const char* format, ...) {
       return 0;
     }
     va_start(arg, format);
-    vsnprintf(buffer, len + 1, format, arg);
+    if(ts) { len_ts = snprintf(buffer, len_ts + 1, "[%lu.%06lu] ", sec, usec); }
+    vsnprintf(buffer + len_ts, len_str + 1, format, arg);
     va_end(arg);
   }
+  #if defined(RADIOLIB_BUILD_ARDUINO)
   len = RADIOLIB_DEBUG_PORT.write(reinterpret_cast<const uint8_t*>(buffer), len);
+  #else
+  len = fwrite(buffer, sizeof(temp[0]), len, RADIOLIB_DEBUG_PORT);
+  #endif
   if (buffer != temp) {
     delete[] buffer;
   }
