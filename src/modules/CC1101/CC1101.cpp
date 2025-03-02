@@ -243,9 +243,10 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   // Check MARCSTATE and wait until ready to tx
   // 724us is the longest time for calibrate per datasheet
+  // Needs a bit more time for reliability
   RadioLibTime_t start = this->mod->hal->micros();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {
-    if(this->mod->hal->micros() - start > 724) {
+    if(this->mod->hal->micros() - start > 800) {
       standby();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
