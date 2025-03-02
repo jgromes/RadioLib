@@ -317,6 +317,7 @@ int16_t Module::SPIcheckStream() {
 
 int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write, const uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio) {
   // prepare the output buffer
+  int16_t state = RADIOLIB_ERR_NONE;
   size_t buffLen = cmdLen + numBytes;
   if(!write) {
     buffLen += (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8);
@@ -391,20 +392,18 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
         // cppcheck-suppress unsignedLessThanZero
         if(this->hal->millis() - start >= this->spiConfig.timeout) {
           RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO post-transfer timeout, is it connected?");
-          #if !RADIOLIB_STATIC_ONLY
-            delete[] buffOut;
-            delete[] buffIn;
-          #endif
-          return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+
+          // do not return yet to display the debug output
+          state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
+          break;
         }
       
       }
     }
   }
 
-  // parse status
-  int16_t state = RADIOLIB_ERR_NONE;
-  if((this->spiConfig.parseStatusCb != nullptr) && (numBytes > 0)) {
+  // parse status (only if GPIO did not timeout)
+  if((state == RADIOLIB_ERR_NONE) && (this->spiConfig.parseStatusCb != nullptr) && (numBytes > 0)) {
     state = this->spiConfig.parseStatusCb(buffIn[this->spiConfig.statusPos]);
   }
   
