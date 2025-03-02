@@ -12,6 +12,7 @@ var class_s_x128x =
     [ "clearPacketSentAction", "class_s_x128x.html#ab2335d91c7899291312e3cd6576446e5", null ],
     [ "explicitHeader", "class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d", null ],
     [ "finishTransmit", "class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4", null ],
+    [ "fixedPacketLengthMode", "class_s_x128x.html#a30ce92d381006888fc46c19553bd805c", null ],
     [ "getChannelScanResult", "class_s_x128x.html#ac39f77b77a2e4124cc30aeae08b4c653", null ],
     [ "getFrequencyError", "class_s_x128x.html#a2b424000856a9dc212f571d0e8890635", null ],
     [ "getIrqFlags", "class_s_x128x.html#aa17ffcb939f6b2eb0712e63b6ee7a71f", null ],
@@ -77,5 +78,6 @@ var class_s_x128x =
     [ "transmit", "class_s_x128x.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "class_s_x128x.html#ada508497ee2e70170da3afe078e2fe0e", null ],
     [ "transmit", "class_s_x128x.html#a45f4ac293d869a35ad737032efa8e884", null ],
-    [ "transmitDirect", "class_s_x128x.html#a53892566b0259d348158efe3c3c3601a", null ]
+    [ "transmitDirect", "class_s_x128x.html#a53892566b0259d348158efe3c3c3601a", null ],
+    [ "variablePacketLengthMode", "class_s_x128x.html#a5ddb01757b3b9f3fa1b82b9419fc9340", null ]
 ];
