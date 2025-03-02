@@ -772,8 +772,7 @@ int16_t SX128x::setModem(ModemType_t modem) {
 int16_t SX128x::getModem(ModemType_t* modem) {
   RADIOLIB_ASSERT_PTR(modem);
 
-  uint8_t pType = getPacketType();
-  switch(pType) {
+  switch(getPacketType()) {
     case(RADIOLIB_SX128X_PACKET_TYPE_LORA):
       *modem = ModemType_t::RADIOLIB_MODEM_LORA;
       return(RADIOLIB_ERR_NONE);
