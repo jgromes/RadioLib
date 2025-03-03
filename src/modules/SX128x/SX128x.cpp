@@ -996,13 +996,8 @@ int16_t SX128x::setSyncWord(const uint8_t* syncWord, uint8_t len) {
     this->syncWordLen = len;
   }
 
-  uint8_t syncWordBuff[] = { 0x00, 0x00, 0x00, 0x00, 0x00 };
-  for(uint8_t i = 0; i < len; i++) {
-    syncWordBuff[i] = syncWord[i];
-  }
-
   // update sync word
-  int16_t state = SX128x::writeRegister(RADIOLIB_SX128X_REG_SYNC_WORD_1_BYTE_4, syncWordBuff, 5);
+  int16_t state = SX128x::writeRegister(RADIOLIB_SX128X_REG_SYNC_WORD_1_BYTE_4, syncWord, len);
   RADIOLIB_ASSERT(state);
 
   // update packet parameters
