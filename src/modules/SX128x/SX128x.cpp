@@ -996,10 +996,9 @@ int16_t SX128x::setSyncWord(const uint8_t* syncWord, uint8_t len) {
     this->syncWordLen = len;
   }
 
-  // reverse sync word byte order
   uint8_t syncWordBuff[] = { 0x00, 0x00, 0x00, 0x00, 0x00 };
   for(uint8_t i = 0; i < len; i++) {
-    syncWordBuff[4 - i] = syncWord[i];
+    syncWordBuff[i] = syncWord[i];
   }
 
   // update sync word
