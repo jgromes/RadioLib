@@ -814,7 +814,7 @@ int16_t RF69::enableSyncWordFiltering(uint8_t maxErrBits) {
   RADIOLIB_ASSERT(state);
 
   // set maximum error bits
-  return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, maxErrBits, 3, 0));
+  return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, maxErrBits, 2, 0));
 }
 
 int16_t RF69::disableSyncWordFiltering() {
