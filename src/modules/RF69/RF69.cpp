@@ -696,7 +696,7 @@ int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
 
 int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // check constraints
-  if((maxErrBits > 7) || (len > 8)) {
+  if((maxErrBits > 7) || (len == 0) || (len > 8)) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
   }
 
@@ -712,12 +712,12 @@ int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBit
   RADIOLIB_ASSERT(state);
 
   // set the length
-  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, len, 5, 3);
+  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, len-1, 5, 3);
 
   // set sync word register
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_SYNC_VALUE_1, syncWord, len);
   if(state == RADIOLIB_ERR_NONE) {
-    this->syncWordLength = len;
+    this->syncWordLength = len-1;
   }
 
   return(state);
