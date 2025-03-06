@@ -8,7 +8,7 @@ const LoRaWANBand_t* LoRaWANBands[RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS] = {
   &US915,
   &EU433,
   &AU915,
-  &CN500,
+  &CN470,
   &AS923,
   &AS923_2,
   &AS923_3,
@@ -331,8 +331,8 @@ const LoRaWANBand_t AU915 = {
   }
 };
 
-const LoRaWANBand_t CN500 = {
-  .bandNum = BandCN500,
+const LoRaWANBand_t CN470 = {
+  .bandNum = BandCN470,
   .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
   .freqMin = 4700000,
   .freqMax = 5100000,
@@ -356,7 +356,7 @@ const LoRaWANBand_t CN500 = {
       .freqStep = 2000,
       .drMin = 0,
       .drMax = 5,
-      .drJoinRequest = 0
+      .drJoinRequest = 3
     },
     RADIOLIB_LORAWAN_CHANNEL_SPAN_NONE
   },

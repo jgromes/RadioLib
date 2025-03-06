@@ -2422,9 +2422,9 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
         chMaskGrp45 |= (uint32_t)chMask;
         break;
       case 5:
-        // for CN500, this is just a normal channel mask
+        // for CN470, this is just a normal channel mask
         // for all other bands, the first 10 bits enable banks of 8 125kHz channels
-        if(this->band->bandNum == BandCN500) {
+        if(this->band->bandNum == BandCN470) {
           chMaskGrp45 |= (uint32_t)chMask << 16;
         } else {
           int bank = 0;
@@ -2443,19 +2443,19 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
       case 6:
         // for dynamic bands: all channels ON (that are currently defined)
         // for fixed bands:   all 125kHz channels ON, channel mask similar to ChMask = 4
-        // except for CN500:  all 125kHz channels ON
+        // except for CN470:  all 125kHz channels ON
 
         // for dynamic bands: retrieve all currently defined channels
         // for fixed bands:   cannot store all defined channels, so select a random one from each bank
         this->getChannelPlanMask(&chMaskGrp0123, &chMaskGrp45);
-        if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && this->band->bandNum != BandCN500) {
+        if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && this->band->bandNum != BandCN470) {
           chMaskGrp45 |= (uint32_t)chMask;
         }
         break;
       case 7:
         // for fixed bands:   all 125kHz channels ON, channel mask similar to ChMask = 4
-        // except for CN500:  RFU
-        if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && this->band->bandNum != BandCN500) {
+        // except for CN470:  RFU
+        if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && this->band->bandNum != BandCN470) {
           chMaskGrp0123 = 0;
           chMaskGrp45 |= (uint32_t)chMask;
         }
@@ -3031,7 +3031,7 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
       *chMaskGrp0123 |= (uint64_t)0xFF << ((this->subBand - 1) * 8);
       *chMaskGrp45 |= (uint32_t)0x01 << (this->subBand - 1);
     } else if(this->subBand > 8 && this->subBand <= 12) {
-      // CN500 only: for sub band 9-12, set bank of 8 125kHz channels
+      // CN470 only: for sub band 9-12, set bank of 8 125kHz channels
       *chMaskGrp45 |= (uint32_t)0xFF << ((this->subBand - 9) * 8);
     } else {
       // if subband is set to 0, all 125kHz channels are enabled.
@@ -3049,8 +3049,8 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
         }
       }
       // the 500 kHz channels are in the usual channel plan however
-      // these are the channel indices 64-71 for bands other than CN500
-      if(this->band->bandNum != BandCN500) {
+      // these are the channel indices 64-71 for bands other than CN470
+      if(this->band->bandNum != BandCN470) {
         for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
           uint8_t idx = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx;
           if(idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE && idx >= 64) {
