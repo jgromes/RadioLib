@@ -8,7 +8,7 @@ RadioLib LoRaWAN examples.
 ## LoRaWAN versions & regional parameters
 RadioLib implements both LoRaWAN Specification 1.1 and 1.0.4. Confusingly, 1.0.4 is newer than 1.1, but 1.1 includes more security checks and as such **LoRaWAN 1.1 is preferred**.  
 The catch is in the Regional Parameters: as RP002 1.0.4 is newer than RP001 1.1, it is more up to date regarding local laws & regulations. Therefore, RadioLib implements 1.0.4 as baseline and 1.1 (revision B) as fallback, and as such **RP002 Regional Parameters 1.0.4 is preferred**.
-_Note: the CN500 band is implemented as specified in RP001 1.1 revision B, as the RP002 1.0.4 version is much too complex._
+_Note: the CN470 band is implemented as specified in RP001 1.1 revision B, as the RP002 1.0.4 version is much too complex._
 
 To activate a LoRaWAN 1.1 session, supply all the required keys:
 ```cpp

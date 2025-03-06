@@ -435,7 +435,7 @@ extern const LoRaWANBand_t EU868;
 extern const LoRaWANBand_t US915;
 extern const LoRaWANBand_t EU433;
 extern const LoRaWANBand_t AU915;
-extern const LoRaWANBand_t CN500;
+extern const LoRaWANBand_t CN470;
 extern const LoRaWANBand_t AS923;
 extern const LoRaWANBand_t AS923_2;
 extern const LoRaWANBand_t AS923_3;
@@ -452,7 +452,7 @@ enum LoRaWANBandNum_t {
   BandUS915,
   BandEU433,
   BandAU915,
-  BandCN500,
+  BandCN470,
   BandAS923,
   BandAS923_2,
   BandAS923_3,

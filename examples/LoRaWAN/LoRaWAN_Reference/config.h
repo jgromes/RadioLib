@@ -37,9 +37,11 @@ const uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // minutes x seconds
 // for the curious, the #ifndef blocks allow for automated testing &/or you can
 // put your EUI & keys in to your platformio.ini - see wiki for more tips
 
-// regional choices: EU868, US915, AU915, AS923, AS923_2, AS923_3, AS923_4, IN865, KR920, CN500
+// regional choices: EU868, US915, AU915, AS923, AS923_2, AS923_3, AS923_4, IN865, KR920, CN470
 const LoRaWANBand_t Region = EU868;
-const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
+
+// subband choice: for US915/AU915 set to 2, for CN470 set to 1, otherwise leave on 0
+const uint8_t subBand = 0;
 
 // ============================================================================
 // Below is to support the sketch - only make changes if the notes say so ...
