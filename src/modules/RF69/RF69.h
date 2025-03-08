@@ -1031,8 +1031,6 @@ class RF69: public PhysicalLayer {
 
     bool promiscuous = false;
 
-    uint8_t syncWordLength = RADIOLIB_RF69_DEFAULT_SW_LEN;
-
     bool bitSync = true;
 
     int16_t directMode();

@@ -716,10 +716,6 @@ int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBit
 
   // set sync word register
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_SYNC_VALUE_1, syncWord, len);
-  if(state == RADIOLIB_ERR_NONE) {
-    this->syncWordLength = len-1;
-  }
-
   return(state);
 }
 
