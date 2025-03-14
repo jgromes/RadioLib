@@ -128,19 +128,19 @@
 #define RADIOLIB_SI443X_IDLE                                    0b00000000  //  1     0                idle
 
 // RADIOLIB_SI443X_REG_INTERRUPT_STATUS_1
-#define RADIOLIB_SI443X_FIFO_LEVEL_ERROR_INTERRUPT              0b10000000  //  7     7   Tx/Rx FIFO overflow or underflow
-#define RADIOLIB_SI443X_TX_FIFO_ALMOST_FULL_INTERRUPT           0b01000000  //  6     6   Tx FIFO almost full
-#define RADIOLIB_SI443X_TX_FIFO_ALMOST_EMPTY_INTERRUPT          0b00100000  //  5     5   Tx FIFO almost empty
-#define RADIOLIB_SI443X_RX_FIFO_ALMOST_FULL_INTERRUPT           0b00010000  //  4     4   Rx FIFO almost full
-#define RADIOLIB_SI443X_EXTERNAL_INTERRUPT                      0b00001000  //  3     3   external interrupt occurred on GPIOx
-#define RADIOLIB_SI443X_PACKET_SENT_INTERRUPT                   0b00000100  //  2     2   packet transmission done
-#define RADIOLIB_SI443X_VALID_PACKET_RECEIVED_INTERRUPT         0b00000010  //  1     1   valid packet has been received
-#define RADIOLIB_SI443X_CRC_ERROR_INTERRUPT                     0b00000001  //  0     0   CRC failed
+#define RADIOLIB_SI443X_FIFO_LEVEL_ERROR_INTERRUPT              0b10000000 << 8  //  7     7   Tx/Rx FIFO overflow or underflow
+#define RADIOLIB_SI443X_TX_FIFO_ALMOST_FULL_INTERRUPT           0b01000000 << 8  //  6     6   Tx FIFO almost full
+#define RADIOLIB_SI443X_TX_FIFO_ALMOST_EMPTY_INTERRUPT          0b00100000 << 8  //  5     5   Tx FIFO almost empty
+#define RADIOLIB_SI443X_RX_FIFO_ALMOST_FULL_INTERRUPT           0b00010000 << 8  //  4     4   Rx FIFO almost full
+#define RADIOLIB_SI443X_EXTERNAL_INTERRUPT                      0b00001000 << 8  //  3     3   external interrupt occurred on GPIOx
+#define RADIOLIB_SI443X_PACKET_SENT_INTERRUPT                   0b00000100 << 8  //  2     2   packet transmission done
+#define RADIOLIB_SI443X_VALID_PACKET_RECEIVED_INTERRUPT         0b00000010 << 8  //  1     1   valid packet has been received
+#define RADIOLIB_SI443X_CRC_ERROR_INTERRUPT                     0b00000001 << 8  //  0     0   CRC failed
 
 // RADIOLIB_SI443X_REG_INTERRUPT_STATUS_2
 #define RADIOLIB_SI443X_SYNC_WORD_DETECTED_INTERRUPT            0b10000000  //  7     7   sync word has been detected
-#define RADIOLIB_SI443X_VALID_RADIOLIB_PREAMBLE_DETECTED_INTERRUPT      0b01000000  //  6     6   valid preamble has been detected
-#define RADIOLIB_SI443X_INVALID_RADIOLIB_PREAMBLE_DETECTED_INTERRUPT    0b00100000  //  5     5   invalid preamble has been detected
+#define RADIOLIB_SI443X_VALID_PREAMBLE_DETECTED_INTERRUPT       0b01000000  //  6     6   valid preamble has been detected
+#define RADIOLIB_SI443X_INVALID_PREAMBLE_DETECTED_INTERRUPT     0b00100000  //  5     5   invalid preamble has been detected
 #define RADIOLIB_SI443X_RSSI_INTERRUPT                          0b00010000  //  4     4   RSSI exceeded programmed threshold
 #define RADIOLIB_SI443X_WAKEUP_TIMER_INTERRUPT                  0b00001000  //  3     3   wake-up timer expired
 #define RADIOLIB_SI443X_LOW_BATTERY_INTERRUPT                   0b00000100  //  2     2   low battery detected
@@ -159,8 +159,8 @@
 
 // RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_2
 #define RADIOLIB_SI443X_SYNC_WORD_DETECTED_ENABLED              0b10000000  //  7     7   sync word interrupt enabled
-#define RADIOLIB_SI443X_VALID_RADIOLIB_PREAMBLE_DETECTED_ENABLED        0b01000000  //  6     6   valid preamble interrupt enabled
-#define RADIOLIB_SI443X_INVALID_RADIOLIB_PREAMBLE_DETECTED_ENABLED      0b00100000  //  5     5   invalid preamble interrupt enabled
+#define RADIOLIB_SI443X_VALID_PREAMBLE_DETECTED_ENABLED         0b01000000  //  6     6   valid preamble interrupt enabled
+#define RADIOLIB_SI443X_INVALID_PREAMBLE_DETECTED_ENABLED       0b00100000  //  5     5   invalid preamble interrupt enabled
 #define RADIOLIB_SI443X_RSSI_ENABLED                            0b00010000  //  4     4   RSSI exceeded programmed threshold interrupt enabled
 #define RADIOLIB_SI443X_WAKEUP_TIMER_ENABLED                    0b00001000  //  3     3   wake-up timer interrupt enabled
 #define RADIOLIB_SI443X_LOW_BATTERY_ENABLED                     0b00000100  //  2     2   low battery interrupt enabled
@@ -810,18 +810,31 @@ class Si443x: public PhysicalLayer {
     #endif
 
     /*!
-     \brief Set modem in fixed packet length mode.
-     \param len Packet length.
-     \returns \ref status_codes
-   */
-   int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
+      \brief Set modem in fixed packet length mode.
+      \param len Packet length.
+      \returns \ref status_codes
+    */
+    int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
 
     /*!
-     \brief Set modem in variable packet length mode.
-     \param maxLen Maximum packet length.
+      \brief Set modem in variable packet length mode.
+      \param maxLen Maximum packet length.
      \returns \ref status_codes
-   */
-   int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
+    */
+    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
+
+    /*!
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
+    */
+    uint32_t getIrqFlags() override;
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq) override;
 
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -847,7 +860,7 @@ class Si443x: public PhysicalLayer {
     uint8_t packetLengthConfig = RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON;
 
     bool findChip();
-    void clearIRQFlags();
+    void clearIrqStatus();
     void clearFIFO(size_t count);
     int16_t config();
     int16_t updateClockRecovery();
