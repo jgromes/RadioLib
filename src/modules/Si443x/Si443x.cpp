@@ -54,10 +54,13 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
   state = packetMode();
   RADIOLIB_ASSERT(state);
 
-  state = setDataShaping(0);
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
   RADIOLIB_ASSERT(state);
 
-  state = setEncoding(0);
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
+  RADIOLIB_ASSERT(state);
+
+  state = setCRC(true);
   RADIOLIB_ASSERT(state);
 
   state = variablePacketLengthMode();
@@ -293,7 +296,8 @@ int16_t Si443x::startReceive() {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set interrupt mapping
-  this->mod->SPIwriteRegister(RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_1, RADIOLIB_SI443X_VALID_PACKET_RECEIVED_ENABLED | RADIOLIB_SI443X_CRC_ERROR_ENABLED);
+  uint8_t irq = this->crcEnabled ? (RADIOLIB_SI443X_VALID_PACKET_RECEIVED_ENABLED | RADIOLIB_SI443X_CRC_ERROR_ENABLED) : RADIOLIB_SI443X_VALID_PACKET_RECEIVED_ENABLED;
+  this->mod->SPIwriteRegister(RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_1, irq);
   this->mod->SPIwriteRegister(RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
 
   // set mode to receive
@@ -652,6 +656,13 @@ int16_t Si443x::clearIrqFlags(uint32_t irq) {
   (void)irq;
   (void)getIrqFlags();
   return(RADIOLIB_ERR_NONE);
+}
+
+int16_t Si443x::setCRC(bool enable, bool mode) {
+  this->crcEnabled = enable;
+  uint8_t crcEn = enable ? RADIOLIB_SI443X_CRC_ON : RADIOLIB_SI443X_CRC_OFF;
+  uint8_t crcCfg = mode ? RADIOLIB_SI443X_CRC_IBM_CRC16 : RADIOLIB_SI443X_CRC_CCITT;
+  return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_DATA_ACCESS_CONTROL, crcEn | crcCfg, 2, 0));
 }
 
 Module* Si443x::getMod() {

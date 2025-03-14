@@ -836,6 +836,14 @@ class Si443x: public PhysicalLayer {
     */
     int16_t clearIrqFlags(uint32_t irq) override;
 
+    /*!
+      \brief Enables/disables CRC of transmitted or received packets.
+      \param enable Enable (true) or disable (false) CRC.
+      \param mode Set CRC mode
+      \returns \ref status_codes
+    */
+    int16_t setCRC(bool enable, bool mode = false);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -858,6 +866,7 @@ class Si443x: public PhysicalLayer {
     size_t packetLength = 0;
     bool packetLengthQueried = false;
     uint8_t packetLengthConfig = RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON;
+    bool crcEnabled = false;
 
     bool findChip();
     void clearIrqStatus();
