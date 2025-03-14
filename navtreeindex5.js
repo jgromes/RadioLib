@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"classn_r_f24.html#a5957f06a891d3d9c07e87b59c239ce56":[3,0,41,33],
+"classn_r_f24.html#a5b01677f5ce6bee54da8fc7098c339f4":[3,0,41,15],
+"classn_r_f24.html#a5e97c13373c6c8d5a86404646884dea3":[3,0,41,25],
 "classn_r_f24.html#a60df9afa489eabe3a3ca193ab7709165":[3,0,41,27],
 "classn_r_f24.html#a69b75e0889c609099487a43c8c3b6721":[3,0,41,32],
 "classn_r_f24.html#a760d3f47f58ddacdf41975447484a47c":[3,0,41,18],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "lr1110__transceiver__0305_8h.html#abc3d6c6ac5598d4ced54b6429770b305":[4,0,0,1,2,0,2,1],
 "lr1110__transceiver__0305_8h_source.html":[4,0,0,1,2,0,2],
 "lr1110__transceiver__0306_8h.html":[4,0,0,1,2,0,3],
-"lr1110__transceiver__0306_8h.html#a41b3993acc55d29c9be76a82718c2ba4":[4,0,0,1,2,0,3,2],
-"lr1110__transceiver__0306_8h.html#a9d71ed93e8016b97a4d70b4194f622db":[4,0,0,1,2,0,3,3],
-"lr1110__transceiver__0306_8h.html#aa6490d72623bacfc624619b3c378ac5d":[4,0,0,1,2,0,3,0],
-"lr1110__transceiver__0306_8h.html#abc3d6c6ac5598d4ced54b6429770b305":[4,0,0,1,2,0,3,1]
+"lr1110__transceiver__0306_8h.html#a41b3993acc55d29c9be76a82718c2ba4":[4,0,0,1,2,0,3,2]
 };
