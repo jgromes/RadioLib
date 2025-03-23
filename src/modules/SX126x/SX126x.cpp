@@ -2359,7 +2359,7 @@ bool SX126x::findChip(const char* verStr) {
     reset();
 
     // read the version string
-    char version[16];
+    char version[16] = { 0 };
     this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, reinterpret_cast<uint8_t*>(version));
 
     // check version register
