@@ -196,6 +196,12 @@
   //#define RADIOLIB_EXCLUDE_RTTY             (1)
   //#define RADIOLIB_EXCLUDE_SSTV             (1)
   //#define RADIOLIB_EXCLUDE_DIRECT_RECEIVE   (1)
+  //#define RADIOLIB_EXCLUDE_BELL             (1)
+  //#define RADIOLIB_EXCLUDE_APRS             (1)
+  //#define RADIOLIB_EXCLUDE_LORAWAN          (1)
+  //#define RADIOLIB_EXCLUDE_LR11X0           (1)
+  //#define RADIOLIB_EXCLUDE_FSK4             (1)
+  //#define RADIOLIB_EXCLUDE_PAGER            (1)
 
 #elif defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(ARDUINO_ARCH_MEGAAVR))
   // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
