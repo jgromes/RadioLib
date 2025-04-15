@@ -262,17 +262,19 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // data put on FIFO
   uint8_t dataSent = 0;
 
+  uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
+
   // optionally write packet length
   if(this->packetLengthConfig == RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE) {
     if (len > RADIOLIB_CC1101_MAX_PACKET_LENGTH - 1) {
         return(RADIOLIB_ERR_PACKET_TOO_LONG);
     }
-    SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, len);
+    SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, len + (filter != RADIOLIB_CC1101_ADR_CHK_NONE? 1:0));
     dataSent+= 1;
   }
 
   // check address filtering
-  uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
+  //uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
   if(filter != RADIOLIB_CC1101_ADR_CHK_NONE) {
     SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, addr);
     dataSent += 1;
