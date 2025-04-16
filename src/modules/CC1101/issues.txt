@@ -1,0 +1,64 @@
+CC1101::receive espera !Irq (GDO0 asserted) + Irq (GDO2 de-asserted) para leer el paquete.
+Dentro, CC1101::readData asume que existen datos en la FIFO sin verificarlo.
+
+Si el paquete es descartado, GDO2 es de-asserted igualmente.
+
+0x06 -Asserts: when sync word has been received, 
+     -de-asserts: at the end of the packet. 
+                  when a packet is discarded due to address or maximum length filtering 
+                  or when the radio enters the RXFIFO_OVERFLOW state.
+
+Se lee de una FIFO vacía un número arbitario que se asume como longitud y a partir de ahí otro monton de datos arbitrarios.
+Finalmente se lee uno que se asume contiene el CRC y si el bit7 está levantado se dá el paquete por correcto.
+
+
+
+[CC1101] Initializing ... success!
+[CC1101] Setting BitRate ... success!
+[CC1101] Setting node address (0x02)... success!
+[CC1101] Setting variable packet length mode ... success!
+[CC1101] Waiting for incoming transmission ... success!
+received data:
+0x00, 0x00, 0x00, 0xac, 0x30, 0x00, 0x82, 0x30, // ....0..0
+[CC1101] RSSI:          -44.50 dBm
+[CC1101] LQI:           126
+[CC1101] Waiting for incoming transmission ... success!
+received data:
+0x00, 0x00, 0x00, 0xac, 0x30, 0x00, 0x82, 0x30, // ....0..0
+[CC1101] RSSI:          -44.50 dBm
+[CC1101] LQI:           126
+[CC1101] Waiting for incoming transmission ... success!
+received data:
+0x00, 0x00, 0x00, 0xac, 0x30, 0x00, 0x82, 0x30, // ....0..0
+[CC1101] RSSI:          -44.50 dBm
+[CC1101] LQI:           126
+
+
+
+
+[CC1101] Setting BitRate ... success!
+[CC1101] Setting node address (0x02)... success!
+[CC1101] Setting variable packet length mode ... success!
+
+[CC1101] Waiting for incoming transmission ... 
+[  1985][D][CC1101_Receive_Address.ino:110] operator()(): GDO0 triggered 0
+[  1999][D][CC1101_Receive_Address.ino:110] operator()(): GDO0 triggered 1
+[  2009][D][CC1101.cpp:828] getPacketLength(): bytes in fifo: 0
+[  2015][D][CC1101.cpp:830] getPacketLength(): packet length 0
+[  2021][D][CC1101.cpp:384] readData(): length 0
+[  2025][D][CC1101.cpp:396] readData(): addr 57
+success!
+received data:
+0x8a, 0xc9, 0x3f, 0xff, 0xff, 0x3f, 0xb3, 0x00, // ..?..?..
+[CC1101] RSSI:          -75.00 dBm
+[CC1101] LQI:           50
+[CC1101] Waiting for incoming transmission ... 
+[  3094][D][CC1101_Receive_Address.ino:110] operator()(): GDO0 triggered 0
+[  3108][D][CC1101_Receive_Address.ino:110] operator()(): GDO0 triggered 1
+[  3118][D][CC1101.cpp:828] getPacketLength(): bytes in fifo: 0
+[  3124][D][CC1101.cpp:830] getPacketLength(): packet length 190
+[  3130][D][CC1101.cpp:384] readData(): length 190
+[  3134][D][CC1101.cpp:389] readData(): new length 8
+[  3139][D][CC1101.cpp:396] readData(): addr 57
+0xfe, 0xb2, 0xbe, 0xa0, 0x3f, 0x14, 0xb7, 0xfe, // ....?...
+CRC error!

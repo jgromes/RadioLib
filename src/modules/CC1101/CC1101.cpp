@@ -62,36 +62,44 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
   RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0f);
 
-  // start reception
-  int16_t state = startReceive();
-  RADIOLIB_ASSERT(state);
-
   // wait for packet start or timeout
   RadioLibTime_t start = this->mod->hal->millis();
-  while(this->mod->hal->digitalRead(this->mod->getIrq())) {
-    this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
-      return(RADIOLIB_ERR_RX_TIMEOUT);
+  do {
+    // start reception
+    int16_t state = startReceive();
+    RADIOLIB_ASSERT(state);
+
+    while(this->mod->hal->digitalRead(this->mod->getIrq())) {
+      this->mod->hal->yield();
+
+      if(this->mod->hal->millis() - start > timeout) {
+        standby();
+        SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+        return(RADIOLIB_ERR_RX_TIMEOUT);
+      }
     }
-  }
 
-  // wait for packet end or timeout
-  start = this->mod->hal->millis();
-  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-    this->mod->hal->yield();
+    // wait for packet end or timeout
+    //start = this->mod->hal->millis();
+    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+      this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
-      return(RADIOLIB_ERR_RX_TIMEOUT);
+      if(this->mod->hal->millis() - start > timeout) {
+        standby();
+        SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+        return(RADIOLIB_ERR_RX_TIMEOUT);
+      }
     }
-  }
-
-  // read packet data
-  return(readData(data, len));
+    
+    if (getPacketLength() > 0) {
+      // read packet data
+      return(readData(data, len));
+    } else {
+      this->packetLengthQueried = false;
+    }
+  
+  } while (true);
 }
 
 int16_t CC1101::standby() {
@@ -805,7 +813,10 @@ uint8_t CC1101::getLQI() const {
 size_t CC1101::getPacketLength(bool update) {
   if(!this->packetLengthQueried && update) {
     if(this->packetLengthConfig == RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE) {
-      this->packetLength = SPIreadRegister(RADIOLIB_CC1101_REG_FIFO);
+      this->packetLength = 0;
+      if ((SPIreadRegister(RADIOLIB_CC1101_REG_RXBYTES) & 0x7f) == 0) {
+        this->packetLength = SPIreadRegister(RADIOLIB_CC1101_REG_FIFO);
+      }
     } else {
       this->packetLength = SPIreadRegister(RADIOLIB_CC1101_REG_PKTLEN);
     }
