@@ -814,7 +814,7 @@ size_t CC1101::getPacketLength(bool update) {
   if(!this->packetLengthQueried && update) {
     if(this->packetLengthConfig == RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE) {
       this->packetLength = 0;
-      if ((SPIreadRegister(RADIOLIB_CC1101_REG_RXBYTES) & 0x7f) == 0) {
+      if ((SPIreadRegister(RADIOLIB_CC1101_REG_RXBYTES) & 0x7f) != 0) {
         this->packetLength = SPIreadRegister(RADIOLIB_CC1101_REG_FIFO);
       }
     } else {
