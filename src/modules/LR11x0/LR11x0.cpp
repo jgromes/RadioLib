@@ -2161,12 +2161,15 @@ bool LR11x0::findChip(uint8_t ver) {
     int16_t state = getVersionInfo(&info);
     RADIOLIB_ASSERT(state);
 
-    if(info.device == ver) {
+    if((info.device == ver) || (info.device == RADIOLIB_LR11X0_DEVICE_BOOT)) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", info.device);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)info.fwMajor, (int)info.fwMinor);
       if(this->chipType != RADIOLIB_LR11X0_DEVICE_LR1121) {
         RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)info.fwMajorWiFi, (int)info.fwMinorWiFi);
         RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)info.fwGNSS, (int)info.almanacGNSS);
+      }
+      if(info.device == RADIOLIB_LR11X0_DEVICE_BOOT) {
+        RADIOLIB_DEBUG_BASIC_PRINTLN("Warning: device is in bootloader mode! Only FW update is possible now.");
       }
       flagFound = true;
     } else {
@@ -2176,6 +2179,7 @@ bool LR11x0::findChip(uint8_t ver) {
       i++;
     }
   }
+  
 
   return(flagFound);
 }
