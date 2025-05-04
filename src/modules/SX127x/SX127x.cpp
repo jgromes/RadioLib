@@ -1591,7 +1591,9 @@ int16_t SX127x::setActiveModem(uint8_t modem) {
   int16_t state = setMode(RADIOLIB_SX127X_SLEEP);
 
   // set modem
-  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, modem, 7, 7, 5);
+  // low frequency access (bit 3) automatically resets when switching modem
+  // so we exclude it from the check 
+  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, modem, 7, 7, 5, 0xF7);
 
   // set mode to STANDBY
   state |= setMode(RADIOLIB_SX127X_STANDBY);
