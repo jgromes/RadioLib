@@ -1667,7 +1667,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
   // assume a rollover if the FCnt16 in the payload is smaller than the previous FCnt16 known by device
   // (MAX_FCNT_GAP is deprecated for 1.0.4 / 1.1, TTS and CS both apply a 16-bit rollover)
   if(payFCnt16 < (devFCnt32 & 0xFFFF)) {
-    Serial.printf("Rollover: %d -> %d\n", payFCnt16, devFCnt32);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("FCnt rollover: %d -> %d", payFCnt16, devFCnt32);
     devFCnt32 += 0x10000;   // apply rollover
   }
   devFCnt32 &= ~0xFFFF;   // clear lower 16 bits known by device
