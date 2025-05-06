@@ -2429,9 +2429,15 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
       case 1:
       case 2:
       case 3:
+        // clear the target 16-bit block
+        chMaskGrp0123 &= ~((uint64_t)0xFFFF << (16 * chMaskCntl));
+        // set the new 16-bit value in that block
         chMaskGrp0123 |= (uint64_t)chMask << (16 * chMaskCntl);
         break;
       case 4:
+        // clear the target 16-bit block
+        chMaskGrp45 &= ~((uint32_t)0xFFFF);
+        // set the new 16-bit value in that block
         chMaskGrp45 |= (uint32_t)chMask;
         break;
       case 5:
