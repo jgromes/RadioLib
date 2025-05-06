@@ -87,7 +87,6 @@
 #define RADIOLIB_LORAWAN_RX1_DR_OFFSET                          (0)
 #define RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS                 (5000)
 #define RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_2_MS                 (6000)
-#define RADIOLIB_LORAWAN_MAX_FCNT_GAP                           (16384)
 #define RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP                      (0x06)
 #define RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP                      (0x05)
 #define RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MIN_MS              (1000)
