@@ -930,8 +930,11 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
     }
   }
 
-  // start transmission
+  // start transmission, and time the duration of launchMode() to offset window timing
+  RadioLibTime_t spiStart = mod->hal->millis();
   state = this->phyLayer->launchMode();
+  RadioLibTime_t spiEnd = mod->hal->millis();
+  this->launchDuration = spiEnd - spiStart;
   RADIOLIB_ASSERT(state);
 
   // sleep for the duration of the transmission
@@ -1345,8 +1348,11 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
     }
   }
 
-  // start transmission
+  // start transmission, and time the duration of launchMode() to offset window timing
+  RadioLibTime_t spiStart = mod->hal->millis();
   state = this->phyLayer->launchMode();
+  RadioLibTime_t spiEnd = mod->hal->millis();
+  this->launchDuration = spiEnd - spiStart;
   RADIOLIB_ASSERT(state);
 
   // sleep for the duration of the transmission
@@ -1433,15 +1439,16 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
     RADIOLIB_ASSERT(state);
 
-    // wait for the start of the Rx window
-    RadioLibTime_t waitLen = tReference + dlDelays[window] - mod->hal->millis();
-    // make sure that no underflow occured; if so, clip the delay (although this will likely miss any downlink)
+    // calculate time at which the window should open
+    RadioLibTime_t tWindow = tReference + dlDelays[window];
+    // wait for the start of the Rx window launch
+    // - the launch of Rx window takes a few milliseconds, so shorten the waitLen a bit (launchDuration)
+    // - the Rx window is padded using scanGuard, so shorten the waitLen a bit (scanGuard / 2)
+    RadioLibTime_t waitLen = tWindow - mod->hal->millis() - this->launchDuration - this->scanGuard / 2;
+
+    // make sure that no underflow occured; if so, there's something weird going on so return an error
     if(waitLen > dlDelays[window]) {
-      waitLen = dlDelays[window];
-    }
-    // the waiting duration is shortened a bit to cover any possible timing errors
-    if(waitLen > this->scanGuard) {
-      waitLen -= this->scanGuard;
+      return(RADIOLIB_ERR_NO_RX_WINDOW);
     }
     this->sleepDelay(waitLen);
 
@@ -1449,11 +1456,17 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     state = this->phyLayer->launchMode();
     tOpen = mod->hal->millis();
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + 2));
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opened Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + 2));
     
-    // wait for the timeout to complete (and a small additional delay)
-    this->sleepDelay(timeoutHost / 1000 + this->scanGuard / 2);
+    // wait for the timeout to complete (and a small delay in case the RxTimeout interrupt needs to fire)
+    this->sleepDelay(timeoutHost / 1000);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", window);
+    while(mod->hal->millis() - tOpen <= timeoutHost / 1000 + this->scanGuard) {
+      // wait for the DIO interrupt to fire (RxDone or RxTimeout)
+      if(downlinkAction) {
+        break;
+      }
+    }
 
     // if the IRQ bit for Rx Timeout is not set, something is received, so stop the windows
     timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
@@ -1485,7 +1498,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   while(!downlinkAction) {
     mod->hal->yield();
     // stay in Rx mode for the maximum allowed Time-on-Air plus small grace period
-    if(mod->hal->millis() - tOpen > tMax + scanGuard) {
+    if(mod->hal->millis() - tOpen > tMax + this->scanGuard) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink missing!");
       downlinkComplete = false;
       break;

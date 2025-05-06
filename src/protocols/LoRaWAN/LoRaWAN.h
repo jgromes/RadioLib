@@ -865,7 +865,7 @@ class LoRaWANNode {
       500 is the **maximum** value, but it is not a good idea to go anywhere near that.
       If you have to go above 50 you probably have a bug somewhere. Check your device timing.
     */
-    RadioLibTime_t scanGuard = 5;
+    RadioLibTime_t scanGuard = 10;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -975,6 +975,9 @@ class LoRaWANNode {
 
     // timestamp when the Rx1/2 windows were closed (timeout or uplink received)
     RadioLibTime_t rxDelayEnd = 0;
+
+    // duration of SPI transaction for phyLayer->launchMode()
+    RadioLibTime_t launchDuration = 0;
 
     // device status - battery level
     uint8_t battLevel = 0xFF;
