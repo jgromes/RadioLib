@@ -923,11 +923,9 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
 
   // if requested, delay until transmitting JoinRequest
   RadioLibTime_t tNow = mod->hal->millis();
-  if(this->tUplink > tNow) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow));
-    if(this->tUplink > mod->hal->millis()) {
-      this->sleepDelay(this->tUplink - mod->hal->millis());
-    }
+  if(this->tUplink > tNow + this->launchDuration) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
+    this->sleepDelay(this->tUplink - this->launchDuration - mod->hal->millis());
   }
 
   // start transmission, and time the duration of launchMode() to offset window timing
@@ -1341,11 +1339,9 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   
   // if requested, wait until transmitting uplink
   tNow = mod->hal->millis();
-  if(this->tUplink > tNow) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow));
-    if(this->tUplink > mod->hal->millis()) {
-      this->sleepDelay(this->tUplink - mod->hal->millis());
-    }
+  if(this->tUplink > tNow + this->launchDuration) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
+    this->sleepDelay(this->tUplink - this->launchDuration - mod->hal->millis());
   }
 
   // start transmission, and time the duration of launchMode() to offset window timing
