@@ -925,7 +925,10 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RadioLibTime_t tNow = mod->hal->millis();
   if(this->tUplink > tNow + this->launchDuration) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
-    this->sleepDelay(this->tUplink - this->launchDuration - mod->hal->millis());
+    tNow = mod->hal->millis();
+    if(this->tUplink > tNow + this->launchDuration) {
+      this->sleepDelay(this->tUplink - tNow - this->launchDuration);
+    }
   }
 
   // start transmission, and time the duration of launchMode() to offset window timing
@@ -1341,7 +1344,10 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   tNow = mod->hal->millis();
   if(this->tUplink > tNow + this->launchDuration) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
-    this->sleepDelay(this->tUplink - this->launchDuration - mod->hal->millis());
+    tNow = mod->hal->millis();
+    if(this->tUplink > tNow + this->launchDuration) {
+      this->sleepDelay(this->tUplink - tNow - this->launchDuration);
+    }
   }
 
   // start transmission, and time the duration of launchMode() to offset window timing
