@@ -28,7 +28,7 @@ int16_t LoRaWANNode::sendReceive(const String& strUp, uint8_t fPort, String& str
 
   state = this->sendReceive(reinterpret_cast<const uint8_t*>(dataUp), strlen(dataUp), fPort, dataDown, &lenDown, isConfirmed, eventUp, eventDown);
 
-  if(state == RADIOLIB_ERR_NONE) {
+  if(state > RADIOLIB_ERR_NONE) {
     // add null terminator
     dataDown[lenDown] = '\0';
 
@@ -157,8 +157,8 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 
   } // end of transmission & reception
 
-  // note: if an error occured, it may still be the case that a transmission occured
-  // therefore, we act as if a transmission occured before throwing the actual error
+  // note: if an error occurred, it may still be the case that a transmission occurred
+  // therefore, we act as if a transmission occurred before throwing the actual error
   // this feels to be the best way to comply to spec
 
   // increase frame counter by one for the next uplink
