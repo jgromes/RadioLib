@@ -884,9 +884,6 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
     return(RADIOLIB_LORAWAN_SESSION_RESTORED);
   }
 
-  int16_t state = RADIOLIB_ERR_UNKNOWN;
-  Module* mod = this->phyLayer->getMod();
-
   // starting a new session, so make sure to update event fields already
   if(joinEvent) {
     joinEvent->newSession = true;
@@ -902,7 +899,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   this->composeJoinRequest(joinRequestMsg);
 
   // select a random pair of Tx/Rx channels
-  state = this->selectChannels();
+  int16_t state = this->selectChannels();
   RADIOLIB_ASSERT(state);
   
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinRequest (DevNonce = %d):", this->devNonce);
