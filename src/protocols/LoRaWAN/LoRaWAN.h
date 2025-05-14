@@ -1036,11 +1036,13 @@ class LoRaWANNode {
     // transmit uplink buffer on a specified channel
     int16_t transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans = false);
 
+    // handle one of the Class A receive windows with a given channel and certain timestamps
     int16_t receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference);
 
+    // handle a Class C receive window with timeout (between Class A windows) or without (between uplinks)
     int16_t receiveClassC(RadioLibTime_t timeout = 0);
 
-    // wait for, open and listen during receive windows; only performs listening
+    // open a series of Class A (and C) downlinks
     int16_t receiveDownlink();
 
     // extract downlink payload and process MAC commands
