@@ -12,9 +12,9 @@
 #include "hardware/clocks.h"
 #include "pico/multicore.h"
 
-uint32_t toneLoopPin;
-unsigned int toneLoopFrequency;
-unsigned long toneLoopDuration;
+inline uint32_t toneLoopPin;
+inline unsigned int toneLoopFrequency;
+inline unsigned long toneLoopDuration;
 
 // pre-calculated pulse-widths for 1200 and 2200Hz
 // we do this to save calculation time (see https://github.com/khoih-prog/RP2040_PWM/issues/6)
@@ -25,7 +25,7 @@ unsigned long toneLoopDuration;
 // The tone(...) implementation uses the second core on the RPi Pico. This is to diminish as much 
 // jitter in the output tones as possible.
 
-void toneLoop(){
+inline void toneLoop(){
   gpio_set_dir(toneLoopPin, GPIO_OUT);
 
   uint32_t sleep_dur;
