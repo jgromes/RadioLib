@@ -639,6 +639,10 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, const uint8_t* fNwkSIntKey, const u
   this->lwMode = RADIOLIB_LORAWAN_MODE_ABP;
   this->lwClass = RADIOLIB_LORAWAN_CLASS_A;
 
+  if(this->rev == 1) {
+    LoRaWANNode::pushMacCommand(RADIOLIB_LORAWAN_MAC_RESET, &this->rev, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
+  }
+
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -1927,9 +1931,10 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // get the server version
       uint8_t srvVersion = optIn[0];
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ResetConf: server version 1.%d", srvVersion);
-      if(srvVersion == this->rev) {
-        // valid server version, stop sending the ResetInd MAC command
-        LoRaWANNode::deleteMacCommand(RADIOLIB_LORAWAN_MAC_RESET, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
+      if(srvVersion != this->rev) {
+        // invalid server version, resend the ResetInd MAC command
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ERROR! Please disable your device and consult supported LoRaWAN versions");
+        (void)LoRaWANNode::pushMacCommand(cid, &this->rev, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
       }
       return(false);
     } break;
@@ -2314,25 +2319,12 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t srvVersion = optIn[0];
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RekeyConf: server version = 1.%d", srvVersion);
 
-      // If the server’s version is invalid the device SHALL discard the RekeyConf command and retransmit the RekeyInd in the next uplink frame
-      if((srvVersion > 0) && (srvVersion <= this->rev)) {
-        // valid server version, accept
-        this->rev = srvVersion;
-        
-      } else {
-        // if not a valid server version, retransmit RekeyInd
-        uint8_t cLen = 0;
-        this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_UPLINK);
-        const uint8_t cOcts[1] = { this->rev };
-        (void)LoRaWANNode::pushMacCommand(cid, cOcts, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
-        
-        // discard RekeyConf, therefore return false so it doesn't send a reply
-        return(false);
+      // If the server's version is invalid the device SHALL discard the RekeyConf command and retransmit the RekeyInd in the next uplink frame
+      if(srvVersion != this->rev) {
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ERROR! Please disable your device and consult supported LoRaWAN versions");
+        (void)LoRaWANNode::pushMacCommand(cid, &this->rev, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
       }
-
-      optOut[0] = this->rev;
-
-      LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_VERSION], this->rev);
+      
       return(false);
     } break;
 
