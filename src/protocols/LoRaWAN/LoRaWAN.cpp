@@ -1491,6 +1491,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   RadioModeConfig_t modeCfg;
   if(timeout) {
     timeout -= (mod->hal->millis() - tStart);
+    timeout -= this->launchDuration;
     modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(timeout * 1000);
   } else {
     modeCfg.receive.timeout = 0xFFFFFFFF; // max(uint32_t) is used for RxContinuous
@@ -1564,11 +1565,13 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
 int16_t LoRaWANNode::receiveDownlink() {
   Module* mod = this->phyLayer->getMod();
 
+  // if applicable, open Class C between uplink and Rx1
   RadioLibTime_t timeoutClassC = this->rxDelayStart + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
                                   mod->hal->millis() - 10*this->scanGuard;
   int16_t state = this->receiveClassC(timeoutClassC);
   RADIOLIB_ASSERT(state);
 
+  // open Rx1 window
   state = this->receiveClassA(RADIOLIB_LORAWAN_DOWNLINK, 
                               &this->channels[RADIOLIB_LORAWAN_RX1], 
                               RADIOLIB_LORAWAN_RX1, 
@@ -1582,12 +1585,13 @@ int16_t LoRaWANNode::receiveDownlink() {
     return(state);
   }
 
-  // for LoRaWAN v1.0.4 Class C, the RxC window is interrupted by the Rx2 window
+  // for LoRaWAN v1.0.4 Class C, there is an RxC window between Rx1 and Rx2
   timeoutClassC = this->rxDelayStart + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
                                   mod->hal->millis() - 10*this->scanGuard;
   state = this->receiveClassC(timeoutClassC);
   RADIOLIB_ASSERT(state);
 
+  // open Rx2 window
   state = this->receiveClassA(RADIOLIB_LORAWAN_DOWNLINK, 
                               &this->channels[RADIOLIB_LORAWAN_RX2], 
                               RADIOLIB_LORAWAN_RX2, 
