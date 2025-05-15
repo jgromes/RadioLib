@@ -2507,9 +2507,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       }
 
       // retrieve pending class from MAC uplink queue
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Switching to Class %s", optIn[0] == RADIOLIB_LORAWAN_CLASS_A ? "A" :
-                                                               optIn[0] == RADIOLIB_LORAWAN_CLASS_B ? "B" :
-                                                                                                      "C");
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("DeviceMode: Switching to LoRaWAN Class %s", 
+                                        optIn[0] == RADIOLIB_LORAWAN_CLASS_A ? "A" :
+                                        optIn[0] == RADIOLIB_LORAWAN_CLASS_B ? "B" : "C");
 
       this->lwClass = optIn[0];
 
