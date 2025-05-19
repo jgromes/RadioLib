@@ -1662,6 +1662,10 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
       int16_t modem = getActiveModem();
       if(modem == RADIOLIB_SX127X_LORA) {
+        // if max(uint32_t) is used, revert to RxContinuous
+        if(cfg->receive.timeout == 0xFFFFFFFF) {
+          cfg->receive.timeout = 0;
+        }
         if(cfg->receive.timeout != 0) {
           // for non-zero timeout value, change mode to Rx single and set the timeout
           this->rxMode = RADIOLIB_SX127X_RXSINGLE;

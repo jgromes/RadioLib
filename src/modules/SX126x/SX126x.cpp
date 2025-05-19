@@ -1554,6 +1554,10 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = startReceiveCommon(cfg->receive.timeout, cfg->receive.irqFlags, cfg->receive.irqMask);
       RADIOLIB_ASSERT(state);
 
+      // if max(uint32_t) is used, revert to RxContinuous
+      if(cfg->receive.timeout == 0xFFFFFFFF) {
+        cfg->receive.timeout = 0xFFFFFF;
+      }
       this->rxTimeout = cfg->receive.timeout;
     } break;
   
