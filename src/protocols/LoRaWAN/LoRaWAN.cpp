@@ -1028,9 +1028,17 @@ bool LoRaWANNode::isActivated() {
 }
 
 int16_t LoRaWANNode::setClass(uint8_t cls) {
+  // only allow switching class once activated
+  if(!this->isActivated()) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
+  }
+
+  // only Class A/B/C exist
   if(cls > RADIOLIB_LORAWAN_CLASS_C) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
+
+  // Class B is not implemented
   if(cls == RADIOLIB_LORAWAN_CLASS_B) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
@@ -1042,7 +1050,7 @@ int16_t LoRaWANNode::setClass(uint8_t cls) {
   }
 
   // for LoRaWAN v1.1, queue the DeviceModeInd MAC command
-  // it will only switch once DeviceModeInf is received
+  // it will only switch once DeviceModeConf is received
   uint8_t cOct = cls;
   int16_t state = LoRaWANNode::pushMacCommand(RADIOLIB_LORAWAN_MAC_DEVICE_MODE, &cOct, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
   return(state);
