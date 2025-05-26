@@ -2015,7 +2015,7 @@ int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaW
   int16_t state = RADIOLIB_ERR_NONE;
 
   if(downlinkAction) {
-    state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RX2, eventDown);
+    state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RXC, eventDown);
     downlinkAction = false;
 
     // if downlink parsed succesfully, set state to RxC window
