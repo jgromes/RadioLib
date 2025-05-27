@@ -1633,7 +1633,7 @@ int16_t LoRaWANNode::receiveDownlink() {
 
   // if applicable, open Class C between uplink and Rx1
   RadioLibTime_t timeoutClassC = this->rxDelayStart + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
-                                  mod->hal->millis() - 10*this->scanGuard;
+                                  mod->hal->millis() - 5*this->scanGuard;
   int16_t state = this->receiveClassC(timeoutClassC);
   RADIOLIB_ASSERT(state);
 
@@ -1653,7 +1653,7 @@ int16_t LoRaWANNode::receiveDownlink() {
 
   // for LoRaWAN v1.0.4 Class C, there is an RxC window between Rx1 and Rx2
   timeoutClassC = this->rxDelayStart + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
-                                  mod->hal->millis() - 10*this->scanGuard;
+                                  mod->hal->millis() - 5*this->scanGuard;
   state = this->receiveClassC(timeoutClassC);
   RADIOLIB_ASSERT(state);
 
@@ -2102,6 +2102,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 }
 
 int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaWANEvent_t* eventDown) {
+  // only allow if the device is Unicast-C or Multicast-C, otherwise ignore without error
+  if(this->lwClass != RADIOLIB_LORAWAN_CLASS_C && this->multicast != RADIOLIB_LORAWAN_CLASS_C) {
+    return(RADIOLIB_ERR_NONE);
+  }
+
   int16_t state = RADIOLIB_ERR_NONE;
 
   if(downlinkAction) {
