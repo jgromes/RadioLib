@@ -1069,7 +1069,7 @@ int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, const u
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
 
-  if(mcAppSKey == nullptr || mcNwkSKey) {
+  if(mcAppSKey == nullptr || mcNwkSKey == nullptr) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
