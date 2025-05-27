@@ -77,7 +77,7 @@
 #define RADIOLIB_LORAWAN_DOWNLINK                               (0x01 << 0)
 #define RADIOLIB_LORAWAN_RX1                                    (0x01 << 0)
 #define RADIOLIB_LORAWAN_RX2                                    (0x02 << 0)
-#define RADIOLIB_LORAWAN_RXC                                    (0x03 << 0)
+#define RADIOLIB_LORAWAN_RX_BC                                  (0x03 << 0)
 #define RADIOLIB_LORAWAN_BAND_DYNAMIC                           (0)
 #define RADIOLIB_LORAWAN_BAND_FIXED                             (1)
 #define RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES                  (15)
@@ -521,6 +521,9 @@ struct LoRaWANEvent_t {
 
   /*! \brief Number of times this uplink was transmitted (ADR)*/
   uint8_t nbTrans;
+
+  /*! \brief Multicast or unicast */
+  bool multicast;
 };
 
 /*!
@@ -612,6 +615,23 @@ class LoRaWANNode {
 
     /*! \brief Configure class (A / C) */
     int16_t setClass(uint8_t cls);
+
+    /*!
+      \brief Start a Multicast session.
+      \param cls The LoRaWAN Class used for this session (only C is supported).
+      \param mcAddr The Multicast address.
+      \param mcAppSKey The Multicast payload encryption key.
+      \param mcNwkSKey The Multicast payload integrity key.
+      \param mcFCntMin The minimum expected Multicast frame counter.
+      \param mcFCntMin The maximum allowed Multicast frame counter.
+      \param mcFreq The frequency used for the Multicast downlinks (in Hz).
+      \param mcDr The datarate used for the Multicast downlinks.
+      \returns \ref status_codes
+    */
+    int16_t startMulticastSession(uint8_t cls, uint32_t mcAddr, uint8_t* mcAppSKey, uint8_t* mcNwkSKey, uint32_t mcFCntMin = 0, uint32_t mcFCntMax = 0xFFFFFFFF, uint32_t mcFreq = 0, uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
+
+    /*! \brief Stop an ongoing multicast session */
+    void stopMulticastSession();
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -952,6 +972,14 @@ class LoRaWANNode {
     RadioLibTime_t tUplink = 0;   // scheduled uplink transmission time (internal clock)
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
 
+    // multicast parameters
+    uint8_t multicast = false;
+    uint32_t mcAddr = 0;
+    uint8_t mcAppSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+    uint8_t mcNwkSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+    uint32_t mcAFCnt = 0;
+    uint32_t mcAFCntMax = 0;
+
     // enable/disable CSMA for LoRaWAN
     bool csmaEnabled = false;
 
@@ -969,7 +997,7 @@ class LoRaWANNode {
     // available channel frequencies from list passed during OTA activation
     LoRaWANChannel_t channelPlan[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];
 
-    // currently configured channels for Tx, Rx1, Rx2, RxC
+    // currently configured channels for Tx, Rx1, Rx2, RxBC
     LoRaWANChannel_t channels[4] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE,
                                      RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };
 
@@ -1139,7 +1167,7 @@ class LoRaWANNode {
     int16_t findDataRate(uint8_t dr, DataRate_t* dataRate);
 
     // function to encrypt and decrypt payloads (regular uplink/downlink)
-    void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
+    void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t addr, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
 
     // function that allows sleeping via user-provided callback
     void sleepDelay(RadioLibTime_t ms);

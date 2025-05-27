@@ -10,7 +10,7 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   this->phyLayer = phy;
   this->band = band;
   this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
-  this->channels[RADIOLIB_LORAWAN_RXC] = this->band->rx2;
+  this->channels[RADIOLIB_LORAWAN_RX_BC] = this->band->rx2;
   this->txPowerMax = this->band->powerMax;
   this->subBand = subBand;
   memset(this->channelPlan, 0, sizeof(this->channelPlan));
@@ -180,6 +180,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     eventUp->fCnt = this->fCntUp;
     eventUp->fPort = fPort;
     eventUp->nbTrans = trans;
+    eventUp->multicast = false;
   }
 
   #if !RADIOLIB_STATIC_ONLY
@@ -754,13 +755,13 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
     memcpy(&micBuff[11], joinAcceptMsg, lenRx);
     
     if(!verifyMIC(micBuff, lenRx + 11, this->jSIntKey)) {
-      return(RADIOLIB_ERR_CRC_MISMATCH);
+      return(RADIOLIB_ERR_MIC_MISMATCH);
     }
   
   } else {
     // 1.0 version
     if(!verifyMIC(joinAcceptMsg, lenRx, this->appKey)) {
-      return(RADIOLIB_ERR_CRC_MISMATCH);
+      return(RADIOLIB_ERR_MIC_MISMATCH);
     }
 
   }
@@ -1056,6 +1057,62 @@ int16_t LoRaWANNode::setClass(uint8_t cls) {
   return(state);
 }
 
+int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, uint8_t* mcAppSKey, uint8_t* mcNwkSKey, uint32_t mcFCntMin, uint32_t mcFCntMax, uint32_t mcFreq, uint8_t mcDr) {
+  this->multicast = false;
+
+  if(!this->isActivated()) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
+  }
+
+  // currently only possible for Class C
+  if(cls == RADIOLIB_LORAWAN_CLASS_B) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  if(mcAppSKey == nullptr || mcNwkSKey) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+
+  // check if frequency is within band
+  if(mcFreq == 0) {
+    mcFreq = this->channels[RADIOLIB_LORAWAN_RX2].freq * 100;
+  }
+  if(mcFreq / 100 < this->band->freqMin || mcFreq / 100 > this->band->freqMax) {
+    return(RADIOLIB_ERR_INVALID_FREQUENCY);
+  }
+
+  // check if datarate is defined
+  if(mcDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+    mcDr = this->channels[RADIOLIB_LORAWAN_RX2].dr;
+  }
+  if(this->band->dataRates[mcDr] == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+    return(RADIOLIB_ERR_INVALID_DATA_RATE);
+  }
+
+  // check the frame counter range
+  if(mcFCntMin >= mcFCntMax) {
+    return(RADIOLIB_ERR_MULTICAST_FCNT_INVALID);
+  }
+
+  // all checks passed, so apply configuration
+  this->multicast = cls;
+  this->channels[RADIOLIB_LORAWAN_RX_BC].freq = mcFreq / 100;
+  this->channels[RADIOLIB_LORAWAN_RX_BC].dr = mcDr;
+  this->channels[RADIOLIB_LORAWAN_RX_BC].drMin = mcDr;
+  this->channels[RADIOLIB_LORAWAN_RX_BC].drMax = mcDr;
+  this->mcAddr = mcAddr;
+  memcpy(this->mcAppSKey, mcAppSKey, RADIOLIB_AES128_KEY_SIZE);
+  memcpy(this->mcNwkSKey, mcNwkSKey, RADIOLIB_AES128_KEY_SIZE);
+  this->mcAFCnt = mcFCntMin;
+  this->mcAFCntMax = mcFCntMax;
+
+  return(RADIOLIB_ERR_NONE);
+}
+
+void LoRaWANNode::stopMulticastSession() {
+  this->multicast = false;
+}
+
 int16_t LoRaWANNode::isValidUplink(uint8_t* len, uint8_t fPort) {
   // check destination fPort
   switch(fPort) {
@@ -1215,7 +1272,7 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
 
     if(this->rev == 1) {
       // in LoRaWAN v1.1, the FOpts are encrypted using the NwkSEncKey
-      processAES(this->fOptsUp, this->fOptsUpLen, this->nwkSEncKey, &out[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x01, true);
+      processAES(this->fOptsUp, this->fOptsUpLen, this->nwkSEncKey, &out[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->devAddr, this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x01, true);
     } else {
       // in LoRaWAN v1.0.x, the FOpts are unencrypted
       memcpy(&out[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->fOptsUp, this->fOptsUpLen);
@@ -1233,7 +1290,7 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
   }
 
   // encrypt the frame payload
-  processAES(in, lenIn, encKey, &out[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)], this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x00, true);
+  processAES(in, lenIn, encKey, &out[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)], this->devAddr, this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x00, true);
 }
 
 void LoRaWANNode::micUplink(uint8_t* inOut, uint8_t lenInOut) {
@@ -1480,7 +1537,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 }
 
 int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
-  if(this->lwClass != RADIOLIB_LORAWAN_CLASS_C) {
+  // only open RxC if the device is Unicast-C or Multicast-C, otherwise ignore without error
+  if(this->lwClass != RADIOLIB_LORAWAN_CLASS_C && this->multicast != RADIOLIB_LORAWAN_CLASS_C) {
     return(RADIOLIB_ERR_NONE);
   }
   Module* mod = this->phyLayer->getMod();
@@ -1488,7 +1546,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   RadioLibTime_t tStart = mod->hal->millis();
 
   // set the physical layer configuration for Class C window
-  int16_t state = this->setPhyProperties(&this->channels[RADIOLIB_LORAWAN_RXC], RADIOLIB_LORAWAN_DOWNLINK, this->txPowerMax - 2*this->txPowerSteps);
+  int16_t state = this->setPhyProperties(&this->channels[RADIOLIB_LORAWAN_RX_BC], RADIOLIB_LORAWAN_DOWNLINK, this->txPowerMax - 2*this->txPowerSteps);
   RADIOLIB_ASSERT(state);
 
   // setup interrupt
@@ -1555,7 +1613,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
     // Any frame received by an end-device containing a MACPayload greater than 
     // the specified maximum length M over the data rate used to receive the frame 
     // SHALL be silently discarded.
-    uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_RXC].dr];
+    uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_RX_BC].dr];
     if(this->TS011) {
       maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
     }
@@ -1564,7 +1622,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
     }
 
     // return downlink window number (3 = RxC)
-    return(RADIOLIB_LORAWAN_RXC);
+    return(RADIOLIB_LORAWAN_RX_BC);
   }
 
   return(state);
@@ -1653,9 +1711,13 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // check the address
   uint32_t addr = LoRaWANNode::ntoh<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS]);
-  if(addr != this->devAddr) {
+  uint32_t expectedAddr = this->devAddr;
+  if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
+    expectedAddr = this->mcAddr;
+  }
+  if(addr != expectedAddr) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Device address mismatch, expected 0x%08lX, got 0x%08lX", 
-                                    (unsigned long)this->devAddr, (unsigned long)addr);
+                                    (unsigned long)expectedAddr, (unsigned long)addr);
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
@@ -1685,10 +1747,10 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       case RADIOLIB_LORAWAN_FPORT_MAC_COMMAND: {
         // payload consists of all MAC commands (or is empty)
 
-        // LoRaWAN v1.0.4 only: A Class C downlink SHALL NOT transport any MAC command. 
-        // If an end-device receives a Class C downlink containing a MAC command (...) 
-        // in the FRMPayload field (if FPort=0), it SHALL silently discard the entire frame.
-        if(window == RADIOLIB_LORAWAN_RXC && this->rev == 0) {
+        // LoRaWAN v1.0.4 only: A Class B/C downlink SHALL NOT transport any MAC command. 
+        // (...) it SHALL silently discard the entire frame.
+        // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
+        if(window == RADIOLIB_LORAWAN_RX_BC) {
           return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
         }
       } break;
@@ -1738,10 +1800,10 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
-  // LoRaWAN v1.0.4 only: A Class C downlink SHALL NOT transport any MAC command. 
-  // If an end-device receives a Class C downlink containing a MAC command in the FOpts field (if FPort is >0), 
+  // LoRaWAN v1.0.4 only: A Class B/C downlink SHALL NOT transport any MAC command. 
   // (...) it SHALL silently discard the entire frame.
-  if(fOptsPbLen > 0 && window == RADIOLIB_LORAWAN_RXC && this->rev == 0) {
+  // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
+  if(fOptsPbLen > 0 && window == RADIOLIB_LORAWAN_RX_BC) {
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
@@ -1751,12 +1813,18 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // get the frame counter
   uint32_t payFCnt16 = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS]);
 
-  // check the FCntDown value (Network or Application)
+  // check the FCntDown value (Network or Application, or Multicast)
   uint32_t devFCnt32 = 0;
-  if (isAppDownlink) {
-    devFCnt32 = this->aFCntDown;
+  if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
+    // multicast: McApp downlink counter
+    devFCnt32 = this->mcAFCnt;
   } else {
-    devFCnt32 = this->nFCntDown;
+    // unicast: App or Nwk downlink
+    if(isAppDownlink) {
+      devFCnt32 = this->aFCntDown;
+    } else {
+      devFCnt32 = this->nFCntDown;
+    }
   }
 
   // assume a rollover if the FCnt16 in the payload is smaller than the previous FCnt16 known by device
@@ -1767,6 +1835,13 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   }
   devFCnt32 &= ~0xFFFF;     // clear lower 16 bits known by device
   devFCnt32 |= payFCnt16;   // set lower 16 bits from payload
+
+  // for multicast, a maximum FCnt value is defined in TS005
+  if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
+    if(devFCnt32 > this->mcAFCntMax) {
+      return(RADIOLIB_ERR_MULTICAST_FCNT_INVALID);
+    }
+  }
 
   // check if the ACK bit is set, indicating this frame acknowledges the previous uplink
   bool isConfirmingUp = false;
@@ -1783,29 +1858,40 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFCntUp);
   }
   downlinkMsg[RADIOLIB_LORAWAN_BLOCK_DIR_POS] = RADIOLIB_LORAWAN_DOWNLINK;
-  LoRaWANNode::hton<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_DEV_ADDR_POS], this->devAddr);
+  LoRaWANNode::hton<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_DEV_ADDR_POS], addr);
   LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_FCNT_POS], devFCnt32);
   downlinkMsg[RADIOLIB_LORAWAN_MIC_BLOCK_LEN_POS] = downlinkMsgLen - sizeof(uint32_t);
 
   // check the MIC
-  // (if a rollover was more than 16-bit, this will always throw CRC mismatch)
-  if(!verifyMIC(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen, this->sNwkSIntKey)) {
+  // (if a rollover was more than 16-bit, this will always result in MIC mismatch)
+  uint8_t* micKey = this->sNwkSIntKey;
+  if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
+    micKey = this->mcNwkSKey;
+  }
+  if(!verifyMIC(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen, micKey)) {
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
-    return(RADIOLIB_ERR_CRC_MISMATCH);
+    return(RADIOLIB_ERR_MIC_MISMATCH);
   }
   
-  // save current fCnt to respective frame counter
-  if (isAppDownlink) {
-    this->aFCntDown = devFCnt32;
+  // save current FCnt to respective frame counter
+  if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
+    // multicast: McApp downlink
+    this->mcAFCnt = devFCnt32;
   } else {
-    this->nFCntDown = devFCnt32;
+    // unicast: App or Nwk downlink
+    if(isAppDownlink) {
+      this->aFCntDown = devFCnt32;
+    } else {
+      this->nFCntDown = devFCnt32;
+    }
   }
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) encoded:", 
-                                  isAppDownlink ? "A" : "N", 
-                                  (unsigned long)(isAppDownlink ? this->aFCntDown : this->nFCntDown));
+                                  (this->multicast && window == RADIOLIB_LORAWAN_RX_BC) ? "M" :
+                                                                  (isAppDownlink ? "A" : "N"), 
+                                  (unsigned long)devFCnt32);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
 
   // if this is a confirmed frame, save the downlink number (only app frames can be confirmed)
@@ -1814,9 +1900,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     this->confFCntDown = this->aFCntDown;
     isConfirmedDown = true;
   }
-
-  // a downlink was received, so restart the ADR counter with the next uplink
-  this->adrFCnt = this->getFCntUp() + 1;
   
   // if this downlink is on FPort 0, the FOptsLen is the length of the payload
   // in any other case, the payload (length) is user accessible
@@ -1843,12 +1926,15 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // figure out which key to use to decrypt the payload
   uint8_t* encKey = this->appSKey;
-    if((fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) || (fPort == RADIOLIB_LORAWAN_FPORT_TS011)) {
+  if((fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) || (fPort == RADIOLIB_LORAWAN_FPORT_TS011)) {
     encKey = this->nwkSEncKey;
+  }
+  if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
+    encKey = this->mcAppSKey;
   }
 
   // decrypt the frame payload
-  processAES(&downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(fOptsPbLen)], payLen, encKey, dest, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, 0x00, true);
+  processAES(&downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(fOptsPbLen)], payLen, encKey, dest, addr, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, 0x00, true);
   
   // pass the event info if requested
   if(event) {
@@ -1857,14 +1943,15 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     event->confirming = isConfirmingUp;
     event->frmPending = (downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_FRAME_PENDING) != 0;
     event->datarate = this->channels[window].dr;
-    event->freq = channels[window].freq / 10000.0;
+    event->freq = this->channels[window].freq / 10000.0;
     event->power = this->txPowerMax - this->txPowerSteps * 2;
-    event->fCnt = isAppDownlink ? this->aFCntDown : this->nFCntDown;
+    event->fCnt = devFCnt32;
     event->fPort = fPort;
+    event->multicast = (bool)this->multicast;
   }
 
-  // for RxC downlinks, return already, we aren't allowed to do any FOpts stuff
-  if(window == RADIOLIB_LORAWAN_RXC) {
+  // for RxBC downlinks, return already, we aren't allowed to do any FOpts stuff
+  if(window == RADIOLIB_LORAWAN_RX_BC) {
     #if !RADIOLIB_STATIC_ONLY
       delete[] fOpts;
       delete[] downlinkMsg;
@@ -1873,13 +1960,16 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     return(RADIOLIB_ERR_NONE);
   }
 
+  // a downlink was received, so restart the ADR counter with the next uplink
+  this->adrFCnt = this->getFCntUp() + 1;
+
   // decrypt any piggy-backed FOpts
   if(fOptsPbLen > 0) {
     // the decryption depends on the LoRaWAN version
     if(this->rev == 1) {
       // in LoRaWAN v1.1, the piggy-backed FOpts are encrypted using the NwkSEncKey
       uint8_t ctrId = 0x01 + isAppDownlink; // see LoRaWAN v1.1 errata
-      processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)fOptsPbLen, this->nwkSEncKey, fOpts, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, ctrId, true);
+      processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)fOptsPbLen, this->nwkSEncKey, fOpts, this->devAddr, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, ctrId, true);
     } else {
       // in LoRaWAN v1.0.x, the piggy-backed FOpts are unencrypted
       memcpy(fOpts, &downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)fOptsPbLen);
@@ -2015,12 +2105,23 @@ int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaW
   int16_t state = RADIOLIB_ERR_NONE;
 
   if(downlinkAction) {
-    state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RXC, eventDown);
+    state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RX_BC, eventDown);
     downlinkAction = false;
 
-    // if downlink parsed succesfully, set state to RxC window
+    // if downlink parsed successfully, set state to RxC window
     if(state == RADIOLIB_ERR_NONE) {
-      state = RADIOLIB_LORAWAN_RXC;
+      state = RADIOLIB_LORAWAN_RX_BC;
+
+    // otherwise, if device is acting as Multicast on top of the same Unicast class,
+    // try decrypting it as a Unicast downlink by temporarily disabling Multicast
+    } else if(this->multicast == this->lwClass) {
+      this->multicast = false;
+      state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RX_BC, eventDown);
+      this->multicast = this->lwClass;
+      // if downlink parsed succesfully, set state to RxC window
+      if(state == RADIOLIB_ERR_NONE) {
+        state = RADIOLIB_LORAWAN_RX_BC;
+      }
     }
   }
 
@@ -2249,8 +2350,8 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       this->rx1DrOffset = macRx1DrOffset;
       this->channels[RADIOLIB_LORAWAN_RX2].dr = macRx2Dr;
       this->channels[RADIOLIB_LORAWAN_RX2].freq = macRx2Freq;
-      this->channels[RADIOLIB_LORAWAN_RXC].dr = macRx2Dr;
-      this->channels[RADIOLIB_LORAWAN_RXC].freq = macRx2Freq;
+      this->channels[RADIOLIB_LORAWAN_RX_BC].dr = macRx2Dr;
+      this->channels[RADIOLIB_LORAWAN_RX_BC].freq = macRx2Freq;
       memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP], optIn, lenIn);
 
       return(true);
@@ -2920,7 +3021,7 @@ int16_t LoRaWANNode::setRx2Dr(uint8_t dr) {
 
   // passed all checks, so configure the datarate
   this->channels[RADIOLIB_LORAWAN_RX2].dr = dr;
-  this->channels[RADIOLIB_LORAWAN_RXC].dr = dr;
+  this->channels[RADIOLIB_LORAWAN_RX_BC].dr = dr;
 
   return(state);
 }
@@ -3227,7 +3328,7 @@ void LoRaWANNode::selectChannelPlanDyn() {
 
   // make sure the Rx2 settings are back to this band's default
   this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
-  this->channels[RADIOLIB_LORAWAN_RXC] = this->band->rx2;
+  this->channels[RADIOLIB_LORAWAN_RX_BC] = this->band->rx2;
 
   // make all enabled channels available for uplink selection
   this->setAvailableChannels(0xFFFF);
@@ -3257,7 +3358,7 @@ void LoRaWANNode::selectChannelPlanFix() {
 
   // make sure the Rx2 settings are back to this band's default
   this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
-  this->channels[RADIOLIB_LORAWAN_RXC] = this->band->rx2;
+  this->channels[RADIOLIB_LORAWAN_RX_BC] = this->band->rx2;
   
   // make all enabled channels available for uplink selection
   this->setAvailableChannels(0xFFFF);
@@ -3610,7 +3711,7 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
   return(state);
 }
 
-void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
+void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t addr, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
   // figure out how many encryption blocks are there
   size_t numBlocks = len/RADIOLIB_AES128_BLOCK_SIZE;
   if(len % RADIOLIB_AES128_BLOCK_SIZE) {
@@ -3623,7 +3724,7 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
   encBlock[RADIOLIB_LORAWAN_BLOCK_MAGIC_POS] = RADIOLIB_LORAWAN_ENC_BLOCK_MAGIC;
   encBlock[RADIOLIB_LORAWAN_ENC_BLOCK_COUNTER_ID_POS] = ctrId;
   encBlock[RADIOLIB_LORAWAN_BLOCK_DIR_POS] = dir;
-  LoRaWANNode::hton<uint32_t>(&encBlock[RADIOLIB_LORAWAN_BLOCK_DEV_ADDR_POS], this->devAddr);
+  LoRaWANNode::hton<uint32_t>(&encBlock[RADIOLIB_LORAWAN_BLOCK_DEV_ADDR_POS], addr);
   LoRaWANNode::hton<uint32_t>(&encBlock[RADIOLIB_LORAWAN_BLOCK_FCNT_POS], fCnt);
 
   // now encrypt the input
