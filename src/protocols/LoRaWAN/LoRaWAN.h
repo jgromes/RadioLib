@@ -628,7 +628,7 @@ class LoRaWANNode {
       \param mcDr The datarate used for the Multicast downlinks.
       \returns \ref status_codes
     */
-    int16_t startMulticastSession(uint8_t cls, uint32_t mcAddr, uint8_t* mcAppSKey, uint8_t* mcNwkSKey, uint32_t mcFCntMin = 0, uint32_t mcFCntMax = 0xFFFFFFFF, uint32_t mcFreq = 0, uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
+    int16_t startMulticastSession(uint8_t cls, uint32_t mcAddr, const uint8_t* mcAppSKey, const uint8_t* mcNwkSKey, uint32_t mcFCntMin = 0, uint32_t mcFCntMax = 0xFFFFFFFF, uint32_t mcFreq = 0, uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
 
     /*! \brief Stop an ongoing multicast session */
     void stopMulticastSession();

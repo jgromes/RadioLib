@@ -1057,7 +1057,7 @@ int16_t LoRaWANNode::setClass(uint8_t cls) {
   return(state);
 }
 
-int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, uint8_t* mcAppSKey, uint8_t* mcNwkSKey, uint32_t mcFCntMin, uint32_t mcFCntMax, uint32_t mcFreq, uint8_t mcDr) {
+int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, const uint8_t* mcAppSKey, const uint8_t* mcNwkSKey, uint32_t mcFCntMin, uint32_t mcFCntMax, uint32_t mcFreq, uint8_t mcDr) {
   this->multicast = false;
 
   if(!this->isActivated()) {
