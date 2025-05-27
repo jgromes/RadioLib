@@ -1175,12 +1175,21 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
 }
 
 RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
-  // the timeout is given as the number of symbols
-  // the calling function should provide some extra width, as this number of symbols is truncated to integer
-  // the order of operators is swapped here to decrease the effects of this truncation error
-  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-  RadioLibTime_t numSymbols = (timeoutUs / symbolLength) / 1000; 
-  return(numSymbols);
+  RadioLibTime_t timeout = 0;
+  if(getActiveModem() == RADIOLIB_SX127X_LORA) {
+    // for LoRa, the timeout is given as the number of symbols
+    // the calling function should provide some extra width, as this number of symbols is truncated to integer
+    // the order of operators is swapped here to decrease the effects of this truncation error
+    float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+    timeout = (timeoutUs / symbolLength) / 1000;
+  
+  } else {
+    // for FSK, the timeout is in units of 16x bit time
+    timeout = ((float)timeoutUs / ((16.0f * 1000.0f) / this->bitRate));
+  
+  }
+
+  return(timeout);
 }
 
 uint32_t SX127x::getIrqFlags() {
@@ -1696,10 +1705,15 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         RADIOLIB_ASSERT(state);
 
       } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
+        // for non-zero timeout value, emulate timeout
+        state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RX_TIMEOUT_3, cfg->receive.timeout & 0xFF);
+        RADIOLIB_ASSERT(state);
+
         // clear interrupt flags
         clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
-        // FSK modem does not distinguish between Rx single and continuous
+        // FSK modem does not actually distinguish between Rx single and continuous mode,
+        // Rx single is emulated using timeout
         this->rxMode = RADIOLIB_SX127X_RX;
       }
     } break;
