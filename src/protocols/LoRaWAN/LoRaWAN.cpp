@@ -1751,6 +1751,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
         // (...) it SHALL silently discard the entire frame.
         // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
         if(window == RADIOLIB_LORAWAN_RX_BC) {
+          #if !RADIOLIB_STATIC_ONLY
+            delete[] downlinkMsg;
+          #endif
           return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
         }
       } break;
@@ -1839,6 +1842,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // for multicast, a maximum FCnt value is defined in TS005
   if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
     if(devFCnt32 > this->mcAFCntMax) {
+      #if !RADIOLIB_STATIC_ONLY
+        delete[] downlinkMsg;
+      #endif
       return(RADIOLIB_ERR_MULTICAST_FCNT_INVALID);
     }
   }
@@ -1956,7 +1962,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       delete[] fOpts;
       delete[] downlinkMsg;
     #endif
-
     return(RADIOLIB_ERR_NONE);
   }
 

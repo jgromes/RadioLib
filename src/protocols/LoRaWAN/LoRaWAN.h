@@ -613,7 +613,7 @@ class LoRaWANNode {
     /*! \brief Whether there is an ongoing session active */
     bool isActivated();
 
-    /*! \brief Configure class (A / C) */
+    /*! \brief Configure class (RADIOLIB_LORAWAN_CLASS_A or RADIOLIB_LORAWAN_CLASS_C) */
     int16_t setClass(uint8_t cls);
 
     /*!
@@ -624,8 +624,8 @@ class LoRaWANNode {
       \param mcNwkSKey The Multicast payload integrity key.
       \param mcFCntMin The minimum expected Multicast frame counter.
       \param mcFCntMin The maximum allowed Multicast frame counter.
-      \param mcFreq The frequency used for the Multicast downlinks (in Hz).
-      \param mcDr The datarate used for the Multicast downlinks.
+      \param mcFreq The frequency used for the Multicast downlinks (in Hz). Default = 0 uses Rx2 frequency.
+      \param mcDr The datarate used for the Multicast downlinks. Default = 0 uses Rx2 datarate.
       \returns \ref status_codes
     */
     int16_t startMulticastSession(uint8_t cls, uint32_t mcAddr, const uint8_t* mcAppSKey, const uint8_t* mcNwkSKey, uint32_t mcFCntMin = 0, uint32_t mcFCntMax = 0xFFFFFFFF, uint32_t mcFreq = 0, uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
