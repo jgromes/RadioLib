@@ -1,7 +1,6 @@
 var group__status__codes =
 [
     [ "RADIOLIB_CHANNEL_FREE", "group__status__codes.html#ga4673596b2cc7290be5ee0a2e9ee42718", null ],
-    [ "RADIOLIB_ERR_A_FCNT_DOWN_INVALID", "group__status__codes.html#ga81bd164044ef4d523464ad17d1e473bb", null ],
     [ "RADIOLIB_ERR_ACK_NOT_RECEIVED", "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063", null ],
     [ "RADIOLIB_ERR_ADDRESS_NOT_FOUND", "group__status__codes.html#ga806183ed238159d317132b0d44d7a0a2", null ],
     [ "RADIOLIB_ERR_CHECKSUM_MISMATCH", "group__status__codes.html#gace49554c055f7b2d02ef0c39c006529c", null ],
@@ -69,7 +68,8 @@ var group__status__codes =
     [ "RADIOLIB_ERR_LORA_HEADER_DAMAGED", "group__status__codes.html#gab152891bb13f6f70e6631820904e9d90", null ],
     [ "RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED", "group__status__codes.html#ga7afc28738967d4d91c13d1d412d6f5e4", null ],
     [ "RADIOLIB_ERR_MIC_E_TELEMETRY_STATUS", "group__status__codes.html#ga54a2fc9441c25b56979c6edab097ff12", null ],
-    [ "RADIOLIB_ERR_N_FCNT_DOWN_INVALID", "group__status__codes.html#gac67f8a734c2011f738db1a3159403e09", null ],
+    [ "RADIOLIB_ERR_MIC_MISMATCH", "group__status__codes.html#ga72766507100035da092be0c0719c103c", null ],
+    [ "RADIOLIB_ERR_MULTICAST_FCNT_INVALID", "group__status__codes.html#ga9caf2e095dea4df9a0fdab33d338459d", null ],
     [ "RADIOLIB_ERR_NETWORK_NOT_JOINED", "group__status__codes.html#gafc3bca002b982af27b703c30b2d12df3", null ],
     [ "RADIOLIB_ERR_NO_CHANNEL_AVAILABLE", "group__status__codes.html#ga6b70881b5be84138ef558e832fbb254c", null ],
     [ "RADIOLIB_ERR_NO_JOIN_ACCEPT", "group__status__codes.html#ga3f645f530e74765d4ef6ab5e3b01dd52", null ],

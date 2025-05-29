@@ -148,6 +148,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearSession</b> ()</
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActivated</b> ()</td></tr>
 <tr class="memdesc:a9a44677a1ef7db1216bc482139d6be8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
 <tr class="separator:a9a44677a1ef7db1216bc482139d6be8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aada364a60591163b87379e434b0149c1" id="r_aada364a60591163b87379e434b0149c1"><td class="memItemLeft" align="right" valign="top"><a id="aada364a60591163b87379e434b0149c1" name="aada364a60591163b87379e434b0149c1"></a>
+int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>setClass</b> (uint8_t cls)</td></tr>
+<tr class="memdesc:aada364a60591163b87379e434b0149c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure class (RADIOLIB_LORAWAN_CLASS_A or RADIOLIB_LORAWAN_CLASS_C) <br /></td></tr>
+<tr class="separator:aada364a60591163b87379e434b0149c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1310697387785bdf6ff34091f271616f" id="r_a1310697387785bdf6ff34091f271616f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a1310697387785bdf6ff34091f271616f">startMulticastSession</a> (uint8_t cls, uint32_t mcAddr, const uint8_t *mcAppSKey, const uint8_t *mcNwkSKey, uint32_t mcFCntMin=0, uint32_t mcFCntMax=0xFFFFFFFF, uint32_t mcFreq=0, uint8_t mcDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
+<tr class="memdesc:a1310697387785bdf6ff34091f271616f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a Multicast session.  <br /></td></tr>
+<tr class="separator:a1310697387785bdf6ff34091f271616f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bb842987637727f5e191799f0343171" id="r_a4bb842987637727f5e191799f0343171"><td class="memItemLeft" align="right" valign="top"><a id="a4bb842987637727f5e191799f0343171" name="a4bb842987637727f5e191799f0343171"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>stopMulticastSession</b> ()</td></tr>
+<tr class="memdesc:a4bb842987637727f5e191799f0343171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop an ongoing multicast session. <br /></td></tr>
+<tr class="separator:a4bb842987637727f5e191799f0343171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11c2fbe631063da69355f8d74f4bf3b8" id="r_a11c2fbe631063da69355f8d74f4bf3b8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a11c2fbe631063da69355f8d74f4bf3b8">sendReceive</a> (const char *strUp, uint8_t fPort, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
 <tr class="memdesc:a11c2fbe631063da69355f8d74f4bf3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <br /></td></tr>
 <tr class="separator:a11c2fbe631063da69355f8d74f4bf3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +171,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActivated</b> ()</t
 <tr class="memitem:aafb2006b8d75549f667608156b5f8a5a" id="r_aafb2006b8d75549f667608156b5f8a5a"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aafb2006b8d75549f667608156b5f8a5a">sendReceive</a> (const uint8_t *dataUp, size_t lenUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
 <tr class="memdesc:aafb2006b8d75549f667608156b5f8a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <br /></td></tr>
 <tr class="separator:aafb2006b8d75549f667608156b5f8a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5b5fca415b4521cee211504577406e" id="r_a4b5b5fca415b4521cee211504577406e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a4b5b5fca415b4521cee211504577406e">getDownlinkClassC</a> (uint8_t *dataDown, size_t *lenDown, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
+<tr class="memdesc:a4b5b5fca415b4521cee211504577406e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if there is an RxC downlink and parse it if available.  <br /></td></tr>
+<tr class="separator:a4b5b5fca415b4521cee211504577406e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adef05650cf4eb92042ca5e2688c1e164" id="r_adef05650cf4eb92042ca5e2688c1e164"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a> (uint8_t cid)</td></tr>
 <tr class="memdesc:adef05650cf4eb92042ca5e2688c1e164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <br /></td></tr>
 <tr class="separator:adef05650cf4eb92042ca5e2688c1e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -578,6 +592,51 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TS009</b> = false</td
 
 <p>Returns the DevAddr of the device, regardless of OTAA or ABP mode. </p>
 <dl class="section return"><dt>Returns</dt><dd>4-byte DevAddr </dd></dl>
+
+</div>
+</div>
+<a id="a4b5b5fca415b4521cee211504577406e" name="a4b5b5fca415b4521cee211504577406e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5b5fca415b4521cee211504577406e">&#9670;&#160;</a></span>getDownlinkClassC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::getDownlinkClassC </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>dataDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>lenDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *&#160;</td>
+          <td class="paramname"><em>eventDown</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if there is an RxC downlink and parse it if available. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataDown</td><td>Buffer to save received data into. </td></tr>
+    <tr><td class="paramname">lenDown</td><td>Pointer to variable that will be used to save the number of received bytes. </td></tr>
+    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Window number &gt; 0 if downlink was received, 0 is no downlink was received, otherwise <a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -1352,6 +1411,86 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TS009</b> = false</td
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">txPower</td><td>Output power during TX mode to be set in dBm. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1310697387785bdf6ff34091f271616f" name="a1310697387785bdf6ff34091f271616f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1310697387785bdf6ff34091f271616f">&#9670;&#160;</a></span>startMulticastSession()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::startMulticastSession </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>cls</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcAddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>mcAppSKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>mcNwkSKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcFCntMin</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcFCntMax</em> = <code>0xFFFFFFFF</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcFreq</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mcDr</em> = <code>RADIOLIB_LORAWAN_DATA_RATE_UNUSED</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start a Multicast session. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cls</td><td>The LoRaWAN Class used for this session (only C is supported). </td></tr>
+    <tr><td class="paramname">mcAddr</td><td>The Multicast address. </td></tr>
+    <tr><td class="paramname">mcAppSKey</td><td>The Multicast payload encryption key. </td></tr>
+    <tr><td class="paramname">mcNwkSKey</td><td>The Multicast payload integrity key. </td></tr>
+    <tr><td class="paramname">mcFCntMin</td><td>The minimum expected Multicast frame counter. </td></tr>
+    <tr><td class="paramname">mcFCntMin</td><td>The maximum allowed Multicast frame counter. </td></tr>
+    <tr><td class="paramname">mcFreq</td><td>The frequency used for the Multicast downlinks (in Hz). Default = 0 uses Rx2 frequency. </td></tr>
+    <tr><td class="paramname">mcDr</td><td>The datarate used for the Multicast downlinks. Default = 0 uses Rx2 datarate. </td></tr>
   </table>
   </dd>
 </dl>
