@@ -1426,6 +1426,10 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->payloadLen, this->crcLoRa, this->invertIQEnabled);
         RADIOLIB_ASSERT(state);
       }
+      // if max(uint32_t) is used, revert to RxContinuous
+      if(cfg->receive.timeout == 0xFFFFFFFF) {
+        cfg->receive.timeout = 0xFFFF;
+      }
       this->rxTimeout = cfg->receive.timeout;
     } break;
   
