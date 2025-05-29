@@ -44,7 +44,6 @@ var annotated_dup =
     [ "nRF24", "classn_r_f24.html", "classn_r_f24" ],
     [ "PagerClient", "class_pager_client.html", "class_pager_client" ],
     [ "PhysicalLayer", "class_physical_layer.html", "class_physical_layer" ],
-    [ "PicoHal", "class_pico_hal.html", "class_pico_hal" ],
     [ "PiHal", "class_pi_hal.html", "class_pi_hal" ],
     [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", "class_radio_lib_a_e_s128" ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", "class_radio_lib_b_c_h" ],
