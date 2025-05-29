@@ -15,7 +15,7 @@ if(ESP_PLATFORM)
   # and needs idf_component_register()
 
   idf_component_register(
-    SRCS ${RADIOLIB_ESP_SOURCES} 
+    SRCS ${RADIOLIB_SOURCES}
     INCLUDE_DIRS . src 
   )
 
