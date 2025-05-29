@@ -22,10 +22,10 @@ add_executable(${PROJECT_NAME}
     main.cpp
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib/src/hal/RPiPico/PicoHal.cpp"
 )
+target_compile_definitions(${PROJECT_NAME} PUBLIC RADIOLIB_BUILD_RPI_PICO)
 
 # Pull in common dependencies
 target_link_libraries(${PROJECT_NAME} pico_stdlib hardware_spi hardware_gpio hardware_timer pico_multicore hardware_pwm RadioLib)
-
 
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
 pico_enable_stdio_uart(${PROJECT_NAME} 0)

@@ -1,5 +1,7 @@
 #include "PicoHal.h"
 
+#if defined(RADIOLIB_BUILD_RPI_PICO)
+
 // pre-calculated pulse-widths for 1200 and 2200Hz
 // we do this to save calculation time (see https://github.com/khoih-prog/RP2040_PWM/issues/6)
 #define SLEEP_1200 416.666
@@ -43,3 +45,5 @@ void PicoHal::tone(uint32_t pin, unsigned int frequency, unsigned long duration)
   toneLoopDuration = duration;
   multicore_launch_core1(toneLoop);
 }
+
+#endif

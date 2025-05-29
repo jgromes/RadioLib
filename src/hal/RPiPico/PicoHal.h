@@ -1,6 +1,8 @@
 #ifndef PICO_HAL_H
 #define PICO_HAL_H
 
+#if defined(RADIOLIB_BUILD_RPI_PICO)
+
 // include RadioLib
 #include <RadioLib.h>
 
@@ -151,5 +153,7 @@ private:
   uint32_t _mosiPin;
   uint32_t _sckPin;
 };
+
+#endif
 
 #endif

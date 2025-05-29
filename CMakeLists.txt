@@ -5,9 +5,8 @@ file(GLOB_RECURSE RADIOLIB_SOURCES
   "src/*.cpp"
 )
 
-# exclude all HAL source files, except the default Arduino HAL
+# exclude all HAL source files
 list(FILTER RADIOLIB_SOURCES EXCLUDE REGEX "src/hal/.*\\.cpp")
-list(APPEND RADIOLIB_SOURCES "src/hal/Arduino/ArduinoHal.cpp")
 
 if(ESP_PLATFORM)
   # Build RadioLib as an ESP-IDF component
