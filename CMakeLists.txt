@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.13)
 
+# first gather the files since this is needed for both ESP-IDF as well as other builds
+file(GLOB_RECURSE RADIOLIB_SOURCES
+  "src/*.cpp"
+)
+
+# exclude all HAL source files, except the default Arduino HAL
+list(FILTER RADIOLIB_SOURCES EXCLUDE REGEX "src/hal/.*\\.cpp")
+list(APPEND RADIOLIB_SOURCES "src/hal/Arduino/ArduinoHal.cpp")
+
 if(ESP_PLATFORM)
   # Build RadioLib as an ESP-IDF component
   # required because ESP-IDF runs cmake in script mode
   # and needs idf_component_register()
-  file(GLOB_RECURSE RADIOLIB_ESP_SOURCES
-    "src/*.*"
-  )
 
   idf_component_register(
     SRCS ${RADIOLIB_ESP_SOURCES} 
@@ -21,14 +27,6 @@ if(CMAKE_SCRIPT_MODE_FILE)
 endif()
 
 project(radiolib)
-
-file(GLOB_RECURSE RADIOLIB_SOURCES
-  "src/*.cpp"
-)
-
-# exclude all HAL source files, except the default Arduino HAL
-list(FILTER RADIOLIB_SOURCES EXCLUDE REGEX "src/hal/.*\\.cpp")
-list(APPEND RADIOLIB_SOURCES "src/hal/Arduino/ArduinoHal.cpp")
 
 add_library(RadioLib ${RADIOLIB_SOURCES})
 
