@@ -20,6 +20,7 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CUR
 
 add_executable(${PROJECT_NAME}
     main.cpp
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib/src/hal/RPiPico/PicoHal.cpp"
 )
 
 # Pull in common dependencies

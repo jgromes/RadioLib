@@ -26,6 +26,10 @@ file(GLOB_RECURSE RADIOLIB_SOURCES
   "src/*.cpp"
 )
 
+# exclude all HAL source files, except the default Arduino HAL
+list(FILTER RADIOLIB_SOURCES EXCLUDE REGEX "src/hal/.*\\.cpp")
+list(APPEND RADIOLIB_SOURCES "src/hal/Arduino/ArduinoHal.cpp")
+
 add_library(RadioLib ${RADIOLIB_SOURCES})
 
 target_include_directories(RadioLib
