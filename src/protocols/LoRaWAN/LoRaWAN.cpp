@@ -1128,9 +1128,6 @@ int16_t LoRaWANNode::isValidUplink(uint8_t* len, uint8_t fPort) {
       // if this is MAC only payload, continue and reset for next uplink
       this->isMACPayload = false;
     } break;
-    case RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN ... RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX: {
-      // all good
-    } break;
     case RADIOLIB_LORAWAN_FPORT_TS009: {
       // TS009 FPort only good if overruled during verification testing
       if(!this->TS009) {
@@ -1146,6 +1143,10 @@ int16_t LoRaWANNode::isValidUplink(uint8_t* len, uint8_t fPort) {
       }
     } break;
     default: {
+      if((fPort >= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN) && (fPort <= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX)) {
+        // user payload ports, all good
+        break;
+      }
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Requested uplink at FPort %d - rejected! This FPort is reserved.", fPort);
     } break;
   }
@@ -1761,10 +1762,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
           return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
         }
       } break;
-      case RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN ... RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX: {
-        // payload is user-defined (or empty) - may carry piggybacked MAC commands
-        isAppDownlink = true;
-      } break;
       case RADIOLIB_LORAWAN_FPORT_TS009: {
         // TS009 FPort only good if overruled during verification testing
         if(!this->TS009) {
@@ -1788,6 +1785,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
         isAppDownlink = true;
       } break;
       default: {
+        if((fPort >= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN) && (fPort <= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX)) {
+          // payload is user-defined (or empty) - may carry piggybacked MAC commands
+          isAppDownlink = true;
+          break;
+        }
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink at FPort %d - rejected! This FPort is reserved.", fPort);
         #if !RADIOLIB_STATIC_ONLY
           delete[] downlinkMsg;
