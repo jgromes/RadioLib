@@ -113,7 +113,7 @@ void loop() {
   uplinkPayload[2] = lowByte(value2);
   
   // Perform an uplink
-  int16_t state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
+  state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
   debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
 
   // Check if a downlink was received 
