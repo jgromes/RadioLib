@@ -136,7 +136,12 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
   #if RADIOLIB_STATIC_ONLY
     uint32_t msg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
-    uint32_t* msg = new uint32_t[msgLen];
+    #define RADIOLIB_PAGER_MAX_MSG_LEN 512
+    static uint32_t staticMsgBuffer[RADIOLIB_PAGER_MAX_MSG_LEN];
+    if(msgLen > RADIOLIB_PAGER_MAX_MSG_LEN) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }
+    uint32_t* msg = staticMsgBuffer;
   #endif
 
   // build the message
@@ -230,10 +235,6 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
 
   // transmit the message
   PagerClient::write(msg, msgLen);
-
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] msg;
-  #endif
 
   // turn transmitter off
   phyLayer->standby();
