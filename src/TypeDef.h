@@ -549,9 +549,9 @@
 #define RADIOLIB_ERR_JOIN_NONCE_INVALID                         (-1111)
 
 /*!
-  \brief The downlink MIC could not be verified (incorrect key or invalid FCnt)
+  \brief The downlink frame counter is slightly lower than expected, looks like a replay attack.
 */
-#define RADIOLIB_ERR_MIC_MISMATCH                               (-1112)
+#define RADIOLIB_ERR_DOWNLINK_FCNT_INVALID                      (-1112)
 
 /*!
   \brief Multicast frame counter is invalid (outside bounds).
@@ -597,6 +597,11 @@
   \brief The requested command is unavailable under the current LoRaWAN mode.
 */
 #define RADIOLIB_ERR_INVALID_MODE                               (-1121)
+
+/*!
+  \brief The downlink MIC could not be verified (incorrect key or invalid FCnt)
+*/
+#define RADIOLIB_ERR_MIC_MISMATCH                               (-1122)
 
 // LR11x0-specific status codes
 

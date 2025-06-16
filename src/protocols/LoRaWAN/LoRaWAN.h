@@ -97,6 +97,9 @@
 #define RADIOLIB_LORAWAN_REJOIN_MAX_COUNT_N                     (10)  // send rejoin request 16384 uplinks
 #define RADIOLIB_LORAWAN_REJOIN_MAX_TIME_N                      (15)  // once every year, not actually implemented
 
+// developer recommended default setting (not specified)
+#define RADIOLIB_LORAWAN_MIN_ROLLOVER_FCNT_GAP                  (16384) // equal to deprecated MaxFCntGap
+
 // join request message layout
 #define RADIOLIB_LORAWAN_JOIN_REQUEST_LEN                       (23)
 #define RADIOLIB_LORAWAN_JOIN_REQUEST_JOIN_EUI_POS              (1)
@@ -1050,7 +1053,7 @@ class LoRaWANNode {
     void processCFList(const uint8_t* cfList);
 
     // check whether payload length and fport are allowed
-    int16_t isValidUplink(uint8_t* len, uint8_t fPort);
+    int16_t isValidUplink(size_t len, uint8_t fPort);
     
     // perform ADR backoff
     void adrBackoff();
@@ -1059,7 +1062,7 @@ class LoRaWANNode {
     void composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed);
 
     // generate and set the MIC of an uplink buffer (depends on selected channels)
-    void micUplink(uint8_t* inOut, uint8_t lenInOut);
+    void micUplink(uint8_t* inOut, size_t lenInOut);
 
     // transmit uplink buffer on a specified channel
     int16_t transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans = false);
