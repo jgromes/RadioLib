@@ -8,6 +8,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_COMMAND_QUEUE_FULL", "group__status__codes.html#ga442250961d11f2582857cd1eafe0df17", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND", "group__status__codes.html#gac4e026589229f7f737c77c641447d180", null ],
     [ "RADIOLIB_ERR_CRC_MISMATCH", "group__status__codes.html#ga9da949184e940a4fa6f4afb63c315963", null ],
+    [ "RADIOLIB_ERR_DOWNLINK_FCNT_INVALID", "group__status__codes.html#gaff1f8f975b0d7e7d83352810459ce38f", null ],
     [ "RADIOLIB_ERR_DOWNLINK_MALFORMED", "group__status__codes.html#gab120f980c06c581cd071452464199aac", null ],
     [ "RADIOLIB_ERR_DWELL_TIME_EXCEEDED", "group__status__codes.html#gac78ef1a402159a3be27a6b92268106b7", null ],
     [ "RADIOLIB_ERR_GNSS_DEMOD_OFFSET", "group__status__codes.html#ga95f44b9fd5db8220158e8dad73506cd9", null ],

@@ -417,10 +417,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_JOIN_NONCE_INVALID</b>&#160;&#160;&#160;(-1111)</td></tr>
 <tr class="memdesc:ga68c7f7b8c699dbd6524da685be476fca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unable to join network because JoinNonce is not higher than saved value. <br /></td></tr>
 <tr class="separator:ga68c7f7b8c699dbd6524da685be476fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga72766507100035da092be0c0719c103c" id="r_ga72766507100035da092be0c0719c103c"><td class="memItemLeft" align="right" valign="top"><a id="ga72766507100035da092be0c0719c103c" name="ga72766507100035da092be0c0719c103c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_MIC_MISMATCH</b>&#160;&#160;&#160;(-1112)</td></tr>
-<tr class="memdesc:ga72766507100035da092be0c0719c103c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The downlink MIC could not be verified (incorrect key or invalid FCnt) <br /></td></tr>
-<tr class="separator:ga72766507100035da092be0c0719c103c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff1f8f975b0d7e7d83352810459ce38f" id="r_gaff1f8f975b0d7e7d83352810459ce38f"><td class="memItemLeft" align="right" valign="top"><a id="gaff1f8f975b0d7e7d83352810459ce38f" name="gaff1f8f975b0d7e7d83352810459ce38f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_DOWNLINK_FCNT_INVALID</b>&#160;&#160;&#160;(-1112)</td></tr>
+<tr class="memdesc:gaff1f8f975b0d7e7d83352810459ce38f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The downlink frame counter is slightly lower than expected, looks like a replay attack. <br /></td></tr>
+<tr class="separator:gaff1f8f975b0d7e7d83352810459ce38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9caf2e095dea4df9a0fdab33d338459d" id="r_ga9caf2e095dea4df9a0fdab33d338459d"><td class="memItemLeft" align="right" valign="top"><a id="ga9caf2e095dea4df9a0fdab33d338459d" name="ga9caf2e095dea4df9a0fdab33d338459d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_MULTICAST_FCNT_INVALID</b>&#160;&#160;&#160;(-1113)</td></tr>
 <tr class="memdesc:ga9caf2e095dea4df9a0fdab33d338459d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multicast frame counter is invalid (outside bounds). <br /></td></tr>
@@ -457,6 +457,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_MODE</b>&#160;&#160;&#160;(-1121)</td></tr>
 <tr class="memdesc:ga4871133fa9b6d7cdbee82daf2226d373"><td class="mdescLeft">&#160;</td><td class="mdescRight">The requested command is unavailable under the current LoRaWAN mode. <br /></td></tr>
 <tr class="separator:ga4871133fa9b6d7cdbee82daf2226d373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72766507100035da092be0c0719c103c" id="r_ga72766507100035da092be0c0719c103c"><td class="memItemLeft" align="right" valign="top"><a id="ga72766507100035da092be0c0719c103c" name="ga72766507100035da092be0c0719c103c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_MIC_MISMATCH</b>&#160;&#160;&#160;(-1122)</td></tr>
+<tr class="memdesc:ga72766507100035da092be0c0719c103c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The downlink MIC could not be verified (incorrect key or invalid FCnt) <br /></td></tr>
+<tr class="separator:ga72766507100035da092be0c0719c103c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac0673e69b893d8f23e339f218d376a52" id="r_gac0673e69b893d8f23e339f218d376a52"><td class="memItemLeft" align="right" valign="top"><a id="gac0673e69b893d8f23e339f218d376a52" name="gac0673e69b893d8f23e339f218d376a52"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_WIFI_TYPE</b>&#160;&#160;&#160;(-1200)</td></tr>
 <tr class="memdesc:gac0673e69b893d8f23e339f218d376a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected 802.11 WiFi type is invalid. <br /></td></tr>
