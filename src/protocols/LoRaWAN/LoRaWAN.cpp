@@ -3101,6 +3101,7 @@ void LoRaWANNode::setDutyCycle(bool enable, RadioLibTime_t msPerHour) {
   this->dutyCycleEnabled = enable;
   if(!enable) {
     this->dutyCycle = 0;
+    return;
   }
   if(msPerHour == 0) {
     this->dutyCycle = this->band->dutyCycle;
