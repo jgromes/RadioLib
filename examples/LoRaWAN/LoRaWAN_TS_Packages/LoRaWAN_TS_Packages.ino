@@ -162,7 +162,9 @@ void loop() {
     delayMs = 1;
   }
   delayMs += 50;
-  Serial.printf("delayDc: %d, delayMs: %d\r\n", delayDc, delayMs);
+  Serial.print(F("Delay: "));
+  Serial.print(max(delayDc, delayMs));
+  Serial.println(F(" ms"));
 
   // wait before sending another packet
   delay(max(delayDc, delayMs));
