@@ -14,6 +14,9 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   this->txPowerMax = this->band->powerMax;
   this->subBand = subBand;
   memset(this->channelPlan, 0, sizeof(this->channelPlan));
+  for(int i = 0; i < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; i++) {
+    this->packages[i] = RADIOLIB_LORAWAN_PACKAGE_NONE;
+  }
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)

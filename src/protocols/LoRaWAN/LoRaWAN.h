@@ -314,6 +314,8 @@ constexpr LoRaWANPackage_t PackageTable[RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES]
   { RADIOLIB_LORAWAN_PACKAGE_TS011, RADIOLIB_LORAWAN_FPORT_TS011, false, false, false }
 };
 
+#define RADIOLIB_LORAWAN_PACKAGE_NONE { .packId = 0, .packFPort = 0, .isAppPack = false, .fixedFPort = false, .enabled = false, .callback = NULL }
+
 #define RADIOLIB_LORAWAN_NONCES_VERSION_VAL (0x0001)
 
 enum LoRaWANSchemeBase_t {
