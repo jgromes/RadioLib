@@ -109,8 +109,11 @@ void loop() {
     if(lenDown > 0) {
       arrayDump(dataDown, lenDown);
     } else {
-      Serial.printf("<MAC / package commands only (FPort %d)>\n", eventDown.fPort);
+      Serial.println(F("<MAC / package commands only>"));
     }
+    
+    Serial.print(F("[LoRaWAN] FPort:\t"));
+    Serial.print(eventDown.fPort);
 
     // print RSSI (Received Signal Strength Indicator)
     Serial.print(F("[LoRaWAN] RSSI:\t\t"));
