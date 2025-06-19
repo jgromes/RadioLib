@@ -1985,9 +1985,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // process any FOpts
   if(fOptsLen > 0) {
-    uint8_t cid;
-    uint8_t fLen = 1;
-    uint8_t fLenRe = 1;
     uint8_t* mPtr = fOpts;
     uint8_t procLen = 0;
     uint8_t fOptsRe[RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE] = { 0 };
@@ -1997,9 +1994,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     bool mAdr = false;
 
     while(procLen < fOptsLen) {
-      cid = *mPtr;      // MAC id is the first byte
+      uint8_t cid = *mPtr;      // MAC id is the first byte
 
       // fetch length of MAC downlink command and uplink response
+      uint8_t fLen = 1;
+      uint8_t fLenRe = 1;
       state = this->getMacLen(cid, &fLen, RADIOLIB_LORAWAN_DOWNLINK, true, mPtr + 1);
       if(state != RADIOLIB_ERR_NONE) {
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Unknown MAC CID %02x", cid);
