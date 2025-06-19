@@ -2,7 +2,7 @@
 #include <string.h>
 
 RadioLibBCH::RadioLibBCH() {
-  
+
 }
 
 RadioLibBCH::~RadioLibBCH() {
@@ -270,7 +270,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
       iEvenParity++;
     }
 	}
-  
+
   #if !RADIOLIB_STATIC_ONLY
   delete[] data;
   #endif
@@ -281,7 +281,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
       iEvenParity++;
     }
 	}
-  
+
   #if !RADIOLIB_STATIC_ONLY
   delete[] bb;
   #endif

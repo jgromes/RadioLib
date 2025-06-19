@@ -559,7 +559,7 @@ class CC1101: public PhysicalLayer {
       float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
       int8_t pwr = RADIOLIB_CC1101_DEFAULT_POWER,
       uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
-    
+
     /*!
       \brief Initialization method for 4-FSK modulation.
       \param freq Carrier frequency in MHz. Defaults to 434 MHz.
@@ -620,7 +620,7 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t sleep() override;
-    
+
     /*!
       \brief Starts synchronous direct mode transmission.
       \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
@@ -703,8 +703,8 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Interrupt-driven binary transmit method for packets less than 64 bytes.
-      Method blocks for packets longer than 64 bytes up to a 255 byte limit, until 
-      the last bytes are placed in the FIFO. Some limitations and issues apply; see discussion: 
+      Method blocks for packets longer than 64 bytes up to a 255 byte limit, until
+      the last bytes are placed in the FIFO. Some limitations and issues apply; see discussion:
       https://github.com/jgromes/RadioLib/discussions/1138
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
@@ -780,7 +780,7 @@ class CC1101: public PhysicalLayer {
 
      /*!
       \brief calculates and sets Rx bandwidth based on the freq, baud and freq uncertainty.
-      Reimplement of atlas0fd00m's (RfCat) CalculatePktChanBw function. 
+      Reimplement of atlas0fd00m's (RfCat) CalculatePktChanBw function.
       Modified for worse ppm with the CC1101, and adjusted for the supportted CC1101 bw.
       \returns \ref status_codes
     */
@@ -794,7 +794,7 @@ class CC1101: public PhysicalLayer {
     int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
-      \brief Gets frequency deviation. 
+      \brief Gets frequency deviation.
       \param[out] freqDev Pointer to variable where to save the frequency deviation.
       \returns \ref status_codes
     */
@@ -940,7 +940,7 @@ class CC1101: public PhysicalLayer {
     int16_t setPromiscuousMode(bool enable = true, bool requireCarrierSense = false);
 
     /*!
-      \brief Get whether the modem is in promiscuous mode: no packet filtering 
+      \brief Get whether the modem is in promiscuous mode: no packet filtering
       (e.g., no preamble, sync word, address, CRC).
       \returns Whether the modem is in promiscuous mode.
     */

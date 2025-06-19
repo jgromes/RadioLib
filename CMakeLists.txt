@@ -15,7 +15,7 @@ if(ESP_PLATFORM)
 
   idf_component_register(
     SRCS ${RADIOLIB_SOURCES}
-    INCLUDE_DIRS . src 
+    INCLUDE_DIRS . src
   )
 
   return()

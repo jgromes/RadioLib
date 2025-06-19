@@ -74,7 +74,7 @@ void setup() {
 void loop() {
   // AFSKClient can be used to transmit tones,
   // same as Arduino tone() function
-  
+
   // 400 Hz tone
   Serial.print(F("[AFSK] 400 Hz tone ... "));
   audio.tone(400);

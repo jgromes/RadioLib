@@ -29,7 +29,7 @@ int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
     (uint8_t)len,
   };
 
-  // build buffers - later we need to ensure endians are correct, 
+  // build buffers - later we need to ensure endians are correct,
   // so there is probably no way to do this without copying buffers and iterating
   #if RADIOLIB_STATIC_ONLY
     uint8_t rplBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
@@ -49,7 +49,7 @@ int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   #if !RADIOLIB_STATIC_ONLY
     delete[] rplBuff;
   #endif
-  
+
   return(state);
 }
 
@@ -105,7 +105,7 @@ int16_t LR11x0::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
 
   // the status check command doesn't return status in the same place as other read commands
   // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
-  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
+  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work
   int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
 
   // pass the replies
@@ -249,7 +249,7 @@ int16_t LR11x0::writeInfoPage(uint16_t addr, const uint32_t* data, size_t len) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
 
-  // build buffers - later we need to ensure endians are correct, 
+  // build buffers - later we need to ensure endians are correct,
   // so there is probably no way to do this without copying buffers and iterating
   size_t buffLen = sizeof(uint8_t) + sizeof(uint16_t) + len*sizeof(uint32_t);
   #if RADIOLIB_STATIC_ONLY
@@ -291,7 +291,7 @@ int16_t LR11x0::readInfoPage(uint16_t addr, uint32_t* data, size_t len) {
     (uint8_t)len,
   };
 
-  // build buffers - later we need to ensure endians are correct, 
+  // build buffers - later we need to ensure endians are correct,
   // so there is probably no way to do this without copying buffers and iterating
   #if RADIOLIB_STATIC_ONLY
     uint8_t rplBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
@@ -307,11 +307,11 @@ int16_t LR11x0::readInfoPage(uint16_t addr, uint32_t* data, size_t len) {
       data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
     }
   }
-  
+
   #if !RADIOLIB_STATIC_ONLY
     delete[] rplBuff;
   #endif
-  
+
   return(state);
 }
 
@@ -492,7 +492,7 @@ int16_t LR11x0::setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint
 }
 
 int16_t LR11x0::setModulationParamsGFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev) {
-  uint8_t buff[10] = { 
+  uint8_t buff[10] = {
     (uint8_t)((br >> 24) & 0xFF), (uint8_t)((br >> 16) & 0xFF),
     (uint8_t)((br >> 8) & 0xFF), (uint8_t)(br & 0xFF), sh, rxBw,
     (uint8_t)((freqDev >> 24) & 0xFF), (uint8_t)((freqDev >> 16) & 0xFF),
@@ -502,7 +502,7 @@ int16_t LR11x0::setModulationParamsGFSK(uint32_t br, uint8_t sh, uint8_t rxBw, u
 }
 
 int16_t LR11x0::setModulationParamsLrFhss(uint32_t br, uint8_t sh) {
-  uint8_t buff[5] = { 
+  uint8_t buff[5] = {
     (uint8_t)((br >> 24) & 0xFF), (uint8_t)((br >> 16) & 0xFF),
     (uint8_t)((br >> 8) & 0xFF), (uint8_t)(br & 0xFF), sh
   };
@@ -515,7 +515,7 @@ int16_t LR11x0::setModulationParamsSigfox(uint32_t br, uint8_t sh) {
 }
 
 int16_t LR11x0::setPacketParamsLoRa(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ) {
-  uint8_t buff[6] = { 
+  uint8_t buff[6] = {
     (uint8_t)((preambleLen >> 8) & 0xFF), (uint8_t)(preambleLen & 0xFF),
     hdrType, payloadLen, crcType, invertIQ
   };
@@ -523,7 +523,7 @@ int16_t LR11x0::setPacketParamsLoRa(uint16_t preambleLen, uint8_t hdrType, uint8
 }
 
 int16_t LR11x0::setPacketParamsGFSK(uint16_t preambleLen, uint8_t preambleDetectorLen, uint8_t syncWordLen, uint8_t addrCmp, uint8_t packType, uint8_t payloadLen, uint8_t crcType, uint8_t whiten) {
-  uint8_t buff[9] = { 
+  uint8_t buff[9] = {
     (uint8_t)((preambleLen >> 8) & 0xFF), (uint8_t)(preambleLen & 0xFF),
     preambleDetectorLen, syncWordLen, addrCmp, packType, payloadLen, crcType, whiten
   };
@@ -531,7 +531,7 @@ int16_t LR11x0::setPacketParamsGFSK(uint16_t preambleLen, uint8_t preambleDetect
 }
 
 int16_t LR11x0::setPacketParamsSigfox(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t bitNum) {
-  uint8_t buff[7] = { 
+  uint8_t buff[7] = {
     payloadLen, (uint8_t)((rampUpDelay >> 8) & 0xFF), (uint8_t)(rampUpDelay & 0xFF),
     (uint8_t)((rampDownDelay >> 8) & 0xFF), (uint8_t)(rampDownDelay & 0xFF),
     (uint8_t)((bitNum >> 8) & 0xFF), (uint8_t)(bitNum & 0xFF),
@@ -612,7 +612,7 @@ int16_t LR11x0::getRangingResult(uint8_t type, float* res) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_RANGING_RESULT, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
 
-  if(res) { 
+  if(res) {
     if(type == RADIOLIB_LR11X0_RANGING_RESULT_DISTANCE) {
       uint32_t raw = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3];
       *res = ((float)(raw*3e8))/((float)(4096*this->bandwidthKhz*1000));
@@ -640,7 +640,7 @@ int16_t LR11x0::setGfskCrcParams(uint32_t init, uint32_t poly) {
     (uint8_t)((poly >> 8) & 0xFF), (uint8_t)(poly & 0xFF)
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_GFSK_CRC_PARAMS, true, buff, sizeof(buff)));
-  
+
 }
 
 int16_t LR11x0::setGfskWhitParams(uint16_t seed) {
@@ -805,7 +805,7 @@ int16_t LR11x0::bootGetJoinEui(uint8_t* eui) {
 }
 
 int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile) {
-  // build buffers - later we need to ensure endians are correct, 
+  // build buffers - later we need to ensure endians are correct,
   // so there is probably no way to do this without copying buffers and iterating
   size_t buffLen = sizeof(uint32_t) + len*sizeof(uint32_t);
   #if RADIOLIB_STATIC_ONLY

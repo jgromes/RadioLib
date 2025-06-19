@@ -43,7 +43,7 @@ class STM32WLx : public SX1262 {
 
     /*!
       \brief Custom operation modes for STMWLx.
-     
+
       This splits the TX mode into two modes: Low-power and high-power.
       These constants can be used with the setRfSwitchTable() method,
       instead of the Module::OpMode_t constants.

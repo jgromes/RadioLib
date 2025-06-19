@@ -21,4 +21,3 @@ awk 'NR > 1 {
 
 # remove input file
 rm -f $in_file
-

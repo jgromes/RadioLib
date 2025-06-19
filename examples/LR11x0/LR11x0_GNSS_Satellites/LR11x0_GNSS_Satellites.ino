@@ -40,13 +40,13 @@ Radio radio = new RadioModule();
 // set RF switch configuration for Wio WM1110
 // Wio WM1110 uses DIO5 and DIO6 for RF switching
 // NOTE: other boards may be different!
-static const uint32_t rfswitch_dio_pins[] = { 
+static const uint32_t rfswitch_dio_pins[] = {
   RADIOLIB_LR11X0_DIO5, RADIOLIB_LR11X0_DIO6,
   RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC
 };
 
 static const Module::RfSwitchMode_t rfswitch_table[] = {
-  // mode                  DIO5  DIO6 
+  // mode                  DIO5  DIO6
   { LR11x0::MODE_STBY,   { LOW,  LOW  } },
   { LR11x0::MODE_RX,     { HIGH, LOW  } },
   { LR11x0::MODE_TX,     { HIGH, HIGH } },
@@ -98,7 +98,7 @@ void loop() {
     Serial.print(F(" (demodulator error "));
     Serial.print(RADIOLIB_GET_GNSS_DEMOD_ERROR(state));
     Serial.println(F(")"));
-    
+
   } else  {
     Serial.println(F("success!"));
 
@@ -123,9 +123,9 @@ void loop() {
         Serial.println(satellites[i].doppler);
 
       }
-    
+
     }
-    
+
   }
 
   // wait for a second before scanning again

@@ -148,6 +148,6 @@ void loop() {
       transmissionState = radio.startTransmit("Hello World!");
       transmitFlag = true;
     }
-  
+
   }
 }

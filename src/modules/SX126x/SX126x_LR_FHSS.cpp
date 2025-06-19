@@ -146,7 +146,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
     // guard bits
     CLEAR_BIT_IN_ARRAY_LSB(out, out_row_index);
     CLEAR_BIT_IN_ARRAY_LSB(out, out_row_index + 1);
-        
+
     for(int16_t j = 0; j < in_row_width; j++) {
       // guard bit
       if(TEST_BIT_IN_ARRAY_LSB(tmp, pos)) {
@@ -267,7 +267,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
 int16_t SX126x::resetLRFHSS() {
   // initialize hopping configuration
   const uint16_t numChan[] = { 80, 176, 280, 376, 688, 792, 1480, 1584, 3120, 3224 };
-  
+
   // LFSR polynomials for different ranges of lrFhssNgrid
   const uint8_t lfsrPoly1[] = { 33, 45, 48, 51, 54, 57 };
   const uint8_t lfsrPoly2[] = { 65, 68, 71, 72 };
@@ -289,7 +289,7 @@ int16_t SX126x::resetLRFHSS() {
         return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
       }
       break;
-    
+
     case 60:
     case 62:
       this->lrFhssLfsrState = 56;
@@ -299,25 +299,25 @@ int16_t SX126x::resetLRFHSS() {
         return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
       }
       break;
-    
+
     case 86:
     case 99:
       this->lrFhssPoly = lfsrPoly2[this->lrFhssHopSeqId >> 7];
       this->lrFhssSeed = this->lrFhssHopSeqId & 0x7F;
       break;
-    
+
     case 185:
     case 198:
       this->lrFhssPoly = lfsrPoly3[this->lrFhssHopSeqId >> 8];
       this->lrFhssSeed = this->lrFhssHopSeqId & 0xFF;
       break;
-    
+
     case 390:
     case 403:
       this->lrFhssPoly = 264;
       this->lrFhssSeed = this->lrFhssHopSeqId;
       break;
-    
+
     default:
       return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
   }

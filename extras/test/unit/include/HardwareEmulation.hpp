@@ -25,7 +25,7 @@ struct EmulatedPin_t {
   uint32_t mode;
   uint32_t value;
   bool event;
-  PinFunction_t func; 
+  PinFunction_t func;
 };
 
 // structure for emulating SPI registers
@@ -58,7 +58,7 @@ class EmulatedRadio {
     virtual void HandleGPIO() {
       // handle discrete GPIO signals here (e.g. reset state machine on NSS falling edge)
     }
-  
+
   protected:
     // pointers to emulated GPIO pins
     // this is done via pointers so that the same GPIO entity is shared, like with a real hardware

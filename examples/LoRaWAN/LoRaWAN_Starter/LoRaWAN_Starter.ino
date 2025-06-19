@@ -10,7 +10,7 @@
   The device will join the network and start uploading data.
 
   Running this examples REQUIRES you to check "Resets DevNonces"
-  on your LoRaWAN dashboard. Refer to the network's 
+  on your LoRaWAN dashboard. Refer to the network's
   documentation on how to do this.
 
   For default module settings, see the wiki page
@@ -60,12 +60,12 @@ void loop() {
   uplinkPayload[0] = value1;
   uplinkPayload[1] = highByte(value2);   // See notes for high/lowByte functions
   uplinkPayload[2] = lowByte(value2);
-  
+
   // Perform an uplink
-  int16_t state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
+  int16_t state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));
   debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
 
-  // Check if a downlink was received 
+  // Check if a downlink was received
   // (state 0 = no downlink, state 1/2 = downlink in window Rx1/Rx2)
   if(state > 0) {
     Serial.println(F("Received a downlink"));
@@ -76,7 +76,7 @@ void loop() {
   Serial.print(F("Next uplink in "));
   Serial.print(uplinkIntervalSeconds);
   Serial.println(F(" seconds\n"));
-  
+
   // Wait until next uplink - observing legal & TTN FUP constraints
   delay(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
 }

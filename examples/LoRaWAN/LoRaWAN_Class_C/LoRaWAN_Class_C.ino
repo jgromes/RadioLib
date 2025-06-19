@@ -9,7 +9,7 @@
   is worse.
 
   Running this examples REQUIRES you to check "Resets DevNonces"
-  on your LoRaWAN dashboard. Refer to the network's 
+  on your LoRaWAN dashboard. Refer to the network's
   documentation on how to do this.
 
   For default module settings, see the wiki page
@@ -63,11 +63,11 @@ void loop() {
   LoRaWANEvent_t downlinkEvent;
 
   // check if a Class C downlink is ready for processing
-  // tip: internally, this just checks a boolean; 
+  // tip: internally, this just checks a boolean;
   //      it does not poll the radio over SPI.
   // tip: you are not required to continuously call
   //      this function; you can do other stuff in between.
-  //      however, a downlink may be overwritten if you 
+  //      however, a downlink may be overwritten if you
   //      don't call this function in time for the previous one.
   int16_t state = node.getDownlinkClassC(downlinkPayload, &downlinkLen, &downlinkEvent);
   if(state > 0) {
@@ -114,12 +114,12 @@ void loop() {
   uplinkPayload[0] = value1;
   uplinkPayload[1] = highByte(value2);   // See notes for high/lowByte functions
   uplinkPayload[2] = lowByte(value2);
-  
+
   // Perform an uplink
-  state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
+  state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));
   debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
 
-  // Check if a downlink was received 
+  // Check if a downlink was received
   // (state 0 = no downlink, state 1/2/3 = downlink in window Rx1/Rx2/RxC)
   if(state > 0) {
     Serial.println(F("Received a downlink"));

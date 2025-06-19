@@ -1011,7 +1011,7 @@ class RF69: public PhysicalLayer {
 #endif
     float bitRate = RADIOLIB_RF69_DEFAULT_BR;
     float rxBandwidth = RADIOLIB_RF69_DEFAULT_RXBW;
-    
+
     int16_t config();
     int16_t setMode(uint8_t mode);
 

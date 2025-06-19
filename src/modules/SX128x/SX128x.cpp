@@ -553,7 +553,7 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
     length = len;
   }
 
-  // read packet data starting at offset 
+  // read packet data starting at offset
   state = readBuffer(data, length, offset);
   RADIOLIB_ASSERT(state);
 
@@ -780,7 +780,7 @@ int16_t SX128x::getModem(ModemType_t* modem) {
       *modem = ModemType_t::RADIOLIB_MODEM_FSK;
       return(RADIOLIB_ERR_NONE);
   }
-  
+
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
@@ -1399,7 +1399,7 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       if((this->headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT) && (cfg->receive.len != 0)) {
         this->payloadLen = cfg->receive.len;
       }
-      
+
       // check active modem
       if(getPacketType() == RADIOLIB_SX128X_PACKET_TYPE_RANGING) {
         return(RADIOLIB_ERR_WRONG_MODEM);
@@ -1432,7 +1432,7 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       }
       this->rxTimeout = cfg->receive.timeout;
     } break;
-  
+
     case(RADIOLIB_RADIO_MODE_TX): {
       // check packet length
       if(cfg->transmit.len > RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
@@ -1478,7 +1478,7 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = clearIrqStatus();
       RADIOLIB_ASSERT(state);
     } break;
-    
+
     default:
       return(RADIOLIB_ERR_UNSUPPORTED);
   }
@@ -1495,7 +1495,7 @@ int16_t SX128x::launchMode() {
       state = setRx(this->rxTimeout);
       RADIOLIB_ASSERT(state);
     } break;
-  
+
     case(RADIOLIB_RADIO_MODE_TX): {
       this->mod->setRfSwitchState(Module::MODE_TX);
       state = setTx(RADIOLIB_SX128X_TX_TIMEOUT_NONE);
@@ -1506,7 +1506,7 @@ int16_t SX128x::launchMode() {
         this->mod->hal->yield();
       }
     } break;
-    
+
     default:
       return(RADIOLIB_ERR_UNSUPPORTED);
   }

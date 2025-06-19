@@ -52,9 +52,9 @@ extern const struct BellModem_t Bell202;
   \brief Client for Bell modem communication. The public interface is the same as Arduino Serial.
 */
 class BellClient: public AFSKClient, public RadioLibPrint {
-  
+
   public:
-    
+
     /*!
       \brief Whether the modem is replying.
       On some modems, the replying station has different tone frequencies.

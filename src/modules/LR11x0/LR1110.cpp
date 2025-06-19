@@ -52,7 +52,7 @@ int16_t LR1110::setFrequency(float freq) {
 
 int16_t LR1110::setFrequency(float freq, bool skipCalibration, float band) {
   RADIOLIB_CHECK_RANGE(freq, 150.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
-  
+
   // check if we need to recalibrate image
   int16_t state;
   if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ)) {
@@ -78,7 +78,7 @@ int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower) {
 
   // determine whether to use HP or LP PA and check range accordingly
   bool useHp = forceHighPower || (power > 14);
-  
+
   // TODO how and when to configure OCP?
 
   // update PA config - always use VBAT for high-power PA
@@ -100,13 +100,13 @@ int16_t LR1110::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPo
       *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
     }
     RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
+
   } else {
     if(clipped) {
       *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
     }
     RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
+
   }
   return(RADIOLIB_ERR_NONE);
 }

@@ -15,7 +15,7 @@ class PiHal : public RadioLibHal {
   public:
     // default constructor - initializes the base HAL and any needed private members
     PiHal(uint8_t spiChannel, uint32_t spiSpeed = 2000000)
-      : RadioLibHal(PI_INPUT, PI_OUTPUT, PI_LOW, PI_HIGH, RISING_EDGE, FALLING_EDGE), 
+      : RadioLibHal(PI_INPUT, PI_OUTPUT, PI_LOW, PI_HIGH, RISING_EDGE, FALLING_EDGE),
       _spiChannel(spiChannel),
       _spiSpeed(spiSpeed) {
     }
@@ -127,7 +127,7 @@ class PiHal : public RadioLibHal {
     }
 
     void spiBeginTransaction() {}
-    
+
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
       spiXfer(_spiHandle, (char*)out, (char*)in, len);
     }

@@ -173,7 +173,7 @@ class APRSClient {
     char** repCalls = NULL;
     uint8_t* repSSIDs = NULL;
     uint8_t numReps = 0;
-    
+
     // source callsign when using APRS over LoRa
     char src[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = { 0 };
     uint8_t id = 0;

@@ -22,7 +22,7 @@ paste the sketch here, even if it is an unmodified example code
 ```
 
 </p>
-</details> 
+</details>
 
 **Hardware setup**
 Wiring diagram, schematic, pictures etc.
@@ -38,7 +38,7 @@ paste the debug output here
 ```
 
 </p>
-</details> 
+</details>
 
 **Additional info (please complete):**
  - MCU: [e.g. Arduino Uno, ESP8266 etc.]

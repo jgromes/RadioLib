@@ -113,7 +113,7 @@ void loop() {
       // inter-word space, interpret that as a new line
       Serial.println();
     }
-  
+
   }
 
 }

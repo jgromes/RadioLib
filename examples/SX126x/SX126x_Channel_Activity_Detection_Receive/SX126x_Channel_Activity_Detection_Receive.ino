@@ -98,46 +98,46 @@ void loop() {
       // you can read received data as an Arduino String
       String str;
       state = radio.readData(str);
-  
+
       // you can also read received data as byte array
       /*
         byte byteArr[8];
         state = radio.readData(byteArr, 8);
       */
-    
+
       if (state == RADIOLIB_ERR_NONE) {
         // packet was successfully received
         Serial.println(F("[SX1262] Received packet!"));
-  
+
         // print data of the packet
         Serial.print(F("[SX1262] Data:\t\t"));
         Serial.println(str);
-  
+
         // print RSSI (Received Signal Strength Indicator)
         Serial.print(F("[SX1262] RSSI:\t\t"));
         Serial.print(radio.getRSSI());
         Serial.println(F(" dBm"));
-  
+
         // print SNR (Signal-to-Noise Ratio)
         Serial.print(F("[SX1262] SNR:\t\t"));
         Serial.print(radio.getSNR());
         Serial.println(F(" dB"));
-  
+
         // print frequency error
         Serial.print(F("[SX1262] Frequency error:\t"));
         Serial.print(radio.getFrequencyError());
         Serial.println(F(" Hz"));
-  
+
       } else {
         // some other error occurred
         Serial.print(F("[SX1262] Failed, code "));
         Serial.println(state);
-  
+
       }
 
       // reception is done now
       receiving = false;
-      
+
     } else {
       // check CAD result
       state = radio.getChannelScanResult();
@@ -179,9 +179,9 @@ void loop() {
         Serial.print(F("failed, code "));
         Serial.println(state);
       }
-    
+
     }
 
   }
-    
+
 }

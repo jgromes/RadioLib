@@ -40,7 +40,7 @@ class ITA2String {
       \param ita2 ITA2String instance to copy.
     */
     ITA2String(const ITA2String& ita2);
-    
+
     /*!
       \brief Overload for assignment operator.
       \param ita2 rvalue ITA2String.

@@ -317,11 +317,11 @@ void SSTVClient::sendLine(const uint32_t* imgLine) {
           color = ((uint32_t)y << 8);
           if(txMode.visCode == RADIOLIB_SSTV_ROBOT_36) {
             // odd lines carry Cb, even lines carry Cr
-            color |= (lineCount % 2) ? cb : cr; 
+            color |= (lineCount % 2) ? cb : cr;
           } else {
             color |= ((uint32_t)cr << 16) | cb;
           }
-          
+
         }
 
         switch(txMode.tones[i].type) {

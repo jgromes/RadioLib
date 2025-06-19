@@ -75,7 +75,7 @@ class SX1268: public SX126x {
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
     // configuration methods
 
     /*!
@@ -111,7 +111,7 @@ class SX1268: public SX126x {
       \returns \ref status_codes
     */
     int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.

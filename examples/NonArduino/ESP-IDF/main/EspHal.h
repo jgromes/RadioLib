@@ -263,7 +263,7 @@ class EspHal : public RadioLibHal {
       // set SPI mode 0
       this->spi->pin.ck_idle_edge = 0;
       this->spi->user.ck_out_edge = 0;
-      
+
       // set bit order to MSB first
       this->spi->ctrl.wr_bit_order = 0;
       this->spi->ctrl.rd_bit_order = 0;

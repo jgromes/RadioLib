@@ -225,16 +225,16 @@
 struct LoRaWANMacCommand_t {
   /*! \brief Command ID */
   const uint8_t cid;
-  
+
   /*! \brief Uplink message length */
   const uint8_t lenDn;
-  
+
   /*! \brief Downlink message length */
   const uint8_t lenUp;
 
   /*! \brief Some commands must be resent until Class A downlink received */
   const bool persist;
-  
+
   /*! \brief Whether this MAC command can be issued by the user or not */
   const bool user;
 };
@@ -363,7 +363,7 @@ struct LoRaWANChannelSpan_t {
 
   /*! \brief Maximum allowed datarate for all channels in this span (inclusive) */
   uint8_t drMax;
-  
+
   /*! \brief Allowed data rates for a join request message */
   uint8_t drJoinRequest;
 };
@@ -431,7 +431,7 @@ struct LoRaWANBand_t {
 
   /*! \brief Relay channels for ACK downlink */
   LoRaWANChannel_t txAck[2];
-  
+
   /*! \brief The corresponding datarates, bandwidths and coding rates for DR index */
   uint8_t dataRates[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 };
@@ -496,10 +496,10 @@ struct LoRaWANJoinEvent_t {
 struct LoRaWANEvent_t {
   /*! \brief Event direction, one of RADIOLIB_LORAWAN_CHANNEL_DIR_* */
   uint8_t dir;
-  
+
   /*! \brief Whether the event is confirmed or not (e.g., confirmed uplink sent by user application) */
   bool confirmed;
-  
+
   /*! \brief Whether the event is confirming a previous request
   (e.g., server downlink reply to confirmed uplink sent by user application)*/
   bool confirming;
@@ -509,16 +509,16 @@ struct LoRaWANEvent_t {
 
   /*! \brief Datarate */
   uint8_t datarate;
-  
+
   /*! \brief Frequency in MHz */
   float freq;
-  
+
   /*! \brief Transmit power in dBm for uplink, or RSSI for downlink */
   int16_t power;
-  
+
   /*! \brief The appropriate frame counter - for different events, different frame counters will be reported! */
   uint32_t fCnt;
-  
+
   /*! \brief Port number */
   uint8_t fPort;
 
@@ -590,7 +590,7 @@ class LoRaWANNode {
       \param addr Device address.
       \param fNwkSIntKey Pointer to the Forwarding network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0.
       \param sNwkSIntKey Pointer to the Serving network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0.
-      \param nwkSEncKey Pointer to the MAC command network session key [NwkSEncKey] (LoRaWAN 1.1) 
+      \param nwkSEncKey Pointer to the MAC command network session key [NwkSEncKey] (LoRaWAN 1.1)
                                     or network session AES-128 key [NwkSKey] (LoRaWAN 1.0).
       \param appSKey Pointer to the application session AES-128 key.
       \returns \ref status_codes
@@ -599,14 +599,14 @@ class LoRaWANNode {
 
     /*!
       \brief Join network by restoring OTAA session or performing over-the-air activation. By this procedure,
-      the device will perform an exchange with the network server and set all necessary configuration. 
+      the device will perform an exchange with the network server and set all necessary configuration.
       \param joinDr The datarate at which to send the join-request and any subsequent uplinks (unless ADR is enabled)
       \returns \ref status_codes
     */
     virtual int16_t activateOTAA(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, LoRaWANJoinEvent_t *joinEvent = NULL);
 
     /*!
-      \brief Join network by restoring ABP session or performing over-the-air activation. 
+      \brief Join network by restoring ABP session or performing over-the-air activation.
       In this procedure, all necessary configuration must be provided by the user.
       \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled).
       \returns \ref status_codes
@@ -722,7 +722,7 @@ class LoRaWANNode {
 
     /*!
       \brief Add a MAC command to the uplink queue.
-      Only LinkCheck and DeviceTime are available to the user. 
+      Only LinkCheck and DeviceTime are available to the user.
       Other commands are ignored; duplicate MAC commands are discarded.
       \param cid ID of the MAC command
       \returns \ref status_codes
@@ -764,7 +764,7 @@ class LoRaWANNode {
     */
     int16_t setTxPower(int8_t txPower);
 
-    /*! 
+    /*!
       \brief Configure the Rx2 datarate for ABP mode.
       This should not be needed for LoRaWAN 1.1 as it is configured through the first downlink.
       \param dr The datarate to be used for listening for downlinks in Rx2.
@@ -781,7 +781,7 @@ class LoRaWANNode {
     /*!
       \brief Toggle adherence to dutyCycle limits to on or off.
       \param enable Whether to adhere to dutyCycle limits or not (default true).
-      \param msPerHour The maximum allowed Time-on-Air per hour in milliseconds 
+      \param msPerHour The maximum allowed Time-on-Air per hour in milliseconds
       (default 0 = maximum allowed for configured band).
     */
     void setDutyCycle(bool enable = true, RadioLibTime_t msPerHour = 0);
@@ -789,7 +789,7 @@ class LoRaWANNode {
     /*!
       \brief Set or disable uplink dwell time limitation; enabled by default if mandatory.
       \param enable Whether to adhere to dwellTime limits or not (default true).
-      \param msPerUplink The maximum allowed Time-on-Air per uplink in milliseconds 
+      \param msPerUplink The maximum allowed Time-on-Air per uplink in milliseconds
       (default 0 = band default value); make sure you follow regulations/law!
     */
     void setDwellTime(bool enable, RadioLibTime_t msPerUplink = 0);
@@ -819,25 +819,25 @@ class LoRaWANNode {
     */
     void scheduleTransmission(RadioLibTime_t tUplink);
 
-    /*! 
-        \brief Returns the last uplink's frame counter; 
-        also 0 if no uplink occured yet. 
+    /*!
+        \brief Returns the last uplink's frame counter;
+        also 0 if no uplink occured yet.
     */
     uint32_t getFCntUp();
 
-    /*! 
-        \brief Returns the last network downlink's frame counter; 
-        also 0 if no network downlink occured yet. 
+    /*!
+        \brief Returns the last network downlink's frame counter;
+        also 0 if no network downlink occured yet.
     */
     uint32_t getNFCntDown();
 
-    /*! 
-        \brief Returns the last application downlink's frame counter; 
-        also 0 if no application downlink occured yet. 
+    /*!
+        \brief Returns the last application downlink's frame counter;
+        also 0 if no application downlink occured yet.
     */
     uint32_t getAFCntDown();
 
-    /*! 
+    /*!
         \brief Reset the downlink frame counters (application and network)
         This is unsafe and can possibly allow replay attacks using downlinks.
         It mainly exists as part of the TS009 Specification Verification protocol.
@@ -868,7 +868,7 @@ class LoRaWANNode {
     /*! \brief Returns time in milliseconds until next uplink is available under dutyCycle limits */
     RadioLibTime_t timeUntilUplink();
 
-    /*! 
+    /*!
       \brief Returns the maximum allowed uplink payload size given the current MAC state.
       Most importantly, this includes dwell time limitations and ADR.
     */
@@ -877,16 +877,16 @@ class LoRaWANNode {
     /*! \brief Callback to a user-provided sleep function. */
     typedef void (*SleepCb_t)(RadioLibTime_t ms);
 
-    /*! 
+    /*!
       \brief Set custom delay/sleep function callback. If set, LoRaWAN node will call
       this function to wait for periods of time longer than RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD.
       This can be used to lower the power consumption by putting the host microcontroller to sleep.
       NOTE: Since this method will call a user-provided function, it is up to the user to ensure
       that the time duration spent in that sleep function is accurate to at least 1 ms!
     */
-    void setSleepFunction(SleepCb_t cb); 
+    void setSleepFunction(SleepCb_t cb);
 
-    /*! 
+    /*!
       \brief TS009 Protocol Specification Verification switch
       (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded).
     */
@@ -942,7 +942,7 @@ class LoRaWANNode {
     uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
 
     uint16_t keyCheckSum = 0;
-    
+
     // device-specific parameters, persistent through sessions
     uint16_t devNonce = 0;
     uint32_t joinNonce = 0;
@@ -991,9 +991,9 @@ class LoRaWANNode {
 
     // number of backoff slots to be checked after DIFS phase.
     // A random BO avoids collisions in the case where two or more nodes start the CSMA
-    // process at the same time. 
+    // process at the same time.
     uint8_t backoffMax = RADIOLIB_LORAWAN_BACKOFF_MAX_DEFAULT;
-    
+
     // number of CADs to estimate a clear channel
     uint8_t difsSlots = RADIOLIB_LORAWAN_DIFS_DEFAULT;
 
@@ -1054,7 +1054,7 @@ class LoRaWANNode {
 
     // check whether payload length and fport are allowed
     int16_t isValidUplink(size_t len, uint8_t fPort);
-    
+
     // perform ADR backoff
     void adrBackoff();
 
@@ -1134,7 +1134,7 @@ class LoRaWANNode {
 
     // setup uplink/downlink channel data rates and frequencies
     // for dynamic channels, there is a small set of predefined channels
-    // in case of JoinRequest, add some optional extra frequencies 
+    // in case of JoinRequest, add some optional extra frequencies
     void selectChannelPlanDyn();
 
     // setup uplink/downlink channel data rates and frequencies

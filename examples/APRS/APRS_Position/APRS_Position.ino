@@ -1,9 +1,9 @@
 /*
   RadioLib APRS Position Example
 
-  This example sends APRS position reports 
+  This example sends APRS position reports
   using SX1278's FSK modem. The data is
-  modulated as AFSK at 1200 baud using Bell 
+  modulated as AFSK at 1200 baud using Bell
   202 tones.
 
   DO NOT transmit in APRS bands unless
@@ -110,7 +110,7 @@ void setup() {
 
 void loop() {
   Serial.println(F("[APRS] Sending location reports"));
-  
+
   // send a location without message or timestamp
   char destination[] = "N0CALL";
   char latitude[] = "4911.67N";
@@ -121,7 +121,7 @@ void loop() {
     Serial.println(state);
   }
   delay(500);
-  
+
   // send a location with message and without timestamp
   char message[] = "I'm here!";
   state = aprs.sendPosition(destination, 0, latitude, longitude, message);
@@ -137,7 +137,7 @@ void loop() {
   char* repeaterCallsigns[] = { "WIDE2" };
   uint8_t repeaterSSIDs[] = { 2 };
   aprs.useRepeaters(repeaterCallsigns, repeaterSSIDs, 1);
-  
+
   // send a location with message and timestamp
   char timestamp[] = "093045z";
   state = aprs.sendPosition(destination, 0, latitude, longitude, message, timestamp);
@@ -154,4 +154,3 @@ void loop() {
   Serial.println(F("[APRS] All done!"));
   delay(60000);
 }
-

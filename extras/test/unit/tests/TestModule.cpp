@@ -10,8 +10,8 @@ struct ModuleFixture {
   Module* mod = nullptr;
   EmulatedRadio* radioHardware = nullptr;
 
-  ModuleFixture()  { 
-    BOOST_TEST_MESSAGE("--- Module fixture setup ---"); 
+  ModuleFixture()  {
+    BOOST_TEST_MESSAGE("--- Module fixture setup ---");
     hal = new TestHal();
     radioHardware = new EmulatedRadio();
     hal->connectRadio(radioHardware);
@@ -20,7 +20,7 @@ struct ModuleFixture {
     mod->init();
   }
 
-  ~ModuleFixture() { 
+  ~ModuleFixture() {
     BOOST_TEST_MESSAGE("--- Module fixture teardown ---");
     mod->term();
     delete[] mod;
@@ -174,7 +174,7 @@ BOOST_FIXTURE_TEST_SUITE(suite_Module, ModuleFixture)
     // basic register write with default config
     const uint8_t address = 0x12;
     const uint8_t value = 0xAB;
-    const uint8_t spiTxn[] = { 
+    const uint8_t spiTxn[] = {
       RADIOLIB_SX126X_CMD_READ_REGISTER,  0x00, address, 0x00, 0x00,
       RADIOLIB_SX126X_CMD_WRITE_REGISTER, 0x00, address, value,
     };
@@ -189,7 +189,7 @@ BOOST_FIXTURE_TEST_SUITE(suite_Module, ModuleFixture)
     const uint8_t msb = 5;
     const uint8_t lsb = 1;
     const uint8_t maskedValue = 0xEB;
-    const uint8_t spiTxn2[] = { 
+    const uint8_t spiTxn2[] = {
       RADIOLIB_SX126X_CMD_READ_REGISTER,  0x00, address, 0x00, 0x00,
       RADIOLIB_SX126X_CMD_WRITE_REGISTER, 0x00, address, maskedValue,
     };

@@ -43,7 +43,7 @@ def main():
         print(hex(rgb), end=', ', file=f)
       print(' },', file=f)
     print('};', file=f)
-  
+
   print('Done!')
 
 if __name__ == "__main__":

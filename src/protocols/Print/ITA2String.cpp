@@ -69,7 +69,7 @@ uint8_t* ITA2String::byteArr() {
 
   // ensure the minimum possible array size is always initialized
   temp[0] = 0;
-  
+
   size_t arrayLen = 0;
   bool flagFigure = false;
   for(size_t i = 0; i < asciiLen; i++) {
@@ -128,7 +128,7 @@ uint16_t ITA2String::getBits(char c) {
       code = (RADIOLIB_ITA2_LTRS << 5) | i;
       break;
     }
-    
+
     ptr = const_cast<char*>(&ITA2Table[i][1]);
     if(RADIOLIB_NONVOLATILE_READ_BYTE(ptr) == c) {
       // character is in figures shift

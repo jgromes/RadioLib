@@ -479,7 +479,7 @@ bool PagerClient::addressMatched(uint32_t addr) {
   if(filterNumAddresses == 0) {
     return((addr & filterMask) == (filterAddr & filterMask));
   }
-  
+
   // multiple addresses, check there are some to match
   if((filterAddresses == NULL) || (filterMasks == NULL)) {
     return(false);

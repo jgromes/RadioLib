@@ -14,7 +14,7 @@
 #include "hardware/clocks.h"
 #include "pico/multicore.h"
 
-// create a new Raspberry Pi Pico hardware abstraction 
+// create a new Raspberry Pi Pico hardware abstraction
 // layer using the Pico SDK
 // the HAL must inherit from the base RadioLibHal class
 // and implement all of its virtual methods

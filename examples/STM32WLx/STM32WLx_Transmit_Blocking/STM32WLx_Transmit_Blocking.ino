@@ -8,7 +8,7 @@
   - Arduino String
   - null-terminated char array (C-string)
   - arbitrary binary data (byte array)
-  
+
   This example assumes Nucleo WL55JC1 is used. For other Nucleo boards
   or standalone STM32WL, some configuration such as TCXO voltage and
   RF switch control may have to be adjusted.

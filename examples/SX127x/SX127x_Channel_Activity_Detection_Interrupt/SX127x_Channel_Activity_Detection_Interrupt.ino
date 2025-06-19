@@ -109,7 +109,7 @@ void loop() {
       // nothing was detected
       Serial.println(F("[SX1278] Channel free!"));
     }
-    
+
     // start scanning the channel
     Serial.print(F("[SX1278] Starting scan for LoRa preamble ... "));
 

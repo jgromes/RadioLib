@@ -604,8 +604,8 @@ class SX126x: public PhysicalLayer {
       Overload with warm start enabled for PhysicalLayer compatibility.
       \returns \ref status_codes
     */
-    int16_t sleep() override; 
-    
+    int16_t sleep() override;
+
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
       \param retainConfig Set to true to retain configuration of the currently active modem ("warm start")
@@ -630,7 +630,7 @@ class SX126x: public PhysicalLayer {
     int16_t standby(uint8_t mode, bool wakeup = true);
 
     /*!
-      \brief Handle LR-FHSS hop. 
+      \brief Handle LR-FHSS hop.
       When using LR-FHSS in interrupt-driven mode, this method MUST be called each time an interrupt is triggered!
       \returns \ref status_codes
     */
@@ -687,7 +687,7 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t finishTransmit() override;
-    
+
     /*!
       \brief Interrupt-driven receive method with default parameters.
       Implemented for compatibility with PhysicalLayer.
@@ -704,7 +704,7 @@ class SX126x: public PhysicalLayer {
       \param rxPeriod The duration the receiver will be in Rx mode, in microseconds.
       \param sleepPeriod The duration the receiver will not be in Rx mode, in microseconds.
 
-      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error.
       \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \returns \ref status_codes
     */
@@ -735,7 +735,7 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
-    
+
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
@@ -1098,7 +1098,7 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getModem(ModemType_t* modem) override;
-    
+
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
 
@@ -1138,7 +1138,7 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t spectralScanStart(uint16_t numSamples, uint8_t window = RADIOLIB_SX126X_SPECTRAL_SCAN_WINDOW_DEFAULT, uint8_t interval = RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US);
-    
+
     /*!
       \brief Abort an ongoing spectral scan.
     */
@@ -1198,7 +1198,7 @@ class SX126x: public PhysicalLayer {
   protected:
 #endif
     Module* getMod() override;
-    
+
     // SX126x SPI command implementations
     int16_t setFs();
     int16_t setTx(uint32_t timeout = 0);
@@ -1231,7 +1231,7 @@ class SX126x: public PhysicalLayer {
     const char* chipType = NULL;
     uint8_t bandwidth = 0;
     float freqMHz = 0;
-    
+
     // Allow subclasses to define different TX modes
     uint8_t txMode = Module::MODE_TX;
 

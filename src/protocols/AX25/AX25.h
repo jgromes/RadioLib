@@ -250,7 +250,7 @@ class AX25Client {
       \param ax25 AX25Client instance to copy.
     */
     AX25Client(const AX25Client& ax25);
-    
+
     /*!
       \brief Overload for assignment operator.
       \param ax25 rvalue AX25Client.

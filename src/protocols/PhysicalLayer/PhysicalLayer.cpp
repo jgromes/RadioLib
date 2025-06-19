@@ -314,7 +314,7 @@ RadioLibTime_t PhysicalLayer::getTimeOnAir(size_t len) {
 
 RadioLibTime_t PhysicalLayer::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   (void)timeoutUs;
-  return(0); 
+  return(0);
 }
 
 uint32_t PhysicalLayer::getIrqMapped(RadioLibIrqFlags_t irq) {
@@ -333,7 +333,7 @@ int16_t PhysicalLayer::checkIrq(RadioLibIrqType_t irq) {
   if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
-  
+
   return(getIrqFlags() & this->irqMap[irq]);
 }
 
@@ -360,12 +360,12 @@ int16_t PhysicalLayer::clearIrqFlags(uint32_t irq) {
 }
 
 int16_t PhysicalLayer::startChannelScan() {
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::startChannelScan(const ChannelScanConfig_t &config) {
   (void)config;
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::getChannelScanResult() {
@@ -373,12 +373,12 @@ int16_t PhysicalLayer::getChannelScanResult() {
 }
 
 int16_t PhysicalLayer::scanChannel() {
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::scanChannel(const ChannelScanConfig_t &config) {
   (void)config;
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int32_t PhysicalLayer::random(int32_t max) {
@@ -518,7 +518,7 @@ void PhysicalLayer::setPacketReceivedAction(void (*func)(void)) {
 }
 
 void PhysicalLayer::clearPacketReceivedAction() {
-  
+
 }
 
 void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
@@ -526,7 +526,7 @@ void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
 }
 
 void PhysicalLayer::clearPacketSentAction() {
-  
+
 }
 
 void PhysicalLayer::setChannelScanAction(void (*func)(void)) {
@@ -534,7 +534,7 @@ void PhysicalLayer::setChannelScanAction(void (*func)(void)) {
 }
 
 void PhysicalLayer::clearChannelScanAction() {
-  
+
 }
 
 int16_t PhysicalLayer::setModem(ModemType_t modem) {

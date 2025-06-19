@@ -208,7 +208,7 @@ void Module::SPItransfer(uint16_t cmd, uint32_t reg, const uint8_t* dataOut, uin
   this->hal->spiTransfer(buffOut, buffLen, buffIn);
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
   this->hal->spiEndTransaction();
-  
+
   // copy the data
   if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ]) {
     memcpy(dataIn, &buffIn[this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8], numBytes);
@@ -359,7 +359,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
           #endif
           return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
         }
-      
+
       }
     }
   }
@@ -387,7 +387,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       RadioLibTime_t start = this->hal->millis();
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
-        
+
         // this timeout check triggers a false positive from cppcheck
         // cppcheck-suppress unsignedLessThanZero
         if(this->hal->millis() - start >= this->spiConfig.timeout) {
@@ -397,7 +397,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
           state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
           break;
         }
-      
+
       }
     }
   }
@@ -406,7 +406,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
   if((state == RADIOLIB_ERR_NONE) && (this->spiConfig.parseStatusCb != nullptr) && (numBytes > 0)) {
     state = this->spiConfig.parseStatusCb(buffIn[this->spiConfig.statusPos]);
   }
-  
+
   // copy the data
   if(!write) {
     // skip the status bytes if present
@@ -490,7 +490,7 @@ void Module::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   const uint32_t pins[] = {
     rxEn, txEn, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC,
   };
-  
+
   // This must be static, since setRfSwitchTable stores a reference.
   static const RfSwitchMode_t table[] = {
     { MODE_IDLE,  {this->hal->GpioLevelLow,  this->hal->GpioLevelLow} },

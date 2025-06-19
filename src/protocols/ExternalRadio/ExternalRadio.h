@@ -19,7 +19,7 @@ class ExternalRadio: public PhysicalLayer {
     */
     ExternalRadio(uint32_t pin = RADIOLIB_NC); // cppcheck-suppress noExplicitConstructor
     #endif
-    
+
     /*!
       \brief Default constructor.
       \param hal Pointer to the hardware abstraction layer to use.
@@ -32,7 +32,7 @@ class ExternalRadio: public PhysicalLayer {
       \param ext ExternalRadio instance to copy.
     */
     ExternalRadio(const ExternalRadio& ext);
-    
+
     /*!
       \brief Overload for assignment operator.
       \param ext rvalue ExternalRadio.
@@ -78,7 +78,7 @@ class ExternalRadio: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t transmitDirect(uint32_t frf = 0) override;
-  
+
   private:
     Module* mod;
     uint32_t prevFrf;

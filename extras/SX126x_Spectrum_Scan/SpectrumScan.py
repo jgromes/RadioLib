@@ -47,14 +47,14 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
     print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-    if iteration == total: 
+    if iteration == total:
         print()
 
 
 def main():
     parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter, description='''
         RadioLib SX126x_Spectrum_Scan plotter script. Displays output from SX126x_Spectrum_Scan example
-        as grayscale and 
+        as grayscale and
 
         Depends on pyserial and matplotlib, install by:
         'python3 -m pip install pyserial matplotlib'
@@ -132,14 +132,14 @@ def main():
                 scanline = line[len(SCAN_MARK_START):-len(SCAN_MARK_END)].split(',')
                 for col in range(SCAN_WIDTH):
                     arr[col][row] = int(scanline[col])
-                
+
                 # increment the row counter
                 row = row + 1
 
                 # check if we're done
                 if (not freq_mode) and (row >= scan_len):
                     break
-    
+
     # scale to the number of scans (sum of any given scanline)
     num_samples = arr.sum(axis=0)[0]
     arr *= (num_samples/arr.max())
@@ -158,7 +158,7 @@ def main():
     im = ax.imshow(arr[:,:scan_len], cmap=args.map, extent=extent)
     fig.colorbar(im)
 
-    # set some properites and show 
+    # set some properites and show
     timestamp = datetime.now().strftime('%y-%m-%d %H-%M-%S')
     title = f'RadioLib SX126x Spectral Scan {timestamp}'
     if freq_mode:

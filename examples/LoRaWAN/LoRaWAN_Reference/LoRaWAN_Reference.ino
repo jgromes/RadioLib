@@ -12,7 +12,7 @@
 
   LoRaWAN v1.0.4/v1.1 requires the use of EEPROM (persistent storage).
   Running this examples REQUIRES you to check "Resets DevNonces"
-  on your LoRaWAN dashboard. Refer to the notes or the 
+  on your LoRaWAN dashboard. Refer to the notes or the
   network's documentation on how to do this.
   To comply with LoRaWAN's persistent storage, refer to
   https://github.com/radiolib-org/radiolib-persistence
@@ -103,11 +103,11 @@ void loop() {
   uint8_t downlinkPayload[10];  // Make sure this fits your plans!
   size_t  downlinkSize;         // To hold the actual payload size received
 
-  // you can also retrieve additional information about an uplink or 
+  // you can also retrieve additional information about an uplink or
   // downlink by passing a reference to LoRaWANEvent_t structure
   LoRaWANEvent_t uplinkDetails;
   LoRaWANEvent_t downlinkDetails;
-  
+
   uint8_t fPort = 10;
 
   // Retrieve the last uplink frame counter
@@ -120,13 +120,13 @@ void loop() {
     Serial.println(F("and requesting LinkCheck and DeviceTime"));
     node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_LINK_CHECK);
     node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_DEVICE_TIME);
-    state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), fPort, downlinkPayload, &downlinkSize, true, &uplinkDetails, &downlinkDetails); 
+    state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), fPort, downlinkPayload, &downlinkSize, true, &uplinkDetails, &downlinkDetails);
   } else {
-    state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), fPort, downlinkPayload, &downlinkSize, false, &uplinkDetails, &downlinkDetails);    
+    state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), fPort, downlinkPayload, &downlinkSize, false, &uplinkDetails, &downlinkDetails);
   }
   debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
 
-  // Check if a downlink was received 
+  // Check if a downlink was received
   // (state 0 = no downlink, state 1/2 = downlink in window Rx1/Rx2)
   if(state > 0) {
     Serial.println(F("Received a downlink"));
@@ -186,7 +186,7 @@ void loop() {
       Serial.print(F("[LoRaWAN] DeviceTime second:\t1/"));
       Serial.println(fracSecond);
     }
-  
+
   } else {
     Serial.println(F("[LoRaWAN] No downlink received"));
   }

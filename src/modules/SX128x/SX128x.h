@@ -536,7 +536,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t finishTransmit() override;
-    
+
     /*!
       \brief Interrupt-driven receive method with default parameters.
       Implemented for compatibility with PhysicalLayer.
@@ -560,7 +560,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
-    
+
     /*!
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
@@ -648,7 +648,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t checkOutputPower(int8_t pwr, int8_t* clipped) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
@@ -854,7 +854,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t invertIQ(bool enable) override;
-    
+
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
 

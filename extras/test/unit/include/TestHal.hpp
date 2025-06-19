@@ -58,7 +58,7 @@ class TestHal : public RadioLibHal {
 
     void pinMode(uint32_t pin, uint32_t mode) override {
       HAL_LOG("TestHal::pinMode(pin=" << pin << ", mode=" << mode << " [" << ((mode == TEST_HAL_INPUT) ? "INPUT" : "OUTPUT") << "])");
-      
+
       // check the range
       BOOST_ASSERT_MSG(pin < TEST_HAL_NUM_GPIO_PINS, "Pin number out of range");
 
@@ -188,7 +188,7 @@ class TestHal : public RadioLibHal {
 
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
       HAL_LOG("TestHal::spiTransfer(len=" << len << ")");
-      
+
       for(size_t i = 0; i < len; i++) {
         // append to log
         (*this->spiLogPtr++) = out[i];

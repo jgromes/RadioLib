@@ -109,9 +109,9 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
       memcpy(resultExtended->mac0, &raw[10], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
       memcpy(resultExtended->mac, &raw[16], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
       memcpy(resultExtended->mac2, &raw[22], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
-      resultExtended->timestamp = (((uint64_t)raw[28] << 56) | ((uint64_t)raw[29] << 48)) | 
-                                  (((uint64_t)raw[30] << 40) | ((uint64_t)raw[31] << 32)) | 
-                                  (((uint64_t)raw[32] << 24) | ((uint64_t)raw[33] << 16)) | 
+      resultExtended->timestamp = (((uint64_t)raw[28] << 56) | ((uint64_t)raw[29] << 48)) |
+                                  (((uint64_t)raw[30] << 40) | ((uint64_t)raw[31] << 32)) |
+                                  (((uint64_t)raw[32] << 24) | ((uint64_t)raw[33] << 16)) |
                                   (((uint64_t)raw[34] << 8) | (uint64_t)raw[35]);
       resultExtended->periodBeacon = (((uint16_t)raw[36] << 8) | ((uint16_t)raw[37])) * 1024UL;
       resultExtended->seqCtrl = (((uint16_t)raw[38] << 8) | ((uint16_t)raw[39]));
@@ -132,9 +132,9 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
     resultFull->fromDistributionSystem = (raw[3] & 0x80) != 0;
     memcpy(resultFull->mac, &raw[4], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
     resultFull->phiOffset = (((uint16_t)raw[10] << 8) | ((uint16_t)raw[11]));
-    resultFull->timestamp = (((uint64_t)raw[12] << 56) | ((uint64_t)raw[13] << 48)) | 
-                            (((uint64_t)raw[14] << 40) | ((uint64_t)raw[15] << 32)) | 
-                            (((uint64_t)raw[16] << 24) | ((uint64_t)raw[17] << 16)) | 
+    resultFull->timestamp = (((uint64_t)raw[12] << 56) | ((uint64_t)raw[13] << 48)) |
+                            (((uint64_t)raw[14] << 40) | ((uint64_t)raw[15] << 32)) |
+                            (((uint64_t)raw[16] << 24) | ((uint64_t)raw[17] << 16)) |
                             (((uint64_t)raw[18] << 8) | (uint64_t)raw[19]);
     resultFull->periodBeacon = (((uint16_t)raw[20] << 8) | ((uint16_t)raw[21])) * 1024UL;
   }

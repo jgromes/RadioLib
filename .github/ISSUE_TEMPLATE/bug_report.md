@@ -21,7 +21,7 @@ paste the debug output here
 ```
 
 </p>
-</details> 
+</details>
 
 **To Reproduce**
 Minimal Arduino sketch to reproduce the behavior. Please use Markdown to style the code to make it readable (see [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#code)).
@@ -34,7 +34,7 @@ paste the sketch here, even if it is an unmodified example code
 ```
 
 </p>
-</details> 
+</details>
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.

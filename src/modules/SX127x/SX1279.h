@@ -62,7 +62,7 @@ class SX1279: public SX1278 {
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.

@@ -1,7 +1,7 @@
 /*
   RadioLib APRS Position over LoRa Example
 
-  This example sends APRS position reports 
+  This example sends APRS position reports
   using SX1278's LoRa modem.
 
   Other modules that can be used for APRS:
@@ -79,7 +79,7 @@ void setup() {
 
 void loop() {
   Serial.print(F("[APRS] Sending position ... "));
-  
+
   // send a location with message and timestamp
   // SSID is set to 1, as APRS over LoRa uses WIDE1-1 path by default
   char destination[] = "GPS";

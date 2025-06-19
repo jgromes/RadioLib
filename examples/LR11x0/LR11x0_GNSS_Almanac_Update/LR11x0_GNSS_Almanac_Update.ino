@@ -2,11 +2,11 @@
   RadioLib LR11x0 GNSS Almanac Update Example
 
   This example updates the LR11x0 GNSS almanac.
-  Almanac is a database of orbital predictions of 
+  Almanac is a database of orbital predictions of
   GNSS satellites, which allows the module to predict
   when different satellites will appear in the sky,
   and frequency of their signal.
-  
+
   Up-to-date almanac is necessary for operation!
   After an update, data will remain valid for 30 days.
   All GNSS examples require at least limited
@@ -44,13 +44,13 @@ Radio radio = new RadioModule();
 // set RF switch configuration for Wio WM1110
 // Wio WM1110 uses DIO5 and DIO6 for RF switching
 // NOTE: other boards may be different!
-static const uint32_t rfswitch_dio_pins[] = { 
+static const uint32_t rfswitch_dio_pins[] = {
   RADIOLIB_LR11X0_DIO5, RADIOLIB_LR11X0_DIO6,
   RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC
 };
 
 static const Module::RfSwitchMode_t rfswitch_table[] = {
-  // mode                  DIO5  DIO6 
+  // mode                  DIO5  DIO6
   { LR11x0::MODE_STBY,   { LOW,  LOW  } },
   { LR11x0::MODE_RX,     { HIGH, LOW  } },
   { LR11x0::MODE_TX,     { HIGH, HIGH } },
@@ -118,16 +118,16 @@ void setup() {
     // we have the status, check if we have demodulated time
     if(almStatus.gps.status < RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_UP_TO_DATE) {
       Serial.println(F("time unknown, another scan needed."));
-    
+
     } else if(almStatus.gps.numUpdateNeeded > 0) {
       Serial.print(almStatus.gps.numUpdateNeeded);
       Serial.println(F(" satellites out-of-date."));
       break;
-    
+
     } else {
       Serial.println(F("no update needed!"));
       while (true) { delay(10); }
-      
+
     }
   }
 }
@@ -142,7 +142,7 @@ void loop() {
 
     // wait until the next update window
     delay(2000);
-    
+
   } else {
     Serial.println(F("done!"));
 
@@ -155,7 +155,7 @@ void loop() {
     } else {
       Serial.println(F("done!"));
     }
-  
+
   }
 
   // check whether another update is needed
@@ -175,8 +175,8 @@ void loop() {
     Serial.print(almStatus.gps.numUpdateNeeded);
     Serial.println(F(" satellites out-of-date."));
   }
-  
+
   // wait a bit before the next update attempt
   delay(1000);
-  
+
 }

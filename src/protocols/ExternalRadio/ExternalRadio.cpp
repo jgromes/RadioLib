@@ -66,6 +66,6 @@ int16_t ExternalRadio::transmitDirect(uint32_t frf) {
     this->prevFrf = frf;
     this->mod->hal->digitalWrite(this->mod->getGpio(), val);
   }
-  
+
   return(RADIOLIB_ERR_NONE);
 }

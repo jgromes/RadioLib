@@ -94,7 +94,7 @@ void setup() {
 
   // print the firmware versions after the update
   printVersions();
-  
+
 }
 
 void printVersions() {
@@ -126,11 +126,11 @@ void printVersions() {
     Serial.print(F("failed, code "));
     Serial.println(state);
     while (true) { delay(10); }
-  
+
   }
 
 }
 
 void loop() {
-  
+
 }

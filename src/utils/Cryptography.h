@@ -116,7 +116,7 @@ class RadioLibAES128 {
       \returns The number of bytes saved into the output buffer.
     */
     size_t encryptECB(const uint8_t* in, size_t len, uint8_t* out);
-    
+
     /*!
       \brief Perform ECB-type AES decryption.
       \param in Input ciphertext data.
@@ -143,7 +143,7 @@ class RadioLibAES128 {
       \returns True if valid, false otherwise.
     */
     bool verifyCMAC(const uint8_t* in, size_t len, const uint8_t* cmac);
-  
+
   private:
     uint8_t* keyPtr = nullptr;
     uint8_t roundKey[RADIOLIB_AES128_KEY_EXP_SIZE] = { 0 };

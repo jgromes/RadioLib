@@ -314,7 +314,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t CC1101::finishTransmit() {
   // set mode to standby to disable transmitter/RF switch
-  
+
   // Check MARCSTATE for Idle to let anything in the FIFO empty
   // Timeout is 2x FIFO transmit time
   RadioLibTime_t timeout = (1.0f/(this->bitRate))*(RADIOLIB_CC1101_FIFO_SIZE*2.0f);
@@ -324,7 +324,7 @@ int16_t CC1101::finishTransmit() {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  
+
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
@@ -501,9 +501,9 @@ int16_t CC1101::autoSetRxBandwidth() {
   float uncertainty = ((this->frequency) * 40 * 2);
   uncertainty = (uncertainty/1000); //Since bitrate is in kBit
   float minbw = ((this->bitRate) + uncertainty);
-  
+
   const int options[16] = { 58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650, 812 };
-  
+
   for(int i = 0; i < 16; i++) {
     if(options[i] > minbw) {
       return(setRxBandwidth(options[i]));
@@ -536,7 +536,7 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // set frequency deviation value
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, (e << 4), 6, 4);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, m, 2, 0);
-  
+
   return(state);
 }
 
@@ -654,7 +654,7 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
       return(RADIOLIB_ERR_NONE);
     }
   }
-  
+
   return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 }
 
@@ -878,7 +878,7 @@ int16_t CC1101::setPromiscuousMode(bool enable, bool requireCarrierSense) {
     RADIOLIB_ASSERT(state);
     // disable sync word filtering and insertion
     // this also disables preamble
-    // Can enable Sync Mode with carriersense when promiscuous is enabled. Default is false: Sync Mode None	
+    // Can enable Sync Mode with carriersense when promiscuous is enabled. Default is false: Sync Mode None
     state = disableSyncWordFiltering(requireCarrierSense);
     RADIOLIB_ASSERT(state);
 

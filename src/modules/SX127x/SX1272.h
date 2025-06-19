@@ -175,14 +175,14 @@ class SX1272: public SX127x {
       \returns \ref status_codes
     */
     int16_t setBitRate(float br) override;
-    
+
     /*!
       \brief Set data.
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
       \returns \ref status_codes
     */
     int16_t setDataRate(DataRate_t dr) override;
-    
+
     /*!
       \brief Check the data rate can be configured by this module.
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
@@ -302,7 +302,7 @@ class SX1272: public SX127x {
       \returns \ref status_codes
     */
     int16_t explicitHeader();
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.

@@ -313,7 +313,7 @@ int16_t nRF24::setBitRate(float br) {
   } else {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
-  
+
   if(state == RADIOLIB_ERR_NONE) {
     this->dataRate = bitRate;
   }

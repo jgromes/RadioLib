@@ -466,7 +466,7 @@ class nRF24: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setEncoding(uint8_t encoding) override;
-    
+
     /*!
       \brief Enable or disable the low-noise amplifier.
       Improves receive performance at the cost of increased power consumption.

@@ -2,4 +2,3 @@
 #include <boost/test/included/unit_test.hpp>
 
 // intentionally left blank, boost.test creates its own entrypoint
-

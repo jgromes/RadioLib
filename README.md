@@ -34,30 +34,30 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __SX123x__ FSK/OOK radio modules (SX1231, SX1233)
 
 ### Supported protocols and digital modes:
-* [__AX.25__](https://www.sigidwiki.com/wiki/PACKET) using 2-FSK or AFSK for modules:  
+* [__AX.25__](https://www.sigidwiki.com/wiki/PACKET) using 2-FSK or AFSK for modules:
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x, Si443x, LR11x0 and SX128x
-* [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:  
+* [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and SX128x
-* [__Morse Code__](https://www.sigidwiki.com/wiki/Morse_Code_(CW)) using 2-FSK or AFSK for modules:  
+* [__Morse Code__](https://www.sigidwiki.com/wiki/Morse_Code_(CW)) using 2-FSK or AFSK for modules:
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and SX128x
-* [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) using 2-FSK or AFSK for modules:  
+* [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) using 2-FSK or AFSK for modules:
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
-* [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:  
+* [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and SX128x
-* [__APRS__](https://www.sigidwiki.com/wiki/APRS) using AFSK for modules:  
+* [__APRS__](https://www.sigidwiki.com/wiki/APRS) using AFSK for modules:
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
-* [__POCSAG__](https://www.sigidwiki.com/wiki/POCSAG) using 2-FSK for modules:  
+* [__POCSAG__](https://www.sigidwiki.com/wiki/POCSAG) using 2-FSK for modules:
 SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
-* [__LoRaWAN__](https://lora-alliance.org/) using LoRa and FSK for modules:  
+* [__LoRaWAN__](https://lora-alliance.org/) using LoRa and FSK for modules:
 SX127x, RFM9x, SX126x, LR11x0 and SX128x
   * Supports Class A and C (and Multicast over C)
   * Pre-certified for Class A on dynamic channelplans (EU868-style)
   * See the [wiki](https://github.com/jgromes/RadioLib/wiki/LoRaWAN) and [notes](https://github.com/jgromes/RadioLib/blob/master/examples/LoRaWAN/LoRaWAN_Starter/notes.md) for more information.
 
 ### Supported Arduino platforms:
-* __Arduino__  
+* __Arduino__
   * [__AVR__](https://github.com/arduino/ArduinoCore-avr) - Arduino Uno, Mega, Leonardo, Pro Mini, Nano etc.
-    * NOTE: Arduino boards based on ATmega328 (Uno, Pro Mini, Nano etc.) and smaller are NOT recommended. This is because the ATmega328 MCU is very constrained in terms of program and memory size, so the library will end up taking most of the space available. 
+    * NOTE: Arduino boards based on ATmega328 (Uno, Pro Mini, Nano etc.) and smaller are NOT recommended. This is because the ATmega328 MCU is very constrained in terms of program and memory size, so the library will end up taking most of the space available.
   * [__mbed__](https://github.com/arduino/ArduinoCore-mbed) - Arduino Nano 33 BLE and Arduino Portenta H7
   * [__megaAVR__](https://github.com/arduino/ArduinoCore-megaavr) - Arduino Uno WiFi Rev.2 and Nano Every
   * [__SAM__](https://github.com/arduino/ArduinoCore-sam) - Arduino Due

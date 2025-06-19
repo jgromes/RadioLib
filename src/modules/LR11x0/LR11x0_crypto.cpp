@@ -39,7 +39,7 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
     uint8_t* reqBuff = new uint8_t[reqLen];
     uint8_t* rplBuff = new uint8_t[rplLen];
   #endif
-  
+
   // set the request fields
   reqBuff[0] = decKeyId;
   reqBuff[1] = verKeyId;
@@ -83,7 +83,7 @@ int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, const uint8_t* data, size_t 
     uint8_t* reqBuff = new uint8_t[reqLen];
   #endif
   uint8_t rplBuff[5] = { 0 };
-  
+
   reqBuff[0] = keyId;
   memcpy(&reqBuff[1], data, len);
 
@@ -110,7 +110,7 @@ int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, const uint8_
     uint8_t* reqBuff = new uint8_t[reqLen];
   #endif
   uint8_t rplBuff[1] = { 0 };
-  
+
   reqBuff[0] = keyId;
   reqBuff[1] = (uint8_t)((micExp >> 24) & 0xFF);
   reqBuff[2] = (uint8_t)((micExp >> 16) & 0xFF);
@@ -185,7 +185,7 @@ int16_t LR11x0::cryptoCheckEncryptedFirmwareImageResult(bool* result) {
 
   // pass the replies
   if(result) { *result = (bool)buff[0]; }
-  
+
   return(state);
 }
 
@@ -198,7 +198,7 @@ int16_t LR11x0::cryptoCommon(uint16_t cmd, uint8_t keyId, const uint8_t* dataIn,
     uint8_t* reqBuff = new uint8_t[sizeof(uint8_t) + len];
     uint8_t* rplBuff = new uint8_t[sizeof(uint8_t) + len];
   #endif
-  
+
   // set the request fields
   reqBuff[0] = keyId;
   memcpy(&reqBuff[1], dataIn, len);

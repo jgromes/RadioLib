@@ -54,7 +54,7 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
 
 AX25Frame::AX25Frame(const AX25Frame& frame)
   : destSSID(frame.destSSID),
-    srcSSID(frame.srcSSID), 
+    srcSSID(frame.srcSSID),
     numRepeaters(frame.numRepeaters),
     control(frame.control),
     protocolID(frame.protocolID),

@@ -167,7 +167,7 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
         return(RADIOLIB_ERR_INVALID_BANDWIDTH);
     }
     return(RADIOLIB_ERR_NONE);
-  
+
   }
 
   return(state);

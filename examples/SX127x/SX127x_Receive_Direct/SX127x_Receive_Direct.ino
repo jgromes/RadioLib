@@ -73,7 +73,7 @@ void loop() {
     while(radio.available()) {
       // read a byte
       byte b = radio.read();
-  
+
       // print it
       Serial.print(b, HEX);
       Serial.print('\t');

@@ -103,48 +103,48 @@ void loop() {
     // check if this was caused by hopping or transmission finished
     if(radio.getIrqFlags() & RADIOLIB_SX126X_IRQ_LR_FHSS_HOP) {
       radio.hopLRFHSS();
-    
+
     } else {
       if (transmissionState == RADIOLIB_ERR_NONE) {
         // packet was successfully sent
         Serial.println(F("transmission finished!"));
-  
+
         // NOTE: when using interrupt-driven transmit method,
         //       it is not possible to automatically measure
         //       transmission data rate using getDataRate()
-  
+
       } else {
         Serial.print(F("failed, code "));
         Serial.println(transmissionState);
-  
+
       }
-  
+
       // clean up after transmission is finished
       // this will ensure transmitter is disabled,
       // RF switch is powered down etc.
       radio.finishTransmit();
-  
+
       // wait a second before transmitting again
       delay(1000);
-  
+
       // send another one
       Serial.print(F("[SX1262] Sending another packet ... "));
-  
+
       // you can transmit C-string or Arduino string up to
       // 256 characters long
       String str = "Hello World! #" + String(count++);
       transmissionState = radio.startTransmit(str);
-  
+
       // you can also transmit byte array up to 256 bytes long
       /*
         byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                           0x89, 0xAB, 0xCD, 0xEF};
         transmissionState = radio.startTransmit(byteArr, 8);
       */
-      
+
     }
 
-    
+
 
   }
 

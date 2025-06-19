@@ -55,7 +55,7 @@ void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t of
         *strPtr++ = '%';
       }
       sprintf(strPtr++, "%c", c);
-      
+
     }
     for(size_t j = line_len; j < 16; j++) {
       sprintf(strPtr++, "   ");

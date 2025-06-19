@@ -122,7 +122,7 @@ jobs:
             run: |
               echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: SiliconLabs:silabs:xg24explorerkit
-            run: | 
+            run: |
               echo "index-url=--additional-urls https://siliconlabs.github.io/arduino/package_arduinosilabs_index.json" >> $GITHUB_OUTPUT
 
     runs-on: ubuntu-latest
@@ -184,11 +184,11 @@ jobs:
           |
           cd $PWD/extras/test/ci
           ./build_examples.sh ${{ matrix.id }} "${{ steps.prep.outputs.skip-pattern }}" ${{ steps.prep.outputs.options }}
-      
+
       - name: Extract short commit hash
         id: short-hash
         run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
-      
+
       - name: Parse sizes
         if: ${{ env.run-build == 'true' }}
         run:
@@ -196,7 +196,7 @@ jobs:
           cd $PWD/extras/test/ci
           ./parse_size.sh ${{ matrix.id }}
           cat size_${{ steps.short-hash.outputs.short_sha }}_${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}-${{ steps.split.outputs._2 }}.csv
-      
+
       - name: Upload size report as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -223,12 +223,12 @@ jobs:
           cd artifacts
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      
+
       - name: Download size artifacts
         uses: actions/download-artifact@v4
         with:
           path: aggregated-sizes
-      
+
       - name: Push size files
         run:
           |
@@ -246,7 +246,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -257,12 +257,12 @@ jobs:
           mkdir -p ~/esp
           cd ~/esp
           git clone --recursive https://github.com/espressif/esp-idf.git
-      
+
       - name: Install ESP-IDF
         run: |
           cd ~/esp/esp-idf
           ./install.sh esp32
-      
+
       - name: Build the example
         run: |
           cd $PWD/examples/NonArduino/ESP-IDF
@@ -298,7 +298,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -310,7 +310,7 @@ jobs:
           sudo make install
           cd ..
           sudo rm -rf lg
-      
+
       - name: Install the library
         run: |
           cd $PWD
@@ -318,7 +318,7 @@ jobs:
           cd build
           cmake ..
           sudo make install
-      
+
       - name: Build the example
         run: |
           cd $PWD/examples/NonArduino/Raspberry
@@ -341,19 +341,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install git cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
-        
+
       - name: Clone the SDK
         run: |
           mkdir -p ~/rpi-pico
           cd ~/rpi-pico
           git clone https://github.com/raspberrypi/pico-sdk.git
           cd pico-sdk && git checkout 1.5.1
-      
+
       - name: Build the example
         run: |
           export PICO_SDK_PATH=~/rpi-pico/pico-sdk

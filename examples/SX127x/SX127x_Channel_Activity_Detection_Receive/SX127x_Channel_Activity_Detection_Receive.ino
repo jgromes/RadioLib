@@ -7,7 +7,7 @@
   if the LoRa channel is free, or if you should start
   receiving a message. If a preamble is detected,
   the module will switch to receive mode and receive the packet.
-  
+
   For most use-cases, it should be enough to just use the
   interrupt-driven reception described in the example
   "SX127x_Receive_Interrupt".
@@ -124,50 +124,50 @@ void loop() {
       // you can read received data as an Arduino String
       String str;
       state = radio.readData(str);
-  
+
       // you can also read received data as byte array
       /*
         byte byteArr[8];
         state = radio.readData(byteArr, 8);
       */
-    
+
       if (state == RADIOLIB_ERR_NONE) {
         // packet was successfully received
         Serial.println(F("[SX1278] Received packet!"));
-  
+
         // print data of the packet
         Serial.print(F("[SX1278] Data:\t\t"));
         Serial.println(str);
-  
+
         // print RSSI (Received Signal Strength Indicator)
         Serial.print(F("[SX1278] RSSI:\t\t"));
         Serial.print(radio.getRSSI());
         Serial.println(F(" dBm"));
-  
+
         // print SNR (Signal-to-Noise Ratio)
         Serial.print(F("[SX1278] SNR:\t\t"));
         Serial.print(radio.getSNR());
         Serial.println(F(" dB"));
-  
+
         // print frequency error
         Serial.print(F("[SX1278] Frequency error:\t"));
         Serial.print(radio.getFrequencyError());
         Serial.println(F(" Hz"));
-  
+
       } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
         // packet was received, but is malformed
         Serial.println(F("[SX1278] CRC error!"));
-  
+
       } else {
         // some other error occurred
         Serial.print(F("[SX1278] Failed, code "));
         Serial.println(state);
-  
+
       }
 
       // reception is done now
       receiving = false;
-      
+
     }
 
     // check if we got a preamble
@@ -184,11 +184,11 @@ void loop() {
 
       // set the flag for ongoing reception
       receiving = true;
-    
+
     } else if(!receiving) {
       // nothing was detected
       // do not print anything, it just spams the console
-    
+
     }
 
     // if we're not receiving, start scanning again
@@ -198,7 +198,7 @@ void loop() {
         Serial.print(F("[SX1278] Starting new scan failed, code "));
         Serial.println(state);
       }
-    
+
     }
 
     // reset flags

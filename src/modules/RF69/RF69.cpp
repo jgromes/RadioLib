@@ -118,7 +118,7 @@ int16_t RF69::transmit(const uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  
+
   return(finishTransmit());
 }
 
@@ -535,7 +535,7 @@ int16_t RF69::setFrequency(float freq) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   //set carrier frequency
-  //FRF(23:0) = freq / Fstep = freq * (1 / Fstep) = freq * (2^19 / 32.0) (pag. 17 of datasheet) 
+  //FRF(23:0) = freq / Fstep = freq * (1 / Fstep) = freq * (2^19 / 32.0) (pag. 17 of datasheet)
   uint32_t FRF = (freq * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_RF69_CRYSTAL_FREQ;
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
@@ -553,7 +553,7 @@ int16_t RF69::getFrequency(float *freq) {
   FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_MID, 7, 0)) <<  8) & 0x0000FF00);
   FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_LSB, 7, 0)) <<  0) & 0x000000FF);
 
-  //freq = Fstep * FRF(23:0) = (32.0 / 2^19) * FRF(23:0) (pag. 17 of datasheet) 
+  //freq = Fstep * FRF(23:0) = (32.0 / 2^19) * FRF(23:0) (pag. 17 of datasheet)
   *freq = FRF * ( RADIOLIB_RF69_CRYSTAL_FREQ / (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT) );
 
   return(RADIOLIB_ERR_NONE);
@@ -639,7 +639,7 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
 
   if(this->ookEnabled) {
     *freqDev = 0.0;
-    
+
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -648,9 +648,9 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
   fdev |= (uint32_t)((this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FDEV_MSB, 5, 0) << 8) & 0x0000FF00);
   fdev |= (uint32_t)((this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FDEV_LSB, 7, 0) << 0) & 0x000000FF);
 
-  // calculate frequency deviation from raw value obtained from register 
+  // calculate frequency deviation from raw value obtained from register
   // Fdev = Fstep * Fdev(13:0) (pag. 20 of datasheet)
-  *freqDev = (1000.0f * fdev * RADIOLIB_RF69_CRYSTAL_FREQ) / 
+  *freqDev = (1000.0f * fdev * RADIOLIB_RF69_CRYSTAL_FREQ) /
     (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
 
   return(RADIOLIB_ERR_NONE);
@@ -863,7 +863,7 @@ int16_t RF69::setPromiscuousMode(bool enable) {
     // disable CRC filtering
     state = setCrcFiltering(false);
   } else {
-    // enable preamble detection and generation 
+    // enable preamble detection and generation
     state = setPreambleLength(RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
     RADIOLIB_ASSERT(state);
 

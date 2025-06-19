@@ -40,7 +40,7 @@ class LLCC68: public SX1262 {
       \returns \ref status_codes
     */
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
-    
+
     /*!
       \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -56,7 +56,7 @@ class LLCC68: public SX1262 {
       \returns \ref status_codes
     */
     int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
-    
+
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -71,7 +71,7 @@ class LLCC68: public SX1262 {
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
-    
+
     // configuration methods
 
     /*!
@@ -94,14 +94,14 @@ class LLCC68: public SX1262 {
       \returns \ref status_codes
     */
     int16_t setDataRate(DataRate_t dr) override;
-    
+
     /*!
       \brief Check the data rate can be configured by this module.
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
       \returns \ref status_codes
     */
     int16_t checkDataRate(DataRate_t dr) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.

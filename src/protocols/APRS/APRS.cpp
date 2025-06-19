@@ -32,7 +32,7 @@ int16_t APRSClient::begin(char sym, const char* callsign, uint8_t ssid, bool alt
   if(strlen(callsign) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
     return(RADIOLIB_ERR_INVALID_CALLSIGN);
   }
-  
+
   memcpy(this->src, callsign, strlen(callsign));
   this->id = ssid;
 
@@ -62,7 +62,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, const cha
       // message, no timestamp
       sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_MSG "%s%c%s%c%s", lat, table, lon, symbol, msg);
     }
-  
+
   } else {
     if(time != NULL) {
       // timestamp, no message
@@ -267,7 +267,7 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
     }
 
     return(axClient->sendFrame(&frameUI));
-  
+
   } else if(this->phyLayer != nullptr) {
     // non-AX.25/LoRa mode
     size_t len = RADIOLIB_APRS_LORA_HEADER_LEN + strlen(this->src) + 4 + strlen(destCallsign) + 11 + strlen(info);
@@ -277,8 +277,8 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
     int16_t res = this->phyLayer->transmit(reinterpret_cast<uint8_t*>(buff), strlen(buff));
     delete[] buff;
     return(res);
-  } 
-  
+  }
+
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 

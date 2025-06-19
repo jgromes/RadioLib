@@ -102,7 +102,7 @@ int16_t SX1233::setBitRate(float br) {
     // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine
     RADIOLIB_CHECK_RANGE(br, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
   }
-  
+
 
   // check bitrate-bandwidth ratio
   if(!(br < 2000 * this->rxBandwidth)) {

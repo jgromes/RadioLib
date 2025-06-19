@@ -220,7 +220,7 @@
 
   // ESP32 boards
   #define RADIOLIB_PLATFORM                           "ESP32"
-  
+
   // ESP32 doesn't support tone(), but it can be emulated via LED control peripheral
   #define RADIOLIB_TONE_UNSUPPORTED
   #define RADIOLIB_TONE_ESP32_CHANNEL                 (1)
@@ -238,7 +238,7 @@
   #define RADIOLIB_PLATFORM                           "Arduino SAMD"
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)  
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
 #elif defined(__SAM3X8E__)
   // Arduino Due

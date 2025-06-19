@@ -30,7 +30,7 @@ jobs:
       run: |
         cd extras/test/unit
         ./coverage.sh
-    
+
     - name: Upload coverage report as artifact
       uses: actions/upload-artifact@v4
       with:

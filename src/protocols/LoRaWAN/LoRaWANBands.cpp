@@ -127,7 +127,7 @@ const LoRaWANBand_t US915 = {
     .freqStep = 6000,
     .drMin = 8,
     .drMax = 13,
-    .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED 
+    .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED
   },
   .rx1DrTable = {
     {   10,    9,    8,    8, 0xFF, 0xFF, 0xFF, 0xFF },
@@ -284,7 +284,7 @@ const LoRaWANBand_t AU915 = {
     .freqStep = 6000,
     .drMin = 8,
     .drMax = 13,
-    .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED 
+    .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED
   },
   .rx1DrTable = {
     {    8,    8,    8,    8,    8,    8, 0xFF, 0xFF },
@@ -366,7 +366,7 @@ const LoRaWANBand_t CN470 = {
     .freqStep = 2000,
     .drMin = 0,
     .drMax = 5,
-    .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED 
+    .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED
   },
   .rx1DrTable = {
     {    0,    0,    0,    0,    0,    0, 0xFF, 0xFF },

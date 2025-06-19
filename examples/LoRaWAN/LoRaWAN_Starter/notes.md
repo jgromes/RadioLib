@@ -58,7 +58,7 @@ Your End device ID can be changed to make the device more identifiable. Somethin
 
 When retail sensors are being deployed, a device is registered, batteries put in, it joins and gets on with sending data for the next few years. For development purposes however we need to turn off one of the security settings so that you can join & uplink out of the normal sequence that a device in the field would do.
 
-Click on General Settings, scroll down to Join settings, click the Expand button, scroll down and click the 'Resets join nonces' option. You will see a warning about replay attacks which is entirely proper & correct. If anyone eavesdropping in your area on your LoRa transmissions could fake a join and send uplinks from their device but only if they happened to find out your AppKey & NwkKey which is kept securely on the TTN servers and is never transmitted over the air, so they'd also have to login to your account, which is protected by your password. 
+Click on General Settings, scroll down to Join settings, click the Expand button, scroll down and click the 'Resets join nonces' option. You will see a warning about replay attacks which is entirely proper & correct. If anyone eavesdropping in your area on your LoRa transmissions could fake a join and send uplinks from their device but only if they happened to find out your AppKey & NwkKey which is kept securely on the TTN servers and is never transmitted over the air, so they'd also have to login to your account, which is protected by your password.
 
 You then need to copy over the device details in to the config file for RadioLib. There are buttons to copy items to the clipboard so you don't have to hand type them.
 
@@ -133,7 +133,7 @@ A key will end up something like 0x31, 0x16, 0x6A, 0x22, 0x97, 0x52, 0xB6, 0x34,
 
 ### Region
 
-The region value you use MUST match the one you selected on the console. 
+The region value you use MUST match the one you selected on the console.
 
 If you are using US915 or AU915 then you should change the subBand const to 2.
 

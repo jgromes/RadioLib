@@ -78,7 +78,7 @@ size_t BellClient::write(uint8_t b) {
     }
     mod->waitForMicroseconds(start, this->toneLen);
   }
-  
+
   if(this->autoStart) {
     phyLayer->standby();
   }

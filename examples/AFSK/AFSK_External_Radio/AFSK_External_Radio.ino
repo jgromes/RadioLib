@@ -3,7 +3,7 @@
 
   This example shows how to use your Arduino
   as modulator for an external analogue FM radio.
-  
+
   The example sends APRS position reports with
   audio modulated as AFSK at 1200 baud using
   Bell 202 tones. However, any other AFSK
@@ -64,19 +64,19 @@ void setup() {
 
 void loop() {
   Serial.print(F("[APRS] Sending position ... "));
-  
+
   // send a location without message or timestamp
   char destination[] = "N0CALL";
   char latitude[] = "4911.67N";
   char longitude[] = "01635.96E";
   int state = aprs.sendPosition(destination, 0, latitude, longitude);
   delay(500);
-  
+
   // send a location with message and without timestamp
   char message[] = "I'm here!";
   state |= aprs.sendPosition(destination, 0, latitude, longitude, message);
   delay(500);
-  
+
   // send a location with message and timestamp
   char timestamp[] = "093045z";
   state |= aprs.sendPosition(destination, 0, latitude, longitude, message, timestamp);

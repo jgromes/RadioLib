@@ -264,7 +264,7 @@
 #define RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED                   (0x01UL << 4)   //  31    0                preamble detected
 #define RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID              (0x01UL << 5)   //  31    0                sync word or LoRa header valid
 #define RADIOLIB_LR11X0_IRQ_HEADER_ERR                          (0x01UL << 6)   //  31    0                LoRa header CRC error
-#define RADIOLIB_LR11X0_IRQ_CRC_ERR                             (0x01UL << 7)   //  31    0                packet CRC error 
+#define RADIOLIB_LR11X0_IRQ_CRC_ERR                             (0x01UL << 7)   //  31    0                packet CRC error
 #define RADIOLIB_LR11X0_IRQ_CAD_DONE                            (0x01UL << 8)   //  31    0                CAD completed
 #define RADIOLIB_LR11X0_IRQ_CAD_DETECTED                        (0x01UL << 9)   //  31    0                CAD detected
 #define RADIOLIB_LR11X0_IRQ_TIMEOUT                             (0x01UL << 10)  //  31    0                Rx or Tx timeout
@@ -760,22 +760,22 @@ struct LR11x0VersionInfo_t {
 
   /*! \brief Which device this is - one of RADIOLIB_LR11X0_DEVICE_* macros. */
   uint8_t device;
-  
+
   /*! \brief Major revision of the base firmware. */
   uint8_t fwMajor;
-  
+
   /*! \brief Minor revision of the base firmware. */
   uint8_t fwMinor;
 
   /*! \brief Major revision of the WiFi firmware. */
   uint8_t fwMajorWiFi;
-  
+
   /*! \brief Minor revision of the WiFi firmware. */
   uint8_t fwMinorWiFi;
 
   /*! \brief Revision of the GNSS firmware. */
   uint8_t fwGNSS;
-  
+
   /*! \brief Almanac revision of the GNSS firmware. */
   uint8_t almanacGNSS;
 };
@@ -787,7 +787,7 @@ struct LR11x0VersionInfo_t {
 struct LR11x0GnssResult_t {
   /*! \brief Demodulator status. One of RADIOLIB_LR11X0_GNSS_DEMOD_STATUS_* */
   int8_t demodStat;
-  
+
   /*! \brief Number of satellites detected during the scan. */
   uint8_t numSatsDet;
 
@@ -913,7 +913,7 @@ class LR11x0: public PhysicalLayer {
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
     */
     bool XTAL;
-    
+
     /*!
       \brief Initialization method for LoRa modem.
       \param bw LoRa bandwidth in kHz.
@@ -1038,7 +1038,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t sleep(bool retainConfig, uint32_t sleepTime);
-    
+
     // interrupt methods
 
     /*!
@@ -1103,7 +1103,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
-    
+
     /*!
       \brief Interrupt-driven channel activity detection method. IRQ1 will be activated
       when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
@@ -1180,7 +1180,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setRxBandwidth(float rxBw);
-    
+
     /*!
       \brief Sets GFSK sync word in the form of array of up to 8 bytes.
       \param syncWord GFSK sync word to be set.
@@ -1443,7 +1443,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
-    
+
     /*!
       \brief Start passive WiFi scan. BUSY pin will be de-activated when the scan is finished.
       \param wifiType Type of WiFi (802.11) signals to scan, 'b', 'n', 'g' or '*' for all signals.
@@ -1488,7 +1488,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, bool brief = false);
-    
+
     /*!
       \brief Blocking WiFi scan method. Performs a full passive WiFi scan.
       This method may block for several seconds!
@@ -1506,14 +1506,14 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t wifiScan(uint8_t wifiType, uint8_t* count, uint8_t mode = RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask = RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans = 16, uint16_t timeout = 100);
-   
+
     /*!
       \brief Retrieve LR11x0 hardware, device and firmware version information.
       \param info Pointer to LR11x0VersionInfo_t structure to populate.
       \returns \ref status_codes
     */
     int16_t getVersionInfo(LR11x0VersionInfo_t* info);
-    
+
     /*!
       \brief Method to upload new firmware image to the device.
       The device will be automatically erased, a new firmware will be uploaded,
@@ -1525,7 +1525,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t updateFirmware(const uint32_t* image, size_t size, bool nonvolatile = true);
-    
+
     /*!
       \brief Method to check whether the device is capable of performing a GNSS scan.
       \returns \ref status_codes
@@ -1566,7 +1566,7 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t updateGnssAlmanac(uint8_t constellation);
-    
+
     /*!
       \brief Get GNSS position. Called after gnssScan to retrieve the position calculated by the internal solver.
       \param pos Pointer to LR11x0GnssPosition_t structure to populate.
@@ -1598,13 +1598,13 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t calibrateImageRejection(float freqMin, float freqMax);
-    
+
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
 
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
-    
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -1777,9 +1777,9 @@ class LR11x0: public PhysicalLayer {
     int16_t bootGetPin(uint8_t* pin);
     int16_t bootGetChipEui(uint8_t* eui);
     int16_t bootGetJoinEui(uint8_t* eui);
-    
+
     int16_t SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out = NULL, size_t outLen = 0);
-    
+
 #if !RADIOLIB_GODMODE
   protected:
 #endif

@@ -99,7 +99,7 @@ class Module {
       \brief Constants to use in a mode table set be setRfSwitchTable. These
       constants work for most radios, but some radios define their own
       constants to be used instead.
-     
+
       See \ref setRfSwitchTable for details.
     */
     enum OpMode_t {
@@ -322,7 +322,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIcheckStream();
-    
+
     /*!
       \brief Method to perform a read transaction with SPI stream.
       \param cmd SPI operation command.
@@ -333,7 +333,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIreadStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
-    
+
     /*!
       \brief Method to perform a read transaction with SPI stream.
       \param cmd SPI operation command.
@@ -345,7 +345,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIreadStream(const uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
-    
+
     /*!
       \brief Method to perform a write transaction with SPI stream.
       \param cmd SPI operation command.
@@ -368,7 +368,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIwriteStream(const uint8_t* cmd, uint8_t cmdLen, const uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
-    
+
     /*!
       \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
       \param cmd SPI operation command.
