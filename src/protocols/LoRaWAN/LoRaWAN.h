@@ -44,8 +44,6 @@
 #define RADIOLIB_LORAWAN_FPORT_MAC_COMMAND                      (0x00 << 0) //  7     0     payload contains MAC commands only
 #define RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN                      (0x01 << 0) //  7     0     start of user-allowed fPort range
 #define RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX                      (0xDF << 0) //  7     0     end of user-allowed fPort range
-#define RADIOLIB_LORAWAN_FPORT_TS009                            (0xE0 << 0) //  7     0     fPort used for TS009 testing
-#define RADIOLIB_LORAWAN_FPORT_TS011                            (0xE2 << 0) //  7     0     fPort used for TS011 Forwarding
 #define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) //  7     0     fPort values equal to and larger than this are reserved
 
 // data rate encoding
@@ -96,9 +94,6 @@
 #define RADIOLIB_LORAWAN_POWER_STEP_SIZE_DBM                    (-2)
 #define RADIOLIB_LORAWAN_REJOIN_MAX_COUNT_N                     (10)  // send rejoin request 16384 uplinks
 #define RADIOLIB_LORAWAN_REJOIN_MAX_TIME_N                      (15)  // once every year, not actually implemented
-
-// developer recommended default setting (not specified)
-#define RADIOLIB_LORAWAN_MIN_ROLLOVER_FCNT_GAP                  (16384) // equal to deprecated MaxFCntGap
 
 // join request message layout
 #define RADIOLIB_LORAWAN_JOIN_REQUEST_LEN                       (23)
@@ -202,6 +197,27 @@
 #define RADIOLIB_LORAWAN_MAC_DEVICE_MODE                        (0x20)
 #define RADIOLIB_LORAWAN_MAC_PROPRIETARY                        (0x80)
 
+// number of supported LoRaWAN TS packages
+#define RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES                 (7)
+
+// Package ID numbering as per TS008 (TS011 ID is made up)
+#define RADIOLIB_LORAWAN_PACKAGE_TS007                          (0)
+#define RADIOLIB_LORAWAN_PACKAGE_TS003                          (1)
+#define RADIOLIB_LORAWAN_PACKAGE_TS005                          (2)
+#define RADIOLIB_LORAWAN_PACKAGE_TS004                          (3)
+#define RADIOLIB_LORAWAN_PACKAGE_TS006                          (4)
+#define RADIOLIB_LORAWAN_PACKAGE_TS009                          (5)
+#define RADIOLIB_LORAWAN_PACKAGE_TS011                          (6)
+
+// Package FPort (specified or recommended)
+#define RADIOLIB_LORAWAN_FPORT_TS007                            (225)
+#define RADIOLIB_LORAWAN_FPORT_TS003                            (202)
+#define RADIOLIB_LORAWAN_FPORT_TS005                            (200)
+#define RADIOLIB_LORAWAN_FPORT_TS004                            (201)
+#define RADIOLIB_LORAWAN_FPORT_TS006                            (203)
+#define RADIOLIB_LORAWAN_FPORT_TS009                            (224)
+#define RADIOLIB_LORAWAN_FPORT_TS011                            (226)
+
 // the length of internal MAC command queue - hopefully this is enough for most use cases
 #define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (9)
 
@@ -259,6 +275,43 @@ constexpr LoRaWANMacCommand_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS] = {
   { RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP,  1, 1, false, false },
   { RADIOLIB_LORAWAN_MAC_DEVICE_MODE,         1, 1, true,  false },
   { RADIOLIB_LORAWAN_MAC_PROPRIETARY,         5, 0, false, true  },
+};
+
+/*! \brief A user-supplied callback for LoRaWAN Application Packages (TSxxx) */
+typedef void (*PackageCb_t)(uint8_t* dataDown, size_t lenDown);
+
+/*!
+  \struct LoRaWANPackage_t
+  \brief LoRaWAN Packages structure (for TSxxx documents).
+*/
+struct LoRaWANPackage_t {
+  /*! \brief Package ID as per TS008 */
+  uint8_t packId;
+
+  /*! \brief Package default FPort (specified or recommended) */
+  uint8_t packFPort;
+
+  /*! \brief Whether the package runs through the Application layer */
+  bool isAppPack;
+
+  /*! \brief Whether the FPort value is fixed or may be modified */
+  bool fixedFPort;
+
+  /*! \brief Whether the package is currently in use */
+  bool enabled;
+
+  /*! \brief User-provided callback for handling package downlinks */
+  PackageCb_t callback;
+};
+
+constexpr LoRaWANPackage_t PackageTable[RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES] = {
+  { RADIOLIB_LORAWAN_PACKAGE_TS007, RADIOLIB_LORAWAN_FPORT_TS007, true,  false, false },
+  { RADIOLIB_LORAWAN_PACKAGE_TS003, RADIOLIB_LORAWAN_FPORT_TS003, true,  true,  false },
+  { RADIOLIB_LORAWAN_PACKAGE_TS005, RADIOLIB_LORAWAN_FPORT_TS005, true,  true,  false },
+  { RADIOLIB_LORAWAN_PACKAGE_TS004, RADIOLIB_LORAWAN_FPORT_TS004, true,  true,  false },
+  { RADIOLIB_LORAWAN_PACKAGE_TS006, RADIOLIB_LORAWAN_FPORT_TS006, true,  true,  false },
+  { RADIOLIB_LORAWAN_PACKAGE_TS009, RADIOLIB_LORAWAN_FPORT_TS009, true,  false, false },
+  { RADIOLIB_LORAWAN_PACKAGE_TS011, RADIOLIB_LORAWAN_FPORT_TS011, false, false, false }
 };
 
 #define RADIOLIB_LORAWAN_NONCES_VERSION_VAL (0x0001)
@@ -886,11 +939,37 @@ class LoRaWANNode {
     */
     void setSleepFunction(SleepCb_t cb); 
 
-    /*! 
-      \brief TS009 Protocol Specification Verification switch
-      (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded).
+    /*!
+      \brief Add a LoRaWAN Application Package as defined in one of the TSxxx documents.
+      Any downlinks that occur on the corresponding FPort will be redirected to 
+      a supplied callback that implements this package. These downlink contents will be
+      hidden from the user as the downlink buffer will be empty and the length zero.
+      The package may need to overrule the behaviour of your device - refer to the examples.
+      Advanced users only!
+      \param packageId The ID of the package (one of RADIOLIB_LORAWAN_PACKAGE_TSxxx).
+      \param callback The downlink handler for this package of type (uint8_t* dataDown, size_t lenDown).
+      \returns \ref status_codes
     */
-    bool TS009 = false;
+    int16_t addAppPackage(uint8_t packageId, PackageCb_t callback);
+
+    /*!
+      \brief Add a LoRaWAN Application Package as defined in one of the TSxxx documents.
+      Any downlinks that occur on the corresponding FPort will be redirected to 
+      a supplied callback that implements this package. These downlink contents will be
+      hidden from the user as the downlink buffer will be empty and the length zero.
+      The package may need to overrule the behaviour of your device - refer to the examples.
+      Advanced users only!
+      \param packageId The ID of the package (one of RADIOLIB_LORAWAN_PACKAGE_TSxxx).
+      \param callback The downlink handler for this package of type (uint8_t* dataDown, size_t lenDown).
+      \param fPort A custom FPort for packages that have a default FPort < 224.
+      \returns \ref status_codes
+    */
+    int16_t addAppPackage(uint8_t packageId, PackageCb_t callback, uint8_t fPort);
+
+    /*!
+      \brief Disable a package that was previously added.
+    */
+    void removePackage(uint8_t packageId);
 
     /*!
       \brief Rx window padding in milliseconds
@@ -982,6 +1061,9 @@ class LoRaWANNode {
     uint8_t mcNwkSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint32_t mcAFCnt = 0;
     uint32_t mcAFCntMax = 0;
+
+    // enabled TS packages
+    LoRaWANPackage_t packages[RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES];
 
     // enable/disable CSMA for LoRaWAN
     bool csmaEnabled = false;
@@ -1078,6 +1160,10 @@ class LoRaWANNode {
 
     // extract downlink payload and process MAC commands
     int16_t parseDownlink(uint8_t* data, size_t* len, uint8_t window, LoRaWANEvent_t* event = NULL);
+
+    // add a LoRaWAN package that runs through the network layer 
+    // (not available to users, they are only allowed to add application packages)
+    int16_t addNwkPackage(uint8_t packageId, PackageCb_t callback);
 
     // execute mac command, return the number of processed bytes for sequential processing
     bool execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn);
