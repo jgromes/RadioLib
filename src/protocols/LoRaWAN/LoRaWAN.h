@@ -1114,9 +1114,7 @@ class LoRaWANNode {
     // save the selected sub-band in case this must be restored in ADR control
     uint8_t subBand = 0;
 
-    // allow port 226 for devices implementing TS011
-    bool TS011 = false;
-
+    // user-provided sleep callback
     SleepCb_t sleepCb = nullptr;
 
     // this will reset the device credentials, so the device starts completely new
