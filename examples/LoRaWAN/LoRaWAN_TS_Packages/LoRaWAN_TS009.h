@@ -57,7 +57,7 @@ void handleTS009(uint8_t* dataDown, size_t lenDown) {
 
       // the function to reset the MCU is platform-dependent
       // for ESP32 for example, this would be:
-      ESP.restart();
+      // ESP.restart();
 
       reply = false;
     } break;
