@@ -25,7 +25,7 @@ const uint32_t uplinkIntervalSeconds = 1UL * 60UL;    // minutes x seconds
 #if (LORAWAN_OTAA == 1)
 // joinEUI - previous versions of LoRaWAN called this AppEUI
 // for development purposes you can use all zeros - see wiki for details
-#define RADIOLIB_LORAWAN_JOIN_EUI  0x----------------
+#define RADIOLIB_LORAWAN_JOIN_EUI  0x0000000000000000
 
 // the Device EUI & two keys can be generated on the TTN console 
 #ifndef RADIOLIB_LORAWAN_DEV_EUI   // Replace with your Device EUI
@@ -34,28 +34,23 @@ const uint32_t uplinkIntervalSeconds = 1UL * 60UL;    // minutes x seconds
 #ifndef RADIOLIB_LORAWAN_APP_KEY   // Replace with your App Key 
 #define RADIOLIB_LORAWAN_APP_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
 #endif
-#ifndef RADIOLIB_LORAWAN_NWK_KEY   // Put your Nwk Key here
-#define RADIOLIB_LORAWAN_NWK_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
-#endif
 
 // copy over the EUI's & keys in to the something that will not compile if incorrectly formatted
 uint64_t joinEUI =   RADIOLIB_LORAWAN_JOIN_EUI;
 uint64_t devEUI  =   RADIOLIB_LORAWAN_DEV_EUI;
 uint8_t appKey[] = { RADIOLIB_LORAWAN_APP_KEY };
-uint8_t nwkKey[] = { RADIOLIB_LORAWAN_NWK_KEY };
+
+#if (LORAWAN_VERSION == 1)
+#ifndef RADIOLIB_LORAWAN_NWK_KEY   // Put your Nwk Key here
+#define RADIOLIB_LORAWAN_NWK_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
+#endif
+uint8_t nwkKey[] = { RADIOLIB_LORAWAN_NWK_KEY };  // LW v1.1 only
+#endif
 
 #else // ABP
 
 #ifndef RADIOLIB_LORAWAN_DEV_ADDR   // Replace with your DevAddr
 #define RADIOLIB_LORAWAN_DEV_ADDR   0x------
-#endif
-
-// LW v1.1 only
-#ifndef RADIOLIB_LORAWAN_FNWKSINT_KEY   // Replace with your FNwkSInt Key 
-#define RADIOLIB_LORAWAN_FNWKSINT_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
-#endif
-#ifndef RADIOLIB_LORAWAN_SNWKSINT_KEY   // Replace with your SNwkSInt Key 
-#define RADIOLIB_LORAWAN_SNWKSINT_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
 #endif
 
 #ifndef RADIOLIB_LORAWAN_NWKSENC_KEY   // Replace with your NwkSEnc Key 
@@ -67,10 +62,19 @@ uint8_t nwkKey[] = { RADIOLIB_LORAWAN_NWK_KEY };
 
 // copy over the keys in to the something that will not compile if incorrectly formatted
 uint32_t devAddr =        RADIOLIB_LORAWAN_DEV_ADDR;
-uint8_t fNwkSIntKey[] = { RADIOLIB_LORAWAN_FNWKSINT_KEY };  // LW v1.1 only
-uint8_t sNwkSIntKey[] = { RADIOLIB_LORAWAN_SNWKSINT_KEY };  // LW v1.1 only
 uint8_t sNwkSEncKey[] = { RADIOLIB_LORAWAN_NWKSENC_KEY };
 uint8_t appSKey[] =     { RADIOLIB_LORAWAN_APPS_KEY };
+
+#if (LORAWAN_VERSION == 1)
+#ifndef RADIOLIB_LORAWAN_FNWKSINT_KEY   // Replace with your FNwkSInt Key 
+#define RADIOLIB_LORAWAN_FNWKSINT_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
+#endif
+#ifndef RADIOLIB_LORAWAN_SNWKSINT_KEY   // Replace with your SNwkSInt Key 
+#define RADIOLIB_LORAWAN_SNWKSINT_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
+#endif
+uint8_t fNwkSIntKey[] = { RADIOLIB_LORAWAN_FNWKSINT_KEY };  // LW v1.1 only
+uint8_t sNwkSIntKey[] = { RADIOLIB_LORAWAN_SNWKSINT_KEY };  // LW v1.1 only
+#endif
 
 #endif // OTAA/ABP
 
@@ -86,8 +90,6 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
 // create the LoRaWAN node
 LoRaWANNode node(&radio, &Region, subBand);
-
-uint8_t LWnonces[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
 
 // helper function to display any issues
 void debug(bool isFail, const __FlashStringHelper* message, int state, bool Freeze) {

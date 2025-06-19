@@ -2,12 +2,13 @@
 #define _LORAWAN_H
 
 #include <RadioLib.h>
-#include <Preferences.h>
 #include "config.h"
 
-#warning "This is an implementation of persistence that only works on ESP32!"
+#warning "You are required to implement persistence here! (ESP32 example provided in comments)"
 
-Preferences store;
+// #include <Preferences.h>
+// Preferences store;
+// uint8_t LWnonces[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
 
 bool lwBegin() {
 #if (LORAWAN_OTAA == 1)
@@ -29,14 +30,14 @@ bool lwBegin() {
 int16_t lwRestore() {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
 
-  store.begin("radiolib");
-  if (store.isKey("nonces")) {
-    radio.standby();
+  // store.begin("radiolib");
+  // if (store.isKey("nonces")) {
+  //   radio.standby();
 
-    store.getBytes("nonces", LWnonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
-    state = node.setBufferNonces(LWnonces);
-  }
-  store.end();
+  //   store.getBytes("nonces", LWnonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+  //   state = node.setBufferNonces(LWnonces);
+  // }
+  // store.end();
 
   return(state);
 }
@@ -58,10 +59,10 @@ void lwActivate() {
     return;
   } 
 
-  store.begin("radiolib");
-  uint8_t *persist = node.getBufferNonces();
-  store.putBytes("nonces", persist, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
-  store.end();
+  // store.begin("radiolib");
+  // uint8_t *persist = node.getBufferNonces();
+  // store.putBytes("nonces", persist, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+  // store.end();
 
   if(state == RADIOLIB_LORAWAN_NEW_SESSION) {
     Serial.println(F("[LoRaWAN] Successfully started new session!"));
