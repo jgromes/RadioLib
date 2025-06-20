@@ -1316,11 +1316,12 @@ size_t SX126x::getPacketLength(bool update) {
 size_t SX126x::getPacketLength(bool update, uint8_t* offset) {
   (void)update;
 
-  // in implicit mode, return the cached value
-  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT)) {
+  // in implicit mode, return the cached value if the offset was not requested
+  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (!offset)) {
     return(this->implicitLen);
   }
 
+  // if offset was requested, or in explicit mode, we always have to perform the SPI transaction
   uint8_t rxBufStatus[2] = {0, 0};
   this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
 
