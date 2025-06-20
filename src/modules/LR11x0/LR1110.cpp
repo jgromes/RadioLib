@@ -71,7 +71,7 @@ int16_t LR1110::setOutputPower(int8_t power) {
   return(this->setOutputPower(power, false));
 }
 
-int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower) {
+int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs) {
   // check if power value is configurable
   int16_t state = this->checkOutputPower(power, NULL, forceHighPower);
   RADIOLIB_ASSERT(state);
@@ -86,7 +86,7 @@ int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower) {
   RADIOLIB_ASSERT(state);
 
   // set output power
-  state = setTxParams(power, RADIOLIB_LR11X0_PA_RAMP_48U);
+  state = setTxParams(power, roundRampTime(rampTimeUs));
   return(state);
 }
 

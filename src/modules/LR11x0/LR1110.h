@@ -103,9 +103,11 @@ class LR1110: public LR11x0 {
       \param power Output power to be set in dBm.
       \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically
       based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used.
+      \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
+      nearest discrete ramp time supported by the PA. Defaults to 48 us.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, bool forceHighPower);
+    int16_t setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs = 48);
 
     /*!
       \brief Check if output power is configurable.
