@@ -112,9 +112,11 @@ class LR1120: public LR11x0 {
       If set to false, PA will be determined automatically based on configured output power and frequency,
       preferring the low-power PA but always using high-frequency PA in 2.4 GHz band.
       Ignored when operating in 2.4 GHz band.
+      \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
+      nearest discrete ramp time supported by the PA. Defaults to 48 us.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, bool forceHighPower);
+    int16_t setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs = 48);
 
     /*!
       \brief Check if output power is configurable.
