@@ -135,9 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a65c08f0475f888537e55401b75e58b23" id="r_a65c08f0475f888537e55401b75e58b23"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#a65c08f0475f888537e55401b75e58b23">setOutputPower</a> (int8_t power) override</td></tr>
 <tr class="memdesc:a65c08f0475f888537e55401b75e58b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <br /></td></tr>
 <tr class="separator:a65c08f0475f888537e55401b75e58b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4eaaa6411bb1eeb131613fb3f43e5d1" id="r_ae4eaaa6411bb1eeb131613fb3f43e5d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#ae4eaaa6411bb1eeb131613fb3f43e5d1">setOutputPower</a> (int8_t power, bool forceHighPower)</td></tr>
-<tr class="memdesc:ae4eaaa6411bb1eeb131613fb3f43e5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <br /></td></tr>
-<tr class="separator:ae4eaaa6411bb1eeb131613fb3f43e5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a8d2d8f98cb2bf9f56068d481c25100" id="r_a2a8d2d8f98cb2bf9f56068d481c25100"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#a2a8d2d8f98cb2bf9f56068d481c25100">setOutputPower</a> (int8_t power, bool forceHighPower, uint32_t rampTimeUs=48)</td></tr>
+<tr class="memdesc:a2a8d2d8f98cb2bf9f56068d481c25100"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <br /></td></tr>
+<tr class="separator:a2a8d2d8f98cb2bf9f56068d481c25100"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1f6dddd12805fdecb55ef5703d23ef1" id="r_af1f6dddd12805fdecb55ef5703d23ef1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#af1f6dddd12805fdecb55ef5703d23ef1">checkOutputPower</a> (int8_t power, int8_t *clipped) override</td></tr>
 <tr class="memdesc:af1f6dddd12805fdecb55ef5703d23ef1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. This method is needed for compatibility with <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536" title="Check if output power is configurable. Must be implemented in module class if the module supports it.">PhysicalLayer::checkOutputPower</a>.  <br /></td></tr>
 <tr class="separator:af1f6dddd12805fdecb55ef5703d23ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1044,8 +1044,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="ae4eaaa6411bb1eeb131613fb3f43e5d1" name="ae4eaaa6411bb1eeb131613fb3f43e5d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4eaaa6411bb1eeb131613fb3f43e5d1">&#9670;&#160;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
+<a id="a2a8d2d8f98cb2bf9f56068d481c25100" name="a2a8d2d8f98cb2bf9f56068d481c25100"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a8d2d8f98cb2bf9f56068d481c25100">&#9670;&#160;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1060,7 +1060,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>forceHighPower</em>&#160;</td>
+          <td class="paramname"><em>forceHighPower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rampTimeUs</em> = <code>48</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1075,6 +1081,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   <table class="params">
     <tr><td class="paramname">power</td><td>Output power to be set in dBm. </td></tr>
     <tr><td class="paramname">forceHighPower</td><td>Force using the high-power PA. If set to false, PA will be determined automatically based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used. </td></tr>
+    <tr><td class="paramname">rampTimeUs</td><td>PA power ramping time in microseconds. Provided value is rounded up to the nearest discrete ramp time supported by the PA. Defaults to 48 us. </td></tr>
   </table>
   </dd>
 </dl>

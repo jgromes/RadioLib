@@ -10,5 +10,5 @@ var class_l_r1120 =
     [ "setFrequency", "class_l_r1120.html#ac34c2ec79e4a36cf0423acb308538811", null ],
     [ "setModem", "class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e", null ],
     [ "setOutputPower", "class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193", null ],
-    [ "setOutputPower", "class_l_r1120.html#a2e2ea0a2f6d3a8d81e0f2be35848bbc7", null ]
+    [ "setOutputPower", "class_l_r1120.html#a92b22c4a9fed3a045da1bb1929e57294", null ]
 ];
