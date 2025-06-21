@@ -37,6 +37,9 @@ extern uint8_t fPort;
   Make sure that all `extern` variables are handled in your user code!
 */
 void handleTS009(uint8_t* dataDown, size_t lenDown) {
+  if(lenDown == 0 || dataDown == NULL) {
+    return;
+  }
   RADIOLIB_DEBUG_PRINTLN("CID = %02x, len = %d", dataDown[0], lenDown - 1);
 
   switch(dataDown[0]) {
@@ -200,11 +203,11 @@ void handleTS009(uint8_t* dataDown, size_t lenDown) {
 
     case(RADIOLIB_LORAWAN_TS009_DUT_VERSIONS): {
       lenUp = 13;
-      // firmware version
-      dataUp[1] = 7;
-      dataUp[2] = 1;
-      dataUp[3] = 2;
-      dataUp[4] = 10;
+      // firmware version - this is RadioLib's version as an example
+      dataUp[1] = RADIOLIB_VERSION_MAJOR;
+      dataUp[2] = RADIOLIB_VERSION_MINOR;
+      dataUp[3] = RADIOLIB_VERSION_PATCH;
+      dataUp[4] = RADIOLIB_VERSION_EXTRA;
 
       // lorawan version
       dataUp[5] = 1;
