@@ -247,13 +247,19 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>getMaxPayloadLen</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setSleepFunction</b> (<a class="el" href="class_lo_ra_w_a_n_node.html#a3aec67bd3fa7ec0f6e4bf6b86d971e9e">SleepCb_t</a> cb)</td></tr>
 <tr class="memdesc:a11c5f0867a9a8d731e980f865caebd99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set custom delay/sleep function callback. If set, LoRaWAN node will call this function to wait for periods of time longer than RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD. This can be used to lower the power consumption by putting the host microcontroller to sleep. NOTE: Since this method will call a user-provided function, it is up to the user to ensure that the time duration spent in that sleep function is accurate to at least 1 ms! <br /></td></tr>
 <tr class="separator:a11c5f0867a9a8d731e980f865caebd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c81fcfaa0d1a82f1f4e96e335713f8c" id="r_a3c81fcfaa0d1a82f1f4e96e335713f8c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a3c81fcfaa0d1a82f1f4e96e335713f8c">addAppPackage</a> (uint8_t packageId, PackageCb_t callback)</td></tr>
+<tr class="memdesc:a3c81fcfaa0d1a82f1f4e96e335713f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a LoRaWAN Application Package as defined in one of the TSxxx documents. Any downlinks that occur on the corresponding FPort will be redirected to a supplied callback that implements this package. These downlink contents will be hidden from the user as the downlink buffer will be empty and the length zero. The package may need to overrule the behaviour of your device - refer to the examples. Advanced users only!  <br /></td></tr>
+<tr class="separator:a3c81fcfaa0d1a82f1f4e96e335713f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19186be86ad1d2f207d2f3280c5ba56" id="r_ad19186be86ad1d2f207d2f3280c5ba56"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad19186be86ad1d2f207d2f3280c5ba56">addAppPackage</a> (uint8_t packageId, PackageCb_t callback, uint8_t fPort)</td></tr>
+<tr class="memdesc:ad19186be86ad1d2f207d2f3280c5ba56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a LoRaWAN Application Package as defined in one of the TSxxx documents. Any downlinks that occur on the corresponding FPort will be redirected to a supplied callback that implements this package. These downlink contents will be hidden from the user as the downlink buffer will be empty and the length zero. The package may need to overrule the behaviour of your device - refer to the examples. Advanced users only!  <br /></td></tr>
+<tr class="separator:ad19186be86ad1d2f207d2f3280c5ba56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdbea8fc354e23d78e2044064ed8058d" id="r_afdbea8fc354e23d78e2044064ed8058d"><td class="memItemLeft" align="right" valign="top"><a id="afdbea8fc354e23d78e2044064ed8058d" name="afdbea8fc354e23d78e2044064ed8058d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removePackage</b> (uint8_t packageId)</td></tr>
+<tr class="memdesc:afdbea8fc354e23d78e2044064ed8058d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable a package that was previously added. <br /></td></tr>
+<tr class="separator:afdbea8fc354e23d78e2044064ed8058d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a8226f4d0329d15da9ffc706e5781403a" id="r_a8226f4d0329d15da9ffc706e5781403a"><td class="memItemLeft" align="right" valign="top"><a id="a8226f4d0329d15da9ffc706e5781403a" name="a8226f4d0329d15da9ffc706e5781403a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>TS009</b> = false</td></tr>
-<tr class="memdesc:a8226f4d0329d15da9ffc706e5781403a"><td class="mdescLeft">&#160;</td><td class="mdescRight">TS009 Protocol Specification Verification switch (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded). <br /></td></tr>
-<tr class="separator:a8226f4d0329d15da9ffc706e5781403a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2176aa3d546e6b00e870a7e1e310c403" id="r_a2176aa3d546e6b00e870a7e1e310c403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403">scanGuard</a> = 10</td></tr>
 <tr class="memdesc:a2176aa3d546e6b00e870a7e1e310c403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rx window padding in milliseconds according to the spec, the Rx window must be at least enough time to effectively detect a preamble but we pad it a bit on both sides (start and end) to make sure it is wide enough The larger this number the more power will be consumed! So be careful about changing it. For debugging purposes 50 is a reasonable start, but for production devices it should be as low as possible. 0 is a valid time.  <br /></td></tr>
 <tr class="separator:a2176aa3d546e6b00e870a7e1e310c403"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -379,6 +385,89 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TS009</b> = false</td
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">joinDr</td><td>The datarate at which to send the join-request and any subsequent uplinks (unless ADR is enabled) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3c81fcfaa0d1a82f1f4e96e335713f8c" name="a3c81fcfaa0d1a82f1f4e96e335713f8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c81fcfaa0d1a82f1f4e96e335713f8c">&#9670;&#160;</a></span>addAppPackage() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::addAppPackage </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>packageId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PackageCb_t&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a LoRaWAN Application Package as defined in one of the TSxxx documents. Any downlinks that occur on the corresponding FPort will be redirected to a supplied callback that implements this package. These downlink contents will be hidden from the user as the downlink buffer will be empty and the length zero. The package may need to overrule the behaviour of your device - refer to the examples. Advanced users only! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packageId</td><td>The ID of the package (one of RADIOLIB_LORAWAN_PACKAGE_TSxxx). </td></tr>
+    <tr><td class="paramname">callback</td><td>The downlink handler for this package of type (uint8_t* dataDown, size_t lenDown). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad19186be86ad1d2f207d2f3280c5ba56" name="ad19186be86ad1d2f207d2f3280c5ba56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad19186be86ad1d2f207d2f3280c5ba56">&#9670;&#160;</a></span>addAppPackage() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::addAppPackage </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>packageId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PackageCb_t&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>fPort</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a LoRaWAN Application Package as defined in one of the TSxxx documents. Any downlinks that occur on the corresponding FPort will be redirected to a supplied callback that implements this package. These downlink contents will be hidden from the user as the downlink buffer will be empty and the length zero. The package may need to overrule the behaviour of your device - refer to the examples. Advanced users only! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packageId</td><td>The ID of the package (one of RADIOLIB_LORAWAN_PACKAGE_TSxxx). </td></tr>
+    <tr><td class="paramname">callback</td><td>The downlink handler for this package of type (uint8_t* dataDown, size_t lenDown). </td></tr>
+    <tr><td class="paramname">fPort</td><td>A custom FPort for packages that have a default FPort &lt; 224. </td></tr>
   </table>
   </dd>
 </dl>

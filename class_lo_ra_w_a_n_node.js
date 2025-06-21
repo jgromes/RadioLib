@@ -4,6 +4,8 @@ var class_lo_ra_w_a_n_node =
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76", null ],
     [ "activateABP", "class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86", null ],
     [ "activateOTAA", "class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd", null ],
+    [ "addAppPackage", "class_lo_ra_w_a_n_node.html#a3c81fcfaa0d1a82f1f4e96e335713f8c", null ],
+    [ "addAppPackage", "class_lo_ra_w_a_n_node.html#ad19186be86ad1d2f207d2f3280c5ba56", null ],
     [ "beginABP", "class_lo_ra_w_a_n_node.html#a43b259fd8804ef8d9d4922962e9ecae5", null ],
     [ "beginOTAA", "class_lo_ra_w_a_n_node.html#ab2df20a240812f184786dda5ace171ef", null ],
     [ "clearSession", "class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847", null ],
@@ -20,6 +22,7 @@ var class_lo_ra_w_a_n_node =
     [ "getMaxPayloadLen", "class_lo_ra_w_a_n_node.html#ab723160aa317cd84550d0da3a0f52811", null ],
     [ "getNFCntDown", "class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1", null ],
     [ "isActivated", "class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d", null ],
+    [ "removePackage", "class_lo_ra_w_a_n_node.html#afdbea8fc354e23d78e2044064ed8058d", null ],
     [ "resetFCntDown", "class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648", null ],
     [ "scheduleTransmission", "class_lo_ra_w_a_n_node.html#a16c7ae2edfe324e11498b13aa042665f", null ],
     [ "sendMacCommandReq", "class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164", null ],
@@ -42,6 +45,5 @@ var class_lo_ra_w_a_n_node =
     [ "startMulticastSession", "class_lo_ra_w_a_n_node.html#a1310697387785bdf6ff34091f271616f", null ],
     [ "stopMulticastSession", "class_lo_ra_w_a_n_node.html#a4bb842987637727f5e191799f0343171", null ],
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
-    [ "scanGuard", "class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403", null ],
-    [ "TS009", "class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a", null ]
+    [ "scanGuard", "class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403", null ]
 ];

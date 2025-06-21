@@ -315,7 +315,7 @@ $(document).ready(function(){initNavTree('_type_def_8h_source.html',''); initRes
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span> </div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga68c7f7b8c699dbd6524da685be476fca">  549</a></span><span class="preprocessor">#define RADIOLIB_ERR_JOIN_NONCE_INVALID                         (-1111)</span></div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span> </div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno"><a class="line" href="group__status__codes.html#gaff1f8f975b0d7e7d83352810459ce38f">  554</a></span><span class="preprocessor">#define RADIOLIB_ERR_DOWNLINK_FCNT_INVALID                      (-1112)</span></div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga72766507100035da092be0c0719c103c">  554</a></span><span class="preprocessor">#define RADIOLIB_ERR_MIC_MISMATCH                               (-1112)</span></div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span> </div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga9caf2e095dea4df9a0fdab33d338459d">  559</a></span><span class="preprocessor">#define RADIOLIB_ERR_MULTICAST_FCNT_INVALID                     (-1113)</span></div>
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span> </div>
@@ -335,29 +335,27 @@ $(document).ready(function(){initNavTree('_type_def_8h_source.html',''); initRes
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga4871133fa9b6d7cdbee82daf2226d373">  599</a></span><span class="preprocessor">#define RADIOLIB_ERR_INVALID_MODE                               (-1121)</span></div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga72766507100035da092be0c0719c103c">  604</a></span><span class="preprocessor">#define RADIOLIB_ERR_MIC_MISMATCH                               (-1122)</span></div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span> </div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span><span class="comment">// LR11x0-specific status codes</span></div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="comment">// LR11x0-specific status codes</span></div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span> </div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno"><a class="line" href="group__status__codes.html#gac0673e69b893d8f23e339f218d376a52">  606</a></span><span class="preprocessor">#define RADIOLIB_ERR_INVALID_WIFI_TYPE                          (-1200)</span></div>
 <div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span> </div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno"><a class="line" href="group__status__codes.html#gac0673e69b893d8f23e339f218d376a52">  611</a></span><span class="preprocessor">#define RADIOLIB_ERR_INVALID_WIFI_TYPE                          (-1200)</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga01584876f01c1815ab27afc364649966">  611</a></span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE                (-1201)</span></div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span> </div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga01584876f01c1815ab27afc364649966">  616</a></span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE                (-1201)</span></div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span> </div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga95f44b9fd5db8220158e8dad73506cd9">  622</a></span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET                          (-1210)</span></div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_DEMOD(X)                              (RADIOLIB_ERR_GNSS_DEMOD_OFFSET + (X))</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="preprocessor">#define RADIOLIB_GET_GNSS_DEMOD_ERROR(X)                        ((X) - RADIOLIB_ERR_GNSS_DEMOD_OFFSET)</span></div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span> </div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga25700f55a8dfaa3aa8076b51528d74f9">  630</a></span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET                         (-1230)</span></div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_SOLVER(X)                             (RADIOLIB_ERR_GNSS_SOLVER_OFFSET - (X))</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span><span class="preprocessor">#define RADIOLIB_GET_GNSS_SOLVER_ERROR(X)                       (-((X) - RADIOLIB_ERR_GNSS_SOLVER_OFFSET))</span></div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span> </div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno"><a class="line" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">  647</a></span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code hl_typedef" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>;</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno"><a class="line" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">  653</a></span><span class="keyword">typedef</span> uint32_t <a class="code hl_typedef" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>;</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="agroup__typedefs_html_ga210f31dd2bff7fb80563275648a5bbbd"><div class="ttname"><a href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a></div><div class="ttdeci">unsigned long RadioLibTime_t</div><div class="ttdoc">Type used for durations in RadioLib.</div><div class="ttdef"><b>Definition</b> TypeDef.h:647</div></div>
-<div class="ttc" id="agroup__typedefs_html_gafaf66becf1112a55ba8ad7402b802b77"><div class="ttname"><a href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a></div><div class="ttdeci">uint32_t RadioLibIrqFlags_t</div><div class="ttdoc">Type used for radio-agnostic IRQ flags. IRQ to enable corresponds to the bit index (RadioLibIrq_t)....</div><div class="ttdef"><b>Definition</b> TypeDef.h:653</div></div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga95f44b9fd5db8220158e8dad73506cd9">  617</a></span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET                          (-1210)</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_DEMOD(X)                              (RADIOLIB_ERR_GNSS_DEMOD_OFFSET + (X))</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="preprocessor">#define RADIOLIB_GET_GNSS_DEMOD_ERROR(X)                        ((X) - RADIOLIB_ERR_GNSS_DEMOD_OFFSET)</span></div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga25700f55a8dfaa3aa8076b51528d74f9">  625</a></span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET                         (-1230)</span></div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="preprocessor">#define RADIOLIB_ERR_GNSS_SOLVER(X)                             (RADIOLIB_ERR_GNSS_SOLVER_OFFSET - (X))</span></div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="preprocessor">#define RADIOLIB_GET_GNSS_SOLVER_ERROR(X)                       (-((X) - RADIOLIB_ERR_GNSS_SOLVER_OFFSET))</span></div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno"><a class="line" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">  642</a></span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code hl_typedef" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>;</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span> </div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno"><a class="line" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">  648</a></span><span class="keyword">typedef</span> uint32_t <a class="code hl_typedef" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>;</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span> </div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="agroup__typedefs_html_ga210f31dd2bff7fb80563275648a5bbbd"><div class="ttname"><a href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a></div><div class="ttdeci">unsigned long RadioLibTime_t</div><div class="ttdoc">Type used for durations in RadioLib.</div><div class="ttdef"><b>Definition</b> TypeDef.h:642</div></div>
+<div class="ttc" id="agroup__typedefs_html_gafaf66becf1112a55ba8ad7402b802b77"><div class="ttname"><a href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a></div><div class="ttdeci">uint32_t RadioLibIrqFlags_t</div><div class="ttdoc">Type used for radio-agnostic IRQ flags. IRQ to enable corresponds to the bit index (RadioLibIrq_t)....</div><div class="ttdef"><b>Definition</b> TypeDef.h:648</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
