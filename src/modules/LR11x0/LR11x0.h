@@ -1349,6 +1349,7 @@ class LR11x0: public PhysicalLayer {
     /*!
       \brief Query modem for the packet length of received payload.
       \param update Update received packet length. Will return cached value when set to false.
+      \param offset Pointer to a variable that will hold the receive packet's offset in the RX buffer
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update, uint8_t* offset);
