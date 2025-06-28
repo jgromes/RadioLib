@@ -125,10 +125,8 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
   }
 
   // calculate number of batches
-  size_t numBatches = (1 + framePos + numDataBlocks) / RADIOLIB_PAGER_BATCH_LEN + 1;
-  if((1 + numDataBlocks) % RADIOLIB_PAGER_BATCH_LEN == 0) {
-    numBatches -= 1;
-  }
+  size_t totalFrames = 1 + framePos + numDataBlocks;
+  size_t numBatches = (totalFrames + RADIOLIB_PAGER_BATCH_LEN - 1) / RADIOLIB_PAGER_BATCH_LEN;
 
   // calculate message length in 32-bit code words
   size_t msgLen = RADIOLIB_PAGER_PREAMBLE_LENGTH + (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
