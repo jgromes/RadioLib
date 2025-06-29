@@ -148,7 +148,7 @@ void handleTS009(uint8_t* dataDown, size_t lenDown) {
 
     case(RADIOLIB_LORAWAN_TS009_RX_APP_CNT_RESET): {
       RADIOLIB_DEBUG_PRINTLN("Resetting Application Frame count");
-      node.resetFCntDown();
+      RADIOLIB_DEBUG_PRINTLN("WARNING: not implemented - never used in tests!");
 
       reply = false;
     } break;
