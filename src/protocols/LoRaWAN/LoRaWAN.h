@@ -892,13 +892,6 @@ class LoRaWANNode {
     */
     uint32_t getAFCntDown();
 
-    /*! 
-        \brief Reset the downlink frame counters (application and network)
-        This is unsafe and can possibly allow replay attacks using downlinks.
-        It mainly exists as part of the TS009 Specification Verification protocol.
-    */
-    void resetFCntDown();
-
     /*!
       \brief Returns the DevAddr of the device, regardless of OTAA or ABP mode
       \returns 4-byte DevAddr
@@ -1214,6 +1207,9 @@ class LoRaWANNode {
 
     // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
     bool cadChannelClear();
+
+    // get the current channel mask and add all default channels
+    void addDefaultChannelsMask();
 
     // (dynamic bands:) get or (fixed bands:) create a complete 80-bit channel mask for current configuration
     void getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGrp45);
