@@ -23,7 +23,6 @@ var class_lo_ra_w_a_n_node =
     [ "getNFCntDown", "class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1", null ],
     [ "isActivated", "class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d", null ],
     [ "removePackage", "class_lo_ra_w_a_n_node.html#afdbea8fc354e23d78e2044064ed8058d", null ],
-    [ "resetFCntDown", "class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648", null ],
     [ "scheduleTransmission", "class_lo_ra_w_a_n_node.html#a16c7ae2edfe324e11498b13aa042665f", null ],
     [ "sendMacCommandReq", "class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#a11c2fbe631063da69355f8d74f4bf3b8", null ],
