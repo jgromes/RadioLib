@@ -1208,20 +1208,11 @@ class LoRaWANNode {
     // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
     bool cadChannelClear();
 
-    // get the current channel mask and add all default channels
-    void addDefaultChannelsMask();
+    // add all default channels on top of the current channels
+    void addDefaultChannels();
 
-    // (dynamic bands:) get or (fixed bands:) create a complete 80-bit channel mask for current configuration
+    // get a complete 80-bit channel mask for current configuration
     void getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGrp45);
-
-    // setup uplink/downlink channel data rates and frequencies
-    // for dynamic channels, there is a small set of predefined channels
-    // in case of JoinRequest, add some optional extra frequencies 
-    void selectChannelPlanDyn();
-
-    // setup uplink/downlink channel data rates and frequencies
-    // for fixed bands, we only allow one sub-band at a time to be selected
-    void selectChannelPlanFix();
 
     // get the number of available channels,
     // along with a 16-bit mask indicating which channels can be used next for uplink/downlink

@@ -335,12 +335,8 @@ void LoRaWANNode::clearSession() {
 void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
   this->clearSession();
 
-  // setup JoinRequest uplink/downlink frequencies and datarates
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    this->selectChannelPlanDyn();
-  } else {
-    this->selectChannelPlanFix();
-  }
+  // setup the default channels
+  this->addDefaultChannels();
 
   uint8_t drUp = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
 
@@ -541,11 +537,7 @@ int16_t LoRaWANNode::setBufferSession(const uint8_t* persistentBuffer) {
   uint8_t cLen = 0;
 
   // setup the default channels
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    this->selectChannelPlanDyn();
-  } else {        // type == RADIOLIB_LORAWAN_BAND_FIXED)
-    this->selectChannelPlanFix();
-  }
+  this->addDefaultChannels();
 
   // for dynamic bands, the additional channels must be restored per-channel
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
@@ -791,11 +783,6 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
       return(RADIOLIB_ERR_MIC_MISMATCH);
     }
 
-  }
-  
-  // in case of dynamic band, reset the channels to clear JoinRequest-specific channels
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    this->selectChannelPlanDyn();
   }
 
   uint8_t cOcts[5];
@@ -1228,18 +1215,7 @@ void LoRaWANNode::adrBackoff() {
   }
 
   // last resort: enable all (default) channels
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    // in a dynamic band, default channels are never modified, so safe to assume they exist
-    for(int num = 0; num < 3; num++) {
-      if(this->band->txFreqs[num].enabled) {
-        this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num].enabled = true;
-      }
-    }
-  } else {
-    // in a fixed band, all default channels must be enabled
-    // this means reverting to the original subband
-    this->addDefaultChannelsMask();
-  }
+  this->addDefaultChannels();
 
   // re-enabling default channels may have enabled channels that do support
   // the next required datarate; if datarate can be decreased, try it
@@ -2090,7 +2066,10 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
       fOptsReLen = 0;
       uint8_t fLenRe = 0;
-      uint8_t* mPtr = fOpts;
+
+      // move back to the start of the uplink buffer
+      mPtr = fOpts;
+      // and add as many MAC commands as space is available
       while(fOptsReLen + fLenRe <= maxReLen) {
         fOptsReLen += fLenRe;
 
@@ -2719,8 +2698,7 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
   // set NbTrans partial field from last MAC command
   mAdrOpt[13] = mPtr[cLen - fLen + 4] & 0x0F;
 
-  uint8_t opt = 0;
-  while(opt < numOpts) {
+  for(uint8_t opt = 0; opt < numOpts; opt++) {
     uint8_t chMaskCntl = (mPtr[opt * fLen + 4] & 0x70) >> 4;
     uint16_t chMask = LoRaWANNode::ntoh<uint16_t>(&mPtr[opt * fLen + 2]);
     switch(chMaskCntl) {
@@ -2780,7 +2758,6 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
         }
         break;
     }
-    opt++;
   }
   LoRaWANNode::hton<uint64_t>(&mAdrOpt[1], chMaskGrp0123);
   LoRaWANNode::hton<uint32_t>(&mAdrOpt[9], chMaskGrp45);
@@ -3315,14 +3292,13 @@ bool LoRaWANNode::cadChannelClear() {
   return(true);
 }
 
-void LoRaWANNode::addDefaultChannelsMask() {
-  // get channel masks for this subband
+void LoRaWANNode::addDefaultChannels() {
+  // get current channel masks
   uint64_t chMaskGrp0123 = 0;
   uint32_t chMaskGrp45 = 0;
   this->getChannelPlanMask(&chMaskGrp0123, &chMaskGrp45);
 
-  // if there are any channels selected, create the mask from those channels
-  // channels are always selected for dynamic bands and/or when a device is active
+  // there are at most three default channels for dynamic bands
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     for(int num = 0; num < 3; num++) {
       if(this->band->txFreqs[num].enabled) {
@@ -3343,10 +3319,12 @@ void LoRaWANNode::addDefaultChannelsMask() {
       // if subband is set to 0, all 125kHz channels are enabled.
       // however, we can 'only' store 16 channels, so we don't use all channels at once.
       // instead, we select a random channel from each bank of 8 channels + 1 from second plan.
+      chMaskGrp0123 = 0;
+      chMaskGrp45 = 0;
       uint8_t num125kHz = this->band->txSpans[0].numChannels;
       uint8_t numBanks = num125kHz / 8;
+      uint8_t bankIdx = this->phyLayer->random(8);
       for(uint8_t bank = 0; bank < numBanks; bank++) {
-        uint8_t bankIdx = this->phyLayer->random(8);
         uint8_t idx = bank * 8 + bankIdx;
         if(idx < 64) {
           chMaskGrp0123 |= ((uint64_t)1 << idx);
@@ -3357,12 +3335,7 @@ void LoRaWANNode::addDefaultChannelsMask() {
       // the 500 kHz channels are in the usual channel plan however
       // these are the channel indices 64-71 for bands other than CN470
       if(this->band->bandNum != BandCN470) {
-        for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-          uint8_t idx = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx;
-          if(idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE && idx >= 64) {
-            chMaskGrp45 |= ((uint32_t)1 << (idx - 64));
-          }
-        }
+        chMaskGrp45 |= ((uint32_t)1 << bankIdx);
       }
     }
   }
@@ -3384,8 +3357,7 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
   *chMaskGrp45 = 0;
 
   // if there are any channels selected, create the mask from those channels
-  // channels are always selected for dynamic bands and/or when a device is active
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC || this->isActivated()) {
+  if(this->isActivated()) {
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       uint8_t idx = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx;
       if(idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
@@ -3396,97 +3368,7 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
         }
       }
     }
-    return;
-
-  } else {    // bandType == RADIOLIB_LORAWAN_BAND_FIXED
-    // if a subband is set, we can set the channel indices straight from subband
-    if(this->subBand > 0 && this->subBand <= 8) {
-      // for sub band 1-8, set bank of 8 125kHz + single 500kHz channel
-      *chMaskGrp0123 |= (uint64_t)0xFF << ((this->subBand - 1) * 8);
-      *chMaskGrp45 |= (uint32_t)0x01 << (this->subBand - 1);
-    } else if(this->subBand > 8 && this->subBand <= 12) {
-      // CN470 only: for sub band 9-12, set bank of 8 125kHz channels
-      *chMaskGrp45 |= (uint32_t)0xFF << ((this->subBand - 9) * 8);
-    } else {
-      // if subband is set to 0, all 125kHz channels are enabled.
-      // however, we can 'only' store 16 channels, so we don't use all channels at once.
-      // instead, we select a random channel from each bank of 8 channels + 1 from second plan.
-      uint8_t num125kHz = this->band->txSpans[0].numChannels;
-      uint8_t numBanks = num125kHz / 8;
-      for(uint8_t bank = 0; bank < numBanks; bank++) {
-        uint8_t bankIdx = this->phyLayer->random(8);
-        uint8_t idx = bank * 8 + bankIdx;
-        if(idx < 64) {
-          *chMaskGrp0123 |= ((uint64_t)1 << idx);
-        } else {
-          *chMaskGrp45 |= ((uint32_t)1 << (idx - 64));
-        }
-      }
-      // the 500 kHz channels are in the usual channel plan however
-      // these are the channel indices 64-71 for bands other than CN470
-      if(this->band->bandNum != BandCN470) {
-        for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-          uint8_t idx = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx;
-          if(idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE && idx >= 64) {
-            *chMaskGrp45 |= ((uint32_t)1 << (idx - 64));
-          }
-        }
-      }
-    }
   }
-}
-
-void LoRaWANNode::selectChannelPlanDyn() {
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Setting up dynamic channels");
-  
-  size_t num = 0;
-  // copy the default defined channels into the first slots (where Tx = Rx)
-  for(; num < 3 && this->band->txFreqs[num].enabled; num++) {
-    this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num] = this->band->txFreqs[num];
-    this->channelPlan[RADIOLIB_LORAWAN_DOWNLINK][num] = this->band->txFreqs[num];
-  }
-
-  // clear all remaining channels
-  for(; num < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; num++) {
-    this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num] = RADIOLIB_LORAWAN_CHANNEL_NONE;
-  }
-
-  // make sure the Rx2 settings are back to this band's default
-  this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
-  this->channels[RADIOLIB_LORAWAN_RX_BC] = this->band->rx2;
-
-  // make all enabled channels available for uplink selection
-  this->setAvailableChannels(0xFFFF);
-
-  #if RADIOLIB_DEBUG_PROTOCOL
-  this->printChannels();
-  #endif
-}
-
-// setup a subband and its corresponding JoinRequest datarate
-// WARNING: subBand starts at 1 (corresponds to all populair schemes)
-void LoRaWANNode::selectChannelPlanFix() {
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Setting up fixed channels (subband %d)", this->subBand);
-
-  // clear all existing channels
-  for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i] = RADIOLIB_LORAWAN_CHANNEL_NONE;
-  }
-
-  // get channel masks for this subband
-  uint64_t chMaskGrp0123 = 0;
-  uint32_t chMaskGrp45 = 0;
-  this->getChannelPlanMask(&chMaskGrp0123, &chMaskGrp45);
-
-  // apply channel mask
-  this->applyChannelMask(chMaskGrp0123, chMaskGrp45);
-
-  // make sure the Rx2 settings are back to this band's default
-  this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
-  this->channels[RADIOLIB_LORAWAN_RX_BC] = this->band->rx2;
-  
-  // make all enabled channels available for uplink selection
-  this->setAvailableChannels(0xFFFF);
 }
 
 uint8_t LoRaWANNode::getAvailableChannels(uint16_t* chMask) {
@@ -3585,15 +3467,12 @@ int16_t LoRaWANNode::selectChannels() {
 bool LoRaWANNode::applyChannelMask(uint64_t chMaskGrp0123, uint32_t chMaskGrp45) {
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-      if(chMaskGrp0123 & ((uint64_t)1 << i)) {
-        // if it should be enabled but is not currently defined, stop immediately
-        if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx == RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
-          return(false);
-        }
-        this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled = true;
-      } else {
-        this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled = false;
+      bool en = chMaskGrp0123 & ((uint64_t)1 << i);
+      // if it should be enabled but is not currently defined, stop immediately
+      if(en && this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx == RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
+        return(false);
       }
+      this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled = en;
     }
   } else {    // bandType == RADIOLIB_LORAWAN_BAND_FIXED
     // full channel mask received, so clear all existing channels
@@ -3618,6 +3497,8 @@ bool LoRaWANNode::applyChannelMask(uint64_t chMaskGrp0123, uint32_t chMaskGrp45)
         chnl.freq  = this->band->txSpans[spanNum].freqStart + chNum*this->band->txSpans[spanNum].freqStep;
         chnl.drMin = this->band->txSpans[spanNum].drMin;
         chnl.drMax = this->band->txSpans[spanNum].drMax;
+        // set the default datarate to the middle datarate, rounded up
+        chnl.dr = (chnl.drMin + chnl.drMax + 1) / 2;
         this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num++] = chnl;
       }
     }
