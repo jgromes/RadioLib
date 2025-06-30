@@ -2048,9 +2048,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
     // remove all MAC commands except those whose payload can be requested by the user
     // (which are LinkCheck and DeviceTime)  
-    LoRaWANNode::clearMacCommands(fOpts, &fOptsLen, RADIOLIB_LORAWAN_DOWNLINK);
-    memcpy(this->fOptsDown, fOpts, fOptsLen);
     this->fOptsDownLen = fOptsLen;
+    LoRaWANNode::clearMacCommands(fOpts, &this->fOptsDownLen, RADIOLIB_LORAWAN_DOWNLINK);
+    memcpy(this->fOptsDown, fOpts, this->fOptsDownLen);
 
     // if fOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
     if(fOptsReLen > RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN) {
@@ -2819,7 +2819,7 @@ int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
 
 int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
   uint8_t payload[2] = { 0 };
-  int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_LINK_CHECK, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
+  int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_LINK_CHECK, this->fOptsDown, this->fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
   if(margin) { *margin = payload[0]; }
@@ -2830,7 +2830,7 @@ int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
 
 int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix) {
   uint8_t payload[5] = { 0 };
-  int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
+  int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, this->fOptsDown, this->fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
   if(gpsEpoch) { 
@@ -3302,6 +3302,8 @@ void LoRaWANNode::addDefaultChannels() {
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     for(int num = 0; num < 3; num++) {
       if(this->band->txFreqs[num].enabled) {
+        this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num] = this->band->txFreqs[num];
+        this->channelPlan[RADIOLIB_LORAWAN_DOWNLINK][num] = this->band->txFreqs[num];
         chMaskGrp0123 |= ((uint64_t)1 << num);
       }
     }
