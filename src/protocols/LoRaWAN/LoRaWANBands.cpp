@@ -253,7 +253,7 @@ const LoRaWANBand_t AU915 = {
   .dutyCycle = 0,
   .dwellTimeUp = RADIOLIB_LORAWAN_DWELL_TIME,
   .dwellTimeDn = 0,
-  .txParamSupported = true, // conflict: not implemented according to RP v1.1
+  .txParamSupported = true,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE,
