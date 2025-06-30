@@ -257,6 +257,8 @@ jobs:
           mkdir -p ~/esp
           cd ~/esp
           git clone --recursive https://github.com/espressif/esp-idf.git
+          git checkout v5.4.2
+          git submodule update --init --recursive
       
       - name: Install ESP-IDF
         run: |
