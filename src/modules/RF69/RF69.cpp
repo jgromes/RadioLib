@@ -421,12 +421,6 @@ int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, const_cast<uint8_t*>(data), packetLen);
 
-  // this is a hack, but it seems than in Stream mode, Rx FIFO level is getting triggered 1 byte before it should
-  // just add a padding byte that can be dropped without consequence
-  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
-    this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, '/');
-  }
-
   // enable +20 dBm operation
   if(this->power > 17) {
     state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_OFF | 0x0F);
