@@ -183,6 +183,7 @@
 #define RADIOLIB_CC1101_RX_ATTEN_18_DB                          0b00110000  //  5     4                   18 dB
 #define RADIOLIB_CC1101_FIFO_THR_TX_61_RX_4                     0b00000000  //  3     0   TX fifo threshold: 61, RX fifo threshold: 4
 #define RADIOLIB_CC1101_FIFO_THR_TX_33_RX_32                    0b00000111  //  3     0   TX fifo threshold: 33, RX fifo threshold: 32
+#define RADIOLIB_CC1101_FIFO_THR_TX_1_RX_64                     0b00001111  //  3     0   TX fifo threshold: 1, RX fifo threshold: 64
 #define RADIOLIB_CC1101_FIFO_THRESH_TX                          33
 #define RADIOLIB_CC1101_FIFO_THRESH_RX                          32
 

@@ -261,7 +261,6 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   // data put on FIFO
   uint8_t dataSent = 0;
-
   uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
 
   // optionally write packet length
@@ -274,7 +273,6 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // check address filtering
-  //uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
   if(filter != RADIOLIB_CC1101_ADR_CHK_NONE) {
     SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, addr);
     dataSent += 1;
@@ -343,8 +341,14 @@ int16_t CC1101::startReceive() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
 
   // set GDO0 mapping
-  // GDO0 is de-asserted at packet end, hence it is inverted here
-  state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDO0_INV | RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 6, 0);
+  // this is the only interrupt source that works reliably
+  // RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED gets triggered by both packet received as well as packet discarded,
+  // RADIOLIB_CC1101_GDOX_PKT_RECEIVED_CRC_OK does not get triggered with CRC disabled
+  state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END, 6, 0);
+  RADIOLIB_ASSERT(state);
+
+  // set Rx FIFO threshold to the maximum Rx size
+  state = SPIsetRegValue(RADIOLIB_CC1101_REG_FIFOTHR, RADIOLIB_CC1101_FIFO_THR_TX_1_RX_64, 3, 0);
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
