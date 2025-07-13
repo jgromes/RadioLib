@@ -19,7 +19,7 @@ jobs:
     - name: Install uncrustify
       run: |
         sudo apt-get update
-        sudo apt-get install -y uncrustify
+        sudo apt-get install -y uncrustify=0.78.1+dfsg1-1
 
     - name: Run uncrustify
       run: ./extras/uncrustify/uncrustify.sh

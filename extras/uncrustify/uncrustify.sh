@@ -4,6 +4,8 @@ script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 out_file=$script_dir/uncrustify.patch
 rm $out_file
 
+echo "Checking with $(uncrustify -v)"
+
 # for all soruce files, run uncrustify and save the output to a patch file
 for file in $(find src/ -name '*.cpp' -or -name '*.h'); do 
     uncrustify -c $script_dir/uncrustify.cfg -f $file -o $file.uncrustify
