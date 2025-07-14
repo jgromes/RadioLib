@@ -229,6 +229,14 @@ class PhysicalLayer {
     */
     PhysicalLayer();
 
+    /*!
+      \brief Default destructor.
+    */
+    virtual ~PhysicalLayer() = default;
+
+
+
+
     // basic methods
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
