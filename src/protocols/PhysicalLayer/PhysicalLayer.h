@@ -234,9 +234,6 @@ class PhysicalLayer {
     */
     virtual ~PhysicalLayer() = default;
 
-
-
-
     // basic methods
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
