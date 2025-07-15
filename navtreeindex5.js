@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classn_r_f24.html#ac3595667329715aef0e9f8d85f4116c4":[3,0,42,29],
 "classn_r_f24.html#aca941c9235ba1212257288554eb4b7fe":[3,0,42,16],
 "classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37":[3,0,42,9],
 "classn_r_f24.html#ada508497ee2e70170da3afe078e2fe0e":[3,0,42,42],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "lr1110__transceiver__0401_8h.html":[4,0,0,1,2,0,6],
 "lr1110__transceiver__0401_8h.html#a41b3993acc55d29c9be76a82718c2ba4":[4,0,0,1,2,0,6,2],
 "lr1110__transceiver__0401_8h.html#a9d71ed93e8016b97a4d70b4194f622db":[4,0,0,1,2,0,6,3],
-"lr1110__transceiver__0401_8h.html#aa6490d72623bacfc624619b3c378ac5d":[4,0,0,1,2,0,6,0],
-"lr1110__transceiver__0401_8h.html#abc3d6c6ac5598d4ced54b6429770b305":[4,0,0,1,2,0,6,1]
+"lr1110__transceiver__0401_8h.html#aa6490d72623bacfc624619b3c378ac5d":[4,0,0,1,2,0,6,0]
 };

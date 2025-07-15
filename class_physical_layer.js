@@ -1,6 +1,7 @@
 var class_physical_layer =
 [
     [ "PhysicalLayer", "class_physical_layer.html#afc972a84153977d6ccd9e116b6181ad4", null ],
+    [ "~PhysicalLayer", "class_physical_layer.html#a7af88f9f75c9778c29002c2b8238a239", null ],
     [ "available", "class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26", null ],
     [ "calculateRxTimeout", "class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9", null ],
     [ "checkDataRate", "class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba", null ],
