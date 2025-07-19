@@ -9,10 +9,10 @@
 #include "SX126x.h"
 #include "SX1262.h"
 
-//RADIOLIB_SX126X_CMD_SET_PA_CONFIG
+// RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_SX1261                        0x01
 
-//RADIOLIB_SX126X_REG_VERSION_STRING
+// RADIOLIB_SX126X_REG_VERSION_STRING
 #define RADIOLIB_SX1261_CHIP_TYPE                               "SX1261"
 
 /*!
@@ -42,9 +42,9 @@ class SX1261 : public SX1262 {
     */
     int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

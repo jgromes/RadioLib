@@ -61,7 +61,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
 
     // we really shouldn't reuse the caller's memory in this way ...
     // but since this is a private method it should be at least controlled, if not safe
-    out[i] = ((u & 0x0F) << 4 ) | ((u & 0xF0) >> 4);
+    out[i] = ((u & 0x0F) << 4) | ((u & 0xF0) >> 4);
     lfsr = (lfsr << 1) | (((lfsr & 0x80) >> 7) ^ (((lfsr & 0x20) >> 5) ^ (((lfsr & 0x10) >> 4) ^ ((lfsr & 0x08) >> 3))));
   }
 
@@ -87,8 +87,8 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
   // for rates other than the 1/3 base, puncture the code
   if(this->lrFhssCr != RADIOLIB_SX126X_LR_FHSS_CR_1_3) {
     uint32_t matrix_index = 0;
-    const uint8_t matrix[15]   = { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0 };
-    uint8_t  matrix_len   = 0;
+    const uint8_t matrix[15] = { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0 };
+    uint8_t matrix_len = 0;
     switch(this->lrFhssCr) {
       case RADIOLIB_SX126X_LR_FHSS_CR_5_6:
         matrix_len = 15;
@@ -131,10 +131,10 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
   const uint16_t step_v = step >> 1;
   step <<= 1;
 
-  uint16_t pos           = 0;
-  uint16_t st_idx        = 0;
-  uint16_t st_idx_init   = 0;
-  int16_t  bits_left     = nb_bits;
+  uint16_t pos = 0;
+  uint16_t st_idx = 0;
+  uint16_t st_idx_init = 0;
+  int16_t bits_left = nb_bits;
   uint16_t out_row_index = RADIOLIB_SX126X_LR_FHSS_HEADER_BITS * this->lrFhssHdrCount;
 
   while(bits_left > 0) {
@@ -146,7 +146,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
     // guard bits
     CLEAR_BIT_IN_ARRAY_LSB(out, out_row_index);
     CLEAR_BIT_IN_ARRAY_LSB(out, out_row_index + 1);
-        
+
     for(int16_t j = 0; j < in_row_width; j++) {
       // guard bit
       if(TEST_BIT_IN_ARRAY_LSB(tmp, pos)) {
@@ -173,10 +173,10 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
   nb_bits = out_row_index - RADIOLIB_SX126X_LR_FHSS_HEADER_BITS * this->lrFhssHdrCount;
 
   // build the header
-  uint8_t raw_header[RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2];
+  uint8_t raw_header[RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2];
   raw_header[0] = in_len;
   raw_header[1] = (this->lrFhssCr << 3) | ((uint8_t)this->lrFhssGridNonFcc << 2) |
-    (RADIOLIB_SX126X_LR_FHSS_HOPPING_ENABLED << 1) | (this->lrFhssBw >> 3);
+                  (RADIOLIB_SX126X_LR_FHSS_HOPPING_ENABLED << 1) | (this->lrFhssBw >> 3);
   raw_header[2] = ((this->lrFhssBw & 0x07) << 5) | (this->lrFhssHopSeqId >> 4);
   raw_header[3] = ((this->lrFhssHopSeqId & 0x000F) << 4);
 
@@ -190,41 +190,41 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
   for(size_t i = 0; i < this->lrFhssHdrCount; i++) {
     // insert index and calculate the header CRC
     raw_header[3] = (raw_header[3] & ~0x0C) | ((this->lrFhssHdrCount - i - 1) << 2);
-    raw_header[4] = RadioLibCRCInstance.checksum(raw_header, (RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2 - 1));
+    raw_header[4] = RadioLibCRCInstance.checksum(raw_header, (RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2 - 1));
 
     // convolutional encode
     uint8_t coded_header[RADIOLIB_SX126X_LR_FHSS_HDR_BYTES] = { 0 };
     RadioLibConvCodeInstance.begin(2);
-    RadioLibConvCodeInstance.encode(raw_header, 8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2, coded_header);
+    RadioLibConvCodeInstance.encode(raw_header, 8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2, coded_header);
     // tail-biting seems to just do this twice ...?
-    RadioLibConvCodeInstance.encode(raw_header, 8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2, coded_header);
+    RadioLibConvCodeInstance.encode(raw_header, 8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2, coded_header);
 
     // clear guard bits
     CLEAR_BIT_IN_ARRAY_LSB(out, header_offset);
     CLEAR_BIT_IN_ARRAY_LSB(out, header_offset + 1);
 
     // interleave the header directly to the physical payload buffer
-    for(size_t j = 0; j < (8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2); j++) {
+    for(size_t j = 0; j < (8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2); j++) {
       if(TEST_BIT_IN_ARRAY_LSB(coded_header, LrFhssHeaderInterleaver[j])) {
         SET_BIT_IN_ARRAY_LSB(out, header_offset + 2 + j);
       } else {
         CLEAR_BIT_IN_ARRAY_LSB(out, header_offset + 2 + j);
       }
     }
-    for(size_t j = 0; j < (8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2); j++) {
-      if(TEST_BIT_IN_ARRAY_LSB(coded_header, LrFhssHeaderInterleaver[(8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2) + j])) {
-        SET_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2) + (8*RADIOLIB_SX126X_LR_FHSS_SYNC_WORD_BYTES) + j);
+    for(size_t j = 0; j < (8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2); j++) {
+      if(TEST_BIT_IN_ARRAY_LSB(coded_header, LrFhssHeaderInterleaver[(8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2) + j])) {
+        SET_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2) + (8 * RADIOLIB_SX126X_LR_FHSS_SYNC_WORD_BYTES) + j);
       } else {
-        CLEAR_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2) + (8*RADIOLIB_SX126X_LR_FHSS_SYNC_WORD_BYTES) + j);
+        CLEAR_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2) + (8 * RADIOLIB_SX126X_LR_FHSS_SYNC_WORD_BYTES) + j);
       }
     }
 
     // copy the sync word to the physical payload buffer
-    for(size_t j = 0; j < (8*RADIOLIB_SX126X_LR_FHSS_SYNC_WORD_BYTES); j++) {
+    for(size_t j = 0; j < (8 * RADIOLIB_SX126X_LR_FHSS_SYNC_WORD_BYTES); j++) {
       if(TEST_BIT_IN_ARRAY_LSB(this->lrFhssSyncWord, j)) {
-        SET_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2) + j);
+        SET_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2) + j);
       } else {
-        CLEAR_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2) + j);
+        CLEAR_BIT_IN_ARRAY_LSB(out, header_offset + 2 + (8 * RADIOLIB_SX126X_LR_FHSS_HDR_BYTES / 2) + j);
       }
     }
 
@@ -235,7 +235,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
   uint16_t length_bits = (in_len + 2) * 8 + 6;
   switch(this->lrFhssCr) {
     case RADIOLIB_SX126X_LR_FHSS_CR_5_6:
-      length_bits = ( ( length_bits * 6 ) + 4 ) / 5;
+      length_bits = ((length_bits * 6) + 4) / 5;
       break;
     case RADIOLIB_SX126X_LR_FHSS_CR_2_3:
       length_bits = length_bits * 3 / 2;
@@ -267,7 +267,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
 int16_t SX126x::resetLRFHSS() {
   // initialize hopping configuration
   const uint16_t numChan[] = { 80, 176, 280, 376, 688, 792, 1480, 1584, 3120, 3224 };
-  
+
   // LFSR polynomials for different ranges of lrFhssNgrid
   const uint8_t lfsrPoly1[] = { 33, 45, 48, 51, 54, 57 };
   const uint8_t lfsrPoly2[] = { 65, 68, 71, 72 };
@@ -289,7 +289,7 @@ int16_t SX126x::resetLRFHSS() {
         return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
       }
       break;
-    
+
     case 60:
     case 62:
       this->lrFhssLfsrState = 56;
@@ -299,25 +299,25 @@ int16_t SX126x::resetLRFHSS() {
         return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
       }
       break;
-    
+
     case 86:
     case 99:
       this->lrFhssPoly = lfsrPoly2[this->lrFhssHopSeqId >> 7];
       this->lrFhssSeed = this->lrFhssHopSeqId & 0x7F;
       break;
-    
+
     case 185:
     case 198:
       this->lrFhssPoly = lfsrPoly3[this->lrFhssHopSeqId >> 8];
       this->lrFhssSeed = this->lrFhssHopSeqId & 0xFF;
       break;
-    
+
     case 390:
     case 403:
       this->lrFhssPoly = 264;
       this->lrFhssSeed = this->lrFhssHopSeqId;
       break;
-    
+
     default:
       return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
   }
@@ -331,7 +331,7 @@ uint16_t SX126x::stepLRFHSS() {
     uint16_t lsb = this->lrFhssLfsrState & 1;
     this->lrFhssLfsrState >>= 1;
     if(lsb) {
-     this->lrFhssLfsrState ^= this->lrFhssPoly;
+      this->lrFhssLfsrState ^= this->lrFhssPoly;
     }
     hop = this->lrFhssSeed;
     if(hop != this->lrFhssLfsrState) {

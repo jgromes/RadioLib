@@ -68,7 +68,7 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
       state = SX126x::setPaConfig(0x04, 0x01, 0x00); // LP output up to 14dBm
       this->txMode = MODE_TX_LP;
     }
-  
+
   } else if(!hp_supported && lp_supported) {
     // only LP supported
     RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
@@ -108,8 +108,9 @@ int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
   // in the interrupt (to prevent each IRQ triggering twice and allow
   // reading the irq status through the pending flag).
   SubGhz.clearPendingInterrupt();
-  if(SubGhz.hasInterrupt())
+  if(SubGhz.hasInterrupt()) {
     SubGhz.enableInterrupt();
+  }
   return(res);
 }
 

@@ -8,17 +8,17 @@
 #include "../../Module.h"
 #include "SX126x.h"
 
-//RADIOLIB_SX126X_CMD_SET_PA_CONFIG
+// RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_SX1268                        0x00
 
-//RADIOLIB_SX126X_REG_VERSION_STRING
+// RADIOLIB_SX126X_REG_VERSION_STRING
 #define RADIOLIB_SX1268_CHIP_TYPE                               "SX1268"
 
 /*!
   \class SX1268
   \brief Derived class for %SX1268 modules.
 */
-class SX1268: public SX126x {
+class SX1268 : public SX126x {
   public:
     /*!
       \brief Default constructor.
@@ -75,7 +75,7 @@ class SX1268: public SX126x {
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
     // configuration methods
 
     /*!
@@ -111,7 +111,7 @@ class SX1268: public SX126x {
       \returns \ref status_codes
     */
     int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
@@ -120,9 +120,9 @@ class SX1268: public SX126x {
     */
     int16_t setModem(ModemType_t modem) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

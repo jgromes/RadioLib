@@ -8,10 +8,10 @@
 #include "../../Module.h"
 #include "SX126x.h"
 
-//RADIOLIB_SX126X_CMD_SET_PA_CONFIG
+// RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_SX1262                        0x00
 
-//RADIOLIB_SX126X_REG_VERSION_STRING
+// RADIOLIB_SX126X_REG_VERSION_STRING
 // Note: this should really be "2", however, it seems that all SX1262 devices report as SX1261
 #define RADIOLIB_SX1262_CHIP_TYPE                               "SX1261"
 
@@ -19,7 +19,7 @@
   \class SX1262
   \brief Derived class for %SX1262 modules.
 */
-class SX1262: public SX126x {
+class SX1262 : public SX126x {
   public:
     /*!
       \brief Default constructor.
@@ -61,7 +61,7 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -76,7 +76,7 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     virtual int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
     // configuration methods
 
     /*!
@@ -113,7 +113,7 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
@@ -122,9 +122,9 @@ class SX1262: public SX126x {
     */
     int16_t setModem(ModemType_t modem) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 
