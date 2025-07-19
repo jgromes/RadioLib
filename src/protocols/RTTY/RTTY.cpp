@@ -28,7 +28,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   shiftFreqHz = shift;
 
   // calculate duration of 1 bit
-  bitDuration = (RadioLibTime_t)1000000/rate;
+  bitDuration = (RadioLibTime_t)1000000 / rate;
 
   // calculate module carrier frequency resolution
   uint32_t step = round(phyLayer->freqStep);
