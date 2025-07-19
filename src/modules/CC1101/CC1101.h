@@ -175,14 +175,15 @@
 #define RADIOLIB_CC1101_GDOX_CLOCK_XOSC_192                     0x3F        // 5     0                             f = f(XOSC)/192 (default for GDO0)
 
 // RADIOLIB_CC1101_REG_FIFOTHR
-#define RADIOLIB_CC1101_ADC_RETENTION_OFF                       0b00000000  // 6     6   do not retain ADC settings in sleep mode (default)
-#define RADIOLIB_CC1101_ADC_RETENTION_ON                        0b01000000  // 6     6   retain ADC settings in sleep mode
-#define RADIOLIB_CC1101_RX_ATTEN_0_DB                           0b00000000  // 5     4   Rx attenuation: 0 dB (default)
-#define RADIOLIB_CC1101_RX_ATTEN_6_DB                           0b00010000  // 5     4                   6 dB
-#define RADIOLIB_CC1101_RX_ATTEN_12_DB                          0b00100000  // 5     4                   12 dB
-#define RADIOLIB_CC1101_RX_ATTEN_18_DB                          0b00110000  // 5     4                   18 dB
-#define RADIOLIB_CC1101_FIFO_THR_TX_61_RX_4                     0b00000000  // 3     0   TX fifo threshold: 61, RX fifo threshold: 4
-#define RADIOLIB_CC1101_FIFO_THR_TX_33_RX_32                    0b00000111  // 3     0   TX fifo threshold: 33, RX fifo threshold: 32
+#define RADIOLIB_CC1101_ADC_RETENTION_OFF                       0b00000000  //  6     6   do not retain ADC settings in sleep mode (default)
+#define RADIOLIB_CC1101_ADC_RETENTION_ON                        0b01000000  //  6     6   retain ADC settings in sleep mode
+#define RADIOLIB_CC1101_RX_ATTEN_0_DB                           0b00000000  //  5     4   Rx attenuation: 0 dB (default)
+#define RADIOLIB_CC1101_RX_ATTEN_6_DB                           0b00010000  //  5     4                   6 dB
+#define RADIOLIB_CC1101_RX_ATTEN_12_DB                          0b00100000  //  5     4                   12 dB
+#define RADIOLIB_CC1101_RX_ATTEN_18_DB                          0b00110000  //  5     4                   18 dB
+#define RADIOLIB_CC1101_FIFO_THR_TX_61_RX_4                     0b00000000  //  3     0   TX fifo threshold: 61, RX fifo threshold: 4
+#define RADIOLIB_CC1101_FIFO_THR_TX_33_RX_32                    0b00000111  //  3     0   TX fifo threshold: 33, RX fifo threshold: 32
+#define RADIOLIB_CC1101_FIFO_THR_TX_1_RX_64                     0b00001111  //  3     0   TX fifo threshold: 1, RX fifo threshold: 64
 #define RADIOLIB_CC1101_FIFO_THRESH_TX                          33
 #define RADIOLIB_CC1101_FIFO_THRESH_RX                          32
 

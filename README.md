@@ -50,8 +50,8 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 * [__LoRaWAN__](https://lora-alliance.org/) using LoRa and FSK for modules:  
 SX127x, RFM9x, SX126x, LR11x0 and SX128x
-  * Supports Class A and C (and Multicast over C)
-  * Pre-certified for Class A on dynamic channelplans (EU868-style)
+  * Supports Class A and C (and Multicast over C).
+  * Pre-certified for Class A.
   * See the [wiki](https://github.com/jgromes/RadioLib/wiki/LoRaWAN) and [notes](https://github.com/jgromes/RadioLib/blob/master/examples/LoRaWAN/LoRaWAN_Starter/notes.md) for more information.
 
 ### Supported Arduino platforms:

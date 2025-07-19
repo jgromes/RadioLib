@@ -124,13 +124,8 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
     numDataBlocks += 1;
   }
 
-  // calculate number of batches
-  size_t numBatches = (1 + framePos + numDataBlocks) / RADIOLIB_PAGER_BATCH_LEN + 1;
-  if((1 + numDataBlocks) % RADIOLIB_PAGER_BATCH_LEN == 0) {
-    numBatches -= 1;
-  }
-
-  // calculate message length in 32-bit code words
+  // calculate number of batches and message length in 32-bit code words
+  size_t numBatches = (framePos + numDataBlocks + RADIOLIB_PAGER_BATCH_LEN) / RADIOLIB_PAGER_BATCH_LEN;
   size_t msgLen = RADIOLIB_PAGER_PREAMBLE_LENGTH + (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
 
   #if RADIOLIB_STATIC_ONLY
@@ -172,6 +167,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
         blockPos++;
         i++;
       }
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("blockPos = %d\n", blockPos);
 
       // mark this as a message code word
       msg[blockPos] = RADIOLIB_PAGER_MESSAGE_CODE_WORD << (RADIOLIB_PAGER_CODE_WORD_LEN - 1);

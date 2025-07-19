@@ -92,7 +92,7 @@ const LoRaWANBand_t US915 = {
   .freqMax = 9280000,
   .payloadLenMax = {  11,  53, 125, 242, 242,  50, 125,   0,  53, 129, 242, 242, 242, 242,   0 },
   .powerMax = 30,
-  .powerNumSteps = 10,
+  .powerNumSteps = 14,
   .dutyCycle = 0,
   .dwellTimeUp = RADIOLIB_LORAWAN_DWELL_TIME,
   .dwellTimeDn = 0,
@@ -253,7 +253,7 @@ const LoRaWANBand_t AU915 = {
   .dutyCycle = 0,
   .dwellTimeUp = RADIOLIB_LORAWAN_DWELL_TIME,
   .dwellTimeDn = 0,
-  .txParamSupported = true, // conflict: not implemented according to RP v1.1
+  .txParamSupported = true,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE,

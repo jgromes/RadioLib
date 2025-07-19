@@ -376,7 +376,6 @@ scheduleTransmission	KEYWORD2
 getFCntUp	KEYWORD2
 getNFCntDown	KEYWORD2
 getAFCntDown	KEYWORD2
-resetFCntDown	KEYWORD2
 getDevAddr	KEYWORD2
 getLastToA	KEYWORD2
 dutyCycleInterval	KEYWORD2
