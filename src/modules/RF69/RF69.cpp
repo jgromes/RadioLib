@@ -118,13 +118,13 @@ int16_t RF69::transmit(const uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  
+
   return(finishTransmit());
 }
 
 int16_t RF69::receive(uint8_t* data, size_t len) {
   // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
-  RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_RF69_MAX_PACKET_LENGTH*400.0f);
+  RadioLibTime_t timeout = 500 + (1.0f / (this->bitRate)) * (RADIOLIB_RF69_MAX_PACKET_LENGTH * 400.0f);
 
   // start reception
   int16_t state = startReceive();
@@ -403,7 +403,7 @@ int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // optionally write packet length
-  if (this->packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
+  if(this->packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
     this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, len);
   }
 
@@ -534,8 +534,8 @@ int16_t RF69::setFrequency(float freq) {
   // set mode to standby
   setMode(RADIOLIB_RF69_STANDBY);
 
-  //set carrier frequency
-  //FRF(23:0) = freq / Fstep = freq * (1 / Fstep) = freq * (2^19 / 32.0) (pag. 17 of datasheet) 
+  // set carrier frequency
+  // FRF(23:0) = freq / Fstep = freq * (1 / Fstep) = freq * (2^19 / 32.0) (pag. 17 of datasheet)
   uint32_t FRF = (freq * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_RF69_CRYSTAL_FREQ;
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
@@ -544,17 +544,17 @@ int16_t RF69::setFrequency(float freq) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t RF69::getFrequency(float *freq) {
+int16_t RF69::getFrequency(float* freq) {
   uint32_t FRF = 0;
 
-  //FRF(23:0) = [     [FRF_MSB]|[FRF_MID]|[FRF_LSB]]
-  //FRF(32:0) = [0x00|[FRF_MSB]|[FRF_MID]|[FRF_LSB]]
+  // FRF(23:0) = [     [FRF_MSB]|[FRF_MID]|[FRF_LSB]]
+  // FRF(32:0) = [0x00|[FRF_MSB]|[FRF_MID]|[FRF_LSB]]
   FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_MSB, 7, 0)) << 16) & 0x00FF0000);
-  FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_MID, 7, 0)) <<  8) & 0x0000FF00);
-  FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_LSB, 7, 0)) <<  0) & 0x000000FF);
+  FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_MID, 7, 0)) << 8) & 0x0000FF00);
+  FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_LSB, 7, 0)) << 0) & 0x000000FF);
 
-  //freq = Fstep * FRF(23:0) = (32.0 / 2^19) * FRF(23:0) (pag. 17 of datasheet) 
-  *freq = FRF * ( RADIOLIB_RF69_CRYSTAL_FREQ / (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT) );
+  // freq = Fstep * FRF(23:0) = (32.0 / 2^19) * FRF(23:0) (pag. 17 of datasheet)
+  *freq = FRF * (RADIOLIB_RF69_CRYSTAL_FREQ / (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT));
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -594,7 +594,7 @@ int16_t RF69::setRxBandwidth(float rxBw) {
   // calculate exponent and mantissa values for receiver bandwidth
   for(int8_t e = 7; e >= 0; e--) {
     for(int8_t m = 2; m >= 0; m--) {
-      float point = (RADIOLIB_RF69_CRYSTAL_FREQ * 1000000.0f)/(((4 * m) + 16) * ((uint32_t)1 << (e + (this->ookEnabled ? 3 : 2))));
+      float point = (RADIOLIB_RF69_CRYSTAL_FREQ * 1000000.0f) / (((4 * m) + 16) * ((uint32_t)1 << (e + (this->ookEnabled ? 3 : 2))));
       if(fabsf(rxBw - (point / 1000.0f)) <= 0.1f) {
         // set Rx bandwidth
         state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, (m << 3) | e, 4, 0);
@@ -617,7 +617,7 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
   }
 
   // check frequency deviation range
-  if(!((newFreqDev + this->bitRate/2 <= 500))) {
+  if(!((newFreqDev + this->bitRate / 2 <= 500))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
@@ -632,14 +632,14 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
   return(state);
 }
 
-int16_t RF69::getFrequencyDeviation(float *freqDev) {
+int16_t RF69::getFrequencyDeviation(float* freqDev) {
   if(freqDev == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
   if(this->ookEnabled) {
     *freqDev = 0.0;
-    
+
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -648,10 +648,10 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
   fdev |= (uint32_t)((this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FDEV_MSB, 5, 0) << 8) & 0x0000FF00);
   fdev |= (uint32_t)((this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FDEV_LSB, 7, 0) << 0) & 0x000000FF);
 
-  // calculate frequency deviation from raw value obtained from register 
+  // calculate frequency deviation from raw value obtained from register
   // Fdev = Fstep * Fdev(13:0) (pag. 20 of datasheet)
-  *freqDev = (1000.0f * fdev * RADIOLIB_RF69_CRYSTAL_FREQ) / 
-    (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
+  *freqDev = (1000.0f * fdev * RADIOLIB_RF69_CRYSTAL_FREQ) /
+             (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -712,7 +712,7 @@ int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBit
   RADIOLIB_ASSERT(state);
 
   // set the length
-  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, (len-1)<<3, 5, 3);
+  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, (len - 1) << 3, 5, 3);
 
   // set sync word register
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_SYNC_VALUE_1, syncWord, len);
@@ -728,7 +728,7 @@ int16_t RF69::setPreambleLength(uint8_t preambleLen) {
   uint8_t preLenBytes = preambleLen / 8;
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_PREAMBLE_MSB, 0x00);
 
-  return (this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, preLenBytes));
+  return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, preLenBytes));
 }
 
 int16_t RF69::setNodeAddress(uint8_t nodeAddr) {
@@ -763,7 +763,7 @@ int16_t RF69::disableAddressFiltering() {
 }
 
 void RF69::setAmbientTemperature(int16_t tempAmbient) {
-  this->tempOffset = getTemperature() -  tempAmbient;
+  this->tempOffset = getTemperature() - tempAmbient;
 }
 
 int16_t RF69::getTemperature() {
@@ -785,7 +785,7 @@ int16_t RF69::getTemperature() {
 
 size_t RF69::getPacketLength(bool update) {
   if(!this->packetLengthQueried && update) {
-    if (this->packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
+    if(this->packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
       this->packetLength = this->mod->SPIreadRegister(RADIOLIB_RF69_REG_FIFO);
     } else {
       this->packetLength = this->mod->SPIreadRegister(RADIOLIB_RF69_REG_PAYLOAD_LENGTH);
@@ -837,7 +837,7 @@ int16_t RF69::disableContinuousModeBitSync() {
 }
 
 int16_t RF69::setCrcFiltering(bool crcOn) {
-  if (crcOn == true) {
+  if(crcOn == true) {
     return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PACKET_CONFIG_1, RADIOLIB_RF69_CRC_ON, 4, 4));
   } else {
     return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PACKET_CONFIG_1, RADIOLIB_RF69_CRC_OFF, 4, 4));
@@ -847,11 +847,11 @@ int16_t RF69::setCrcFiltering(bool crcOn) {
 int16_t RF69::setPromiscuousMode(bool enable) {
   int16_t state = RADIOLIB_ERR_NONE;
 
-  if (this->promiscuous == enable) {
+  if(this->promiscuous == enable) {
     return(state);
   }
 
-  if (enable == true) {
+  if(enable == true) {
     // disable preamble detection and generation
     state = setPreambleLength(0);
     RADIOLIB_ASSERT(state);
@@ -863,7 +863,7 @@ int16_t RF69::setPromiscuousMode(bool enable) {
     // disable CRC filtering
     state = setCrcFiltering(false);
   } else {
-    // enable preamble detection and generation 
+    // enable preamble detection and generation
     state = setPreambleLength(RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
     RADIOLIB_ASSERT(state);
 
@@ -922,14 +922,14 @@ int16_t RF69::setEncoding(uint8_t encoding) {
 
 int16_t RF69::setLnaTestBoost(bool value) {
   if(value) {
-    return (this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_TEST_LNA, RADIOLIB_RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+    return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_TEST_LNA, RADIOLIB_RF69_TEST_LNA_BOOST_HIGH, 7, 0));
   }
 
   return(this->mod->SPIsetRegValue(RADIOLIB_RF69_TEST_LNA_BOOST_NORMAL, RADIOLIB_RF69_TEST_LNA_BOOST_HIGH, 7, 0));
 }
 
 float RF69::getRSSI() {
-  return(-1.0 * (this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_RSSI_VALUE)/2.0));
+  return(-1.0 * (this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_RSSI_VALUE) / 2.0));
 }
 
 int16_t RF69::setRSSIThreshold(float dbm) {
@@ -1053,7 +1053,7 @@ int16_t RF69::config() {
 
 int16_t RF69::setPacketMode(uint8_t mode, uint8_t len) {
   // check length
-  if (len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
+  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
