@@ -1,9 +1,7 @@
 #include "SX1231.h"
 #if !RADIOLIB_EXCLUDE_SX1231
 
-SX1231::SX1231(Module* mod) : RF69(mod) {
-
-}
+SX1231::SX1231(Module* mod) : RF69(mod) {}
 
 int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
@@ -74,7 +72,7 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 
   // set default packet length mode
   state = variablePacketLengthMode();
-  if (state != RADIOLIB_ERR_NONE) {
+  if(state != RADIOLIB_ERR_NONE) {
     return(state);
   }
 
