@@ -26,9 +26,9 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
 
   // dynamically allocate memory
   #if RADIOLIB_STATIC_ONLY
-    char str[RADIOLIB_STATIC_ARRAY_SIZE];
+  char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
-    char* str = new char[len];
+  char* str = new char[len];
   #endif
 
   // copy string from flash
@@ -40,12 +40,12 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   // transmit string
   int16_t state = transmit(str, addr);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] str;
+  delete[] str;
   #endif
   return(state);
 }
 
-int16_t PhysicalLayer::transmit(String& str, uint8_t addr) {
+int16_t PhysicalLayer::transmit(String &str, uint8_t addr) {
   return(transmit(str.c_str(), addr));
 }
 #endif
@@ -62,7 +62,7 @@ int16_t PhysicalLayer::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PhysicalLayer::receive(String& str, size_t len) {
+int16_t PhysicalLayer::receive(String &str, size_t len) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // user can override the length of data to read
@@ -70,15 +70,15 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
 
   // build a temporary buffer
   #if RADIOLIB_STATIC_ONLY
-    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
+  uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
-    uint8_t* data = NULL;
-    if(length == 0) {
-      data = new uint8_t[this->maxPacketLength + 1];
-    } else {
-      data = new uint8_t[length + 1];
-    }
-    RADIOLIB_ASSERT_PTR(data);
+  uint8_t* data = NULL;
+  if(length == 0) {
+    data = new uint8_t[this->maxPacketLength + 1];
+  } else {
+    data = new uint8_t[length + 1];
+  }
+  RADIOLIB_ASSERT_PTR(data);
   #endif
 
   // attempt packet reception
@@ -101,7 +101,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
 
   // deallocate temporary buffer
   #if !RADIOLIB_STATIC_ONLY
-    delete[] data;
+  delete[] data;
   #endif
 
   return(state);
@@ -147,7 +147,7 @@ int16_t PhysicalLayer::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlag
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PhysicalLayer::startTransmit(String& str, uint8_t addr) {
+int16_t PhysicalLayer::startTransmit(String &str, uint8_t addr) {
   return(startTransmit(str.c_str(), addr));
 }
 #endif
@@ -175,7 +175,7 @@ int16_t PhysicalLayer::finishTransmit() {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PhysicalLayer::readData(String& str, size_t len) {
+int16_t PhysicalLayer::readData(String &str, size_t len) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // read the number of actually received bytes
@@ -189,10 +189,10 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
 
   // build a temporary buffer
   #if RADIOLIB_STATIC_ONLY
-    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
+  uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
-    uint8_t* data = new uint8_t[length + 1];
-    RADIOLIB_ASSERT_PTR(data);
+  uint8_t* data = new uint8_t[length + 1];
+  RADIOLIB_ASSERT_PTR(data);
   #endif
 
   // read the received data
@@ -210,7 +210,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
 
   // deallocate temporary buffer
   #if !RADIOLIB_STATIC_ONLY
-    delete[] data;
+  delete[] data;
   #endif
 
   return(state);
@@ -314,13 +314,13 @@ RadioLibTime_t PhysicalLayer::getTimeOnAir(size_t len) {
 
 RadioLibTime_t PhysicalLayer::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   (void)timeoutUs;
-  return(0); 
+  return(0);
 }
 
 uint32_t PhysicalLayer::getIrqMapped(RadioLibIrqFlags_t irq) {
   // iterate over all set bits and build the module-specific flags
   uint32_t irqRaw = 0;
-  for(uint8_t i = 0; i < 8*(sizeof(RadioLibIrqFlags_t)); i++) {
+  for(uint8_t i = 0; i < 8 * (sizeof(RadioLibIrqFlags_t)); i++) {
     if((irq & (uint32_t)(1UL << i)) && (this->irqMap[i] != RADIOLIB_IRQ_NOT_SUPPORTED)) {
       irqRaw |= this->irqMap[i];
     }
@@ -333,7 +333,7 @@ int16_t PhysicalLayer::checkIrq(RadioLibIrqType_t irq) {
   if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
-  
+
   return(getIrqFlags() & this->irqMap[irq]);
 }
 
@@ -360,12 +360,12 @@ int16_t PhysicalLayer::clearIrqFlags(uint32_t irq) {
 }
 
 int16_t PhysicalLayer::startChannelScan() {
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::startChannelScan(const ChannelScanConfig_t &config) {
   (void)config;
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::getChannelScanResult() {
@@ -373,12 +373,12 @@ int16_t PhysicalLayer::getChannelScanResult() {
 }
 
 int16_t PhysicalLayer::scanChannel() {
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::scanChannel(const ChannelScanConfig_t &config) {
   (void)config;
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int32_t PhysicalLayer::random(int32_t max) {
@@ -517,25 +517,19 @@ void PhysicalLayer::setPacketReceivedAction(void (*func)(void)) {
   (void)func;
 }
 
-void PhysicalLayer::clearPacketReceivedAction() {
-  
-}
+void PhysicalLayer::clearPacketReceivedAction() {}
 
 void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
   (void)func;
 }
 
-void PhysicalLayer::clearPacketSentAction() {
-  
-}
+void PhysicalLayer::clearPacketSentAction() {}
 
 void PhysicalLayer::setChannelScanAction(void (*func)(void)) {
   (void)func;
 }
 
-void PhysicalLayer::clearChannelScanAction() {
-  
-}
+void PhysicalLayer::clearChannelScanAction() {}
 
 int16_t PhysicalLayer::setModem(ModemType_t modem) {
   (void)modem;
