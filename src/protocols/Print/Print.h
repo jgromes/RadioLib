@@ -17,23 +17,25 @@
 class RadioLibPrint {
   public:
     virtual size_t write(uint8_t) = 0;
-    size_t write(const char *str) {
-      if (str == NULL) return 0;
-      return write(reinterpret_cast<const uint8_t *>(str), strlen(str));
+    size_t write(const char* str) {
+      if(str == NULL) {
+        return 0;
+      }
+      return write(reinterpret_cast<const uint8_t*>(str), strlen(str));
     }
-    virtual size_t write(const uint8_t *buffer, size_t size);
-    size_t write(const char *buffer, size_t size) {
-      return write(reinterpret_cast<const uint8_t *>(buffer), size);
+    virtual size_t write(const uint8_t* buffer, size_t size);
+    size_t write(const char* buffer, size_t size) {
+      return write(reinterpret_cast<const uint8_t*>(buffer), size);
     }
 
-    size_t print(ITA2String& ita2);
-    size_t println(ITA2String& ita2);
+    size_t print(ITA2String &ita2);
+    size_t println(ITA2String &ita2);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
-    size_t print(const __FlashStringHelper *);
+    size_t print(const __FlashStringHelper*);
     size_t print(const String &);
 
-    size_t println(const __FlashStringHelper *);
+    size_t println(const __FlashStringHelper*);
     size_t println(const String &);
     #endif
 
@@ -56,9 +58,9 @@ class RadioLibPrint {
     size_t println(double, int = 2);
     size_t println(void);
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   protected:
-#endif
+    #endif
     uint8_t encoding = RADIOLIB_ASCII_EXTENDED;
     const char* lineFeed = "\r\n";
 
