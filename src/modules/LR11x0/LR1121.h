@@ -13,7 +13,7 @@
   \class LR1121
   \brief Derived class for %LR1121 modules.
 */
-class LR1121: public LR1120 {
+class LR1121 : public LR1120 {
   public:
     /*!
       \brief Default constructor.
@@ -21,9 +21,9 @@ class LR1121: public LR1120 {
     */
     LR1121(Module* mod); // cppcheck-suppress noExplicitConstructor
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 
