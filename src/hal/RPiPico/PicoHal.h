@@ -69,16 +69,16 @@ class PicoHal : public RadioLibHal {
         return;
       }
 
-    gpio_set_irq_enabled_with_callback(interruptNum, mode, true, (gpio_irq_callback_t)interruptCb);
-  }
+      gpio_set_irq_enabled_with_callback(interruptNum, mode, true, (gpio_irq_callback_t)interruptCb);
+    }
 
     void detachInterrupt(uint32_t interruptNum) override {
       if(interruptNum == RADIOLIB_NC) {
         return;
       }
 
-    gpio_set_irq_enabled_with_callback(interruptNum, 0, false, NULL);
-  }
+      gpio_set_irq_enabled_with_callback(interruptNum, 0, false, NULL);
+    }
 
     void delay(unsigned long ms) override {
       sleep_ms(ms);
