@@ -15,38 +15,38 @@
 #define RADIOLIB_AX25_MAX_CALLSIGN_LEN                          6
 
 // flag field                                                                 MSB   LSB   DESCRIPTION
-#define RADIOLIB_AX25_FLAG                                      0b01111110  //  7     0     AX.25 frame start/end flag
+#define RADIOLIB_AX25_FLAG                                      0b01111110  // 7     0     AX.25 frame start/end flag
 
 // address field
-#define RADIOLIB_AX25_SSID_COMMAND_DEST                         0b10000000  //  7     7     frame type: command (set in destination SSID)
-#define RADIOLIB_AX25_SSID_COMMAND_SOURCE                       0b00000000  //  7     7                 command (set in source SSID)
-#define RADIOLIB_AX25_SSID_RESPONSE_DEST                        0b00000000  //  7     7                 response (set in destination SSID)
-#define RADIOLIB_AX25_SSID_RESPONSE_SOURCE                      0b10000000  //  7     7                 response (set in source SSID)
-#define RADIOLIB_AX25_SSID_HAS_NOT_BEEN_REPEATED                0b00000000  //  7     7                 not repeated yet (set in repeater SSID)
-#define RADIOLIB_AX25_SSID_HAS_BEEN_REPEATED                    0b10000000  //  7     7                 repeated (set in repeater SSID)
-#define RADIOLIB_AX25_SSID_RESERVED_BITS                        0b01100000  //  6     5     reserved bits in SSID
-#define RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE              0b00000000  //  0     0     HDLC extension bit: next octet contains more address information
-#define RADIOLIB_AX25_SSID_HDLC_EXTENSION_END                   0b00000001  //  0     0                         address field end
+#define RADIOLIB_AX25_SSID_COMMAND_DEST                         0b10000000  // 7     7     frame type: command (set in destination SSID)
+#define RADIOLIB_AX25_SSID_COMMAND_SOURCE                       0b00000000  // 7     7                 command (set in source SSID)
+#define RADIOLIB_AX25_SSID_RESPONSE_DEST                        0b00000000  // 7     7                 response (set in destination SSID)
+#define RADIOLIB_AX25_SSID_RESPONSE_SOURCE                      0b10000000  // 7     7                 response (set in source SSID)
+#define RADIOLIB_AX25_SSID_HAS_NOT_BEEN_REPEATED                0b00000000  // 7     7                 not repeated yet (set in repeater SSID)
+#define RADIOLIB_AX25_SSID_HAS_BEEN_REPEATED                    0b10000000  // 7     7                 repeated (set in repeater SSID)
+#define RADIOLIB_AX25_SSID_RESERVED_BITS                        0b01100000  // 6     5     reserved bits in SSID
+#define RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE              0b00000000  // 0     0     HDLC extension bit: next octet contains more address information
+#define RADIOLIB_AX25_SSID_HDLC_EXTENSION_END                   0b00000001  // 0     0                         address field end
 
 // control field
-#define RADIOLIB_AX25_CONTROL_U_SET_ASYNC_BAL_MODE              0b01101100  //  7     2     U frame type: set asynchronous balanced mode (connect request)
-#define RADIOLIB_AX25_CONTROL_U_SET_ASYNC_BAL_MODE_EXT          0b00101100  //  7     2                   set asynchronous balanced mode extended (connect request with module 128)
-#define RADIOLIB_AX25_CONTROL_U_DISCONNECT                      0b01000000  //  7     2                   disconnect request
-#define RADIOLIB_AX25_CONTROL_U_DISCONNECT_MODE                 0b00001100  //  7     2                   disconnect mode (system busy or disconnected)
-#define RADIOLIB_AX25_CONTROL_U_UNNUMBERED_ACK                  0b01100000  //  7     2                   unnumbered acknowledge
-#define RADIOLIB_AX25_CONTROL_U_FRAME_REJECT                    0b10000100  //  7     2                   frame reject
-#define RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION          0b00000000  //  7     2                   unnumbered information
-#define RADIOLIB_AX25_CONTROL_U_EXHANGE_IDENTIFICATION          0b10101100  //  7     2                   exchange ID
-#define RADIOLIB_AX25_CONTROL_U_TEST                            0b11100000  //  7     2                   test
-#define RADIOLIB_AX25_CONTROL_POLL_FINAL_ENABLED                0b00010000  //  4     4     control field poll/final bit: enabled
-#define RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED               0b00000000  //  4     4                                   disabled
-#define RADIOLIB_AX25_CONTROL_S_RECEIVE_READY                   0b00000000  //  3     2     S frame type: receive ready (system ready to receive)
-#define RADIOLIB_AX25_CONTROL_S_RECEIVE_NOT_READY               0b00000100  //  3     2                   receive not ready (TNC buffer full)
-#define RADIOLIB_AX25_CONTROL_S_REJECT                          0b00001000  //  3     2                   reject (out of sequence or duplicate)
-#define RADIOLIB_AX25_CONTROL_S_SELECTIVE_REJECT                0b00001100  //  3     2                   selective reject (single frame repeat request)
-#define RADIOLIB_AX25_CONTROL_INFORMATION_FRAME                 0b00000000  //  0     0     frame type: information (I frame)
-#define RADIOLIB_AX25_CONTROL_SUPERVISORY_FRAME                 0b00000001  //  1     0                 supervisory (S frame)
-#define RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME                  0b00000011  //  1     0                 unnumbered (U frame)
+#define RADIOLIB_AX25_CONTROL_U_SET_ASYNC_BAL_MODE              0b01101100  // 7     2     U frame type: set asynchronous balanced mode (connect request)
+#define RADIOLIB_AX25_CONTROL_U_SET_ASYNC_BAL_MODE_EXT          0b00101100  // 7     2                   set asynchronous balanced mode extended (connect request with module 128)
+#define RADIOLIB_AX25_CONTROL_U_DISCONNECT                      0b01000000  // 7     2                   disconnect request
+#define RADIOLIB_AX25_CONTROL_U_DISCONNECT_MODE                 0b00001100  // 7     2                   disconnect mode (system busy or disconnected)
+#define RADIOLIB_AX25_CONTROL_U_UNNUMBERED_ACK                  0b01100000  // 7     2                   unnumbered acknowledge
+#define RADIOLIB_AX25_CONTROL_U_FRAME_REJECT                    0b10000100  // 7     2                   frame reject
+#define RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION          0b00000000  // 7     2                   unnumbered information
+#define RADIOLIB_AX25_CONTROL_U_EXHANGE_IDENTIFICATION          0b10101100  // 7     2                   exchange ID
+#define RADIOLIB_AX25_CONTROL_U_TEST                            0b11100000  // 7     2                   test
+#define RADIOLIB_AX25_CONTROL_POLL_FINAL_ENABLED                0b00010000  // 4     4     control field poll/final bit: enabled
+#define RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED               0b00000000  // 4     4                                   disabled
+#define RADIOLIB_AX25_CONTROL_S_RECEIVE_READY                   0b00000000  // 3     2     S frame type: receive ready (system ready to receive)
+#define RADIOLIB_AX25_CONTROL_S_RECEIVE_NOT_READY               0b00000100  // 3     2                   receive not ready (TNC buffer full)
+#define RADIOLIB_AX25_CONTROL_S_REJECT                          0b00001000  // 3     2                   reject (out of sequence or duplicate)
+#define RADIOLIB_AX25_CONTROL_S_SELECTIVE_REJECT                0b00001100  // 3     2                   selective reject (single frame repeat request)
+#define RADIOLIB_AX25_CONTROL_INFORMATION_FRAME                 0b00000000  // 0     0     frame type: information (I frame)
+#define RADIOLIB_AX25_CONTROL_SUPERVISORY_FRAME                 0b00000001  // 1     0                 supervisory (S frame)
+#define RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME                  0b00000011  // 1     0                 unnumbered (U frame)
 
 // protocol identifier field
 #define RADIOLIB_AX25_PID_ISO_8208                              0x01
@@ -121,35 +121,35 @@ class AX25Frame {
     uint16_t sendSeqNumber;
 
     #if !RADIOLIB_STATIC_ONLY
-      /*!
-        \brief The info field.
-      */
-      uint8_t* info;
+    /*!
+      \brief The info field.
+    */
+    uint8_t* info;
 
-      /*!
-        \brief Array of repeater callsigns.
-      */
-      char** repeaterCallsigns;
+    /*!
+      \brief Array of repeater callsigns.
+    */
+    char** repeaterCallsigns;
 
-      /*!
-        \brief Array of repeater SSIDs.
-      */
-      uint8_t* repeaterSSIDs;
+    /*!
+      \brief Array of repeater SSIDs.
+    */
+    uint8_t* repeaterSSIDs;
     #else
-      /*!
-        \brief The info field.
-      */
-      uint8_t info[RADIOLIB_STATIC_ARRAY_SIZE];
+    /*!
+      \brief The info field.
+    */
+    uint8_t info[RADIOLIB_STATIC_ARRAY_SIZE];
 
-      /*!
-        \brief Array of repeater callsigns.
-      */
-      char repeaterCallsigns[8][RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1];
+    /*!
+      \brief Array of repeater callsigns.
+    */
+    char repeaterCallsigns[8][RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1];
 
-      /*!
-        \brief Array of repeater SSIDs.
-      */
-      uint8_t repeaterSSIDs[8];
+    /*!
+      \brief Array of repeater SSIDs.
+    */
+    uint8_t repeaterSSIDs[8];
     #endif
 
     /*!
@@ -191,7 +191,7 @@ class AX25Frame {
       \brief Copy constructor.
       \param frame AX25Frame instance to copy.
     */
-    AX25Frame(const AX25Frame& frame);
+    AX25Frame(const AX25Frame &frame);
 
     /*!
       \brief Default destructor.
@@ -202,7 +202,7 @@ class AX25Frame {
       \brief Overload for assignment operator.
       \param frame rvalue AX25Frame.
     */
-    AX25Frame& operator=(const AX25Frame& frame);
+    AX25Frame &operator=(const AX25Frame &frame);
 
     /*!
       \brief Method to set the repeater callsigns and SSIDs.
@@ -249,13 +249,13 @@ class AX25Client {
       \brief Copy constructor.
       \param ax25 AX25Client instance to copy.
     */
-    AX25Client(const AX25Client& ax25);
-    
+    AX25Client(const AX25Client &ax25);
+
     /*!
       \brief Overload for assignment operator.
       \param ax25 rvalue AX25Client.
     */
-    AX25Client& operator=(const AX25Client& ax25);
+    AX25Client &operator=(const AX25Client &ax25);
 
     /*!
       \brief Set AFSK tone correction offset. On some platforms, this is required to get the audio produced
@@ -290,7 +290,7 @@ class AX25Client {
       Defaults to 0.
       \returns \ref status_codes
     */
-    int16_t transmit(String& str, const char* destCallsign, uint8_t destSSID = 0x00);
+    int16_t transmit(String &str, const char* destCallsign, uint8_t destSSID = 0x00);
     #endif
 
     /*!
@@ -310,9 +310,9 @@ class AX25Client {
     */
     int16_t sendFrame(AX25Frame* frame);
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     friend class APRSClient;
 
     PhysicalLayer* phyLayer;
