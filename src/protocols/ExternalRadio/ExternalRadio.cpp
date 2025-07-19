@@ -9,14 +9,14 @@ ExternalRadio::ExternalRadio(uint32_t pin) : PhysicalLayer() {
 }
 #endif
 
-ExternalRadio::ExternalRadio(RadioLibHal *hal, uint32_t pin) : PhysicalLayer() {
+ExternalRadio::ExternalRadio(RadioLibHal* hal, uint32_t pin) : PhysicalLayer() {
   this->freqStep = 1;
   mod = new Module(hal, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, pin);
   mod->hal->pinMode(pin, mod->hal->GpioModeOutput);
   this->prevFrf = 0;
 }
 
-ExternalRadio::ExternalRadio(const ExternalRadio& ext) : PhysicalLayer() {
+ExternalRadio::ExternalRadio(const ExternalRadio &ext) : PhysicalLayer() {
   this->freqStep = 1;
   this->prevFrf = ext.prevFrf;
   if(ext.mod) {
@@ -24,7 +24,7 @@ ExternalRadio::ExternalRadio(const ExternalRadio& ext) : PhysicalLayer() {
   }
 }
 
-ExternalRadio& ExternalRadio::operator=(const ExternalRadio& ext) {
+ExternalRadio &ExternalRadio::operator=(const ExternalRadio &ext) {
   if(&ext != this) {
     this->prevFrf = ext.prevFrf;
     if(ext.mod) {
@@ -66,6 +66,6 @@ int16_t ExternalRadio::transmitDirect(uint32_t frf) {
     this->prevFrf = frf;
     this->mod->hal->digitalWrite(this->mod->getGpio(), val);
   }
-  
+
   return(RADIOLIB_ERR_NONE);
 }
