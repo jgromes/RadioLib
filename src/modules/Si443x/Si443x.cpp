@@ -99,7 +99,7 @@ int16_t Si443x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t Si443x::receive(uint8_t* data, size_t len) {
   // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
-  RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_SI443X_MAX_PACKET_LENGTH*400.0f);
+  RadioLibTime_t timeout = 500 + (1.0f / (this->bitRate)) * (RADIOLIB_SI443X_MAX_PACKET_LENGTH * 400.0f);
 
   // start reception
   int16_t state = startReceive();
@@ -249,7 +249,7 @@ int16_t Si443x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   clearIrqStatus();
 
   // set packet length
-  if (this->packetLengthConfig == RADIOLIB_SI443X_FIXED_PACKET_LENGTH_OFF) {
+  if(this->packetLengthConfig == RADIOLIB_SI443X_FIXED_PACKET_LENGTH_OFF) {
     this->mod->SPIwriteRegister(RADIOLIB_SI443X_REG_TRANSMIT_PACKET_LENGTH, len);
   }
 
@@ -420,25 +420,25 @@ int16_t Si443x::setRxBandwidth(float rxBw) {
   // this is the "well-behaved" section - can be linearly approximated
   if((rxBw >= 2.6f) && (rxBw <= 4.5f)) {
     decRate = 5;
-    filterSet = ((rxBw - 2.1429f)/0.3250f + 0.5f);
+    filterSet = ((rxBw - 2.1429f) / 0.3250f + 0.5f);
   } else if((rxBw > 4.5f) && (rxBw <= 8.8f)) {
     decRate = 4;
-    filterSet = ((rxBw - 3.9857f)/0.6643f + 0.5f);
+    filterSet = ((rxBw - 3.9857f) / 0.6643f + 0.5f);
   } else if((rxBw > 8.8f) && (rxBw <= 17.5f)) {
     decRate = 3;
-    filterSet = ((rxBw - 7.6714f)/1.3536f + 0.5f);
+    filterSet = ((rxBw - 7.6714f) / 1.3536f + 0.5f);
   } else if((rxBw > 17.5f) && (rxBw <= 34.7f)) {
     decRate = 2;
-    filterSet = ((rxBw - 15.2000f)/2.6893f + 0.5f);
+    filterSet = ((rxBw - 15.2000f) / 2.6893f + 0.5f);
   } else if((rxBw > 34.7f) && (rxBw <= 69.2f)) {
     decRate = 1;
-    filterSet = ((rxBw - 30.2430f)/5.3679f + 0.5f);
+    filterSet = ((rxBw - 30.2430f) / 5.3679f + 0.5f);
   } else if((rxBw > 69.2f) && (rxBw <= 137.9f)) {
     decRate = 0;
-    filterSet = ((rxBw - 60.286f)/10.7000f + 0.5f);
+    filterSet = ((rxBw - 60.286f) / 10.7000f + 0.5f);
 
-  // this is the "Lord help thee who tread 'ere" section - no way to approximate this mess
-  /// \todo float tolerance equality as macro?
+    // this is the "Lord help thee who tread 'ere" section - no way to approximate this mess
+    /// \todo float tolerance equality as macro?
   } else if(fabsf(rxBw - 142.8f) <= 0.001f) {
     bypass = RADIOLIB_SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
@@ -471,7 +471,7 @@ int16_t Si443x::setRxBandwidth(float rxBw) {
     bypass = RADIOLIB_SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 4;
-  } else if(fabsf(rxBw -335.5f) <= 0.001f) {
+  } else if(fabsf(rxBw - 335.5f) <= 0.001f) {
     bypass = RADIOLIB_SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 8;
@@ -545,13 +545,13 @@ int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
   RADIOLIB_ASSERT(state);
 
   // set default preamble detection threshold to 5/8 of preamble length (in units of 4 bits)
-  uint8_t preThreshold = 5*preLenNibbles / 8;
+  uint8_t preThreshold = 5 * preLenNibbles / 8;
   return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 3, 7, 3));
 }
 
 size_t Si443x::getPacketLength(bool update) {
   if(!this->packetLengthQueried && update) {
-    if (this->packetLengthConfig == RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON) {
+    if(this->packetLengthConfig == RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON) {
       this->packetLength = this->mod->SPIreadRegister(RADIOLIB_SI443X_REG_TRANSMIT_PACKET_LENGTH);
     } else {
       this->packetLength = this->mod->SPIreadRegister(RADIOLIB_SI443X_REG_RECEIVED_PACKET_LENGTH);
@@ -699,7 +699,7 @@ int16_t Si443x::setFrequencyRaw(float newFreq) {
 
 int16_t Si443x::setPacketMode(uint8_t mode, uint8_t len) {
   // check packet length
-  if (len > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
+  if(len > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
@@ -788,10 +788,10 @@ int16_t Si443x::updateClockRecovery() {
     ndec = (uint16_t)1 << ndecExp;
   } else {
     ndecExp *= -1;
-    ndec = 1.0f/(float)((uint16_t)1 << ndecExp);
+    ndec = 1.0f / (float)((uint16_t)1 << ndecExp);
   }
-  float rxOsr = ((float)(500 * (1 + 2*bypass))) / (ndec * this->bitRate * ((float)(1 + manch)));
-  uint32_t ncoOff = (this->bitRate * (1 + manch) * ((uint32_t)(1) << (20 + decRate))) / (500 * (1 + 2*bypass));
+  float rxOsr = ((float)(500 * (1 + 2 * bypass))) / (ndec * this->bitRate * ((float)(1 + manch)));
+  uint32_t ncoOff = (this->bitRate * (1 + manch) * ((uint32_t)(1) << (20 + decRate))) / (500 * (1 + 2 * bypass));
   uint16_t crGain = 2 + (((float)(65536.0f * (1 + manch)) * this->bitRate) / (rxOsr * (this->frequencyDev / 0.625f)));
   uint16_t rxOsr_fixed = (uint16_t)rxOsr;
 
