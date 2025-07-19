@@ -41,10 +41,10 @@
 #define RADIOLIB_LORAWAN_FCTRL_FRAME_PENDING                    (0x01 << 4) // 4     4     downlink frame is pending
 
 // fPort field
-#define RADIOLIB_LORAWAN_FPORT_MAC_COMMAND                      (0x00 << 0) //  7     0     payload contains MAC commands only
-#define RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN                      (0x01 << 0) //  7     0     start of user-allowed fPort range
-#define RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX                      (0xDF << 0) //  7     0     end of user-allowed fPort range
-#define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) //  7     0     fPort values equal to and larger than this are reserved
+#define RADIOLIB_LORAWAN_FPORT_MAC_COMMAND                      (0x00 << 0) // 7     0     payload contains MAC commands only
+#define RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN                      (0x01 << 0) // 7     0     start of user-allowed fPort range
+#define RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX                      (0xDF << 0) // 7     0     end of user-allowed fPort range
+#define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) // 7     0     fPort values equal to and larger than this are reserved
 
 // data rate encoding
 #define RADIOLIB_LORAWAN_DATA_RATE_MODEM                        (0x03 << 6) // 7     6     modem mask
@@ -936,7 +936,7 @@ class LoRaWANNode {
 
     /*!
       \brief Add a LoRaWAN Application Package as defined in one of the TSxxx documents.
-      Any downlinks that occur on the corresponding FPort will be redirected to 
+      Any downlinks that occur on the corresponding FPort will be redirected to
       a supplied callback that implements this package. These downlink contents will be
       hidden from the user as the downlink buffer will be empty and the length zero.
       The package may need to overrule the behaviour of your device - refer to the examples.
@@ -949,7 +949,7 @@ class LoRaWANNode {
 
     /*!
       \brief Add a LoRaWAN Application Package as defined in one of the TSxxx documents.
-      Any downlinks that occur on the corresponding FPort will be redirected to 
+      Any downlinks that occur on the corresponding FPort will be redirected to
       a supplied callback that implements this package. These downlink contents will be
       hidden from the user as the downlink buffer will be empty and the length zero.
       The package may need to overrule the behaviour of your device - refer to the examples.
@@ -1154,7 +1154,7 @@ class LoRaWANNode {
     // extract downlink payload and process MAC commands
     int16_t parseDownlink(uint8_t* data, size_t* len, uint8_t window, LoRaWANEvent_t* event = NULL);
 
-    // add a LoRaWAN package that runs through the network layer 
+    // add a LoRaWAN package that runs through the network layer
     // (not available to users, they are only allowed to add application packages)
     int16_t addNwkPackage(uint8_t packageId, PackageCb_t callback);
 

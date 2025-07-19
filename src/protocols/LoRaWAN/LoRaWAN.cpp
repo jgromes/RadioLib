@@ -231,7 +231,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     LoRaWANNode::clearMacCommands(this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
     return(rxWindow);
   }
-  
+
   state = this->parseDownlink(dataDown, lenDown, rxWindow, eventDown);
   RADIOLIB_ASSERT(state);
 
@@ -994,7 +994,7 @@ int16_t LoRaWANNode::activateABP(uint8_t initialDr) {
 
 void LoRaWANNode::processCFList(const uint8_t* cfList) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Processing CFList");
-  
+
   uint8_t cOcts[14] = { 0 }; // see Wiki dev notes for this odd size
   uint8_t cid;
   uint8_t cLen = 0;
@@ -1775,7 +1775,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     // check destination fPort
     bool ok = false;
 
-    // LoRaWAN v1.0.4 only: A Class B/C downlink SHALL NOT transport any MAC command. 
+    // LoRaWAN v1.0.4 only: A Class B/C downlink SHALL NOT transport any MAC command.
     // (...) it SHALL silently discard the entire frame.
     // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
     if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND && window < RADIOLIB_LORAWAN_RX_BC) {
@@ -1800,7 +1800,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     if(!ok) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Received downlink at FPort %d - rejected! This FPort is reserved.", fPort);
       #if !RADIOLIB_STATIC_ONLY
-        delete[] downlinkMsg;
+      delete[] downlinkMsg;
       #endif
       return(RADIOLIB_ERR_INVALID_PORT);
     }
@@ -1809,10 +1809,10 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // handle FOpts in uplink with FPort = 0 (or absent which means 0)
   if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
     if(fOptsLen > 0 && payLen > 0) {
-      // MAC commands SHALL NOT be present in the payload field and the frame options field simultaneously. 
+      // MAC commands SHALL NOT be present in the payload field and the frame options field simultaneously.
       // Should this occur, the end-device SHALL silently discard the frame.
       #if !RADIOLIB_STATIC_ONLY
-        delete[] downlinkMsg;
+      delete[] downlinkMsg;
       #endif
       return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
     }
@@ -1849,7 +1849,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     }
   }
 
-  // assume a rollover if the FCnt16 in the payload is equal to / smaller 
+  // assume a rollover if the FCnt16 in the payload is equal to / smaller
   // than the previous FCnt16 known by device
   // (MAX_FCNT_GAP is deprecated for 1.0.4 / 1.1, TTS and CS both apply a 16-bit rollover)
   if(devFCnt32 > 0 && payFCnt16 <= (uint16_t)devFCnt32) {
@@ -1902,9 +1902,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   }
 
   // all checks passed, so dump its contents and start processing
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) encoded:", 
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) encoded:",
                                   (this->multicast && window == RADIOLIB_LORAWAN_RX_BC) ? "M" :
-                                                                  (isAppDownlink ? "A" : "N"), 
+                                  (isAppDownlink ? "A" : "N"),
                                   (unsigned long)devFCnt32);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
 
@@ -1951,8 +1951,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND && payLen > 0) {
     payLen = 0;
     processAES(&downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(0)], fOptsLen, this->nwkSEncKey, fOpts, addr, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, 0x00, true);
-  
-  // decrypt any piggy-backed FOpts
+
+    // decrypt any piggy-backed FOpts
   } else if(fOptsLen > 0) {
     // the decryption depends on the LoRaWAN version
     if(this->rev == 1) {
@@ -2007,7 +2007,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
           reply = true;
           fOptsRe[fOptsReLen + 1] = 0x00;
 
-        // if this is the first LinkAdr command, do some special treatment:
+          // if this is the first LinkAdr command, do some special treatment:
         } else {
           mAdr = true;
           uint8_t fAdrLen = 5;
@@ -2029,13 +2029,13 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
           if(this->rev == 0) {
             LoRaWANNode::postprocessMacLinkAdr(&fOptsRe[fOptsReLen], fLen);
 
-          // in LoRaWAN v1.1, just provide one ACK, so no post-processing but cut off reply length 
+            // in LoRaWAN v1.1, just provide one ACK, so no post-processing but cut off reply length
           } else {
             fLenRe = 2;
           }
         }
 
-      // MAC command other than LinkAdr, just process the payload
+        // MAC command other than LinkAdr, just process the payload
       } else {
         reply = this->execMacCommand(cid, mPtr + 1, fLen - 1, &fOptsRe[fOptsReLen + 1]);
       }
@@ -2051,7 +2051,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     }
 
     // remove all MAC commands except those whose payload can be requested by the user
-    // (which are LinkCheck and DeviceTime)  
+    // (which are LinkCheck and DeviceTime)
     this->fOptsDownLen = fOptsLen;
     LoRaWANNode::clearMacCommands(fOpts, &this->fOptsDownLen, RADIOLIB_LORAWAN_DOWNLINK);
     memcpy(this->fOptsDown, fOpts, this->fOptsDownLen);
@@ -3358,7 +3358,7 @@ void LoRaWANNode::addDefaultChannels() {
   // make sure the Rx2 settings are back to this band's default
   this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
   this->channels[RADIOLIB_LORAWAN_RX_BC] = this->band->rx2;
-  
+
   // make all enabled channels available for uplink selection
   this->setAvailableChannels(0xFFFF);
 }
