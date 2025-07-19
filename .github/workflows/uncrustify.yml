@@ -13,13 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
     - name: Install uncrustify
       run: |
         sudo apt-get update
-        sudo apt-get install -y uncrustify=0.78.1+dfsg1-1
+        sudo apt-get install -y cmake
+        mkdir -p ~/uncrustify
+        cd ~/uncrustify
+        git clone https://github.com/uncrustify/uncrustify.git
+        cd uncrustify
+        git checkout uncrustify-0.78.1
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        make
+        sudo make install
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Run uncrustify
       run: ./extras/uncrustify/uncrustify.sh
