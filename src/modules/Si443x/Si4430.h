@@ -12,7 +12,7 @@
   \class Si4430
   \brief Derived class for %Si4430 modules.
 */
-class Si4430: public Si4432 {
+class Si4430 : public Si4432 {
   public:
 
     // constructor
@@ -53,13 +53,13 @@ class Si4430: public Si4432 {
     */
     int16_t setOutputPower(int8_t power) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   protected:
-#endif
+    #endif
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 };
 
 #endif

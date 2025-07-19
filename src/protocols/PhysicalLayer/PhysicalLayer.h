@@ -32,10 +32,10 @@ enum RadioLibIrqType_t {
 struct LoRaRate_t {
   /*! \brief LoRa spreading factor */
   uint8_t spreadingFactor;
-  
+
   /*! \brief LoRa bandwidth in kHz */
   float bandwidth;
-  
+
   /*! \brief LoRa coding rate */
   uint8_t codingRate;
 };
@@ -47,7 +47,7 @@ struct LoRaRate_t {
 struct FSKRate_t {
   /*! \brief FSK bit rate in kbps */
   float bitRate;
-  
+
   /*! \brief FSK frequency deviation in kHz */
   float freqDev;
 };
@@ -89,16 +89,16 @@ union DataRate_t {
 struct CADScanConfig_t {
   /*! \brief Number of symbols to consider signal present */
   uint8_t symNum;
-  
+
   /*! \brief Number of peak detection symbols */
   uint8_t detPeak;
-  
+
   /*! \brief Number of minimum detection symbols */
   uint8_t detMin;
-  
+
   /*! \brief Exit mode after signal detection is complete - module-specific value */
   uint8_t exitMode;
-  
+
   /*! \brief Timeout in microseconds */
   RadioLibTime_t timeout;
 
@@ -138,13 +138,13 @@ struct StandbyConfig_t {
 struct ReceiveConfig_t {
   /*! \brief  Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive). */
   uint32_t timeout;
-  
+
   /*! \brief Sets the IRQ flags. */
   RadioLibIrqFlags_t irqFlags;
-  
+
   /*! \brief Sets the mask of IRQ flags that will trigger the radio interrupt pin. */
   RadioLibIrqFlags_t irqMask;
-  
+
   /*! \brief Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). */
   size_t len;
 };
@@ -251,7 +251,7 @@ class PhysicalLayer {
       \param addr Node address to transmit the packet to. Only used in FSK mode.
       \returns \ref status_codes
     */
-    int16_t transmit(String& str, uint8_t addr = 0);
+    int16_t transmit(String &str, uint8_t addr = 0);
     #endif
 
     /*!
@@ -278,7 +278,7 @@ class PhysicalLayer {
       \param len Expected number of characters in the message. Leave as 0 if expecting a unknown size packet
       \returns \ref status_codes
     */
-    int16_t receive(String& str, size_t len = 0);
+    int16_t receive(String &str, size_t len = 0);
     #endif
 
     /*!
@@ -306,7 +306,7 @@ class PhysicalLayer {
     virtual int16_t startReceive();
 
     /*!
-      \brief Interrupt-driven receive method. A DIO pin will be activated when full packet is received. 
+      \brief Interrupt-driven receive method. A DIO pin will be activated when full packet is received.
       Must be implemented in module class.
       \param timeout Raw timeout value. Some modules use this argument to specify operation mode
       (single vs. continuous receive).
@@ -333,7 +333,7 @@ class PhysicalLayer {
       \param addr Node address to transmit the packet to. Only used in FSK mode.
       \returns \ref status_codes
     */
-    int16_t startTransmit(String& str, uint8_t addr = 0);
+    int16_t startTransmit(String &str, uint8_t addr = 0);
     #endif
 
     /*!
@@ -364,11 +364,11 @@ class PhysicalLayer {
     /*!
       \brief Reads data that was received after calling startReceive method.
       \param str Address of Arduino String to save the received data.
-      \param len Expected number of characters in the message. When set to 0, the packet length will be retrieved 
+      \param len Expected number of characters in the message. When set to 0, the packet length will be retrieved
       automatically. When more bytes than received are requested, only the number of bytes requested will be returned.
       \returns \ref status_codes
     */
-    int16_t readData(String& str, size_t len = 0);
+    int16_t readData(String &str, size_t len = 0);
     #endif
 
     /*!
@@ -469,7 +469,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t setPreambleLength(size_t len);
-    
+
     /*!
       \brief Set data. Must be implemented in module class if the module supports it.
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
@@ -511,7 +511,7 @@ class PhysicalLayer {
     virtual RadioLibTime_t getTimeOnAir(size_t len);
 
     /*!
-      \brief Calculate the timeout value for this specific module / series 
+      \brief Calculate the timeout value for this specific module / series
       (in number of symbols or units of time).
       \param timeoutUs Timeout in microseconds to listen for.
       \returns Timeout value in a unit that is specific for the used module.
@@ -710,7 +710,7 @@ class PhysicalLayer {
       \brief Clears interrupt service routine to call when a packet is sent.
     */
     virtual void clearPacketSentAction();
-    
+
     /*!
       \brief Sets interrupt service routine to call when a channel scan is finished.
       \param func ISR to call.
@@ -768,19 +768,19 @@ class PhysicalLayer {
 
     #endif
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   protected:
-#endif
+    #endif
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
 
-#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
-#endif
+    #endif
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     uint8_t bufferBitPos = 0;

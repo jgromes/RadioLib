@@ -53,9 +53,9 @@ int16_t LR1120::setFrequency(float freq) {
 int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
   #if RADIOLIB_CHECK_PARAMS
   if(!(((freq >= 150.0f) && (freq <= 960.0f)) ||
-    ((freq >= 1900.0f) && (freq <= 2200.0f)) ||
-    ((freq >= 2400.0f) && (freq <= 2500.0f)))) {
-      return(RADIOLIB_ERR_INVALID_FREQUENCY);
+       ((freq >= 1900.0f) && (freq <= 2200.0f)) ||
+       ((freq >= 2400.0f) && (freq <= 2500.0f)))) {
+    return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
   #endif
 
@@ -67,7 +67,7 @@ int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
   }
 
   // set frequency
-  state = LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f));
+  state = LR11x0::setRfFrequency((uint32_t)(freq * 1000000.0f));
   RADIOLIB_ASSERT(state);
   this->freqMHz = freq;
   this->highFreq = (freq > 1000.0f);
@@ -92,7 +92,7 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
     paSel = 1;
     paSupply = 1;
   }
-  
+
   // TODO how and when to configure OCP?
 
   // update PA config - always use VBAT for high-power PA
@@ -122,26 +122,26 @@ int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPo
       *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
     }
     RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
+
   } else {
     if(clipped) {
       *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
     }
     RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
+
   }
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LR1120::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::RADIOLIB_MODEM_LORA): {
+    case (ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::RADIOLIB_MODEM_FSK): {
+    case (ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginGFSK());
     } break;
-    case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
+    case (ModemType_t::RADIOLIB_MODEM_LRFHSS): {
       return(this->beginLRFHSS());
     } break;
   }

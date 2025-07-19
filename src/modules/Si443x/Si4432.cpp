@@ -1,9 +1,7 @@
 #include "Si4432.h"
 #if !RADIOLIB_EXCLUDE_SI443X
 
-Si4432::Si4432(Module* mod) : Si443x(mod) {
-
-}
+Si4432::Si4432(Module* mod) : Si443x(mod) {}
 
 int16_t Si4432::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // execute common part

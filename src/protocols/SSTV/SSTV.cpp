@@ -204,7 +204,7 @@ SSTVClient::SSTVClient(AFSKClient* audio) {
 #endif
 
 #if !RADIOLIB_EXCLUDE_AFSK
-int16_t SSTVClient::begin(const SSTVMode_t& mode) {
+int16_t SSTVClient::begin(const SSTVMode_t &mode) {
   if(audioClient == nullptr) {
     // this initialization method can only be used in AFSK mode
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -214,7 +214,7 @@ int16_t SSTVClient::begin(const SSTVMode_t& mode) {
 }
 #endif
 
-int16_t SSTVClient::begin(float base, const SSTVMode_t& mode) {
+int16_t SSTVClient::begin(float base, const SSTVMode_t &mode) {
   // save mode
   txMode = mode;
 
@@ -317,32 +317,32 @@ void SSTVClient::sendLine(const uint32_t* imgLine) {
           color = ((uint32_t)y << 8);
           if(txMode.visCode == RADIOLIB_SSTV_ROBOT_36) {
             // odd lines carry Cb, even lines carry Cr
-            color |= (lineCount % 2) ? cb : cr; 
+            color |= (lineCount % 2) ? cb : cr;
           } else {
             color |= ((uint32_t)cr << 16) | cb;
           }
-          
+
         }
 
         switch(txMode.tones[i].type) {
-          case(tone_t::SCAN_RED_CR):
+          case (tone_t::SCAN_RED_CR):
             color &= 0x00FF0000;
             color >>= 16;
             if((txMode.visCode == RADIOLIB_SSTV_ROBOT_36) || (txMode.visCode == RADIOLIB_SSTV_ROBOT_72)) {
               len /= 2;
             }
             break;
-          case(tone_t::SCAN_GREEN_Y):
+          case (tone_t::SCAN_GREEN_Y):
             color &= 0x0000FF00;
             color >>= 8;
             break;
-          case(tone_t::SCAN_BLUE_CB):
+          case (tone_t::SCAN_BLUE_CB):
             color &= 0x000000FF;
             if((txMode.visCode == RADIOLIB_SSTV_ROBOT_36) || (txMode.visCode == RADIOLIB_SSTV_ROBOT_72)) {
               len /= 2;
             }
             break;
-          case(tone_t::GENERIC):
+          case (tone_t::GENERIC):
             break;
         }
         this->tone(RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549f), len);

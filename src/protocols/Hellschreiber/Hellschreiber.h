@@ -13,9 +13,9 @@
 #define RADIOLIB_HELL_FONT_HEIGHT                               7
 
 // font definition: characters are stored in rows,
-//                  least significant byte of each character is the first row
-//                  Hellschreiber use 7x7 characters, but this simplified font uses only 5x5
-//                  the extra bytes aren't stored
+// least significant byte of each character is the first row
+// Hellschreiber use 7x7 characters, but this simplified font uses only 5x5
+// the extra bytes aren't stored
 static const uint8_t HellFont[64][RADIOLIB_HELL_FONT_WIDTH - 2] RADIOLIB_NONVOLATILE = {
   { 0b0000000, 0b0000000, 0b0000000, 0b0000000, 0b0000000 },  // space
   { 0b0001000, 0b0001000, 0b0001000, 0b0000000, 0b0001000 },  // !
@@ -32,7 +32,7 @@ static const uint8_t HellFont[64][RADIOLIB_HELL_FONT_WIDTH - 2] RADIOLIB_NONVOLA
   { 0b0000000, 0b0000000, 0b0000000, 0b0001000, 0b0010000 },  // ,
   { 0b0000000, 0b0000000, 0b0111110, 0b0000000, 0b0000000 },  // -
   { 0b0000000, 0b0000000, 0b0000000, 0b0000000, 0b0001000 },  // .
-  { 0b0000010, 0b0000100, 0b0001000, 0b0010000, 0b0100000 },  // /
+  { 0b0000010, 0b0000100, 0b0001000, 0b0010000, 0b0100000 },  ///
   { 0b0011100, 0b0100110, 0b0101010, 0b0110010, 0b0011100 },  // 0
   { 0b0011000, 0b0001000, 0b0001000, 0b0001000, 0b0001000 },  // 1
   { 0b0011000, 0b0100100, 0b0001000, 0b0010000, 0b0111100 },  // 2
@@ -87,7 +87,7 @@ static const uint8_t HellFont[64][RADIOLIB_HELL_FONT_WIDTH - 2] RADIOLIB_NONVOLA
   \class HellClient
   \brief Client for Hellschreiber transmissions.
 */
-class HellClient: public RadioLibPrint {
+class HellClient : public RadioLibPrint {
   public:
     /*!
       \brief Constructor for 2-FSK mode.
@@ -132,9 +132,9 @@ class HellClient: public RadioLibPrint {
     */
     size_t write(uint8_t b) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     PhysicalLayer* phyLayer;
     #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;

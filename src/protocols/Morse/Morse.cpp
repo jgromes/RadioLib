@@ -26,13 +26,13 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
   baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
 
   // calculate tone period for decoding
-  basePeriod = (1000000.0f/base)/2.0f;
+  basePeriod = (1000000.0f / base) / 2.0f;
 
   // calculate symbol lengths (assumes PARIS as typical word)
   dotLength = 1200 / speed;
-  dashLength = 3*dotLength;
-  letterSpace = 3*dotLength;
-  wordSpace = 4*dotLength;
+  dashLength = 3 * dotLength;
+  letterSpace = 3 * dotLength;
+  wordSpace = 4 * dotLength;
 
   // configure for direct mode
   return(phyLayer->startDirect());
@@ -65,10 +65,10 @@ int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
   Module* mod = phyLayer->getMod();
 
   // measure pulse duration in us
-  uint32_t duration = mod->hal->pulseIn(audioClient->outPin, mod->hal->GpioLevelLow, 4*basePeriod);
+  uint32_t duration = mod->hal->pulseIn(audioClient->outPin, mod->hal->GpioLevelLow, 4 * basePeriod);
 
   // decide if this is a signal, or pause
-  if((duration > low*basePeriod) && (duration < high*basePeriod)) {
+  if((duration > low * basePeriod) && (duration < high * basePeriod)) {
     // this is a signal
     signalCounter++;
   } else if(duration == 0) {
@@ -83,7 +83,7 @@ int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
     signalStart = mod->hal->millis();
     uint32_t pauseLen = mod->hal->millis() - pauseStart;
 
-    if((pauseLen >= low*(float)letterSpace) && (pauseLen <= high*(float)letterSpace)) {
+    if((pauseLen >= low * (float)letterSpace) && (pauseLen <= high * (float)letterSpace)) {
       return(RADIOLIB_MORSE_CHAR_COMPLETE);
     } else if(pauseLen > wordSpace) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN(RADIOLIB_LINE_FEED "<space>");
@@ -96,11 +96,11 @@ int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
     pauseStart = mod->hal->millis();
     uint32_t signalLen = mod->hal->millis() - signalStart;
 
-    if((signalLen >= low*(float)dotLength) && (signalLen <= high*(float)dotLength)) {
+    if((signalLen >= low * (float)dotLength) && (signalLen <= high * (float)dotLength)) {
       RADIOLIB_DEBUG_PROTOCOL_PRINT(".");
       (*symbol) |= (RADIOLIB_MORSE_DOT << (*len));
       (*len)++;
-    } else if((signalLen >= low*(float)dashLength) && (signalLen <= high*(float)dashLength)) {
+    } else if((signalLen >= low * (float)dashLength) && (signalLen <= high * (float)dashLength)) {
       RADIOLIB_DEBUG_PROTOCOL_PRINT("-");
       (*symbol) |= (RADIOLIB_MORSE_DASH << (*len));
       (*len)++;
@@ -125,7 +125,7 @@ size_t MorseClient::write(uint8_t b) {
   if(b == ' ') {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("space");
     standby();
-    mod->waitForMicroseconds(mod->hal->micros(), wordSpace*1000);
+    mod->waitForMicroseconds(mod->hal->micros(), wordSpace * 1000);
     return(1);
   }
 
@@ -143,19 +143,19 @@ size_t MorseClient::write(uint8_t b) {
   while(code > RADIOLIB_MORSE_GUARDBIT) {
 
     // send dot or dash
-    if (code & RADIOLIB_MORSE_DASH) {
+    if(code & RADIOLIB_MORSE_DASH) {
       RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG("-");
       transmitDirect(baseFreq, baseFreqHz);
-      mod->waitForMicroseconds(mod->hal->micros(), dashLength*1000);
+      mod->waitForMicroseconds(mod->hal->micros(), dashLength * 1000);
     } else {
       RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG(".");
       transmitDirect(baseFreq, baseFreqHz);
-      mod->waitForMicroseconds(mod->hal->micros(), dotLength*1000);
+      mod->waitForMicroseconds(mod->hal->micros(), dotLength * 1000);
     }
 
     // symbol space
     standby();
-    mod->waitForMicroseconds(mod->hal->micros(), dotLength*1000);
+    mod->waitForMicroseconds(mod->hal->micros(), dotLength * 1000);
 
     // move onto the next bit
     code >>= 1;
@@ -163,7 +163,7 @@ size_t MorseClient::write(uint8_t b) {
 
   // letter space
   standby();
-  mod->waitForMicroseconds(mod->hal->micros(), letterSpace*1000 - dotLength*1000);
+  mod->waitForMicroseconds(mod->hal->micros(), letterSpace * 1000 - dotLength * 1000);
   RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG(RADIOLIB_LINE_FEED);
 
   return(1);

@@ -2,9 +2,9 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
-ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&RADIOLIB_DEFAULT_SPI), initInterface(true) {}
+ArduinoHal::ArduinoHal() : RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&RADIOLIB_DEFAULT_SPI), initInterface(true) {}
 
-ArduinoHal::ArduinoHal(SPIClass& spi, SPISettings spiSettings): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&spi), spiSettings(spiSettings) {}
+ArduinoHal::ArduinoHal(SPIClass &spi, SPISettings spiSettings) : RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&spi), spiSettings(spiSettings) {}
 
 void ArduinoHal::init() {
   if(initInterface) {
@@ -54,35 +54,35 @@ void inline ArduinoHal::detachInterrupt(uint32_t interruptNum) {
 }
 
 void inline ArduinoHal::delay(RadioLibTime_t ms) {
-#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+  #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   ::delay(ms);
-#else
+  #else
   ::delay(ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
-#endif
+  #endif
 }
 
 void inline ArduinoHal::delayMicroseconds(RadioLibTime_t us) {
-#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+  #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   ::delayMicroseconds(us);
-#else
+  #else
   ::delayMicroseconds(us * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
-#endif
+  #endif
 }
 
 RadioLibTime_t inline ArduinoHal::millis() {
-#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+  #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   return(::millis());
-#else
+  #else
   return(::millis() * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
-#endif
+  #endif
 }
 
 RadioLibTime_t inline ArduinoHal::micros() {
-#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+  #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   return(::micros());
-#else
+  #else
   return(::micros() * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
-#endif
+  #endif
 }
 
 long inline ArduinoHal::pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) {
@@ -116,76 +116,76 @@ void inline ArduinoHal::spiEnd() {
 
 void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, RadioLibTime_t duration) {
   #if !defined(RADIOLIB_TONE_UNSUPPORTED)
-    if(pin == RADIOLIB_NC) {
-      return;
-    }
-    ::tone(pin, frequency, duration);
+  if(pin == RADIOLIB_NC) {
+    return;
+  }
+  ::tone(pin, frequency, duration);
   #elif defined(RADIOLIB_ESP32)
-    // ESP32 tone() emulation
-    (void)duration;
-    if(prev == -1) {
-      #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
-      ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
-      #else
-      ledcAttach(pin, frequency, 14); // 14-bit resolution should be enough
-      #endif
-    }
-    if(prev != frequency) {
-      #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
-      ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, frequency);
-      #else
-      ledcWriteTone(pin, frequency);
-      #endif
-    }
-    prev = frequency;
+  // ESP32 tone() emulation
+  (void)duration;
+  if(prev == -1) {
+    #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
+    ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
+    #else
+    ledcAttach(pin, frequency, 14);   // 14-bit resolution should be enough
+    #endif
+  }
+  if(prev != frequency) {
+    #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
+    ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, frequency);
+    #else
+    ledcWriteTone(pin, frequency);
+    #endif
+  }
+  prev = frequency;
   #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
-    // better tone for mbed OS boards
-    (void)duration;
-    if(!pwmPin) {
-      pwmPin = new mbed::PwmOut(digitalPinToPinName(pin));
-    }
-    pwmPin->period(1.0 / frequency);
-    pwmPin->write(0.5);
+  // better tone for mbed OS boards
+  (void)duration;
+  if(!pwmPin) {
+    pwmPin = new mbed::PwmOut(digitalPinToPinName(pin));
+  }
+  pwmPin->period(1.0 / frequency);
+  pwmPin->write(0.5);
   #else
-    (void)pin;
-    (void)frequency;
-    (void)duration;
+  (void)pin;
+  (void)frequency;
+  (void)duration;
   #endif
 }
 
 void inline ArduinoHal::noTone(uint32_t pin) {
   #if !defined(RADIOLIB_TONE_UNSUPPORTED) and defined(ARDUINO_ARCH_STM32)
-    if(pin == RADIOLIB_NC) {
-      return;
-    }
-    ::noTone(pin, false);
+  if(pin == RADIOLIB_NC) {
+    return;
+  }
+  ::noTone(pin, false);
   #elif !defined(RADIOLIB_TONE_UNSUPPORTED)
-    if(pin == RADIOLIB_NC) {
-      return;
-    }
-    ::noTone(pin);
+  if(pin == RADIOLIB_NC) {
+    return;
+  }
+  ::noTone(pin);
   #elif defined(RADIOLIB_ESP32)
-    if(pin == RADIOLIB_NC) {
-      return;
-    }
-    // ESP32 tone() emulation
-    #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
-    ledcDetachPin(pin);
-    ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
-    #else
-    ledcDetach(pin);
-    ledcWrite(pin, 0);
-    #endif
-    prev = -1;
-  #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
-    if(pin == RADIOLIB_NC) {
-      return;
-    }
-    // better tone for mbed OS boards
-    (void)pin;
-    pwmPin->suspend();
+  if(pin == RADIOLIB_NC) {
+    return;
+  }
+  // ESP32 tone() emulation
+  #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
+  ledcDetachPin(pin);
+  ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
   #else
-    (void)pin;
+  ledcDetach(pin);
+  ledcWrite(pin, 0);
+  #endif
+  prev = -1;
+  #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
+  if(pin == RADIOLIB_NC) {
+    return;
+  }
+  // better tone for mbed OS boards
+  (void)pin;
+  pwmPin->suspend();
+  #else
+  (void)pin;
   #endif
 }
 

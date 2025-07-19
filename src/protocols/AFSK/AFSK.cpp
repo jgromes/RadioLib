@@ -1,7 +1,7 @@
 #include "AFSK.h"
 #if !RADIOLIB_EXCLUDE_AFSK
 
-AFSKClient::AFSKClient(PhysicalLayer* phy, uint32_t pin): outPin(pin) {
+AFSKClient::AFSKClient(PhysicalLayer* phy, uint32_t pin) : outPin(pin) {
   phyLayer = phy;
 }
 

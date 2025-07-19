@@ -12,16 +12,16 @@ int16_t LR11x0::startWifiScan(char wifiType, uint8_t mode, uint16_t chanMask, ui
 
   uint8_t type;
   switch(wifiType) {
-    case('b'):
+    case ('b'):
       type = RADIOLIB_LR11X0_WIFI_SCAN_802_11_B;
       break;
-    case('g'):
+    case ('g'):
       type = RADIOLIB_LR11X0_WIFI_SCAN_802_11_G;
       break;
-    case('n'):
+    case ('n'):
       type = RADIOLIB_LR11X0_WIFI_SCAN_802_11_N;
       break;
-    case('*'):
+    case ('*'):
       type = RADIOLIB_LR11X0_WIFI_SCAN_ALL;
       break;
     default:
@@ -63,7 +63,9 @@ int16_t LR11x0::getWifiScanResultsCount(uint8_t* count) {
   state = this->SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_GET_NB_RESULTS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(count) { *count = buff[0]; }
+  if(count) {
+    *count = buff[0];
+  }
 
   return(state);
 }
@@ -79,18 +81,18 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
 
   // parse the information
   switch(raw[0] & 0x03) {
-    case(RADIOLIB_LR11X0_WIFI_SCAN_802_11_B):
+    case (RADIOLIB_LR11X0_WIFI_SCAN_802_11_B):
       result->type = 'b';
       break;
-    case(RADIOLIB_LR11X0_WIFI_SCAN_802_11_G):
+    case (RADIOLIB_LR11X0_WIFI_SCAN_802_11_G):
       result->type = 'g';
       break;
-    case(RADIOLIB_LR11X0_WIFI_SCAN_802_11_N):
+    case (RADIOLIB_LR11X0_WIFI_SCAN_802_11_N):
       result->type = 'n';
       break;
   }
   result->dataRateId = (raw[0] & 0xFC) >> 2;
-  result->channelFreq = 2407 + (raw[1] & 0x0F)*5;
+  result->channelFreq = 2407 + (raw[1] & 0x0F) * 5;
   result->origin = (raw[1] & 0x30) >> 4;
   result->ap = (raw[1] & 0x40) != 0;
   result->rssi = (float)raw[2] / -2.0f;;
@@ -109,9 +111,9 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
       memcpy(resultExtended->mac0, &raw[10], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
       memcpy(resultExtended->mac, &raw[16], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
       memcpy(resultExtended->mac2, &raw[22], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
-      resultExtended->timestamp = (((uint64_t)raw[28] << 56) | ((uint64_t)raw[29] << 48)) | 
-                                  (((uint64_t)raw[30] << 40) | ((uint64_t)raw[31] << 32)) | 
-                                  (((uint64_t)raw[32] << 24) | ((uint64_t)raw[33] << 16)) | 
+      resultExtended->timestamp = (((uint64_t)raw[28] << 56) | ((uint64_t)raw[29] << 48)) |
+                                  (((uint64_t)raw[30] << 40) | ((uint64_t)raw[31] << 32)) |
+                                  (((uint64_t)raw[32] << 24) | ((uint64_t)raw[33] << 16)) |
                                   (((uint64_t)raw[34] << 8) | (uint64_t)raw[35]);
       resultExtended->periodBeacon = (((uint16_t)raw[36] << 8) | ((uint16_t)raw[37])) * 1024UL;
       resultExtended->seqCtrl = (((uint16_t)raw[38] << 8) | ((uint16_t)raw[39]));
@@ -132,9 +134,9 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
     resultFull->fromDistributionSystem = (raw[3] & 0x80) != 0;
     memcpy(resultFull->mac, &raw[4], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);
     resultFull->phiOffset = (((uint16_t)raw[10] << 8) | ((uint16_t)raw[11]));
-    resultFull->timestamp = (((uint64_t)raw[12] << 56) | ((uint64_t)raw[13] << 48)) | 
-                            (((uint64_t)raw[14] << 40) | ((uint64_t)raw[15] << 32)) | 
-                            (((uint64_t)raw[16] << 24) | ((uint64_t)raw[17] << 16)) | 
+    resultFull->timestamp = (((uint64_t)raw[12] << 56) | ((uint64_t)raw[13] << 48)) |
+                            (((uint64_t)raw[14] << 40) | ((uint64_t)raw[15] << 32)) |
+                            (((uint64_t)raw[16] << 24) | ((uint64_t)raw[17] << 16)) |
                             (((uint64_t)raw[18] << 8) | (uint64_t)raw[19]);
     resultFull->periodBeacon = (((uint16_t)raw[20] << 8) | ((uint16_t)raw[21])) * 1024UL;
   }
@@ -223,9 +225,15 @@ int16_t LR11x0::wifiReadCumulTimings(uint32_t* detection, uint32_t* capture, uin
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_READ_CUMUL_TIMINGS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(detection) { *detection = ((uint32_t)(buff[4]) << 24) | ((uint32_t)(buff[5]) << 16) | ((uint32_t)(buff[6]) << 8) | (uint32_t)buff[7]; }
-  if(capture) { *capture = ((uint32_t)(buff[8]) << 24) | ((uint32_t)(buff[9]) << 16) | ((uint32_t)(buff[10]) << 8) | (uint32_t)buff[11]; }
-  if(demodulation) { *demodulation = ((uint32_t)(buff[12]) << 24) | ((uint32_t)(buff[13]) << 16) | ((uint32_t)(buff[14]) << 8) | (uint32_t)buff[15]; }
+  if(detection) {
+    *detection = ((uint32_t)(buff[4]) << 24) | ((uint32_t)(buff[5]) << 16) | ((uint32_t)(buff[6]) << 8) | (uint32_t)buff[7];
+  }
+  if(capture) {
+    *capture = ((uint32_t)(buff[8]) << 24) | ((uint32_t)(buff[9]) << 16) | ((uint32_t)(buff[10]) << 8) | (uint32_t)buff[11];
+  }
+  if(demodulation) {
+    *demodulation = ((uint32_t)(buff[12]) << 24) | ((uint32_t)(buff[13]) << 16) | ((uint32_t)(buff[14]) << 8) | (uint32_t)buff[15];
+  }
 
   return(state);
 }
@@ -235,7 +243,9 @@ int16_t LR11x0::wifiGetNbCountryCodeResults(uint8_t* nbResults) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_GET_NB_COUNTRY_CODE_RESULTS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(nbResults) { *nbResults = buff[0]; }
+  if(nbResults) {
+    *nbResults = buff[0];
+  }
 
   return(state);
 }
@@ -258,8 +268,12 @@ int16_t LR11x0::wifiReadVersion(uint8_t* major, uint8_t* minor) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_READ_VERSION, false, buff, sizeof(buff));
 
   // pass the replies
-  if(major) { *major = buff[0]; }
-  if(minor) { *minor = buff[1]; }
+  if(major) {
+    *major = buff[0];
+  }
+  if(minor) {
+    *minor = buff[1];
+  }
 
   return(state);
 }

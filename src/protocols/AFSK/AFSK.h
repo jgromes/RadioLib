@@ -13,7 +13,7 @@
   \class AFSKClient
   \brief Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direct mode transmission using DIO pins.
 */
-class AFSKClient  {
+class AFSKClient {
   public:
     /*!
       \brief Default contructor.
@@ -49,9 +49,9 @@ class AFSKClient  {
     */
     int16_t noTone(bool keepOn = false);
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     PhysicalLayer* phyLayer;
     uint32_t outPin;
 

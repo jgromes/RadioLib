@@ -1,9 +1,7 @@
 #include "SX1273.h"
 #if !RADIOLIB_EXCLUDE_SX127X
 
-SX1273::SX1273(Module* mod) : SX1272(mod) {
-
-}
+SX1273::SX1273(Module* mod) : SX1272(mod) {}
 
 int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
@@ -99,7 +97,7 @@ int16_t SX1273::checkDataRate(DataRate_t dr) {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_FSK_OOK) {
     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
-    if(!((dr.fsk.freqDev + dr.fsk.bitRate/2.0f <= 250.0f) && (dr.fsk.freqDev <= 200.0f))) {
+    if(!((dr.fsk.freqDev + dr.fsk.bitRate / 2.0f <= 250.0f) && (dr.fsk.freqDev <= 200.0f))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     }
     return(RADIOLIB_ERR_NONE);
@@ -109,7 +107,7 @@ int16_t SX1273::checkDataRate(DataRate_t dr) {
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
-  
+
   }
 
   return(state);
@@ -117,10 +115,10 @@ int16_t SX1273::checkDataRate(DataRate_t dr) {
 
 int16_t SX1273::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::RADIOLIB_MODEM_LORA): {
+    case (ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::RADIOLIB_MODEM_FSK): {
+    case (ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginFSK());
     } break;
     default:

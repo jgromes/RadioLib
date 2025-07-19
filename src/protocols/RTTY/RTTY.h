@@ -14,7 +14,7 @@
   \class RTTYClient
   \brief Client for RTTY communication. The public interface is the same as Arduino Serial.
 */
-class RTTYClient: public RadioLibPrint {
+class RTTYClient : public RadioLibPrint {
   public:
     /*!
       \brief Constructor for 2-FSK mode.
@@ -61,9 +61,9 @@ class RTTYClient: public RadioLibPrint {
     */
     size_t write(uint8_t b) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     PhysicalLayer* phyLayer;
     #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;

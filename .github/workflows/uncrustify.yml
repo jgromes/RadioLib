@@ -1,0 +1,43 @@
+name: "Uncrustify"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Run format check using uncrustify
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install uncrustify
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake
+        mkdir -p ~/uncrustify
+        cd ~/uncrustify
+        git clone https://github.com/uncrustify/uncrustify.git
+        cd uncrustify
+        git checkout uncrustify-0.78.1
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        make
+        sudo make install
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run uncrustify
+      run: ./extras/uncrustify/uncrustify.sh
+    
+    - name: Upload patch file as artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: uncrustify.patch
+        path: extras/uncrustify/uncrustify.patch
+        if-no-files-found: ignore

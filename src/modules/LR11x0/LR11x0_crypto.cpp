@@ -28,18 +28,18 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
   if(lwVer) {
     headerLen += 11; // LoRaWAN 1.1 header is 11 bytes longer than 1.0
   }
-  size_t reqLen = 3*sizeof(uint8_t) + headerLen + len;
+  size_t reqLen = 3 * sizeof(uint8_t) + headerLen + len;
   size_t rplLen = sizeof(uint8_t) + len;
 
   // build buffers
   #if RADIOLIB_STATIC_ONLY
-    uint8_t reqBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
-    uint8_t rplBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t reqBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t rplBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
   #else
-    uint8_t* reqBuff = new uint8_t[reqLen];
-    uint8_t* rplBuff = new uint8_t[rplLen];
+  uint8_t* reqBuff = new uint8_t[reqLen];
+  uint8_t* rplBuff = new uint8_t[rplLen];
   #endif
-  
+
   // set the request fields
   reqBuff[0] = decKeyId;
   reqBuff[1] = verKeyId;
@@ -49,11 +49,11 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_PROCESS_JOIN_ACCEPT, false, rplBuff, rplLen, reqBuff, reqLen);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] reqBuff;
+  delete[] reqBuff;
   #endif
   if(state != RADIOLIB_ERR_NONE) {
     #if !RADIOLIB_STATIC_ONLY
-      delete[] rplBuff;
+    delete[] rplBuff;
     #endif
     return(state);
   }
@@ -62,7 +62,7 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
   if(rplBuff[0] != RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("Crypto Engine error: %02x", rplBuff[0]);
     #if !RADIOLIB_STATIC_ONLY
-      delete[] rplBuff;
+    delete[] rplBuff;
     #endif
     return(RADIOLIB_ERR_SPI_CMD_FAILED);
   }
@@ -70,7 +70,7 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
   // pass the data
   memcpy(dataOut, &rplBuff[1], len);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] rplBuff;
+  delete[] rplBuff;
   #endif
   return(state);
 }
@@ -78,18 +78,18 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
 int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, const uint8_t* data, size_t len, uint32_t* mic) {
   size_t reqLen = sizeof(uint8_t) + len;
   #if RADIOLIB_STATIC_ONLY
-    uint8_t reqBuff[sizeof(uint8_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t reqBuff[sizeof(uint8_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
   #else
-    uint8_t* reqBuff = new uint8_t[reqLen];
+  uint8_t* reqBuff = new uint8_t[reqLen];
   #endif
   uint8_t rplBuff[5] = { 0 };
-  
+
   reqBuff[0] = keyId;
   memcpy(&reqBuff[1], data, len);
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_COMPUTE_AES_CMAC, false, rplBuff, sizeof(rplBuff), reqBuff, reqLen);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] reqBuff;
+  delete[] reqBuff;
   #endif
 
   // check the crypto engine state
@@ -98,19 +98,21 @@ int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, const uint8_t* data, size_t 
     return(RADIOLIB_ERR_SPI_CMD_FAILED);
   }
 
-  if(mic) { *mic = ((uint32_t)(rplBuff[1]) << 24) |  ((uint32_t)(rplBuff[2]) << 16) | ((uint32_t)(rplBuff[3]) << 8) | (uint32_t)rplBuff[4]; }
+  if(mic) {
+    *mic = ((uint32_t)(rplBuff[1]) << 24) | ((uint32_t)(rplBuff[2]) << 16) | ((uint32_t)(rplBuff[3]) << 8) | (uint32_t)rplBuff[4];
+  }
   return(state);
 }
 
 int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, const uint8_t* data, size_t len, bool* result) {
-   size_t reqLen = sizeof(uint8_t) + sizeof(uint32_t) + len;
+  size_t reqLen = sizeof(uint8_t) + sizeof(uint32_t) + len;
   #if RADIOLIB_STATIC_ONLY
-    uint8_t reqBuff[sizeof(uint8_t) + sizeof(uint32_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t reqBuff[sizeof(uint8_t) + sizeof(uint32_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
   #else
-    uint8_t* reqBuff = new uint8_t[reqLen];
+  uint8_t* reqBuff = new uint8_t[reqLen];
   #endif
   uint8_t rplBuff[1] = { 0 };
-  
+
   reqBuff[0] = keyId;
   reqBuff[1] = (uint8_t)((micExp >> 24) & 0xFF);
   reqBuff[2] = (uint8_t)((micExp >> 16) & 0xFF);
@@ -120,7 +122,7 @@ int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, const uint8_
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_VERIFY_AES_CMAC, false, rplBuff, sizeof(rplBuff), reqBuff, reqLen);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] reqBuff;
+  delete[] reqBuff;
   #endif
 
   // check the crypto engine state
@@ -129,7 +131,9 @@ int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, const uint8_
     return(RADIOLIB_ERR_SPI_CMD_FAILED);
   }
 
-  if(result) { *result = (rplBuff[0] == RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS); }
+  if(result) {
+    *result = (rplBuff[0] == RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS);
+  }
   return(state);
 }
 
@@ -167,13 +171,15 @@ int16_t LR11x0::cryptoGetParam(uint8_t id, uint32_t* value) {
   uint8_t rplBuff[4] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_GET_PARAM, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
-  if(value) { *value = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3]; }
+  if(value) {
+    *value = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3];
+  }
   return(state);
 }
 
 int16_t LR11x0::cryptoCheckEncryptedFirmwareImage(uint32_t offset, const uint32_t* data, size_t len, bool nonvolatile) {
   // check maximum size
-  if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
+  if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN / sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
   return(this->writeCommon(RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE, offset, data, len, nonvolatile));
@@ -184,32 +190,34 @@ int16_t LR11x0::cryptoCheckEncryptedFirmwareImageResult(bool* result) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE_RESULT, false, buff, sizeof(buff));
 
   // pass the replies
-  if(result) { *result = (bool)buff[0]; }
-  
+  if(result) {
+    *result = (bool)buff[0];
+  }
+
   return(state);
 }
 
 int16_t LR11x0::cryptoCommon(uint16_t cmd, uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut) {
   // build buffers
   #if RADIOLIB_STATIC_ONLY
-    uint8_t reqBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
-    uint8_t rplBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t reqBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t rplBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
   #else
-    uint8_t* reqBuff = new uint8_t[sizeof(uint8_t) + len];
-    uint8_t* rplBuff = new uint8_t[sizeof(uint8_t) + len];
+  uint8_t* reqBuff = new uint8_t[sizeof(uint8_t) + len];
+  uint8_t* rplBuff = new uint8_t[sizeof(uint8_t) + len];
   #endif
-  
+
   // set the request fields
   reqBuff[0] = keyId;
   memcpy(&reqBuff[1], dataIn, len);
 
   int16_t state = this->SPIcommand(cmd, false, rplBuff, sizeof(uint8_t) + len, reqBuff, sizeof(uint8_t) + len);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] reqBuff;
+  delete[] reqBuff;
   #endif
   if(state != RADIOLIB_ERR_NONE) {
     #if !RADIOLIB_STATIC_ONLY
-      delete[] rplBuff;
+    delete[] rplBuff;
     #endif
     return(state);
   }
@@ -223,7 +231,7 @@ int16_t LR11x0::cryptoCommon(uint16_t cmd, uint8_t keyId, const uint8_t* dataIn,
   // pass the data
   memcpy(dataOut, &rplBuff[1], len);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] rplBuff;
+  delete[] rplBuff;
   #endif
   return(state);
 }

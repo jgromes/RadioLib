@@ -2,9 +2,7 @@
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_SX1231
 
-SX1233::SX1233(Module* mod) : SX1231(mod) {
-
-}
+SX1233::SX1233(Module* mod) : SX1231(mod) {}
 
 int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
@@ -75,7 +73,7 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 
   // set default packet length mode
   state = variablePacketLengthMode();
-  if (state != RADIOLIB_ERR_NONE) {
+  if(state != RADIOLIB_ERR_NONE) {
     return(state);
   }
 
@@ -102,7 +100,7 @@ int16_t SX1233::setBitRate(float br) {
     // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine
     RADIOLIB_CHECK_RANGE(br, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
   }
-  
+
 
   // check bitrate-bandwidth ratio
   if(!(br < 2000 * this->rxBandwidth)) {

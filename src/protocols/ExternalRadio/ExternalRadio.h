@@ -10,7 +10,7 @@
   \class ExternalRadio
   \brief Class to interface with external radio hardware.
 */
-class ExternalRadio: public PhysicalLayer {
+class ExternalRadio : public PhysicalLayer {
   public:
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -19,25 +19,25 @@ class ExternalRadio: public PhysicalLayer {
     */
     ExternalRadio(uint32_t pin = RADIOLIB_NC); // cppcheck-suppress noExplicitConstructor
     #endif
-    
+
     /*!
       \brief Default constructor.
       \param hal Pointer to the hardware abstraction layer to use.
       \param pin Output pin when using direct transmission, defaults to unused pin.
     */
-    ExternalRadio(RadioLibHal *hal, uint32_t pin = RADIOLIB_NC); // cppcheck-suppress noExplicitConstructor
+    ExternalRadio(RadioLibHal* hal, uint32_t pin = RADIOLIB_NC); // cppcheck-suppress noExplicitConstructor
 
     /*!
       \brief Copy constructor.
       \param ext ExternalRadio instance to copy.
     */
-    ExternalRadio(const ExternalRadio& ext);
-    
+    ExternalRadio(const ExternalRadio &ext);
+
     /*!
       \brief Overload for assignment operator.
       \param ext rvalue ExternalRadio.
     */
-    ExternalRadio& operator=(const ExternalRadio& ext);
+    ExternalRadio &operator=(const ExternalRadio &ext);
 
     /*!
       \brief Default destructor.
@@ -78,7 +78,7 @@ class ExternalRadio: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t transmitDirect(uint32_t frf = 0) override;
-  
+
   private:
     Module* mod;
     uint32_t prevFrf;

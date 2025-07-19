@@ -95,7 +95,7 @@ class PagerClient {
       \param function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
       \returns \ref status_codes
     */
-    int16_t transmit(String& str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
+    int16_t transmit(String &str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
     #endif
 
     /*!
@@ -138,7 +138,7 @@ class PagerClient {
       \param numAddress Number of addresses/masks to match.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t pin, uint32_t *addrs, uint32_t *masks, size_t numAddress);
+    int16_t startReceive(uint32_t pin, uint32_t* addrs, uint32_t* masks, size_t numAddress);
 
     /*!
       \brief Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!
@@ -156,7 +156,7 @@ class PagerClient {
       Set to NULL to not retrieve address.
       \returns \ref status_codes
     */
-    int16_t readData(String& str, size_t len = 0, uint32_t* addr = NULL);
+    int16_t readData(String &str, size_t len = 0, uint32_t* addr = NULL);
     #endif
 
     /*!
@@ -170,11 +170,11 @@ class PagerClient {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t* len, uint32_t* addr = NULL);
-#endif
+    #endif
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     PhysicalLayer* phyLayer;
 
     float baseFreq = 0;
@@ -185,8 +185,8 @@ class PagerClient {
     RadioLibTime_t bitDuration = 0;
     uint32_t filterAddr = 0;
     uint32_t filterMask = 0;
-    uint32_t *filterAddresses = nullptr;
-    uint32_t *filterMasks = nullptr;
+    uint32_t* filterAddresses = nullptr;
+    uint32_t* filterMasks = nullptr;
     size_t filterNumAddresses = 0;
     bool inv = false;
 
@@ -195,9 +195,9 @@ class PagerClient {
     int16_t startReceiveCommon();
     bool addressMatched(uint32_t addr);
 
-#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     uint32_t read();
-#endif
+    #endif
 
     uint8_t encodeBCD(char c);
     char decodeBCD(uint8_t b);

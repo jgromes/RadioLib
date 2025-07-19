@@ -153,7 +153,7 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     uint8_t bw_div2 = dr.lora.bandwidth / 2 + 0.01f;
-    switch (bw_div2)  {
+    switch(bw_div2) {
       case 62: // 125.0:
         RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 9, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
         break;
@@ -167,7 +167,7 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
         return(RADIOLIB_ERR_INVALID_BANDWIDTH);
     }
     return(RADIOLIB_ERR_NONE);
-  
+
   }
 
   return(state);
@@ -175,13 +175,13 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
 
 int16_t LLCC68::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::RADIOLIB_MODEM_LORA): {
+    case (ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::RADIOLIB_MODEM_FSK): {
+    case (ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginFSK());
     } break;
-    case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
+    case (ModemType_t::RADIOLIB_MODEM_LRFHSS): {
       return(this->beginLRFHSS());
     } break;
     default:

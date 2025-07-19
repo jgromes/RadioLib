@@ -29,12 +29,12 @@ int16_t LR11x0::isGnssScanCapable() {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Almanac@%08x, %d bytes", addr, sz);
   uint32_t buff[32] = { 0 };
   while(sz > 0) {
-    size_t len = sz > 32 ? 32 : sz/sizeof(uint32_t);
+    size_t len = sz > 32 ? 32 : sz / sizeof(uint32_t);
     state = this->readRegMem32(addr, buff, len);
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_HEXDUMP(NULL, reinterpret_cast<uint8_t*>(buff), len*sizeof(uint32_t), addr);
-    addr += len*sizeof(uint32_t);
-    sz -= len*sizeof(uint32_t);
+    RADIOLIB_DEBUG_HEXDUMP(NULL, reinterpret_cast<uint8_t*>(buff), len * sizeof(uint32_t), addr);
+    addr += len * sizeof(uint32_t);
+    sz -= len * sizeof(uint32_t);
   }
 
   uint8_t almanac[22] = { 0 };
@@ -64,7 +64,7 @@ int16_t LR11x0::gnssScan(LR11x0GnssResult_t* res) {
   // set scan mode (single vs multiple)
   state = this->gnssSetMode(0x03);
   RADIOLIB_ASSERT(state);
-  
+
   // set RF switch
   this->mod->setRfSwitchState(LR11x0::MODE_GNSS);
 
@@ -114,11 +114,11 @@ int16_t LR11x0::gnssScan(LR11x0GnssResult_t* res) {
   if(res->demodStat < RADIOLIB_LR11X0_GNSS_DEMOD_STATUS_TOW_FOUND) {
     return(RADIOLIB_ERR_GNSS_DEMOD(res->demodStat));
   }
-  
+
   return(state);
 }
 
-int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
+int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t* stat) {
   RADIOLIB_ASSERT_PTR(stat);
 
   // save the time the time until subframe is relative to
@@ -157,7 +157,7 @@ int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
   return(state);
 }
 
-int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t constellation) {
+int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t* stat, uint8_t constellation) {
   RADIOLIB_ASSERT_PTR(stat);
 
   // almanac update has to be called at least 1.3 seconds before the subframe
@@ -176,7 +176,7 @@ int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t 
 
   RadioLibTime_t delay = window - now;
   RADIOLIB_DEBUG_BASIC_PRINTLN("Time until subframe %lu ms", delay);
-  this->mod->hal->delay(delay); 
+  this->mod->hal->delay(delay);
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -191,7 +191,7 @@ int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
   // wait for scan finished or timeout, assumes 2 subframes and up to 2.3s pre-roll
   uint32_t softTimeout = 16UL * 1000UL;
   uint32_t start = this->mod->hal->millis();
-  while (!this->mod->hal->digitalRead(this->mod->getIrq())) {
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
       this->gnssAbort();
@@ -207,7 +207,7 @@ int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
   if(irq & RADIOLIB_LR11X0_IRQ_GNSS_ABORT) {
     state = RADIOLIB_ERR_RX_TIMEOUT;
   }
-  
+
   return(state);
 }
 
@@ -256,7 +256,9 @@ int16_t LR11x0::gnssReadRssi(int8_t* rssi) {
   uint8_t rplBuff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_RSSI, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
-  if(rssi) { *rssi = rplBuff[1]; }
+  if(rssi) {
+    *rssi = rplBuff[1];
+  }
   return(state);
 }
 
@@ -270,7 +272,9 @@ int16_t LR11x0::gnssReadConstellationToUse(uint8_t* mask) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_CONSTELLATION_TO_USE, false, buff, sizeof(buff));
 
   // pass the replies
-  if(mask) { *mask = buff[0]; }
+  if(mask) {
+    *mask = buff[0];
+  }
 
   return(state);
 }
@@ -285,7 +289,9 @@ int16_t LR11x0::gnssReadAlmanacUpdate(uint8_t* mask) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_UPDATE, false, buff, sizeof(buff));
 
   // pass the replies
-  if(mask) { *mask = buff[0]; }
+  if(mask) {
+    *mask = buff[0];
+  }
 
   return(state);
 }
@@ -298,7 +304,9 @@ int16_t LR11x0::gnssSetFreqSearchSpace(uint8_t freq) {
 int16_t LR11x0::gnssReadFreqSearchSpace(uint8_t* freq) {
   uint8_t buff[1] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_FREQ_SEARCH_SPACE, false, buff, sizeof(buff));
-  if(freq) { *freq = buff[0]; }
+  if(freq) {
+    *freq = buff[0];
+  }
   return(state);
 }
 
@@ -307,8 +315,12 @@ int16_t LR11x0::gnssReadVersion(uint8_t* fw, uint8_t* almanac) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_VERSION, false, buff, sizeof(buff));
 
   // pass the replies
-  if(fw) { *fw = buff[0]; }
-  if(almanac) { *almanac = buff[1]; }
+  if(fw) {
+    *fw = buff[0];
+  }
+  if(almanac) {
+    *almanac = buff[1];
+  }
 
   return(state);
 }
@@ -318,7 +330,9 @@ int16_t LR11x0::gnssReadSupportedConstellations(uint8_t* mask) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_SUPPORTED_CONSTELLATIONS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(mask) { *mask = buff[0]; }
+  if(mask) {
+    *mask = buff[0];
+  }
 
   return(state);
 }
@@ -347,8 +361,8 @@ int16_t LR11x0::gnssAssisted(uint32_t gpsTime, uint8_t effort, uint8_t resMask, 
 }
 
 int16_t LR11x0::gnssSetAssistancePosition(float lat, float lon) {
-  int16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
-  int16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
+  int16_t latRaw = (lat * 2048.0f) / 90.0f + 0.5f;
+  int16_t lonRaw = (lon * 2048.0f) / 180.0f + 0.5f;
   uint8_t buff[4] = {
     (uint8_t)((latRaw >> 8) & 0xFF), (uint8_t)(latRaw & 0xFF),
     (uint8_t)((lonRaw >> 8) & 0xFF), (uint8_t)(lonRaw & 0xFF),
@@ -363,11 +377,11 @@ int16_t LR11x0::gnssReadAssistancePosition(float* lat, float* lon) {
   // pass the replies
   if(lat) {
     int16_t latRaw = ((int16_t)(buff[0]) << 8) | (int16_t)(buff[1]);
-    *lat = ((float)latRaw*90.0f)/2048.0f;
+    *lat = ((float)latRaw * 90.0f) / 2048.0f;
   }
   if(lon) {
     int16_t lonRaw = ((int16_t)(buff[2]) << 8) | (int16_t)(buff[3]);
-    *lon = ((float)lonRaw*180.0f)/2048.0f;
+    *lon = ((float)lonRaw * 180.0f) / 2048.0f;
   }
 
   return(state);
@@ -388,11 +402,21 @@ int16_t LR11x0::gnssGetContextStatus(uint8_t* fwVersion, uint32_t* almanacCrc, u
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_GET_CONTEXT_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(fwVersion) { *fwVersion = buff[2]; }
-  if(almanacCrc) { *almanacCrc = ((uint32_t)(buff[3]) << 24) | ((uint32_t)(buff[4]) << 16) | ((uint32_t)(buff[5]) << 8) | (uint32_t)buff[6]; }
-  if(errCode) { *errCode = (buff[7] & 0xF0) >> 4; }
-  if(almUpdMask) { *almUpdMask = (buff[7] & 0x0E) >> 1; }
-  if(freqSpace) { *freqSpace = ((buff[7] & 0x01) << 1) | ((buff[8] & 0x80) >> 7); }
+  if(fwVersion) {
+    *fwVersion = buff[2];
+  }
+  if(almanacCrc) {
+    *almanacCrc = ((uint32_t)(buff[3]) << 24) | ((uint32_t)(buff[4]) << 16) | ((uint32_t)(buff[5]) << 8) | (uint32_t)buff[6];
+  }
+  if(errCode) {
+    *errCode = (buff[7] & 0xF0) >> 4;
+  }
+  if(almUpdMask) {
+    *almUpdMask = (buff[7] & 0x0E) >> 1;
+  }
+  if(freqSpace) {
+    *freqSpace = ((buff[7] & 0x01) << 1) | ((buff[8] & 0x80) >> 7);
+  }
 
   return(state);
 }
@@ -402,36 +426,44 @@ int16_t LR11x0::gnssGetNbSvDetected(uint8_t* nbSv) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_GET_NB_SV_DETECTED, false, buff, sizeof(buff));
 
   // pass the replies
-  if(nbSv) { *nbSv = buff[0]; }
+  if(nbSv) {
+    *nbSv = buff[0];
+  }
 
   return(state);
 }
 
 int16_t LR11x0::gnssGetSvDetected(uint8_t* svId, uint8_t* snr, int16_t* doppler, size_t nbSv) {
   // TODO this is arbitrary - is there an actual maximum?
-  if(nbSv > RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t)) {
+  if(nbSv > RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN / sizeof(uint32_t)) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
 
   // build buffers
-  size_t buffLen = nbSv*sizeof(uint32_t);
+  size_t buffLen = nbSv * sizeof(uint32_t);
   #if RADIOLIB_STATIC_ONLY
-    uint8_t dataBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+  uint8_t dataBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
   #else
-    uint8_t* dataBuff = new uint8_t[buffLen];
+  uint8_t* dataBuff = new uint8_t[buffLen];
   #endif
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_GET_SV_DETECTED, false, dataBuff, buffLen);
   if(state == RADIOLIB_ERR_NONE) {
     for(size_t i = 0; i < nbSv; i++) {
-      if(svId) { svId[i] = dataBuff[4*i]; }
-      if(snr) { snr[i] = dataBuff[4*i + 1]; }
-      if(doppler) { doppler[i] = ((uint16_t)(dataBuff[4*i + 2]) << 8) | (uint16_t)dataBuff[4*i + 3]; }
+      if(svId) {
+        svId[i] = dataBuff[4 * i];
+      }
+      if(snr) {
+        snr[i] = dataBuff[4 * i + 1];
+      }
+      if(doppler) {
+        doppler[i] = ((uint16_t)(dataBuff[4 * i + 2]) << 8) | (uint16_t)dataBuff[4 * i + 3];
+      }
     }
   }
 
   #if !RADIOLIB_STATIC_ONLY
-    delete[] dataBuff;
+  delete[] dataBuff;
   #endif
   return(state);
 }
@@ -441,8 +473,12 @@ int16_t LR11x0::gnssGetConsumption(uint32_t* cpu, uint32_t* radio) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_GET_CONSUMPTION, false, buff, sizeof(buff));
 
   // pass the replies
-  if(cpu) { *cpu = ((uint32_t)(buff[0]) << 24) | ((uint32_t)(buff[1]) << 16) | ((uint32_t)(buff[2]) << 8) | (uint32_t)buff[3]; }
-  if(radio) { *radio = ((uint32_t)(buff[4]) << 24) | ((uint32_t)(buff[5]) << 16) | ((uint32_t)(buff[6]) << 8) | (uint32_t)buff[7]; }
+  if(cpu) {
+    *cpu = ((uint32_t)(buff[0]) << 24) | ((uint32_t)(buff[1]) << 16) | ((uint32_t)(buff[2]) << 8) | (uint32_t)buff[3];
+  }
+  if(radio) {
+    *radio = ((uint32_t)(buff[4]) << 24) | ((uint32_t)(buff[5]) << 16) | ((uint32_t)(buff[6]) << 8) | (uint32_t)buff[7];
+  }
 
   return(state);
 }
@@ -452,8 +488,10 @@ int16_t LR11x0::gnssGetResultSize(uint16_t* size) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_GET_RESULT_SIZE, false, buff, sizeof(buff));
 
   // pass the replies
-  if(size) { *size = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1]; }
-  
+  if(size) {
+    *size = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1];
+  }
+
   return(state);
 }
 
@@ -466,7 +504,7 @@ int16_t LR11x0::gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc) {
   uint8_t buff[RADIOLIB_LR11X0_GNSS_ALMANAC_BLOCK_SIZE] = {
     RADIOLIB_LR11X0_GNSS_ALMANAC_HEADER_ID,
     (uint8_t)((date >> 8) & 0xFF), (uint8_t)(date & 0xFF),
-    (uint8_t)((globalCrc >> 24) & 0xFF), (uint8_t)((globalCrc >> 16) & 0xFF), 
+    (uint8_t)((globalCrc >> 24) & 0xFF), (uint8_t)((globalCrc >> 16) & 0xFF),
     (uint8_t)((globalCrc >> 8) & 0xFF), (uint8_t)(globalCrc & 0xFF),
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_FULL_UPDATE, true, buff, sizeof(buff)));
@@ -482,9 +520,13 @@ int16_t LR11x0::gnssAlmanacReadAddrSize(uint32_t* addr, uint16_t* size) {
   uint8_t buff[6] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_READ_ADDR_SIZE, false, buff, sizeof(buff));
 
-  if(addr) { *addr = ((uint32_t)(buff[0]) << 24) | ((uint32_t)(buff[1]) << 16) | ((uint32_t)(buff[2]) << 8) | (uint32_t)buff[3]; }
-  if(size) { *size = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5]; }
-  
+  if(addr) {
+    *addr = ((uint32_t)(buff[0]) << 24) | ((uint32_t)(buff[1]) << 16) | ((uint32_t)(buff[2]) << 8) | (uint32_t)buff[3];
+  }
+  if(size) {
+    *size = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5];
+  }
+
   return(state);
 }
 
@@ -496,9 +538,9 @@ int16_t LR11x0::gnssAlmanacReadSV(uint8_t svId, uint8_t* almanac) {
 }
 
 int16_t LR11x0::gnssGetNbSvVisible(uint32_t time, float lat, float lon, uint8_t constellation, uint8_t* nbSv) {
-  int16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
-  int16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
-  uint8_t reqBuff[9] = { 
+  int16_t latRaw = (lat * 2048.0f) / 90.0f + 0.5f;
+  int16_t lonRaw = (lon * 2048.0f) / 180.0f + 0.5f;
+  uint8_t reqBuff[9] = {
     (uint8_t)((time >> 24) & 0xFF), (uint8_t)((time >> 16) & 0xFF),
     (uint8_t)((time >> 8) & 0xFF), (uint8_t)(time & 0xFF),
     (uint8_t)((latRaw >> 8) & 0xFF), (uint8_t)(latRaw & 0xFF),
@@ -517,11 +559,17 @@ int16_t LR11x0::gnssGetSvVisible(uint8_t nbSv, uint8_t** svId, int16_t** doppler
   uint8_t buff[60] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_GET_SV_VISIBLE_DOPPLER, false, buff, sizeof(buff));
   for(uint8_t i = 0; i < nbSv; i++) {
-    if(svId && svId[i]) { *svId[i] = buff[i*12]; }
-    if(doppler && doppler[i]) { *doppler[i] = ((uint16_t)(buff[i*12 + 1]) << 8) | (uint16_t)buff[i*12 + 2]; }
-    if(dopplerErr && dopplerErr[i]) { *dopplerErr[i] = ((uint16_t)(buff[i*12 + 3]) << 8) | (uint16_t)buff[i*12 + 4]; }
+    if(svId && svId[i]) {
+      *svId[i] = buff[i * 12];
+    }
+    if(doppler && doppler[i]) {
+      *doppler[i] = ((uint16_t)(buff[i * 12 + 1]) << 8) | (uint16_t)buff[i * 12 + 2];
+    }
+    if(dopplerErr && dopplerErr[i]) {
+      *dopplerErr[i] = ((uint16_t)(buff[i * 12 + 3]) << 8) | (uint16_t)buff[i * 12 + 4];
+    }
   }
-  
+
   return(state);
 }
 
@@ -536,8 +584,10 @@ int16_t LR11x0::gnssReadLastScanModeLaunched(uint8_t* lastScanMode) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_LAST_SCAN_MODE_LAUNCHED, false, buff, sizeof(buff));
 
   // pass the replies
-  if(lastScanMode) { *lastScanMode = buff[0]; }
-  
+  if(lastScanMode) {
+    *lastScanMode = buff[0];
+  }
+
   return(state);
 }
 
@@ -552,11 +602,13 @@ int16_t LR11x0::gnssReadTime(uint8_t* err, uint32_t* time, uint32_t* nbUs, uint3
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_TIME, false, buff, sizeof(buff));
 
   // pass the replies
-  if(err) { *err = buff[0]; }
-  
+  if(err) {
+    *err = buff[0];
+  }
+
   if(time) {
     *time = ((uint32_t)(buff[1]) << 24) | ((uint32_t)(buff[2]) << 16) | ((uint32_t)(buff[3]) << 8) | (uint32_t)buff[4];
-    *time += 2UL*1024UL*7UL*24UL*3600UL; // assume WN rollover is at 2, this will fail sometime in 2038
+    *time += 2UL * 1024UL * 7UL * 24UL * 3600UL; // assume WN rollover is at 2, this will fail sometime in 2038
     *time += 315964800UL; // convert to UTC
   }
 
@@ -569,7 +621,7 @@ int16_t LR11x0::gnssReadTime(uint8_t* err, uint32_t* time, uint32_t* nbUs, uint3
     *timeAccuracy = ((uint32_t)(buff[8]) << 24) | ((uint32_t)(buff[9]) << 16) | ((uint32_t)(buff[10]) << 8) | (uint32_t)buff[11];
     *timeAccuracy /= 16;
   }
-  
+
   return(state);
 }
 
@@ -584,8 +636,12 @@ int16_t LR11x0::gnssResetPosition(void) {
 int16_t LR11x0::gnssReadWeekNumberRollover(uint8_t* status, uint8_t* rollover) {
   uint8_t buff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_WEEK_NUMBER_ROLLOWER, false, buff, sizeof(buff));
-  if(status) { *status = buff[0]; }
-  if(rollover) { *rollover = buff[1]; }
+  if(status) {
+    *status = buff[0];
+  }
+  if(rollover) {
+    *rollover = buff[1];
+  }
   return(state);
 }
 
@@ -594,9 +650,13 @@ int16_t LR11x0::gnssReadDemodStatus(int8_t* status, uint8_t* info) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_DEMOD_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(status) { *status = (int8_t)buff[0]; }
-  if(info) { *info = buff[1]; }
-  
+  if(status) {
+    *status = (int8_t)buff[0];
+  }
+  if(info) {
+    *info = buff[1];
+  }
+
   return(state);
 }
 
@@ -608,12 +668,14 @@ int16_t LR11x0::gnssReadCumulTiming(uint32_t* timing, uint8_t* constDemod) {
   // convert endians
   if(timing) {
     for(size_t i = 0; i < 31; i++) {
-      timing[i] = ((uint32_t)rplBuff[i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[1 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[3 + i*sizeof(uint32_t)];
+      timing[i] = ((uint32_t)rplBuff[i * sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[1 + i * sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[2 + i * sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[3 + i * sizeof(uint32_t)];
     }
   }
 
-  if(constDemod) { *constDemod = rplBuff[124]; }
-  
+  if(constDemod) {
+    *constDemod = rplBuff[124];
+  }
+
   return(state);
 }
 
@@ -631,29 +693,41 @@ int16_t LR11x0::gnssReadDopplerSolverRes(uint8_t* error, uint8_t* nbSvUsed, floa
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_DOPPLER_SOLVER_RES, false, buff, sizeof(buff));
 
   // pass the replies
-  if(error) { *error = buff[0]; }
-  if(nbSvUsed) { *nbSvUsed = buff[1]; }
+  if(error) {
+    *error = buff[0];
+  }
+  if(nbSvUsed) {
+    *nbSvUsed = buff[1];
+  }
   if(lat) {
     int16_t latRaw = ((int16_t)(buff[2]) << 8) | (int16_t)buff[3];
-    *lat = ((float)latRaw * 90.0f)/2048.0f;
+    *lat = ((float)latRaw * 90.0f) / 2048.0f;
   }
   if(lon) {
     int16_t lonRaw = ((int16_t)(buff[4]) << 8) | (int16_t)buff[5];
-    *lon = ((float)lonRaw * 180.0f)/2048.0f;
+    *lon = ((float)lonRaw * 180.0f) / 2048.0f;
   }
-  if(accuracy) { *accuracy = ((uint16_t)(buff[6]) << 8) | (uint16_t)buff[7]; }
-  if(xtal) { *xtal = ((uint16_t)(buff[8]) << 8) | (uint16_t)buff[9]; }
+  if(accuracy) {
+    *accuracy = ((uint16_t)(buff[6]) << 8) | (uint16_t)buff[7];
+  }
+  if(xtal) {
+    *xtal = ((uint16_t)(buff[8]) << 8) | (uint16_t)buff[9];
+  }
   if(latFilt) {
     int16_t latRaw = ((int16_t)(buff[10]) << 8) | (int16_t)buff[11];
-    *latFilt = ((float)latRaw * 90.0f)/2048.0f;
+    *latFilt = ((float)latRaw * 90.0f) / 2048.0f;
   }
   if(lonFilt) {
     int16_t lonRaw = ((int16_t)(buff[12]) << 8) | (int16_t)buff[13];
-    *lonFilt = ((float)lonRaw * 180.0f)/2048.0f;
+    *lonFilt = ((float)lonRaw * 180.0f) / 2048.0f;
   }
-  if(accuracyFilt) { *accuracyFilt = ((uint16_t)(buff[14]) << 8) | (uint16_t)buff[15]; }
-  if(xtalFilt) { *xtalFilt = ((uint16_t)(buff[16]) << 8) | (uint16_t)buff[17]; }
-  
+  if(accuracyFilt) {
+    *accuracyFilt = ((uint16_t)(buff[14]) << 8) | (uint16_t)buff[15];
+  }
+  if(xtalFilt) {
+    *xtalFilt = ((uint16_t)(buff[16]) << 8) | (uint16_t)buff[17];
+  }
+
   return(state);
 }
 
@@ -661,8 +735,10 @@ int16_t LR11x0::gnssReadDelayResetAP(uint32_t* delay) {
   uint8_t buff[3] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_DELAY_RESET_AP, false, buff, sizeof(buff));
 
-  if(delay) { *delay = ((uint32_t)(buff[0]) << 16) | ((uint32_t)(buff[1]) << 8) | (uint32_t)buff[2]; }
-  
+  if(delay) {
+    *delay = ((uint32_t)(buff[0]) << 16) | ((uint32_t)(buff[1]) << 8) | (uint32_t)buff[2];
+  }
+
   return(state);
 }
 
@@ -677,8 +753,12 @@ int16_t LR11x0::gnssReadKeepSyncStatus(uint8_t mask, uint8_t* nbSvVisible, uint3
   uint8_t rplBuff[5] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_KEEP_SYNC_STATUS, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
-  if(nbSvVisible) { *nbSvVisible = rplBuff[0]; }
-  if(elapsed) { *elapsed = ((uint32_t)(rplBuff[1]) << 24) | ((uint32_t)(rplBuff[2]) << 16) | ((uint32_t)(rplBuff[3]) << 8) | (uint32_t)rplBuff[4]; }
+  if(nbSvVisible) {
+    *nbSvVisible = rplBuff[0];
+  }
+  if(elapsed) {
+    *elapsed = ((uint32_t)(rplBuff[1]) << 24) | ((uint32_t)(rplBuff[2]) << 16) | ((uint32_t)(rplBuff[3]) << 8) | (uint32_t)rplBuff[4];
+  }
   return(state);
 }
 
@@ -697,7 +777,9 @@ int16_t LR11x0::gnssReadAlmanacUpdatePeriod(uint8_t bitMask, uint8_t svType, uin
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_UPDATE_PERIOD, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
 
-  if(period) { *period = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1]; }
+  if(period) {
+    *period = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1];
+  }
 
   return(state);
 }
@@ -723,8 +805,12 @@ int16_t LR11x0::gnssReadWarmStartStatus(uint8_t bitMask, uint8_t* nbVisSat, uint
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_READ_WARM_START_STATUS, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
 
-  if(nbVisSat) { *nbVisSat = rplBuff[0]; }
-  if(timeElapsed) { *timeElapsed = ((uint32_t)(rplBuff[1]) << 24) | ((uint32_t)(rplBuff[2]) << 16) | ((uint32_t)(rplBuff[3]) << 8) | (uint32_t)rplBuff[4]; }
+  if(nbVisSat) {
+    *nbVisSat = rplBuff[0];
+  }
+  if(timeElapsed) {
+    *timeElapsed = ((uint32_t)(rplBuff[1]) << 24) | ((uint32_t)(rplBuff[2]) << 16) | ((uint32_t)(rplBuff[3]) << 8) | (uint32_t)rplBuff[4];
+  }
 
   return(state);
 }
@@ -736,8 +822,12 @@ int16_t LR11x0::gnssWriteBitMaskSatActivated(uint8_t bitMask, uint32_t* bitMaskA
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_WRITE_BIT_MASK_SAT_ACTIVATED, false, rplBuff, rplLen, reqBuff, sizeof(reqBuff));
   RADIOLIB_ASSERT(state);
 
-  if(bitMaskActivated0) { *bitMaskActivated0 = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3]; }
-  if(bitMaskActivated1) { *bitMaskActivated1 = ((uint32_t)(rplBuff[4]) << 24) | ((uint32_t)(rplBuff[5]) << 16) | ((uint32_t)(rplBuff[6]) << 8) | (uint32_t)rplBuff[7]; }
+  if(bitMaskActivated0) {
+    *bitMaskActivated0 = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3];
+  }
+  if(bitMaskActivated1) {
+    *bitMaskActivated1 = ((uint32_t)(rplBuff[4]) << 24) | ((uint32_t)(rplBuff[5]) << 16) | ((uint32_t)(rplBuff[6]) << 8) | (uint32_t)rplBuff[7];
+  }
 
   return(state);
 }

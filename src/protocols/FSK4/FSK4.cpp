@@ -10,10 +10,10 @@ FSK4Client::FSK4Client(PhysicalLayer* phy) {
 }
 
 #if !RADIOLIB_EXCLUDE_AFSK
- FSK4Client::FSK4Client(AFSKClient* audio) {
-   phyLayer = audio->phyLayer;
-   audioClient = audio;
- }
+FSK4Client::FSK4Client(AFSKClient* audio) {
+  phyLayer = audio->phyLayer;
+  audioClient = audio;
+}
 #endif
 
 int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
@@ -22,15 +22,15 @@ int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
   shiftFreqHz = shift;
 
   // calculate duration of 1 bit
-  bitDuration = (RadioLibTime_t)1000000/rate;
+  bitDuration = (RadioLibTime_t)1000000 / rate;
 
   // calculate carrier shift
   shiftFreq = getRawShift(shift);
 
   // Write resultant tones into arrays for quick lookup when modulating.
   for(uint8_t i = 0; i < 4; i++) {
-    tones[i] = shiftFreq*i;
-    tonesHz[i] = shiftFreqHz*i;
+    tones[i] = shiftFreq * i;
+    tonesHz[i] = shiftFreqHz * i;
   }
 
   // calculate 24-bit frequency

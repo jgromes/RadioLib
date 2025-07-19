@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <math.h>
 
-size_t RadioLibPrint::print(ITA2String& ita2) {
+size_t RadioLibPrint::print(ITA2String &ita2) {
   uint8_t enc = this->encoding;
   this->encoding = RADIOLIB_ITA2;
   uint8_t* arr = ita2.byteArr();
@@ -13,17 +13,20 @@ size_t RadioLibPrint::print(ITA2String& ita2) {
   return(n);
 }
 
-size_t RadioLibPrint::println(ITA2String& ita2) {
+size_t RadioLibPrint::println(ITA2String &ita2) {
   size_t n = RadioLibPrint::print(ita2);
   n += RadioLibPrint::println();
   return(n);
 }
 
-size_t RadioLibPrint::write(const uint8_t *buffer, size_t size) {
+size_t RadioLibPrint::write(const uint8_t* buffer, size_t size) {
   size_t n = 0;
-  while (size--) {
-    if (write(*buffer++)) n++;
-    else break;
+  while(size--) {
+    if(write(*buffer++)) {
+      n++;
+    } else {
+      break;
+    }
   }
   return n;
 }
@@ -43,9 +46,9 @@ size_t RadioLibPrint::print(const __FlashStringHelper* fstr) {
 
   // dynamically allocate memory
   #if RADIOLIB_STATIC_ONLY
-    char str[RADIOLIB_STATIC_ARRAY_SIZE];
+  char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
-    char* str = new char[len];
+  char* str = new char[len];
   #endif
 
   // copy string from flash
@@ -62,12 +65,12 @@ size_t RadioLibPrint::print(const __FlashStringHelper* fstr) {
     n = write(reinterpret_cast<uint8_t*>(str), len);
   }
   #if !RADIOLIB_STATIC_ONLY
-    delete[] str;
+  delete[] str;
   #endif
   return(n);
 }
 
-size_t RadioLibPrint::print(const String& str) {
+size_t RadioLibPrint::print(const String &str) {
   size_t n = 0;
   if(this->encoding == RADIOLIB_ITA2) {
     ITA2String ita2 = ITA2String(str.c_str());
@@ -84,7 +87,7 @@ size_t RadioLibPrint::println(const __FlashStringHelper* fstr) {
   return(n);
 }
 
-size_t RadioLibPrint::println(const String& str) {
+size_t RadioLibPrint::println(const String &str) {
   size_t n = RadioLibPrint::print(str);
   n += RadioLibPrint::println();
   return(n);
@@ -129,7 +132,7 @@ size_t RadioLibPrint::print(long n, int base) {
   if(base == 0) {
     return(write(n));
   } else if(base == DEC) {
-    if (n < 0) {
+    if(n < 0) {
       int t = RadioLibPrint::print('-');
       n = -n;
       return(RadioLibPrint::printNumber(n, DEC) + t);
@@ -213,7 +216,7 @@ size_t RadioLibPrint::println(void) {
 
 size_t RadioLibPrint::printNumber(unsigned long n, uint8_t base) {
   char buf[8 * sizeof(long) + 1];
-  char *str = &buf[sizeof(buf) - 1];
+  char* str = &buf[sizeof(buf) - 1];
 
   *str = '\0';
 
@@ -246,11 +249,19 @@ size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
   size_t n = 0;
 
   char code[] = {0x00, 0x00, 0x00, 0x00};
-  if (isnan(number)) strcpy(code, "nan");
-  if (isinf(number)) strcpy(code, "inf");
-  if (number > (double)4294967040.0) strcpy(code, "ovf");  // constant determined empirically
-  if (number < (double)-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
+  if(isnan(number)) {
+    strcpy(code, "nan");
+  }
+  if(isinf(number)) {
+    strcpy(code, "inf");
+  }
+  if(number > (double)4294967040.0) {
+    strcpy(code, "ovf");                                   // constant determined empirically
+  }
+  if(number < (double)-4294967040.0) {
+    strcpy(code, "ovf");                                    // constant determined empirically
 
+  }
   if(code[0] != 0x00) {
     if(this->encoding == RADIOLIB_ITA2) {
       ITA2String ita2 = ITA2String(code);
@@ -264,7 +275,7 @@ size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
   }
 
   // Handle negative numbers
-  if (number < (double)0.0) {
+  if(number < (double)0.0) {
     if(this->encoding == RADIOLIB_ITA2) {
       ITA2String ita2 = ITA2String("-");
       uint8_t* arr = ita2.byteArr();

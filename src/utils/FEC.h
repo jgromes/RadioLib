@@ -53,15 +53,15 @@ class RadioLibBCH {
     uint8_t k = 0;
     uint32_t poly = 0;
     uint8_t m = 0;
-    
+
     #if RADIOLIB_STATIC_ONLY
-      int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1] = { 0 };
-      int32_t indexOf[RADIOLIB_BCH_MAX_N + 1] = { 0 };
-      int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
+    int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1] = { 0 };
+    int32_t indexOf[RADIOLIB_BCH_MAX_N + 1] = { 0 };
+    int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
     #else
-      int32_t* alphaTo = nullptr;
-      int32_t* indexOf = nullptr;
-      int32_t* generator = nullptr;
+    int32_t* alphaTo = nullptr;
+    int32_t* indexOf = nullptr;
+    int32_t* generator = nullptr;
     #endif
 };
 
@@ -128,7 +128,7 @@ class RadioLibConvCode {
       to ensure the buffer is large enough to fit the encoded data!
       \param out_bits Pointer to a variable to save the number of encoded bits.
       Ignored if set to NULL.
-      \returns \ref status_codes 
+      \returns \ref status_codes
     */
     int16_t encode(const uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits = NULL);
 
@@ -145,7 +145,7 @@ static const uint32_t ConvCodeTable1_3[16] = {
   0x34074370, 0x52612516, 0x25165261, 0x43703407,
 };
 
-static const uint32_t ConvCodeTable1_2[4] = { 
+static const uint32_t ConvCodeTable1_2[4] = {
   0x03122130, 0x21300312, 0x30211203, 0x12033021,
 };
 

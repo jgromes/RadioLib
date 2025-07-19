@@ -13,7 +13,7 @@
   \class SX1282
   \brief Derived class for %SX1282 modules.
 */
-class SX1282: public SX1280 {
+class SX1282 : public SX1280 {
   public:
     /*!
       \brief Default constructor.
@@ -21,9 +21,9 @@ class SX1282: public SX1280 {
     */
     SX1282(Module* mod); // cppcheck-suppress noExplicitConstructor
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

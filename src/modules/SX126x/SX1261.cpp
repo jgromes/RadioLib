@@ -1,7 +1,7 @@
 #include "SX1261.h"
 #if !RADIOLIB_EXCLUDE_SX126X
 
-SX1261::SX1261(Module* mod): SX1262(mod) {
+SX1261::SX1261(Module* mod) : SX1262(mod) {
   chipType = RADIOLIB_SX1261_CHIP_TYPE;
 }
 

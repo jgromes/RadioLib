@@ -126,221 +126,221 @@
 #define RADIOLIB_SX128X_REG_ACCESS_ADDRESS_BYTE_0               (RADIOLIB_SX128X_REG_SYNC_WORD_1_BYTE_0)
 
 // SX128X SPI command variables
-//RADIOLIB_SX128X_CMD_GET_STATUS                                              MSB   LSB   DESCRIPTION
-#define RADIOLIB_SX128X_STATUS_MODE_STDBY_RC                    0b01000000  //  7     5   current chip mode: STDBY_RC
-#define RADIOLIB_SX128X_STATUS_MODE_STDBY_XOSC                  0b01100000  //  7     5                      STDBY_XOSC
-#define RADIOLIB_SX128X_STATUS_MODE_FS                          0b10000000  //  7     5                      FS
-#define RADIOLIB_SX128X_STATUS_MODE_RX                          0b10100000  //  7     5                      Rx
-#define RADIOLIB_SX128X_STATUS_MODE_TX                          0b11000000  //  7     5                      Tx
-#define RADIOLIB_SX128X_STATUS_CMD_PROCESSED                    0b00000100  //  4     2   command status: processing OK
-#define RADIOLIB_SX128X_STATUS_DATA_AVAILABLE                   0b00001000  //  4     2                   data available
-#define RADIOLIB_SX128X_STATUS_CMD_TIMEOUT                      0b00001100  //  4     2                   timeout
-#define RADIOLIB_SX128X_STATUS_CMD_ERROR                        0b00010000  //  4     2                   processing error
-#define RADIOLIB_SX128X_STATUS_CMD_FAILED                       0b00010100  //  4     2                   failed to execute
-#define RADIOLIB_SX128X_STATUS_TX_DONE                          0b00011000  //  4     2                   transmission finished
-#define RADIOLIB_SX128X_STATUS_BUSY                             0b00000001  //  0     0   chip busy
-#define RADIOLIB_SX128X_STATUS_SPI_FAILED                       0b11111111  //  7     0   SPI transaction failed
+// RADIOLIB_SX128X_CMD_GET_STATUS                                              MSB   LSB   DESCRIPTION
+#define RADIOLIB_SX128X_STATUS_MODE_STDBY_RC                    0b01000000  // 7     5   current chip mode: STDBY_RC
+#define RADIOLIB_SX128X_STATUS_MODE_STDBY_XOSC                  0b01100000  // 7     5                      STDBY_XOSC
+#define RADIOLIB_SX128X_STATUS_MODE_FS                          0b10000000  // 7     5                      FS
+#define RADIOLIB_SX128X_STATUS_MODE_RX                          0b10100000  // 7     5                      Rx
+#define RADIOLIB_SX128X_STATUS_MODE_TX                          0b11000000  // 7     5                      Tx
+#define RADIOLIB_SX128X_STATUS_CMD_PROCESSED                    0b00000100  // 4     2   command status: processing OK
+#define RADIOLIB_SX128X_STATUS_DATA_AVAILABLE                   0b00001000  // 4     2                   data available
+#define RADIOLIB_SX128X_STATUS_CMD_TIMEOUT                      0b00001100  // 4     2                   timeout
+#define RADIOLIB_SX128X_STATUS_CMD_ERROR                        0b00010000  // 4     2                   processing error
+#define RADIOLIB_SX128X_STATUS_CMD_FAILED                       0b00010100  // 4     2                   failed to execute
+#define RADIOLIB_SX128X_STATUS_TX_DONE                          0b00011000  // 4     2                   transmission finished
+#define RADIOLIB_SX128X_STATUS_BUSY                             0b00000001  // 0     0   chip busy
+#define RADIOLIB_SX128X_STATUS_SPI_FAILED                       0b11111111  // 7     0   SPI transaction failed
 
-//RADIOLIB_SX128X_CMD_SET_SLEEP
-#define RADIOLIB_SX128X_SLEEP_DATA_BUFFER_FLUSH                 0b00000000  //  1     1   data buffer behavior in sleep mode: flush
-#define RADIOLIB_SX128X_SLEEP_DATA_BUFFER_RETAIN                0b00000010  //  1     1                                       retain
-#define RADIOLIB_SX128X_SLEEP_DATA_RAM_FLUSH                    0b00000000  //  0     0   data RAM (configuration) behavior in sleep mode: flush
-#define RADIOLIB_SX128X_SLEEP_DATA_RAM_RETAIN                   0b00000001  //  0     0                                                    retain
+// RADIOLIB_SX128X_CMD_SET_SLEEP
+#define RADIOLIB_SX128X_SLEEP_DATA_BUFFER_FLUSH                 0b00000000  // 1     1   data buffer behavior in sleep mode: flush
+#define RADIOLIB_SX128X_SLEEP_DATA_BUFFER_RETAIN                0b00000010  // 1     1                                       retain
+#define RADIOLIB_SX128X_SLEEP_DATA_RAM_FLUSH                    0b00000000  // 0     0   data RAM (configuration) behavior in sleep mode: flush
+#define RADIOLIB_SX128X_SLEEP_DATA_RAM_RETAIN                   0b00000001  // 0     0                                                    retain
 
-//RADIOLIB_SX128X_CMD_SET_STANDBY
-#define RADIOLIB_SX128X_STANDBY_RC                              0x00        //  7     0   standby mode: 13 MHz RC oscillator
-#define RADIOLIB_SX128X_STANDBY_XOSC                            0x01        //  7     0                 52 MHz crystal oscillator
+// RADIOLIB_SX128X_CMD_SET_STANDBY
+#define RADIOLIB_SX128X_STANDBY_RC                              0x00        // 7     0   standby mode: 13 MHz RC oscillator
+#define RADIOLIB_SX128X_STANDBY_XOSC                            0x01        // 7     0                 52 MHz crystal oscillator
 
-//RADIOLIB_SX128X_CMD_SET_TX + RADIOLIB_SX128X_CMD_SET_RX + RADIOLIB_SX128X_CMD_SET_RX_DUTY_CYCLE
-#define RADIOLIB_SX128X_PERIOD_BASE_15_625_US                   0x00        //  7     0   time period step: 15.625 us
-#define RADIOLIB_SX128X_PERIOD_BASE_62_5_US                     0x01        //  7     0                     62.5 us
-#define RADIOLIB_SX128X_PERIOD_BASE_1_MS                        0x02        //  7     0                     1 ms
-#define RADIOLIB_SX128X_PERIOD_BASE_4_MS                        0x03        //  7     0                     4 ms
+// RADIOLIB_SX128X_CMD_SET_TX + RADIOLIB_SX128X_CMD_SET_RX + RADIOLIB_SX128X_CMD_SET_RX_DUTY_CYCLE
+#define RADIOLIB_SX128X_PERIOD_BASE_15_625_US                   0x00        // 7     0   time period step: 15.625 us
+#define RADIOLIB_SX128X_PERIOD_BASE_62_5_US                     0x01        // 7     0                     62.5 us
+#define RADIOLIB_SX128X_PERIOD_BASE_1_MS                        0x02        // 7     0                     1 ms
+#define RADIOLIB_SX128X_PERIOD_BASE_4_MS                        0x03        // 7     0                     4 ms
 
-//RADIOLIB_SX128X_CMD_SET_TX
-#define RADIOLIB_SX128X_TX_TIMEOUT_NONE                         0x0000      //  15    0   Tx timeout duration: no timeout (Tx single mode)
+// RADIOLIB_SX128X_CMD_SET_TX
+#define RADIOLIB_SX128X_TX_TIMEOUT_NONE                         0x0000      // 15    0   Tx timeout duration: no timeout (Tx single mode)
 
-//RADIOLIB_SX128X_CMD_SET_RX
-#define RADIOLIB_SX128X_RX_TIMEOUT_NONE                         0x0000      //  15    0   Rx timeout duration: no timeout (Rx single mode)
-#define RADIOLIB_SX128X_RX_TIMEOUT_INF                          0xFFFF      //  15    0                        infinite (Rx continuous mode)
+// RADIOLIB_SX128X_CMD_SET_RX
+#define RADIOLIB_SX128X_RX_TIMEOUT_NONE                         0x0000      // 15    0   Rx timeout duration: no timeout (Rx single mode)
+#define RADIOLIB_SX128X_RX_TIMEOUT_INF                          0xFFFF      // 15    0                        infinite (Rx continuous mode)
 
-//RADIOLIB_SX128X_CMD_SET_PACKET_TYPE
-#define RADIOLIB_SX128X_PACKET_TYPE_GFSK                        0x00        //  7     0   packet type: (G)FSK
-#define RADIOLIB_SX128X_PACKET_TYPE_LORA                        0x01        //  7     0                LoRa
-#define RADIOLIB_SX128X_PACKET_TYPE_RANGING                     0x02        //  7     0                ranging engine
-#define RADIOLIB_SX128X_PACKET_TYPE_FLRC                        0x03        //  7     0                FLRC
-#define RADIOLIB_SX128X_PACKET_TYPE_BLE                         0x04        //  7     0                BLE
+// RADIOLIB_SX128X_CMD_SET_PACKET_TYPE
+#define RADIOLIB_SX128X_PACKET_TYPE_GFSK                        0x00        // 7     0   packet type: (G)FSK
+#define RADIOLIB_SX128X_PACKET_TYPE_LORA                        0x01        // 7     0                LoRa
+#define RADIOLIB_SX128X_PACKET_TYPE_RANGING                     0x02        // 7     0                ranging engine
+#define RADIOLIB_SX128X_PACKET_TYPE_FLRC                        0x03        // 7     0                FLRC
+#define RADIOLIB_SX128X_PACKET_TYPE_BLE                         0x04        // 7     0                BLE
 
-//RADIOLIB_SX128X_CMD_SET_TX_PARAMS
-#define RADIOLIB_SX128X_PA_RAMP_02_US                           0x00        //  7     0   PA ramp time: 2 us
-#define RADIOLIB_SX128X_PA_RAMP_04_US                           0x20        //  7     0                 4 us
-#define RADIOLIB_SX128X_PA_RAMP_06_US                           0x40        //  7     0                 6 us
-#define RADIOLIB_SX128X_PA_RAMP_08_US                           0x60        //  7     0                 8 us
-#define RADIOLIB_SX128X_PA_RAMP_10_US                           0x80        //  7     0                 10 us
-#define RADIOLIB_SX128X_PA_RAMP_12_US                           0xA0        //  7     0                 12 us
-#define RADIOLIB_SX128X_PA_RAMP_16_US                           0xC0        //  7     0                 16 us
-#define RADIOLIB_SX128X_PA_RAMP_20_US                           0xE0        //  7     0                 20 us
+// RADIOLIB_SX128X_CMD_SET_TX_PARAMS
+#define RADIOLIB_SX128X_PA_RAMP_02_US                           0x00        // 7     0   PA ramp time: 2 us
+#define RADIOLIB_SX128X_PA_RAMP_04_US                           0x20        // 7     0                 4 us
+#define RADIOLIB_SX128X_PA_RAMP_06_US                           0x40        // 7     0                 6 us
+#define RADIOLIB_SX128X_PA_RAMP_08_US                           0x60        // 7     0                 8 us
+#define RADIOLIB_SX128X_PA_RAMP_10_US                           0x80        // 7     0                 10 us
+#define RADIOLIB_SX128X_PA_RAMP_12_US                           0xA0        // 7     0                 12 us
+#define RADIOLIB_SX128X_PA_RAMP_16_US                           0xC0        // 7     0                 16 us
+#define RADIOLIB_SX128X_PA_RAMP_20_US                           0xE0        // 7     0                 20 us
 
-//RADIOLIB_SX128X_CMD_SET_CAD_PARAMS
-#define RADIOLIB_SX128X_CAD_ON_1_SYMB                           0x00        //  7     0   number of symbols used for CAD: 1
-#define RADIOLIB_SX128X_CAD_ON_2_SYMB                           0x20        //  7     0                                   2
-#define RADIOLIB_SX128X_CAD_ON_4_SYMB                           0x40        //  7     0                                   4
-#define RADIOLIB_SX128X_CAD_ON_8_SYMB                           0x60        //  7     0                                   8
-#define RADIOLIB_SX128X_CAD_ON_16_SYMB                          0x80        //  7     0                                   16
+// RADIOLIB_SX128X_CMD_SET_CAD_PARAMS
+#define RADIOLIB_SX128X_CAD_ON_1_SYMB                           0x00        // 7     0   number of symbols used for CAD: 1
+#define RADIOLIB_SX128X_CAD_ON_2_SYMB                           0x20        // 7     0                                   2
+#define RADIOLIB_SX128X_CAD_ON_4_SYMB                           0x40        // 7     0                                   4
+#define RADIOLIB_SX128X_CAD_ON_8_SYMB                           0x60        // 7     0                                   8
+#define RADIOLIB_SX128X_CAD_ON_16_SYMB                          0x80        // 7     0                                   16
 #define RADIOLIB_SX128X_CAD_PARAM_DEFAULT                       RADIOLIB_SX128X_CAD_ON_8_SYMB
 
-//RADIOLIB_SX128X_CMD_SET_MODULATION_PARAMS
-#define RADIOLIB_SX128X_BLE_GFSK_BR_2_000_BW_2_4                0x04        //  7     0   GFSK/BLE bit rate and bandwidth setting: 2.0 Mbps   2.4 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_1_600_BW_2_4                0x28        //  7     0                                            1.6 Mbps   2.4 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_1_000_BW_2_4                0x4C        //  7     0                                            1.0 Mbps   2.4 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_1_000_BW_1_2                0x45        //  7     0                                            1.0 Mbps   1.2 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4                0x70        //  7     0                                            0.8 Mbps   2.4 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_1_2                0x69        //  7     0                                            0.8 Mbps   1.2 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_500_BW_1_2                0x8D        //  7     0                                            0.5 Mbps   1.2 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_500_BW_0_6                0x86        //  7     0                                            0.5 Mbps   0.6 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_400_BW_1_2                0xB1        //  7     0                                            0.4 Mbps   1.2 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_400_BW_0_6                0xAA        //  7     0                                            0.4 Mbps   0.6 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_250_BW_0_6                0xCE        //  7     0                                            0.25 Mbps  0.6 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_250_BW_0_3                0xC7        //  7     0                                            0.25 Mbps  0.3 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_BR_0_125_BW_0_3                0xEF        //  7     0                                            0.125 Mbps 0.3 MHz
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_35                   0x00        //  7     0   GFSK/BLE modulation index: 0.35
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_50                   0x01        //  7     0                              0.50
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_75                   0x02        //  7     0                              0.75
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_00                   0x03        //  7     0                              1.00
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_25                   0x04        //  7     0                              1.25
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_50                   0x05        //  7     0                              1.50
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_75                   0x06        //  7     0                              1.75
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_00                   0x07        //  7     0                              2.00
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_25                   0x08        //  7     0                              2.25
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_50                   0x09        //  7     0                              2.50
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_75                   0x0A        //  7     0                              2.75
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_00                   0x0B        //  7     0                              3.00
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_25                   0x0C        //  7     0                              3.25
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_50                   0x0D        //  7     0                              3.50
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_75                   0x0E        //  7     0                              3.75
-#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_4_00                   0x0F        //  7     0                              4.00
-#define RADIOLIB_SX128X_BLE_GFSK_BT_OFF                         0x00        //  7     0   GFSK Gaussian filter BT product: filter disabled
-#define RADIOLIB_SX128X_BLE_GFSK_BT_1_0                         0x10        //  7     0                                    1.0
-#define RADIOLIB_SX128X_BLE_GFSK_BT_0_5                         0x20        //  7     0                                    0.5
-#define RADIOLIB_SX128X_FLRC_BR_1_300_BW_1_2                    0x45        //  7     0   FLRC bit rate and bandwidth setting: 1.3 Mbps   1.2 MHz
-#define RADIOLIB_SX128X_FLRC_BR_1_000_BW_1_2                    0x69        //  7     0                                        1.04 Mbps  1.2 MHz
-#define RADIOLIB_SX128X_FLRC_BR_0_650_BW_0_6                    0x86        //  7     0                                        0.65 Mbps  0.6 MHz
-#define RADIOLIB_SX128X_FLRC_BR_0_520_BW_0_6                    0xAA        //  7     0                                        0.52 Mbps  0.6 MHz
-#define RADIOLIB_SX128X_FLRC_BR_0_325_BW_0_3                    0xC7        //  7     0                                        0.325 Mbps 0.3 MHz
-#define RADIOLIB_SX128X_FLRC_BR_0_260_BW_0_3                    0xEB        //  7     0                                        0.260 Mbps 0.3 MHz
-#define RADIOLIB_SX128X_FLRC_CR_1_2                             0x00        //  7     0   FLRC coding rate: 1/2
-#define RADIOLIB_SX128X_FLRC_CR_3_4                             0x02        //  7     0                     3/4
-#define RADIOLIB_SX128X_FLRC_CR_1_0                             0x04        //  7     0                     1/1
-#define RADIOLIB_SX128X_FLRC_BT_OFF                             0x00        //  7     0   FLRC Gaussian filter BT product: filter disabled
-#define RADIOLIB_SX128X_FLRC_BT_1_0                             0x10        //  7     0                                    1.0
-#define RADIOLIB_SX128X_FLRC_BT_0_5                             0x20        //  7     0                                    0.5
-#define RADIOLIB_SX128X_LORA_SF_5                               0x50        //  7     0   LoRa spreading factor: 5
-#define RADIOLIB_SX128X_LORA_SF_6                               0x60        //  7     0                          6
-#define RADIOLIB_SX128X_LORA_SF_7                               0x70        //  7     0                          7
-#define RADIOLIB_SX128X_LORA_SF_8                               0x80        //  7     0                          8
-#define RADIOLIB_SX128X_LORA_SF_9                               0x90        //  7     0                          9
-#define RADIOLIB_SX128X_LORA_SF_10                              0xA0        //  7     0                          10
-#define RADIOLIB_SX128X_LORA_SF_11                              0xB0        //  7     0                          11
-#define RADIOLIB_SX128X_LORA_SF_12                              0xC0        //  7     0                          12
-#define RADIOLIB_SX128X_LORA_BW_1625_00                         0x0A        //  7     0   LoRa bandwidth: 1625.0 kHz
-#define RADIOLIB_SX128X_LORA_BW_812_50                          0x18        //  7     0                   812.5 kHz
-#define RADIOLIB_SX128X_LORA_BW_406_25                          0x26        //  7     0                   406.25 kHz
-#define RADIOLIB_SX128X_LORA_BW_203_125                         0x34        //  7     0                   203.125 kHz
-#define RADIOLIB_SX128X_LORA_CR_4_5                             0x01        //  7     0   LoRa coding rate: 4/5
-#define RADIOLIB_SX128X_LORA_CR_4_6                             0x02        //  7     0                     4/6
-#define RADIOLIB_SX128X_LORA_CR_4_7                             0x03        //  7     0                     4/7
-#define RADIOLIB_SX128X_LORA_CR_4_8                             0x04        //  7     0                     4/8
-#define RADIOLIB_SX128X_LORA_CR_4_5_LI                          0x05        //  7     0                     4/5, long interleaving
-#define RADIOLIB_SX128X_LORA_CR_4_6_LI                          0x06        //  7     0                     4/6, long interleaving
-#define RADIOLIB_SX128X_LORA_CR_4_7_LI                          0x07        //  7     0                     4/7, long interleaving
+// RADIOLIB_SX128X_CMD_SET_MODULATION_PARAMS
+#define RADIOLIB_SX128X_BLE_GFSK_BR_2_000_BW_2_4                0x04        // 7     0   GFSK/BLE bit rate and bandwidth setting: 2.0 Mbps   2.4 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_1_600_BW_2_4                0x28        // 7     0                                            1.6 Mbps   2.4 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_1_000_BW_2_4                0x4C        // 7     0                                            1.0 Mbps   2.4 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_1_000_BW_1_2                0x45        // 7     0                                            1.0 Mbps   1.2 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4                0x70        // 7     0                                            0.8 Mbps   2.4 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_1_2                0x69        // 7     0                                            0.8 Mbps   1.2 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_500_BW_1_2                0x8D        // 7     0                                            0.5 Mbps   1.2 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_500_BW_0_6                0x86        // 7     0                                            0.5 Mbps   0.6 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_400_BW_1_2                0xB1        // 7     0                                            0.4 Mbps   1.2 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_400_BW_0_6                0xAA        // 7     0                                            0.4 Mbps   0.6 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_250_BW_0_6                0xCE        // 7     0                                            0.25 Mbps  0.6 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_250_BW_0_3                0xC7        // 7     0                                            0.25 Mbps  0.3 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_BR_0_125_BW_0_3                0xEF        // 7     0                                            0.125 Mbps 0.3 MHz
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_35                   0x00        // 7     0   GFSK/BLE modulation index: 0.35
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_50                   0x01        // 7     0                              0.50
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_75                   0x02        // 7     0                              0.75
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_00                   0x03        // 7     0                              1.00
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_25                   0x04        // 7     0                              1.25
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_50                   0x05        // 7     0                              1.50
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_75                   0x06        // 7     0                              1.75
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_00                   0x07        // 7     0                              2.00
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_25                   0x08        // 7     0                              2.25
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_50                   0x09        // 7     0                              2.50
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_2_75                   0x0A        // 7     0                              2.75
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_00                   0x0B        // 7     0                              3.00
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_25                   0x0C        // 7     0                              3.25
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_50                   0x0D        // 7     0                              3.50
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_3_75                   0x0E        // 7     0                              3.75
+#define RADIOLIB_SX128X_BLE_GFSK_MOD_IND_4_00                   0x0F        // 7     0                              4.00
+#define RADIOLIB_SX128X_BLE_GFSK_BT_OFF                         0x00        // 7     0   GFSK Gaussian filter BT product: filter disabled
+#define RADIOLIB_SX128X_BLE_GFSK_BT_1_0                         0x10        // 7     0                                    1.0
+#define RADIOLIB_SX128X_BLE_GFSK_BT_0_5                         0x20        // 7     0                                    0.5
+#define RADIOLIB_SX128X_FLRC_BR_1_300_BW_1_2                    0x45        // 7     0   FLRC bit rate and bandwidth setting: 1.3 Mbps   1.2 MHz
+#define RADIOLIB_SX128X_FLRC_BR_1_000_BW_1_2                    0x69        // 7     0                                        1.04 Mbps  1.2 MHz
+#define RADIOLIB_SX128X_FLRC_BR_0_650_BW_0_6                    0x86        // 7     0                                        0.65 Mbps  0.6 MHz
+#define RADIOLIB_SX128X_FLRC_BR_0_520_BW_0_6                    0xAA        // 7     0                                        0.52 Mbps  0.6 MHz
+#define RADIOLIB_SX128X_FLRC_BR_0_325_BW_0_3                    0xC7        // 7     0                                        0.325 Mbps 0.3 MHz
+#define RADIOLIB_SX128X_FLRC_BR_0_260_BW_0_3                    0xEB        // 7     0                                        0.260 Mbps 0.3 MHz
+#define RADIOLIB_SX128X_FLRC_CR_1_2                             0x00        // 7     0   FLRC coding rate: 1/2
+#define RADIOLIB_SX128X_FLRC_CR_3_4                             0x02        // 7     0                     3/4
+#define RADIOLIB_SX128X_FLRC_CR_1_0                             0x04        // 7     0                     1/1
+#define RADIOLIB_SX128X_FLRC_BT_OFF                             0x00        // 7     0   FLRC Gaussian filter BT product: filter disabled
+#define RADIOLIB_SX128X_FLRC_BT_1_0                             0x10        // 7     0                                    1.0
+#define RADIOLIB_SX128X_FLRC_BT_0_5                             0x20        // 7     0                                    0.5
+#define RADIOLIB_SX128X_LORA_SF_5                               0x50        // 7     0   LoRa spreading factor: 5
+#define RADIOLIB_SX128X_LORA_SF_6                               0x60        // 7     0                          6
+#define RADIOLIB_SX128X_LORA_SF_7                               0x70        // 7     0                          7
+#define RADIOLIB_SX128X_LORA_SF_8                               0x80        // 7     0                          8
+#define RADIOLIB_SX128X_LORA_SF_9                               0x90        // 7     0                          9
+#define RADIOLIB_SX128X_LORA_SF_10                              0xA0        // 7     0                          10
+#define RADIOLIB_SX128X_LORA_SF_11                              0xB0        // 7     0                          11
+#define RADIOLIB_SX128X_LORA_SF_12                              0xC0        // 7     0                          12
+#define RADIOLIB_SX128X_LORA_BW_1625_00                         0x0A        // 7     0   LoRa bandwidth: 1625.0 kHz
+#define RADIOLIB_SX128X_LORA_BW_812_50                          0x18        // 7     0                   812.5 kHz
+#define RADIOLIB_SX128X_LORA_BW_406_25                          0x26        // 7     0                   406.25 kHz
+#define RADIOLIB_SX128X_LORA_BW_203_125                         0x34        // 7     0                   203.125 kHz
+#define RADIOLIB_SX128X_LORA_CR_4_5                             0x01        // 7     0   LoRa coding rate: 4/5
+#define RADIOLIB_SX128X_LORA_CR_4_6                             0x02        // 7     0                     4/6
+#define RADIOLIB_SX128X_LORA_CR_4_7                             0x03        // 7     0                     4/7
+#define RADIOLIB_SX128X_LORA_CR_4_8                             0x04        // 7     0                     4/8
+#define RADIOLIB_SX128X_LORA_CR_4_5_LI                          0x05        // 7     0                     4/5, long interleaving
+#define RADIOLIB_SX128X_LORA_CR_4_6_LI                          0x06        // 7     0                     4/6, long interleaving
+#define RADIOLIB_SX128X_LORA_CR_4_7_LI                          0x07        // 7     0                     4/7, long interleaving
 
-//RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_OFF                 0x00        //  7     0   GFSK/FLRC sync word used: none
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1                   0x10        //  7     0                             sync word 1
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_2                   0x20        //  7     0                             sync word 2
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1_2                 0x30        //  7     0                             sync words 1 and 2
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_3                   0x40        //  7     0                             sync word 3
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1_3                 0x50        //  7     0                             sync words 1 and 3
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_2_3                 0x60        //  7     0                             sync words 2 and 3
-#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1_2_3               0x70        //  7     0                             sync words 1, 2 and 3
-#define RADIOLIB_SX128X_GFSK_FLRC_PACKET_FIXED                  0x00        //  7     0   GFSK/FLRC packet length mode: fixed
-#define RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE               0x20        //  7     0                                 variable
-#define RADIOLIB_SX128X_GFSK_FLRC_CRC_OFF                       0x00        //  7     0   GFSK/FLRC packet CRC: none
-#define RADIOLIB_SX128X_GFSK_FLRC_CRC_1_BYTE                    0x10        //  7     0                         1 byte
-#define RADIOLIB_SX128X_GFSK_FLRC_CRC_2_BYTE                    0x20        //  7     0                         2 bytes
-#define RADIOLIB_SX128X_GFSK_FLRC_CRC_3_BYTE                    0x30        //  7     0                         3 bytes (FLRC only)
-#define RADIOLIB_SX128X_GFSK_BLE_WHITENING_ON                   0x00        //  7     0   GFSK/BLE whitening: enabled
-#define RADIOLIB_SX128X_GFSK_BLE_WHITENING_OFF                  0x08        //  7     0                       disabled
-#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_MAX_31               0x00        //  7     0   BLE maximum payload length: 31 bytes
-#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_MAX_37               0x20        //  7     0                               37 bytes
-#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_TEST                 0x40        //  7     0                               63 bytes (test mode)
-#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_MAX_255              0x80        //  7     0                               255 bytes (Bluetooth 4.2 and above)
-#define RADIOLIB_SX128X_BLE_CRC_OFF                             0x00        //  7     0   BLE packet CRC: none
-#define RADIOLIB_SX128X_BLE_CRC_3_BYTE                          0x10        //  7     0                   3 byte
-#define RADIOLIB_SX128X_BLE_PRBS_9                              0x00        //  7     0   BLE test payload contents: PRNG sequence using x^9 + x^5 + x
-#define RADIOLIB_SX128X_BLE_EYELONG                             0x04        //  7     0                              repeated 0xF0
-#define RADIOLIB_SX128X_BLE_EYESHORT                            0x08        //  7     0                              repeated 0xAA
-#define RADIOLIB_SX128X_BLE_PRBS_15                             0x0C        //  7     0                              PRNG sequence using x^15 + x^14 + x^13 + x^12 + x^2 + x + 1
-#define RADIOLIB_SX128X_BLE_ALL_1                               0x10        //  7     0                              repeated 0xFF
-#define RADIOLIB_SX128X_BLE_ALL_0                               0x14        //  7     0                              repeated 0x00
-#define RADIOLIB_SX128X_BLE_EYELONG_INV                         0x18        //  7     0                              repeated 0x0F
-#define RADIOLIB_SX128X_BLE_EYESHORT_INV                        0x1C        //  7     0                              repeated 0x55
-#define RADIOLIB_SX128X_FLRC_SYNC_WORD_OFF                      0x00        //  7     0   FLRC sync word: disabled
-#define RADIOLIB_SX128X_FLRC_SYNC_WORD_ON                       0x04        //  7     0                   enabled
-#define RADIOLIB_SX128X_LORA_HEADER_EXPLICIT                    0x00        //  7     0   LoRa header mode: explicit
-#define RADIOLIB_SX128X_LORA_HEADER_IMPLICIT                    0x80        //  7     0                     implicit
-#define RADIOLIB_SX128X_LORA_CRC_OFF                            0x00        //  7     0   LoRa packet CRC: disabled
-#define RADIOLIB_SX128X_LORA_CRC_ON                             0x20        //  7     0                    enabled
-#define RADIOLIB_SX128X_LORA_IQ_STANDARD                        0x40        //  7     0   LoRa IQ: standard
-#define RADIOLIB_SX128X_LORA_IQ_INVERTED                        0x00        //  7     0            inverted
+// RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_OFF                 0x00        // 7     0   GFSK/FLRC sync word used: none
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1                   0x10        // 7     0                             sync word 1
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_2                   0x20        // 7     0                             sync word 2
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1_2                 0x30        // 7     0                             sync words 1 and 2
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_3                   0x40        // 7     0                             sync word 3
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1_3                 0x50        // 7     0                             sync words 1 and 3
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_2_3                 0x60        // 7     0                             sync words 2 and 3
+#define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1_2_3               0x70        // 7     0                             sync words 1, 2 and 3
+#define RADIOLIB_SX128X_GFSK_FLRC_PACKET_FIXED                  0x00        // 7     0   GFSK/FLRC packet length mode: fixed
+#define RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE               0x20        // 7     0                                 variable
+#define RADIOLIB_SX128X_GFSK_FLRC_CRC_OFF                       0x00        // 7     0   GFSK/FLRC packet CRC: none
+#define RADIOLIB_SX128X_GFSK_FLRC_CRC_1_BYTE                    0x10        // 7     0                         1 byte
+#define RADIOLIB_SX128X_GFSK_FLRC_CRC_2_BYTE                    0x20        // 7     0                         2 bytes
+#define RADIOLIB_SX128X_GFSK_FLRC_CRC_3_BYTE                    0x30        // 7     0                         3 bytes (FLRC only)
+#define RADIOLIB_SX128X_GFSK_BLE_WHITENING_ON                   0x00        // 7     0   GFSK/BLE whitening: enabled
+#define RADIOLIB_SX128X_GFSK_BLE_WHITENING_OFF                  0x08        // 7     0                       disabled
+#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_MAX_31               0x00        // 7     0   BLE maximum payload length: 31 bytes
+#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_MAX_37               0x20        // 7     0                               37 bytes
+#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_TEST                 0x40        // 7     0                               63 bytes (test mode)
+#define RADIOLIB_SX128X_BLE_PAYLOAD_LENGTH_MAX_255              0x80        // 7     0                               255 bytes (Bluetooth 4.2 and above)
+#define RADIOLIB_SX128X_BLE_CRC_OFF                             0x00        // 7     0   BLE packet CRC: none
+#define RADIOLIB_SX128X_BLE_CRC_3_BYTE                          0x10        // 7     0                   3 byte
+#define RADIOLIB_SX128X_BLE_PRBS_9                              0x00        // 7     0   BLE test payload contents: PRNG sequence using x^9 + x^5 + x
+#define RADIOLIB_SX128X_BLE_EYELONG                             0x04        // 7     0                              repeated 0xF0
+#define RADIOLIB_SX128X_BLE_EYESHORT                            0x08        // 7     0                              repeated 0xAA
+#define RADIOLIB_SX128X_BLE_PRBS_15                             0x0C        // 7     0                              PRNG sequence using x^15 + x^14 + x^13 + x^12 + x^2 + x + 1
+#define RADIOLIB_SX128X_BLE_ALL_1                               0x10        // 7     0                              repeated 0xFF
+#define RADIOLIB_SX128X_BLE_ALL_0                               0x14        // 7     0                              repeated 0x00
+#define RADIOLIB_SX128X_BLE_EYELONG_INV                         0x18        // 7     0                              repeated 0x0F
+#define RADIOLIB_SX128X_BLE_EYESHORT_INV                        0x1C        // 7     0                              repeated 0x55
+#define RADIOLIB_SX128X_FLRC_SYNC_WORD_OFF                      0x00        // 7     0   FLRC sync word: disabled
+#define RADIOLIB_SX128X_FLRC_SYNC_WORD_ON                       0x04        // 7     0                   enabled
+#define RADIOLIB_SX128X_LORA_HEADER_EXPLICIT                    0x00        // 7     0   LoRa header mode: explicit
+#define RADIOLIB_SX128X_LORA_HEADER_IMPLICIT                    0x80        // 7     0                     implicit
+#define RADIOLIB_SX128X_LORA_CRC_OFF                            0x00        // 7     0   LoRa packet CRC: disabled
+#define RADIOLIB_SX128X_LORA_CRC_ON                             0x20        // 7     0                    enabled
+#define RADIOLIB_SX128X_LORA_IQ_STANDARD                        0x40        // 7     0   LoRa IQ: standard
+#define RADIOLIB_SX128X_LORA_IQ_INVERTED                        0x00        // 7     0            inverted
 
-//RADIOLIB_SX128X_CMD_GET_PACKET_STATUS
-#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_ERROR                0b01000000  //  6     6   packet status errors byte: sync word error
-#define RADIOLIB_SX128X_PACKET_STATUS_LENGTH_ERROR              0b00100000  //  5     5                              packet length error
-#define RADIOLIB_SX128X_PACKET_STATUS_CRC_ERROR                 0b00010000  //  4     4                              CRC error
-#define RADIOLIB_SX128X_PACKET_STATUS_ABORT_ERROR               0b00001000  //  3     3                              packet reception aborted
-#define RADIOLIB_SX128X_PACKET_STATUS_HEADER_RECEIVED           0b00000100  //  2     2                              header received
-#define RADIOLIB_SX128X_PACKET_STATUS_PACKET_RECEIVED           0b00000010  //  1     1                              packet received
-#define RADIOLIB_SX128X_PACKET_STATUS_PACKET_CTRL_BUSY          0b00000001  //  0     0                              packet controller is busy
-#define RADIOLIB_SX128X_PACKET_STATUS_RX_PID                    0b11000000  //  7     6   packet status status byte: PID field of the received packet
-#define RADIOLIB_SX128X_PACKET_STATUS_NO_ACK                    0b00100000  //  5     5                              NO_ACK field of the received packet
-#define RADIOLIB_SX128X_PACKET_STATUS_RX_PID_ERROR              0b00010000  //  4     4                              PID field error
-#define RADIOLIB_SX128X_PACKET_STATUS_PACKET_SENT               0b00000001  //  0     0                              packet sent
-#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_ERROR            0b00000000  //  2     0   packet status sync byte: sync word detection error
-#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_1                0b00000001  //  2     0                            detected sync word 1
-#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_2                0b00000010  //  2     0                            detected sync word 2
-#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_3                0b00000100  //  2     0                            detected sync word 3
+// RADIOLIB_SX128X_CMD_GET_PACKET_STATUS
+#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_ERROR                0b01000000  // 6     6   packet status errors byte: sync word error
+#define RADIOLIB_SX128X_PACKET_STATUS_LENGTH_ERROR              0b00100000  // 5     5                              packet length error
+#define RADIOLIB_SX128X_PACKET_STATUS_CRC_ERROR                 0b00010000  // 4     4                              CRC error
+#define RADIOLIB_SX128X_PACKET_STATUS_ABORT_ERROR               0b00001000  // 3     3                              packet reception aborted
+#define RADIOLIB_SX128X_PACKET_STATUS_HEADER_RECEIVED           0b00000100  // 2     2                              header received
+#define RADIOLIB_SX128X_PACKET_STATUS_PACKET_RECEIVED           0b00000010  // 1     1                              packet received
+#define RADIOLIB_SX128X_PACKET_STATUS_PACKET_CTRL_BUSY          0b00000001  // 0     0                              packet controller is busy
+#define RADIOLIB_SX128X_PACKET_STATUS_RX_PID                    0b11000000  // 7     6   packet status status byte: PID field of the received packet
+#define RADIOLIB_SX128X_PACKET_STATUS_NO_ACK                    0b00100000  // 5     5                              NO_ACK field of the received packet
+#define RADIOLIB_SX128X_PACKET_STATUS_RX_PID_ERROR              0b00010000  // 4     4                              PID field error
+#define RADIOLIB_SX128X_PACKET_STATUS_PACKET_SENT               0b00000001  // 0     0                              packet sent
+#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_ERROR            0b00000000  // 2     0   packet status sync byte: sync word detection error
+#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_1                0b00000001  // 2     0                            detected sync word 1
+#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_2                0b00000010  // 2     0                            detected sync word 2
+#define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_3                0b00000100  // 2     0                            detected sync word 3
 
-//RADIOLIB_SX128X_CMD_SET_DIO_IRQ_PARAMS
-#define RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED                   0x8000      //  15    15  interrupt source: preamble detected
-#define RADIOLIB_SX128X_IRQ_ADVANCED_RANGING_DONE               0x8000      //  15    15                    advanced ranging done
-#define RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT                       0x4000      //  14    14                    Rx or Tx timeout
-#define RADIOLIB_SX128X_IRQ_CAD_DETECTED                        0x2000      //  13    13                    channel activity detected
-#define RADIOLIB_SX128X_IRQ_CAD_DONE                            0x1000      //  12    12                    CAD finished
-#define RADIOLIB_SX128X_IRQ_RANGING_SLAVE_REQ_VALID             0x0800      //  11    11                    ranging request valid (slave)
-#define RADIOLIB_SX128X_IRQ_RANGING_MASTER_TIMEOUT              0x0400      //  10    10                    ranging timeout (master)
-#define RADIOLIB_SX128X_IRQ_RANGING_MASTER_RES_VALID            0x0200      //  9     9                     ranging result valid (master)
-#define RADIOLIB_SX128X_IRQ_RANGING_SLAVE_REQ_DISCARD           0x0100      //  8     8                     ranging result valid (master)
-#define RADIOLIB_SX128X_IRQ_RANGING_SLAVE_RESP_DONE             0x0080      //  7     7                     ranging response complete (slave)
-#define RADIOLIB_SX128X_IRQ_CRC_ERROR                           0x0040      //  6     6                     CRC error
-#define RADIOLIB_SX128X_IRQ_HEADER_ERROR                        0x0020      //  5     5                     header error
-#define RADIOLIB_SX128X_IRQ_HEADER_VALID                        0x0010      //  4     4                     header valid
-#define RADIOLIB_SX128X_IRQ_SYNC_WORD_ERROR                     0x0008      //  3     3                     sync word error
-#define RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID                     0x0004      //  2     2                     sync word valid
-#define RADIOLIB_SX128X_IRQ_RX_DONE                             0x0002      //  1     1                     Rx done
-#define RADIOLIB_SX128X_IRQ_TX_DONE                             0x0001      //  0     0                     Tx done
-#define RADIOLIB_SX128X_IRQ_NONE                                0x0000      //  15    0                     none
-#define RADIOLIB_SX128X_IRQ_ALL                                 0xFFFF      //  15    0                     all
+// RADIOLIB_SX128X_CMD_SET_DIO_IRQ_PARAMS
+#define RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED                   0x8000      // 15    15  interrupt source: preamble detected
+#define RADIOLIB_SX128X_IRQ_ADVANCED_RANGING_DONE               0x8000      // 15    15                    advanced ranging done
+#define RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT                       0x4000      // 14    14                    Rx or Tx timeout
+#define RADIOLIB_SX128X_IRQ_CAD_DETECTED                        0x2000      // 13    13                    channel activity detected
+#define RADIOLIB_SX128X_IRQ_CAD_DONE                            0x1000      // 12    12                    CAD finished
+#define RADIOLIB_SX128X_IRQ_RANGING_SLAVE_REQ_VALID             0x0800      // 11    11                    ranging request valid (slave)
+#define RADIOLIB_SX128X_IRQ_RANGING_MASTER_TIMEOUT              0x0400      // 10    10                    ranging timeout (master)
+#define RADIOLIB_SX128X_IRQ_RANGING_MASTER_RES_VALID            0x0200      // 9     9                     ranging result valid (master)
+#define RADIOLIB_SX128X_IRQ_RANGING_SLAVE_REQ_DISCARD           0x0100      // 8     8                     ranging result valid (master)
+#define RADIOLIB_SX128X_IRQ_RANGING_SLAVE_RESP_DONE             0x0080      // 7     7                     ranging response complete (slave)
+#define RADIOLIB_SX128X_IRQ_CRC_ERROR                           0x0040      // 6     6                     CRC error
+#define RADIOLIB_SX128X_IRQ_HEADER_ERROR                        0x0020      // 5     5                     header error
+#define RADIOLIB_SX128X_IRQ_HEADER_VALID                        0x0010      // 4     4                     header valid
+#define RADIOLIB_SX128X_IRQ_SYNC_WORD_ERROR                     0x0008      // 3     3                     sync word error
+#define RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID                     0x0004      // 2     2                     sync word valid
+#define RADIOLIB_SX128X_IRQ_RX_DONE                             0x0002      // 1     1                     Rx done
+#define RADIOLIB_SX128X_IRQ_TX_DONE                             0x0001      // 0     0                     Tx done
+#define RADIOLIB_SX128X_IRQ_NONE                                0x0000      // 15    0                     none
+#define RADIOLIB_SX128X_IRQ_ALL                                 0xFFFF      // 15    0                     all
 
-//RADIOLIB_SX128X_CMD_SET_REGULATOR_MODE
-#define RADIOLIB_SX128X_REGULATOR_LDO                           0x00        //  7     0   set regulator mode: LDO (default)
-#define RADIOLIB_SX128X_REGULATOR_DC_DC                         0x01        //  7     0                       DC-DC
+// RADIOLIB_SX128X_CMD_SET_REGULATOR_MODE
+#define RADIOLIB_SX128X_REGULATOR_LDO                           0x00        // 7     0   set regulator mode: LDO (default)
+#define RADIOLIB_SX128X_REGULATOR_DC_DC                         0x01        // 7     0                       DC-DC
 
-//RADIOLIB_SX128X_CMD_SET_RANGING_ROLE
-#define RADIOLIB_SX128X_RANGING_ROLE_MASTER                     0x01        //  7     0   ranging role: master
-#define RADIOLIB_SX128X_RANGING_ROLE_SLAVE                      0x00        //  7     0                 slave
+// RADIOLIB_SX128X_CMD_SET_RANGING_ROLE
+#define RADIOLIB_SX128X_RANGING_ROLE_MASTER                     0x01        // 7     0   ranging role: master
+#define RADIOLIB_SX128X_RANGING_ROLE_SLAVE                      0x00        // 7     0                 slave
 
-//RADIOLIB_SX128X_REG_LORA_SYNC_WORD_1 - RADIOLIB_SX128X_REG_LORA_SYNC_WORD_2
+// RADIOLIB_SX128X_REG_LORA_SYNC_WORD_1 - RADIOLIB_SX128X_REG_LORA_SYNC_WORD_2
 #define RADIOLIB_SX128X_SYNC_WORD_PRIVATE                       0x12
 
 /*!
@@ -348,7 +348,7 @@
   \brief Base class for %SX128x series. All derived classes for %SX128x (e.g. SX1280 or SX1281) inherit from this base class.
   This class should not be instantiated directly from Arduino sketch, only from its derived classes.
 */
-class SX128x: public PhysicalLayer {
+class SX128x : public PhysicalLayer {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -536,7 +536,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t finishTransmit() override;
-    
+
     /*!
       \brief Interrupt-driven receive method with default parameters.
       Implemented for compatibility with PhysicalLayer.
@@ -560,7 +560,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
-    
+
     /*!
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
@@ -648,7 +648,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t checkOutputPower(int8_t pwr, int8_t* clipped) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
@@ -854,7 +854,7 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t invertIQ(bool enable) override;
-    
+
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
 
@@ -875,9 +875,9 @@ class SX128x: public PhysicalLayer {
     void readBit(uint32_t pin) override;
     #endif
 
-#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
+    #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
-#endif
+    #endif
     Module* getMod() override;
 
     // cached LoRa parameters
@@ -907,9 +907,9 @@ class SX128x: public PhysicalLayer {
     int16_t setRangingRole(uint8_t role);
     int16_t setPacketType(uint8_t type);
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     Module* mod;
 
     // common low-level SPI interface

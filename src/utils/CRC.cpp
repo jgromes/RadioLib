@@ -1,13 +1,11 @@
 #include "CRC.h"
 
-RadioLibCRC::RadioLibCRC() {
-
-}
+RadioLibCRC::RadioLibCRC() {}
 
 uint32_t RadioLibCRC::checksum(const uint8_t* buff, size_t len) {
   uint32_t crc = this->init;
   size_t pos = 0;
-  for(size_t i = 0; i < 8*len; i++) {
+  for(size_t i = 0; i < 8 * len; i++) {
     if(i % 8 == 0) {
       uint32_t in = buff[pos++];
       if(this->refIn) {

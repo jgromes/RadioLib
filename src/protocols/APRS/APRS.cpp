@@ -32,7 +32,7 @@ int16_t APRSClient::begin(char sym, const char* callsign, uint8_t ssid, bool alt
   if(strlen(callsign) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
     return(RADIOLIB_ERR_INVALID_CALLSIGN);
   }
-  
+
   memcpy(this->src, callsign, strlen(callsign));
   this->id = ssid;
 
@@ -48,9 +48,9 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, const cha
     len += strlen(time);
   }
   #if !RADIOLIB_STATIC_ONLY
-    char* info = new char[len + 2];
+  char* info = new char[len + 2];
   #else
-    char info[RADIOLIB_STATIC_ARRAY_SIZE];
+  char info[RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
 
   // build the info field
@@ -62,7 +62,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, const cha
       // message, no timestamp
       sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_MSG "%s%c%s%c%s", lat, table, lon, symbol, msg);
     }
-  
+
   } else {
     if(time != NULL) {
       // timestamp, no message
@@ -79,7 +79,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, const cha
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("APRS Info: %s, length = %d", info, (int)len);
   int16_t state = sendFrame(destCallsign, destSSID, info);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] info;
+  delete[] info;
   #endif
   return(state);
 }
@@ -102,23 +102,23 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   // prepare buffers
   char destCallsign[7];
   #if !RADIOLIB_STATIC_ONLY
-    size_t infoLen = 10;
-    if(telemLen > 0) {
-      infoLen += 1 + telemLen;
-    } else {
-      if(grid != NULL) {
-        infoLen += strlen(grid) + 2;
-      }
-      if(status != NULL) {
-        infoLen += strlen(status);
-      }
-      if(alt > RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED) {
-        infoLen += 4;
-      }
+  size_t infoLen = 10;
+  if(telemLen > 0) {
+    infoLen += 1 + telemLen;
+  } else {
+    if(grid != NULL) {
+      infoLen += strlen(grid) + 2;
     }
-    char* info = new char[infoLen];
+    if(status != NULL) {
+      infoLen += strlen(status);
+    }
+    if(alt > RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED) {
+      infoLen += 4;
+    }
+  }
+  char* info = new char[infoLen];
   #else
-    char info[RADIOLIB_STATIC_ARRAY_SIZE];
+  char info[RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
   size_t infoPos = 0;
 
@@ -130,20 +130,32 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   int lat_deg = (int)lat_abs;
   int lat_min = (lat_abs - (float)lat_deg) * 60.0f;
   int lat_hun = (((lat_abs - (float)lat_deg) * 60.0f) - lat_min) * 100.0f;
-  destCallsign[0] = lat_deg/10;
-  destCallsign[1] = lat_deg%10;
-  destCallsign[2] = lat_min/10;
-  destCallsign[3] = lat_min%10;
-  destCallsign[4] = lat_hun/10;
-  destCallsign[5] = lat_hun%10;
+  destCallsign[0] = lat_deg / 10;
+  destCallsign[1] = lat_deg % 10;
+  destCallsign[2] = lat_min / 10;
+  destCallsign[3] = lat_min % 10;
+  destCallsign[4] = lat_hun / 10;
+  destCallsign[5] = lat_hun % 10;
 
   // next, add the extra bits
-  if(type & 0x04) { destCallsign[0] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET; }
-  if(type & 0x02) { destCallsign[1] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET; }
-  if(type & 0x01) { destCallsign[2] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET; }
-  if(lat >= 0) { destCallsign[3] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET; }
-  if(lon >= 100 || lon <= -100) { destCallsign[4] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET; }
-  if(lon < 0) { destCallsign[5] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET; }
+  if(type & 0x04) {
+    destCallsign[0] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET;
+  }
+  if(type & 0x02) {
+    destCallsign[1] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET;
+  }
+  if(type & 0x01) {
+    destCallsign[2] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET;
+  }
+  if(lat >= 0) {
+    destCallsign[3] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET;
+  }
+  if(lon >= 100 || lon <= -100) {
+    destCallsign[4] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET;
+  }
+  if(lon < 0) {
+    destCallsign[5] += RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET;
+  }
   destCallsign[6] = '\0';
 
   // now convert to Mic-E characters to get the "callsign"
@@ -174,7 +186,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
     info[infoPos++] = lon_deg - 72;
   }
 
-  if(lon_min <= 9){
+  if(lon_min <= 9) {
     info[infoPos++] = lon_min + 88;
   } else {
     info[infoPos++] = lon_min + 28;
@@ -183,10 +195,10 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   info[infoPos++] = lon_hun + 28;
 
   // now the speed and heading - this gets really weird
-  int32_t speed_hun_ten = speed/10;
-  int32_t speed_uni = speed%10;
-  int32_t head_hun = heading/100;
-  int32_t head_ten_uni = heading%100;
+  int32_t speed_hun_ten = speed / 10;
+  int32_t speed_uni = speed % 10;
+  int32_t head_hun = heading / 100;
+  int32_t head_ten_uni = heading % 100;
 
   if(speed <= 199) {
     info[infoPos++] = speed_hun_ten + 'l';
@@ -194,7 +206,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
     info[infoPos++] = speed_hun_ten + '0';
   }
 
-  info[infoPos++] = speed_uni*10 + head_hun + 32;
+  info[infoPos++] = speed_uni * 10 + head_hun + 32;
   info[infoPos++] = head_ten_uni + 28;
   info[infoPos++] = symbol;
   info[infoPos++] = table;
@@ -244,7 +256,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   }
   int16_t state = sendFrame(destCallsign, destSSID, info);
   #if !RADIOLIB_STATIC_ONLY
-    delete[] info;
+  delete[] info;
   #endif
   return(state);
 }
@@ -267,7 +279,7 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
     }
 
     return(axClient->sendFrame(&frameUI));
-  
+
   } else if(this->phyLayer != nullptr) {
     // non-AX.25/LoRa mode
     size_t len = RADIOLIB_APRS_LORA_HEADER_LEN + strlen(this->src) + 4 + strlen(destCallsign) + 11 + strlen(info);
@@ -277,8 +289,8 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
     int16_t res = this->phyLayer->transmit(reinterpret_cast<uint8_t*>(buff), strlen(buff));
     delete[] buff;
     return(res);
-  } 
-  
+  }
+
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 

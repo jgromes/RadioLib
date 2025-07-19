@@ -11,7 +11,7 @@
   \class SX1273
   \brief Derived class for %SX1273 modules. Overrides some methods from SX1272 due to different parameter ranges.
 */
-class SX1273: public SX1272 {
+class SX1273 : public SX1272 {
   public:
 
     // constructor
@@ -55,14 +55,14 @@ class SX1273: public SX1272 {
       \returns \ref status_codes
     */
     int16_t setDataRate(DataRate_t dr) override;
-    
+
     /*!
       \brief Check the data rate can be configured by this module.
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
       \returns \ref status_codes
     */
     int16_t checkDataRate(DataRate_t dr) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
@@ -71,9 +71,9 @@ class SX1273: public SX1272 {
     */
     int16_t setModem(ModemType_t modem) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

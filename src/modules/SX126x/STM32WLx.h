@@ -43,22 +43,22 @@ class STM32WLx : public SX1262 {
 
     /*!
       \brief Custom operation modes for STMWLx.
-     
+
       This splits the TX mode into two modes: Low-power and high-power.
       These constants can be used with the setRfSwitchTable() method,
       instead of the Module::OpMode_t constants.
     */
     enum OpMode_t {
-        /*! End of table marker, use \ref END_OF_MODE_TABLE constant instead */
-        MODE_END_OF_TABLE = Module::MODE_END_OF_TABLE,
-        /*! Idle mode */
-        MODE_IDLE = Module::MODE_IDLE,
-        /*! Receive mode */
-        MODE_RX = Module::MODE_RX,
-        /*! Low power transmission mode */
-        MODE_TX_LP = Module::MODE_TX,
-        /*! High power transmission mode */
-        MODE_TX_HP,
+      /*! End of table marker, use \ref END_OF_MODE_TABLE constant instead */
+      MODE_END_OF_TABLE = Module::MODE_END_OF_TABLE,
+      /*! Idle mode */
+      MODE_IDLE = Module::MODE_IDLE,
+      /*! Receive mode */
+      MODE_RX = Module::MODE_RX,
+      /*! Low power transmission mode */
+      MODE_TX_LP = Module::MODE_TX,
+      /*! High power transmission mode */
+      MODE_TX_HP,
     };
 
     // basic methods
@@ -153,14 +153,14 @@ class STM32WLx : public SX1262 {
     */
     void clearChannelScanAction() override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   protected:
-#endif
+    #endif
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 };
 
 #endif

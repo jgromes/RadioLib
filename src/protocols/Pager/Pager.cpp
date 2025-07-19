@@ -16,7 +16,7 @@ static PhysicalLayer* readBitInstance = NULL;
 static uint32_t readBitPin = RADIOLIB_NC;
 
 #if defined(ESP8266) || defined(ESP32)
-  IRAM_ATTR
+IRAM_ATTR
 #endif
 static void PagerClientReadBit(void) {
   if(readBitInstance) {
@@ -34,8 +34,8 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
 
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
   // calculate duration of 1 bit in us
-  dataRate = (float)speed/1000.0f;
-  bitDuration = (RadioLibTime_t)1000000/speed;
+  dataRate = (float)speed / 1000.0f;
+  bitDuration = (RadioLibTime_t)1000000 / speed;
 
   // calculate 24-bit frequency
   baseFreq = base;
@@ -46,7 +46,7 @@ int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shi
 
   // calculate raw frequency shift
   shiftFreqHz = shift;
-  shiftFreq = shiftFreqHz/step;
+  shiftFreq = shiftFreqHz / step;
   inv = invert;
 
   // initialize BCH encoder
@@ -61,7 +61,7 @@ int16_t PagerClient::sendTone(uint32_t addr) {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PagerClient::transmit(String& str, uint32_t addr, uint8_t encoding, uint8_t function) {
+int16_t PagerClient::transmit(String &str, uint32_t addr, uint8_t encoding, uint8_t function) {
   return(PagerClient::transmit(str.c_str(), addr, encoding, function));
 }
 #endif
@@ -113,7 +113,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
   }
 
   // get target position in batch (3 LSB from address determine frame position in batch)
-  uint8_t framePos = 2*(addr & 0x07);
+  uint8_t framePos = 2 * (addr & 0x07);
 
   // get address that will be written into address frame
   uint32_t frameAddr = ((addr >> 3) << RADIOLIB_PAGER_ADDRESS_POS) | (function << RADIOLIB_PAGER_FUNC_BITS_POS);
@@ -129,13 +129,13 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
   size_t msgLen = RADIOLIB_PAGER_PREAMBLE_LENGTH + (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
 
   #if RADIOLIB_STATIC_ONLY
-    uint32_t msg[RADIOLIB_STATIC_ARRAY_SIZE];
+  uint32_t msg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
-    uint32_t* msg = new uint32_t[msgLen];
+  uint32_t* msg = new uint32_t[msgLen];
   #endif
 
   // build the message
-  memset(msg, 0x00, msgLen*sizeof(uint32_t));
+  memset(msg, 0x00, msgLen * sizeof(uint32_t));
 
   // set preamble
   for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {
@@ -149,7 +149,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
 
   // set frame synchronization code words
   for(size_t i = 0; i < numBatches; i++) {
-    msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + i*(1 + RADIOLIB_PAGER_BATCH_LEN)] = RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD;
+    msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + i * (1 + RADIOLIB_PAGER_BATCH_LEN)] = RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD;
   }
 
   // write address code word
@@ -200,7 +200,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
         if(dataPos >= len) {
           // in BCD mode, pad the rest of the code word with spaces (0xC)
           if(encoding == RADIOLIB_PAGER_BCD) {
-            uint8_t numSteps = (symbolPos - RADIOLIB_PAGER_FUNC_BITS_POS + symbolLength)/symbolLength;
+            uint8_t numSteps = (symbolPos - RADIOLIB_PAGER_FUNC_BITS_POS + symbolLength) / symbolLength;
             for(uint8_t j = 0; j < numSteps; j++) {
               symbol = encodeBCD(' ');
               symbol = rlb_reflect(symbol, 8);
@@ -228,7 +228,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
   PagerClient::write(msg, msgLen);
 
   #if !RADIOLIB_STATIC_ONLY
-    delete[] msg;
+  delete[] msg;
   #endif
 
   // turn transmitter off
@@ -249,7 +249,7 @@ int16_t PagerClient::startReceive(uint32_t pin, uint32_t addr, uint32_t mask) {
   return(startReceiveCommon());
 }
 
-int16_t PagerClient::startReceive(uint32_t pin, uint32_t *addrs, uint32_t *masks, size_t numAddresses) {
+int16_t PagerClient::startReceive(uint32_t pin, uint32_t* addrs, uint32_t* masks, size_t numAddresses) {
   // save the variables
   readBitPin = pin;
   filterAddr = 0;
@@ -293,26 +293,26 @@ int16_t PagerClient::startReceiveCommon() {
 }
 
 size_t PagerClient::available() {
-  return(phyLayer->available() + sizeof(uint32_t))/(sizeof(uint32_t) * (RADIOLIB_PAGER_BATCH_LEN + 1));
+  return (phyLayer->available() + sizeof(uint32_t)) / (sizeof(uint32_t) * (RADIOLIB_PAGER_BATCH_LEN + 1));
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
+int16_t PagerClient::readData(String &str, size_t len, uint32_t* addr) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // determine the message length, based on user input or the amount of received data
   size_t length = len;
   if(length == 0) {
     // one batch can contain at most 80 message symbols
-    length = available()*80;
+    length = available() * 80;
   }
 
   // build a temporary buffer
   #if RADIOLIB_STATIC_ONLY
-    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
+  uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
-    uint8_t* data = new uint8_t[length + 1];
-    RADIOLIB_ASSERT_PTR(data);
+  uint8_t* data = new uint8_t[length + 1];
+  RADIOLIB_ASSERT_PTR(data);
   #endif
 
   // read the received data
@@ -334,7 +334,7 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
 
   // deallocate temporary buffer
   #if !RADIOLIB_STATIC_ONLY
-    delete[] data;
+  delete[] data;
   #endif
 
   return(state);
@@ -368,8 +368,8 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
     }
 
     // should be an address code word, extract the address
-    uint32_t addr_found = ((cw & RADIOLIB_PAGER_ADDRESS_BITS_MASK) >> (RADIOLIB_PAGER_ADDRESS_POS - 3)) | (framePos/2);
-    if (addressMatched(addr_found)) {
+    uint32_t addr_found = ((cw & RADIOLIB_PAGER_ADDRESS_BITS_MASK) >> (RADIOLIB_PAGER_ADDRESS_POS - 3)) | (framePos / 2);
+    if(addressMatched(addr_found)) {
       match = true;
       if(addr) {
         *addr = addr_found;
@@ -475,7 +475,7 @@ bool PagerClient::addressMatched(uint32_t addr) {
   if(filterNumAddresses == 0) {
     return((addr & filterMask) == (filterAddr & filterMask));
   }
-  
+
   // multiple addresses, check there are some to match
   if((filterAddresses == NULL) || (filterMasks == NULL)) {
     return(false);

@@ -2,9 +2,7 @@
 #include <string.h>
 #if !RADIOLIB_EXCLUDE_SX128X
 
-SX1280::SX1280(Module* mod) : SX1281(mod) {
-
-}
+SX1280::SX1280(Module* mod) : SX1281(mod) {}
 
 int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   // start ranging
@@ -104,13 +102,13 @@ int16_t SX1280::startRanging(bool master, uint32_t addr, const uint16_t calTable
   uint8_t index = (this->spreadingFactor >> 4) - 5;
   uint16_t val = 0;
   switch(this->bandwidth) {
-    case(RADIOLIB_SX128X_LORA_BW_406_25):
+    case (RADIOLIB_SX128X_LORA_BW_406_25):
       val = calTbl[0][index];
       break;
-    case(RADIOLIB_SX128X_LORA_BW_812_50):
+    case (RADIOLIB_SX128X_LORA_BW_812_50):
       val = calTbl[1][index];
       break;
-    case(RADIOLIB_SX128X_LORA_BW_1625_00):
+    case (RADIOLIB_SX128X_LORA_BW_1625_00):
       val = calTbl[2][index];
       break;
     default:

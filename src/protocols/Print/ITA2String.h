@@ -8,8 +8,8 @@
 #define RADIOLIB_ITA2_LENGTH                                    32
 
 // ITA2 character table: - position in array corresponds to 5-bit ITA2 code
-//                       - characters to the left are in letters shift, characters to the right in figures shift
-//                       - characters marked 0x7F do not have ASCII equivalent
+// - characters to the left are in letters shift, characters to the right in figures shift
+// - characters marked 0x7F do not have ASCII equivalent
 static const char ITA2Table[RADIOLIB_ITA2_LENGTH][2] RADIOLIB_NONVOLATILE = {
   {'\0', '\0'}, {'E', '3'}, {'\n', '\n'}, {'A', '-'}, {' ', ' '}, {'S', '\''}, {'I', '8'}, {'U', '7'},
   {'\r', '\r'}, {'D', 0x05}, {'R', '4'}, {'J', '\a'}, {'N', ','}, {'F', '!'}, {'C', ':'}, {'K', '('},
@@ -39,13 +39,13 @@ class ITA2String {
       \brief Copy constructor.
       \param ita2 ITA2String instance to copy.
     */
-    ITA2String(const ITA2String& ita2);
-    
+    ITA2String(const ITA2String &ita2);
+
     /*!
       \brief Overload for assignment operator.
       \param ita2 rvalue ITA2String.
     */
-    ITA2String& operator=(const ITA2String& ita2);
+    ITA2String &operator=(const ITA2String &ita2);
 
     /*!
       \brief Default destructor.
@@ -65,13 +65,13 @@ class ITA2String {
     */
     uint8_t* byteArr();
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     #if RADIOLIB_STATIC_ONLY
-      char strAscii[RADIOLIB_STATIC_ARRAY_SIZE];
+    char strAscii[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
-      char* strAscii;
+    char* strAscii;
     #endif
     size_t asciiLen;
     size_t ita2Len;

@@ -28,22 +28,22 @@ class RadioLibHal {
       \brief Value to be used as the "output" GPIO direction.
     */
     const uint32_t GpioModeOutput;
-    
+
     /*!
       \brief Value to be used as the "low" GPIO level.
     */
     const uint32_t GpioLevelLow;
-    
+
     /*!
       \brief Value to be used as the "high" GPIO level.
     */
     const uint32_t GpioLevelHigh;
-    
+
     /*!
       \brief Value to be used as the "rising" GPIO level change direction.
     */
     const uint32_t GpioInterruptRising;
-    
+
     /*!
       \brief Value to be used as the "falling" GPIO level change direction.
     */
@@ -85,7 +85,7 @@ class RadioLibHal {
       \returns Value read on the pin (platform-specific).
     */
     virtual uint32_t digitalRead(uint32_t pin) = 0;
-    
+
     /*!
       \brief Method to attach function to an external interrupt.
       Must be implemented by the platform-specific hardware abstraction!
@@ -108,28 +108,28 @@ class RadioLibHal {
       \param ms Number of milliseconds to wait.
     */
     virtual void delay(RadioLibTime_t ms) = 0;
-    
+
     /*!
       \brief Blocking microsecond wait function.
       Must be implemented by the platform-specific hardware abstraction!
       \param us Number of microseconds to wait.
     */
     virtual void delayMicroseconds(RadioLibTime_t us) = 0;
-    
+
     /*!
       \brief Get number of milliseconds since start.
       Must be implemented by the platform-specific hardware abstraction!
       \returns Number of milliseconds since start.
     */
     virtual RadioLibTime_t millis() = 0;
-    
+
     /*!
       \brief Get number of microseconds since start.
       Must be implemented by the platform-specific hardware abstraction!
       \returns Number of microseconds since start.
     */
     virtual RadioLibTime_t micros() = 0;
-    
+
     /*!
       \brief Measure the length of incoming digital pulse in microseconds.
       Must be implemented by the platform-specific hardware abstraction!
@@ -198,12 +198,12 @@ class RadioLibHal {
       \param pin Pin which is currently producing the tone.
     */
     virtual void noTone(uint32_t pin);
-    
+
     /*!
       \brief Yield method, called from long loops in multi-threaded environment (to prevent blocking other threads).
     */
     virtual void yield();
-    
+
     /*!
       \brief Function to convert from pin number to interrupt number.
       \param pin Pin to convert from.

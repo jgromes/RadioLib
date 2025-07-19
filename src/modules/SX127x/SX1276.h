@@ -11,7 +11,7 @@
   \class SX1276
   \brief Derived class for %SX1276 modules. Overrides some methods from SX1278 due to different parameter ranges.
 */
-class SX1276: public SX1278 {
+class SX1276 : public SX1278 {
   public:
 
     // constructor
@@ -62,7 +62,7 @@ class SX1276: public SX1278 {
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq) override;
-    
+
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
@@ -71,9 +71,9 @@ class SX1276: public SX1278 {
     */
     int16_t setModem(ModemType_t modem) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

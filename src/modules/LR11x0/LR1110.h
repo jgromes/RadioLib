@@ -12,7 +12,7 @@
   \class LR1110
   \brief Derived class for %LR1110 modules.
 */
-class LR1110: public LR11x0 {
+class LR1110 : public LR11x0 {
   public:
     /*!
       \brief Default constructor.
@@ -52,7 +52,7 @@ class LR1110: public LR11x0 {
       \returns \ref status_codes
     */
     int16_t beginGFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
-    
+
     /*!
       \brief Initialization method for LR-FHSS modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -90,7 +90,7 @@ class LR1110: public LR11x0 {
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq, bool skipCalibration, float band = 4);
-    
+
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
       \param power Output power to be set in dBm, output PA is determined automatically preferring the low-power PA.
@@ -136,9 +136,9 @@ class LR1110: public LR11x0 {
     */
     int16_t setModem(ModemType_t modem) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 
