@@ -616,6 +616,7 @@ int16_t SX126x::startReceiveCommon(uint32_t timeout, RadioLibIrqFlags_t irqFlags
 
   // clear interrupt flags
   state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
 
   // restore original packet length
   uint8_t modem = getPacketType();
