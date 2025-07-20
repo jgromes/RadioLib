@@ -313,7 +313,7 @@ int16_t nRF24::setBitRate(float br) {
   } else {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
-  
+
   if(state == RADIOLIB_ERR_NONE) {
     this->dataRate = bitRate;
   }
@@ -511,7 +511,7 @@ size_t nRF24::getPacketLength(bool update) {
 
 int16_t nRF24::setCrcFiltering(bool crcOn) {
   // Auto Ack needs to be disabled in order to disable CRC.
-  if (!crcOn) {
+  if(!crcOn) {
     int16_t status = setAutoAck(false);
     RADIOLIB_ASSERT(status)
   }
@@ -545,7 +545,7 @@ int16_t nRF24::setAutoAck(uint8_t pipeNum, bool autoAckOn){
       return this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_EN_AA, (autoAckOn ? RADIOLIB_NRF24_AA_P5_ON : RADIOLIB_NRF24_AA_P5_OFF), 5, 5);
       break;
     default:
-      return (RADIOLIB_ERR_INVALID_PIPE_NUMBER);
+      return(RADIOLIB_ERR_INVALID_PIPE_NUMBER);
   }
 }
 

@@ -51,10 +51,10 @@ extern const struct BellModem_t Bell202;
   \class BellClient
   \brief Client for Bell modem communication. The public interface is the same as Arduino Serial.
 */
-class BellClient: public AFSKClient, public RadioLibPrint {
-  
+class BellClient : public AFSKClient, public RadioLibPrint {
+
   public:
-    
+
     /*!
       \brief Whether the modem is replying.
       On some modems, the replying station has different tone frequencies.
@@ -79,14 +79,14 @@ class BellClient: public AFSKClient, public RadioLibPrint {
       \param modem Definition of the Bell modem to use for communication.
       \returns \ref status_codes
     */
-    int16_t begin(const BellModem_t& modem);
+    int16_t begin(const BellModem_t &modem);
 
     /*!
       \brief Set Bell modem.
       \param modem Definition of the Bell modem to use for communication.
       \returns \ref status_codes
     */
-    int16_t setModem(const BellModem_t& modem);
+    int16_t setModem(const BellModem_t &modem);
 
     /*!
       \brief Set correction coefficient for tone length.
@@ -113,9 +113,9 @@ class BellClient: public AFSKClient, public RadioLibPrint {
     */
     int16_t standby();
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     BellModem_t modemType = Bell101;
     float correction = 1.0;
     uint16_t toneLen = 0;

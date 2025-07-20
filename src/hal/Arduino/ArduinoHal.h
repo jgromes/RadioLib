@@ -32,7 +32,7 @@ class ArduinoHal : public RadioLibHal {
       \param spi SPI interface to be used, can also use software SPI implementations.
       \param spiSettings SPI interface settings.
     */
-    explicit ArduinoHal(SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
+    explicit ArduinoHal(SPIClass &spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
 
     // implementations of pure virtual RadioLibHal methods
     void pinMode(uint32_t pin, uint32_t mode) override;
@@ -59,15 +59,15 @@ class ArduinoHal : public RadioLibHal {
     void yield() override;
     uint32_t pinToInterrupt(uint32_t pin) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   protected:
-#endif
+    #endif
     SPIClass* spi = NULL;
     SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;
     bool initInterface = false;
 
     #if defined(RADIOLIB_MBED_TONE_OVERRIDE)
-    mbed::PwmOut *pwmPin = NULL;
+    mbed::PwmOut* pwmPin = NULL;
     #endif
 
     #if defined(RADIOLIB_ESP32)

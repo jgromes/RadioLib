@@ -1,9 +1,7 @@
 #include "SX1279.h"
 #if !RADIOLIB_EXCLUDE_SX127X
 
-SX1279::SX1279(Module* mod) : SX1278(mod) {
-
-}
+SX1279::SX1279(Module* mod) : SX1278(mod) {}
 
 int16_t SX1279::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
@@ -81,10 +79,10 @@ int16_t SX1279::setFrequency(float freq) {
 
 int16_t SX1279::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::RADIOLIB_MODEM_LORA): {
+    case (ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::RADIOLIB_MODEM_FSK): {
+    case (ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginFSK());
     } break;
     default:

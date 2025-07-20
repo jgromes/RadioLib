@@ -12,7 +12,7 @@
   \class LR1120
   \brief Derived class for %LR1120 modules.
 */
-class LR1120: public LR11x0 {
+class LR1120 : public LR11x0 {
   public:
     /*!
       \brief Default constructor.
@@ -52,7 +52,7 @@ class LR1120: public LR11x0 {
       \returns \ref status_codes
     */
     int16_t beginGFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
-    
+
     /*!
       \brief Initialization method for LR-FHSS modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -146,9 +146,9 @@ class LR1120: public LR11x0 {
     */
     int16_t setModem(ModemType_t modem) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     // flag to determine whether we are in the sub-GHz or 2.4 GHz range
     // this is needed to automatically detect which PA to use
     bool highFreq = false;

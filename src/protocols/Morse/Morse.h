@@ -17,81 +17,81 @@
 #define RADIOLIB_MORSE_UNKNOWN_SYMBOL                           '*'
 
 // Morse character table: - using codes defined in ITU-R M.1677-1
-//                        - Morse code representation is saved LSb first, using additional bit as guard
-//                        - position in array corresponds ASCII code minus RADIOLIB_MORSE_ASCII_OFFSET
-//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPPORTED do not have ITU-R M.1677-1 equivalent
+// - Morse code representation is saved LSb first, using additional bit as guard
+// - position in array corresponds ASCII code minus RADIOLIB_MORSE_ASCII_OFFSET
+// - ASCII characters marked RADIOLIB_MORSE_UNSUPPORTED do not have ITU-R M.1677-1 equivalent
 static const uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {
-    0b00,                         // space
-    0b110101,                     // ! (unsupported)
-    0b1010010,                    // "
-    RADIOLIB_MORSE_UNSUPPORTED,   // # (unsupported)
-    RADIOLIB_MORSE_UNSUPPORTED,   // $ (unsupported)
-    RADIOLIB_MORSE_UNSUPPORTED,   // % (unsupported)
-    RADIOLIB_MORSE_UNSUPPORTED,   // & (unsupported)
-    0b1011110,                    // '
-    0b101101,                     // (
-    0b1101101,                    // )
-    RADIOLIB_MORSE_UNSUPPORTED,   // * (unsupported)
-    0b101010,                     // +
-    0b1110011,                    // ,
-    0b1100001,                    // -
-    0b1101010,                    // .
-    0b101001,                     // /
-    0b111111,                     // 0
-    0b111110,                     // 1
-    0b111100,                     // 2
-    0b111000,                     // 3
-    0b110000,                     // 4
-    0b100000,                     // 5
-    0b100001,                     // 6
-    0b100011,                     // 7
-    0b100111,                     // 8
-    0b101111,                     // 9
-    0b1000111,                    // :
-    RADIOLIB_MORSE_UNSUPPORTED,   // ; (unsupported)
-    RADIOLIB_MORSE_UNSUPPORTED,   // < (unsupported)
-    0b110001,                     // =
-    RADIOLIB_MORSE_UNSUPPORTED,   // > (unsupported)
-    0b1001100,                    // ?
-    0b1010110,                    // @
-    0b110,                        // A
-    0b10001,                      // B
-    0b10101,                      // C
-    0b1001,                       // D
-    0b10,                         // E
-    0b10100,                      // F
-    0b1011,                       // G
-    0b10000,                      // H
-    0b100,                        // I
-    0b11110,                      // J
-    0b1101,                       // K
-    0b10010,                      // L
-    0b111,                        // M
-    0b101,                        // N
-    0b1111,                       // O
-    0b10110,                      // P
-    0b11011,                      // Q
-    0b1010,                       // R
-    0b1000,                       // S
-    0b11,                         // T
-    0b1100,                       // U
-    0b11000,                      // V
-    0b1110,                       // W
-    0b11001,                      // X
-    0b11101,                      // Y
-    0b10011,                      // Z
-    RADIOLIB_MORSE_UNSUPPORTED,   // [ (unsupported)
-    RADIOLIB_MORSE_UNSUPPORTED,   // \ (unsupported)
-    RADIOLIB_MORSE_UNSUPPORTED,   // ] (unsupported)
-    0b1101000,                    // ^ (unsupported, used as alias for end of work)
-    0b110101                      // _ (unsupported, used as alias for starting signal)
+  0b00,                           // space
+  0b110101,                       // ! (unsupported)
+  0b1010010,                      // "
+  RADIOLIB_MORSE_UNSUPPORTED,     // # (unsupported)
+  RADIOLIB_MORSE_UNSUPPORTED,     // $ (unsupported)
+  RADIOLIB_MORSE_UNSUPPORTED,     // % (unsupported)
+  RADIOLIB_MORSE_UNSUPPORTED,     // & (unsupported)
+  0b1011110,                      // '
+  0b101101,                       // (
+  0b1101101,                      // )
+  RADIOLIB_MORSE_UNSUPPORTED,     // * (unsupported)
+  0b101010,                       // +
+  0b1110011,                      // ,
+  0b1100001,                      // -
+  0b1101010,                      // .
+  0b101001,                       // '/'
+  0b111111,                       // 0
+  0b111110,                       // 1
+  0b111100,                       // 2
+  0b111000,                       // 3
+  0b110000,                       // 4
+  0b100000,                       // 5
+  0b100001,                       // 6
+  0b100011,                       // 7
+  0b100111,                       // 8
+  0b101111,                       // 9
+  0b1000111,                      // :
+  RADIOLIB_MORSE_UNSUPPORTED,     // ; (unsupported)
+  RADIOLIB_MORSE_UNSUPPORTED,     // < (unsupported)
+  0b110001,                       // =
+  RADIOLIB_MORSE_UNSUPPORTED,     // > (unsupported)
+  0b1001100,                      // ?
+  0b1010110,                      // @
+  0b110,                          // A
+  0b10001,                        // B
+  0b10101,                        // C
+  0b1001,                         // D
+  0b10,                           // E
+  0b10100,                        // F
+  0b1011,                         // G
+  0b10000,                        // H
+  0b100,                          // I
+  0b11110,                        // J
+  0b1101,                         // K
+  0b10010,                        // L
+  0b111,                          // M
+  0b101,                          // N
+  0b1111,                         // O
+  0b10110,                        // P
+  0b11011,                        // Q
+  0b1010,                         // R
+  0b1000,                         // S
+  0b11,                           // T
+  0b1100,                         // U
+  0b11000,                        // V
+  0b1110,                         // W
+  0b11001,                        // X
+  0b11101,                        // Y
+  0b10011,                        // Z
+  RADIOLIB_MORSE_UNSUPPORTED,     // [ (unsupported)
+  RADIOLIB_MORSE_UNSUPPORTED,     // \ (unsupported)
+  RADIOLIB_MORSE_UNSUPPORTED,     // ] (unsupported)
+  0b1101000,                      // ^ (unsupported, used as alias for end of work)
+  0b110101                        // _ (unsupported, used as alias for starting signal)
 };
 
 /*!
   \class MorseClient
   \brief Client for Morse Code communication. The public interface is the same as Arduino Serial.
 */
-class MorseClient: public RadioLibPrint {
+class MorseClient : public RadioLibPrint {
   public:
     /*!
       \brief Constructor for 2-FSK mode.
@@ -151,9 +151,9 @@ class MorseClient: public RadioLibPrint {
     */
     size_t write(uint8_t b) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     PhysicalLayer* phyLayer;
     #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;

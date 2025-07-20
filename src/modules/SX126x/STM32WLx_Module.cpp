@@ -28,7 +28,7 @@ enum {
 */
 class Stm32wlxHal : public ArduinoHal {
   public:
-    Stm32wlxHal(): ArduinoHal(SubGhz.SPI, SubGhz.spi_settings) {}
+    Stm32wlxHal() : ArduinoHal(SubGhz.SPI, SubGhz.spi_settings) {}
 
     /*!
       \brief Pin mode override to handle STM32WL virtual pins.
@@ -55,7 +55,7 @@ class Stm32wlxHal : public ArduinoHal {
       \param dwVal Value to set.
     */
     void digitalWrite(uint32_t dwPin, uint32_t dwVal) {
-      switch (dwPin) {
+      switch(dwPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS:
           SubGhz.setNssActive(dwVal == LOW);
           break;
@@ -81,17 +81,17 @@ class Stm32wlxHal : public ArduinoHal {
       \returns Value read on the pin.
     */
     uint32_t digitalRead(uint32_t ulPin) {
-      switch (ulPin) {
+      switch(ulPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY:
           return(SubGhz.isBusy() ? HIGH : LOW);
 
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_IRQ:
           // We cannot use the radio IRQ output directly, but since:
-          //  - the pending flag will be set whenever the IRQ output is set,
-          //    and
-          //  - the pending flag will be cleared (by
-          //    STM32WLx::clearIrqStatus()) whenever the radio IRQ output is
-          //    cleared,
+          // - the pending flag will be set whenever the IRQ output is set,
+          // and
+          // - the pending flag will be cleared (by
+          // STM32WLx::clearIrqStatus()) whenever the radio IRQ output is
+          // cleared,
           // the pending flag should always reflect the current radio IRQ
           // output. There is one exception: when the ISR starts the pending
           // flag is cleared by hardware and not set again until after the
@@ -113,13 +113,13 @@ class Stm32wlxHal : public ArduinoHal {
     }
 };
 
-STM32WLx_Module::STM32WLx_Module():
+STM32WLx_Module::STM32WLx_Module() :
   Module(
     new Stm32wlxHal,
     RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS,
     RADIOLIB_STM32WLx_VIRTUAL_PIN_IRQ,
     RADIOLIB_STM32WLx_VIRTUAL_PIN_RESET,
     RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY
-  ) {}
+    ) {}
 
 #endif

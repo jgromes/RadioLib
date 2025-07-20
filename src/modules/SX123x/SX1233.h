@@ -20,7 +20,7 @@
   \class SX1233
   \brief Control class for %SX1233 module. Overrides some methods from SX1231/RF69 due to different register values.
 */
-class SX1233: public SX1231  {
+class SX1233 : public SX1231  {
   public:
     /*!
       \brief Default constructor.
@@ -50,9 +50,9 @@ class SX1233: public SX1231  {
     */
     int16_t setBitRate(float br) override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

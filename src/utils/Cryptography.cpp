@@ -2,9 +2,7 @@
 
 #include <string.h>
 
-RadioLibAES128::RadioLibAES128() {
-
-}
+RadioLibAES128::RadioLibAES128() {}
 
 void RadioLibAES128::init(uint8_t* key) {
   this->keyPtr = key;
@@ -24,7 +22,7 @@ size_t RadioLibAES128::encryptECB(const uint8_t* in, size_t len, uint8_t* out) {
     this->cipher((state_t*)(out + (RADIOLIB_AES128_BLOCK_SIZE * i)), this->roundKey);
   }
 
-  return(num_blocks*RADIOLIB_AES128_BLOCK_SIZE);
+  return(num_blocks * RADIOLIB_AES128_BLOCK_SIZE);
 }
 
 size_t RadioLibAES128::decryptECB(const uint8_t* in, size_t len, uint8_t* out) {
@@ -40,7 +38,7 @@ size_t RadioLibAES128::decryptECB(const uint8_t* in, size_t len, uint8_t* out) {
     this->decipher((state_t*)(out + (RADIOLIB_AES128_BLOCK_SIZE * i)), this->roundKey);
   }
 
-  return(num_blocks*RADIOLIB_AES128_BLOCK_SIZE);
+  return(num_blocks * RADIOLIB_AES128_BLOCK_SIZE);
 }
 
 void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) {
@@ -58,11 +56,11 @@ void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) 
   uint8_t* buff = new uint8_t[num_blocks * RADIOLIB_AES128_BLOCK_SIZE];
   memset(buff, 0, num_blocks * RADIOLIB_AES128_BLOCK_SIZE);
   memcpy(buff, in, len);
-  if (flag) {
-    this->blockXor(&buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], &buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], key1);
+  if(flag) {
+    this->blockXor(&buff[(num_blocks - 1) * RADIOLIB_AES128_BLOCK_SIZE], &buff[(num_blocks - 1) * RADIOLIB_AES128_BLOCK_SIZE], key1);
   } else {
     buff[len] = 0x80;
-    this->blockXor(&buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], &buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], key2);
+    this->blockXor(&buff[(num_blocks - 1) * RADIOLIB_AES128_BLOCK_SIZE], &buff[(num_blocks - 1) * RADIOLIB_AES128_BLOCK_SIZE], key2);
   }
 
   uint8_t X[] = {
@@ -74,10 +72,10 @@ void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) 
   uint8_t Y[RADIOLIB_AES128_BLOCK_SIZE];
 
   for(size_t i = 0; i < num_blocks - 1; i++) {
-    this->blockXor(Y, &buff[i*RADIOLIB_AES128_BLOCK_SIZE], X);
+    this->blockXor(Y, &buff[i * RADIOLIB_AES128_BLOCK_SIZE], X);
     this->encryptECB(Y, RADIOLIB_AES128_BLOCK_SIZE, X);
   }
-  this->blockXor(Y, &buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], X);
+  this->blockXor(Y, &buff[(num_blocks - 1) * RADIOLIB_AES128_BLOCK_SIZE], X);
   this->encryptECB(Y, RADIOLIB_AES128_BLOCK_SIZE, cmac);
   delete[] buff;
 }
@@ -113,7 +111,7 @@ void RadioLibAES128::keyExpansion(uint8_t* roundKey, const uint8_t* key) {
     if(i % RADIOLIB_AES128_N_K == 0) {
       this->rotWord(tmp);
       this->subWord(tmp);
-      tmp[0] = tmp[0] ^ aesRcon[i/RADIOLIB_AES128_N_K];
+      tmp[0] = tmp[0] ^ aesRcon[i / RADIOLIB_AES128_N_K];
     }
 
     j = i * 4;
@@ -281,7 +279,7 @@ uint8_t RadioLibAES128::mul(uint8_t a, uint8_t b) {
   sb[0] = b;
   for(size_t i = 1; i < 4; i++) {
     sb[i] = sb[i - 1] << 1;
-    if (sb[i - 1] & 0x80) {
+    if(sb[i - 1] & 0x80) {
       sb[i] ^= 0x1b;
     }
   }

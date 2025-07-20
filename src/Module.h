@@ -6,11 +6,11 @@
 #include "utils/Utils.h"
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-  #include <SPI.h>
+#include <SPI.h>
 #endif
 
 #if defined(STM32WLxx)
-  #include <SubGhz.h>
+#include <SubGhz.h>
 #endif
 
 /*!
@@ -99,7 +99,7 @@ class Module {
       \brief Constants to use in a mode table set be setRfSwitchTable. These
       constants work for most radios, but some radios define their own
       constants to be used instead.
-     
+
       See \ref setRfSwitchTable for details.
     */
     enum OpMode_t {
@@ -138,7 +138,7 @@ class Module {
       \param spi SPI interface to be used, can also use software SPI implementations.
       \param spiSettings SPI interface settings.
     */
-    Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
+    Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass &spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
     #endif
 
     /*!
@@ -149,19 +149,19 @@ class Module {
       \param rst Pin to be used as hardware reset for the module.
       \param gpio Pin to be used as additional interrupt/GPIO.
     */
-    Module(RadioLibHal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
+    Module(RadioLibHal* hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
 
     /*!
       \brief Copy constructor.
       \param mod Module instance to copy.
     */
-    Module(const Module& mod);
+    Module(const Module &mod);
 
     /*!
       \brief Overload for assignment operator.
       \param mod rvalue Module.
     */
-    Module& operator=(const Module& mod);
+    Module &operator=(const Module &mod);
 
     // public member variables
     /*! \brief Hardware abstraction layer to be used. */
@@ -322,7 +322,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIcheckStream();
-    
+
     /*!
       \brief Method to perform a read transaction with SPI stream.
       \param cmd SPI operation command.
@@ -333,7 +333,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIreadStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
-    
+
     /*!
       \brief Method to perform a read transaction with SPI stream.
       \param cmd SPI operation command.
@@ -345,7 +345,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIreadStream(const uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
-    
+
     /*!
       \brief Method to perform a write transaction with SPI stream.
       \param cmd SPI operation command.
@@ -368,7 +368,7 @@ class Module {
       \returns \ref status_codes
     */
     int16_t SPIwriteStream(const uint8_t* cmd, uint8_t cmdLen, const uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
-    
+
     /*!
       \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
       \param cmd SPI operation command.
@@ -391,19 +391,25 @@ class Module {
       \brief Access method to get the pin number of interrupt/GPIO.
       \returns Pin number of interrupt/GPIO configured in the constructor.
     */
-    uint32_t getIrq() const { return(irqPin); }
+    uint32_t getIrq() const {
+      return(irqPin);
+    }
 
     /*!
       \brief Access method to get the pin number of hardware reset pin.
       \returns Pin number of hardware reset pin configured in the constructor.
     */
-    uint32_t getRst() const { return(rstPin); }
+    uint32_t getRst() const {
+      return(rstPin);
+    }
 
     /*!
       \brief Access method to get the pin number of second interrupt/GPIO.
       \returns Pin number of second interrupt/GPIO configured in the constructor.
     */
-    uint32_t getGpio() const { return(gpioPin); }
+    uint32_t getGpio() const {
+      return(gpioPin);
+    }
 
     /*!
       \brief Some modules contain external RF switch controlled by pins.
@@ -494,7 +500,7 @@ class Module {
       matches the passed mode. Returns nullptr if no rfswitch pins are
       configured, or the passed mode is not listed in the table.
     */
-    const RfSwitchMode_t *findRfSwitchMode(uint8_t mode) const;
+    const RfSwitchMode_t*findRfSwitchMode(uint8_t mode) const;
 
     /*!
       \brief Set RF switch state.
@@ -521,9 +527,9 @@ class Module {
     void regdump(const char* level, uint16_t start, size_t len);
     #endif
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     uint32_t csPin = RADIOLIB_NC;
     uint32_t irqPin = RADIOLIB_NC;
     uint32_t rstPin = RADIOLIB_NC;
@@ -531,7 +537,7 @@ class Module {
 
     // RF switch pins and table
     uint32_t rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
-    const RfSwitchMode_t *rfSwitchTable = nullptr;
+    const RfSwitchMode_t* rfSwitchTable = nullptr;
 
     #if RADIOLIB_INTERRUPT_TIMING
     uint32_t prevTimingLen = 0;

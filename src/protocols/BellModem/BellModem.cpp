@@ -33,7 +33,7 @@ BellClient::BellClient(AFSKClient* aud) : AFSKClient(aud) {
   this->reply = false;
 }
 
-int16_t BellClient::begin(const BellModem_t& modem) {
+int16_t BellClient::begin(const BellModem_t &modem) {
   int16_t state = setModem(modem);
   RADIOLIB_ASSERT(state);
 
@@ -41,9 +41,9 @@ int16_t BellClient::begin(const BellModem_t& modem) {
   return(state);
 }
 
-int16_t BellClient::setModem(const BellModem_t& modem) {
+int16_t BellClient::setModem(const BellModem_t &modem) {
   this->modemType = modem;
-  this->toneLen = (1000000.0f/(float)this->modemType.baudRate)*this->correction;
+  this->toneLen = (1000000.0f / (float)this->modemType.baudRate) * this->correction;
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -78,7 +78,7 @@ size_t BellClient::write(uint8_t b) {
     }
     mod->waitForMicroseconds(start, this->toneLen);
   }
-  
+
   if(this->autoStart) {
     phyLayer->standby();
   }

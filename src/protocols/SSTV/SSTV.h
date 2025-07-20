@@ -139,12 +139,12 @@ class SSTVClient {
     /*!
       \brief Initialization method for 2-FSK.
       \param base Base "0 Hz tone" RF frequency to be used in MHz.
-      \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, 
+      \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2,
       ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7,
       Robot36 and Robot37.
       \returns \ref status_codes
     */
-    int16_t begin(float base, const SSTVMode_t& mode);
+    int16_t begin(float base, const SSTVMode_t &mode);
 
     #if !RADIOLIB_EXCLUDE_AFSK
     /*!
@@ -154,7 +154,7 @@ class SSTVClient {
       Robot36 and Robot37.
       \returns \ref status_codes
     */
-    int16_t begin(const SSTVMode_t& mode);
+    int16_t begin(const SSTVMode_t &mode);
     #endif
 
     /*!
@@ -188,9 +188,9 @@ class SSTVClient {
     */
     uint16_t getPictureHeight() const;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     PhysicalLayer* phyLayer;
     #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;

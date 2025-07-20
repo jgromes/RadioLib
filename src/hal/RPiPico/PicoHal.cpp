@@ -12,7 +12,7 @@ static unsigned int toneLoopFrequency;
 static unsigned long toneLoopDuration;
 
 // === NOTE ===
-// The tone(...) implementation uses the second core on the RPi Pico. This is to diminish as much 
+// The tone(...) implementation uses the second core on the RPi Pico. This is to diminish as much
 // jitter in the output tones as possible.
 
 static void toneLoop() {

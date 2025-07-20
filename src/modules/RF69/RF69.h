@@ -98,369 +98,369 @@
 
 // RF69 modem settings
 // RADIOLIB_RF69_REG_OP_MODE                                                  MSB   LSB   DESCRIPTION
-#define RADIOLIB_RF69_SEQUENCER_OFF                             0b10000000  //  7     7   disable automatic sequencer
-#define RADIOLIB_RF69_SEQUENCER_ON                              0b00000000  //  7     7   enable automatic sequencer
-#define RADIOLIB_RF69_LISTEN_OFF                                0b00000000  //  6     6   disable Listen mode
-#define RADIOLIB_RF69_LISTEN_ON                                 0b01000000  //  6     6   enable Listen mode
-#define RADIOLIB_RF69_LISTEN_ABORT                              0b00100000  //  5     5   abort Listen mode (has to be set together with RF69_LISTEN_OFF)
-#define RADIOLIB_RF69_SLEEP                                     0b00000000  //  4     2   sleep
-#define RADIOLIB_RF69_STANDBY                                   0b00000100  //  4     2   standby
-#define RADIOLIB_RF69_FS                                        0b00001000  //  4     2   frequency synthesis
-#define RADIOLIB_RF69_TX                                        0b00001100  //  4     2   transmit
-#define RADIOLIB_RF69_RX                                        0b00010000  //  4     2   receive
+#define RADIOLIB_RF69_SEQUENCER_OFF                             0b10000000  // 7     7   disable automatic sequencer
+#define RADIOLIB_RF69_SEQUENCER_ON                              0b00000000  // 7     7   enable automatic sequencer
+#define RADIOLIB_RF69_LISTEN_OFF                                0b00000000  // 6     6   disable Listen mode
+#define RADIOLIB_RF69_LISTEN_ON                                 0b01000000  // 6     6   enable Listen mode
+#define RADIOLIB_RF69_LISTEN_ABORT                              0b00100000  // 5     5   abort Listen mode (has to be set together with RF69_LISTEN_OFF)
+#define RADIOLIB_RF69_SLEEP                                     0b00000000  // 4     2   sleep
+#define RADIOLIB_RF69_STANDBY                                   0b00000100  // 4     2   standby
+#define RADIOLIB_RF69_FS                                        0b00001000  // 4     2   frequency synthesis
+#define RADIOLIB_RF69_TX                                        0b00001100  // 4     2   transmit
+#define RADIOLIB_RF69_RX                                        0b00010000  // 4     2   receive
 
 // RADIOLIB_RF69_REG_DATA_MODUL
-#define RADIOLIB_RF69_PACKET_MODE                               0b00000000  //  6     5   packet mode (default)
-#define RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC                 0b01000000  //  6     5   continuous mode with bit synchronizer
-#define RADIOLIB_RF69_CONTINUOUS_MODE                           0b01100000  //  6     5   continuous mode without bit synchronizer
-#define RADIOLIB_RF69_FSK                                       0b00000000  //  4     3   modulation: FSK (default)
-#define RADIOLIB_RF69_OOK                                       0b00001000  //  4     3               OOK
-#define RADIOLIB_RF69_NO_SHAPING                                0b00000000  //  1     0   modulation shaping: no shaping (default)
-#define RADIOLIB_RF69_FSK_GAUSSIAN_1_0                          0b00000001  //  1     0                       FSK modulation Gaussian filter, BT = 1.0
-#define RADIOLIB_RF69_FSK_GAUSSIAN_0_5                          0b00000010  //  1     0                       FSK modulation Gaussian filter, BT = 0.5
-#define RADIOLIB_RF69_FSK_GAUSSIAN_0_3                          0b00000011  //  1     0                       FSK modulation Gaussian filter, BT = 0.3
-#define RADIOLIB_RF69_OOK_FILTER_BR                             0b00000001  //  1     0                       OOK modulation filter, f_cutoff = BR
-#define RADIOLIB_RF69_OOK_FILTER_2BR                            0b00000010  //  1     0                       OOK modulation filter, f_cutoff = 2*BR
+#define RADIOLIB_RF69_PACKET_MODE                               0b00000000  // 6     5   packet mode (default)
+#define RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC                 0b01000000  // 6     5   continuous mode with bit synchronizer
+#define RADIOLIB_RF69_CONTINUOUS_MODE                           0b01100000  // 6     5   continuous mode without bit synchronizer
+#define RADIOLIB_RF69_FSK                                       0b00000000  // 4     3   modulation: FSK (default)
+#define RADIOLIB_RF69_OOK                                       0b00001000  // 4     3               OOK
+#define RADIOLIB_RF69_NO_SHAPING                                0b00000000  // 1     0   modulation shaping: no shaping (default)
+#define RADIOLIB_RF69_FSK_GAUSSIAN_1_0                          0b00000001  // 1     0                       FSK modulation Gaussian filter, BT = 1.0
+#define RADIOLIB_RF69_FSK_GAUSSIAN_0_5                          0b00000010  // 1     0                       FSK modulation Gaussian filter, BT = 0.5
+#define RADIOLIB_RF69_FSK_GAUSSIAN_0_3                          0b00000011  // 1     0                       FSK modulation Gaussian filter, BT = 0.3
+#define RADIOLIB_RF69_OOK_FILTER_BR                             0b00000001  // 1     0                       OOK modulation filter, f_cutoff = BR
+#define RADIOLIB_RF69_OOK_FILTER_2BR                            0b00000010  // 1     0                       OOK modulation filter, f_cutoff = 2*BR
 
 // RADIOLIB_RF69_REG_BITRATE_MSB + REG_BITRATE_LSB
-#define RADIOLIB_RF69_BITRATE_MSB                               0x1A        //  7     0   bit rate setting: rate = F(XOSC) / BITRATE
-#define RADIOLIB_RF69_BITRATE_LSB                               0x0B        //  7     0       default value: 4.8 kbps
+#define RADIOLIB_RF69_BITRATE_MSB                               0x1A        // 7     0   bit rate setting: rate = F(XOSC) / BITRATE
+#define RADIOLIB_RF69_BITRATE_LSB                               0x0B        // 7     0       default value: 4.8 kbps
 
 // RADIOLIB_RF69_REG_FDEV_MSB + REG_FDEV_LSB
-#define RADIOLIB_RF69_FDEV_MSB                                  0x00        //  5     0   frequency deviation: f_dev = f_step * FDEV
-#define RADIOLIB_RF69_FDEV_LSB                                  0x52        //  7     0       default value: 5 kHz
+#define RADIOLIB_RF69_FDEV_MSB                                  0x00        // 5     0   frequency deviation: f_dev = f_step * FDEV
+#define RADIOLIB_RF69_FDEV_LSB                                  0x52        // 7     0       default value: 5 kHz
 
 // RADIOLIB_RF69_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
-#define RADIOLIB_RF69_FRF_MSB                                   0xE4        //  7     0   carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
-#define RADIOLIB_RF69_FRF_MID                                   0xC0        //  7     0       where F(XOSC) = 32 MHz
-#define RADIOLIB_RF69_FRF_LSB                                   0x00        //  7     0       default value: 915 MHz
+#define RADIOLIB_RF69_FRF_MSB                                   0xE4        // 7     0   carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
+#define RADIOLIB_RF69_FRF_MID                                   0xC0        // 7     0       where F(XOSC) = 32 MHz
+#define RADIOLIB_RF69_FRF_LSB                                   0x00        // 7     0       default value: 915 MHz
 
 // RADIOLIB_RF69_REG_OSC_1
-#define RADIOLIB_RF69_RC_CAL_START                              0b10000000  //  7     7   force RC oscillator calibration
-#define RADIOLIB_RF69_RC_CAL_RUNNING                            0b00000000  //  6     6   RC oscillator calibration is still running
-#define RADIOLIB_RF69_RC_CAL_DONE                               0b00000000  //  5     5   RC oscillator calibration has finished
+#define RADIOLIB_RF69_RC_CAL_START                              0b10000000  // 7     7   force RC oscillator calibration
+#define RADIOLIB_RF69_RC_CAL_RUNNING                            0b00000000  // 6     6   RC oscillator calibration is still running
+#define RADIOLIB_RF69_RC_CAL_DONE                               0b00000000  // 5     5   RC oscillator calibration has finished
 
 // RADIOLIB_RF69_REG_AFC_CTRL
-#define RADIOLIB_RF69_AFC_LOW_BETA_OFF                          0b00000000  //  5     5   standard AFC routine
-#define RADIOLIB_RF69_AFC_LOW_BETA_ON                           0b00100000  //  5     5   improved AFC routine for signals with modulation index less than 2
+#define RADIOLIB_RF69_AFC_LOW_BETA_OFF                          0b00000000  // 5     5   standard AFC routine
+#define RADIOLIB_RF69_AFC_LOW_BETA_ON                           0b00100000  // 5     5   improved AFC routine for signals with modulation index less than 2
 
 // RADIOLIB_RF69_REG_LISTEN_1
-#define RADIOLIB_RF69_LISTEN_RES_IDLE_64_US                     0b01000000  //  7     6   resolution of Listen mode idle time: 64 us
-#define RADIOLIB_RF69_LISTEN_RES_IDLE_4_1_MS                    0b10000000  //  7     6                                        4.1 ms (default)
-#define RADIOLIB_RF69_LISTEN_RES_IDLE_262_MS                    0b11000000  //  7     6                                        262 ms
-#define RADIOLIB_RF69_LISTEN_RES_RX_64_US                       0b00010000  //  5     4   resolution of Listen mode rx time: 64 us (default)
-#define RADIOLIB_RF69_LISTEN_RES_RX_4_1_MS                      0b00100000  //  5     4                                      4.1 ms
-#define RADIOLIB_RF69_LISTEN_RES_RX_262_MS                      0b00110000  //  5     4                                      262 ms
-#define RADIOLIB_RF69_LISTEN_ACCEPT_ABOVE_RSSI_THRESH           0b00000000  //  3     3   packet acceptance criteria: RSSI above threshold
-#define RADIOLIB_RF69_LISTEN_ACCEPT_MATCH_SYNC_ADDRESS          0b00001000  //  3     3                               RSSI above threshold AND sync address matched
-#define RADIOLIB_RF69_LISTEN_END_KEEP_RX                        0b00000000  //  2     1   action after packet acceptance: stay in Rx mode
-#define RADIOLIB_RF69_LISTEN_END_KEEP_RX_TIMEOUT                0b00000010  //  2     1                                   stay in Rx mode until timeout (default)
-#define RADIOLIB_RF69_LISTEN_END_KEEP_RX_TIMEOUT_RESUME         0b00000100  //  2     1                                   stay in Rx mode until timeout, Listen mode will resume
+#define RADIOLIB_RF69_LISTEN_RES_IDLE_64_US                     0b01000000  // 7     6   resolution of Listen mode idle time: 64 us
+#define RADIOLIB_RF69_LISTEN_RES_IDLE_4_1_MS                    0b10000000  // 7     6                                        4.1 ms (default)
+#define RADIOLIB_RF69_LISTEN_RES_IDLE_262_MS                    0b11000000  // 7     6                                        262 ms
+#define RADIOLIB_RF69_LISTEN_RES_RX_64_US                       0b00010000  // 5     4   resolution of Listen mode rx time: 64 us (default)
+#define RADIOLIB_RF69_LISTEN_RES_RX_4_1_MS                      0b00100000  // 5     4                                      4.1 ms
+#define RADIOLIB_RF69_LISTEN_RES_RX_262_MS                      0b00110000  // 5     4                                      262 ms
+#define RADIOLIB_RF69_LISTEN_ACCEPT_ABOVE_RSSI_THRESH           0b00000000  // 3     3   packet acceptance criteria: RSSI above threshold
+#define RADIOLIB_RF69_LISTEN_ACCEPT_MATCH_SYNC_ADDRESS          0b00001000  // 3     3                               RSSI above threshold AND sync address matched
+#define RADIOLIB_RF69_LISTEN_END_KEEP_RX                        0b00000000  // 2     1   action after packet acceptance: stay in Rx mode
+#define RADIOLIB_RF69_LISTEN_END_KEEP_RX_TIMEOUT                0b00000010  // 2     1                                   stay in Rx mode until timeout (default)
+#define RADIOLIB_RF69_LISTEN_END_KEEP_RX_TIMEOUT_RESUME         0b00000100  // 2     1                                   stay in Rx mode until timeout, Listen mode will resume
 
 // RADIOLIB_RF69_REG_LISTEN_2
-#define RADIOLIB_RF69_LISTEN_COEF_IDLE                          0xF5        //  7     0   duration of idle phase in Listen mode
+#define RADIOLIB_RF69_LISTEN_COEF_IDLE                          0xF5        // 7     0   duration of idle phase in Listen mode
 
 // RADIOLIB_RF69_REG_LISTEN_3
-#define RADIOLIB_RF69_LISTEN_COEF_RX                            0x20        //  7     0   duration of Rx phase in Listen mode
+#define RADIOLIB_RF69_LISTEN_COEF_RX                            0x20        // 7     0   duration of Rx phase in Listen mode
 
 // RADIOLIB_RF69_REG_VERSION
-#define RADIOLIB_RF69_CHIP_VERSION                              0x24        //  7     0
+#define RADIOLIB_RF69_CHIP_VERSION                              0x24        // 7     0
 
 // RADIOLIB_RF69_REG_PA_LEVEL
-#define RADIOLIB_RF69_PA0_OFF                                   0b00000000  //  7     7   PA0 disabled
-#define RADIOLIB_RF69_PA0_ON                                    0b10000000  //  7     7   PA0 enabled (default)
-#define RADIOLIB_RF69_PA1_OFF                                   0b00000000  //  6     6   PA1 disabled (default)
-#define RADIOLIB_RF69_PA1_ON                                    0b01000000  //  6     6   PA1 enabled
-#define RADIOLIB_RF69_PA2_OFF                                   0b00000000  //  5     5   PA2 disabled (default)
-#define RADIOLIB_RF69_PA2_ON                                    0b00100000  //  5     5   PA2 enabled
-#define RADIOLIB_RF69_OUTPUT_POWER                              0b00011111  //  4     0   output power: P_out = -18 + OUTPUT_POWER
+#define RADIOLIB_RF69_PA0_OFF                                   0b00000000  // 7     7   PA0 disabled
+#define RADIOLIB_RF69_PA0_ON                                    0b10000000  // 7     7   PA0 enabled (default)
+#define RADIOLIB_RF69_PA1_OFF                                   0b00000000  // 6     6   PA1 disabled (default)
+#define RADIOLIB_RF69_PA1_ON                                    0b01000000  // 6     6   PA1 enabled
+#define RADIOLIB_RF69_PA2_OFF                                   0b00000000  // 5     5   PA2 disabled (default)
+#define RADIOLIB_RF69_PA2_ON                                    0b00100000  // 5     5   PA2 enabled
+#define RADIOLIB_RF69_OUTPUT_POWER                              0b00011111  // 4     0   output power: P_out = -18 + OUTPUT_POWER
 
 // RADIOLIB_RF69_REG_PA_RAMP
-#define RADIOLIB_RF69_PA_RAMP_3_4_MS                            0b00000000  //  3     0   PA ramp rise/fall time: 3.4 ms
-#define RADIOLIB_RF69_PA_RAMP_2_MS                              0b00000001  //  3     0                           2 ms
-#define RADIOLIB_RF69_PA_RAMP_1_MS                              0b00000010  //  3     0                           1 ms
-#define RADIOLIB_RF69_PA_RAMP_500_US                            0b00000011  //  3     0                           500 us
-#define RADIOLIB_RF69_PA_RAMP_250_US                            0b00000100  //  3     0                           250 us
-#define RADIOLIB_RF69_PA_RAMP_125_US                            0b00000101  //  3     0                           125 us
-#define RADIOLIB_RF69_PA_RAMP_100_US                            0b00000110  //  3     0                           100 us
-#define RADIOLIB_RF69_PA_RAMP_62_US                             0b00000111  //  3     0                           62 us
-#define RADIOLIB_RF69_PA_RAMP_50_US                             0b00001000  //  3     0                           50 us
-#define RADIOLIB_RF69_PA_RAMP_40_US                             0b00001001  //  3     0                           40 us (default)
-#define RADIOLIB_RF69_PA_RAMP_31_US                             0b00001010  //  3     0                           31 us
-#define RADIOLIB_RF69_PA_RAMP_25_US                             0b00001011  //  3     0                           25 us
-#define RADIOLIB_RF69_PA_RAMP_20_US                             0b00001100  //  3     0                           20 us
-#define RADIOLIB_RF69_PA_RAMP_15_US                             0b00001101  //  3     0                           15 us
-#define RADIOLIB_RF69_PA_RAMP_12_US                             0b00001110  //  3     0                           12 us
-#define RADIOLIB_RF69_PA_RAMP_10_US                             0b00001111  //  3     0                           10 us
+#define RADIOLIB_RF69_PA_RAMP_3_4_MS                            0b00000000  // 3     0   PA ramp rise/fall time: 3.4 ms
+#define RADIOLIB_RF69_PA_RAMP_2_MS                              0b00000001  // 3     0                           2 ms
+#define RADIOLIB_RF69_PA_RAMP_1_MS                              0b00000010  // 3     0                           1 ms
+#define RADIOLIB_RF69_PA_RAMP_500_US                            0b00000011  // 3     0                           500 us
+#define RADIOLIB_RF69_PA_RAMP_250_US                            0b00000100  // 3     0                           250 us
+#define RADIOLIB_RF69_PA_RAMP_125_US                            0b00000101  // 3     0                           125 us
+#define RADIOLIB_RF69_PA_RAMP_100_US                            0b00000110  // 3     0                           100 us
+#define RADIOLIB_RF69_PA_RAMP_62_US                             0b00000111  // 3     0                           62 us
+#define RADIOLIB_RF69_PA_RAMP_50_US                             0b00001000  // 3     0                           50 us
+#define RADIOLIB_RF69_PA_RAMP_40_US                             0b00001001  // 3     0                           40 us (default)
+#define RADIOLIB_RF69_PA_RAMP_31_US                             0b00001010  // 3     0                           31 us
+#define RADIOLIB_RF69_PA_RAMP_25_US                             0b00001011  // 3     0                           25 us
+#define RADIOLIB_RF69_PA_RAMP_20_US                             0b00001100  // 3     0                           20 us
+#define RADIOLIB_RF69_PA_RAMP_15_US                             0b00001101  // 3     0                           15 us
+#define RADIOLIB_RF69_PA_RAMP_12_US                             0b00001110  // 3     0                           12 us
+#define RADIOLIB_RF69_PA_RAMP_10_US                             0b00001111  // 3     0                           10 us
 
 // RADIOLIB_RF69_REG_OCP
-#define RADIOLIB_RF69_OCP_OFF                                   0b00000000  //  4     4   PA overload current protection disabled
-#define RADIOLIB_RF69_OCP_ON                                    0b00010000  //  4     4   PA overload current protection enabled
-#define RADIOLIB_RF69_OCP_TRIM                                  0b00001010  //  3     0   OCP current: I_max(OCP_TRIM = 0b1010) = 95 mA
+#define RADIOLIB_RF69_OCP_OFF                                   0b00000000  // 4     4   PA overload current protection disabled
+#define RADIOLIB_RF69_OCP_ON                                    0b00010000  // 4     4   PA overload current protection enabled
+#define RADIOLIB_RF69_OCP_TRIM                                  0b00001010  // 3     0   OCP current: I_max(OCP_TRIM = 0b1010) = 95 mA
 
 // RADIOLIB_RF69_REG_LNA
-#define RADIOLIB_RF69_LNA_Z_IN_50_OHM                           0b00000000  //  7     7   LNA input impedance: 50 ohm
-#define RADIOLIB_RF69_LNA_Z_IN_200_OHM                          0b10000000  //  7     7                        200 ohm
-#define RADIOLIB_RF69_LNA_CURRENT_GAIN                          0b00001000  //  5     3   manually set LNA current gain
-#define RADIOLIB_RF69_LNA_GAIN_AUTO                             0b00000000  //  2     0   LNA gain setting: set automatically by AGC
-#define RADIOLIB_RF69_LNA_GAIN_MAX                              0b00000001  //  2     0                     max gain
-#define RADIOLIB_RF69_LNA_GAIN_MAX_6_DB                         0b00000010  //  2     0                     max gain - 6 dB
-#define RADIOLIB_RF69_LNA_GAIN_MAX_12_DB                        0b00000011  //  2     0                     max gain - 12 dB
-#define RADIOLIB_RF69_LNA_GAIN_MAX_24_DB                        0b00000100  //  2     0                     max gain - 24 dB
-#define RADIOLIB_RF69_LNA_GAIN_MAX_36_DB                        0b00000101  //  2     0                     max gain - 36 dB
-#define RADIOLIB_RF69_LNA_GAIN_MAX_48_DB                        0b00000110  //  2     0                     max gain - 48 dB
+#define RADIOLIB_RF69_LNA_Z_IN_50_OHM                           0b00000000  // 7     7   LNA input impedance: 50 ohm
+#define RADIOLIB_RF69_LNA_Z_IN_200_OHM                          0b10000000  // 7     7                        200 ohm
+#define RADIOLIB_RF69_LNA_CURRENT_GAIN                          0b00001000  // 5     3   manually set LNA current gain
+#define RADIOLIB_RF69_LNA_GAIN_AUTO                             0b00000000  // 2     0   LNA gain setting: set automatically by AGC
+#define RADIOLIB_RF69_LNA_GAIN_MAX                              0b00000001  // 2     0                     max gain
+#define RADIOLIB_RF69_LNA_GAIN_MAX_6_DB                         0b00000010  // 2     0                     max gain - 6 dB
+#define RADIOLIB_RF69_LNA_GAIN_MAX_12_DB                        0b00000011  // 2     0                     max gain - 12 dB
+#define RADIOLIB_RF69_LNA_GAIN_MAX_24_DB                        0b00000100  // 2     0                     max gain - 24 dB
+#define RADIOLIB_RF69_LNA_GAIN_MAX_36_DB                        0b00000101  // 2     0                     max gain - 36 dB
+#define RADIOLIB_RF69_LNA_GAIN_MAX_48_DB                        0b00000110  // 2     0                     max gain - 48 dB
 
 // RADIOLIB_RF69_REG_RX_BW
-#define RADIOLIB_RF69_DCC_FREQ                                  0b01000000  //  7     5   DC offset canceller cutoff frequency (4% Rx BW by default)
-#define RADIOLIB_RF69_RX_BW_MANT_16                             0b00000000  //  4     3   Channel filter bandwidth FSK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 2))
-#define RADIOLIB_RF69_RX_BW_MANT_20                             0b00001000  //  4     3                            OOK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 3))
-#define RADIOLIB_RF69_RX_BW_MANT_24                             0b00010000  //  4     3
-#define RADIOLIB_RF69_RX_BW_EXP                                 0b00000101  //  2     0   default RxBwExp value = 5
+#define RADIOLIB_RF69_DCC_FREQ                                  0b01000000  // 7     5   DC offset canceller cutoff frequency (4% Rx BW by default)
+#define RADIOLIB_RF69_RX_BW_MANT_16                             0b00000000  // 4     3   Channel filter bandwidth FSK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 2))
+#define RADIOLIB_RF69_RX_BW_MANT_20                             0b00001000  // 4     3                            OOK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 3))
+#define RADIOLIB_RF69_RX_BW_MANT_24                             0b00010000  // 4     3
+#define RADIOLIB_RF69_RX_BW_EXP                                 0b00000101  // 2     0   default RxBwExp value = 5
 
 // RADIOLIB_RF69_REG_AFC_BW
-#define RADIOLIB_RF69_DCC_FREQ_AFC                              0b10000000  //  7     5   default DccFreq parameter for AFC
-#define RADIOLIB_RF69_DCC_RX_BW_MANT_AFC                        0b00001000  //  4     3   default RxBwMant parameter for AFC
-#define RADIOLIB_RF69_DCC_RX_BW_EXP_AFC                         0b00000011  //  2     0   default RxBwExp parameter for AFC
+#define RADIOLIB_RF69_DCC_FREQ_AFC                              0b10000000  // 7     5   default DccFreq parameter for AFC
+#define RADIOLIB_RF69_DCC_RX_BW_MANT_AFC                        0b00001000  // 4     3   default RxBwMant parameter for AFC
+#define RADIOLIB_RF69_DCC_RX_BW_EXP_AFC                         0b00000011  // 2     0   default RxBwExp parameter for AFC
 
 // RADIOLIB_RF69_REG_OOK_PEAK
-#define RADIOLIB_RF69_OOK_THRESH_FIXED                          0b00000000  //  7     6   OOK threshold type: fixed
-#define RADIOLIB_RF69_OOK_THRESH_PEAK                           0b01000000  //  7     6                       peak (default)
-#define RADIOLIB_RF69_OOK_THRESH_AVERAGE                        0b10000000  //  7     6                       average
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_0_5_DB               0b00000000  //  5     3   OOK demodulator step size: 0.5 dB (default)
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_1_0_DB               0b00001000  //  5     3                              1.0 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_1_5_DB               0b00010000  //  5     3                              1.5 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_2_0_DB               0b00011000  //  5     3                              2.0 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_3_0_DB               0b00100000  //  5     3                              3.0 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_4_0_DB               0b00101000  //  5     3                              4.0 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_5_0_DB               0b00110000  //  5     3                              5.0 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_6_0_DB               0b00111000  //  5     3                              6.0 dB
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_1_CHIP              0b00000000  //  2     0   OOK demodulator step period: once per chip (default)
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_2_CHIP              0b00000001  //  2     0                                once every 2 chips
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_4_CHIP              0b00000010  //  2     0                                once every 4 chips
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_8_CHIP              0b00000011  //  2     0                                once every 8 chips
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_2_1_CHIP              0b00000100  //  2     0                                2 times per chip
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_4_1_CHIP              0b00000101  //  2     0                                4 times per chip
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_8_1_CHIP              0b00000110  //  2     0                                8 times per chip
-#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_16_1_CHIP             0b00000111  //  2     0                                16 times per chip
+#define RADIOLIB_RF69_OOK_THRESH_FIXED                          0b00000000  // 7     6   OOK threshold type: fixed
+#define RADIOLIB_RF69_OOK_THRESH_PEAK                           0b01000000  // 7     6                       peak (default)
+#define RADIOLIB_RF69_OOK_THRESH_AVERAGE                        0b10000000  // 7     6                       average
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_0_5_DB               0b00000000  // 5     3   OOK demodulator step size: 0.5 dB (default)
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_1_0_DB               0b00001000  // 5     3                              1.0 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_1_5_DB               0b00010000  // 5     3                              1.5 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_2_0_DB               0b00011000  // 5     3                              2.0 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_3_0_DB               0b00100000  // 5     3                              3.0 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_4_0_DB               0b00101000  // 5     3                              4.0 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_5_0_DB               0b00110000  // 5     3                              5.0 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_STEP_6_0_DB               0b00111000  // 5     3                              6.0 dB
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_1_CHIP              0b00000000  // 2     0   OOK demodulator step period: once per chip (default)
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_2_CHIP              0b00000001  // 2     0                                once every 2 chips
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_4_CHIP              0b00000010  // 2     0                                once every 4 chips
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_1_8_CHIP              0b00000011  // 2     0                                once every 8 chips
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_2_1_CHIP              0b00000100  // 2     0                                2 times per chip
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_4_1_CHIP              0b00000101  // 2     0                                4 times per chip
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_8_1_CHIP              0b00000110  // 2     0                                8 times per chip
+#define RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_16_1_CHIP             0b00000111  // 2     0                                16 times per chip
 
 // RADIOLIB_RF69_REG_OOK_AVG
-#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_32_PI                 0b00000000  //  7     6   OOK average filter coefficient: chip rate / 32*pi
-#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_8_PI                  0b01000000  //  7     6                                   chip rate / 8*pi
-#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_4_PI                  0b10000000  //  7     6                                   chip rate / 4*pi (default)
-#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_2_PI                  0b11000000  //  7     6                                   chip rate / 2*pi
+#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_32_PI                 0b00000000  // 7     6   OOK average filter coefficient: chip rate / 32*pi
+#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_8_PI                  0b01000000  // 7     6                                   chip rate / 8*pi
+#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_4_PI                  0b10000000  // 7     6                                   chip rate / 4*pi (default)
+#define RADIOLIB_RF69_OOK_AVG_THRESH_FILT_2_PI                  0b11000000  // 7     6                                   chip rate / 2*pi
 
 // RADIOLIB_RF69_REG_OOK_FIX
-#define RADIOLIB_RF69_OOK_FIXED_THRESH                          0b00000110  //  7     0   default OOK fixed threshold (6 dB)
+#define RADIOLIB_RF69_OOK_FIXED_THRESH                          0b00000110  // 7     0   default OOK fixed threshold (6 dB)
 
 // RADIOLIB_RF69_REG_AFC_FEI
-#define RADIOLIB_RF69_FEI_RUNNING                               0b00000000  //  6     6   FEI status: on-going
-#define RADIOLIB_RF69_FEI_DONE                                  0b01000000  //  6     6               done
-#define RADIOLIB_RF69_FEI_START                                 0b00100000  //  5     5   force new FEI measurement
-#define RADIOLIB_RF69_AFC_RUNNING                               0b00000000  //  4     4   AFC status: on-going
-#define RADIOLIB_RF69_AFC_DONE                                  0b00010000  //  4     4               done
-#define RADIOLIB_RF69_AFC_AUTOCLEAR_OFF                         0b00000000  //  3     3   AFC register autoclear disabled
-#define RADIOLIB_RF69_AFC_AUTOCLEAR_ON                          0b00001000  //  3     3   AFC register autoclear enabled
-#define RADIOLIB_RF69_AFC_AUTO_OFF                              0b00000000  //  2     2   perform AFC only manually
-#define RADIOLIB_RF69_AFC_AUTO_ON                               0b00000100  //  2     2   perform AFC each time Rx mode is started
-#define RADIOLIB_RF69_AFC_CLEAR                                 0b00000010  //  1     1   clear AFC register
-#define RADIOLIB_RF69_AFC_START                                 0b00000001  //  0     0   start AFC
+#define RADIOLIB_RF69_FEI_RUNNING                               0b00000000  // 6     6   FEI status: on-going
+#define RADIOLIB_RF69_FEI_DONE                                  0b01000000  // 6     6               done
+#define RADIOLIB_RF69_FEI_START                                 0b00100000  // 5     5   force new FEI measurement
+#define RADIOLIB_RF69_AFC_RUNNING                               0b00000000  // 4     4   AFC status: on-going
+#define RADIOLIB_RF69_AFC_DONE                                  0b00010000  // 4     4               done
+#define RADIOLIB_RF69_AFC_AUTOCLEAR_OFF                         0b00000000  // 3     3   AFC register autoclear disabled
+#define RADIOLIB_RF69_AFC_AUTOCLEAR_ON                          0b00001000  // 3     3   AFC register autoclear enabled
+#define RADIOLIB_RF69_AFC_AUTO_OFF                              0b00000000  // 2     2   perform AFC only manually
+#define RADIOLIB_RF69_AFC_AUTO_ON                               0b00000100  // 2     2   perform AFC each time Rx mode is started
+#define RADIOLIB_RF69_AFC_CLEAR                                 0b00000010  // 1     1   clear AFC register
+#define RADIOLIB_RF69_AFC_START                                 0b00000001  // 0     0   start AFC
 
 // RADIOLIB_RF69_REG_RSSI_CONFIG
-#define RADIOLIB_RF69_RSSI_RUNNING                              0b00000000  //  1     1   RSSI status: on-going
-#define RADIOLIB_RF69_RSSI_DONE                                 0b00000010  //  1     1                done
-#define RADIOLIB_RF69_RSSI_START                                0b00000001  //  0     0   start RSSI measurement
+#define RADIOLIB_RF69_RSSI_RUNNING                              0b00000000  // 1     1   RSSI status: on-going
+#define RADIOLIB_RF69_RSSI_DONE                                 0b00000010  // 1     1                done
+#define RADIOLIB_RF69_RSSI_START                                0b00000001  // 0     0   start RSSI measurement
 
 // RADIOLIB_RF69_REG_DIO_MAPPING_1
-#define RADIOLIB_RF69_DIO0_CONT_MODE_READY                      0b11000000  //  7     6
-#define RADIOLIB_RF69_DIO0_CONT_PLL_LOCK                        0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO0_CONT_SYNC_ADDRESS                    0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO0_CONT_TIMEOUT                         0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO0_CONT_RSSI                            0b10000000  //  7     6
-#define RADIOLIB_RF69_DIO0_CONT_TX_READY                        0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_PLL_LOCK                        0b11000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_CRC_OK                          0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_PAYLOAD_READY                   0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_SYNC_ADDRESS                    0b10000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_RSSI                            0b11000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_PACKET_SENT                     0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO0_PACK_TX_READY                        0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO1_CONT_PLL_LOCK                        0b00110000  //  5     4
-#define RADIOLIB_RF69_DIO1_CONT_DCLK                            0b00000000  //  5     4
-#define RADIOLIB_RF69_DIO1_CONT_RX_READY                        0b00010000  //  5     4
-#define RADIOLIB_RF69_DIO1_CONT_SYNC_ADDRESS                    0b00110000  //  5     4
-#define RADIOLIB_RF69_DIO1_CONT_TX_READY                        0b00010000  //  5     4
-#define RADIOLIB_RF69_DIO1_PACK_FIFO_LEVEL                      0b00000000  //  5     4
-#define RADIOLIB_RF69_DIO1_PACK_FIFO_FULL                       0b00010000  //  5     4
-#define RADIOLIB_RF69_DIO1_PACK_FIFO_NOT_EMPTY                  0b00100000  //  5     4
-#define RADIOLIB_RF69_DIO1_PACK_PLL_LOCK                        0b00110000  //  5     4
-#define RADIOLIB_RF69_DIO1_PACK_TIMEOUT                         0b00110000  //  5     4
-#define RADIOLIB_RF69_DIO2_CONT_DATA                            0b00000000  //  3     2
-#define RADIOLIB_RF69_DIO2_PACK_FIFO_NOT_EMPTY                  0b00000000  //  3     2
-#define RADIOLIB_RF69_DIO2_PACK_AUTO_MODE                       0b00001100  //  3     2
-#define RADIOLIB_RF69_DIO2_PACK_DATA                            0b00000100  //  3     2
-#define RADIOLIB_RF69_DIO3_CONT_AUTO_MODE                       0b00000010  //  0     1
-#define RADIOLIB_RF69_DIO3_CONT_RSSI                            0b00000000  //  0     1
-#define RADIOLIB_RF69_DIO3_CONT_RX_READY                        0b00000001  //  0     1
-#define RADIOLIB_RF69_DIO3_CONT_TIMEOUT                         0b00000011  //  0     1
-#define RADIOLIB_RF69_DIO3_CONT_TX_READY                        0b00000001  //  0     1
-#define RADIOLIB_RF69_DIO3_PACK_FIFO_FULL                       0b00000000  //  0     1
-#define RADIOLIB_RF69_DIO3_PACK_PLL_LOCK                        0b00000011  //  0     1
-#define RADIOLIB_RF69_DIO3_PACK_RSSI                            0b00000001  //  0     1
-#define RADIOLIB_RF69_DIO3_PACK_SYNC_ADDRESSS                   0b00000010  //  0     1
-#define RADIOLIB_RF69_DIO3_PACK_TX_READY                        0b00000001  //  0     1
+#define RADIOLIB_RF69_DIO0_CONT_MODE_READY                      0b11000000  // 7     6
+#define RADIOLIB_RF69_DIO0_CONT_PLL_LOCK                        0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO0_CONT_SYNC_ADDRESS                    0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO0_CONT_TIMEOUT                         0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO0_CONT_RSSI                            0b10000000  // 7     6
+#define RADIOLIB_RF69_DIO0_CONT_TX_READY                        0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_PLL_LOCK                        0b11000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_CRC_OK                          0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_PAYLOAD_READY                   0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_SYNC_ADDRESS                    0b10000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_RSSI                            0b11000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_PACKET_SENT                     0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO0_PACK_TX_READY                        0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO1_CONT_PLL_LOCK                        0b00110000  // 5     4
+#define RADIOLIB_RF69_DIO1_CONT_DCLK                            0b00000000  // 5     4
+#define RADIOLIB_RF69_DIO1_CONT_RX_READY                        0b00010000  // 5     4
+#define RADIOLIB_RF69_DIO1_CONT_SYNC_ADDRESS                    0b00110000  // 5     4
+#define RADIOLIB_RF69_DIO1_CONT_TX_READY                        0b00010000  // 5     4
+#define RADIOLIB_RF69_DIO1_PACK_FIFO_LEVEL                      0b00000000  // 5     4
+#define RADIOLIB_RF69_DIO1_PACK_FIFO_FULL                       0b00010000  // 5     4
+#define RADIOLIB_RF69_DIO1_PACK_FIFO_NOT_EMPTY                  0b00100000  // 5     4
+#define RADIOLIB_RF69_DIO1_PACK_PLL_LOCK                        0b00110000  // 5     4
+#define RADIOLIB_RF69_DIO1_PACK_TIMEOUT                         0b00110000  // 5     4
+#define RADIOLIB_RF69_DIO2_CONT_DATA                            0b00000000  // 3     2
+#define RADIOLIB_RF69_DIO2_PACK_FIFO_NOT_EMPTY                  0b00000000  // 3     2
+#define RADIOLIB_RF69_DIO2_PACK_AUTO_MODE                       0b00001100  // 3     2
+#define RADIOLIB_RF69_DIO2_PACK_DATA                            0b00000100  // 3     2
+#define RADIOLIB_RF69_DIO3_CONT_AUTO_MODE                       0b00000010  // 0     1
+#define RADIOLIB_RF69_DIO3_CONT_RSSI                            0b00000000  // 0     1
+#define RADIOLIB_RF69_DIO3_CONT_RX_READY                        0b00000001  // 0     1
+#define RADIOLIB_RF69_DIO3_CONT_TIMEOUT                         0b00000011  // 0     1
+#define RADIOLIB_RF69_DIO3_CONT_TX_READY                        0b00000001  // 0     1
+#define RADIOLIB_RF69_DIO3_PACK_FIFO_FULL                       0b00000000  // 0     1
+#define RADIOLIB_RF69_DIO3_PACK_PLL_LOCK                        0b00000011  // 0     1
+#define RADIOLIB_RF69_DIO3_PACK_RSSI                            0b00000001  // 0     1
+#define RADIOLIB_RF69_DIO3_PACK_SYNC_ADDRESSS                   0b00000010  // 0     1
+#define RADIOLIB_RF69_DIO3_PACK_TX_READY                        0b00000001  // 0     1
 
 // RADIOLIB_RF69_REG_DIO_MAPPING_2
-#define RADIOLIB_RF69_DIO4_CONT_PLL_LOCK                        0b11000000  //  7     6
-#define RADIOLIB_RF69_DIO4_CONT_TIMEOUT                         0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO4_CONT_RX_READY                        0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO4_CONT_SYNC_ADDRESS                    0b10000000  //  7     6
-#define RADIOLIB_RF69_DIO4_CONT_TX_READY                        0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO4_PACK_PLL_LOCK                        0b11000000  //  7     6
-#define RADIOLIB_RF69_DIO4_PACK_TIMEOUT                         0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO4_PACK_RSSI                            0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO4_PACK_RX_READY                        0b10000000  //  7     6
-#define RADIOLIB_RF69_DIO4_PACK_MODE_READY                      0b00000000  //  7     6
-#define RADIOLIB_RF69_DIO4_PACK_TX_READY                        0b01000000  //  7     6
-#define RADIOLIB_RF69_DIO5_CONT_MODE_READY                      0b00110000  //  5     4
-#define RADIOLIB_RF69_DIO5_CONT_CLK_OUT                         0b00000000  //  5     4
-#define RADIOLIB_RF69_DIO5_CONT_RSSI                            0b00010000  //  5     4
-#define RADIOLIB_RF69_DIO5_PACK_MODE_READY                      0b00110000  //  5     4
-#define RADIOLIB_RF69_DIO5_PACK_CLK_OUT                         0b00000000  //  5     4
-#define RADIOLIB_RF69_DIO5_PACK_DATA                            0b00010000  //  5     4
-#define RADIOLIB_RF69_CLK_OUT_FXOSC                             0b00000000  //  2     0   ClkOut frequency: F(XOSC)
-#define RADIOLIB_RF69_CLK_OUT_FXOSC_2                           0b00000001  //  2     0                     F(XOSC) / 2
-#define RADIOLIB_RF69_CLK_OUT_FXOSC_4                           0b00000010  //  2     0                     F(XOSC) / 4
-#define RADIOLIB_RF69_CLK_OUT_FXOSC_8                           0b00000011  //  2     0                     F(XOSC) / 8
-#define RADIOLIB_RF69_CLK_OUT_FXOSC_16                          0b00000100  //  2     0                     F(XOSC) / 16
-#define RADIOLIB_RF69_CLK_OUT_FXOSC_32                          0b00000101  //  2     0                     F(XOSC) / 31
-#define RADIOLIB_RF69_CLK_OUT_RC                                0b00000110  //  2     0                     RC
-#define RADIOLIB_RF69_CLK_OUT_OFF                               0b00000111  //  2     0                     disabled (default)
+#define RADIOLIB_RF69_DIO4_CONT_PLL_LOCK                        0b11000000  // 7     6
+#define RADIOLIB_RF69_DIO4_CONT_TIMEOUT                         0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO4_CONT_RX_READY                        0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO4_CONT_SYNC_ADDRESS                    0b10000000  // 7     6
+#define RADIOLIB_RF69_DIO4_CONT_TX_READY                        0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO4_PACK_PLL_LOCK                        0b11000000  // 7     6
+#define RADIOLIB_RF69_DIO4_PACK_TIMEOUT                         0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO4_PACK_RSSI                            0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO4_PACK_RX_READY                        0b10000000  // 7     6
+#define RADIOLIB_RF69_DIO4_PACK_MODE_READY                      0b00000000  // 7     6
+#define RADIOLIB_RF69_DIO4_PACK_TX_READY                        0b01000000  // 7     6
+#define RADIOLIB_RF69_DIO5_CONT_MODE_READY                      0b00110000  // 5     4
+#define RADIOLIB_RF69_DIO5_CONT_CLK_OUT                         0b00000000  // 5     4
+#define RADIOLIB_RF69_DIO5_CONT_RSSI                            0b00010000  // 5     4
+#define RADIOLIB_RF69_DIO5_PACK_MODE_READY                      0b00110000  // 5     4
+#define RADIOLIB_RF69_DIO5_PACK_CLK_OUT                         0b00000000  // 5     4
+#define RADIOLIB_RF69_DIO5_PACK_DATA                            0b00010000  // 5     4
+#define RADIOLIB_RF69_CLK_OUT_FXOSC                             0b00000000  // 2     0   ClkOut frequency: F(XOSC)
+#define RADIOLIB_RF69_CLK_OUT_FXOSC_2                           0b00000001  // 2     0                     F(XOSC) / 2
+#define RADIOLIB_RF69_CLK_OUT_FXOSC_4                           0b00000010  // 2     0                     F(XOSC) / 4
+#define RADIOLIB_RF69_CLK_OUT_FXOSC_8                           0b00000011  // 2     0                     F(XOSC) / 8
+#define RADIOLIB_RF69_CLK_OUT_FXOSC_16                          0b00000100  // 2     0                     F(XOSC) / 16
+#define RADIOLIB_RF69_CLK_OUT_FXOSC_32                          0b00000101  // 2     0                     F(XOSC) / 31
+#define RADIOLIB_RF69_CLK_OUT_RC                                0b00000110  // 2     0                     RC
+#define RADIOLIB_RF69_CLK_OUT_OFF                               0b00000111  // 2     0                     disabled (default)
 
 // RADIOLIB_RF69_REG_IRQ_FLAGS_1
-#define RADIOLIB_RF69_IRQ_MODE_READY                            0b10000000  //  7     7   requested mode was set
-#define RADIOLIB_RF69_IRQ_RX_READY                              0b01000000  //  6     6   Rx mode ready
-#define RADIOLIB_RF69_IRQ_TX_READY                              0b00100000  //  5     5   Tx mode ready
-#define RADIOLIB_RF69_IRQ_PLL_LOCK                              0b00010000  //  4     4   PLL is locked
-#define RADIOLIB_RF69_IRQ_RSSI                                  0b00001000  //  3     3   RSSI value exceeded RssiThreshold
-#define RADIOLIB_RF69_IRQ_TIMEOUT                               0b00000100  //  2     2   timeout occurred
-#define RADIOLIB_RF69_IRQ_AUTO_MODE                             0b00000010  //  1     1   entered intermediate mode
-#define RADIOLIB_RF69_SYNC_ADDRESS_MATCH                        0b00000001  //  0     0   sync address detected
+#define RADIOLIB_RF69_IRQ_MODE_READY                            0b10000000  // 7     7   requested mode was set
+#define RADIOLIB_RF69_IRQ_RX_READY                              0b01000000  // 6     6   Rx mode ready
+#define RADIOLIB_RF69_IRQ_TX_READY                              0b00100000  // 5     5   Tx mode ready
+#define RADIOLIB_RF69_IRQ_PLL_LOCK                              0b00010000  // 4     4   PLL is locked
+#define RADIOLIB_RF69_IRQ_RSSI                                  0b00001000  // 3     3   RSSI value exceeded RssiThreshold
+#define RADIOLIB_RF69_IRQ_TIMEOUT                               0b00000100  // 2     2   timeout occurred
+#define RADIOLIB_RF69_IRQ_AUTO_MODE                             0b00000010  // 1     1   entered intermediate mode
+#define RADIOLIB_RF69_SYNC_ADDRESS_MATCH                        0b00000001  // 0     0   sync address detected
 
 // RADIOLIB_RF69_REG_IRQ_FLAGS_2
-#define RADIOLIB_RF69_IRQ_FIFO_FULL                             0b10000000  //  7     7   FIFO is full
-#define RADIOLIB_RF69_IRQ_FIFO_NOT_EMPTY                        0b01000000  //  6     6   FIFO contains at least 1 byte
-#define RADIOLIB_RF69_IRQ_FIFO_LEVEL                            0b00100000  //  5     5   FIFO contains more than FifoThreshold bytes
-#define RADIOLIB_RF69_IRQ_FIFO_OVERRUN                          0b00010000  //  4     4   FIFO overrun occurred
-#define RADIOLIB_RF69_IRQ_PACKET_SENT                           0b00001000  //  3     3   packet was sent
-#define RADIOLIB_RF69_IRQ_PAYLOAD_READY                         0b00000100  //  2     2   last payload byte received and CRC check passed
-#define RADIOLIB_RF69_IRQ_CRC_OK                                0b00000010  //  1     1   CRC check passed
+#define RADIOLIB_RF69_IRQ_FIFO_FULL                             0b10000000  // 7     7   FIFO is full
+#define RADIOLIB_RF69_IRQ_FIFO_NOT_EMPTY                        0b01000000  // 6     6   FIFO contains at least 1 byte
+#define RADIOLIB_RF69_IRQ_FIFO_LEVEL                            0b00100000  // 5     5   FIFO contains more than FifoThreshold bytes
+#define RADIOLIB_RF69_IRQ_FIFO_OVERRUN                          0b00010000  // 4     4   FIFO overrun occurred
+#define RADIOLIB_RF69_IRQ_PACKET_SENT                           0b00001000  // 3     3   packet was sent
+#define RADIOLIB_RF69_IRQ_PAYLOAD_READY                         0b00000100  // 2     2   last payload byte received and CRC check passed
+#define RADIOLIB_RF69_IRQ_CRC_OK                                0b00000010  // 1     1   CRC check passed
 
 // RADIOLIB_RF69_REG_RSSI_THRESH
-#define RADIOLIB_RF69_RSSI_THRESHOLD                            0xE4        //  7     0   RSSI threshold level (2 dB by default)
+#define RADIOLIB_RF69_RSSI_THRESHOLD                            0xE4        // 7     0   RSSI threshold level (2 dB by default)
 
 // RADIOLIB_RF69_REG_RX_TIMEOUT_1
-#define RADIOLIB_RF69_TIMEOUT_RX_START_OFF                      0x00        //  7     0   RSSI interrupt timeout disabled (default)
-#define RADIOLIB_RF69_TIMEOUT_RX_START                          0xFF        //  7     0   timeout will occur if RSSI interrupt is not received
+#define RADIOLIB_RF69_TIMEOUT_RX_START_OFF                      0x00        // 7     0   RSSI interrupt timeout disabled (default)
+#define RADIOLIB_RF69_TIMEOUT_RX_START                          0xFF        // 7     0   timeout will occur if RSSI interrupt is not received
 
 // RADIOLIB_RF69_REG_RX_TIMEOUT_2
-#define RADIOLIB_RF69_TIMEOUT_RSSI_THRESH_OFF                   0x00        //  7     0   PayloadReady interrupt timeout disabled (default)
-#define RADIOLIB_RF69_TIMEOUT_RSSI_THRESH                       0xFF        //  7     0   timeout will occur if PayloadReady interrupt is not received
+#define RADIOLIB_RF69_TIMEOUT_RSSI_THRESH_OFF                   0x00        // 7     0   PayloadReady interrupt timeout disabled (default)
+#define RADIOLIB_RF69_TIMEOUT_RSSI_THRESH                       0xFF        // 7     0   timeout will occur if PayloadReady interrupt is not received
 
 // RADIOLIB_RF69_REG_PREAMBLE_MSB + REG_PREAMBLE_MSB
-#define RADIOLIB_RF69_PREAMBLE_MSB                              0x00        //  7     0   2-byte preamble size value
-#define RADIOLIB_RF69_PREAMBLE_LSB                              0x03        //  7     0
+#define RADIOLIB_RF69_PREAMBLE_MSB                              0x00        // 7     0   2-byte preamble size value
+#define RADIOLIB_RF69_PREAMBLE_LSB                              0x03        // 7     0
 
 // RADIOLIB_RF69_REG_SYNC_CONFIG
-#define RADIOLIB_RF69_SYNC_OFF                                  0b00000000  //  7     7   sync word detection off
-#define RADIOLIB_RF69_SYNC_ON                                   0b10000000  //  7     7   sync word detection on (default)
-#define RADIOLIB_RF69_FIFO_FILL_CONDITION_SYNC                  0b00000000  //  6     6   FIFO fill condition: on SyncAddress interrupt (default)
-#define RADIOLIB_RF69_FIFO_FILL_CONDITION                       0b01000000  //  6     6                        as long as the bit is set
-#define RADIOLIB_RF69_SYNC_SIZE                                 0b00001000  //  5     3   size of sync word: SyncSize + 1 bytes
-#define RADIOLIB_RF69_SYNC_TOL                                  0b00000000  //  2     0   number of tolerated errors in sync word
+#define RADIOLIB_RF69_SYNC_OFF                                  0b00000000  // 7     7   sync word detection off
+#define RADIOLIB_RF69_SYNC_ON                                   0b10000000  // 7     7   sync word detection on (default)
+#define RADIOLIB_RF69_FIFO_FILL_CONDITION_SYNC                  0b00000000  // 6     6   FIFO fill condition: on SyncAddress interrupt (default)
+#define RADIOLIB_RF69_FIFO_FILL_CONDITION                       0b01000000  // 6     6                        as long as the bit is set
+#define RADIOLIB_RF69_SYNC_SIZE                                 0b00001000  // 5     3   size of sync word: SyncSize + 1 bytes
+#define RADIOLIB_RF69_SYNC_TOL                                  0b00000000  // 2     0   number of tolerated errors in sync word
 
 // RADIOLIB_RF69_REG_SYNC_VALUE_1 - SYNC_VALUE_8
-#define RADIOLIB_RF69_SYNC_BYTE_1                               0x01        //  7     0   sync word: 1st byte (MSB)
-#define RADIOLIB_RF69_SYNC_BYTE_2                               0x01        //  7     0              2nd byte
-#define RADIOLIB_RF69_SYNC_BYTE_3                               0x01        //  7     0              3rd byte
-#define RADIOLIB_RF69_SYNC_BYTE_4                               0x01        //  7     0              4th byte
-#define RADIOLIB_RF69_SYNC_BYTE_5                               0x01        //  7     0              5th byte
-#define RADIOLIB_RF69_SYNC_BYTE_6                               0x01        //  7     0              6th byte
-#define RADIOLIB_RF69_SYNC_BYTE_7                               0x01        //  7     0              7th byte
-#define RADIOLIB_RF69_SYNC_BYTE_8                               0x01        //  7     0              8th byte (LSB)
+#define RADIOLIB_RF69_SYNC_BYTE_1                               0x01        // 7     0   sync word: 1st byte (MSB)
+#define RADIOLIB_RF69_SYNC_BYTE_2                               0x01        // 7     0              2nd byte
+#define RADIOLIB_RF69_SYNC_BYTE_3                               0x01        // 7     0              3rd byte
+#define RADIOLIB_RF69_SYNC_BYTE_4                               0x01        // 7     0              4th byte
+#define RADIOLIB_RF69_SYNC_BYTE_5                               0x01        // 7     0              5th byte
+#define RADIOLIB_RF69_SYNC_BYTE_6                               0x01        // 7     0              6th byte
+#define RADIOLIB_RF69_SYNC_BYTE_7                               0x01        // 7     0              7th byte
+#define RADIOLIB_RF69_SYNC_BYTE_8                               0x01        // 7     0              8th byte (LSB)
 
 // RADIOLIB_RF69_REG_PACKET_CONFIG_1
-#define RADIOLIB_RF69_PACKET_FORMAT_FIXED                       0b00000000  //  7     7   fixed packet length (default)
-#define RADIOLIB_RF69_PACKET_FORMAT_VARIABLE                    0b10000000  //  7     7   variable packet length
-#define RADIOLIB_RF69_DC_FREE_NONE                              0b00000000  //  6     5   DC-free encoding: none (default)
-#define RADIOLIB_RF69_DC_FREE_MANCHESTER                        0b00100000  //  6     5                     Manchester
-#define RADIOLIB_RF69_DC_FREE_WHITENING                         0b01000000  //  6     5                     Whitening
-#define RADIOLIB_RF69_CRC_OFF                                   0b00000000  //  4     4   CRC disabled
-#define RADIOLIB_RF69_CRC_ON                                    0b00010000  //  4     4   CRC enabled (default)
-#define RADIOLIB_RF69_CRC_AUTOCLEAR_ON                          0b00000000  //  3     3   discard packet when CRC check fails (default)
-#define RADIOLIB_RF69_CRC_AUTOCLEAR_OFF                         0b00001000  //  3     3   keep packet when CRC check fails
-#define RADIOLIB_RF69_ADDRESS_FILTERING_OFF                     0b00000000  //  2     1   address filtering: none (default)
-#define RADIOLIB_RF69_ADDRESS_FILTERING_NODE                    0b00000010  //  2     1                      node
-#define RADIOLIB_RF69_ADDRESS_FILTERING_NODE_BROADCAST          0b00000100  //  2     1                      node or broadcast
+#define RADIOLIB_RF69_PACKET_FORMAT_FIXED                       0b00000000  // 7     7   fixed packet length (default)
+#define RADIOLIB_RF69_PACKET_FORMAT_VARIABLE                    0b10000000  // 7     7   variable packet length
+#define RADIOLIB_RF69_DC_FREE_NONE                              0b00000000  // 6     5   DC-free encoding: none (default)
+#define RADIOLIB_RF69_DC_FREE_MANCHESTER                        0b00100000  // 6     5                     Manchester
+#define RADIOLIB_RF69_DC_FREE_WHITENING                         0b01000000  // 6     5                     Whitening
+#define RADIOLIB_RF69_CRC_OFF                                   0b00000000  // 4     4   CRC disabled
+#define RADIOLIB_RF69_CRC_ON                                    0b00010000  // 4     4   CRC enabled (default)
+#define RADIOLIB_RF69_CRC_AUTOCLEAR_ON                          0b00000000  // 3     3   discard packet when CRC check fails (default)
+#define RADIOLIB_RF69_CRC_AUTOCLEAR_OFF                         0b00001000  // 3     3   keep packet when CRC check fails
+#define RADIOLIB_RF69_ADDRESS_FILTERING_OFF                     0b00000000  // 2     1   address filtering: none (default)
+#define RADIOLIB_RF69_ADDRESS_FILTERING_NODE                    0b00000010  // 2     1                      node
+#define RADIOLIB_RF69_ADDRESS_FILTERING_NODE_BROADCAST          0b00000100  // 2     1                      node or broadcast
 
 // RADIOLIB_RF69_REG_PAYLOAD_LENGTH
-#define RADIOLIB_RF69_PAYLOAD_LENGTH                            0xFF        //  7     0   payload length
+#define RADIOLIB_RF69_PAYLOAD_LENGTH                            0xFF        // 7     0   payload length
 
 // RADIOLIB_RF69_REG_AUTO_MODES
-#define RADIOLIB_RF69_ENTER_COND_NONE                           0b00000000  //  7     5   condition for entering intermediate mode: none, AutoModes disabled (default)
-#define RADIOLIB_RF69_ENTER_COND_FIFO_NOT_EMPTY                 0b00100000  //  7     5                                             FifoNotEmpty rising edge
-#define RADIOLIB_RF69_ENTER_COND_FIFO_LEVEL                     0b01000000  //  7     5                                             FifoLevel rising edge
-#define RADIOLIB_RF69_ENTER_COND_CRC_OK                         0b01100000  //  7     5                                             CrcOk rising edge
-#define RADIOLIB_RF69_ENTER_COND_PAYLOAD_READY                  0b10000000  //  7     5                                             PayloadReady rising edge
-#define RADIOLIB_RF69_ENTER_COND_SYNC_ADDRESS                   0b10100000  //  7     5                                             SyncAddress rising edge
-#define RADIOLIB_RF69_ENTER_COND_PACKET_SENT                    0b11000000  //  7     5                                             PacketSent rising edge
-#define RADIOLIB_RF69_ENTER_COND_FIFO_EMPTY                     0b11100000  //  7     5                                             FifoNotEmpty falling edge
-#define RADIOLIB_RF69_EXIT_COND_NONE                            0b00000000  //  4     2   condition for exiting intermediate mode: none, AutoModes disabled (default)
-#define RADIOLIB_RF69_EXIT_COND_FIFO_EMPTY                      0b00100000  //  4     2                                            FifoNotEmpty falling edge
-#define RADIOLIB_RF69_EXIT_COND_FIFO_LEVEL                      0b01000000  //  4     2                                            FifoLevel rising edge
-#define RADIOLIB_RF69_EXIT_COND_CRC_OK                          0b01100000  //  4     2                                            CrcOk rising edge
-#define RADIOLIB_RF69_EXIT_COND_PAYLOAD_READY                   0b10000000  //  4     2                                            PayloadReady rising edge
-#define RADIOLIB_RF69_EXIT_COND_SYNC_ADDRESS                    0b10100000  //  4     2                                            SyncAddress rising edge
-#define RADIOLIB_RF69_EXIT_COND_PACKET_SENT                     0b11000000  //  4     2                                            PacketSent rising edge
-#define RADIOLIB_RF69_EXIT_COND_TIMEOUT                         0b11100000  //  4     2                                            timeout rising edge
-#define RADIOLIB_RF69_INTER_MODE_SLEEP                          0b00000000  //  1     0   intermediate mode: sleep (default)
-#define RADIOLIB_RF69_INTER_MODE_STANDBY                        0b00000001  //  1     0                      standby
-#define RADIOLIB_RF69_INTER_MODE_RX                             0b00000010  //  1     0                      Rx
-#define RADIOLIB_RF69_INTER_MODE_TX                             0b00000011  //  1     0                      Tx
+#define RADIOLIB_RF69_ENTER_COND_NONE                           0b00000000  // 7     5   condition for entering intermediate mode: none, AutoModes disabled (default)
+#define RADIOLIB_RF69_ENTER_COND_FIFO_NOT_EMPTY                 0b00100000  // 7     5                                             FifoNotEmpty rising edge
+#define RADIOLIB_RF69_ENTER_COND_FIFO_LEVEL                     0b01000000  // 7     5                                             FifoLevel rising edge
+#define RADIOLIB_RF69_ENTER_COND_CRC_OK                         0b01100000  // 7     5                                             CrcOk rising edge
+#define RADIOLIB_RF69_ENTER_COND_PAYLOAD_READY                  0b10000000  // 7     5                                             PayloadReady rising edge
+#define RADIOLIB_RF69_ENTER_COND_SYNC_ADDRESS                   0b10100000  // 7     5                                             SyncAddress rising edge
+#define RADIOLIB_RF69_ENTER_COND_PACKET_SENT                    0b11000000  // 7     5                                             PacketSent rising edge
+#define RADIOLIB_RF69_ENTER_COND_FIFO_EMPTY                     0b11100000  // 7     5                                             FifoNotEmpty falling edge
+#define RADIOLIB_RF69_EXIT_COND_NONE                            0b00000000  // 4     2   condition for exiting intermediate mode: none, AutoModes disabled (default)
+#define RADIOLIB_RF69_EXIT_COND_FIFO_EMPTY                      0b00100000  // 4     2                                            FifoNotEmpty falling edge
+#define RADIOLIB_RF69_EXIT_COND_FIFO_LEVEL                      0b01000000  // 4     2                                            FifoLevel rising edge
+#define RADIOLIB_RF69_EXIT_COND_CRC_OK                          0b01100000  // 4     2                                            CrcOk rising edge
+#define RADIOLIB_RF69_EXIT_COND_PAYLOAD_READY                   0b10000000  // 4     2                                            PayloadReady rising edge
+#define RADIOLIB_RF69_EXIT_COND_SYNC_ADDRESS                    0b10100000  // 4     2                                            SyncAddress rising edge
+#define RADIOLIB_RF69_EXIT_COND_PACKET_SENT                     0b11000000  // 4     2                                            PacketSent rising edge
+#define RADIOLIB_RF69_EXIT_COND_TIMEOUT                         0b11100000  // 4     2                                            timeout rising edge
+#define RADIOLIB_RF69_INTER_MODE_SLEEP                          0b00000000  // 1     0   intermediate mode: sleep (default)
+#define RADIOLIB_RF69_INTER_MODE_STANDBY                        0b00000001  // 1     0                      standby
+#define RADIOLIB_RF69_INTER_MODE_RX                             0b00000010  // 1     0                      Rx
+#define RADIOLIB_RF69_INTER_MODE_TX                             0b00000011  // 1     0                      Tx
 
 // RADIOLIB_RF69_REG_FIFO_THRESH
-#define RADIOLIB_RF69_TX_START_CONDITION_FIFO_LEVEL             0b00000000  //  7     7   packet transmission start condition: FifoLevel
-#define RADIOLIB_RF69_TX_START_CONDITION_FIFO_NOT_EMPTY         0b10000000  //  7     7                                        FifoNotEmpty (default)
-#define RADIOLIB_RF69_FIFO_THRESH                               0x1F        //  6     0   default threshold to trigger FifoLevel interrupt
+#define RADIOLIB_RF69_TX_START_CONDITION_FIFO_LEVEL             0b00000000  // 7     7   packet transmission start condition: FifoLevel
+#define RADIOLIB_RF69_TX_START_CONDITION_FIFO_NOT_EMPTY         0b10000000  // 7     7                                        FifoNotEmpty (default)
+#define RADIOLIB_RF69_FIFO_THRESH                               0x1F        // 6     0   default threshold to trigger FifoLevel interrupt
 
 // RADIOLIB_RF69_REG_PACKET_CONFIG_2
-#define RADIOLIB_RF69_INTER_PACKET_RX_DELAY                     0b00000000  //  7     4   delay between FIFO empty and start of new RSSI phase
-#define RADIOLIB_RF69_RESTART_RX                                0b00000100  //  2     2   force receiver into wait mode
-#define RADIOLIB_RF69_AUTO_RX_RESTART_OFF                       0b00000000  //  1     1   auto Rx restart disabled
-#define RADIOLIB_RF69_AUTO_RX_RESTART_ON                        0b00000010  //  1     1   auto Rx restart enabled (default)
-#define RADIOLIB_RF69_AES_OFF                                   0b00000000  //  0     0   AES encryption disabled (default)
-#define RADIOLIB_RF69_AES_ON                                    0b00000001  //  0     0   AES encryption enabled, payload size limited to 66 bytes
+#define RADIOLIB_RF69_INTER_PACKET_RX_DELAY                     0b00000000  // 7     4   delay between FIFO empty and start of new RSSI phase
+#define RADIOLIB_RF69_RESTART_RX                                0b00000100  // 2     2   force receiver into wait mode
+#define RADIOLIB_RF69_AUTO_RX_RESTART_OFF                       0b00000000  // 1     1   auto Rx restart disabled
+#define RADIOLIB_RF69_AUTO_RX_RESTART_ON                        0b00000010  // 1     1   auto Rx restart enabled (default)
+#define RADIOLIB_RF69_AES_OFF                                   0b00000000  // 0     0   AES encryption disabled (default)
+#define RADIOLIB_RF69_AES_ON                                    0b00000001  // 0     0   AES encryption enabled, payload size limited to 66 bytes
 
 // RADIOLIB_RF69_REG_TEST_LNA
-#define RADIOLIB_RF69_TEST_LNA_BOOST_NORMAL                     0x1B        //  7     0
-#define RADIOLIB_RF69_TEST_LNA_BOOST_HIGH                       0x2D        //  7     0
+#define RADIOLIB_RF69_TEST_LNA_BOOST_NORMAL                     0x1B        // 7     0
+#define RADIOLIB_RF69_TEST_LNA_BOOST_HIGH                       0x2D        // 7     0
 
 // RADIOLIB_RF69_REG_TEMP_1
-#define RADIOLIB_RF69_TEMP_MEAS_START                           0b00001000  //  3     3   trigger temperature measurement
-#define RADIOLIB_RF69_TEMP_MEAS_RUNNING                         0b00000100  //  2     2   temperature measurement status: on-going
-#define RADIOLIB_RF69_TEMP_MEAS_DONE                            0b00000000  //  2     2                                   done
+#define RADIOLIB_RF69_TEMP_MEAS_START                           0b00001000  // 3     3   trigger temperature measurement
+#define RADIOLIB_RF69_TEMP_MEAS_RUNNING                         0b00000100  // 2     2   temperature measurement status: on-going
+#define RADIOLIB_RF69_TEMP_MEAS_DONE                            0b00000000  // 2     2                                   done
 
 // RADIOLIB_RF69_REG_TEST_DAGC
-#define RADIOLIB_RF69_CONTINUOUS_DAGC_NORMAL                    0x00        //  7     0   fading margin improvement: normal mode
-#define RADIOLIB_RF69_CONTINUOUS_DAGC_LOW_BETA_ON               0x20        //  7     0                              improved mode for AfcLowBetaOn
-#define RADIOLIB_RF69_CONTINUOUS_DAGC_LOW_BETA_OFF              0x30        //  7     0                              improved mode for AfcLowBetaOff (default)
+#define RADIOLIB_RF69_CONTINUOUS_DAGC_NORMAL                    0x00        // 7     0   fading margin improvement: normal mode
+#define RADIOLIB_RF69_CONTINUOUS_DAGC_LOW_BETA_ON               0x20        // 7     0                              improved mode for AfcLowBetaOn
+#define RADIOLIB_RF69_CONTINUOUS_DAGC_LOW_BETA_OFF              0x30        // 7     0                              improved mode for AfcLowBetaOff (default)
 
 // RADIOLIB_RF69_REG_TEST_PA1
-#define RADIOLIB_RF69_PA1_NORMAL                                0x55        //  7     0   PA_BOOST: none
-#define RADIOLIB_RF69_PA1_20_DBM                                0x5D        //  7     0             +20 dBm
+#define RADIOLIB_RF69_PA1_NORMAL                                0x55        // 7     0   PA_BOOST: none
+#define RADIOLIB_RF69_PA1_20_DBM                                0x5D        // 7     0             +20 dBm
 
 // RADIOLIB_RF69_REG_TEST_PA2
-#define RADIOLIB_RF69_PA2_NORMAL                                0x70        //  7     0   PA_BOOST: none
-#define RADIOLIB_RF69_PA2_20_DBM                                0x7C        //  7     0             +20 dBm
+#define RADIOLIB_RF69_PA2_NORMAL                                0x70        // 7     0   PA_BOOST: none
+#define RADIOLIB_RF69_PA2_20_DBM                                0x7C        // 7     0             +20 dBm
 
 // RadioLib defaults
 #define RADIOLIB_RF69_DEFAULT_FREQ                              434.0
@@ -476,7 +476,7 @@
   \class RF69
   \brief Control class for %RF69 module. Also serves as base class for SX1231.
 */
-class RF69: public PhysicalLayer {
+class RF69 : public PhysicalLayer {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -502,13 +502,13 @@ class RF69: public PhysicalLayer {
       \param preambleLen Preamble Length in bits. Defaults to 16 bits.
       \returns \ref status_codes
     */
-      int16_t begin(
-        float freq = RADIOLIB_RF69_DEFAULT_FREQ,
-        float br = RADIOLIB_RF69_DEFAULT_BR,
-        float freqDev = RADIOLIB_RF69_DEFAULT_FREQDEV,
-        float rxBw = RADIOLIB_RF69_DEFAULT_RXBW,
-        int8_t pwr = RADIOLIB_RF69_DEFAULT_POWER,
-        uint8_t preambleLen = RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
+    int16_t begin(
+      float freq = RADIOLIB_RF69_DEFAULT_FREQ,
+      float br = RADIOLIB_RF69_DEFAULT_BR,
+      float freqDev = RADIOLIB_RF69_DEFAULT_FREQDEV,
+      float rxBw = RADIOLIB_RF69_DEFAULT_RXBW,
+      int8_t pwr = RADIOLIB_RF69_DEFAULT_POWER,
+      uint8_t preambleLen = RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -742,7 +742,7 @@ class RF69: public PhysicalLayer {
       \param[out] freq Variable to write carrier frequency currently set, in MHz.
       \returns \ref status_codes
     */
-    int16_t getFrequency(float *freq);
+    int16_t getFrequency(float* freq);
 
     /*!
       \brief Sets bit rate. Allowed values range from 0.5 to 300.0 kbps.
@@ -771,7 +771,7 @@ class RF69: public PhysicalLayer {
       \param[out] freqDev Where to write the frequency deviation currently set, in kHz.
       \returns \ref status_codes
     */
-    int16_t getFrequencyDeviation(float *freqDev);
+    int16_t getFrequencyDeviation(float* freqDev);
 
     /*!
       \brief Sets output power. Allowed values range from -18 to 13 dBm for
@@ -878,24 +878,24 @@ class RF69: public PhysicalLayer {
     */
     int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_RF69_MAX_PACKET_LENGTH);
 
-     /*!
-      \brief Set modem in variable packet length mode.
-      \param maxLen Maximum packet length.
-      \returns \ref status_codes
-    */
+    /*!
+     \brief Set modem in variable packet length mode.
+     \param maxLen Maximum packet length.
+     \returns \ref status_codes
+   */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_RF69_MAX_PACKET_LENGTH);
 
-     /*!
-      \brief Enable sync word filtering and generation.
-      \param maxErrBits Maximum allowed number of error bits in sync word.
-      \returns \ref status_codes
-    */
+    /*!
+     \brief Enable sync word filtering and generation.
+     \param maxErrBits Maximum allowed number of error bits in sync word.
+     \returns \ref status_codes
+   */
     int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0);
 
-     /*!
-      \brief Disable preamble and sync word filtering and generation.
-      \returns \ref status_codes
-    */
+    /*!
+     \brief Disable preamble and sync word filtering and generation.
+     \returns \ref status_codes
+   */
     int16_t disableSyncWordFiltering();
 
     /*!
@@ -910,18 +910,18 @@ class RF69: public PhysicalLayer {
     */
     int16_t disableContinuousModeBitSync();
 
-     /*!
-      \brief Enable CRC filtering and generation.
-      \param crcOn Set or unset CRC filtering.
-      \returns \ref status_codes
-    */
+    /*!
+     \brief Enable CRC filtering and generation.
+     \param crcOn Set or unset CRC filtering.
+     \returns \ref status_codes
+   */
     int16_t setCrcFiltering(bool crcOn = true);
 
-     /*!
-      \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
-      \param enable Set or unset promiscuous mode.
-      \returns \ref status_codes
-    */
+    /*!
+     \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
+     \param enable Set or unset promiscuous mode.
+     \returns \ref status_codes
+   */
     int16_t setPromiscuousMode(bool enable = true);
 
     /*!
@@ -1001,23 +1001,23 @@ class RF69: public PhysicalLayer {
     */
     int16_t setDIOMapping(uint32_t pin, uint32_t value) override;
 
-#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
+    #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
-#endif
+    #endif
     Module* getMod() override;
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   protected:
-#endif
+    #endif
     float bitRate = RADIOLIB_RF69_DEFAULT_BR;
     float rxBandwidth = RADIOLIB_RF69_DEFAULT_RXBW;
-    
+
     int16_t config();
     int16_t setMode(uint8_t mode);
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
     Module* mod;
 
     float frequency = RADIOLIB_RF69_DEFAULT_FREQ;

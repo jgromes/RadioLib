@@ -14,7 +14,7 @@
 #define PI_MAX_USER_GPIO  (31)
 
 // forward declaration of alert handler that will be used to emulate interrupts
-static void lgpioAlertHandler(int num_alerts, lgGpioAlert_p alerts, void *userdata);
+static void lgpioAlertHandler(int num_alerts, lgGpioAlert_p alerts, void* userdata);
 
 // create a new Raspberry Pi hardware abstraction layer
 // using the lgpio library
@@ -28,8 +28,7 @@ class PiHal : public RadioLibHal {
       _gpioDevice(gpioDevice),
       _spiDevice(spiDevice),
       _spiChannel(spiChannel),
-      _spiSpeed(spiSpeed) {
-    }
+      _spiSpeed(spiSpeed) {}
 
     void init() override {
       if(_gpioHandle != -1) {
@@ -78,7 +77,7 @@ class PiHal : public RadioLibHal {
 
       if(result < 0) {
         fprintf(stderr, "Could not claim pin %" PRIu32 " for mode %" PRIu32 ": %s\n",
-            pin, mode, lguErrorText(result));
+                pin, mode, lguErrorText(result));
       }
     }
 
@@ -122,7 +121,7 @@ class PiHal : public RadioLibHal {
       interruptModes[interruptNum] = mode;
       interruptCallbacks[interruptNum] = interruptCb;
 
-      lgGpioSetAlertsFunc(_gpioHandle, interruptNum, lgpioAlertHandler, (void *)this);
+      lgGpioSetAlertsFunc(_gpioHandle, interruptNum, lgpioAlertHandler, (void*)this);
     }
 
     void detachInterrupt(uint32_t interruptNum) override {
@@ -201,7 +200,7 @@ class PiHal : public RadioLibHal {
     void spiBeginTransaction() {}
 
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
-      int result = lgSpiXfer(_spiHandle, (char *)out, (char*)in, len);
+      int result = lgSpiXfer(_spiHandle, (char*)out, (char*)in, len);
       if(result < 0) {
         fprintf(stderr, "Could not perform SPI transfer: %s\n", lguErrorText(result));
       }
@@ -241,15 +240,16 @@ class PiHal : public RadioLibHal {
 };
 
 // this handler emulates interrupts
-static void lgpioAlertHandler(int num_alerts, lgGpioAlert_p alerts, void *userdata) {
-  if(!userdata)
+static void lgpioAlertHandler(int num_alerts, lgGpioAlert_p alerts, void* userdata) {
+  if(!userdata) {
     return;
+  }
 
   // PiHal instance is passed via the user data
   PiHal* hal = (PiHal*)userdata;
 
   // check the interrupt is enabled, the level matches and a callback exists
-  for(lgGpioAlert_t *alert = alerts; alert < (alerts + num_alerts); alert++) {
+  for(lgGpioAlert_t* alert = alerts; alert < (alerts + num_alerts); alert++) {
     if((hal->interruptEnabled[alert->report.gpio]) &&
        (hal->interruptModes[alert->report.gpio] == alert->report.level) &&
        (hal->interruptCallbacks[alert->report.gpio])) {

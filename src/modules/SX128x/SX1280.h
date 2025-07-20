@@ -13,7 +13,7 @@
   \class SX1280
   \brief Derived class for %SX1280 modules.
 */
-class SX1280: public SX1281 {
+class SX1280 : public SX1281 {
   public:
     /*!
       \brief Default constructor.
@@ -45,9 +45,9 @@ class SX1280: public SX1281 {
     */
     float getRangingResult();
 
-#if !RADIOLIB_GODMODE
+    #if !RADIOLIB_GODMODE
   private:
-#endif
+    #endif
 
 };
 

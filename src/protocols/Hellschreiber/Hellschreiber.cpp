@@ -24,7 +24,7 @@ int16_t HellClient::begin(float base, float rate) {
   baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
 
   // calculate "pixel" duration
-  pixelDuration = 1000000.0f/rate;
+  pixelDuration = 1000000.0f / rate;
 
   // configure for direct mode
   return(phyLayer->startDirect());
@@ -36,15 +36,15 @@ size_t HellClient::printGlyph(const uint8_t* buff) {
   bool transmitting = false;
   for(uint8_t mask = 0x40; mask >= 0x01; mask >>= 1) {
     for(int8_t i = RADIOLIB_HELL_FONT_HEIGHT - 1; i >= 0; i--) {
-        RadioLibTime_t start = mod->hal->micros();
-        if((buff[i] & mask) && (!transmitting)) {
-          transmitting = true;
-          transmitDirect(baseFreq, baseFreqHz);
-        } else if((!(buff[i] & mask)) && (transmitting)) {
-          transmitting = false;
-          standby();
-        }
-        mod->waitForMicroseconds(start, pixelDuration);
+      RadioLibTime_t start = mod->hal->micros();
+      if((buff[i] & mask) && (!transmitting)) {
+        transmitting = true;
+        transmitDirect(baseFreq, baseFreqHz);
+      } else if((!(buff[i] & mask)) && (transmitting)) {
+        transmitting = false;
+        standby();
+      }
+      mod->waitForMicroseconds(start, pixelDuration);
     }
   }
 
@@ -64,7 +64,7 @@ size_t HellClient::write(uint8_t b) {
   if((pos >= ' ') && (pos <= '_')) {
     pos -= ' ';
   } else if((pos >= 'a') && (pos <= 'z')) {
-    pos -= (2*' ');
+    pos -= (2 * ' ');
   } else {
     return(0);
   }
