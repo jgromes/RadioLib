@@ -77,7 +77,7 @@ public:
       return;
     }
 
-    gpio_set_irq_enabled_with_callback(interruptNum, 0, false, NULL);
+    gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, false, NULL);
   }
 
   void delay(unsigned long ms) override {
