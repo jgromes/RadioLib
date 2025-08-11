@@ -793,7 +793,7 @@ int16_t SX128x::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
+int16_t SX128x::setPreambleLength(size_t preambleLength) {
   uint8_t modem = getPacketType();
   if((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING)) {
     // LoRa or ranging
