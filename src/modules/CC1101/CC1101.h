@@ -832,7 +832,7 @@ class CC1101: public PhysicalLayer {
       \param len Sync word length in bytes. Maximum length depends on the module used.
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* sync, size_t len);
+    int16_t setSyncWord(uint8_t *sync, size_t len) override;
 
     /*!
       \brief Sets 16-bit sync word as a two byte value.
@@ -859,7 +859,7 @@ class CC1101: public PhysicalLayer {
       \param len Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len);
+    int16_t setPreambleLength(size_t len) override;
 
     /*!
       \brief Sets preamble length.
