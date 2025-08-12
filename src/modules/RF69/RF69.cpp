@@ -713,7 +713,7 @@ int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBit
   return(state);
 }
 
-int16_t RF69::setPreambleLength(uint8_t preambleLen) {
+int16_t RF69::setPreambleLength(size_t preambleLen) {
   // RF69 configures preamble length in bytes
   if(preambleLen % 8 != 0) {
     return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);

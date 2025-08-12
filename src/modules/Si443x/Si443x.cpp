@@ -533,7 +533,7 @@ int16_t Si443x::setSyncWord(uint8_t* syncWord, size_t len) {
   return(state);
 }
 
-int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
+int16_t Si443x::setPreambleLength(size_t preambleLen) {
   // Si443x configures preamble length in 4-bit nibbles
   if(preambleLen % 4 != 0) {
     return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);

@@ -669,7 +669,7 @@ class SX128x: public PhysicalLayer {
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK/BLE/FLRC).
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint32_t preambleLength);
+    int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
       \brief Set data rate.

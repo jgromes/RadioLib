@@ -827,6 +827,14 @@ class CC1101: public PhysicalLayer {
     int16_t checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw);
 
     /*!
+      \brief Set 1 or 2 bytes of sync word.
+      \param sync Pointer to the sync word.
+      \param len Sync word length in bytes. Maximum length depends on the module used.
+      \returns \ref status_codes
+    */
+    int16_t setSyncWord(uint8_t *sync, size_t len) override;
+
+    /*!
       \brief Sets 16-bit sync word as a two byte value.
       \param syncH MSB of the sync word.
       \param syncL LSB of the sync word.
@@ -845,6 +853,13 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+
+    /*!
+      \brief Sets preamble length.
+      \param len Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
+      \returns \ref status_codes
+    */
+    int16_t setPreambleLength(size_t len) override;
 
     /*!
       \brief Sets preamble length.
