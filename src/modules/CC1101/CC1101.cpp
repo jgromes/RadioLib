@@ -695,7 +695,7 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bo
 }
 
 int16_t CC1101::setPreambleLength(size_t len) {
-  return this->setPreambleLength(len, 7*4);
+  return this->setPreambleLength(len, len-4);
 }
 int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold) {
   // check allowed values
