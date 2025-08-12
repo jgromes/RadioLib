@@ -237,9 +237,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memitem:ad7bb0f4aa60a600d24d6268b430e719d" id="r_ad7bb0f4aa60a600d24d6268b430e719d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad7bb0f4aa60a600d24d6268b430e719d">getModem</a> (ModemType_t *modem) override</td></tr>
 <tr class="memdesc:ad7bb0f4aa60a600d24d6268b430e719d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <br /></td></tr>
 <tr class="separator:ad7bb0f4aa60a600d24d6268b430e719d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1984a405262f155f16a4759c5f6b0133" id="r_a1984a405262f155f16a4759c5f6b0133"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a1984a405262f155f16a4759c5f6b0133">setPreambleLength</a> (uint32_t preambleLength)</td></tr>
-<tr class="memdesc:a1984a405262f155f16a4759c5f6b0133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for currently active modem. Allowed values range from 1 to 65535.  <br /></td></tr>
-<tr class="separator:a1984a405262f155f16a4759c5f6b0133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c82ee4e0b86b83f48e36d8017bcf7ec" id="r_a3c82ee4e0b86b83f48e36d8017bcf7ec"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a3c82ee4e0b86b83f48e36d8017bcf7ec">setPreambleLength</a> (size_t preambleLength) override</td></tr>
+<tr class="memdesc:a3c82ee4e0b86b83f48e36d8017bcf7ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for currently active modem. Allowed values range from 1 to 65535.  <br /></td></tr>
+<tr class="separator:a3c82ee4e0b86b83f48e36d8017bcf7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbf5a9ac62460efb1c709e51260dbe3d" id="r_adbf5a9ac62460efb1c709e51260dbe3d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#adbf5a9ac62460efb1c709e51260dbe3d">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr) override</td></tr>
 <tr class="memdesc:adbf5a9ac62460efb1c709e51260dbe3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate.  <br /></td></tr>
 <tr class="separator:adbf5a9ac62460efb1c709e51260dbe3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -378,9 +378,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer" id="r_a6c71cdc1238e1368274670758431a977"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
 <tr class="memdesc:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85db1ff64e6c56e054f276c511194633 inherit pub_methods_class_physical_layer" id="r_a85db1ff64e6c56e054f276c511194633"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">setPreambleLength</a> (size_t len)</td></tr>
-<tr class="memdesc:a85db1ff64e6c56e054f276c511194633 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a85db1ff64e6c56e054f276c511194633 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58d54eeb40fb586013ba48e15318abba inherit pub_methods_class_physical_layer" id="r_a58d54eeb40fb586013ba48e15318abba"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
 <tr class="memdesc:a58d54eeb40fb586013ba48e15318abba inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a58d54eeb40fb586013ba48e15318abba inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2429,20 +2426,28 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a1984a405262f155f16a4759c5f6b0133" name="a1984a405262f155f16a4759c5f6b0133"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1984a405262f155f16a4759c5f6b0133">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="a3c82ee4e0b86b83f48e36d8017bcf7ec" name="a3c82ee4e0b86b83f48e36d8017bcf7ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c82ee4e0b86b83f48e36d8017bcf7ec">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX128x::setPreambleLength </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>preambleLength</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets preamble length for currently active modem. Allowed values range from 1 to 65535. </p>
@@ -2453,6 +2458,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
 
 </div>
 </div>

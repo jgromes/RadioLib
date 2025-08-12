@@ -56,7 +56,7 @@ var class_s_x128x =
     [ "setOutputPower", "class_s_x128x.html#a1bc3372c47a4e3c81ef15bee448ba6b6", null ],
     [ "setPacketReceivedAction", "class_s_x128x.html#ad98c4526ef971f9aadb30e351a37eaf9", null ],
     [ "setPacketSentAction", "class_s_x128x.html#a1e6f938ce715dad9a6609bf56626a50d", null ],
-    [ "setPreambleLength", "class_s_x128x.html#a1984a405262f155f16a4759c5f6b0133", null ],
+    [ "setPreambleLength", "class_s_x128x.html#a3c82ee4e0b86b83f48e36d8017bcf7ec", null ],
     [ "setRfSwitchPins", "class_s_x128x.html#a5ba683fbc4a46418ce3736f224fb55f2", null ],
     [ "setRfSwitchTable", "class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958", null ],
     [ "setSpreadingFactor", "class_s_x128x.html#ae435f57132f76f4283abb870176acf54", null ],

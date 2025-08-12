@@ -59,7 +59,7 @@ var class_r_f69 =
     [ "setOutputPower", "class_r_f69.html#a721094611fa375e73bd0332ab2d7d113", null ],
     [ "setPacketReceivedAction", "class_r_f69.html#a74962c069e08890ac9566d48634c778e", null ],
     [ "setPacketSentAction", "class_r_f69.html#a97603856caada65676ff4b11630c7f72", null ],
-    [ "setPreambleLength", "class_r_f69.html#a7c84b3f881cad6e05b0f4f68c24496d9", null ],
+    [ "setPreambleLength", "class_r_f69.html#a529dd8d3fad97c10b9319391eb2a7ad1", null ],
     [ "setPromiscuousMode", "class_r_f69.html#ae004326d663a9d6a9c30e792aa368b49", null ],
     [ "setRfSwitchPins", "class_r_f69.html#ac341945538a84430c61f80f610a94411", null ],
     [ "setRfSwitchTable", "class_r_f69.html#afff64ceef5f496ce035ff6d12d6bcc3c", null ],

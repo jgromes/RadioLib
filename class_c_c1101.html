@@ -228,12 +228,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearGdo2Action</b> (
 <tr class="memitem:aa86c74ed4339b70be6950e9f92be1d81" id="r_aa86c74ed4339b70be6950e9f92be1d81"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aa86c74ed4339b70be6950e9f92be1d81">checkOutputPower</a> (int8_t power, int8_t *clipped, uint8_t *raw)</td></tr>
 <tr class="memdesc:aa86c74ed4339b70be6950e9f92be1d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable.  <br /></td></tr>
 <tr class="separator:aa86c74ed4339b70be6950e9f92be1d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab299f0802f004c89ddab7c9192cd52ac" id="r_ab299f0802f004c89ddab7c9192cd52ac"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab299f0802f004c89ddab7c9192cd52ac">setSyncWord</a> (uint8_t *sync, size_t len) override</td></tr>
+<tr class="memdesc:ab299f0802f004c89ddab7c9192cd52ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set 1 or 2 bytes of sync word.  <br /></td></tr>
+<tr class="separator:ab299f0802f004c89ddab7c9192cd52ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a433f1a40b33be6c84d3665a1b4cd57d6" id="r_a433f1a40b33be6c84d3665a1b4cd57d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">setSyncWord</a> (uint8_t syncH, uint8_t syncL, uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 16-bit sync word as a two byte value.  <br /></td></tr>
 <tr class="separator:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5345d819ea74f583e4e54f3496aa63eb" id="r_a5345d819ea74f583e4e54f3496aa63eb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a5345d819ea74f583e4e54f3496aa63eb">setSyncWord</a> (const uint8_t *syncWord, uint8_t len, uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:a5345d819ea74f583e4e54f3496aa63eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 1 or 2 bytes of sync word.  <br /></td></tr>
 <tr class="separator:a5345d819ea74f583e4e54f3496aa63eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae535dc268518c51d03c12defbaebe93e" id="r_ae535dc268518c51d03c12defbaebe93e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ae535dc268518c51d03c12defbaebe93e">setPreambleLength</a> (size_t len) override</td></tr>
+<tr class="memdesc:ae535dc268518c51d03c12defbaebe93e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
+<tr class="separator:ae535dc268518c51d03c12defbaebe93e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae77c828c9c7cc12012fe011e8c4d3570" id="r_ae77c828c9c7cc12012fe011e8c4d3570"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ae77c828c9c7cc12012fe011e8c4d3570">setPreambleLength</a> (uint8_t preambleLength, uint8_t qualityThreshold)</td></tr>
 <tr class="memdesc:ae77c828c9c7cc12012fe011e8c4d3570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
 <tr class="separator:ae77c828c9c7cc12012fe011e8c4d3570"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -339,12 +345,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a11b4c6d0bf3ae7b9ca04e9434180feab inherit pub_methods_class_physical_layer" id="r_a11b4c6d0bf3ae7b9ca04e9434180feab"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">invertIQ</a> (bool enable)</td></tr>
 <tr class="memdesc:a11b4c6d0bf3ae7b9ca04e9434180feab inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set IQ inversion. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a11b4c6d0bf3ae7b9ca04e9434180feab inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer" id="r_a6c71cdc1238e1368274670758431a977"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
-<tr class="memdesc:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85db1ff64e6c56e054f276c511194633 inherit pub_methods_class_physical_layer" id="r_a85db1ff64e6c56e054f276c511194633"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">setPreambleLength</a> (size_t len)</td></tr>
-<tr class="memdesc:a85db1ff64e6c56e054f276c511194633 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a85db1ff64e6c56e054f276c511194633 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee1fed6bbb8d3571974153ac6f26751 inherit pub_methods_class_physical_layer" id="r_a6ee1fed6bbb8d3571974153ac6f26751"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
 <tr class="memdesc:a6ee1fed6bbb8d3571974153ac6f26751 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a6ee1fed6bbb8d3571974153ac6f26751 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1957,8 +1957,45 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="ae535dc268518c51d03c12defbaebe93e" name="ae535dc268518c51d03c12defbaebe93e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae535dc268518c51d03c12defbaebe93e">&#9670;&#160;</a></span>setPreambleLength() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::setPreambleLength </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets preamble length. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">len</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="ae77c828c9c7cc12012fe011e8c4d3570" name="ae77c828c9c7cc12012fe011e8c4d3570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae77c828c9c7cc12012fe011e8c4d3570">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae77c828c9c7cc12012fe011e8c4d3570">&#9670;&#160;</a></span>setPreambleLength() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2164,7 +2201,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <a id="a5345d819ea74f583e4e54f3496aa63eb" name="a5345d819ea74f583e4e54f3496aa63eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5345d819ea74f583e4e54f3496aa63eb">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5345d819ea74f583e4e54f3496aa63eb">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2215,8 +2252,56 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="ab299f0802f004c89ddab7c9192cd52ac" name="ab299f0802f004c89ddab7c9192cd52ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab299f0802f004c89ddab7c9192cd52ac">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::setSyncWord </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>sync</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set 1 or 2 bytes of sync word. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sync</td><td>Pointer to the sync word. </td></tr>
+    <tr><td class="paramname">len</td><td>Sync word length in bytes. Maximum length depends on the module used. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a433f1a40b33be6c84d3665a1b4cd57d6" name="a433f1a40b33be6c84d3665a1b4cd57d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a433f1a40b33be6c84d3665a1b4cd57d6">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a433f1a40b33be6c84d3665a1b4cd57d6">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

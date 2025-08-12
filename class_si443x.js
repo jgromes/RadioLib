@@ -29,7 +29,7 @@ var class_si443x =
     [ "setIrqAction", "class_si443x.html#a801b51059e61f93d4e01ae6ba8eb0726", null ],
     [ "setPacketReceivedAction", "class_si443x.html#a0e098ea9aa3945f0c38f59efe43b147e", null ],
     [ "setPacketSentAction", "class_si443x.html#af2d36121ca94736ef3ecb4c09aded753", null ],
-    [ "setPreambleLength", "class_si443x.html#a4821a6141caf16141074615c976ecd91", null ],
+    [ "setPreambleLength", "class_si443x.html#a6f8a1d33d222ed7d56772d9f1c5afa64", null ],
     [ "setRfSwitchPins", "class_si443x.html#a43e7ceeff9114b35ab89f1d69916b375", null ],
     [ "setRfSwitchTable", "class_si443x.html#a8898f11cf9dabd9a5ad717376fdbffa6", null ],
     [ "setRxBandwidth", "class_si443x.html#a51e6b7c677e82042224798114f311175", null ],
