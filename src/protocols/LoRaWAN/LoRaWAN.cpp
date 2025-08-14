@@ -964,10 +964,7 @@ int16_t LoRaWANNode::activateABP() {
 void LoRaWANNode::processCFList(const uint8_t* cfList) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Processing CFList");
   
-  uint8_t cOcts[14] = { 0 }; // see Wiki dev notes for this odd size
-  uint8_t cid;
-  uint8_t cLen = 0;
-
+  
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     // retrieve number of default channels
     size_t num = 0;
@@ -977,8 +974,10 @@ void LoRaWANNode::processCFList(const uint8_t* cfList) {
       }
       num++;
     }
-
-    cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
+    
+    uint8_t cOcts[5] = { 0 };
+    uint8_t cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
+    uint8_t cLen = 0;
     (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
 
     const uint8_t freqZero[3] = { 0 };
@@ -3336,7 +3335,7 @@ bool LoRaWANNode::calculateChannelFlags() {
         }
       }
     }
-    int offs = this->band->txSpans[0].numChannels / 16;
+
     // check second frequency span to see if the datarate is allowed and any channel is available
     if(drUp >= this->band->txSpans[1].drMin && drUp <= this->band->txSpans[1].drMax) {
       this->channelFlags[4] = this->channelMasks[4];
@@ -3385,7 +3384,6 @@ int16_t LoRaWANNode::selectChannels() {
     // if there is a 500 kHz span, add a 'virtual' bank
     uint8_t divisor = num125kHzBanks + (this->band->txSpans[1].numChannels ? 1 : 0);
     uint8_t bank = (this->devNonce - this->joinNonce) % divisor;
-    uint8_t idx = 0;
     // if we selected a 125 kHz bank, select a random channel from this bank
     if(bank < num125kHzBanks) {
       start = bank * 8;

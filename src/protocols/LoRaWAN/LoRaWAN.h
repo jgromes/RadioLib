@@ -1072,8 +1072,8 @@ class LoRaWANNode {
     LoRaWANChannel_t dynamicChannels[2][RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS];
 
     // masks: which channels are defined/active; flags: which should be used next
-    uint16_t channelMasks[RADIOLIB_LORAWAN_MAX_NUM_FIXED_CHANNELS / 16];
-    uint16_t channelFlags[RADIOLIB_LORAWAN_MAX_NUM_FIXED_CHANNELS / 16];
+    uint16_t channelMasks[RADIOLIB_LORAWAN_MAX_NUM_FIXED_CHANNELS / 16] = { 0 };
+    uint16_t channelFlags[RADIOLIB_LORAWAN_MAX_NUM_FIXED_CHANNELS / 16] = { 0 };
 
     // currently configured channels for Tx, Rx1, Rx2, RxBC
     LoRaWANChannel_t channels[4] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE,
