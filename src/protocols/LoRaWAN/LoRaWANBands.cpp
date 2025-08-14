@@ -30,9 +30,9 @@ const LoRaWANBand_t EU868 = {
   .dwellTimeDn = 0,
   .txParamSupported = false,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 8681000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8683000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 2, .freq = 8685000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
+    { .idx = 0, .freq = 8681000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 8683000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 2, .freq = 8685000, .drMin = 0, .drMax = 5, .dr = 3 },
   },
   .numTxSpans = 0,
   .txSpans = {
@@ -57,14 +57,14 @@ const LoRaWANBand_t EU868 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 8695250, .drMin = 0, .drMax = 7, .dr = 0, .available = true },
+  .rx2 = { .idx = 0, .freq = 8695250, .drMin = 0, .drMax = 7, .dr = 0 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 8651000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8655000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
+    { .idx = 0, .freq = 8651000, .drMin = 3, .drMax = 3, .dr = 3 },
+    { .idx = 1, .freq = 8655000, .drMin = 3, .drMax = 3, .dr = 3 }
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 8653000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8659000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
+    { .idx = 0, .freq = 8653000, .drMin = 3, .drMax = 3, .dr = 3 },
+    { .idx = 1, .freq = 8659000, .drMin = 3, .drMax = 3, .dr = 3 }
   },
   .dataRates = {
     RADIOLIB_LORAWAN_DATA_RATE_LORA | RADIOLIB_LORAWAN_DATA_RATE_SF_12 | RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ,
@@ -146,14 +146,14 @@ const LoRaWANBand_t US915 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9233000, .drMin = 8, .drMax = 13, .dr = 8, .available = true },
+  .rx2 = { .idx = 0, .freq = 9233000, .drMin = 8, .drMax = 13, .dr = 8 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9167000, .drMin = 10, .drMax = 10, .dr = 10, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9199000, .drMin = 10, .drMax = 10, .dr = 10, .available = true }
+    { .idx = 0, .freq = 9167000, .drMin = 10, .drMax = 10, .dr = 10 },
+    { .idx = 1, .freq = 9199000, .drMin = 10, .drMax = 10, .dr = 10 }
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9183000, .drMin = 10, .drMax = 10, .dr = 10, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9215000, .drMin = 10, .drMax = 10, .dr = 10, .available = true }
+    { .idx = 0, .freq = 9183000, .drMin = 10, .drMax = 10, .dr = 10 },
+    { .idx = 1, .freq = 9215000, .drMin = 10, .drMax = 10, .dr = 10 }
   },
   .dataRates = {
     RADIOLIB_LORAWAN_DATA_RATE_LORA | RADIOLIB_LORAWAN_DATA_RATE_SF_10 | RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ,
@@ -187,9 +187,9 @@ const LoRaWANBand_t EU433 = {
   .dwellTimeDn = 0,
   .txParamSupported = false,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 4331750, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 4333750, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 2, .freq = 4335750, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
+    { .idx = 0, .freq = 4331750, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 4333750, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 2, .freq = 4335750, .drMin = 0, .drMax = 5, .dr = 3 },
   },
   .numTxSpans = 0,
   .txSpans = {
@@ -214,7 +214,7 @@ const LoRaWANBand_t EU433 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 4346650, .drMin = 0, .drMax = 7, .dr = 0, .available = true },
+  .rx2 = { .idx = 0, .freq = 4346650, .drMin = 0, .drMax = 7, .dr = 0 },
   .txWoR = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE
@@ -303,14 +303,14 @@ const LoRaWANBand_t AU915 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9233000, .drMin = 8, .drMax = 13, .dr = 8, .available = true },
+  .rx2 = { .idx = 0, .freq = 9233000, .drMin = 8, .drMax = 13, .dr = 8 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9167000, .drMin = 10, .drMax = 10, .dr = 10, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9199000, .drMin = 10, .drMax = 10, .dr = 10, .available = true }
+    { .idx = 0, .freq = 9167000, .drMin = 10, .drMax = 10, .dr = 10 },
+    { .idx = 1, .freq = 9199000, .drMin = 10, .drMax = 10, .dr = 10 }
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9183000, .drMin = 10, .drMax = 10, .dr = 10, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9215000, .drMin = 10, .drMax = 10, .dr = 10, .available = true }
+    { .idx = 0, .freq = 9183000, .drMin = 10, .drMax = 10, .dr = 10 },
+    { .idx = 1, .freq = 9215000, .drMin = 10, .drMax = 10, .dr = 10 }
   },
   .dataRates = {
     RADIOLIB_LORAWAN_DATA_RATE_LORA | RADIOLIB_LORAWAN_DATA_RATE_SF_12 | RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ,
@@ -385,7 +385,7 @@ const LoRaWANBand_t CN470 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 5053000, .drMin = 0, .drMax = 5, .dr = 0, .available = true },
+  .rx2 = { .idx = 0, .freq = 5053000, .drMin = 0, .drMax = 5, .dr = 0 },
   .txWoR = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE
@@ -426,8 +426,8 @@ const LoRaWANBand_t AS923 = {
   .dwellTimeDn = RADIOLIB_LORAWAN_DWELL_TIME,
   .txParamSupported = true,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 9232000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9234000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9232000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 9234000, .drMin = 0, .drMax = 5, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .numTxSpans = 0,
@@ -453,13 +453,13 @@ const LoRaWANBand_t AS923 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9232000, .drMin = 0, .drMax = 7, .dr = 2, .available = true },
+  .rx2 = { .idx = 0, .freq = 9232000, .drMin = 0, .drMax = 7, .dr = 2 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9236000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9236000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9238000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9238000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .dataRates = {
@@ -494,8 +494,8 @@ const LoRaWANBand_t AS923_2 = {
   .dwellTimeDn = RADIOLIB_LORAWAN_DWELL_TIME,
   .txParamSupported = true,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 9214000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9216000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9214000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 9216000, .drMin = 0, .drMax = 5, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .numTxSpans = 0,
@@ -521,13 +521,13 @@ const LoRaWANBand_t AS923_2 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9214000, .drMin = 0, .drMax = 7, .dr = 2, .available = true },
+  .rx2 = { .idx = 0, .freq = 9214000, .drMin = 0, .drMax = 7, .dr = 2 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9218000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9218000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9220000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9220000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .dataRates = {
@@ -562,8 +562,8 @@ const LoRaWANBand_t AS923_3 = {
   .dwellTimeDn = RADIOLIB_LORAWAN_DWELL_TIME,
   .txParamSupported = true,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 9166000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9168000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9166000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 9168000, .drMin = 0, .drMax = 5, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .numTxSpans = 0,
@@ -589,13 +589,13 @@ const LoRaWANBand_t AS923_3 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9166000, .drMin = 0, .drMax = 7, .dr = 2, .available = true },
+  .rx2 = { .idx = 0, .freq = 9166000, .drMin = 0, .drMax = 7, .dr = 2 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9170000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9170000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9172000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9172000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .dataRates = {
@@ -630,8 +630,8 @@ const LoRaWANBand_t AS923_4 = {
   .dwellTimeDn = RADIOLIB_LORAWAN_DWELL_TIME,
   .txParamSupported = true,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 9173000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9175000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9173000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 9175000, .drMin = 0, .drMax = 5, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .numTxSpans = 0,
@@ -657,13 +657,13 @@ const LoRaWANBand_t AS923_4 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9173000, .drMin = 0, .drMax = 7, .dr = 2, .available = true },
+  .rx2 = { .idx = 0, .freq = 9173000, .drMin = 0, .drMax = 7, .dr = 2 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9177000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9177000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9179000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .idx = 0, .freq = 9179000, .drMin = 3, .drMax = 3, .dr = 3 },
     RADIOLIB_LORAWAN_CHANNEL_NONE
   },
   .dataRates = {
@@ -698,9 +698,9 @@ const LoRaWANBand_t KR920 = {
   .dwellTimeDn = 0,
   .txParamSupported = false,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 9221000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9223000, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 2, .freq = 9225000, .drMin = 0, .drMax = 5, .dr = 3, .available = true }
+    { .idx = 0, .freq = 9221000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 9223000, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 2, .freq = 9225000, .drMin = 0, .drMax = 5, .dr = 3 }
   },
   .numTxSpans = 0,
   .txSpans = {
@@ -725,14 +725,14 @@ const LoRaWANBand_t KR920 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 9219000, .drMin = 0, .drMax = 5, .dr = 0, .available = true },
+  .rx2 = { .idx = 0, .freq = 9219000, .drMin = 0, .drMax = 5, .dr = 0 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 9227000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9231000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
+    { .idx = 0, .freq = 9227000, .drMin = 3, .drMax = 3, .dr = 3 },
+    { .idx = 1, .freq = 9231000, .drMin = 3, .drMax = 3, .dr = 3 }
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 9229000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 9231000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
+    { .idx = 0, .freq = 9229000, .drMin = 3, .drMax = 3, .dr = 3 },
+    { .idx = 1, .freq = 9231000, .drMin = 3, .drMax = 3, .dr = 3 }
   },
   .dataRates = {
     RADIOLIB_LORAWAN_DATA_RATE_LORA | RADIOLIB_LORAWAN_DATA_RATE_SF_12 | RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ,
@@ -766,9 +766,9 @@ const LoRaWANBand_t IN865 = {
   .dwellTimeDn = 0,
   .txParamSupported = false,
   .txFreqs = {
-    { .enabled = true, .idx = 0, .freq = 8650625, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8654025, .drMin = 0, .drMax = 5, .dr = 3, .available = true },
-    { .enabled = true, .idx = 2, .freq = 8659850, .drMin = 0, .drMax = 5, .dr = 3, .available = true }
+    { .idx = 0, .freq = 8650625, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 1, .freq = 8654025, .drMin = 0, .drMax = 5, .dr = 3 },
+    { .idx = 2, .freq = 8659850, .drMin = 0, .drMax = 5, .dr = 3 }
   },
   .numTxSpans = 0,
   .txSpans = {
@@ -793,14 +793,14 @@ const LoRaWANBand_t IN865 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
   },
-  .rx2 = { .enabled = true, .idx = 0, .freq = 8665500, .drMin = 0, .drMax = 7, .dr = 2, .available = true },
+  .rx2 = { .idx = 0, .freq = 8665500, .drMin = 0, .drMax = 7, .dr = 2 },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 8660000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8667000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
+    { .idx = 0, .freq = 8660000, .drMin = 3, .drMax = 3, .dr = 3 },
+    { .idx = 1, .freq = 8667000, .drMin = 3, .drMax = 3, .dr = 3 }
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 8662000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8669000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
+    { .idx = 0, .freq = 8662000, .drMin = 3, .drMax = 3, .dr = 3 },
+    { .idx = 1, .freq = 8669000, .drMin = 3, .drMax = 3, .dr = 3 }
   },
   .dataRates = {
     RADIOLIB_LORAWAN_DATA_RATE_LORA | RADIOLIB_LORAWAN_DATA_RATE_SF_12 | RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ,
