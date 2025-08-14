@@ -3399,7 +3399,7 @@ int16_t LoRaWANNode::selectChannels() {
   // select a random channel index using reservoir sampling
   uint8_t idx = 0;
   uint8_t seen = 0;
-  for(uint8_t i = start; i < end; i++) {
+  for(int i = start; i < end; i++) {
     if(this->channelFlags[i/16] & (0x0001 << (i % 16))) {
       seen++;
       if(rand() % seen == 0) {
