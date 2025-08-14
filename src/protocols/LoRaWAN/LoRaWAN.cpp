@@ -2231,8 +2231,6 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         if(state == RADIOLIB_ERR_NONE) {
           this->channels[RADIOLIB_LORAWAN_UPLINK].dr = macDrUp;
           drAck = this->calculateChannelFlags();
-          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Flags:");
-          RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelFlags, 12);
 
           if(!drAck) {
             RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR: no channels available for datarate %d", macDrUp);
@@ -3304,9 +3302,6 @@ bool LoRaWANNode::calculateChannelFlags() {
   memset(this->channelFlags, 0, sizeof(this->channelFlags));
   bool any = false;
 
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Masks:");
-  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelMasks, 12);
-
   uint8_t drUp = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
 
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
@@ -3331,26 +3326,22 @@ bool LoRaWANNode::calculateChannelFlags() {
       return(true);
     }
 
-    int i = 0;
     // check first frequency span to see if the datarate is allowed and any channel is available
     if(drUp >= this->band->txSpans[0].drMin && drUp <= this->band->txSpans[0].drMax) {
       // if the datarate is OK, all channel in this span can be used
-      for(; i < this->band->txSpans[0].numChannels / 16; i++) {
+      for(int i = 0; i < this->band->txSpans[0].numChannels / 16; i++) {
         this->channelFlags[i] = this->channelMasks[i];
         if(this->channelMasks[i]) {
           any = true;
         }
       }
     }
-    int offs = i;
+    int offs = this->band->txSpans[0].numChannels / 16;
     // check second frequency span to see if the datarate is allowed and any channel is available
     if(drUp >= this->band->txSpans[1].drMin && drUp <= this->band->txSpans[1].drMax) {
-      // check if any channel is masked
-      for(; i < offs + (this->band->txSpans[1].numChannels + 16) / 16; i++) {
-        this->channelFlags[i] = this->channelMasks[i];
-        if(this->channelMasks[i]) {
-          any = true;
-        }
+      this->channelFlags[4] = this->channelMasks[4];
+      if(this->channelMasks[4]) {
+        any = true;
       }
     }
   }
@@ -3358,10 +3349,6 @@ bool LoRaWANNode::calculateChannelFlags() {
 }
 
 int16_t LoRaWANNode::selectChannels() {
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Mask and flags:");
-  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelMasks, 12);
-  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelFlags, 12);
-
   // save the current uplink datarate
   uint8_t uplinkDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
 
@@ -3372,7 +3359,7 @@ int16_t LoRaWANNode::selectChannels() {
 
   // check if any channel is flagged available
   bool flag = false;
-  for(int i = 0; i < channelMax / 16; i++) {
+  for(int i = 0; i < (channelMax + 15) / 16; i++) {
     if(this->channelFlags[i]) {
       flag = true;
       break;
