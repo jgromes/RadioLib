@@ -2488,7 +2488,6 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_UL_CHANNELS] + macChIndex * lenIn, optIn, lenIn);
       // update the channel masks in the session buffer as we modified a channel
       if(this->isActivated()) {
-        RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelMasks, 12);
         memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR] + 1, this->channelMasks, sizeof(this->channelMasks));
       }
 
@@ -3483,9 +3482,6 @@ int16_t LoRaWANNode::selectChannels() {
     rx1Dr = 2;
   }
   this->channels[RADIOLIB_LORAWAN_RX1].dr = rx1Dr;
-
-  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelMasks, 12);
-  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelFlags, 12);
 
   return(RADIOLIB_ERR_NONE);
 }
