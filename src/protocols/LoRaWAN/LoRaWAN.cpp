@@ -329,7 +329,7 @@ void LoRaWANNode::resetSession() {
   this->lwClass = RADIOLIB_LORAWAN_CLASS_A;
 
   // set a seed for the pseudo-rng using a truly random value from radio noise
-  srand(this->phyLayer->random(0xFFFFFFFF));
+  srand(this->phyLayer->random(INT32_MAX));
 
   // reset all channels
   memset(this->dynamicChannels, 0, sizeof(this->dynamicChannels));
