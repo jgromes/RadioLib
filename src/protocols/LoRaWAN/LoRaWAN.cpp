@@ -440,9 +440,6 @@ uint8_t* LoRaWANNode::getBufferSession() {
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_FCNT_UP], this->fCntUp);
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_CLASS], this->lwClass);
 
-  // store the enabled channels
-  memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR] + 1, this->channelMasks, RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS);
-
   // store the unused channel flags
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS], this->channelFlags, RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS);
 
@@ -478,6 +475,14 @@ int16_t LoRaWANNode::setBufferSession(const uint8_t* persistentBuffer) {
   // copy the whole buffer over
   memcpy(this->bufferSession, persistentBuffer, RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
 
+  // always restore the channels, so as to adhere to channel hopping between JoinRequests
+  memcpy(this->channelFlags, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS], RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS);
+
+  // check if the session is active, if not, don't restore anything else
+  if((bool)this->bufferSession[RADIOLIB_LORAWAN_SESSION_ACTIVE] == false) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
+  }
+
   //// this code can be used in case breaking chances must be caught:
   // uint8_t nvm_table_version = this->bufferNonces[RADIOLIB_LORAWAN_NONCES_VERSION];
   // if (RADIOLIB_LORAWAN_NONCES_VERSION_VAL > nvm_table_version) {
@@ -503,13 +508,9 @@ int16_t LoRaWANNode::setBufferSession(const uint8_t* persistentBuffer) {
   this->fCntUp       = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_FCNT_UP]);
   
   // restore the complete MAC state
-
   uint8_t cOcts[14] = { 0 }; // see Wiki dev notes for this odd size
   uint8_t cid;
   uint8_t cLen = 0;
-
-  // setup the default channels
-  this->addDefaultChannels();
 
   // for dynamic bands, the additional channels must be restored per-channel
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
@@ -836,12 +837,7 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   LoRaWANNode::hton<uint32_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_JOIN_NONCE], this->joinNonce, 3);
 
   this->bufferNonces[RADIOLIB_LORAWAN_NONCES_ACTIVE] = (uint8_t)true;
-
-  // generate the signature of the Nonces buffer, and store it in the last two bytes of the Nonces buffer
-  // also store this signature in the Session buffer to make sure these buffers match
-  uint16_t signature = LoRaWANNode::checkSum16(this->bufferNonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE - 2);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
-  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
+  this->bufferSession[RADIOLIB_LORAWAN_SESSION_ACTIVE] = (uint8_t)true;
 
   // store DevAddr and all keys
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_DEV_ADDR], this->devAddr);
@@ -903,6 +899,12 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   this->devNonce += 1;
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_DEV_NONCE], this->devNonce);
 
+  // generate the signature of the Nonces buffer, and store it in the last two bytes of the Nonces buffer
+  // also store this signature in the Session buffer to make sure these buffers match
+  uint16_t signature = LoRaWANNode::checkSum16(this->bufferNonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE - 2);
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
+  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
+
   // configure Rx1 and Rx2 delay for JoinAccept message - these are re-configured once a valid JoinAccept is received
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
   this->rxDelays[2] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_2_MS;
@@ -918,6 +920,11 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   // process JoinAccept message
   state = this->processJoinAccept(joinEvent);
   RADIOLIB_ASSERT(state);
+
+  // regenerate the Nonces signature as we received new Nonces in the JoinAccept
+  signature = LoRaWANNode::checkSum16(this->bufferNonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE - 2);
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
+  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
 
   (void)this->calculateChannelFlags();
 
@@ -938,6 +945,7 @@ int16_t LoRaWANNode::activateABP() {
 
   // new session all good, so set active-bit to true
   this->bufferNonces[RADIOLIB_LORAWAN_NONCES_ACTIVE] = (uint8_t)true;
+  this->bufferSession[RADIOLIB_LORAWAN_SESSION_ACTIVE] = (uint8_t)true;
 
   // generate the signature of the Nonces buffer, and store it in the last two bytes of the Nonces buffer
   // also store this signature in the Session buffer to make sure these buffers match
@@ -964,6 +972,9 @@ int16_t LoRaWANNode::activateABP() {
 void LoRaWANNode::processCFList(const uint8_t* cfList) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Processing CFList");
   
+  uint8_t cOcts[14] = { 0 };    // see Wiki for special length
+  uint8_t cid;
+  uint8_t cLen = 0;
   
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     // retrieve number of default channels
@@ -975,9 +986,7 @@ void LoRaWANNode::processCFList(const uint8_t* cfList) {
       num++;
     }
     
-    uint8_t cOcts[5] = { 0 };
-    uint8_t cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
-    uint8_t cLen = 0;
+    cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
     (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
 
     const uint8_t freqZero[3] = { 0 };
@@ -994,8 +1003,14 @@ void LoRaWANNode::processCFList(const uint8_t* cfList) {
       (void)execMacCommand(cid, cOcts, cLen);
     }
   } else {                // RADIOLIB_LORAWAN_BAND_FIXED
-    // copy channel mask straight over
-    memcpy(this->channelMasks, cfList, sizeof(this->channelMasks));
+    // apply channel mask
+    cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
+    cLen = 14;
+    cOcts[0]  = 0xF0;                       // keep datarate the same
+    cOcts[0] |= 0x0F;                       // keep Tx Power the same
+    cOcts[13] = 0x01;                       // default NbTrans = 1
+    memcpy(&cOcts[1], cfList, sizeof(this->channelMasks));
+    (void)execMacCommand(cid, cOcts, cLen);
   }
 
 }
@@ -2442,16 +2457,20 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         // downlink channel is identical to uplink channel
         this->dynamicChannels[RADIOLIB_LORAWAN_DOWNLINK][macChIndex] = this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][macChIndex];
   
-        // add the new channel
-        this->channelMasks[0] |= (0x0001 << macChIndex);
-        this->channelFlags[0] |= (0x0001 << macChIndex);
+        // add the new channel (unless this happens during session restore)
+        if(this->isActivated()) {
+          this->channelMasks[0] |= (0x0001 << macChIndex);
+          this->channelFlags[0] |= (0x0001 << macChIndex);
+        }
       } else {
         this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][macChIndex] = RADIOLIB_LORAWAN_CHANNEL_NONE;
         this->dynamicChannels[RADIOLIB_LORAWAN_DOWNLINK][macChIndex] = RADIOLIB_LORAWAN_CHANNEL_NONE;
 
-        // remove this channel
-        this->channelMasks[0] &= ~(0x0001 << macChIndex);
-        this->channelFlags[0] &= ~(0x0001 << macChIndex);
+        // remove this channel (unless this happens during session restore)
+        if(this->isActivated()) {
+          this->channelMasks[0] &= ~(0x0001 << macChIndex);
+          this->channelFlags[0] &= ~(0x0001 << macChIndex);
+        }
       }
 
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("UL: %3d %7.3f (%d - %d) | DL: %3d %7.3f (%d - %d)", 
@@ -2467,6 +2486,11 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
                             );
 
       memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_UL_CHANNELS] + macChIndex * lenIn, optIn, lenIn);
+      // update the channel masks in the session buffer as we modified a channel
+      if(this->isActivated()) {
+        RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelMasks, 12);
+        memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR] + 1, this->channelMasks, sizeof(this->channelMasks));
+      }
 
       return(true);
     } break;
@@ -3459,6 +3483,9 @@ int16_t LoRaWANNode::selectChannels() {
     rx1Dr = 2;
   }
   this->channels[RADIOLIB_LORAWAN_RX1].dr = rx1Dr;
+
+  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelMasks, 12);
+  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP((uint8_t*)this->channelFlags, 12);
 
   return(RADIOLIB_ERR_NONE);
 }
