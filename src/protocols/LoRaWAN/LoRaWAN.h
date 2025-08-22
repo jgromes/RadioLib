@@ -320,7 +320,7 @@ constexpr LoRaWANPackage_t PackageTable[RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES]
 
 #define RADIOLIB_LORAWAN_PACKAGE_NONE { .packId = 0, .packFPort = 0, .isAppPack = false, .fixedFPort = false, .enabled = false, .callback = NULL }
 
-#define RADIOLIB_LORAWAN_NONCES_VERSION_VAL (0x0002)
+#define RADIOLIB_LORAWAN_NONCES_VERSION_VAL (0x0003)
 
 enum LoRaWANSchemeBase_t {
   RADIOLIB_LORAWAN_NONCES_START       = 0x00,
