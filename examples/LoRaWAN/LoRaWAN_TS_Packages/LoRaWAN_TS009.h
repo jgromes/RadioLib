@@ -67,7 +67,7 @@ void handleTS009(uint8_t* dataDown, size_t lenDown) {
 
     case(RADIOLIB_LORAWAN_TS009_DUT_JOIN): {
       RADIOLIB_DEBUG_PRINTLN("Reverting to Join state");
-      node.resetSession();
+      node.clearSession();
       
       reply = false;
     } break;
