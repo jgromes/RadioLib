@@ -249,20 +249,25 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX126x::receive(uint8_t* data, size_t len) {
+int16_t SX126x::receive(uint8_t* data, size_t len, RadioLibTime_t exTimeout) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  RadioLibTime_t timeout = 0;
+  RadioLibTime_t hwTimeout = 0;
+  RadioLibTime_t swTimeout = 0;
 
   // get currently active modem
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    // calculate timeout (100 LoRa symbols, the default for SX127x series)
+    // calculate hardware timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (RadioLibTime_t)(symbolLength * 100.0f);
-  
+    hwTimeout = (RadioLibTime_t)(symbolLength * 100.0f);
+    if (hwTimeout < 60) { hwTimeout = 60; }  // limit it to a resonable minimum of 60 ms
+ 
+    // calculate software timeout, taking into account the full packet length and +160 ms safety margin
+    swTimeout = (RadioLibTime_t)((getTimeOnAir(len) + 999ul) / 1000ul) + 160ul;
+
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
@@ -270,17 +275,23 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
       maxLen = 0xFF;
     }
     float brBps = (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f * 32.0f) / (float)this->bitRate;
-    timeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
+    hwTimeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
+    swTimeout = hwTimeout;
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
-  
+
   }
 
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
+  // add user extra timeout
+  hwTimeout += exTimeout;
+  swTimeout += exTimeout;
+
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in: %lu ms [hardware], %lu ms [software]", hwTimeout, swTimeout);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0f) / 15.625f);
+  uint32_t timeoutValue = (uint32_t)(((float)hwTimeout * 1000.0f) / 15.625f);
+  if(timeoutValue > 0xFFDC00) { timeoutValue = 0xFFDC00; }  // limit it to max 262s - from datasheet !
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -290,7 +301,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > swTimeout) {
       softTimeout = true;
       break;
     }

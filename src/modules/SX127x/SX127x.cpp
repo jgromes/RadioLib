@@ -211,7 +211,7 @@ int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX127x::receive(uint8_t* data, size_t len) {
+int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t exTimeout) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);

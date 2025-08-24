@@ -350,7 +350,7 @@ int16_t SX128x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX128x::receive(uint8_t* data, size_t len) {
+int16_t SX128x::receive(uint8_t* data, size_t len, RadioLibTime_t exTimeout) {
   // check active modem
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING) {
@@ -361,12 +361,13 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  // calculate timeout (1000% of expected time-on-air)
-  RadioLibTime_t timeout = getTimeOnAir(len) * 10;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
+  // calculate timeout (1000% of expected time-on-air), and adding user extra timeout
+  RadioLibTime_t usTimeout = (getTimeOnAir(len) * 10) + (exTimeout * 1000);
+  RadioLibTime_t msTimeout = (RadioLibTime_t) (usTimeout + 999) / 1000;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", msTimeout); 
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625f);
+  uint32_t timeoutValue = (uint32_t)((float)usTimeout / 15.625f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -376,7 +377,7 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > msTimeout) {
       softTimeout = true;
       break;
     }
