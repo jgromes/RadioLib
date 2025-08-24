@@ -2,8 +2,8 @@ var class_lo_ra_w_a_n_node =
 [
     [ "SleepCb_t", "class_lo_ra_w_a_n_node.html#a3aec67bd3fa7ec0f6e4bf6b86d971e9e", null ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76", null ],
-    [ "activateABP", "class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86", null ],
-    [ "activateOTAA", "class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd", null ],
+    [ "activateABP", "class_lo_ra_w_a_n_node.html#abc5672878d0d406cd17db1955c9006fa", null ],
+    [ "activateOTAA", "class_lo_ra_w_a_n_node.html#a7d07b71509db47d0baea75b2710436aa", null ],
     [ "addAppPackage", "class_lo_ra_w_a_n_node.html#a3c81fcfaa0d1a82f1f4e96e335713f8c", null ],
     [ "addAppPackage", "class_lo_ra_w_a_n_node.html#ad19186be86ad1d2f207d2f3280c5ba56", null ],
     [ "beginABP", "class_lo_ra_w_a_n_node.html#a43b259fd8804ef8d9d4922962e9ecae5", null ],

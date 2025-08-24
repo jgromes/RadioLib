@@ -4,7 +4,7 @@ var searchData=
   ['enableaes_1',['enableAES',['../class_r_f69.html#a1fd4609f419d8b0213ee39b05dd40b69',1,'RF69']]],
   ['enablebitsync_2',['enableBitSync',['../class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa',1,'SX127x']]],
   ['enablecontinuousmodebitsync_3',['enableContinuousModeBitSync',['../class_r_f69.html#a7e2201b5bc389a68765400b70439f3f0',1,'RF69']]],
-  ['enabled_4',['enabled',['../struct_lo_ra_w_a_n_package__t.html#a1dfa052bb8801693813911484b927198',1,'LoRaWANPackage_t::enabled'],['../struct_lo_ra_w_a_n_channel__t.html#acde186d519eca4dc43d053f2146b75a0',1,'LoRaWANChannel_t::enabled']]],
+  ['enabled_4',['enabled',['../struct_lo_ra_w_a_n_package__t.html#a1dfa052bb8801693813911484b927198',1,'LoRaWANPackage_t']]],
   ['enablesyncwordfiltering_5',['enablesyncwordfiltering',['../class_c_c1101.html#a6fe55d0217bf5218865198ef8d6fdab4',1,'CC1101::enableSyncWordFiltering()'],['../class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417',1,'RF69::enableSyncWordFiltering()']]],
   ['encode_6',['encode',['../class_radio_lib_b_c_h.html#afa0a2eb58245715536acb781cd351d8a',1,'RadioLibBCH::encode()'],['../class_radio_lib_conv_code.html#a64c324098fab2c5521b3f4e965503ca8',1,'RadioLibConvCode::encode()']]],
   ['encoding_20type_20aliases_7',['Encoding type aliases.',['../group__config__encoding.html',1,'']]],
