@@ -322,7 +322,8 @@ class PhysicalLayer {
       \brief Binary receive method. Must be implemented in module class.
       \param data Pointer to array to save the received binary data.
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
-      \param exTimeout User extra timeout, in milliseconds. Used if the sender must do some work before replaying.
+      \param exTimeout User extra timeout (ms). 
+      Used to allow the sender to prepare its reply, if needed.
       \returns \ref status_codes
     */
     virtual int16_t receive(uint8_t* data, size_t len, RadioLibTime_t exTimeout = 0ul);
