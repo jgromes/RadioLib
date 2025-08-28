@@ -164,7 +164,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
       return(state);
     }
 
-    // handle Rx1 and Rx2 windows - returns window > 0 if a downlink is received
+    // handle Rx windows - returns window > 0 if a downlink is received
     state = this->receiveDownlink();
 
     // RETRANSMIT_TIMEOUT is 2s +/- 1s (RP v1.0.4)
@@ -930,7 +930,7 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
   this->rxDelays[2] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_2_MS;
 
-  // handle Rx1 and Rx2 windows - returns window > 0 if a downlink is received
+  // handle Rx windows - returns window > 0 if a downlink is received
   state = this->receiveDownlink();
   if(state < RADIOLIB_ERR_NONE) {
     return(state);
@@ -1786,9 +1786,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     // LoRaWAN v1.0.4 only: A Class B/C downlink SHALL NOT transport any MAC command. 
     // (...) it SHALL silently discard the entire frame.
     // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
-    if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND && window < RADIOLIB_LORAWAN_RX_BC) {
-      // payload consists of all MAC commands (or is empty)
-      ok = true;
+    if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
+      if(this->lwClass == RADIOLIB_LORAWAN_CLASS_A || window < RADIOLIB_LORAWAN_RX_BC) {
+        // payload consists of all MAC commands (or is empty)
+        ok = true;
+      }
     }
     if(fPort >= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN && fPort <= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX) {
       ok = true;
@@ -1833,7 +1835,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // LoRaWAN v1.0.4 only: A Class B/C downlink SHALL NOT transport any MAC command. 
   // (...) it SHALL silently discard the entire frame.
   // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
-  if(fOptsLen > 0 && window == RADIOLIB_LORAWAN_RX_BC) {
+  if(fOptsLen > 0 && this->lwClass != RADIOLIB_LORAWAN_CLASS_A && window == RADIOLIB_LORAWAN_RX_BC) {
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
@@ -2126,10 +2128,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   processAES(&downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(fOptsLen)], payLen, encKey, data, addr, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, 0x00, true);
   *len = payLen;
 
-  // however, if this frame belongs to a package, redirect instead and 'hide' contents from the user
+  // however, if this frame belongs to an application package, 
+  // redirect instead and 'hide' contents from the user
   // just to be sure that it doesn't get re-interpreted...
   for(int id = 0; id < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; id++) {
-    if(this->packages[id].enabled && fPort == this->packages[id].packFPort) {
+    if(this->packages[id].enabled && this->packages[id].isAppPack && fPort == this->packages[id].packFPort) {
       this->packages[id].callback(data, *len);
       memset(data, 0, *len);
       *len = 0;
@@ -3629,18 +3632,14 @@ int16_t LoRaWANNode::addAppPackage(uint8_t packageId, PackageCb_t callback, uint
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::addNwkPackage(uint8_t packageId, PackageCb_t callback) {
+int16_t LoRaWANNode::addNwkPackage(uint8_t packageId) {
   if(packageId >= RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES) {
     return(RADIOLIB_ERR_INVALID_MODE);
   }
   if(PackageTable[packageId].isAppPack == true) {
     return(RADIOLIB_ERR_INVALID_MODE);
   }
-  if(callback == NULL) {
-    return(RADIOLIB_ERR_NULL_POINTER);
-  }
   this->packages[packageId] = PackageTable[packageId];
-  this->packages[packageId].callback = callback;
   this->packages[packageId].enabled = true;
   return(RADIOLIB_ERR_NONE);
 }
