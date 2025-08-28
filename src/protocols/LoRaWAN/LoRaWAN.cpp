@@ -1425,7 +1425,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   RADIOLIB_ASSERT(state);
 
   // sleep for the duration of the transmission
-  this->sleepDelay(toa);
+  this->sleepDelay(toa, false);
   RadioLibTime_t txEnd = mod->hal->millis();
 
   // wait for an additional transmission duration as Tx timeout period
@@ -1519,7 +1519,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opened Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + 2));
   
   // sleep for the duration of the padded Rx window
-  this->sleepDelay(timeoutHost / 1000);
+  this->sleepDelay(timeoutHost / 1000, false);
   
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
   // use a small additional delay in case the RxTimeout interrupt is slow to fire
@@ -3775,16 +3775,32 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
   }
 }
 
-void LoRaWANNode::sleepDelay(RadioLibTime_t ms) {
-  // if the user did not provide sleep callback, or the duration is short, just call delay
-  if((this->sleepCb == nullptr) || (ms <= RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD)) {
+void LoRaWANNode::sleepDelay(RadioLibTime_t ms, bool radioOff) {
+  // if the duration is short, just call delay
+  if(ms <= 2 || ms <= RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD) {
     Module* mod = this->phyLayer->getMod();
     mod->hal->delay(ms);
     return;
   }
 
-  // otherwise, call the user-provided callback
-  this->sleepCb(ms);
+  // if radioOff is requested, put the radio to sleep
+  if(radioOff) {
+    this->phyLayer->sleep();
+    ms -= 2;
+  }
+
+  // call the user-provided callback if provided
+  if(this->sleepCb) {
+    this->sleepCb(ms);
+  } else {
+    // if no callback is provided, just delay
+    Module* mod = this->phyLayer->getMod();
+    mod->hal->delay(ms);
+  }
+
+  if(radioOff) {
+    this->phyLayer->standby();
+  }
 }
 
 int16_t LoRaWANNode::checkBufferCommon(const uint8_t *buffer, uint16_t size) {
