@@ -296,7 +296,12 @@ int16_t SX127x::sleep() {
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
   // set mode to sleep
-  return(setMode(RADIOLIB_SX127X_SLEEP));
+  int16_t state = setMode(RADIOLIB_SX127X_SLEEP);
+  
+  // wait for SX127x to safely enter sleep mode
+  this->mod->hal->delay(1);
+
+  return(state);
 }
 
 int16_t SX127x::standby() {
