@@ -530,9 +530,11 @@ class RF69: public PhysicalLayer {
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
       \param len Number of bytes to send.
+      \param exTimeout User extra timeout (ms). 
+      Used to allow the sender to prepare its reply, if needed.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t exTimeout) override;
 
     /*!
       \brief Sets the module to sleep mode.

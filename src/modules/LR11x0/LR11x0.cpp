@@ -223,7 +223,7 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t LR11x0::receive(uint8_t* data, size_t len) {
+int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t exTimeout) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -256,6 +256,9 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
     return(RADIOLIB_ERR_UNKNOWN);
   
   }
+
+  // adding user extra timeout
+  timeout += exTimeout;  
 
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
