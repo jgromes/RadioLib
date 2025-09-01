@@ -933,7 +933,8 @@ class LR11x0: public PhysicalLayer {
       \brief Initialization method for LoRa modem.
       \param bw LoRa bandwidth in kHz.
       \param sf LoRa spreading factor.
-      \param cr LoRa coding rate denominator.
+      \param cr LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
       \param tcxoVoltage TCXO reference voltage to be set.
@@ -1159,7 +1160,8 @@ class LR11x0: public PhysicalLayer {
     int16_t setSpreadingFactor(uint8_t sf, bool legacy = false);
 
     /*!
-      \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
+      \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
+      is undocumented and not recommended without your own FEC.
       \param cr LoRa coding rate denominator to be set.
       \param longInterleave Enable long interleaver when set to true.
       Note that CR 4/7 is not possible with long interleaver enabled!
