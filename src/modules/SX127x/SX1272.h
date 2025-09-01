@@ -31,7 +31,8 @@
 #define RADIOLIB_SX1272_BW_125_00_KHZ                           0b00000000  //  7     6   bandwidth:  125 kHz
 #define RADIOLIB_SX1272_BW_250_00_KHZ                           0b01000000  //  7     6               250 kHz
 #define RADIOLIB_SX1272_BW_500_00_KHZ                           0b10000000  //  7     6               500 kHz
-#define RADIOLIB_SX1272_CR_4_5                                  0b00001000  //  5     3   error coding rate:  4/5
+#define RADIOLIB_SX1272_CR_4_4                                  0b00000000  //  5     3   error coding rate:  4/4 (undocumented)
+#define RADIOLIB_SX1272_CR_4_5                                  0b00001000  //  5     3                       4/5
 #define RADIOLIB_SX1272_CR_4_6                                  0b00010000  //  5     3                       4/6
 #define RADIOLIB_SX1272_CR_4_7                                  0b00011000  //  5     3                       4/7
 #define RADIOLIB_SX1272_CR_4_8                                  0b00100000  //  5     3                       4/8
@@ -109,7 +110,8 @@ class SX1272: public SX127x {
       \param freq Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.
       \param bw %LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz.
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
-      \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
+      \param cr %LoRa link coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
       \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
@@ -163,7 +165,8 @@ class SX1272: public SX127x {
     virtual int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
-      \brief Sets %LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in %LoRa mode.
+      \brief Sets %LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in %LoRa mode.
+      Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. 
       \param cr %LoRa link coding rate denominator to be set.
       \returns \ref status_codes
     */
