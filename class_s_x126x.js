@@ -23,6 +23,7 @@ var class_s_x126x =
     [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
     [ "getFrequencyError", "class_s_x126x.html#a068d709ffb79ae66d718ffb76ffae997", null ],
     [ "getIrqFlags", "class_s_x126x.html#ab4f9b0c6496a796211e9816bf92146a7", null ],
+    [ "getLoRaRxHeaderInfo", "class_s_x126x.html#a1631a3b8ce88da58d0a1fb5179319daf", null ],
     [ "getModem", "class_s_x126x.html#a867b111d21308319e117695051e157ae", null ],
     [ "getPacketLength", "class_s_x126x.html#a121a0c8bc8548b58019c9ccbbe5181c9", null ],
     [ "getPacketLength", "class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987", null ],

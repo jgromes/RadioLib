@@ -29,6 +29,7 @@ var class_s_x127x =
     [ "getFrequencyError", "class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362", null ],
     [ "getIRQFlags", "class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d", null ],
     [ "getIrqFlags", "class_s_x127x.html#a22de05835dda9ed287ec48f60ef91f55", null ],
+    [ "getLoRaRxHeaderInfo", "class_s_x127x.html#a46011b39460e27227a99cc93fdd1484b", null ],
     [ "getModem", "class_s_x127x.html#a333a9004cc05ff8aba2e9610db31109d", null ],
     [ "getModemStatus", "class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc", null ],
     [ "getNumSymbols", "class_s_x127x.html#abcc10ab36404aaaee3fe7a1be6841511", null ],

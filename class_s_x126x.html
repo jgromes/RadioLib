@@ -299,6 +299,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a121a0c8bc8548b58019c9ccbbe5181c9" id="r_a121a0c8bc8548b58019c9ccbbe5181c9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a121a0c8bc8548b58019c9ccbbe5181c9">getPacketLength</a> (bool update, uint8_t *offset)</td></tr>
 <tr class="memdesc:a121a0c8bc8548b58019c9ccbbe5181c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload and Rx buffer offset.  <br /></td></tr>
 <tr class="separator:a121a0c8bc8548b58019c9ccbbe5181c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1631a3b8ce88da58d0a1fb5179319daf" id="r_a1631a3b8ce88da58d0a1fb5179319daf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a1631a3b8ce88da58d0a1fb5179319daf">getLoRaRxHeaderInfo</a> (uint8_t *cr, bool *hasCRC)</td></tr>
+<tr class="memdesc:a1631a3b8ce88da58d0a1fb5179319daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LoRa header information from last received packet. Only valid in explicit header mode.  <br /></td></tr>
+<tr class="separator:a1631a3b8ce88da58d0a1fb5179319daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc3a4f9213b2a7052e97c2e3a0bf45a5" id="r_abc3a4f9213b2a7052e97c2e3a0bf45a5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#abc3a4f9213b2a7052e97c2e3a0bf45a5">fixedPacketLengthMode</a> (uint8_t len=RADIOLIB_SX126X_MAX_PACKET_LENGTH)</td></tr>
 <tr class="memdesc:abc3a4f9213b2a7052e97c2e3a0bf45a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in fixed packet length mode. Available in FSK mode only.  <br /></td></tr>
 <tr class="separator:abc3a4f9213b2a7052e97c2e3a0bf45a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1263,6 +1266,44 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd>IRQ flags. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af1caeed34b2e2ff0355467507106a1a2">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a1631a3b8ce88da58d0a1fb5179319daf" name="a1631a3b8ce88da58d0a1fb5179319daf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1631a3b8ce88da58d0a1fb5179319daf">&#9670;&#160;</a></span>getLoRaRxHeaderInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::getLoRaRxHeaderInfo </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool *&#160;</td>
+          <td class="paramname"><em>hasCRC</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get LoRa header information from last received packet. Only valid in explicit header mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cr</td><td>Pointer to variable to store the coding rate. </td></tr>
+    <tr><td class="paramname">hasCRC</td><td>Pointer to variable to store the CRC status. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
