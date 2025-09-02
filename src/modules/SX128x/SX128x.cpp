@@ -1299,6 +1299,20 @@ size_t SX128x::getPacketLength(bool update, uint8_t* offset) {
   return((size_t)rxBufStatus[0]);
 }
 
+int16_t SX128x::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // check if in explicit header mode
+  if(this->headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  if(cr) { *cr = this->mod->SPIgetRegValue(RADIOLIB_SX128X_REG_LORA_RX_CODING_RATE, 6, 4) >> 4; }
+  if(hasCRC) { *hasCRC = (this->mod->SPIgetRegValue(RADIOLIB_SX128X_REG_FEI_MSB, 4, 4) != 0); }
+
+  return(state);
+}
+
 int16_t SX128x::fixedPacketLengthMode(uint8_t len) {
   return(setPacketMode(RADIOLIB_SX128X_GFSK_FLRC_PACKET_FIXED, len));
 }

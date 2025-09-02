@@ -770,12 +770,18 @@ int16_t LR11x0::configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len
   return(this->bleBeaconCommon(RADIOLIB_LR11X0_CMD_CONFIG_BLE_BEACON, chan, payload, len));
 }
 
-int16_t LR11x0::getLoRaRxHeaderInfos(uint8_t* info) {
+int16_t LR11x0::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
+  // check if in explicit header mode
+  if(this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
   uint8_t buff[1] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_LORA_RX_HEADER_INFOS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(info) { *info = buff[0]; }
+  if(cr) { *cr = (buff[0] & 0x70) >> 4; }
+  if(hasCRC) { *hasCRC = (buff[0] & RADIOLIB_LR11X0_LAST_HEADER_CRC_ENABLED) != 0; }
 
   return(state);
 }

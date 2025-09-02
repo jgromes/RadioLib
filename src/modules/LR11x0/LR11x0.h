@@ -1357,6 +1357,14 @@ class LR11x0: public PhysicalLayer {
     size_t getPacketLength(bool update, uint8_t* offset);
 
     /*!
+      \brief Get LoRa header information from last received packet. Only valid in explicit header mode.
+      \param cr Pointer to variable to store the coding rate.
+      \param hasCRC Pointer to variable to store the CRC status.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
+
+    /*!
       \brief Get expected time-on-air for a given size of payload
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
@@ -1714,7 +1722,6 @@ class LR11x0: public PhysicalLayer {
     int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     int16_t lrFhssSetSyncWord(uint32_t sync);
     int16_t configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len);
-    int16_t getLoRaRxHeaderInfos(uint8_t* info);
     int16_t bleBeaconSend(uint8_t chan, const uint8_t* payload, size_t len);
 
     int16_t wifiScan(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);

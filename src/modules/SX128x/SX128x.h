@@ -84,6 +84,7 @@
 #define RADIOLIB_SX128X_REG_FREQ_ERROR_CORRECTION               0x093C
 #define RADIOLIB_SX128X_REG_LORA_SYNC_WORD_MSB                  0x0944
 #define RADIOLIB_SX128X_REG_LORA_SYNC_WORD_LSB                  0x0945
+#define RADIOLIB_SX128X_REG_LORA_RX_CODING_RATE                 0x0950
 #define RADIOLIB_SX128X_REG_RANGING_FILTER_RSSI_OFFSET          0x0953
 #define RADIOLIB_SX128X_REG_FEI_MSB                             0x0954
 #define RADIOLIB_SX128X_REG_FEI_MID                             0x0955
@@ -796,6 +797,14 @@ class SX128x: public PhysicalLayer {
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update, uint8_t* offset);
+
+    /*!
+      \brief Get LoRa header information from last received packet. Only valid in explicit header mode.
+      \param cr Pointer to variable to store the coding rate.
+      \param hasCRC Pointer to variable to store the CRC status.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
       \brief Set modem in fixed packet length mode. Available in GFSK mode only.

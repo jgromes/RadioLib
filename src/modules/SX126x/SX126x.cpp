@@ -1286,11 +1286,11 @@ float SX126x::getFrequencyError() {
 
   // read the raw frequency error register values
   uint8_t efeRaw[3] = {0};
-  int16_t state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR, &efeRaw[0], 1);
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR_RX_CRC, &efeRaw[0], 1);
   RADIOLIB_ASSERT(state);
-  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 1, &efeRaw[1], 1);
+  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR_RX_CRC + 1, &efeRaw[1], 1);
   RADIOLIB_ASSERT(state);
-  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 2, &efeRaw[2], 1);
+  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR_RX_CRC + 2, &efeRaw[2], 1);
   RADIOLIB_ASSERT(state);
   uint32_t efe = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
   efe &= 0x0FFFFF;
@@ -1329,6 +1329,20 @@ size_t SX126x::getPacketLength(bool update, uint8_t* offset) {
   if(offset) { *offset = rxBufStatus[1]; }
 
   return((size_t)rxBufStatus[0]);
+}
+
+int16_t SX126x::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // check if in explicit header mode
+  if(this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  if(cr) { *cr = this->mod->SPIgetRegValue(RADIOLIB_SX126X_REG_LORA_RX_CODING_RATE, 6, 4) >> 4; }
+  if(hasCRC) { *hasCRC = (this->mod->SPIgetRegValue(RADIOLIB_SX126X_REG_FREQ_ERROR_RX_CRC, 4, 4) != 0); }
+
+  return(state);
 }
 
 int16_t SX126x::fixedPacketLengthMode(uint8_t len) {

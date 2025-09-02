@@ -1109,6 +1109,20 @@ size_t SX127x::getPacketLength(bool update) {
   return(this->packetLength);
 }
 
+int16_t SX127x::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // check if in explicit header mode
+  if(this->implicitHdr) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  if(cr) { *cr = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_STAT, 7, 5) >> 5; }
+  if(hasCRC) { *hasCRC = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6) != 0; }
+
+  return(state);
+}
+
 int16_t SX127x::fixedPacketLengthMode(uint8_t len) {
   return(SX127x::setPacketMode(RADIOLIB_SX127X_PACKET_FIXED, len));
 }

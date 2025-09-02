@@ -120,7 +120,8 @@
 #define RADIOLIB_SX126X_REG_IQ_CONFIG                           0x0736
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_MSB                  0x0740
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_LSB                  0x0741
-#define RADIOLIB_SX126X_REG_FREQ_ERROR                          0x076B
+#define RADIOLIB_SX126X_REG_LORA_RX_CODING_RATE                 0x0749
+#define RADIOLIB_SX126X_REG_FREQ_ERROR_RX_CRC                   0x076B
 #define RADIOLIB_SX126X_REG_SPECTRAL_SCAN_STATUS                0x07CD
 #define RADIOLIB_SX126X_REG_RX_ADDR_PTR                         0x0803
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_0                     0x0819
@@ -976,6 +977,14 @@ class SX126x: public PhysicalLayer {
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update, uint8_t* offset);
+
+    /*!
+      \brief Get LoRa header information from last received packet. Only valid in explicit header mode.
+      \param cr Pointer to variable to store the coding rate.
+      \param hasCRC Pointer to variable to store the CRC status.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
       \brief Set modem in fixed packet length mode. Available in FSK mode only.
