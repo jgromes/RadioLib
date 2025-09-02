@@ -726,11 +726,24 @@ int16_t SX128x::setCodingRate(uint8_t cr, bool longInterleaving) {
 
   // LoRa/ranging
   if((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING)) {
-    RADIOLIB_CHECK_RANGE(cr, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+    RADIOLIB_CHECK_RANGE(cr, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
 
     // update modulation parameters
     if(longInterleaving && (modem == RADIOLIB_SX128X_PACKET_TYPE_LORA)) {
-      this->codingRateLoRa = cr;
+      switch(cr) {
+        case 4:
+          this->codingRateLoRa = 0;
+          break;
+        case 5:
+        case 6:
+          this->codingRateLoRa = cr;
+          break;
+        case 8: 
+          this->codingRateLoRa = cr - 1;
+          break;
+        default:
+          return(RADIOLIB_ERR_INVALID_CODING_RATE);
+      }
     } else {
       this->codingRateLoRa = cr - 4;
     }

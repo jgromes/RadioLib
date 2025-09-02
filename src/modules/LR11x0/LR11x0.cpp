@@ -628,10 +628,13 @@ int16_t LR11x0::setCodingRate(uint8_t cr, bool longInterleave) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  RADIOLIB_CHECK_RANGE(cr, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+  RADIOLIB_CHECK_RANGE(cr, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
 
   if(longInterleave) {
     switch(cr) {
+      case 4:
+        this->codingRate = 0;
+        break;
       case 5:
       case 6:
         this->codingRate = cr;
@@ -1003,7 +1006,7 @@ int16_t LR11x0::checkDataRate(DataRate_t dr) {
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
-    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
   
   }

@@ -370,7 +370,8 @@ class SX128x: public PhysicalLayer {
       \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 812.5 kHz.
       \param sf LoRa spreading factor. Defaults to 9.
-      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
+      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX128X_SYNC_WORD_PRIVATE (0x12).
       \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength LoRa preamble length in symbols. Defaults to 12 symbols.
@@ -626,7 +627,8 @@ class SX128x: public PhysicalLayer {
     int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
-      \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
+      \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4
+      means no coding, is undocumented and not recommended without your own FEC.
       \param cr LoRa coding rate denominator to be set.
       \param longInterleaving Whether to enable long interleaving mode. Not available for coding rate 4/7,
       defaults to false.

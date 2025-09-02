@@ -501,7 +501,8 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Initialization method for LoRa modem.
-      \param cr LoRa coding rate denominator. Allowed values range from 5 to 8.
+      \param cr LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
@@ -774,7 +775,8 @@ class SX126x: public PhysicalLayer {
     virtual int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
-      \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
+      \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
+      is undocumented and not recommended without your own FEC.
       \param cr LoRa coding rate denominator to be set.
       \returns \ref status_codes
     */
