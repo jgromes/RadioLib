@@ -223,7 +223,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memdesc:ae435f57132f76f4283abb870176acf54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Allowed values range from 5 to 12.  <br /></td></tr>
 <tr class="separator:ae435f57132f76f4283abb870176acf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9da544e4a6120f73a078b46c6138505a" id="r_a9da544e4a6120f73a078b46c6138505a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a9da544e4a6120f73a078b46c6138505a">setCodingRate</a> (uint8_t cr, bool longInterleaving=false)</td></tr>
-<tr class="memdesc:a9da544e4a6120f73a078b46c6138505a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.  <br /></td></tr>
+<tr class="memdesc:a9da544e4a6120f73a078b46c6138505a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
 <tr class="separator:a9da544e4a6120f73a078b46c6138505a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bc3372c47a4e3c81ef15bee448ba6b6" id="r_a1bc3372c47a4e3c81ef15bee448ba6b6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a1bc3372c47a4e3c81ef15bee448ba6b6">setOutputPower</a> (int8_t pwr) override</td></tr>
 <tr class="memdesc:a1bc3372c47a4e3c81ef15bee448ba6b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -18 to 13 dBm.  <br /></td></tr>
@@ -540,7 +540,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 2400.0 MHz. </td></tr>
     <tr><td class="paramname">bw</td><td>LoRa bandwidth in kHz. Defaults to 812.5 kHz. </td></tr>
     <tr><td class="paramname">sf</td><td>LoRa spreading factor. Defaults to 9. </td></tr>
-    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). </td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </td></tr>
     <tr><td class="paramname">syncWord</td><td>2-byte LoRa sync word. Defaults to RADIOLIB_SX128X_SYNC_WORD_PRIVATE (0x12). </td></tr>
     <tr><td class="paramname">pwr</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Defaults to 12 symbols. </td></tr>
@@ -1885,7 +1885,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
       </table>
 </div><div class="memdoc">
 
-<p>Sets LoRa coding rate denominator. Allowed values range from 5 to 8. </p>
+<p>Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator to be set. </td></tr>

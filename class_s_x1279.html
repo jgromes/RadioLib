@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af70c22fe38bc3b944070ccbc083fed08 inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link spreading factor. Allowed values range from 6 to 12. Only available in LoRa mode.  <br /></td></tr>
 <tr class="separator:af70c22fe38bc3b944070ccbc083fed08 inherit pub_methods_class_s_x1278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a834f26a0bd3fc8a03fa7e68aa4daf9e1 inherit pub_methods_class_s_x1278" id="r_a834f26a0bd3fc8a03fa7e68aa4daf9e1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a834f26a0bd3fc8a03fa7e68aa4daf9e1">setCodingRate</a> (uint8_t cr)</td></tr>
-<tr class="memdesc:a834f26a0bd3fc8a03fa7e68aa4daf9e1 inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in LoRa mode.  <br /></td></tr>
+<tr class="memdesc:a834f26a0bd3fc8a03fa7e68aa4daf9e1 inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in LoRa mode. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
 <tr class="separator:a834f26a0bd3fc8a03fa7e68aa4daf9e1 inherit pub_methods_class_s_x1278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd6df07fc4972cc656f05670e6802f67 inherit pub_methods_class_s_x1278" id="r_afd6df07fc4972cc656f05670e6802f67"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#afd6df07fc4972cc656f05670e6802f67">setBitRate</a> (float br) override</td></tr>
 <tr class="memdesc:afd6df07fc4972cc656f05670e6802f67 inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.  <br /></td></tr>
@@ -674,7 +674,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 137.0 MHz to 960.0 MHz. </td></tr>
     <tr><td class="paramname">bw</td><td>LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. </td></tr>
     <tr><td class="paramname">sf</td><td>LoRa link spreading factor. Allowed values range from 6 to 12. </td></tr>
-    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 5 to 8. </td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </td></tr>
     <tr><td class="paramname">syncWord</td><td>LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks. </td></tr>
     <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535. </td></tr>

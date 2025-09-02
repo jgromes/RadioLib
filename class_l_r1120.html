@@ -244,7 +244,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memdesc:adf6895cbf7af7e00ea06c5b2b5040cb4 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Allowed values range from 5 to 12.  <br /></td></tr>
 <tr class="separator:adf6895cbf7af7e00ea06c5b2b5040cb4 inherit pub_methods_class_l_r11x0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a583f2d5ed601a98c609dbf0d57f2f541 inherit pub_methods_class_l_r11x0" id="r_a583f2d5ed601a98c609dbf0d57f2f541"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a583f2d5ed601a98c609dbf0d57f2f541">setCodingRate</a> (uint8_t cr, bool longInterleave=false)</td></tr>
-<tr class="memdesc:a583f2d5ed601a98c609dbf0d57f2f541 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.  <br /></td></tr>
+<tr class="memdesc:a583f2d5ed601a98c609dbf0d57f2f541 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
 <tr class="separator:a583f2d5ed601a98c609dbf0d57f2f541 inherit pub_methods_class_l_r11x0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee7dbdbd76f4639395af4a0db17025a7 inherit pub_methods_class_l_r11x0" id="r_aee7dbdbd76f4639395af4a0db17025a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aee7dbdbd76f4639395af4a0db17025a7">setSyncWord</a> (uint8_t syncWord)</td></tr>
 <tr class="memdesc:aee7dbdbd76f4639395af4a0db17025a7 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <br /></td></tr>
@@ -649,7 +649,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz. </td></tr>
     <tr><td class="paramname">bw</td><td>LoRa bandwidth in kHz. Defaults to 125.0 kHz. </td></tr>
     <tr><td class="paramname">sf</td><td>LoRa spreading factor. Defaults to 9. </td></tr>
-    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). </td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </td></tr>
     <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word. Defaults to RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE (0x12). </td></tr>
     <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Defaults to 8 symbols. </td></tr>

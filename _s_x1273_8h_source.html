@@ -117,30 +117,30 @@ $(document).ready(function(){initNavTree('_s_x1273_8h_source.html',''); initResi
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="comment">// basic methods</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#a61844a7f08f7aadac00cf6617f991191">begin</a>(<span class="keywordtype">float</span> freq = 915.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// configuration methods</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#ac714448cb245ec57fa6f2395f1c8a1f7">setSpreadingFactor</a>(uint8_t sf) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#acaffc772f70e7db371cbe736dc4a19ab">setDataRate</a>(<a class="code hl_union" href="union_data_rate__t.html">DataRate_t</a> dr) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">checkDataRate</a>(<a class="code hl_union" href="union_data_rate__t.html">DataRate_t</a> dr) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#af9f0969764fde3e12b6b05409718fa83">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>};</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#a61844a7f08f7aadac00cf6617f991191">begin</a>(<span class="keywordtype">float</span> freq = 915.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="comment">// configuration methods</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#ac714448cb245ec57fa6f2395f1c8a1f7">setSpreadingFactor</a>(uint8_t sf) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#acaffc772f70e7db371cbe736dc4a19ab">setDataRate</a>(<a class="code hl_union" href="union_data_rate__t.html">DataRate_t</a> dr) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">checkDataRate</a>(<a class="code hl_union" href="union_data_rate__t.html">DataRate_t</a> dr) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    int16_t <a class="code hl_function" href="class_s_x1273.html#af9f0969764fde3e12b6b05409718fa83">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:73</div></div>
-<div class="ttc" id="aclass_s_x1272_html"><div class="ttname"><a href="class_s_x1272.html">SX1272</a></div><div class="ttdoc">Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...</div><div class="ttdef"><b>Definition</b> SX1272.h:94</div></div>
+<div class="ttc" id="aclass_s_x1272_html"><div class="ttname"><a href="class_s_x1272.html">SX1272</a></div><div class="ttdoc">Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...</div><div class="ttdef"><b>Definition</b> SX1272.h:95</div></div>
 <div class="ttc" id="aclass_s_x1273_html"><div class="ttname"><a href="class_s_x1273.html">SX1273</a></div><div class="ttdoc">Derived class for SX1273 modules. Overrides some methods from SX1272 due to different parameter range...</div><div class="ttdef"><b>Definition</b> SX1273.h:14</div></div>
 <div class="ttc" id="aclass_s_x1273_html_a5eae1e82596f3a6c4c926c381c2737a7"><div class="ttname"><a href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">SX1273::checkDataRate</a></div><div class="ttdeci">int16_t checkDataRate(DataRate_t dr) override</div><div class="ttdoc">Check the data rate can be configured by this module.</div><div class="ttdef"><b>Definition</b> SX1273.cpp:95</div></div>
 <div class="ttc" id="aclass_s_x1273_html_a61844a7f08f7aadac00cf6617f991191"><div class="ttname"><a href="class_s_x1273.html#a61844a7f08f7aadac00cf6617f991191">SX1273::begin</a></div><div class="ttdeci">int16_t begin(float freq=915.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0) override</div><div class="ttdoc">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the ...</div><div class="ttdef"><b>Definition</b> SX1273.cpp:8</div></div>

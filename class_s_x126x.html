@@ -225,7 +225,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae5993359ace652fbdc862eb23fdd263d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Allowed values range from 5 to 12.  <br /></td></tr>
 <tr class="separator:ae5993359ace652fbdc862eb23fdd263d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd3113858966e878e9c67a1e710bd586" id="r_afd3113858966e878e9c67a1e710bd586"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afd3113858966e878e9c67a1e710bd586">setCodingRate</a> (uint8_t cr)</td></tr>
-<tr class="memdesc:afd3113858966e878e9c67a1e710bd586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.  <br /></td></tr>
+<tr class="memdesc:afd3113858966e878e9c67a1e710bd586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
 <tr class="separator:afd3113858966e878e9c67a1e710bd586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d92dce566f8aefa836fe8f332e9560f" id="r_a9d92dce566f8aefa836fe8f332e9560f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a9d92dce566f8aefa836fe8f332e9560f">setSyncWord</a> (uint8_t syncWord, uint8_t controlBits=0x44)</td></tr>
 <tr class="memdesc:a9d92dce566f8aefa836fe8f332e9560f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <br /></td></tr>
@@ -613,7 +613,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <p>Initialization method for LoRa modem. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Allowed values range from 5 to 8. </td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </td></tr>
     <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Allowed values range from 1 to 65535. </td></tr>
     <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip. </td></tr>
@@ -2124,7 +2124,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
       </table>
 </div><div class="memdoc">
 
-<p>Sets LoRa coding rate denominator. Allowed values range from 5 to 8. </p>
+<p>Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator to be set. </td></tr>

@@ -117,31 +117,31 @@ $(document).ready(function(){initNavTree('_s_x1276_8h_source.html',''); initResi
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="comment">// basic methods</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#a729cfac96ccd76fa96cfae93d17a2d92">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#aad2a12f233378d75d28ab9a2307331a8">beginFSK</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, <span class="keywordtype">bool</span> enableOOK = <span class="keyword">false</span>) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">// configuration methods</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#a981b59110e514b7dcaec8490e1c4320c">setFrequency</a>(<span class="keywordtype">float</span> freq) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#a36a526b6c8540cda36d058fb47a9e099">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>};</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#a729cfac96ccd76fa96cfae93d17a2d92">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#aad2a12f233378d75d28ab9a2307331a8">beginFSK</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, <span class="keywordtype">bool</span> enableOOK = <span class="keyword">false</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">// configuration methods</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#a981b59110e514b7dcaec8490e1c4320c">setFrequency</a>(<span class="keywordtype">float</span> freq) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    int16_t <a class="code hl_function" href="class_s_x1276.html#a36a526b6c8540cda36d058fb47a9e099">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>RADIOLIB_TYPE_ALIAS(<a class="code hl_class" href="class_s_x1276.html">SX1276</a>, <a class="code hl_class" href="class_r_f_m95.html">RFM95</a>)</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>RADIOLIB_TYPE_ALIAS(<a class="code hl_class" href="class_s_x1276.html">SX1276</a>, <a class="code hl_class" href="class_r_f_m95.html">RFM95</a>)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>RADIOLIB_TYPE_ALIAS(<a class="code hl_class" href="class_s_x1276.html">SX1276</a>, <a class="code hl_class" href="class_r_f_m96.html">RFM96</a>)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>RADIOLIB_TYPE_ALIAS(<a class="code hl_class" href="class_s_x1276.html">SX1276</a>, <a class="code hl_class" href="class_r_f_m96.html">RFM96</a>)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:73</div></div>
 <div class="ttc" id="aclass_r_f_m95_html"><div class="ttname"><a href="class_r_f_m95.html">RFM95</a></div><div class="ttdoc">Only exists as alias for SX1276, since there seems to be no difference between RFM95 and SX1276 modul...</div></div>
 <div class="ttc" id="aclass_r_f_m96_html"><div class="ttname"><a href="class_r_f_m96.html">RFM96</a></div><div class="ttdoc">Only exists as alias for SX1276, since there seems to be no difference between RFM96 and SX1276 modul...</div></div>
@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('_s_x1276_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x1276_html_a729cfac96ccd76fa96cfae93d17a2d92"><div class="ttname"><a href="class_s_x1276.html#a729cfac96ccd76fa96cfae93d17a2d92">SX1276::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0) override</div><div class="ttdoc">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the ...</div><div class="ttdef"><b>Definition</b> SX1276.cpp:8</div></div>
 <div class="ttc" id="aclass_s_x1276_html_a981b59110e514b7dcaec8490e1c4320c"><div class="ttname"><a href="class_s_x1276.html#a981b59110e514b7dcaec8490e1c4320c">SX1276::setFrequency</a></div><div class="ttdeci">int16_t setFrequency(float freq) override</div><div class="ttdoc">Sets carrier frequency. Allowed values range from 137.0 MHz to 1020.0 MHz.</div><div class="ttdef"><b>Definition</b> SX1276.cpp:71</div></div>
 <div class="ttc" id="aclass_s_x1276_html_aad2a12f233378d75d28ab9a2307331a8"><div class="ttname"><a href="class_s_x1276.html#aad2a12f233378d75d28ab9a2307331a8">SX1276::beginFSK</a></div><div class="ttdeci">int16_t beginFSK(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint16_t preambleLength=16, bool enableOOK=false) override</div><div class="ttdoc">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the m...</div><div class="ttdef"><b>Definition</b> SX1276.cpp:40</div></div>
-<div class="ttc" id="aclass_s_x1278_html"><div class="ttname"><a href="class_s_x1278.html">SX1278</a></div><div class="ttdoc">Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...</div><div class="ttdef"><b>Definition</b> SX1278.h:105</div></div>
+<div class="ttc" id="aclass_s_x1278_html"><div class="ttname"><a href="class_s_x1278.html">SX1278</a></div><div class="ttdoc">Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...</div><div class="ttdef"><b>Definition</b> SX1278.h:106</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

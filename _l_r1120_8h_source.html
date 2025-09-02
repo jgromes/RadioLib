@@ -115,41 +115,41 @@ $(document).ready(function(){initNavTree('_l_r1120_8h_source.html',''); initResi
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="comment">// basic methods</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a0393071d4403d06c665f28c49e755382">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, <span class="keywordtype">float</span> tcxoVoltage = 1.6);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a4c6b867146f00de5c45aeb4164d51cc5">beginGFSK</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, <span class="keywordtype">float</span> tcxoVoltage = 1.6);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#ad49ce378101cf0c3894297808ae27f3a">beginLRFHSS</a>(<span class="keywordtype">float</span> freq = 434.0, uint8_t bw = RADIOLIB_LR11X0_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LR11X0_LR_FHSS_CR_2_3, <span class="keywordtype">bool</span> narrowGrid = <span class="keyword">true</span>, int8_t power = 10, <span class="keywordtype">float</span> tcxoVoltage = 1.6);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// configuration methods</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a8d13c0f91a90a2aab43229133caf41fb">setFrequency</a>(<span class="keywordtype">float</span> freq) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a8d13c0f91a90a2aab43229133caf41fb">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> skipCalibration, <span class="keywordtype">float</span> band = 4);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power, <span class="keywordtype">bool</span> forceHighPower, uint32_t rampTimeUs = 48);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#acf6ea475643c6eba63133641a8681a8f">checkOutputPower</a>(int8_t power, int8_t* clipped) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#acf6ea475643c6eba63133641a8681a8f">checkOutputPower</a>(int8_t power, int8_t* clipped, <span class="keywordtype">bool</span> forceHighPower);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="comment">// flag to determine whether we are in the sub-GHz or 2.4 GHz range</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="comment">// this is needed to automatically detect which PA to use</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordtype">bool</span> highFreq = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>};</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a0393071d4403d06c665f28c49e755382">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, <span class="keywordtype">float</span> tcxoVoltage = 1.6);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a4c6b867146f00de5c45aeb4164d51cc5">beginGFSK</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, <span class="keywordtype">float</span> tcxoVoltage = 1.6);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#ad49ce378101cf0c3894297808ae27f3a">beginLRFHSS</a>(<span class="keywordtype">float</span> freq = 434.0, uint8_t bw = RADIOLIB_LR11X0_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LR11X0_LR_FHSS_CR_2_3, <span class="keywordtype">bool</span> narrowGrid = <span class="keyword">true</span>, int8_t power = 10, <span class="keywordtype">float</span> tcxoVoltage = 1.6);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">// configuration methods</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a8d13c0f91a90a2aab43229133caf41fb">setFrequency</a>(<span class="keywordtype">float</span> freq) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a8d13c0f91a90a2aab43229133caf41fb">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> skipCalibration, <span class="keywordtype">float</span> band = 4);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power, <span class="keywordtype">bool</span> forceHighPower, uint32_t rampTimeUs = 48);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#acf6ea475643c6eba63133641a8681a8f">checkOutputPower</a>(int8_t power, int8_t* clipped) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#acf6ea475643c6eba63133641a8681a8f">checkOutputPower</a>(int8_t power, int8_t* clipped, <span class="keywordtype">bool</span> forceHighPower);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="comment">// flag to determine whether we are in the sub-GHz or 2.4 GHz range</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="comment">// this is needed to automatically detect which PA to use</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordtype">bool</span> highFreq = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>};</div>
 </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_l_r1120_html"><div class="ttname"><a href="class_l_r1120.html">LR1120</a></div><div class="ttdoc">Derived class for LR1120 modules.</div><div class="ttdef"><b>Definition</b> LR1120.h:15</div></div>
 <div class="ttc" id="aclass_l_r1120_html_a0393071d4403d06c665f28c49e755382"><div class="ttname"><a href="class_l_r1120.html#a0393071d4403d06c665f28c49e755382">LR1120::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition</b> LR1120.cpp:10</div></div>
 <div class="ttc" id="aclass_l_r1120_html_a1b1321eb695e4a6b583074bb92c33193"><div class="ttname"><a href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">LR1120::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power) override</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (lo...</div><div class="ttdef"><b>Definition</b> LR1120.cpp:77</div></div>
