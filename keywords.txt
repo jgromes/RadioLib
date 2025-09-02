@@ -195,6 +195,7 @@ getFHSSChannel	KEYWORD2
 clearFHSSInt	KEYWORD2
 randomByte	KEYWORD2
 getPacketLength	KEYWORD2
+getLoRaRxHeaderInfo	KEYWORD2
 setFifoEmptyAction	KEYWORD2
 clearFifoEmptyAction	KEYWORD2
 setFifoThreshold	KEYWORD2
