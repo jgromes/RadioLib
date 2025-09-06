@@ -393,8 +393,7 @@ int16_t SX128x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
   // check whether this was a timeout or not
   if((getIrqStatus() & RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT) || softTimeout) {
-    standby();
-    clearIrqStatus();
+    (void)finishReceive();
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
@@ -567,6 +566,15 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(crcState);
 
   return(state);
+}
+
+int16_t SX128x::finishReceive() {
+  // clear interrupt flags
+  int16_t state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby to disable RF switch
+  return(standby());
 }
 
 uint32_t SX128x::getIrqFlags() {
