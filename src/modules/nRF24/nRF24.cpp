@@ -110,7 +110,13 @@ int16_t nRF24::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t nRF24::receive(uint8_t* data, size_t len) {
+int16_t nRF24::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // calculate timeout (15 retries * 4ms (max Tx time as per datasheet) + 10 ms)
+    timeoutInternal = ((15 * 4) + 10);
+  } 
+
   // start reception
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
@@ -120,10 +126,8 @@ int16_t nRF24::receive(uint8_t* data, size_t len) {
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    // check timeout: 15 retries * 4ms (max Tx time as per datasheet) + 10 ms
-    if(this->mod->hal->millis() - start >= ((15 * 4) + 10)) {
-      standby();
-      clearIRQ();
+    // check timeout
+    if(this->mod->hal->millis() - start >= timeoutInternal) {
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
