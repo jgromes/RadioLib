@@ -350,7 +350,7 @@ int16_t SX128x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX128x::receive(uint8_t* data, size_t len) {
+int16_t SX128x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   // check active modem
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING) {
@@ -362,11 +362,14 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // calculate timeout (1000% of expected time-on-air)
-  RadioLibTime_t timeout = getTimeOnAir(len) * 10;
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    timeoutInternal = getTimeOnAir(len) * 10;
+  }
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", (uint32_t)((timeout + 999) / 1000));
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625f);
+  uint32_t timeoutValue = (uint32_t)((float)timeoutInternal / 15.625f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
