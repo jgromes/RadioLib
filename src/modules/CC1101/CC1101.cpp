@@ -75,8 +75,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     this->mod->hal->yield();
 
     if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -87,8 +86,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     this->mod->hal->yield();
 
     if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -413,14 +411,15 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 
   // Flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
   if(SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
-
-    // set mode to standby
-    standby();
-
-    // flush Rx FIFO
-    SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    finishReceive();
   }
 
+  return(state);
+}
+
+int16_t CC1101::finishReceive() {
+  int16_t state = standby();
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
   return(state);
 }
 
