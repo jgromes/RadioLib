@@ -112,6 +112,7 @@ int16_t Si443x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   RadioLibTime_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -346,14 +347,15 @@ int16_t Si443x::readData(uint8_t* data, size_t len) {
   // clear internal flag so getPacketLength can return the new packet length
   this->packetLengthQueried = false;
 
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
+  return(finishReceive());
+}
 
+int16_t Si443x::finishReceive() {
   // clear interrupt flags
   clearIrqStatus();
 
-  return(RADIOLIB_ERR_NONE);
+  // set mode to standby to disable RF switch
+  return(standby());
 }
 
 int16_t Si443x::setBitRate(float br) {
