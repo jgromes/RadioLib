@@ -364,6 +364,12 @@ class PhysicalLayer {
     */
     virtual int16_t finishTransmit();
 
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    virtual int16_t finishReceive();
+
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Reads data that was received after calling startReceive method.

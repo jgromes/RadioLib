@@ -175,6 +175,10 @@ int16_t PhysicalLayer::finishTransmit() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::finishReceive() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 #if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PhysicalLayer::readData(String& str, size_t len) {
   int16_t state = RADIOLIB_ERR_NONE;
