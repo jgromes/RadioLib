@@ -529,6 +529,20 @@ int16_t SX126x::finishTransmit() {
   return(standby());
 }
 
+int16_t SX126x::finishReceive() {
+  // clear interrupt flags
+  int16_t state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
+
+  // try to fix timeout error in implicit header mode
+  // check for modem type and header mode is done in fixImplicitTimeout()
+  state = fixImplicitTimeout();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby to disable RF switch
+  return(standby());
+}
+
 int16_t SX126x::startReceive() {
   return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
@@ -2200,7 +2214,8 @@ int16_t SX126x::fixImplicitTimeout() {
 
   //check if we're in implicit LoRa mode
   if(!((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA))) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+    // not in the correct mode, nothing to do here
+    return(RADIOLIB_ERR_NONE);
   }
 
   // stop RTC counter
