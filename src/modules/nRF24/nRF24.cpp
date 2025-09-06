@@ -128,6 +128,7 @@ int16_t nRF24::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
     // check timeout
     if(this->mod->hal->millis() - start >= timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -278,10 +279,15 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
   // read packet data
   SPIreadRxPayload(data, length);
 
-  // clear interrupt
+  return(finishReceive());
+}
+
+int16_t nRF24::finishReceive() {
+  // clear interrupt flags
   clearIRQ();
 
-  return(RADIOLIB_ERR_NONE);
+  // set mode to standby to disable transmitter/RF switch
+  return(standby());
 }
 
 int16_t nRF24::setFrequency(float freq) {
