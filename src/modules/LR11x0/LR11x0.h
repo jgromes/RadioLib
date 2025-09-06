@@ -1121,6 +1121,12 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
     
     /*!
       \brief Interrupt-driven channel activity detection method. IRQ1 will be activated

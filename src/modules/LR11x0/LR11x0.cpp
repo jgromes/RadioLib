@@ -287,8 +287,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
   // check whether this was a timeout or not
   if((getIrqStatus() & RADIOLIB_LR11X0_IRQ_TIMEOUT) || softTimeout) {
-    standby();
-    clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+    (void)finishReceive();
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
@@ -480,6 +479,15 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(crcState);
 
   return(state);
+}
+
+int16_t LR11x0::finishReceive() {
+  // clear interrupt flags
+  int16_t state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby to disable RF switch
+  return(standby());
 }
 
 int16_t LR11x0::startChannelScan() {
