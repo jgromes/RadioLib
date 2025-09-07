@@ -220,27 +220,14 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   RadioLibTime_t timeoutInternal = timeout;
   uint32_t timeoutValue = 0;
   if(!timeoutInternal) {
-    // get currently active modem
-    uint8_t modem = getActiveModem();
-    if(modem == RADIOLIB_SX127X_LORA) {
-      // calculate timeout (100 LoRa symbols, the default for SX127x series)
-      timeoutValue = 100;
-      float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-      timeoutInternal = (RadioLibTime_t)(symbolLength * (float)timeoutValue);
-    
-    } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-      // calculate timeout in ms (500 % of expected time-on-air)
-      size_t maxLen = len;
-      if(len == 0) { maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK; }
-      timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
+    // calculate timeout (500 % of expected time-one-air)
+    size_t maxLen = len;
+    if(len == 0) { maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH; }
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
 
-      // FSK modem does not distinguish Rx single and continuous mode
-      timeoutValue = 0;
-
-    } else {
-      return(RADIOLIB_ERR_UNKNOWN);
-    
-    }
+    // convert to symbols
+    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+    timeoutValue = (float)timeoutInternal / symbolLength;
   }
 
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
