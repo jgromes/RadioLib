@@ -263,6 +263,8 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
   // cache the IRQ flags and clean up after reception
   uint16_t irqFlags = getIRQFlags();
+  state = finishReceive();
+  RADIOLIB_ASSERT(state);
 
   // check whether this was a timeout or not
   if(softTimeout || (irqFlags & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
@@ -579,6 +581,15 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
   return(state);
+}
+
+int16_t SX127x::finishReceive() {
+  // clear interrupt flags
+  int16_t state = clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby to disable RF switch
+  return(standby());
 }
 
 int16_t SX127x::startChannelScan() {
