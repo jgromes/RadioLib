@@ -228,26 +228,18 @@ int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  // calcualte timeout based on the configured modem
+  // calculate timeout based on the configured modem
   RadioLibTime_t timeoutInternal = timeout;
   if(!timeoutInternal) {
     // get currently active modem
     uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
     state = getPacketType(&modem);
     RADIOLIB_ASSERT(state);
-    if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-      // calculate timeout (100 LoRa symbols, the default for SX127x series)
-      float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-      timeoutInternal = (RadioLibTime_t)(symbolLength * 100.0f);
-    
-    } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    if((modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
       // calculate timeout (500 % of expected time-one-air)
       size_t maxLen = len;
-      if(len == 0) { 
-        maxLen = 0xFF;
-      }
-      float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0f * 32.0f) / (float)this->bitRate;
-      timeoutInternal = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
+      if(len == 0) { maxLen = RADIOLIB_LR11X0_MAX_PACKET_LENGTH; }
+      timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
     
     } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
       // this modem cannot receive
