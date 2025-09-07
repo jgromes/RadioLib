@@ -133,6 +133,7 @@ startTransmit	KEYWORD2
 finishTransmit	KEYWORD2
 startReceive	KEYWORD2
 readData	KEYWORD2
+finishReceive	KEYWORD2
 startChannelScan	KEYWORD2
 getChannelScanResult	KEYWORD2
 setBandwidth	KEYWORD2
