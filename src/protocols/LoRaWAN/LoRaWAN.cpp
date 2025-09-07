@@ -2701,7 +2701,9 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
   // set Dr/Tx field from last MAC command
   mAdrOpt[0] = mPtr[cLen - fLen + 1];
 
-  uint16_t adrMasks[RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS / 2];
+  // extra 2 bytes are added on the end, because in theory, 
+  // chMaskCntl can go up to 7 (though it probably shouldn't)
+  uint16_t adrMasks[(RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS / 2) + 2];
   memcpy(adrMasks, this->channelMasks, sizeof(this->channelMasks));
 
   // set NbTrans partial field from last MAC command
