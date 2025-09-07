@@ -74,7 +74,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeoutInternal) {
       (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
@@ -85,7 +85,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeoutInternal) {
       (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
