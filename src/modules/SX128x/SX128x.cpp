@@ -362,6 +362,8 @@ int16_t SX128x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   RADIOLIB_ASSERT(state);
 
   // calculate timeout (1000% of expected time-on-air)
+  // for most other modules, it is 500%, however, the overall datarates of SX128x are higher
+  // so we use higher value for the default timeout
   RadioLibTime_t timeoutInternal = timeout;
   if(!timeoutInternal) {
     timeoutInternal = getTimeOnAir(len) * 10;
