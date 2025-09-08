@@ -351,11 +351,12 @@ int16_t Si443x::readData(uint8_t* data, size_t len) {
 }
 
 int16_t Si443x::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  
   // clear interrupt flags
   clearIrqStatus();
-
-  // set mode to standby to disable RF switch
-  return(standby());
+  return(state);
 }
 
 int16_t Si443x::setBitRate(float br) {

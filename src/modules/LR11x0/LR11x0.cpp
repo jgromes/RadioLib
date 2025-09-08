@@ -474,12 +474,12 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
 }
 
 int16_t LR11x0::finishReceive() {
-  // clear interrupt flags
-  int16_t state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  // set mode to standby to disable RF switch
-  return(standby());
+  // clear interrupt flags
+  return(clearIrqState(RADIOLIB_LR11X0_IRQ_ALL));
 }
 
 int16_t LR11x0::startChannelScan() {

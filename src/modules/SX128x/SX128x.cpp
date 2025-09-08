@@ -569,12 +569,12 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
 }
 
 int16_t SX128x::finishReceive() {
-  // clear interrupt flags
-  int16_t state = clearIrqStatus();
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  // set mode to standby to disable RF switch
-  return(standby());
+  // clear interrupt flags
+  return(clearIrqStatus());
 }
 
 uint32_t SX128x::getIrqFlags() {

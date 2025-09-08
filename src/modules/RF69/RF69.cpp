@@ -485,11 +485,12 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 }
 
 int16_t RF69::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  
   // clear interrupt flags
   clearIRQFlags();
-
-  // set mode to standby to disable RF switch
-  return(standby());
+  return(state);
 }
 
 int16_t RF69::setOOK(bool enable) {

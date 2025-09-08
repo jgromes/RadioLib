@@ -511,8 +511,8 @@ int16_t SX126x::finishTransmit() {
 }
 
 int16_t SX126x::finishReceive() {
-  // clear interrupt flags
-  int16_t state = clearIrqStatus();
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
   // try to fix timeout error in implicit header mode
@@ -520,8 +520,8 @@ int16_t SX126x::finishReceive() {
   state = fixImplicitTimeout();
   RADIOLIB_ASSERT(state);
 
-  // set mode to standby to disable RF switch
-  return(standby());
+  // clear interrupt flags
+  return(clearIrqStatus());
 }
 
 int16_t SX126x::startReceive() {
