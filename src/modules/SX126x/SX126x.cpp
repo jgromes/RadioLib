@@ -249,38 +249,23 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX126x::receive(uint8_t* data, size_t len) {
+int16_t SX126x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  RadioLibTime_t timeout = 0;
-
-  // get currently active modem
-  uint8_t modem = getPacketType();
-  if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    // calculate timeout (100 LoRa symbols, the default for SX127x series)
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (RadioLibTime_t)(symbolLength * 100.0f);
-  
-  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
-    if(len == 0) {
-      maxLen = 0xFF;
-    }
-    float brBps = (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f * 32.0f) / (float)this->bitRate;
-    timeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
-
-  } else {
-    return(RADIOLIB_ERR_UNKNOWN);
-  
+    if(len == 0) { maxLen = RADIOLIB_SX126X_MAX_PACKET_LENGTH; }
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
   }
 
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0f) / 15.625f);
+  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 15.625f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -290,7 +275,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeoutInternal) {
       softTimeout = true;
       break;
     }
@@ -302,18 +287,14 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     return(state);
   }
 
-  // check whether this was a timeout or not
-  if((getIrqFlags() & RADIOLIB_SX126X_IRQ_TIMEOUT) || softTimeout) {
-    standby();
-    fixImplicitTimeout();
-    clearIrqStatus();
-    return(RADIOLIB_ERR_RX_TIMEOUT);
-  }
+  // cache the IRQ flags and clean up after reception
+  uint32_t irqFlags = getIrqFlags();
+  state = finishReceive();
+  RADIOLIB_ASSERT(state);
 
-  // fix timeout in implicit LoRa mode
-  if(((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA))) {
-    state = fixImplicitTimeout();
-    RADIOLIB_ASSERT(state);
+  // check whether this was a timeout or not
+  if((irqFlags & RADIOLIB_SX126X_IRQ_TIMEOUT) || softTimeout) {
+    return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
   // read the received data
@@ -527,6 +508,20 @@ int16_t SX126x::finishTransmit() {
 
   // set mode to standby to disable transmitter/RF switch
   return(standby());
+}
+
+int16_t SX126x::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // try to fix timeout error in implicit header mode
+  // check for modem type and header mode is done in fixImplicitTimeout()
+  state = fixImplicitTimeout();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  return(clearIrqStatus());
 }
 
 int16_t SX126x::startReceive() {
@@ -2200,7 +2195,8 @@ int16_t SX126x::fixImplicitTimeout() {
 
   //check if we're in implicit LoRa mode
   if(!((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA))) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+    // not in the correct mode, nothing to do here
+    return(RADIOLIB_ERR_NONE);
   }
 
   // stop RTC counter

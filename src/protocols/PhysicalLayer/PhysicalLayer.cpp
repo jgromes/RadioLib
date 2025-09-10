@@ -62,7 +62,7 @@ int16_t PhysicalLayer::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PhysicalLayer::receive(String& str, size_t len) {
+int16_t PhysicalLayer::receive(String& str, size_t len, RadioLibTime_t timeout) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // user can override the length of data to read
@@ -82,7 +82,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   #endif
 
   // attempt packet reception
-  state = receive(data, length);
+  state = receive(data, length, timeout);
 
   // any of the following leads to at least some data being available
   // let's leave the decision of whether to keep it or not up to the user
@@ -108,9 +108,10 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
 }
 #endif
 
-int16_t PhysicalLayer::receive(uint8_t* data, size_t len) {
+int16_t PhysicalLayer::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   (void)data;
   (void)len;
+  (void)timeout;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -171,6 +172,10 @@ int16_t PhysicalLayer::startTransmit(const uint8_t* data, size_t len, uint8_t ad
 }
 
 int16_t PhysicalLayer::finishTransmit() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::finishReceive() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 

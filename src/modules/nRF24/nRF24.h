@@ -243,13 +243,15 @@ class nRF24: public PhysicalLayer {
     int16_t transmit(const uint8_t* data, size_t len, uint8_t addr) override;
 
     /*!
-      \brief Blocking binary receive method.
-      Overloads for string-based transmissions are implemented in PhysicalLayer.
-      \param data Binary data to be sent.
-      \param len Number of bytes to send.
+      \brief Binary receive method. Will attempt to receive arbitrary binary data up to 64 bytes long.
+      For overloads to receive Arduino String, see PhysicalLayer::receive.
+      \param data Pointer to array to save the received binary data.
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -339,6 +341,12 @@ class nRF24: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
 
     // configuration methods
 

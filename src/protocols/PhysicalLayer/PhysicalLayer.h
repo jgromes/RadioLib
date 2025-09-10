@@ -275,10 +275,12 @@ class PhysicalLayer {
     /*!
       \brief Arduino String receive method.
       \param str Address of Arduino String to save the received data.
-      \param len Expected number of characters in the message. Leave as 0 if expecting a unknown size packet
+      \param len Expected number of characters in the message. Leave as 0 if expecting a unknown size packet.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(String& str, size_t len = 0);
+    int16_t receive(String& str, size_t len = 0, RadioLibTime_t timeout = 0);
     #endif
 
     /*!
@@ -321,9 +323,11 @@ class PhysicalLayer {
       \brief Binary receive method. Must be implemented in module class.
       \param data Pointer to array to save the received binary data.
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    virtual int16_t receive(uint8_t* data, size_t len);
+    virtual int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -359,6 +363,12 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t finishTransmit();
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    virtual int16_t finishReceive();
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!

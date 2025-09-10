@@ -223,44 +223,38 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t LR11x0::receive(uint8_t* data, size_t len) {
+int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  RadioLibTime_t timeout = 0;
+  // calculate timeout based on the configured modem
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // get currently active modem
+    uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+    state = getPacketType(&modem);
+    RADIOLIB_ASSERT(state);
+    if((modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
+      // calculate timeout (500 % of expected time-one-air)
+      size_t maxLen = len;
+      if(len == 0) { maxLen = RADIOLIB_LR11X0_MAX_PACKET_LENGTH; }
+      timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
+    
+    } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+      // this modem cannot receive
+      return(RADIOLIB_ERR_WRONG_MODEM);
 
-  // get currently active modem
-  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  state = getPacketType(&modem);
-  RADIOLIB_ASSERT(state);
-  if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    // calculate timeout (100 LoRa symbols, the default for SX127x series)
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (RadioLibTime_t)(symbolLength * 100.0f);
-  
-  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    // calculate timeout (500 % of expected time-one-air)
-    size_t maxLen = len;
-    if(len == 0) { 
-      maxLen = 0xFF;
+    } else {
+      return(RADIOLIB_ERR_UNKNOWN);
+    
     }
-    float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0f * 32.0f) / (float)this->bitRate;
-    timeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
-  
-  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    // this modem cannot receive
-    return(RADIOLIB_ERR_WRONG_MODEM);
-
-  } else {
-    return(RADIOLIB_ERR_UNKNOWN);
-  
   }
 
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0f) / 30.52f);
+  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 30.52f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -270,7 +264,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeoutInternal) {
       softTimeout = true;
       break;
     }
@@ -285,8 +279,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
 
   // check whether this was a timeout or not
   if((getIrqStatus() & RADIOLIB_LR11X0_IRQ_TIMEOUT) || softTimeout) {
-    standby();
-    clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+    (void)finishReceive();
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
@@ -478,6 +471,15 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(crcState);
 
   return(state);
+}
+
+int16_t LR11x0::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  return(clearIrqState(RADIOLIB_LR11X0_IRQ_ALL));
 }
 
 int16_t LR11x0::startChannelScan() {

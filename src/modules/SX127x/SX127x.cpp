@@ -211,68 +211,55 @@ int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX127x::receive(uint8_t* data, size_t len) {
+int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
 
-  int16_t modem = getActiveModem();
-  if(modem == RADIOLIB_SX127X_LORA) {
-    // set mode to receive
-    state = startReceive(100, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
-    RADIOLIB_ASSERT(state);
+  // calculate timeout based on the configured modem
+  RadioLibTime_t timeoutInternal = timeout;
+  uint32_t timeoutValue = 0;
+  if(!timeoutInternal) {
+    // calculate timeout (500 % of expected time-one-air)
+    size_t maxLen = len;
+    if(len == 0) { maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH; }
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
 
-    // if no DIO1 is provided, use software timeout (100 LoRa symbols, same as hardware timeout)
-    RadioLibTime_t timeout = 0;
-    if(this->mod->getGpio() == RADIOLIB_NC) {
-      float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-      timeout = (RadioLibTime_t)(symbolLength * 100.0f);
-    }
+    // convert to symbols
+    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+    timeoutValue = (float)timeoutInternal / symbolLength;
+  }
 
-    // wait for packet reception or timeout
-    RadioLibTime_t start = this->mod->hal->millis();
-    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-      this->mod->hal->yield();
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
-      if(this->mod->getGpio() == RADIOLIB_NC) {
-        // no GPIO pin provided, use software timeout
-        if(this->mod->hal->millis() - start > timeout) {
-          clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
-          return(RADIOLIB_ERR_RX_TIMEOUT);
-        }
-      } else {
-        // GPIO provided, use that
-        if(this->mod->hal->digitalRead(this->mod->getGpio())) {
-          clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
-          return(RADIOLIB_ERR_RX_TIMEOUT);
-        }
-      }
+  // start reception
+  state = startReceive(timeoutValue, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
+  RADIOLIB_ASSERT(state);
 
-    }
-
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // calculate timeout in ms (500 % of expected time-on-air)
-    RadioLibTime_t timeout = (getTimeOnAir(len) * 5) / 1000;
-
-    // set mode to receive
-    state = startReceive(0, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
-    RADIOLIB_ASSERT(state);
-
-    // wait for packet reception or timeout
-    RadioLibTime_t start = this->mod->hal->millis();
-    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-      this->mod->hal->yield();
-      if(this->mod->hal->millis() - start > timeout) {
-        clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
-        return(RADIOLIB_ERR_RX_TIMEOUT);
-      }
+  // wait for packet reception or timeout
+  bool softTimeout = false;
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+    // check the blocking timeout
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      softTimeout = true;
+      break;
     }
   }
 
-  // read the received data
-  state = readData(data, len);
+  // cache the IRQ flags and clean up after reception
+  uint16_t irqFlags = getIRQFlags();
+  state = finishReceive();
+  RADIOLIB_ASSERT(state);
 
-  return(state);
+  // check whether this was a timeout or not
+  if(softTimeout || (irqFlags & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }
+
+  // read the received data
+  return(readData(data, len));
 }
 
 int16_t SX127x::scanChannel() {
@@ -581,6 +568,15 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
   return(state);
+}
+
+int16_t SX127x::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  return(clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL));
 }
 
 int16_t SX127x::startChannelScan() {

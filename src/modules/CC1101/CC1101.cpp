@@ -58,9 +58,12 @@ int16_t CC1101::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t CC1101::receive(uint8_t* data, size_t len) {
-  // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
-  RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0f);
+int16_t CC1101::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
+    timeoutInternal = 500 + (1.0f/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0f);
+  } 
 
   // start reception
   int16_t state = startReceive();
@@ -71,9 +74,8 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -83,9 +85,8 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -410,14 +411,15 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 
   // Flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
   if(SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
-
-    // set mode to standby
-    standby();
-
-    // flush Rx FIFO
-    SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    finishReceive();
   }
 
+  return(state);
+}
+
+int16_t CC1101::finishReceive() {
+  int16_t state = standby();
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
   return(state);
 }
 

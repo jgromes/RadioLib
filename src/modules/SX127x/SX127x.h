@@ -641,9 +641,11 @@ class SX127x: public PhysicalLayer {
       For overloads to receive Arduino String, see PhysicalLayer::receive.
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
       \brief Performs scan for valid %LoRa preamble in the current channel.
@@ -821,6 +823,12 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
 
     /*!
       \brief Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected.

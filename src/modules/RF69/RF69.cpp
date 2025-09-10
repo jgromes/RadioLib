@@ -122,9 +122,12 @@ int16_t RF69::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t RF69::receive(uint8_t* data, size_t len) {
-  // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
-  RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_RF69_MAX_PACKET_LENGTH*400.0f);
+int16_t RF69::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
+    timeoutInternal = 500 + (1.0f/(this->bitRate))*(RADIOLIB_RF69_MAX_PACKET_LENGTH*400.0f);
+  } 
 
   // start reception
   int16_t state = startReceive();
@@ -135,9 +138,8 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      clearIRQFlags();
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -477,10 +479,18 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   // clear internal flag so getPacketLength can return the new packet length
   this->packetLengthQueried = false;
 
-  // clear interrupt flags
-  clearIRQFlags();
+  finishReceive();
 
   return(RADIOLIB_ERR_NONE);
+}
+
+int16_t RF69::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  
+  // clear interrupt flags
+  clearIRQFlags();
+  return(state);
 }
 
 int16_t RF69::setOOK(bool enable) {
