@@ -128,9 +128,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr
 <tr class="memitem:a8d68f041b20ed765f2ff2fbdff06171f" id="r_a8d68f041b20ed765f2ff2fbdff06171f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a8d68f041b20ed765f2ff2fbdff06171f">transmit</a> (const uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a8d68f041b20ed765f2ff2fbdff06171f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
 <tr class="separator:a8d68f041b20ed765f2ff2fbdff06171f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae36e8e6042245621a182b29526fe2245" id="r_ae36e8e6042245621a182b29526fe2245"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ae36e8e6042245621a182b29526fe2245">receive</a> (uint8_t *data, size_t len) override</td></tr>
-<tr class="memdesc:ae36e8e6042245621a182b29526fe2245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary receive method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
-<tr class="separator:ae36e8e6042245621a182b29526fe2245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76463ef98c3e135fc53072cf09d9e2c2" id="r_a76463ef98c3e135fc53072cf09d9e2c2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a76463ef98c3e135fc53072cf09d9e2c2">receive</a> (uint8_t *data, size_t len, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout=0) override</td></tr>
+<tr class="memdesc:a76463ef98c3e135fc53072cf09d9e2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary receive method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
+<tr class="separator:a76463ef98c3e135fc53072cf09d9e2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adec9debf69f5ee846a5b6e34831ade3c" id="r_adec9debf69f5ee846a5b6e34831ade3c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#adec9debf69f5ee846a5b6e34831ade3c">sleep</a> () override</td></tr>
 <tr class="memdesc:adec9debf69f5ee846a5b6e34831ade3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode.  <br /></td></tr>
 <tr class="separator:adec9debf69f5ee846a5b6e34831ade3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,6 +223,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:a3983b66c83818b4082805bcafc712f00" id="r_a3983b66c83818b4082805bcafc712f00"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a3983b66c83818b4082805bcafc712f00">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a3983b66c83818b4082805bcafc712f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <br /></td></tr>
 <tr class="separator:a3983b66c83818b4082805bcafc712f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3682d05847394fe2a0758213ebb0347a" id="r_a3682d05847394fe2a0758213ebb0347a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a3682d05847394fe2a0758213ebb0347a">finishReceive</a> () override</td></tr>
+<tr class="memdesc:a3682d05847394fe2a0758213ebb0347a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done.  <br /></td></tr>
+<tr class="separator:a3682d05847394fe2a0758213ebb0347a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7f47c37eec6c7e3ebf6e6d30ebd5532" id="r_aa7f47c37eec6c7e3ebf6e6d30ebd5532"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#aa7f47c37eec6c7e3ebf6e6d30ebd5532">setFrequency</a> (float freq) override</td></tr>
 <tr class="memdesc:aa7f47c37eec6c7e3ebf6e6d30ebd5532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in bands 290.0 to 340.0 MHz, 431.0 to 510.0 MHz and 862.0 to 1020.0 MHz.  <br /></td></tr>
 <tr class="separator:aa7f47c37eec6c7e3ebf6e6d30ebd5532"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -346,9 +349,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:ada508497ee2e70170da3afe078e2fe0e" id="r_ada508497ee2e70170da3afe078e2fe0e"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ada508497ee2e70170da3afe078e2fe0e">transmit</a> (const uint8_t *data, size_t len, uint8_t addr=0)</td></tr>
 <tr class="memdesc:ada508497ee2e70170da3afe078e2fe0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Must be implemented in module class.  <br /></td></tr>
 <tr class="separator:ada508497ee2e70170da3afe078e2fe0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82617fa3fa9f21d4cd427314ecc4af8" id="r_ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a> (uint8_t *data, size_t len)</td></tr>
-<tr class="memdesc:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <br /></td></tr>
-<tr class="separator:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae608fabef91defa1e33e6a6787c68ce8" id="r_ae608fabef91defa1e33e6a6787c68ce8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ae608fabef91defa1e33e6a6787c68ce8">receive</a> (uint8_t *data, size_t len, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout=0)</td></tr>
+<tr class="memdesc:ae608fabef91defa1e33e6a6787c68ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <br /></td></tr>
+<tr class="separator:ae608fabef91defa1e33e6a6787c68ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
 <tr class="separator:a923654706eff5118ef6e84214e837f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -880,6 +883,36 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="a3682d05847394fe2a0758213ebb0347a" name="a3682d05847394fe2a0758213ebb0347a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3682d05847394fe2a0758213ebb0347a">&#9670;&#160;</a></span>finishReceive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::finishReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after reception is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a3e449fa06c9e76cf69585bfbeed1c46b" name="a3e449fa06c9e76cf69585bfbeed1c46b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3e449fa06c9e76cf69585bfbeed1c46b">&#9670;&#160;</a></span>finishTransmit()</h2>
 
@@ -1260,8 +1293,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="ab82617fa3fa9f21d4cd427314ecc4af8" name="ab82617fa3fa9f21d4cd427314ecc4af8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab82617fa3fa9f21d4cd427314ecc4af8">&#9670;&#160;</a></span>receive() <span class="overload">[1/2]</span></h2>
+<a id="ae608fabef91defa1e33e6a6787c68ce8" name="ae608fabef91defa1e33e6a6787c68ce8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae608fabef91defa1e33e6a6787c68ce8">&#9670;&#160;</a></span>receive() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1279,7 +1312,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1299,17 +1338,18 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   <table class="params">
     <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
     <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). </td></tr>
+    <tr><td class="paramname">timeout</td><td>Reception timeout in milliseconds. If set to 0, timeout period will be calculated automatically based on the radio configuration. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae608fabef91defa1e33e6a6787c68ce8">PhysicalLayer</a>.</p>
 
 </div>
 </div>
-<a id="ae36e8e6042245621a182b29526fe2245" name="ae36e8e6042245621a182b29526fe2245"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae36e8e6042245621a182b29526fe2245">&#9670;&#160;</a></span>receive() <span class="overload">[2/2]</span></h2>
+<a id="a76463ef98c3e135fc53072cf09d9e2c2" name="a76463ef98c3e135fc53072cf09d9e2c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76463ef98c3e135fc53072cf09d9e2c2">&#9670;&#160;</a></span>receive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1327,7 +1367,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1345,14 +1391,15 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <p>Blocking binary receive method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Reception timeout in milliseconds. If set to 0, timeout period will be calculated automatically based on the radio configuration. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae608fabef91defa1e33e6a6787c68ce8">PhysicalLayer</a>.</p>
 
 </div>
 </div>

@@ -152,9 +152,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:ae93500dfbcfd39837e04c0f3eaa40d97" id="r_ae93500dfbcfd39837e04c0f3eaa40d97"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae93500dfbcfd39837e04c0f3eaa40d97">startReceive</a> (uint32_t timeout, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len=0)</td></tr>
 <tr class="memdesc:ae93500dfbcfd39837e04c0f3eaa40d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <br /></td></tr>
 <tr class="separator:ae93500dfbcfd39837e04c0f3eaa40d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82617fa3fa9f21d4cd427314ecc4af8" id="r_ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a> (uint8_t *data, size_t len)</td></tr>
-<tr class="memdesc:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <br /></td></tr>
-<tr class="separator:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae608fabef91defa1e33e6a6787c68ce8" id="r_ae608fabef91defa1e33e6a6787c68ce8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae608fabef91defa1e33e6a6787c68ce8">receive</a> (uint8_t *data, size_t len, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout=0)</td></tr>
+<tr class="memdesc:ae608fabef91defa1e33e6a6787c68ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <br /></td></tr>
+<tr class="separator:ae608fabef91defa1e33e6a6787c68ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
 <tr class="separator:a923654706eff5118ef6e84214e837f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +164,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a1de26f68b939f5af79ec29cc34c7be18" id="r_a1de26f68b939f5af79ec29cc34c7be18"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">finishTransmit</a> ()</td></tr>
 <tr class="memdesc:a1de26f68b939f5af79ec29cc34c7be18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="separator:a1de26f68b939f5af79ec29cc34c7be18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d8997a3fdeaede52d9354d3bf310bf4" id="r_a8d8997a3fdeaede52d9354d3bf310bf4"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">finishReceive</a> ()</td></tr>
+<tr class="memdesc:a8d8997a3fdeaede52d9354d3bf310bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done.  <br /></td></tr>
+<tr class="separator:a8d8997a3fdeaede52d9354d3bf310bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3563453988a83d22dd07d4691543a300" id="r_a3563453988a83d22dd07d4691543a300"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a3563453988a83d22dd07d4691543a300">readData</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <br /></td></tr>
 <tr class="separator:a3563453988a83d22dd07d4691543a300"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -695,6 +698,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <p>Clears interrupt service routine to call when a packet is sent. </p>
 
 <p>Reimplemented in <a class="el" href="class_c_c1101.html#a2791ebc7fe71626407278de5852b492f">CC1101</a>, <a class="el" href="class_l_r11x0.html#a95ddec84ae2fb19989c333d42d4dc5fa">LR11x0</a>, <a class="el" href="classn_r_f24.html#a41499cf2c1a6c83a04ff89dd59e3fa56">nRF24</a>, <a class="el" href="class_r_f69.html#ac4ada0c4243b092ffb4c9812519fe947">RF69</a>, <a class="el" href="class_si443x.html#a4fdc84341b1ec602f89ad00c7ca20f26">Si443x</a>, <a class="el" href="class_s_t_m32_w_lx.html#ac11d53d29bf5a845e3797ba6bb875930">STM32WLx</a>, <a class="el" href="class_s_x126x.html#af38ba3d27ab2ac10c703eefa1c428913">SX126x</a>, <a class="el" href="class_s_x127x.html#a2ec32a52b13752d75f3076a5868c312d">SX127x</a>, and <a class="el" href="class_s_x128x.html#ab2335d91c7899291312e3cd6576446e5">SX128x</a>.</p>
+
+</div>
+</div>
+<a id="a8d8997a3fdeaede52d9354d3bf310bf4" name="a8d8997a3fdeaede52d9354d3bf310bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d8997a3fdeaede52d9354d3bf310bf4">&#9670;&#160;</a></span>finishReceive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::finishReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after reception is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_c_c1101.html#aebd7dac7d846ff25a86b5a3f6e196a6b">CC1101</a>, <a class="el" href="class_l_r11x0.html#a2c5ea392a6de9004238a739e8e8d8cf5">LR11x0</a>, <a class="el" href="classn_r_f24.html#a0862e860c08e41c7dadf8a6675711fb8">nRF24</a>, <a class="el" href="class_r_f69.html#a3682d05847394fe2a0758213ebb0347a">RF69</a>, <a class="el" href="class_si443x.html#a63e632595e968202190396e92cb70897">Si443x</a>, <a class="el" href="class_s_x126x.html#a5a6a7ff321ddb64885380dc2e7208870">SX126x</a>, <a class="el" href="class_s_x127x.html#acaec05c056dacb2c2171eaa8521be4bb">SX127x</a>, and <a class="el" href="class_s_x128x.html#a64241c3e766c03b5b4008e6e0cdb5b48">SX128x</a>.</p>
 
 </div>
 </div>
@@ -1259,8 +1292,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 </div>
 </div>
-<a id="ab82617fa3fa9f21d4cd427314ecc4af8" name="ab82617fa3fa9f21d4cd427314ecc4af8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab82617fa3fa9f21d4cd427314ecc4af8">&#9670;&#160;</a></span>receive()</h2>
+<a id="ae608fabef91defa1e33e6a6787c68ce8" name="ae608fabef91defa1e33e6a6787c68ce8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae608fabef91defa1e33e6a6787c68ce8">&#9670;&#160;</a></span>receive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1278,7 +1311,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1298,12 +1337,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
   <table class="params">
     <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
     <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). </td></tr>
+    <tr><td class="paramname">timeout</td><td>Reception timeout in milliseconds. If set to 0, timeout period will be calculated automatically based on the radio configuration. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_c_c1101.html#ab82617fa3fa9f21d4cd427314ecc4af8">CC1101</a>, <a class="el" href="class_l_r11x0.html#ab82617fa3fa9f21d4cd427314ecc4af8">LR11x0</a>, <a class="el" href="classn_r_f24.html#ab82617fa3fa9f21d4cd427314ecc4af8">nRF24</a>, <a class="el" href="class_r_f69.html#ab82617fa3fa9f21d4cd427314ecc4af8">RF69</a>, <a class="el" href="class_si443x.html#ab82617fa3fa9f21d4cd427314ecc4af8">Si443x</a>, <a class="el" href="class_s_x126x.html#ab82617fa3fa9f21d4cd427314ecc4af8">SX126x</a>, <a class="el" href="class_s_x127x.html#ab82617fa3fa9f21d4cd427314ecc4af8">SX127x</a>, <a class="el" href="class_s_x128x.html#ab82617fa3fa9f21d4cd427314ecc4af8">SX128x</a>, <a class="el" href="class_c_c1101.html#aedc1067d0334bb69ed5316146014097d">CC1101</a>, <a class="el" href="class_l_r11x0.html#a377c287f18c939c2b4da3241d8329e58">LR11x0</a>, <a class="el" href="classn_r_f24.html#a239e94511d9ee67ad3d64a49a5c4d7ac">nRF24</a>, <a class="el" href="class_r_f69.html#ae36e8e6042245621a182b29526fe2245">RF69</a>, <a class="el" href="class_si443x.html#aabca3ba8eda212938febab1df2e764b4">Si443x</a>, <a class="el" href="class_s_x126x.html#ae3db6b29c482d94eef8a43cd8b5751c0">SX126x</a>, <a class="el" href="class_s_x127x.html#adfe0d3f033a23ec2f3c2a407285d357c">SX127x</a>, and <a class="el" href="class_s_x128x.html#a32b7b674d63c36f15b7f58a2cb837a99">SX128x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_c1101.html#ae608fabef91defa1e33e6a6787c68ce8">CC1101</a>, <a class="el" href="class_l_r11x0.html#ae608fabef91defa1e33e6a6787c68ce8">LR11x0</a>, <a class="el" href="classn_r_f24.html#ae608fabef91defa1e33e6a6787c68ce8">nRF24</a>, <a class="el" href="class_r_f69.html#ae608fabef91defa1e33e6a6787c68ce8">RF69</a>, <a class="el" href="class_si443x.html#ae608fabef91defa1e33e6a6787c68ce8">Si443x</a>, <a class="el" href="class_s_x126x.html#ae608fabef91defa1e33e6a6787c68ce8">SX126x</a>, <a class="el" href="class_s_x127x.html#ae608fabef91defa1e33e6a6787c68ce8">SX127x</a>, <a class="el" href="class_s_x128x.html#ae608fabef91defa1e33e6a6787c68ce8">SX128x</a>, <a class="el" href="class_c_c1101.html#a4a7e12ef1eb2aaf9a5f39eeaa114e9f2">CC1101</a>, <a class="el" href="class_l_r11x0.html#a1c22931126f1097d0f6f88daf293c590">LR11x0</a>, <a class="el" href="classn_r_f24.html#a3f9aebfaddbc4a8f531bdb09c49c7a9f">nRF24</a>, <a class="el" href="class_r_f69.html#a76463ef98c3e135fc53072cf09d9e2c2">RF69</a>, <a class="el" href="class_si443x.html#a3dbd2a70b4d81aa712b7e004188a9955">Si443x</a>, <a class="el" href="class_s_x126x.html#adcd258b18cc83ce7b4eae91ad0e09ad3">SX126x</a>, <a class="el" href="class_s_x127x.html#a53d6b2d3cb8ce3ebb50adb35430dfd3c">SX127x</a>, and <a class="el" href="class_s_x128x.html#a53280312924c548141ae57aa226c06fe">SX128x</a>.</p>
 
 </div>
 </div>
