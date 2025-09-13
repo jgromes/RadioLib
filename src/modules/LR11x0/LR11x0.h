@@ -1373,11 +1373,23 @@ class LR11x0: public PhysicalLayer {
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len);
+
+    /*!
       \brief Get expected time-on-air for a given size of payload
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    RadioLibTime_t getTimeOnAir_old(size_t len);
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
@@ -1688,7 +1700,7 @@ class LR11x0: public PhysicalLayer {
 
     int16_t resetStats(void);
     int16_t getStats(uint16_t* nbPktReceived, uint16_t* nbPktCrcError, uint16_t* data1, uint16_t* data2);
-    int16_t getPacketType(uint8_t* type);
+    virtual int16_t getPacketType(uint8_t* type);
     int16_t getRxBufferStatus(uint8_t* len, uint8_t* startOffset);
     int16_t getPacketStatusLoRa(float* rssiPkt, float* snrPkt, float* signalRssiPkt);
     int16_t getPacketStatusGFSK(float* rssiSync, float* rssiAvg, uint8_t* rxLen, uint8_t* stat);

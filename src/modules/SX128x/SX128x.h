@@ -829,11 +829,23 @@ class SX128x: public PhysicalLayer {
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX128X_MAX_PACKET_LENGTH);
 
     /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len);
+
+    /*!
       \brief Get expected time-on-air for a given size of payload.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    RadioLibTime_t getTimeOnAir_old(size_t len);
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
@@ -913,7 +925,7 @@ class SX128x: public PhysicalLayer {
     int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
     int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
     int16_t setCad(uint8_t symbolNum);
-    uint8_t getPacketType();
+    virtual uint8_t getPacketType();
     int16_t setRfFrequency(uint32_t frf);
     int16_t setTxParams(uint8_t pwr, uint8_t rampTime = RADIOLIB_SX128X_PA_RAMP_10_US);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
@@ -942,7 +954,7 @@ class SX128x: public PhysicalLayer {
     uint8_t invertIQEnabled = RADIOLIB_SX128X_LORA_IQ_STANDARD;
 
     // cached GFSK parameters
-    float modIndexReal = 0;
+    float modIndexReal = 0, frequencyDev = 0;
     uint16_t bitRateKbps = 0;
     uint8_t bitRate = 0, modIndex = 0, shaping = 0;
     uint8_t preambleLengthGFSK = 0, syncWordLen = 0, syncWordMatch = 0, crcGFSK = 0, whitening = 0;
