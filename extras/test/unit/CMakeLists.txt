@@ -9,6 +9,8 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CUR
 file(GLOB_RECURSE TEST_SOURCES
   "tests/main.cpp"
   "tests/TestModule.cpp"
+  "tests/TestCalculateTimeOnAir.cpp"
+  "tests/TestGetTimeOnAir.cpp"
 )
 
 # create the executable
