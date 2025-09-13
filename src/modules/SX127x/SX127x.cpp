@@ -1173,35 +1173,39 @@ RadioLibTime_t SX127x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
 
 RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
   uint8_t modem = getActiveModem();
-  DataRate_t dataRate = {};
-  PacketConfig_t packetConfig = {};
+  DataRate_t dr = {};
+  PacketConfig_t pc = {};
 
   switch (modem) {
     case(RADIOLIB_SX127X_LORA): {
-      dataRate.lora.spreadingFactor = this->spreadingFactor;
-      dataRate.lora.bandwidth = this->bandwidth;
-      dataRate.lora.codingRate = this->codingRate;
+      dr.lora.spreadingFactor = this->spreadingFactor;
+      dr.lora.bandwidth = this->bandwidth;
+      dr.lora.codingRate = this->codingRate;
 
       // Get number of preamble symbols
       uint16_t n_pre = ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
 
-      packetConfig.lora.preambleLength = n_pre;
-      packetConfig.lora.implicitHeader = this->implicitHdr;
-      packetConfig.lora.crcEnabled = this->crcEnabled;
-      packetConfig.lora.ldrOptimize = this->ldroEnabled;
+      pc.lora.preambleLength = n_pre;
+      pc.lora.implicitHeader = this->implicitHdr;
+      pc.lora.crcEnabled = this->crcEnabled;
+      pc.lora.ldrOptimize = this->ldroEnabled;
 
-      return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_LORA, dataRate, packetConfig, len));
+      return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_LORA, dr, pc, len));
     }
     case(RADIOLIB_SX127X_FSK_OOK): {
-      dataRate.fsk.bitRate = this->bitRate;
-      dataRate.fsk.freqDev = this->frequencyDev;
+      dr.fsk.bitRate = this->bitRate;
+      dr.fsk.freqDev = this->frequencyDev;
 
       // get number of bits preamble
       uint16_t n_pre = (uint16_t) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
       // get the number of bits of the sync word
       uint8_t n_syncWord = (uint8_t) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 2, 0) + 1) * 8);
       // get CRC enabled status
-      bool crcEnabled = (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) == RADIOLIB_SX127X_CRC_ON);
+      bool crcEn = (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) == RADIOLIB_SX127X_CRC_ON);
+
+      pc.fsk.preambleLength = n_pre;
+      pc.fsk.syncWordLength = n_syncWord;
+      pc.fsk.crcLength = (uint8_t)(crcEn * 2);
 
       if (this->packetLengthConfig == RADIOLIB_SX127X_PACKET_FIXED) {
         // if packet size fixed -> len = fixed packet length
@@ -1211,11 +1215,7 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
         len += 1;
       }
 
-      packetConfig.fsk.preambleLength = n_pre;
-      packetConfig.fsk.syncWordLength = n_syncWord;
-      packetConfig.fsk.crcLength = (uint8_t)(crcEnabled * 2);
-
-      return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_FSK, dataRate, packetConfig, len));
+      return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_FSK, dr, pc, len));
     }
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

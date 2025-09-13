@@ -1426,13 +1426,9 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
     dr.fsk.bitRate = (float)this->bitRateKbps;
     dr.fsk.freqDev = this->frequencyDev;
 
-    uint8_t crcLength = this->crcGFSK >> 4;
-    uint16_t preambleLength = (this->preambleLengthGFSK >> 2) + 4;
-    uint8_t syncWordLen = ((this->syncWordLen >> 1) + 1) * 8;
-
-    pc.fsk.preambleLength = preambleLength;
-    pc.fsk.syncWordLength = syncWordLen;
-    pc.fsk.crcLength = crcLength;
+    pc.fsk.preambleLength = ((uint16_t)this->preambleLengthGFSK >> 2) + 4;
+    pc.fsk.syncWordLength = ((this->syncWordLen >> 1) + 1) * 8;
+    pc.fsk.crcLength = this->crcGFSK >> 4;
 
     return(calculateTimeOnAir(ModemType_t::RADIOLIB_MODEM_FSK, dr, pc, len));
   } else {

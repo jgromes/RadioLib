@@ -1439,9 +1439,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     modem = RADIOLIB_MODEM_FSK;
 
-    float bitRate = RADIOLIB_SX126X_CRYSTAL_FREQ * 32.0f * 1000.0f / (float)this->bitRate;
-
-    dataRate.fsk.bitRate = bitRate;
+    dataRate.fsk.bitRate = RADIOLIB_SX126X_CRYSTAL_FREQ * 32.0f * 1000.0f / (float)this->bitRate;
     dataRate.fsk.freqDev = (float)this->frequencyDev;
 
     uint8_t crcLen = 0;
