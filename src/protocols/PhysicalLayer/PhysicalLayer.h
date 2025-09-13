@@ -35,8 +35,8 @@ struct LoRaRate_t {
   
   /*! \brief LoRa bandwidth in kHz */
   float bandwidth;
-  
-  /*! \brief LoRa coding rate */
+
+  /*! \brief LoRa coding rate denominator */
   uint8_t codingRate;
 };
 
@@ -80,6 +80,46 @@ union DataRate_t {
 
   /*! \brief Interpretation for LR-FHSS modems */
   LrFhssRate_t lrFhss;
+};
+
+struct LoRaPacketConfig_t {
+  /*! \brief LoRa preamble length */
+  uint16_t preambleLength;
+
+  /*! \brief LoRa implicit header mode */
+  bool implicitHeader;
+
+  /*! \brief LoRa CRC mode */
+  bool crcEnabled;
+
+  /*! \brief LoRa low data rate optimization */
+  bool ldrOptimize;
+};
+
+struct FSKPacketConfig_t {
+  /*! \brief FSK preamble length in bits */
+  uint16_t preambleLength;
+
+  /*! \brief Length of the sync word in bits */
+  uint8_t syncWordLength;
+
+  /*! \brief FSK CRC length in bytes */
+  uint8_t crcLength;
+};
+
+struct LrFhssPacketConfig_t {
+  /*! \brief LR-FHSS header count (1 - 4) */
+  uint8_t hdrCount;
+};
+
+/*!
+  \union PacketConfig_t
+  \brief Common packet configuration structure
+*/
+union PacketConfig_t {
+  LoRaPacketConfig_t lora;
+  FSKPacketConfig_t fsk;
+  LrFhssPacketConfig_t lrFhss;
 };
 
 /*!

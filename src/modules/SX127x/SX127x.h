@@ -1040,9 +1040,11 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Convert from bytes to LoRa symbols.
       \param len Payload length in bytes.
+      \param dr Data rate.
+      \param pc Packet configuration.
       \returns The total number of LoRa symbols, including preamble, sync and possible header.
     */
-    float getNumSymbols(size_t len);
+    float getNumSymbols(size_t len, DataRate_t dr, PacketConfig_t pc);
 
     /*!
       \brief Get expected time-on-air for a given size of payload.
@@ -1050,6 +1052,16 @@ class SX127x: public PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len);
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
@@ -1251,6 +1263,8 @@ class SX127x: public PhysicalLayer {
     bool crcEnabled = false;
     bool ookEnabled = false;
     bool implicitHdr = false;
+    bool ldroAuto = false;
+    bool ldroEnabled = false;
 
     virtual int16_t configFSK();
     int16_t getActiveModem();
@@ -1264,7 +1278,7 @@ class SX127x: public PhysicalLayer {
 #endif
     Module* mod;
 
-    float bitRate = 0;
+    float bitRate = 0, frequencyDev = 0;
     bool crcOn = true; // default value used in FSK mode
     float dataRate = 0;
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once

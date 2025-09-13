@@ -969,6 +969,7 @@ int16_t SX128x::setFrequencyDeviation(float freqDev) {
   }
 
   // update modulation parameters
+  this->frequencyDev = newFreqDev;
   this->modIndex = modInd;
   return(setModulationParams(this->bitRate, this->modIndex, this->shaping));
 }
@@ -1334,15 +1335,13 @@ int16_t SX128x::variablePacketLengthMode(uint8_t maxLen) {
   return(setPacketMode(RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE, maxLen));
 }
 
-RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
-  // check active modem
-  uint8_t modem = getPacketType();
-  if(modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
-    // calculate number of symbols
-    float N_symbol = 0;
-    uint8_t sf = this->spreadingFactor >> 4;
-    if(this->codingRateLoRa <= RADIOLIB_SX128X_LORA_CR_4_8) {
-      // legacy coding rate - nice and simple
+RadioLibTime_t SX128x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
+  switch(modem) {
+    case (ModemType_t::RADIOLIB_MODEM_LORA): {
+      // calculate number of symbols
+      float N_symbol = 0;
+      uint8_t sf = dr.lora.spreadingFactor;
+      float cr = (float)dr.lora.codingRate;
 
       // get SF coefficients
       float coeff1 = 0;
@@ -1367,33 +1366,73 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
 
       // get CRC length
       int16_t N_bitCRC = 16;
-      if(this->crcLoRa == RADIOLIB_SX128X_LORA_CRC_OFF) {
+      if(!pc.lora.crcEnabled) {
         N_bitCRC = 0;
       }
 
       // get header length
       int16_t N_symbolHeader = 20;
-      if(this->headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT) {
+      if(pc.lora.implicitHeader) {
         N_symbolHeader = 0;
       }
 
       // calculate number of LoRa preamble symbols
-      uint32_t N_symbolPreamble = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
+      uint32_t N_symbolPreamble = pc.lora.preambleLength;
 
       // calculate the number of symbols
-      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0f + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRateLoRa + 4);
+      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0f + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * cr;
 
-    } else {
-      // long interleaving - abandon hope all ye who enter here
-      /// \todo implement this mess - SX1280 datasheet v3.0 section 7.4.4.2
-
+      // get time-on-air in us
+      return(((uint32_t(1) << sf) / dr.lora.bandwidth) * N_symbol * 1000.0f);
     }
+    case (ModemType_t::RADIOLIB_MODEM_FSK):
+      return((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (uint32_t)len * 8) / (dr.fsk.bitRate / 1000.0f)));
 
-    // get time-on-air in us
-    return(((uint32_t(1) << sf) / this->bandwidthKhz) * N_symbol * 1000.0f);
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+  
+}
 
+RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
+  // check active modem
+  uint8_t modem = getPacketType();
+  DataRate_t dr = {};
+  PacketConfig_t pc = {};
+  
+  if(modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
+    uint8_t sf = this->spreadingFactor >> 4;
+    uint8_t cr = this->codingRateLoRa;
+    // We assume same calculation for short and long interleaving, so map CR values 0-4 and 5-7 to the same values
+    if (cr < 5) {
+      cr = cr + 4;
+    } else if (cr == 7) {
+      cr = cr + 1;
+    }
+    
+    dr.lora.spreadingFactor = sf;
+    dr.lora.codingRate = cr;
+    dr.lora.bandwidth = this->bandwidthKhz;
+
+    uint16_t preambleLength = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
+    
+    pc.lora.preambleLength = preambleLength;
+    pc.lora.implicitHeader = this->headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT;
+    pc.lora.crcEnabled = this->crcLoRa == RADIOLIB_SX128X_LORA_CRC_ON;
+    pc.lora.ldrOptimize = false;
+
+    return(calculateTimeOnAir(ModemType_t::RADIOLIB_MODEM_LORA, dr, pc, len));
+  } else if (modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) {
+    dr.fsk.bitRate = (float)this->bitRateKbps;
+    dr.fsk.freqDev = this->frequencyDev;
+
+    pc.fsk.preambleLength = ((uint16_t)this->preambleLengthGFSK >> 2) + 4;
+    pc.fsk.syncWordLength = ((this->syncWordLen >> 1) + 1) * 8;
+    pc.fsk.crcLength = this->crcGFSK >> 4;
+
+    return(calculateTimeOnAir(ModemType_t::RADIOLIB_MODEM_FSK, dr, pc, len));
   } else {
-    return(((uint32_t)len * 8 * 1000) / this->bitRateKbps);
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
 }
