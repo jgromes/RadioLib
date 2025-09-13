@@ -1389,8 +1389,6 @@ class LR11x0: public PhysicalLayer {
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
 
-    RadioLibTime_t getTimeOnAir_old(size_t len);
-
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
@@ -1700,7 +1698,7 @@ class LR11x0: public PhysicalLayer {
 
     int16_t resetStats(void);
     int16_t getStats(uint16_t* nbPktReceived, uint16_t* nbPktCrcError, uint16_t* data1, uint16_t* data2);
-    virtual int16_t getPacketType(uint8_t* type);
+    int16_t getPacketType(uint8_t* type);
     int16_t getRxBufferStatus(uint8_t* len, uint8_t* startOffset);
     int16_t getPacketStatusLoRa(float* rssiPkt, float* snrPkt, float* signalRssiPkt);
     int16_t getPacketStatusGFSK(float* rssiSync, float* rssiAvg, uint8_t* rxLen, uint8_t* stat);

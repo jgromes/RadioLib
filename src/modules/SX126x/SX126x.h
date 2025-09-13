@@ -1025,8 +1025,6 @@ class SX126x: public PhysicalLayer {
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
 
-    RadioLibTime_t getTimeOnAir_old(size_t len);
-
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
@@ -1243,7 +1241,7 @@ class SX126x: public PhysicalLayer {
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
     int16_t calibrateImage(const uint8_t* data);
-    virtual uint8_t getPacketType();
+    uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev);
