@@ -1397,8 +1397,8 @@ RadioLibTime_t SX128x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
 RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
   // check active modem
   uint8_t modem = getPacketType();
-  DataRate_t dr;
-  PacketConfig_t pc;
+  DataRate_t dr = {};
+  PacketConfig_t pc = {};
   
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
     uint8_t sf = this->spreadingFactor >> 4;
@@ -1409,19 +1409,30 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
     } else if (cr == 7) {
       cr = cr + 1;
     }
-    dr = {.lora = {.spreadingFactor = sf, .bandwidth = this->bandwidthKhz, .codingRate = cr}};
+    
+    dr.lora.spreadingFactor = sf;
+    dr.lora.codingRate = cr;
+    dr.lora.bandwidth = this->bandwidthKhz;
 
     uint16_t preambleLength = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
-    pc = {.lora = { .preambleLength = preambleLength, .implicitHeader = this->headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT, .crcEnabled = this->crcLoRa == RADIOLIB_SX128X_LORA_CRC_ON, .ldrOptimize = false }};
+    
+    pc.lora.preambleLength = preambleLength;
+    pc.lora.implicitHeader = this->headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT;
+    pc.lora.crcEnabled = this->crcLoRa == RADIOLIB_SX128X_LORA_CRC_ON;
+    pc.lora.ldrOptimize = false;
 
     return(calculateTimeOnAir(ModemType_t::RADIOLIB_MODEM_LORA, dr, pc, len));
   } else if (modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) {
-    dr = {.fsk = {.bitRate = (float)this->bitRateKbps, .freqDev = this->frequencyDev}};
+    dr.fsk.bitRate = (float)this->bitRateKbps;
+    dr.fsk.freqDev = this->frequencyDev;
 
     uint8_t crcLength = this->crcGFSK >> 4;
     uint16_t preambleLength = (this->preambleLengthGFSK >> 2) + 4;
     uint8_t syncWordLen = ((this->syncWordLen >> 1) + 1) * 8;
-    pc = {.fsk = {.preambleLength = preambleLength, .syncWordLength = syncWordLen, .crcLength = crcLength}};
+
+    pc.fsk.preambleLength = preambleLength;
+    pc.fsk.syncWordLength = syncWordLen;
+    pc.fsk.crcLength = crcLength;
 
     return(calculateTimeOnAir(ModemType_t::RADIOLIB_MODEM_FSK, dr, pc, len));
   } else {

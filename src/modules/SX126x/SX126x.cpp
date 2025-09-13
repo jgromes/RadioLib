@@ -1428,23 +1428,40 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   PacketConfig_t packetConfig = {};
 
   if(type == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    dataRate = {.lora = {.spreadingFactor = this->spreadingFactor, .bandwidth = this->bandwidthKhz, .codingRate = (uint8_t)(this->codingRate + 4) } };
-    packetConfig = {.lora = {.preambleLength = this->preambleLengthLoRa, .implicitHeader = this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT, .crcEnabled = (bool)this->crcTypeLoRa, .ldrOptimize = (bool)this->ldrOptimize}};
+    dataRate.lora.spreadingFactor = this->spreadingFactor;
+    dataRate.lora.bandwidth = this->bandwidthKhz;
+    dataRate.lora.codingRate = (uint8_t)(this->codingRate + 4);
+
+    packetConfig.lora.preambleLength = this->preambleLengthLoRa;
+    packetConfig.lora.crcEnabled = (bool)this->crcTypeLoRa;
+    packetConfig.lora.implicitHeader = this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT;
+    packetConfig.lora.ldrOptimize = (bool)this->ldrOptimize;
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     modem = RADIOLIB_MODEM_FSK;
+
     float bitRate = RADIOLIB_SX126X_CRYSTAL_FREQ * 32.0f * 1000.0f / (float)this->bitRate;
-    dataRate = {.fsk = {.bitRate = bitRate, .freqDev = (float)this->frequencyDev }};
+
+    dataRate.fsk.bitRate = bitRate;
+    dataRate.fsk.freqDev = (float)this->frequencyDev;
+
     uint8_t crcLen = 0;
     if(this->crcTypeFSK == RADIOLIB_SX126X_GFSK_CRC_1_BYTE || this->crcTypeFSK == RADIOLIB_SX126X_GFSK_CRC_1_BYTE_INV) {
       crcLen = 1;
     } else if(this->crcTypeFSK == RADIOLIB_SX126X_GFSK_CRC_2_BYTE || this->crcTypeFSK == RADIOLIB_SX126X_GFSK_CRC_2_BYTE_INV) {
       crcLen = 2;
     }
-    packetConfig = {.fsk = {.preambleLength = this->preambleLengthFSK, .syncWordLength = this->syncWordLength, .crcLength = crcLen}};
+
+    packetConfig.fsk.preambleLength = this->preambleLengthFSK;
+    packetConfig.fsk.syncWordLength = this->syncWordLength;
+    packetConfig.fsk.crcLength = crcLen;
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
     modem = RADIOLIB_MODEM_LRFHSS;
-    dataRate = {.lrFhss = {.bw = this->lrFhssBw, .cr = this->lrFhssCr, .narrowGrid = this->lrFhssGridNonFcc }};
-    packetConfig = {.lrFhss = {.hdrCount = this->lrFhssHdrCount}};
+
+    dataRate.lrFhss.bw = this->lrFhssBw;
+    dataRate.lrFhss.cr = this->lrFhssCr;
+    dataRate.lrFhss.narrowGrid = this->lrFhssGridNonFcc;
+    
+    packetConfig.lrFhss.hdrCount = this->lrFhssHdrCount;
   } else {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }

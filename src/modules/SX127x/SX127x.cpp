@@ -1178,17 +1178,23 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
 
   switch (modem) {
     case(RADIOLIB_SX127X_LORA): {
+      dataRate.lora.spreadingFactor = this->spreadingFactor;
+      dataRate.lora.bandwidth = this->bandwidth;
+      dataRate.lora.codingRate = this->codingRate;
+
       // Get number of preamble symbols
       uint16_t n_pre = ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
 
-      dataRate = { .lora = { .spreadingFactor = this->spreadingFactor, .bandwidth = this->bandwidth, .codingRate = this->codingRate } };
-
-      packetConfig = { .lora = { .preambleLength = n_pre, .implicitHeader = this->implicitHdr, .crcEnabled = this->crcEnabled, .ldrOptimize = this->ldroEnabled } };
+      packetConfig.lora.preambleLength = n_pre;
+      packetConfig.lora.implicitHeader = this->implicitHdr;
+      packetConfig.lora.crcEnabled = this->crcEnabled;
+      packetConfig.lora.ldrOptimize = this->ldroEnabled;
 
       return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_LORA, dataRate, packetConfig, len));
     }
     case(RADIOLIB_SX127X_FSK_OOK): {
-      dataRate = { .fsk = { .bitRate = this->bitRate, .freqDev = this->frequencyDev } };
+      dataRate.fsk.bitRate = this->bitRate;
+      dataRate.fsk.freqDev = this->frequencyDev;
 
       // get number of bits preamble
       uint16_t n_pre = (uint16_t) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
@@ -1205,7 +1211,9 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
         len += 1;
       }
 
-      packetConfig = { .fsk = { .preambleLength = n_pre, .syncWordLength = n_syncWord, .crcLength = (uint8_t)(crcEnabled * 2) } };
+      packetConfig.fsk.preambleLength = n_pre;
+      packetConfig.fsk.syncWordLength = n_syncWord;
+      packetConfig.fsk.crcLength = (uint8_t)(crcEnabled * 2);
 
       return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_FSK, dataRate, packetConfig, len));
     }

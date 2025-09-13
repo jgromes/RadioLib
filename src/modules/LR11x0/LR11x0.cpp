@@ -1291,26 +1291,39 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
       } else if (cr == 7) {
         cr = cr + 1;
       }
-      dr = {.lora = { .spreadingFactor = this->spreadingFactor, .bandwidth = this->bandwidthKhz, .codingRate = cr } };
-      pc = {.lora = { .preambleLength = this->preambleLengthLoRa, .implicitHeader = (this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) ? true : false, \
-                      .crcEnabled = (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED) ? true : false, \
-                      .ldrOptimize = (bool)this->ldrOptimize } };
+
+      dr.lora.spreadingFactor = this->spreadingFactor;
+      dr.lora.bandwidth = this->bandwidthKhz;
+      dr.lora.codingRate = cr;
+
+      pc.lora.preambleLength = this->preambleLengthLoRa;
+      pc.lora.implicitHeader = (this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) ? true : false;
+      pc.lora.crcEnabled = (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED) ? true : false;
+      pc.lora.ldrOptimize = (bool)this->ldrOptimize;
       break;
     }
     case ModemType_t::RADIOLIB_MODEM_FSK: {
-      dr = {.fsk = { .bitRate = (float)this->bitRate / 1000.0f, .freqDev = (float)this->frequencyDev } };
+      dr.fsk.bitRate = (float)this->bitRate / 1000.0f;
+      dr.fsk.freqDev = (float)this->frequencyDev;
+
       uint8_t crcLen = 0;
       if(this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_1_BYTE || this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_1_BYTE_INV) {
         crcLen = 1;
       } else if(this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_2_BYTE || this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_2_BYTE_INV) {
         crcLen = 2;
       }
-      pc = {.fsk = { .preambleLength = this->preambleLengthGFSK, .syncWordLength = this->syncWordLength, .crcLength = crcLen } };
+      
+      pc.fsk.preambleLength = this->preambleLengthGFSK;
+      pc.fsk.syncWordLength = this->syncWordLength; 
+      pc.fsk.crcLength = crcLen;
       break;
     }
     case ModemType_t::RADIOLIB_MODEM_LRFHSS: {
-      dr = {.lrFhss = { .bw = this->lrFhssBw, .cr = this->lrFhssCr, .narrowGrid = (this->lrFhssGrid == RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC) ? true : false } };
-      pc = {.lrFhss = { .hdrCount = this->lrFhssHdrCount } };
+      dr.lrFhss.bw = this->lrFhssBw;
+      dr.lrFhss.cr = this->lrFhssCr;
+      dr.lrFhss.narrowGrid = (this->lrFhssGrid == RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC) ? true : false;
+
+      pc.lrFhss.hdrCount = this->lrFhssHdrCount;
       break;
     }
     default:
