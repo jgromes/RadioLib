@@ -4,14 +4,6 @@
 #include "modules/SX128x/SX128x.h"
 #include "modules/LR11x0/LR11x0.h"
 
-// Testable wrappers
-class SX127xTestable : public SX127x {
-public:
-    explicit SX127xTestable(Module* mod) : SX127x(mod) {}
-    void reset () {}
-    void errataFix(bool rx) {(void)rx;}
-};
-
 // --- Config structure ---
 struct RadioConfig {
     std::string name; // Radio name
@@ -57,7 +49,7 @@ BOOST_AUTO_TEST_CASE(TimeOnAir_AllRadios) {
                 SX126x dummy(nullptr);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "SX127x") {
-                SX127xTestable dummy(nullptr);
+                SX127x dummy(nullptr);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "SX128x") {
                 SX128x dummy(nullptr);

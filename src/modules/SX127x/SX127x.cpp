@@ -262,6 +262,10 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   return(readData(data, len));
 }
 
+void SX127x::reset() {
+  // should be implemented in derived class
+}
+
 int16_t SX127x::scanChannel() {
   // start CAD
   int16_t state = startChannelScan();
@@ -454,6 +458,11 @@ void SX127x::setFifoFullAction(void (*func)(void)) {
 void SX127x::clearFifoFullAction() {
   clearDio1Action();
   this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, 0x00, 5, 4);
+}
+
+void SX127x::errataFix(bool rx) {
+  (void)rx;
+  // should be implemented in derived class
 }
 
 bool SX127x::fifoAdd(uint8_t* data, int totalLen, int* remLen) {

@@ -610,9 +610,9 @@ class SX127x: public PhysicalLayer {
     int16_t begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength);
 
     /*!
-      \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implementations differ.
+      \brief Reset method. Will reset the chip to the default state using RST pin. Should be implemented in derived class since SX1272 and SX1278 implementations differ.
     */
-    virtual void reset() = 0;
+    virtual void reset();
 
     /*!
       \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
@@ -1300,7 +1300,7 @@ class SX127x: public PhysicalLayer {
     */
     static uint8_t calculateBWManExp(float bandwidth);
 
-    virtual void errataFix(bool rx) = 0;
+    virtual void errataFix(bool rx); // should be implemented in derived class
 };
 
 #endif
