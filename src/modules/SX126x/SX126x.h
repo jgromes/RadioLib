@@ -729,7 +729,7 @@ class SX126x: public PhysicalLayer {
 
       \param minSymbols Ensure that the unit will catch at least this many symbols of any preamble of the specified senderPreambleLength.
       To reliably latch a preamble, the receiver requires 8 symbols for SF7-12 and 12 symbols for SF5-6 (see datasheet section 6.1.1.1, version 1.2).
-      Defaults to 8.
+      If set to zero, the minimum required symbols will be used. Defaults to 0.
 
       If senderPreambleLength is less than 2*minSymbols + 1, this method is equivalent to startReceive().
 
@@ -737,7 +737,7 @@ class SX126x: public PhysicalLayer {
       \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \returns \ref status_codes
     */
-    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 0, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,

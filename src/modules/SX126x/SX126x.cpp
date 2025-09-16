@@ -559,6 +559,13 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   if(senderPreambleLength == 0) {
     senderPreambleLength = this->preambleLengthLoRa;
   }
+  if(minSymbols == 0) {
+    if (this->spreadingFactor <= 6) {
+      minSymbols = 12;
+    } else {
+      minSymbols = 8;
+    }
+  }
 
   // worst case is that the sender starts transmitting when we're just less than minSymbols from going back to sleep.
   // in this case, we don't catch minSymbols before going to sleep,
