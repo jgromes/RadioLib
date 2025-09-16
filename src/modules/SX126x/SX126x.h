@@ -724,7 +724,7 @@ class SX126x: public PhysicalLayer {
       \brief Calls \ref startReceiveDutyCycle with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.
       \param senderPreambleLength Expected preamble length of the messages to receive.
       If set to zero, the currently configured preamble length will be used. Defaults to zero.
-      This value should never exceed the configured preamble length. If the sender preamble length is variable, set the
+      This value cannot exceed the configured preamble length. If the sender preamble length is variable, set the
       maximum expected length by calling setPreambleLength(maximumExpectedLength) prior to this method, and use the
       minimum expected length here.
 
