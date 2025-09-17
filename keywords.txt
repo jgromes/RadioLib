@@ -230,6 +230,7 @@ beginFSK4	KEYWORD2
 setTCXO	KEYWORD2
 setDio2AsRfSwitch	KEYWORD2
 getTimeOnAir	KEYWORD2
+calculateTimeOnAir KEYWORD2
 implicitHeader	KEYWORD2
 explicitHeader	KEYWORD2
 setSyncBits	KEYWORD2

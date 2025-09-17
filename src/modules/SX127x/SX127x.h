@@ -610,9 +610,9 @@ class SX127x: public PhysicalLayer {
     int16_t begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength);
 
     /*!
-      \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implementations differ.
+      \brief Reset method. Will reset the chip to the default state using RST pin. Should be implemented in derived class since SX1272 and SX1278 implementations differ.
     */
-    virtual void reset() = 0;
+    virtual void reset();
 
     /*!
       \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
@@ -1040,9 +1040,11 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Convert from bytes to LoRa symbols.
       \param len Payload length in bytes.
+      \param dr Data rate.
+      \param pc Packet configuration.
       \returns The total number of LoRa symbols, including preamble, sync and possible header.
     */
-    float getNumSymbols(size_t len);
+    float getNumSymbols(size_t len, DataRate_t dr, PacketConfig_t pc);
 
     /*!
       \brief Get expected time-on-air for a given size of payload.
@@ -1050,6 +1052,16 @@ class SX127x: public PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len);
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
@@ -1251,6 +1263,8 @@ class SX127x: public PhysicalLayer {
     bool crcEnabled = false;
     bool ookEnabled = false;
     bool implicitHdr = false;
+    bool ldroAuto = false;
+    bool ldroEnabled = false;
 
     virtual int16_t configFSK();
     int16_t getActiveModem();
@@ -1264,7 +1278,7 @@ class SX127x: public PhysicalLayer {
 #endif
     Module* mod;
 
-    float bitRate = 0;
+    float bitRate = 0, frequencyDev = 0;
     bool crcOn = true; // default value used in FSK mode
     float dataRate = 0;
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
@@ -1286,7 +1300,7 @@ class SX127x: public PhysicalLayer {
     */
     static uint8_t calculateBWManExp(float bandwidth);
 
-    virtual void errataFix(bool rx) = 0;
+    virtual void errataFix(bool rx); // should be implemented in derived class
 };
 
 #endif

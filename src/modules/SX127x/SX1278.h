@@ -336,12 +336,6 @@ class SX1278: public SX127x {
     int16_t configFSK() override;
     void errataFix(bool rx) override;
 
-#if !RADIOLIB_GODMODE
-  private:
-#endif
-    bool ldroAuto = true;
-    bool ldroEnabled = false;
-
 };
 
 /*!
