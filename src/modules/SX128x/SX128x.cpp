@@ -394,7 +394,7 @@ int16_t SX128x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   }
 
   // check whether this was a timeout or not
-  if(softTimeout || (getIRQFlags() & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+  if(softTimeout || (getIrqStatus() & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
     (void)finishReceive();
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
