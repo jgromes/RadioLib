@@ -94,7 +94,7 @@ var class_s_x126x =
     [ "startReceive", "class_s_x126x.html#a66ad433561b02fe61b09afd735ce56cc", null ],
     [ "startReceive", "class_s_x126x.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
     [ "startReceiveDutyCycle", "class_s_x126x.html#af9352e49d893151d68a314109140fe29", null ],
-    [ "startReceiveDutyCycleAuto", "class_s_x126x.html#ad0f95b62ee987010b00f4be75bf9ab4e", null ],
+    [ "startReceiveDutyCycleAuto", "class_s_x126x.html#ae90588c594acb3ae660ee05ea724a1ad", null ],
     [ "startTransmit", "class_s_x126x.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_s_x126x.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "transmit", "class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534", null ],
