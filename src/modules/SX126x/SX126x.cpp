@@ -2261,12 +2261,8 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
+  // reset the module and verify startup (module will be in standby mode after this)
+  int16_t state = reset(true);
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
