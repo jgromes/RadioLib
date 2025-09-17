@@ -554,6 +554,9 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
 int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   if(senderPreambleLength == 0) {
     senderPreambleLength = this->preambleLengthLoRa;
+  } else if (senderPreambleLength > this->preambleLengthLoRa) {
+    // the unit must be configured to expect a preamble length at least as long as the sender is using
+    return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
   }
   if(minSymbols == 0) {
     if (this->spreadingFactor <= 6) {
