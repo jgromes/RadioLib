@@ -13,5 +13,7 @@ var searchData=
   ['control_10',['control',['../class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f',1,'AX25Frame']]],
   ['countrycode_11',['countryCode',['../struct_l_r11x0_wifi_result_extended__t.html#ae9bf4bc28c72985edc131ad1b69cb06a',1,'LR11x0WifiResultExtended_t']]],
   ['cr_12',['cr',['../struct_lr_fhss_rate__t.html#a3eb7a2c2f4f23face4d6706aa8084c6b',1,'LrFhssRate_t']]],
-  ['currentchannel_13',['currentChannel',['../struct_l_r11x0_wifi_result_extended__t.html#a7314104129f9ceb6d91c85578d85d252',1,'LR11x0WifiResultExtended_t']]]
+  ['crcenabled_13',['crcEnabled',['../struct_lo_ra_packet_config__t.html#a83077478953036e94611edbbc28dd9e3',1,'LoRaPacketConfig_t']]],
+  ['crclength_14',['crcLength',['../struct_f_s_k_packet_config__t.html#a4e93d166a130a95bada45e79ac61200b',1,'FSKPacketConfig_t']]],
+  ['currentchannel_15',['currentChannel',['../struct_l_r11x0_wifi_result_extended__t.html#a7314104129f9ceb6d91c85578d85d252',1,'LR11x0WifiResultExtended_t']]]
 ];

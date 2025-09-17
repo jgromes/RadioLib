@@ -11,5 +11,6 @@ var searchData=
   ['power_8',['power',['../struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff',1,'LoRaWANEvent_t']]],
   ['powermax_9',['powerMax',['../struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c',1,'LoRaWANBand_t']]],
   ['powernumsteps_10',['powerNumSteps',['../struct_lo_ra_w_a_n_band__t.html#aa22d7d7670846b36d3104439d18e5f15',1,'LoRaWANBand_t']]],
-  ['protocolid_11',['protocolID',['../class_a_x25_frame.html#aa8895fea37220c82f68bd320331595c8',1,'AX25Frame']]]
+  ['preamblelength_11',['preamblelength',['../struct_lo_ra_packet_config__t.html#acde781dd06ef08cb06128f10ab72168d',1,'LoRaPacketConfig_t::preambleLength'],['../struct_f_s_k_packet_config__t.html#a99ecb4e55423767e340fcdad1b081c63',1,'FSKPacketConfig_t::preambleLength']]],
+  ['protocolid_12',['protocolID',['../class_a_x25_frame.html#aa8895fea37220c82f68bd320331595c8',1,'AX25Frame']]]
 ];

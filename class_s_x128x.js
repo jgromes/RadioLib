@@ -5,6 +5,7 @@ var class_s_x128x =
     [ "beginBLE", "class_s_x128x.html#ace5ede905bf85aada0c61b9cfaaea127", null ],
     [ "beginFLRC", "class_s_x128x.html#a2c4a24623c5fd27b3cc937e55783d709", null ],
     [ "beginGFSK", "class_s_x128x.html#a6ed60dfbd142315bb4e1abd2555a470a", null ],
+    [ "calculateTimeOnAir", "class_s_x128x.html#a3e6bc7c2223985643fcc317df9cb4014", null ],
     [ "checkOutputPower", "class_s_x128x.html#a5e876e02fd527390905004718225c25f", null ],
     [ "clearDio1Action", "class_s_x128x.html#ab8a3fe8e2843fa039ef369668f1a423f", null ],
     [ "clearIrqFlags", "class_s_x128x.html#afb95ca5f2c8494042fbbe52802fc265d", null ],

@@ -19,5 +19,6 @@ var searchData=
   ['statuspos_16',['statusPos',['../struct_module_1_1_s_p_i_config__t.html#a5b689d2722b8980a211a562ed394d23e',1,'Module::SPIConfig_t']]],
   ['stream_17',['stream',['../struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681',1,'Module::SPIConfig_t']]],
   ['svid_18',['svId',['../struct_l_r11x0_gnss_satellite__t.html#a0513395fd04c052b862c443dfbe75e84',1,'LR11x0GnssSatellite_t']]],
-  ['symnum_19',['symNum',['../struct_c_a_d_scan_config__t.html#a5cb000f071f740c8cc81ea2f04dd9b60',1,'CADScanConfig_t']]]
+  ['symnum_19',['symNum',['../struct_c_a_d_scan_config__t.html#a5cb000f071f740c8cc81ea2f04dd9b60',1,'CADScanConfig_t']]],
+  ['syncwordlength_20',['syncWordLength',['../struct_f_s_k_packet_config__t.html#a57ba915ccd7c896fc7f9642868c4a33e',1,'FSKPacketConfig_t']]]
 ];

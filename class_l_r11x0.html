@@ -313,6 +313,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memitem:af8e9b885b60a9bae56bb1f59d7d01fd1" id="r_af8e9b885b60a9bae56bb1f59d7d01fd1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#af8e9b885b60a9bae56bb1f59d7d01fd1">getLoRaRxHeaderInfo</a> (uint8_t *cr, bool *hasCRC)</td></tr>
 <tr class="memdesc:af8e9b885b60a9bae56bb1f59d7d01fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LoRa header information from last received packet. Only valid in explicit header mode.  <br /></td></tr>
 <tr class="separator:af8e9b885b60a9bae56bb1f59d7d01fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa045aa59d10d001de214c73e1cce5d9" id="r_afa045aa59d10d001de214c73e1cce5d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#afa045aa59d10d001de214c73e1cce5d9">calculateTimeOnAir</a> (ModemType_t modem, <a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, <a class="el" href="union_packet_config__t.html">PacketConfig_t</a> pc, size_t len)</td></tr>
+<tr class="memdesc:afa045aa59d10d001de214c73e1cce5d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.  <br /></td></tr>
+<tr class="separator:afa045aa59d10d001de214c73e1cce5d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abccf5dc80aab71090a5f19bfffa0201d" id="r_abccf5dc80aab71090a5f19bfffa0201d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:abccf5dc80aab71090a5f19bfffa0201d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <br /></td></tr>
 <tr class="separator:abccf5dc80aab71090a5f19bfffa0201d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -888,6 +891,58 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="afa045aa59d10d001de214c73e1cce5d9" name="afa045aa59d10d001de214c73e1cce5d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa045aa59d10d001de214c73e1cce5d9">&#9670;&#160;</a></span>calculateTimeOnAir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> LR11x0::calculateTimeOnAir </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_packet_config__t.html">PacketConfig_t</a>&#160;</td>
+          <td class="paramname"><em>pc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Modem type. </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate. </td></tr>
+    <tr><td class="paramname">pc</td><td>Packet config. </td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
 
 </div>
 </div>
@@ -1680,7 +1735,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>implement this mess - <a class="el" href="class_s_x1280.html" title="Derived class for SX1280 modules.">SX1280</a> datasheet v3.0 section 7.4.4.2 </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a50e730a894f60b58034507ad7730dd3c">PhysicalLayer</a>.</p>
 

@@ -173,11 +173,11 @@ var searchData=
   ['stream_170',['stream',['../struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681',1,'Module::SPIConfig_t']]],
   ['svid_171',['svId',['../struct_l_r11x0_gnss_satellite__t.html#a0513395fd04c052b862c443dfbe75e84',1,'LR11x0GnssSatellite_t']]],
   ['sx1231_172',['sx1231',['../class_s_x1231.html#a9f39cd41fa0c934fe871b6cbfa7ce269',1,'SX1231::SX1231()'],['../class_s_x1231.html',1,'SX1231']]],
-  ['sx1233_173',['sx1233',['../class_s_x1233.html#a23d2fbf2473e48d46e341e6afe31f82f',1,'SX1233::SX1233()'],['../class_s_x1233.html',1,'SX1233']]],
+  ['sx1233_173',['sx1233',['../class_s_x1233.html',1,'SX1233'],['../class_s_x1233.html#a23d2fbf2473e48d46e341e6afe31f82f',1,'SX1233::SX1233()']]],
   ['sx1261_174',['sx1261',['../class_s_x1261.html#a7d74b8684dd49b5b3ba23baf336f1c35',1,'SX1261::SX1261()'],['../class_s_x1261.html',1,'SX1261']]],
   ['sx1262_175',['sx1262',['../class_s_x1262.html#a0da317728ec8ef23c5032d550c9acb8d',1,'SX1262::SX1262()'],['../class_s_x1262.html',1,'SX1262']]],
   ['sx1268_176',['sx1268',['../class_s_x1268.html#a6bc50597d50fd9a2387628e452eac42f',1,'SX1268::SX1268()'],['../class_s_x1268.html',1,'SX1268']]],
-  ['sx126x_177',['sx126x',['../class_s_x126x.html',1,'SX126x'],['../class_s_x126x.html#aaca5a8fa8a3e634dd1b5b4c2bb5058d8',1,'SX126x::SX126x()']]],
+  ['sx126x_177',['sx126x',['../class_s_x126x.html#aaca5a8fa8a3e634dd1b5b4c2bb5058d8',1,'SX126x::SX126x()'],['../class_s_x126x.html',1,'SX126x']]],
   ['sx1272_178',['sx1272',['../class_s_x1272.html',1,'SX1272'],['../class_s_x1272.html#a9ffe467a6baaeaa079e02c3f1f43f626',1,'SX1272::SX1272()']]],
   ['sx1273_179',['sx1273',['../class_s_x1273.html',1,'SX1273'],['../class_s_x1273.html#ad0387b22d6dcc876bc5f85174714149b',1,'SX1273::SX1273()']]],
   ['sx1276_180',['sx1276',['../class_s_x1276.html',1,'SX1276'],['../class_s_x1276.html#a91c31d4dbd6d35ef6e42dba6dad8197b',1,'SX1276::SX1276()']]],
@@ -189,5 +189,6 @@ var searchData=
   ['sx1281_186',['sx1281',['../class_s_x1281.html#a0dd7678cdf7fad9ecfc9139c5092f998',1,'SX1281::SX1281()'],['../class_s_x1281.html',1,'SX1281']]],
   ['sx1282_187',['sx1282',['../class_s_x1282.html#ae90b7dcd7167c4cbe20e33ced04e4232',1,'SX1282::SX1282()'],['../class_s_x1282.html',1,'SX1282']]],
   ['sx128x_188',['sx128x',['../class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7',1,'SX128x::SX128x()'],['../class_s_x128x.html',1,'SX128x']]],
-  ['symnum_189',['symNum',['../struct_c_a_d_scan_config__t.html#a5cb000f071f740c8cc81ea2f04dd9b60',1,'CADScanConfig_t']]]
+  ['symnum_189',['symNum',['../struct_c_a_d_scan_config__t.html#a5cb000f071f740c8cc81ea2f04dd9b60',1,'CADScanConfig_t']]],
+  ['syncwordlength_190',['syncWordLength',['../struct_f_s_k_packet_config__t.html#a57ba915ccd7c896fc7f9642868c4a33e',1,'FSKPacketConfig_t']]]
 ];

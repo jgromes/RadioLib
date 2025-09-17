@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('class_s_x127x.html',''); initResizable
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_s_x127x-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SX127x Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">SX127x Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -125,9 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ddbde7fd8eb06d38abfb658eee29bc1" id="r_a7ddbde7fd8eb06d38abfb658eee29bc1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7ddbde7fd8eb06d38abfb658eee29bc1">begin</a> (const uint8_t *chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength)</td></tr>
 <tr class="memdesc:a7ddbde7fd8eb06d38abfb658eee29bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.  <br /></td></tr>
 <tr class="separator:a7ddbde7fd8eb06d38abfb658eee29bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3321ac4a7f65e73004202486db9b1d68" id="r_a3321ac4a7f65e73004202486db9b1d68"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a3321ac4a7f65e73004202486db9b1d68">reset</a> ()=0</td></tr>
-<tr class="memdesc:a3321ac4a7f65e73004202486db9b1d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ.  <br /></td></tr>
-<tr class="separator:a3321ac4a7f65e73004202486db9b1d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f510359be44fd633037810587f1ea2" id="r_a15f510359be44fd633037810587f1ea2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a15f510359be44fd633037810587f1ea2">reset</a> ()</td></tr>
+<tr class="memdesc:a15f510359be44fd633037810587f1ea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. Should be implemented in derived class since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ.  <br /></td></tr>
+<tr class="separator:a15f510359be44fd633037810587f1ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66fe001474583d490df1d0b38260bf8e" id="r_a66fe001474583d490df1d0b38260bf8e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a66fe001474583d490df1d0b38260bf8e">beginFSK</a> (const uint8_t *chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</td></tr>
 <tr class="memdesc:a66fe001474583d490df1d0b38260bf8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <br /></td></tr>
 <tr class="separator:a66fe001474583d490df1d0b38260bf8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,12 +315,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:a1d39296b40e7282ef44d8f376065e92c" id="r_a1d39296b40e7282ef44d8f376065e92c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c">variablePacketLengthMode</a> (uint8_t maxLen=RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)</td></tr>
 <tr class="memdesc:a1d39296b40e7282ef44d8f376065e92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in variable packet length mode. Available in FSK mode only.  <br /></td></tr>
 <tr class="separator:a1d39296b40e7282ef44d8f376065e92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcc10ab36404aaaee3fe7a1be6841511" id="r_abcc10ab36404aaaee3fe7a1be6841511"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#abcc10ab36404aaaee3fe7a1be6841511">getNumSymbols</a> (size_t len)</td></tr>
-<tr class="memdesc:abcc10ab36404aaaee3fe7a1be6841511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from bytes to LoRa symbols.  <br /></td></tr>
-<tr class="separator:abcc10ab36404aaaee3fe7a1be6841511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a655ce24df39a164498977b0f532752f6" id="r_a655ce24df39a164498977b0f532752f6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a655ce24df39a164498977b0f532752f6">getNumSymbols</a> (size_t len, <a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, <a class="el" href="union_packet_config__t.html">PacketConfig_t</a> pc)</td></tr>
+<tr class="memdesc:a655ce24df39a164498977b0f532752f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from bytes to LoRa symbols.  <br /></td></tr>
+<tr class="separator:a655ce24df39a164498977b0f532752f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e7ecbc92c9d70f93211d21399d237d0" id="r_a9e7ecbc92c9d70f93211d21399d237d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9e7ecbc92c9d70f93211d21399d237d0">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:a9e7ecbc92c9d70f93211d21399d237d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <br /></td></tr>
 <tr class="separator:a9e7ecbc92c9d70f93211d21399d237d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ca1a0a7a4990315b106122812ac3bd5" id="r_a4ca1a0a7a4990315b106122812ac3bd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a4ca1a0a7a4990315b106122812ac3bd5">calculateTimeOnAir</a> (ModemType_t modem, <a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, <a class="el" href="union_packet_config__t.html">PacketConfig_t</a> pc, size_t len)</td></tr>
+<tr class="memdesc:a4ca1a0a7a4990315b106122812ac3bd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.  <br /></td></tr>
+<tr class="separator:a4ca1a0a7a4990315b106122812ac3bd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbc4021380dc557114625dc51262cf90" id="r_adbc4021380dc557114625dc51262cf90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adbc4021380dc557114625dc51262cf90">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
 <tr class="memdesc:adbc4021380dc557114625dc51262cf90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <br /></td></tr>
 <tr class="separator:adbc4021380dc557114625dc51262cf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -715,6 +718,58 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a4ca1a0a7a4990315b106122812ac3bd5" name="a4ca1a0a7a4990315b106122812ac3bd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ca1a0a7a4990315b106122812ac3bd5">&#9670;&#160;</a></span>calculateTimeOnAir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> SX127x::calculateTimeOnAir </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_packet_config__t.html">PacketConfig_t</a>&#160;</td>
+          <td class="paramname"><em>pc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Modem type. </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate. </td></tr>
+    <tr><td class="paramname">pc</td><td>Packet config. </td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
 
 </div>
 </div>
@@ -1383,8 +1438,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="abcc10ab36404aaaee3fe7a1be6841511" name="abcc10ab36404aaaee3fe7a1be6841511"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcc10ab36404aaaee3fe7a1be6841511">&#9670;&#160;</a></span>getNumSymbols()</h2>
+<a id="a655ce24df39a164498977b0f532752f6" name="a655ce24df39a164498977b0f532752f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a655ce24df39a164498977b0f532752f6">&#9670;&#160;</a></span>getNumSymbols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1393,8 +1448,24 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="memname">float SX127x::getNumSymbols </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em></td><td>)</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_packet_config__t.html">PacketConfig_t</a>&#160;</td>
+          <td class="paramname"><em>pc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1403,6 +1474,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate. </td></tr>
+    <tr><td class="paramname">pc</td><td>Packet configuration. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1950,8 +2023,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a3321ac4a7f65e73004202486db9b1d68" name="a3321ac4a7f65e73004202486db9b1d68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3321ac4a7f65e73004202486db9b1d68">&#9670;&#160;</a></span>reset()</h2>
+<a id="a15f510359be44fd633037810587f1ea2" name="a15f510359be44fd633037810587f1ea2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15f510359be44fd633037810587f1ea2">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1960,7 +2033,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void SX127x::reset </td>
+          <td class="memname">void SX127x::reset </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1968,14 +2041,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ. </p>
+<p>Reset method. Will reset the chip to the default state using RST pin. Should be implemented in derived class since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ. </p>
 
-<p>Implemented in <a class="el" href="class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac">SX1272</a>, and <a class="el" href="class_s_x1278.html#a6d60902ac59b653a9eb83e82a932f7ad">SX1278</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac">SX1272</a>, and <a class="el" href="class_s_x1278.html#a6d60902ac59b653a9eb83e82a932f7ad">SX1278</a>.</p>
 
 </div>
 </div>
