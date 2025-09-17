@@ -248,13 +248,9 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     }
   }
 
-  // cache the IRQ flags and clean up after reception
-  uint16_t irqFlags = getIRQFlags();
-  state = finishReceive();
-  RADIOLIB_ASSERT(state);
-
   // check whether this was a timeout or not
-  if(softTimeout || (irqFlags & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+  if(softTimeout || (getIRQFlags() & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+    (void)finishReceive();
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
