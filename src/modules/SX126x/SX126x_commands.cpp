@@ -100,6 +100,11 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD, NULL, 0));
 }
 
+int16_t SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax, uint8_t paLut) {
+  const uint8_t data[] = { paDutyCycle, hpMax, deviceSel, paLut };
+  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PA_CONFIG, data, 4));
+}
+
 int16_t SX126x::writeRegister(uint16_t addr, const uint8_t* data, uint8_t numBytes) {
   this->mod->SPIwriteRegisterBurst(addr, data, numBytes);
   return(RADIOLIB_ERR_NONE);
