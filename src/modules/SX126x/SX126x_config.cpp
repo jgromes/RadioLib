@@ -1,5 +1,8 @@
 #include "SX126x.h"
 
+#include <math.h>
+#include <string.h>
+
 // this file contains all configuration methods
 // of the SX126x, which let user control the
 // modulation properties, packet configuration etc.
