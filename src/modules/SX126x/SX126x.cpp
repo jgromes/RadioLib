@@ -1347,8 +1347,8 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX126X_CMD_GET_STATUS;
   this->mod->spiConfig.stream = true;
   this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  
-  // try to find the SX126x chip
+
+  // find the SX126x chip - this will also reset the module and verify the module
   if(!SX126x::findChip(this->chipType)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
     this->mod->term();
@@ -1356,9 +1356,7 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
 
-  // reset the module and verify startup (module will be in standby mode after this)
-  int16_t state = reset(true);
-  RADIOLIB_ASSERT(state);
+  int16_t state = RADIOLIB_ERR_NONE;
 
   // set TCXO control, if requested
   if(!this->XTAL && tcxoVoltage > 0.0f) {
@@ -1396,7 +1394,7 @@ bool SX126x::findChip(const char* verStr) {
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     // reset the module
-    reset();
+    reset(true);
 
     // read the version string
     char version[16] = { 0 };
