@@ -552,6 +552,16 @@ class PhysicalLayer {
       \returns SNR of the last received packet in dB.
     */
     virtual float getSNR();
+    
+    /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    virtual RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len);
 
     /*!
       \brief Get expected time-on-air for a given size of payload

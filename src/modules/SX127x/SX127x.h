@@ -1061,7 +1061,7 @@ class SX127x: public PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len);
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)

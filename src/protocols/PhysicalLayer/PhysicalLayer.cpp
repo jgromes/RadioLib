@@ -312,6 +312,14 @@ float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+RadioLibTime_t PhysicalLayer::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
+  (void)modem;
+  (void)dr;
+  (void)pc;
+  (void)len;
+  return(0);
+}
+
 RadioLibTime_t PhysicalLayer::getTimeOnAir(size_t len) {
   (void)len;
   return(0);
