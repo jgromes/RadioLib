@@ -4,7 +4,7 @@ var class_s_x127x =
     [ "begin", "class_s_x127x.html#a7ddbde7fd8eb06d38abfb658eee29bc1", null ],
     [ "beginFSK", "class_s_x127x.html#a66fe001474583d490df1d0b38260bf8e", null ],
     [ "calculateRxTimeout", "class_s_x127x.html#adbc4021380dc557114625dc51262cf90", null ],
-    [ "calculateTimeOnAir", "class_s_x127x.html#a4ca1a0a7a4990315b106122812ac3bd5", null ],
+    [ "calculateTimeOnAir", "class_s_x127x.html#a99cb7d326f6d7effb6301d730a24def1", null ],
     [ "clearChannelScanAction", "class_s_x127x.html#a0ce9beca21406e3556b3518370947ee2", null ],
     [ "clearDio0Action", "class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823", null ],
     [ "clearDio1Action", "class_s_x127x.html#a9b6532a25e1730973ac08146008adca5", null ],

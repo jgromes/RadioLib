@@ -17,7 +17,7 @@ var class_l_r11x0 =
     [ "beginGNSS", "class_l_r11x0.html#ad7f31060cbab41ad53ee6fa7126cd17b", null ],
     [ "beginLRFHSS", "class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8", null ],
     [ "calculateRxTimeout", "class_l_r11x0.html#a260c7f4ee4739e532ddb465a276205d3", null ],
-    [ "calculateTimeOnAir", "class_l_r11x0.html#afa045aa59d10d001de214c73e1cce5d9", null ],
+    [ "calculateTimeOnAir", "class_l_r11x0.html#a39d6498b45eb519257f8b80d743b3880", null ],
     [ "calibrateImageRejection", "class_l_r11x0.html#adc8fbcfff7cd3b801dcee22e87bc2598", null ],
     [ "checkDataRate", "class_l_r11x0.html#a4d18ad719be79c083f2b0ce77bbaa448", null ],
     [ "clearIrqAction", "class_l_r11x0.html#ab167c4dc14e80d19f8b33d68c3f90d98", null ],
