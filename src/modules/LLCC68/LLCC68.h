@@ -38,10 +38,12 @@ class LLCC68: public SX1262 {
       If you are seeing -706/-707 error codes, it likely means you are using a module with TCXO.
       To use TCXO, either set this value to its reference voltage, or set SX126x::XTAL to false.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+      \param resetModule Whether to perform a module reset during initialization. Defaults to true.
+      Setting this to false assumes that the module is already in a known state.
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
-    
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 0, bool useRegulatorLDO = false, bool resetModule = true) override;
+
     /*!
       \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
