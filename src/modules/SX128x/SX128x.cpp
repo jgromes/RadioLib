@@ -315,7 +315,12 @@ int16_t SX128x::reset(bool verify) {
 
 int16_t SX128x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
-  if(len > RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
+  if(this->codingRateLoRa == RADIOLIB_SX128X_LORA_CR_4_8_LI && this->crcLoRa == RADIOLIB_SX128X_LORA_CRC_ON) {
+    // Long Interleaver at CR 4/8 supports up to 253 bytes if CRC is enabled
+    if(len > RADIOLIB_SX128X_MAX_PACKET_LENGTH - 2) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }
+  } else if(len > RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
