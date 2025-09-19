@@ -200,6 +200,17 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // check packet length
+  if(this->codingRate > RADIOLIB_SX126X_LORA_CR_4_8) {
+    // Long Interleaver needs at least 8 bytes
+    if(len < 8) {
+      return(RADIOLIB_ERR_PACKET_TOO_SHORT);
+    }
+
+    // Long Interleaver supports up to 253 bytes if CRC is enabled
+    if(this->crcTypeLoRa == RADIOLIB_SX126X_LORA_CRC_ON && (len > RADIOLIB_SX126X_MAX_PACKET_LENGTH - 2)) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }  
+  } 
   if(len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
@@ -847,9 +858,17 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   PacketConfig_t packetConfig = {};
 
   if(type == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
+    uint8_t cr = this->codingRate;
+    // We assume same calculation for short and long interleaving, so map CR values 0-4 and 5-7 to the same values
+    if (cr < 5) {
+      cr = cr + 4;
+    } else if (cr == 7) {
+      cr = cr + 1;
+    }
+
+    dataRate.lora.codingRate = cr;
     dataRate.lora.spreadingFactor = this->spreadingFactor;
     dataRate.lora.bandwidth = this->bandwidthKhz;
-    dataRate.lora.codingRate = (uint8_t)(this->codingRate + 4);
 
     packetConfig.lora.preambleLength = this->preambleLengthLoRa;
     packetConfig.lora.crcEnabled = (bool)this->crcTypeLoRa;
