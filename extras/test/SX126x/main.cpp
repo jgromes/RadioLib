@@ -13,7 +13,7 @@ SX1261 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
 int main(int argc, char** argv) {
   int state = RADIOLIB_ERR_UNKNOWN;
 
-  state = radio.begin();
+  state = radio.begin({});
   printf("[SX1261] Test:begin() = %d\n", state);
   RADIOLIB_TEST_ASSERT(state);
 

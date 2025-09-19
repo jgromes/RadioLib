@@ -39,7 +39,7 @@ void setup() {
 
   // initialize SX1262 FSK modem with default settings
   Serial.print(F("[SX1262] Initializing ... "));
-  int state = radio.beginFSK();
+  int state = radio.beginFSK({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -50,8 +50,8 @@ void setup() {
 
   // if needed, you can switch between LoRa and FSK modes
   //
-  // radio.begin()       start LoRa mode (and disable FSK)
-  // radio.beginFSK()    start FSK mode (and disable LoRa)
+  // radio.begin({})       start LoRa mode (and disable FSK)
+  // radio.beginFSK({})    start FSK mode (and disable LoRa)
 
   // the following settings can also
   // be modified at run-time
