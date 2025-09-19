@@ -1111,7 +1111,7 @@ int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, const u
   if(mcDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
     mcDr = this->channels[RADIOLIB_LORAWAN_RX2].dr;
   }
-  if(this->band->dataRates[mcDr] == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+  if(this->band->dataRates[mcDr].modem != RADIOLIB_MODEM_NONE) {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
 
@@ -1210,6 +1210,7 @@ void LoRaWANNode::adrBackoff() {
 
   // if datarate can be decreased, try it
   if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr > 0) {
+    // if(this->dwellTimeUp && this->phyLayer->calculateTimeOnAir())
     uint8_t oldDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
 
     if(this->setDatarate(oldDr - 1) == RADIOLIB_ERR_NONE) {
@@ -2273,7 +2274,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         macDrUp = currentDr;
       }
 
-      if(this->band->dataRates[macDrUp] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      if(this->band->dataRates[macDrUp].modem != RADIOLIB_MODEM_NONE) {
         // check if the module supports this data rate
         DataRate_t dr;
         state = this->findDataRate(macDrUp, &dr);
@@ -2399,7 +2400,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         }
       }
       if(macRx2Dr >= this->band->rx2.drMin && macRx2Dr <= this->band->rx2.drMax) {
-        if(this->band->dataRates[macRx2Dr] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+        if(this->band->dataRates[macRx2Dr].modem != RADIOLIB_MODEM_NONE) {
           if(this->findDataRate(macRx2Dr, &dr) == RADIOLIB_ERR_NONE) {
             rx2DrAck = 1;
           }
@@ -2465,8 +2466,8 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
 
       // check if the outermost datarates are defined and if the device supports them
       DataRate_t dr;
-      if(this->band->dataRates[macDrMin] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED && this->findDataRate(macDrMin, &dr) == RADIOLIB_ERR_NONE) {
-        if(this->band->dataRates[macDrMax] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED && this->findDataRate(macDrMax, &dr) == RADIOLIB_ERR_NONE) {
+      if(this->band->dataRates[macDrMin].modem != RADIOLIB_MODEM_NONE && this->findDataRate(macDrMin, &dr) == RADIOLIB_ERR_NONE) {
+        if(this->band->dataRates[macDrMax].modem != RADIOLIB_MODEM_NONE && this->findDataRate(macDrMax, &dr) == RADIOLIB_ERR_NONE) {
           drAck = 1;
         }
       }
@@ -3055,7 +3056,7 @@ int16_t LoRaWANNode::setRx2Dr(uint8_t dr) {
   }
 
   // check if datarate is available in the selected band
-  if(this->band->dataRates[dr] == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+  if(this->band->dataRates[dr].modem != RADIOLIB_MODEM_NONE) {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
 
@@ -3161,8 +3162,8 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   RADIOLIB_ASSERT(state);
 
   // set modem-dependent functions
-  switch(this->band->dataRates[chnl->dr] & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
-    case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
+  switch(this->band->dataRates[chnl->dr].modem) {
+    case(RADIOLIB_MODEM_LORA):
       if(modem != ModemType_t::RADIOLIB_MODEM_LORA) {
         state = this->phyLayer->setModem(ModemType_t::RADIOLIB_MODEM_LORA);
         RADIOLIB_ASSERT(state);
@@ -3177,7 +3178,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       RADIOLIB_ASSERT(state);
       break;
     
-    case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
+    case(RADIOLIB_MODEM_FSK):
       if(modem != ModemType_t::RADIOLIB_MODEM_FSK) {
         state = this->phyLayer->setModem(ModemType_t::RADIOLIB_MODEM_FSK);
         RADIOLIB_ASSERT(state);
@@ -3189,7 +3190,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       RADIOLIB_ASSERT(state);
       break;
     
-    case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
+    case(RADIOLIB_MODEM_LRFHSS):
       if(modem != ModemType_t::RADIOLIB_MODEM_LRFHSS) {
         state = this->phyLayer->setModem(ModemType_t::RADIOLIB_MODEM_LRFHSS);
         RADIOLIB_ASSERT(state);
@@ -3658,73 +3659,15 @@ void LoRaWANNode::removePackage(uint8_t packageId) {
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
   int16_t state = RADIOLIB_ERR_NONE;
 
-  ModemType_t modemNew;
-
-  uint8_t dataRateBand = this->band->dataRates[dr];
-
-  switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
-    case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
-      modemNew = ModemType_t::RADIOLIB_MODEM_LORA;
-      dataRate->lora.spreadingFactor = ((dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_SF) >> 3) + 7;
-      switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
-        case(RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ):
-          dataRate->lora.bandwidth = 125.0;
-          break;
-        case(RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ):
-          dataRate->lora.bandwidth = 250.0;
-          break;
-        case(RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ):
-          dataRate->lora.bandwidth = 500.0;
-          break;
-        default:
-          return(RADIOLIB_ERR_UNSUPPORTED);
-      }
-      dataRate->lora.codingRate = 5;
-      break;
-    case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
-      modemNew = ModemType_t::RADIOLIB_MODEM_FSK;
-      dataRate->fsk.bitRate = 50;
-      dataRate->fsk.freqDev = 25;
-      break;
-    case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
-      modemNew = ModemType_t::RADIOLIB_MODEM_LRFHSS;
-      switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
-        case(RADIOLIB_LORAWAN_DATA_RATE_BW_137_KHZ):
-          dataRate->lrFhss.bw = 0x02; // specific encoding
-          dataRate->lrFhss.narrowGrid = 1;
-          break;
-        case(RADIOLIB_LORAWAN_DATA_RATE_BW_336_KHZ):
-          dataRate->lrFhss.bw = 0x04; // specific encoding
-          dataRate->lrFhss.narrowGrid = 1;
-          break;
-        case(RADIOLIB_LORAWAN_DATA_RATE_BW_1523_KHZ):
-          dataRate->lrFhss.bw = 0x08; // specific encoding
-          dataRate->lrFhss.narrowGrid = 0;
-          break;
-        default:
-          return(RADIOLIB_ERR_UNSUPPORTED);
-      }
-      switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_CR) {
-        case(RADIOLIB_LORAWAN_DATA_RATE_CR_1_3):
-          dataRate->lrFhss.cr = 0x03;
-          break;
-        case(RADIOLIB_LORAWAN_DATA_RATE_CR_2_3):
-          dataRate->lrFhss.cr = 0x01;
-          break;
-        default:
-          return(RADIOLIB_ERR_UNSUPPORTED);
-      }
-      break;
-    default:
-      return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-
+  *dataRate = this->band->dataRates[dr].dr;
+  
   // get the currently configured modem from the radio
   ModemType_t modemCurrent;
   state = this->phyLayer->getModem(&modemCurrent);
   RADIOLIB_ASSERT(state);
-
+  
   // if the required modem is different than the current one, change over
+  ModemType_t modemNew = this->band->dataRates[dr].modem;
   if(modemNew != modemCurrent) {
     state = this->phyLayer->standby();
     RADIOLIB_ASSERT(state);
