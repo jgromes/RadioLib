@@ -51,18 +51,22 @@ class SX1273: public SX1272 {
     int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
-      \brief Set data.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \brief Set data rate.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Check the data rate can be configured by this module.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t checkDataRate(DataRate_t dr) override;
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
