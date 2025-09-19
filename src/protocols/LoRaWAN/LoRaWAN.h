@@ -1215,9 +1215,6 @@ class LoRaWANNode {
     // it assumes that the MIC is the last 4 bytes of the message
     bool verifyMIC(uint8_t* msg, size_t len, uint8_t* key);
 
-    // find the first usable data rate for the given band
-    int16_t findDataRate(uint8_t dr, DataRate_t* dataRate);
-
     // function to encrypt and decrypt payloads (regular uplink/downlink)
     void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t addr, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
 
