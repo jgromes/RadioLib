@@ -3192,7 +3192,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   // this only needs to be done once-ish
   uint8_t syncWord[4] = { 0 };
   uint8_t syncWordLen = 0;
-  size_t preLen = 0;
+  
   switch(this->band->dataRates[chnl->dr].modem) {
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
       state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
