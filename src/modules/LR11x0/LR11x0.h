@@ -1172,7 +1172,8 @@ class LR11x0: public PhysicalLayer {
       is undocumented and not recommended without your own FEC.
       \param cr LoRa coding rate denominator to be set.
       \param longInterleave Enable long interleaver when set to true.
-      Note that CR 4/7 is not possible with long interleaver enabled!
+      Note that with long interleaver enabled, CR 4/7 is not possible, there are packet length restrictions,
+      and it is not compatible with SX127x radios!
       \returns \ref status_codes
     */
     int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
