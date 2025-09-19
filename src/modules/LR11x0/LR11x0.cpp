@@ -179,6 +179,17 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // check packet length
+  if (this->codingRate > RADIOLIB_LR11X0_LORA_CR_4_8_SHORT) {
+    // Long Interleaver needs at least 8 bytes
+    if(len < 8) {
+      return(RADIOLIB_ERR_PACKET_TOO_SHORT);
+    }
+
+    // Long Interleaver supports up to 253 bytes if CRC is enabled
+    if (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED && (len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH - 2)) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }  
+  } 
   if(len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
