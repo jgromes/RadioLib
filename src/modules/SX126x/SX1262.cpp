@@ -7,64 +7,115 @@ SX1262::SX1262(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1262_CHIP_TYPE;
 }
 
+int16_t SX1262::begin(const Configuration_t& config) {
+  // execute common part
+  int16_t state = SX126x::begin(
+    config.codingRate, config.syncWord, config.preambleLength,
+    config.tcxoVoltage, config.useRegulatorLDO);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setSpreadingFactor(config.spreadingFactor);
+  RADIOLIB_ASSERT(state);
+
+  state = setBandwidth(config.bandwidth);
+  RADIOLIB_ASSERT(state);
+
+  state = setFrequency(config.frequency);
+  RADIOLIB_ASSERT(state);
+
+  state = SX126x::fixPaClamping();
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(config.power);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
+// deprecated
 int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+  // C++11 does not support designated initializers here, so we need to do this the old way
+  Configuration_t config;
+  config.frequency = freq;
+  config.bandwidth = bw;
+  config.spreadingFactor = sf;
+  config.codingRate = cr;
+  config.syncWord = syncWord;
+  config.power = power;
+  config.preambleLength = preambleLength;
+  config.tcxoVoltage = tcxoVoltage;
+  config.useRegulatorLDO = useRegulatorLDO;
+  return(begin(config));
+}
+
+int16_t SX1262::beginFSK(const ConfigurationFSK_t& config) {
   // execute common part
-  int16_t state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
+  int16_t state = SX126x::beginFSK(
+    config.bitRate, config.frequencyDeviation, config.receiverBandwidth,
+    config.preambleLength, config.tcxoVoltage, config.useRegulatorLDO);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setSpreadingFactor(sf);
-  RADIOLIB_ASSERT(state);
-
-  state = setBandwidth(bw);
-  RADIOLIB_ASSERT(state);
-
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
   return(state);
 }
 
+// deprecated
 int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+  // C++11 does not support designated initializers here, so we need to do this the old way
+  ConfigurationFSK_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.frequencyDeviation = freqDev;
+  config.receiverBandwidth = rxBw;
+  config.power = power;
+  config.preambleLength = preambleLength;
+  config.tcxoVoltage = tcxoVoltage;
+  config.useRegulatorLDO = useRegulatorLDO;
+  return(beginFSK(config));
+}
+
+int16_t SX1262::beginLRFHSS(const ConfigurationLRFHSS_t& config) {
   // execute common part
-  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, tcxoVoltage, useRegulatorLDO);
+  int16_t state = SX126x::beginLRFHSS(
+    config.bandwidth, config.codingRate, config.narrowGrid,
+    config.tcxoVoltage, config.useRegulatorLDO);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
   return(state);
 }
 
+// deprecated
 int16_t SX1262::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  // execute common part
-  int16_t state = SX126x::beginLRFHSS(bw, cr, narrowGrid, tcxoVoltage, useRegulatorLDO);
-  RADIOLIB_ASSERT(state);
-
-  // configure publicly accessible settings
-  state = setFrequency(freq);
-  RADIOLIB_ASSERT(state);
-
-  state = SX126x::fixPaClamping();
-  RADIOLIB_ASSERT(state);
-
-  state = setOutputPower(power);
-  RADIOLIB_ASSERT(state);
-
-  return(state);
+  // C++11 does not support designated initializers here, so we need to do this the old way
+  ConfigurationLRFHSS_t config;
+  config.frequency = freq;
+  config.bandwidth = bw;
+  config.codingRate = cr;
+  config.narrowGrid = narrowGrid;
+  config.power = power;
+  config.tcxoVoltage = tcxoVoltage;
+  config.useRegulatorLDO = useRegulatorLDO;
+  return(beginLRFHSS(config));
 }
 
 int16_t SX1262::setFrequency(float freq) {

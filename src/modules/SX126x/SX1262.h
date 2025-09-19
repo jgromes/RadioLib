@@ -30,6 +30,51 @@ class SX1262: public SX126x {
     // basic methods
 
     /*!
+      \brief Configuration for begin() method.
+    */
+    struct Configuration_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief LoRa bandwidth in kHz. Defaults to 125.0 kHz. */
+      float bandwidth = 125.0;
+      /*! \brief LoRa spreading factor. Defaults to 9. */
+      uint8_t spreadingFactor = 9;
+      /*! \brief LoRa coding rate. DDefaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC. */
+      uint8_t codingRate = 7;
+      /*! \brief 1-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12). */
+      uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief LoRa preamble length in symbols. Defaults to 8 symbols. */
+      uint16_t preambleLength = 8;
+      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
+      float tcxoVoltage = 1.6;
+      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
+      bool useRegulatorLDO = false;
+    };
+
+    /*!
+      \brief Initialization method for LoRa modem.
+      \details This method initializes the LoRa modem with the specified configuration. Supports designated
+      initializers when using C++14 or above. Example:
+      \code
+      int state = radio.begin({
+        .frequency = 434.0,
+        .bandwidth = 125.0,
+        .spreadingFactor = 9,
+        .codingRate = 7,
+        .preambleLength = 8
+      });
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    virtual int16_t begin(const Configuration_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const Configuration_t& config) instead.
       \brief Initialization method for LoRa modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
@@ -48,6 +93,48 @@ class SX1262: public SX126x {
     virtual int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
 
     /*!
+      \brief Configuration for beginFSK() method.
+    */
+    struct ConfigurationFSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+      float bitRate = 4.8;
+      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
+      float frequencyDeviation = 5.0;
+      /*! \brief FSK receiver bandwidth in kHz. Defaults to 156.2 kHz. */
+      float receiverBandwidth = 156.2;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+      uint16_t preambleLength = 16;
+      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
+      float tcxoVoltage = 1.6;
+      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
+      bool useRegulatorLDO = false;
+    };
+
+    /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration. Supports designated
+      initializers when using C++14 or above. Example:
+      \code
+      int state = radio.beginFSK({
+        .frequency = 434.0,
+        .bitRate = 4.8,
+        .frequencyDeviation = 5.0,
+        .receiverBandwidth = 156.2,
+        .preambleLength = 16
+      });
+      \returns \ref status_codes
+    */
+    virtual int16_t beginFSK(const ConfigurationFSK_t& config);
+
+    /*!
+      \deprecated Use \ref beginFSK(const ConfigurationFSK_t& config) instead.
       \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
@@ -62,8 +149,44 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
+    struct ConfigurationLRFHSS_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz. */
+      uint8_t bandwidth = RADIOLIB_SX126X_LR_FHSS_BW_722_66;
+      /*! \brief LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values. Defaults to 2/3 coding rate. */
+      uint8_t codingRate = RADIOLIB_SX126X_LR_FHSS_CR_2_3;
+      /*! \brief Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid. */
+      bool narrowGrid = true;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
+      float tcxoVoltage = 1.6;
+      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
+      bool useRegulatorLDO = false;
+    };
+
     /*!
+      \brief Initialization method for LR-FHSS modem.
+      \param config Initialization configuration.
+      \details This method initializes the LR-FHSS modem with the specified configuration. Supports designated
+      initializers when using C++14 or above. Example:
+      \code
+      int state = radio.beginLRFHSS({
+        .frequency = 434.0,
+        .bandwidth = RADIOLIB_SX126X_LR_FHSS_BW_722_66,
+        .codingRate = RADIOLIB_SX126X_LR_FHSS_CR_2_3,
+        .narrowGrid = true
+      });
+      \returns \ref status_codes
+    */
+    virtual int16_t beginLRFHSS(const ConfigurationLRFHSS_t& config);
+
+    /*!
+      \deprecated Use \ref beginLRFHSS(const ConfigurationLRFHSS_t& config) instead.
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
