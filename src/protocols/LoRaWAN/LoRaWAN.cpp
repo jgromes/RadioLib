@@ -1041,9 +1041,9 @@ void LoRaWANNode::processCFList(const uint8_t* cfList) {
     // apply channel mask
     cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
     cLen = 14;
-    cOcts[0]  = 0xF0;                       // keep datarate the same
-    cOcts[0] |= 0x0F;                       // keep Tx Power the same
-    cOcts[13] = 0x01;                       // default NbTrans = 1
+    cOcts[0]  = RADIOLIB_LORAWAN_DATA_RATE_UNUSED << 4; // keep datarate the same
+    cOcts[0] |= RADIOLIB_LORAWAN_TX_POWER_UNUSED;       // keep Tx Power the same
+    cOcts[13] = 0x01;                                   // default NbTrans = 1
     memcpy(&cOcts[1], cfList, sizeof(this->channelMasks));
     (void)execMacCommand(cid, cOcts, cLen);
   }
@@ -2281,7 +2281,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
 
       // try to apply the datarate configuration
       // if value is set to 'keep current values', retrieve current value
-      if(macDrUp == 0x0F) {
+      if(macDrUp == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
         macDrUp = currentDr;
       }
 
@@ -2306,7 +2306,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
 
       // try to apply the power configuration
       // if value is set to 'keep current values', retrieve current value
-      if(macTxSteps == 0x0F) {
+      if(macTxSteps == RADIOLIB_LORAWAN_TX_POWER_UNUSED) {
         macTxSteps = this->txPowerSteps;
       }
 
@@ -3020,9 +3020,9 @@ int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
   uint8_t cOcts[1];
   uint8_t cAck[1];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  uint8_t cLen = 1;                       // only apply Dr/Tx field
-  cOcts[0]  = (drUp << 4);                // set requested datarate
-  cOcts[0] |= 0x0F;                       // keep Tx Power the same
+  uint8_t cLen = 1;                             // only apply Dr/Tx field
+  cOcts[0]  = (drUp << 4);                      // set requested datarate
+  cOcts[0] |= RADIOLIB_LORAWAN_TX_POWER_UNUSED; // keep Tx Power the same
   (void)execMacCommand(cid, cOcts, cLen, cAck);
 
   // check if ACK is set for Datarate
@@ -3047,9 +3047,9 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower) {
   uint8_t cOcts[1];
   uint8_t cAck[1];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  uint8_t cLen = 1;                       // only apply Dr/Tx field
-  cOcts[0]  = 0xF0;                       // keep datarate the same
-  cOcts[0] |= numSteps;                   // set requested Tx Power
+  uint8_t cLen = 1;                                   // only apply Dr/Tx field
+  cOcts[0]  = RADIOLIB_LORAWAN_DATA_RATE_UNUSED << 4; // keep datarate the same
+  cOcts[0] |= numSteps;                               // set requested Tx Power
   (void)execMacCommand(cid, cOcts, cLen, cAck);
 
   // check if ACK is set for Tx Power

@@ -47,7 +47,8 @@
 #define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) //  7     0     fPort values equal to and larger than this are reserved
 
 // data rate encoding
-#define RADIOLIB_LORAWAN_DATA_RATE_UNUSED                       (0xFF << 0) //  7     0     unused data rate
+#define RADIOLIB_LORAWAN_DATA_RATE_UNUSED                       (0x0F << 0) // reserved / unused data rate
+#define RADIOLIB_LORAWAN_TX_POWER_UNUSED                        (0x0F << 0) // reserved / unused Tx power
 
 // channels and channel plans
 #define RADIOLIB_LORAWAN_UPLINK                                 (0x00 << 0)
