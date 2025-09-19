@@ -230,6 +230,7 @@ enum ModemType_t {
   RADIOLIB_MODEM_FSK = 0,
   RADIOLIB_MODEM_LORA,
   RADIOLIB_MODEM_LRFHSS,
+  RADIOLIB_MODEM_NONE,  // last entry
 };
 
 /*!
