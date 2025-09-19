@@ -255,6 +255,11 @@
 */
 #define RADIOLIB_ERR_INVALID_IRQ                               (-29)
 
+/*!
+  \brief Packet supplied to transmission method was shorter than required.
+*/
+#define RADIOLIB_ERR_PACKET_TOO_SHORT                          (-30)
+
 // RF69-specific status codes
 
 /*!
