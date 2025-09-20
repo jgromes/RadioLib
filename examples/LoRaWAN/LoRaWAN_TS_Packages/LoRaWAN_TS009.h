@@ -126,7 +126,7 @@ void handleTS009(uint8_t* dataDown, size_t lenDown) {
 
     case(RADIOLIB_LORAWAN_TS009_ECHO_PAYLOAD): {
       lenUp = lenDown;
-      for (int i = 1; i < lenDown; i++) {
+      for (size_t i = 1; i < lenDown; i++) {
         dataUp[i] = dataDown[i] + 1;
       }
       fPort = RADIOLIB_LORAWAN_FPORT_TS009;
@@ -179,9 +179,8 @@ void handleTS009(uint8_t* dataDown, size_t lenDown) {
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_TX_CW): {
-      // not implemented
-      uint16_t timeout = (dataDown[2] << 8) | dataDown[1];
-      uint32_t freqRaw = (dataDown[5] << 16) | (dataDown[4] << 8) | (dataDown[3]);
+      uint16_t timeout = ((uint16_t)dataDown[2] <<  8) |  (uint16_t)dataDown[1];
+      uint32_t freqRaw = ((uint32_t)dataDown[5] << 16) | ((uint32_t)dataDown[4] << 8) | ((uint32_t)dataDown[3]);
       float freq = (float)freqRaw/10000.0;
       uint8_t txPower = dataDown[6];
       RADIOLIB_DEBUG_PRINTLN("Continuous wave: %7.3f MHz, %d dBm, %d s", freq, txPower, timeout);

@@ -92,7 +92,7 @@ void loop() {
     memset(dataUp, 0, 255);
     lenUp = 4;
     fPort = 1;
-    sprintf((char*)dataUp, "%04d", node.getFCntUp());
+    sprintf((char*)dataUp, "%04lu", node.getFCntUp());
     state = node.sendReceive(dataUp, lenUp, fPort, dataDown, &lenDown, isConfirmed, &eventUp, &eventDown);
   } else {
     reply = false;
