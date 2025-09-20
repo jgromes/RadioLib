@@ -105,7 +105,7 @@ int16_t SX126x::setSpreadingFactor(uint8_t sf) {
   return(setModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
-int16_t SX126x::setCodingRate(uint8_t cr) {
+int16_t SX126x::setCodingRate(uint8_t cr, bool longInterleave) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -113,8 +113,26 @@ int16_t SX126x::setCodingRate(uint8_t cr) {
 
   RADIOLIB_CHECK_RANGE(cr, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
 
+  if(longInterleave) {
+    switch(cr) {
+      case 4:
+        this->codingRate = 0;
+        break;
+      case 5:
+      case 6:
+        this->codingRate = cr;
+        break;
+      case 8: 
+        this->codingRate = cr - 1;
+        break;
+      default:
+        return(RADIOLIB_ERR_INVALID_CODING_RATE);
+    }
+  } else {
+    this->codingRate = cr - 4;
+  }
+
   // update modulation parameters
-  this->codingRate = cr - 4;
   return(setModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 

@@ -253,7 +253,7 @@
 #define RADIOLIB_SX128X_LORA_CR_4_8                             0x04        //  7     0                     4/8
 #define RADIOLIB_SX128X_LORA_CR_4_5_LI                          0x05        //  7     0                     4/5, long interleaving
 #define RADIOLIB_SX128X_LORA_CR_4_6_LI                          0x06        //  7     0                     4/6, long interleaving
-#define RADIOLIB_SX128X_LORA_CR_4_7_LI                          0x07        //  7     0                     4/7, long interleaving
+#define RADIOLIB_SX128X_LORA_CR_4_8_LI                          0x07        //  7     0                     4/8, long interleaving
 
 //RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS
 #define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_OFF                 0x00        //  7     0   GFSK/FLRC sync word used: none
