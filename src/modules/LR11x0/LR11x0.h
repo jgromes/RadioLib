@@ -1284,18 +1284,22 @@ class LR11x0: public PhysicalLayer {
     int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
 
     /*!
-      \brief Set data.
-      \param dr Data rate struct. Interpretation depends on currently active modem (GFSK or LoRa).
+      \brief Set data rate.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Check the data rate can be configured by this module.
-      \param dr Data rate struct. Interpretation depends on currently active modem (GFSK or LoRa).
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t checkDataRate(DataRate_t dr) override;
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.

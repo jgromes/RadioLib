@@ -687,7 +687,7 @@ class SX128x: public PhysicalLayer {
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000,

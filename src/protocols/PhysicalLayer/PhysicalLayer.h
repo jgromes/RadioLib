@@ -230,6 +230,7 @@ enum ModemType_t {
   RADIOLIB_MODEM_FSK = 0,
   RADIOLIB_MODEM_LORA,
   RADIOLIB_MODEM_LRFHSS,
+  RADIOLIB_MODEM_NONE,  // last entry
 };
 
 /*!
@@ -521,18 +522,22 @@ class PhysicalLayer {
     virtual int16_t setPreambleLength(size_t len);
     
     /*!
-      \brief Set data. Must be implemented in module class if the module supports it.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \brief Set data rate. Must be implemented in module class if the module supports it.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    virtual int16_t setDataRate(DataRate_t dr);
+    virtual int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE);
 
     /*!
       \brief Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    virtual int16_t checkDataRate(DataRate_t dr);
+    virtual int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE);
 
     /*!
       \brief Query modem for the packet length of received payload. Must be implemented in module class.

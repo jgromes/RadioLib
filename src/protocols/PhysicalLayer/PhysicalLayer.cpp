@@ -289,13 +289,15 @@ int16_t PhysicalLayer::setPreambleLength(size_t len) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setDataRate(DataRate_t dr) {
+int16_t PhysicalLayer::setDataRate(DataRate_t dr, ModemType_t modem) {
   (void)dr;
+  (void)modem;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::checkDataRate(DataRate_t dr) {
+int16_t PhysicalLayer::checkDataRate(DataRate_t dr, ModemType_t modem) {
   (void)dr;
+  (void)modem;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 

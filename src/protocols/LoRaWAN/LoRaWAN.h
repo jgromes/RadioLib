@@ -47,28 +47,8 @@
 #define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) //  7     0     fPort values equal to and larger than this are reserved
 
 // data rate encoding
-#define RADIOLIB_LORAWAN_DATA_RATE_MODEM                        (0x03 << 6) //  7     6     modem mask
-#define RADIOLIB_LORAWAN_DATA_RATE_LORA                         (0x00 << 6) //  7     6     use LoRa modem
-#define RADIOLIB_LORAWAN_DATA_RATE_FSK                          (0x01 << 6) //  7     6     use FSK modem
-#define RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS                      (0x02 << 6) //  7     6     use LR-FHSS modem
-#define RADIOLIB_LORAWAN_DATA_RATE_SF                           (0x07 << 3) //  5     3     LoRa spreading factor mask
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_12                        (0x05 << 3) //  5     3     LoRa spreading factor: SF12
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_11                        (0x04 << 3) //  5     3                            SF11
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_10                        (0x03 << 3) //  5     3                            SF10
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_9                         (0x02 << 3) //  5     3                            SF9
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_8                         (0x01 << 3) //  5     3                            SF8
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_7                         (0x00 << 3) //  5     3                            SF7
-#define RADIOLIB_LORAWAN_DATA_RATE_BW                           (0x03 << 1) //  2     1     bandwidth mask
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ                   (0x00 << 1) //  2     1                        125 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ                   (0x01 << 1) //  2     1                        250 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ                   (0x02 << 1) //  2     1     LoRa bandwidth:    500 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_137_KHZ                   (0x00 << 1) //  2     1                         137 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_336_KHZ                   (0x01 << 1) //  2     1                         336 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_1523_KHZ                  (0x02 << 1) //  2     1     LR-FHSS bandwidth: 1523 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_CR                           (0x01 << 0) //  0     0     coding rate mask
-#define RADIOLIB_LORAWAN_DATA_RATE_CR_1_3                       (0x00 << 0) //  0     0     LR-FHSS coding rate: 1/3
-#define RADIOLIB_LORAWAN_DATA_RATE_CR_2_3                       (0x01 << 0) //  0     0                          2/3
-#define RADIOLIB_LORAWAN_DATA_RATE_UNUSED                       (0xFF << 0) //  7     0     unused data rate
+#define RADIOLIB_LORAWAN_DATA_RATE_UNUSED                       (0x0F << 0) // reserved / unused data rate
+#define RADIOLIB_LORAWAN_TX_POWER_UNUSED                        (0x0F << 0) // reserved / unused Tx power
 
 // channels and channel plans
 #define RADIOLIB_LORAWAN_UPLINK                                 (0x00 << 0)
@@ -424,6 +404,14 @@ struct LoRaWANChannelSpan_t {
 // alias for unused channel span
 #define RADIOLIB_LORAWAN_CHANNEL_SPAN_NONE    { .numChannels = 0, .freqStart = 0, .freqStep = 0, .drMin = 0, .drMax = 0, .drJoinRequest = RADIOLIB_LORAWAN_DATA_RATE_UNUSED }
 
+struct LoRaWANDataRate_t {
+  ModemType_t modem;
+  DataRate_t dr;
+  PacketConfig_t pc;
+};
+
+#define RADIOLIB_DATARATE_NONE { .modem = RADIOLIB_MODEM_NONE, .dr = {.lora = {0, 0, 0}}, .pc = {.lora = { 8, 0, 0, 0}}}
+
 /*!
   \struct LoRaWANBand_t
   \brief Structure to save information about LoRaWAN band
@@ -486,7 +474,7 @@ struct LoRaWANBand_t {
   LoRaWANChannel_t txAck[2];
   
   /*! \brief The corresponding datarates, bandwidths and coding rates for DR index */
-  uint8_t dataRates[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
+  LoRaWANDataRate_t dataRates[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 };
 
 // supported bands
@@ -1227,9 +1215,6 @@ class LoRaWANNode {
     // method to verify message integrity code
     // it assumes that the MIC is the last 4 bytes of the message
     bool verifyMIC(uint8_t* msg, size_t len, uint8_t* key);
-
-    // find the first usable data rate for the given band
-    int16_t findDataRate(uint8_t dr, DataRate_t* dataRate);
 
     // function to encrypt and decrypt payloads (regular uplink/downlink)
     void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t addr, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);

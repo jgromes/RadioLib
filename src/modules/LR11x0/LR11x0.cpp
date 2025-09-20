@@ -955,13 +955,26 @@ int16_t LR11x0::setWhitening(bool enabled, uint16_t initial) {
   return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }
 
-int16_t LR11x0::setDataRate(DataRate_t dr) {
-  // select interpretation based on active modem
-  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&type);
+int16_t LR11x0::setDataRate(DataRate_t dr, ModemType_t modem) {
+  // get the current modem
+  ModemType_t currentModem;
+  int16_t state = this->getModem(&currentModem);
   RADIOLIB_ASSERT(state);
+
+  // switch over if the requested modem is different
+  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
+    state = this->standby();
+    RADIOLIB_ASSERT(state);
+    state = this->setModem(modem);
+    RADIOLIB_ASSERT(state);
+  }
   
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+  if(modem == RADIOLIB_MODEM_NONE) {
+    modem = currentModem;
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
     // set the bit rate
     state = this->setBitRate(dr.fsk.bitRate);
     RADIOLIB_ASSERT(state);
@@ -969,7 +982,7 @@ int16_t LR11x0::setDataRate(DataRate_t dr) {
     // set the frequency deviation
     state = this->setFrequencyDeviation(dr.fsk.freqDev);
 
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+  } else if(modem == RADIOLIB_MODEM_LORA) {
     // set the spreading factor
     state = this->setSpreadingFactor(dr.lora.spreadingFactor);
     RADIOLIB_ASSERT(state);
@@ -981,7 +994,7 @@ int16_t LR11x0::setDataRate(DataRate_t dr) {
     // set the coding rate
     state = this->setCodingRate(dr.lora.codingRate);
   
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+  } else if(modem == RADIOLIB_MODEM_LRFHSS) {
     // set the basic config
     state = this->setLrFhssConfig(dr.lrFhss.bw, dr.lrFhss.cr);
     RADIOLIB_ASSERT(state);
@@ -994,18 +1007,22 @@ int16_t LR11x0::setDataRate(DataRate_t dr) {
   return(state);
 }
 
-int16_t LR11x0::checkDataRate(DataRate_t dr) {
-  // select interpretation based on active modem
-  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&type);
-  RADIOLIB_ASSERT(state);
+int16_t LR11x0::checkDataRate(DataRate_t dr, ModemType_t modem) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
 
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+  // retrieve modem if not supplied
+  if(modem == RADIOLIB_MODEM_NONE) {
+    state = this->getModem(&modem);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
     RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+  } else if(modem == RADIOLIB_MODEM_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
@@ -1013,7 +1030,7 @@ int16_t LR11x0::checkDataRate(DataRate_t dr) {
   
   }
 
-  return(RADIOLIB_ERR_UNKNOWN);
+  return(state);
 }
 
 int16_t LR11x0::setPreambleLength(size_t preambleLength) {
