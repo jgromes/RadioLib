@@ -828,7 +828,7 @@ int16_t SX128x::setPreambleLength(size_t preambleLength) {
   uint8_t modem = getPacketType();
   if((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING)) {
     // LoRa or ranging
-    RADIOLIB_CHECK_RANGE(preambleLength, 2, 491520, RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
+    RADIOLIB_CHECK_RANGE((uint32_t)preambleLength, 2, 491520, RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
 
     // check preamble length is even - no point even trying odd numbers
     if(preambleLength % 2 != 0) {
