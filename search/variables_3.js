@@ -3,7 +3,7 @@ var searchData=
   ['data_0',['data',['../struct_transmit_config__t.html#a2fac0be2c983726c49d242a7c799b4aa',1,'TransmitConfig_t']]],
   ['datarate_1',['datarate',['../struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b',1,'LoRaWANEvent_t']]],
   ['datarateid_2',['dataRateId',['../struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd',1,'LR11x0WifiResult_t']]],
-  ['datarates_3',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b',1,'LoRaWANBand_t']]],
+  ['datarates_3',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a209bf17e92a8de60de9275b5773cfccf',1,'LoRaWANBand_t']]],
   ['demodstat_4',['demodStat',['../struct_l_r11x0_gnss_result__t.html#a6142622b9fb790108546b4d09b063b6c',1,'LR11x0GnssResult_t']]],
   ['destcallsign_5',['destCallsign',['../class_a_x25_frame.html#a7fe9805148e2dd46d163cd989473dbff',1,'AX25Frame']]],
   ['destssid_6',['destSSID',['../class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8',1,'AX25Frame']]],

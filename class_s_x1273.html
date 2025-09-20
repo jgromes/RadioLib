@@ -124,12 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac714448cb245ec57fa6f2395f1c8a1f7" id="r_ac714448cb245ec57fa6f2395f1c8a1f7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1273.html#ac714448cb245ec57fa6f2395f1c8a1f7">setSpreadingFactor</a> (uint8_t sf) override</td></tr>
 <tr class="memdesc:ac714448cb245ec57fa6f2395f1c8a1f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link spreading factor. Allowed values range from 6 to 9. Only available in LoRa mode.  <br /></td></tr>
 <tr class="separator:ac714448cb245ec57fa6f2395f1c8a1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaffc772f70e7db371cbe736dc4a19ab" id="r_acaffc772f70e7db371cbe736dc4a19ab"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1273.html#acaffc772f70e7db371cbe736dc4a19ab">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr) override</td></tr>
-<tr class="memdesc:acaffc772f70e7db371cbe736dc4a19ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data.  <br /></td></tr>
-<tr class="separator:acaffc772f70e7db371cbe736dc4a19ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eae1e82596f3a6c4c926c381c2737a7" id="r_a5eae1e82596f3a6c4c926c381c2737a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr) override</td></tr>
-<tr class="memdesc:a5eae1e82596f3a6c4c926c381c2737a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module.  <br /></td></tr>
-<tr class="separator:a5eae1e82596f3a6c4c926c381c2737a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57e8d3a8f44fb9ea0e09b0efb3d7bbe" id="r_aa57e8d3a8f44fb9ea0e09b0efb3d7bbe"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1273.html#aa57e8d3a8f44fb9ea0e09b0efb3d7bbe">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE) override</td></tr>
+<tr class="memdesc:aa57e8d3a8f44fb9ea0e09b0efb3d7bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate.  <br /></td></tr>
+<tr class="separator:aa57e8d3a8f44fb9ea0e09b0efb3d7bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc89cbc690db05c85b0266ad58bddaab" id="r_adc89cbc690db05c85b0266ad58bddaab"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1273.html#adc89cbc690db05c85b0266ad58bddaab">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE) override</td></tr>
+<tr class="memdesc:adc89cbc690db05c85b0266ad58bddaab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module.  <br /></td></tr>
+<tr class="separator:adc89cbc690db05c85b0266ad58bddaab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9f0969764fde3e12b6b05409718fa83" id="r_af9f0969764fde3e12b6b05409718fa83"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1273.html#af9f0969764fde3e12b6b05409718fa83">setModem</a> (ModemType_t modem) override</td></tr>
 <tr class="memdesc:af9f0969764fde3e12b6b05409718fa83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <br /></td></tr>
 <tr class="separator:af9f0969764fde3e12b6b05409718fa83"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -697,8 +697,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a5eae1e82596f3a6c4c926c381c2737a7" name="a5eae1e82596f3a6c4c926c381c2737a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5eae1e82596f3a6c4c926c381c2737a7">&#9670;&#160;</a></span>checkDataRate()</h2>
+<a id="adc89cbc690db05c85b0266ad58bddaab" name="adc89cbc690db05c85b0266ad58bddaab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc89cbc690db05c85b0266ad58bddaab">&#9670;&#160;</a></span>checkDataRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -710,8 +710,18 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="memname">int16_t SX1273::checkDataRate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
-          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em> = <code>RADIOLIB_MODEM_NONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -724,18 +734,19 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <p>Check the data rate can be configured by this module. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dr</td><td>Data rate struct. Interpretation depends on currently active modem (FSK or LoRa). </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate struct. </td></tr>
+    <tr><td class="paramname">modem</td><td>The modem corresponding to the requested datarate (FSK or LoRa). Defaults to currently active modem if not supplied. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_s_x1272.html#a2a36487740f15731c6e508428e4b11f0">SX1272</a>.</p>
+<p>Reimplemented from <a class="el" href="class_s_x1272.html#a6486c663e0be785eaa4e0f74f2195a0b">SX1272</a>.</p>
 
 </div>
 </div>
-<a id="acaffc772f70e7db371cbe736dc4a19ab" name="acaffc772f70e7db371cbe736dc4a19ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acaffc772f70e7db371cbe736dc4a19ab">&#9670;&#160;</a></span>setDataRate()</h2>
+<a id="aa57e8d3a8f44fb9ea0e09b0efb3d7bbe" name="aa57e8d3a8f44fb9ea0e09b0efb3d7bbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa57e8d3a8f44fb9ea0e09b0efb3d7bbe">&#9670;&#160;</a></span>setDataRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -747,8 +758,18 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="memname">int16_t SX1273::setDataRate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
-          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em> = <code>RADIOLIB_MODEM_NONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -758,16 +779,17 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>Set data. </p>
+<p>Set data rate. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dr</td><td>Data rate struct. Interpretation depends on currently active modem (FSK or LoRa). </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate struct. </td></tr>
+    <tr><td class="paramname">modem</td><td>The modem corresponding to the requested datarate (FSK or LoRa). Defaults to currently active modem if not supplied. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_s_x1272.html#a5b79b7cd20c4c3cd1f486f777b3457d1">SX1272</a>.</p>
+<p>Reimplemented from <a class="el" href="class_s_x1272.html#a41236161da417a26793a4453864d21dc">SX1272</a>.</p>
 
 </div>
 </div>

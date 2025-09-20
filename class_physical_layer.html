@@ -206,12 +206,12 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a85db1ff64e6c56e054f276c511194633" id="r_a85db1ff64e6c56e054f276c511194633"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">setPreambleLength</a> (size_t len)</td></tr>
 <tr class="memdesc:a85db1ff64e6c56e054f276c511194633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a85db1ff64e6c56e054f276c511194633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ee1fed6bbb8d3571974153ac6f26751" id="r_a6ee1fed6bbb8d3571974153ac6f26751"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
-<tr class="memdesc:a6ee1fed6bbb8d3571974153ac6f26751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a6ee1fed6bbb8d3571974153ac6f26751"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58d54eeb40fb586013ba48e15318abba" id="r_a58d54eeb40fb586013ba48e15318abba"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
-<tr class="memdesc:a58d54eeb40fb586013ba48e15318abba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a58d54eeb40fb586013ba48e15318abba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5f1e0c24d8bf878f2c9fe729b6e1610" id="r_ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ac5f1e0c24d8bf878f2c9fe729b6e1610">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
+<tr class="memdesc:ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate. Must be implemented in module class if the module supports it.  <br /></td></tr>
+<tr class="separator:ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c5c902d9f8ffe9866b7f178b14d34f6" id="r_a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a9c5c902d9f8ffe9866b7f178b14d34f6">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
+<tr class="memdesc:a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <br /></td></tr>
+<tr class="separator:a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fe95169b5cdc8cabe1f2af66cad6ef6" id="r_a2fe95169b5cdc8cabe1f2af66cad6ef6"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a2fe95169b5cdc8cabe1f2af66cad6ef6">getPacketLength</a> (bool update=true)</td></tr>
 <tr class="memdesc:a2fe95169b5cdc8cabe1f2af66cad6ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload. Must be implemented in module class.  <br /></td></tr>
 <tr class="separator:a2fe95169b5cdc8cabe1f2af66cad6ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -503,8 +503,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 </div>
 </div>
-<a id="a58d54eeb40fb586013ba48e15318abba" name="a58d54eeb40fb586013ba48e15318abba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58d54eeb40fb586013ba48e15318abba">&#9670;&#160;</a></span>checkDataRate()</h2>
+<a id="a9c5c902d9f8ffe9866b7f178b14d34f6" name="a9c5c902d9f8ffe9866b7f178b14d34f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c5c902d9f8ffe9866b7f178b14d34f6">&#9670;&#160;</a></span>checkDataRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -516,8 +516,18 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
           <td class="memname">int16_t PhysicalLayer::checkDataRate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
-          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em> = <code>RADIOLIB_MODEM_NONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -530,13 +540,14 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <p>Check the data rate can be configured by this module. Must be implemented in module class if the module supports it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dr</td><td>Data rate struct. Interpretation depends on currently active modem (FSK or LoRa). </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate struct. </td></tr>
+    <tr><td class="paramname">modem</td><td>The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). Defaults to currently active modem if not supplied. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#a708183645ec0b9fec54d6369e7b1345f">LLCC68</a>, <a class="el" href="class_l_r11x0.html#a4d18ad719be79c083f2b0ce77bbaa448">LR11x0</a>, <a class="el" href="class_s_x126x.html#a75c8d32cee712e0c940163446b98e587">SX126x</a>, <a class="el" href="class_s_x1272.html#a2a36487740f15731c6e508428e4b11f0">SX1272</a>, <a class="el" href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">SX1273</a>, <a class="el" href="class_s_x1277.html#aef5d9e27edc2173d1b4cc1cb0d9733bc">SX1277</a>, and <a class="el" href="class_s_x1278.html#a7f238fd38f436d9e86aa92a387d48467">SX1278</a>.</p>
+<p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#a6b51b394398ea47a630d9e14afe7c69e">LLCC68</a>, <a class="el" href="class_l_r11x0.html#a902b407443ee3aa11d3c265cccef7366">LR11x0</a>, <a class="el" href="class_s_x126x.html#a368d7cde58790cc3d09c50cac0c1619f">SX126x</a>, <a class="el" href="class_s_x1272.html#a6486c663e0be785eaa4e0f74f2195a0b">SX1272</a>, <a class="el" href="class_s_x1273.html#adc89cbc690db05c85b0266ad58bddaab">SX1273</a>, <a class="el" href="class_s_x1277.html#a72f75d711ea98bac068b1ae14ba80862">SX1277</a>, and <a class="el" href="class_s_x1278.html#a6f9d9f371a3a53a0be25cc05284ade47">SX1278</a>.</p>
 
 </div>
 </div>
@@ -1582,8 +1593,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 </div>
 </div>
-<a id="a6ee1fed6bbb8d3571974153ac6f26751" name="a6ee1fed6bbb8d3571974153ac6f26751"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ee1fed6bbb8d3571974153ac6f26751">&#9670;&#160;</a></span>setDataRate()</h2>
+<a id="ac5f1e0c24d8bf878f2c9fe729b6e1610" name="ac5f1e0c24d8bf878f2c9fe729b6e1610"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5f1e0c24d8bf878f2c9fe729b6e1610">&#9670;&#160;</a></span>setDataRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1595,8 +1606,18 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
           <td class="memname">int16_t PhysicalLayer::setDataRate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
-          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em> = <code>RADIOLIB_MODEM_NONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1606,16 +1627,17 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 </table>
 </div><div class="memdoc">
 
-<p>Set data. Must be implemented in module class if the module supports it. </p>
+<p>Set data rate. Must be implemented in module class if the module supports it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dr</td><td>Data rate struct. Interpretation depends on currently active modem (FSK or LoRa). </td></tr>
+    <tr><td class="paramname">dr</td><td>Data rate struct. </td></tr>
+    <tr><td class="paramname">modem</td><td>The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). Defaults to currently active modem if not supplied. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#ac630770441cadc547892173bde7504f9">LLCC68</a>, <a class="el" href="class_l_r11x0.html#a056e65c58ff8fb18bd84917512790ee6">LR11x0</a>, <a class="el" href="class_s_x126x.html#af30a581d31feae6f50c0591d1ee113f1">SX126x</a>, <a class="el" href="class_s_x1272.html#a5b79b7cd20c4c3cd1f486f777b3457d1">SX1272</a>, <a class="el" href="class_s_x1273.html#acaffc772f70e7db371cbe736dc4a19ab">SX1273</a>, <a class="el" href="class_s_x1277.html#ac4bfae9258662381e685e46c803c984c">SX1277</a>, <a class="el" href="class_s_x1278.html#a286f1ee00e2c7f2ab1bd06b66196c3f9">SX1278</a>, and <a class="el" href="class_s_x128x.html#adbf5a9ac62460efb1c709e51260dbe3d">SX128x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#a466d96a5ad8fe87bee5c1737c6a78066">LLCC68</a>, <a class="el" href="class_l_r11x0.html#a4f5c63e0ea51520e522c58ea5872296a">LR11x0</a>, <a class="el" href="class_s_x126x.html#ac8783b0d80a9706f9e1df1e524c99eef">SX126x</a>, <a class="el" href="class_s_x1272.html#a41236161da417a26793a4453864d21dc">SX1272</a>, <a class="el" href="class_s_x1273.html#aa57e8d3a8f44fb9ea0e09b0efb3d7bbe">SX1273</a>, <a class="el" href="class_s_x1277.html#ab262680ff9de1b24e94ad9422e62b86f">SX1277</a>, <a class="el" href="class_s_x1278.html#ac68af98ab018cfdb70edde1051dcb1dc">SX1278</a>, and <a class="el" href="class_s_x128x.html#acd1b4f675b03a584fde1694c19d24653">SX128x</a>.</p>
 
 </div>
 </div>

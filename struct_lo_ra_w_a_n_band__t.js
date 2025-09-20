@@ -2,7 +2,7 @@ var struct_lo_ra_w_a_n_band__t =
 [
     [ "bandNum", "struct_lo_ra_w_a_n_band__t.html#abb14a7c48ec89a944f441517b1d55986", null ],
     [ "bandType", "struct_lo_ra_w_a_n_band__t.html#ad7ab17cc0b530fb99c3be39fd6411802", null ],
-    [ "dataRates", "struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b", null ],
+    [ "dataRates", "struct_lo_ra_w_a_n_band__t.html#a209bf17e92a8de60de9275b5773cfccf", null ],
     [ "dutyCycle", "struct_lo_ra_w_a_n_band__t.html#a743d3a23aa5c58e156dff633b830ee4f", null ],
     [ "dwellTimeDn", "struct_lo_ra_w_a_n_band__t.html#aef289b63007a6e085c7c66f71209d84c", null ],
     [ "dwellTimeUp", "struct_lo_ra_w_a_n_band__t.html#a8bd0d705d9c0dbe87d25e83cc54e922c", null ],

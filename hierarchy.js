@@ -23,6 +23,7 @@ var hierarchy =
     [ "LoRaWANBandNum_t", "struct_lo_ra_w_a_n_band_num__t.html", null ],
     [ "LoRaWANChannel_t", "struct_lo_ra_w_a_n_channel__t.html", null ],
     [ "LoRaWANChannelSpan_t", "struct_lo_ra_w_a_n_channel_span__t.html", null ],
+    [ "LoRaWANDataRate_t", "struct_lo_ra_w_a_n_data_rate__t.html", null ],
     [ "LoRaWANEvent_t", "struct_lo_ra_w_a_n_event__t.html", null ],
     [ "LoRaWANJoinEvent_t", "struct_lo_ra_w_a_n_join_event__t.html", null ],
     [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", null ],

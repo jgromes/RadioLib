@@ -45,7 +45,7 @@ var class_s_x128x =
     [ "setBitRate", "class_s_x128x.html#ad6570f33bae09bc8b7617f9da39033ac", null ],
     [ "setCodingRate", "class_s_x128x.html#a9da544e4a6120f73a078b46c6138505a", null ],
     [ "setCRC", "class_s_x128x.html#aa4b1e0b96347011522e053f30202c0fe", null ],
-    [ "setDataRate", "class_s_x128x.html#adbf5a9ac62460efb1c709e51260dbe3d", null ],
+    [ "setDataRate", "class_s_x128x.html#acd1b4f675b03a584fde1694c19d24653", null ],
     [ "setDataShaping", "class_s_x128x.html#a99491c705e88dddc820f884b778f1660", null ],
     [ "setDio1Action", "class_s_x128x.html#a0759fb31b3ce5bf1c832259c9c2245ed", null ],
     [ "setDirectAction", "class_s_x128x.html#a2326cf28c385b8dd709cb62c9f665000", null ],
