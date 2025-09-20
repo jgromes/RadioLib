@@ -227,9 +227,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae5993359ace652fbdc862eb23fdd263d" id="r_ae5993359ace652fbdc862eb23fdd263d"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ae5993359ace652fbdc862eb23fdd263d">setSpreadingFactor</a> (uint8_t sf)</td></tr>
 <tr class="memdesc:ae5993359ace652fbdc862eb23fdd263d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Allowed values range from 5 to 12.  <br /></td></tr>
 <tr class="separator:ae5993359ace652fbdc862eb23fdd263d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd3113858966e878e9c67a1e710bd586" id="r_afd3113858966e878e9c67a1e710bd586"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afd3113858966e878e9c67a1e710bd586">setCodingRate</a> (uint8_t cr)</td></tr>
-<tr class="memdesc:afd3113858966e878e9c67a1e710bd586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
-<tr class="separator:afd3113858966e878e9c67a1e710bd586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f04a13e604d8bd8127ddf910e406ab5" id="r_a6f04a13e604d8bd8127ddf910e406ab5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a6f04a13e604d8bd8127ddf910e406ab5">setCodingRate</a> (uint8_t cr, bool longInterleave=false)</td></tr>
+<tr class="memdesc:a6f04a13e604d8bd8127ddf910e406ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
+<tr class="separator:a6f04a13e604d8bd8127ddf910e406ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d92dce566f8aefa836fe8f332e9560f" id="r_a9d92dce566f8aefa836fe8f332e9560f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a9d92dce566f8aefa836fe8f332e9560f">setSyncWord</a> (uint8_t syncWord, uint8_t controlBits=0x44)</td></tr>
 <tr class="memdesc:a9d92dce566f8aefa836fe8f332e9560f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <br /></td></tr>
 <tr class="separator:a9d92dce566f8aefa836fe8f332e9560f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2272,8 +2272,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="afd3113858966e878e9c67a1e710bd586" name="afd3113858966e878e9c67a1e710bd586"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd3113858966e878e9c67a1e710bd586">&#9670;&#160;</a></span>setCodingRate()</h2>
+<a id="a6f04a13e604d8bd8127ddf910e406ab5" name="a6f04a13e604d8bd8127ddf910e406ab5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f04a13e604d8bd8127ddf910e406ab5">&#9670;&#160;</a></span>setCodingRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2282,8 +2282,18 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="memname">int16_t SX126x::setCodingRate </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>cr</em></td><td>)</td>
+          <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>longInterleave</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2292,6 +2302,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator to be set. </td></tr>
+    <tr><td class="paramname">longInterleave</td><td>Enable long interleaver when set to true. Note that with long interleaver enabled, CR 4/7 is not possible, there are packet length restrictions, and it is not compatible with <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> radios. </td></tr>
   </table>
   </dd>
 </dl>

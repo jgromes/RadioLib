@@ -78,6 +78,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_NONE", "group__status__codes.html#ga4c1dd3c7f2b37c973a047c58506729f5", null ],
     [ "RADIOLIB_ERR_NULL_POINTER", "group__status__codes.html#gaad31ccea119011fd05441ed83e0f3b3d", null ],
     [ "RADIOLIB_ERR_PACKET_TOO_LONG", "group__status__codes.html#ga4602702eac86c5c3a13b93a06d846fac", null ],
+    [ "RADIOLIB_ERR_PACKET_TOO_SHORT", "group__status__codes.html#ga9dfcb1f392378622af79348adebb15c9", null ],
     [ "RADIOLIB_ERR_RANGING_TIMEOUT", "group__status__codes.html#gabf529b0d150265c071c2255cb45f9e4f", null ],
     [ "RADIOLIB_ERR_RX_TIMEOUT", "group__status__codes.html#gafadba2c16b7296cbaf96978e8eadfa45", null ],
     [ "RADIOLIB_ERR_SESSION_DISCARDED", "group__status__codes.html#gadf08d3de797fe01de54f7d26cc0b0d48", null ],

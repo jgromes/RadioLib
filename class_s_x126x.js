@@ -50,7 +50,7 @@ var class_s_x126x =
     [ "setBandwidth", "class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08", null ],
     [ "setBitRate", "class_s_x126x.html#ac38a19db6b8b9aff438d6e23051d487d", null ],
     [ "setChannelScanAction", "class_s_x126x.html#aed0e7dcd60479c9db3d7a3408e7f396d", null ],
-    [ "setCodingRate", "class_s_x126x.html#afd3113858966e878e9c67a1e710bd586", null ],
+    [ "setCodingRate", "class_s_x126x.html#a6f04a13e604d8bd8127ddf910e406ab5", null ],
     [ "setCRC", "class_s_x126x.html#a95007639c2648a1dbb614493224606f1", null ],
     [ "setCurrentLimit", "class_s_x126x.html#a8f971dca834be7e0470a9a9f0c01854e", null ],
     [ "setDataRate", "class_s_x126x.html#ac8783b0d80a9706f9e1df1e524c99eef", null ],
