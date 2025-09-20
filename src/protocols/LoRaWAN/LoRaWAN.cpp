@@ -2718,9 +2718,7 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
   // set Dr/Tx field from last MAC command
   mAdrOpt[0] = mPtr[cLen - fLen + 1];
 
-  // extra 2 bytes are added on the end, because in theory, 
-  // chMaskCntl can go up to 7 (though it probably shouldn't)
-  uint16_t adrMasks[(RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS / 2) + 2];
+  uint16_t adrMasks[RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS / 2];
   memcpy(adrMasks, this->channelMasks, sizeof(this->channelMasks));
 
   // set NbTrans partial field from last MAC command
@@ -2769,13 +2767,13 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
             }
           }
         }
-        // for fixed bands:   all default 125kHz channels ON, channel mask similar to ChMask = 4
+        // for fixed bands:   all default 125kHz channels ON, channel mask similar to ChMaskCntl = 4
         // except for CN470:  all default 125kHz channels ON
         else if(this->band->bandNum != BandCN470) {
           for(int cnt = 0; cnt < 4; cnt++) {
             adrMasks[cnt] = 0xFFFF;
           }
-          adrMasks[chMaskCntl] = chMask;
+          adrMasks[4] = chMask;
         } else {                    // BandCN470
           for(int cnt = 0; cnt < 5; cnt++) {
             adrMasks[cnt] = 0xFFFF;
@@ -2783,13 +2781,13 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
         }
         break;
       case 7:
-        // for fixed bands:   all 125kHz channels OFF, channel mask similar to ChMask = 4
+        // for fixed bands:   all 125kHz channels OFF, channel mask similar to ChMaskCntl = 4
         // except for CN470:  RFU
         if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && this->band->bandNum != BandCN470) {
           for(int cnt = 0; cnt < 4; cnt++) {
             adrMasks[cnt] = 0x0000;
           }
-          adrMasks[chMaskCntl] = chMask;
+          adrMasks[4] = chMask;
         }
         break;
     }
