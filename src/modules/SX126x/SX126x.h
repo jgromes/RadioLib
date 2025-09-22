@@ -545,14 +545,14 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Query modem for the packet length of received payload.
-      \param update Update received packet length. Will return cached value when set to false.
+      \param update Not used for SX126x modules.
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update = true) override;
 
     /*!
       \brief Query modem for the packet length of received payload and Rx buffer offset.
-      \param update Update received packet length. Will return cached value when set to false.
+      \param update Not used for SX126x modules.
       \param offset Pointer to variable to store the Rx buffer offset.
       \returns Length of last received packet in bytes.
     */
