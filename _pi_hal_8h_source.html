@@ -128,8 +128,8 @@ $(document).ready(function(){initNavTree('_pi_hal_8h_source.html',''); initResiz
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      : <a class="code hl_class" href="class_radio_lib_hal.html">RadioLibHal</a>(PI_INPUT, PI_OUTPUT, LG_LOW, LG_HIGH, PI_RISING, PI_FALLING),</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      _gpioDevice(gpioDevice),</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      _spiDevice(spiDevice),</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      _spiChannel(spiChannel),</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      _spiSpeed(spiSpeed) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      _spiSpeed(spiSpeed),</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      _spiChannel(spiChannel) {</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    }</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
@@ -369,9 +369,9 @@ $(document).ready(function(){initNavTree('_pi_hal_8h_source.html',''); initResiz
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="comment">// the HAL can contain any additional private members</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _spiSpeed;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keyword">const</span> uint8_t _gpioDevice;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keyword">const</span> uint8_t _spiDevice;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keyword">const</span> uint8_t _gpioDevice;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keyword">const</span> uint8_t _spiDevice;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _spiSpeed;</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keyword">const</span> uint8_t _spiChannel;</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordtype">int</span> _gpioHandle = -1;</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordtype">int</span> _spiHandle = -1;</div>
