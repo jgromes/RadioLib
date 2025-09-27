@@ -178,11 +178,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>stopMulticastSession<
 <tr class="memdesc:adef05650cf4eb92042ca5e2688c1e164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <br /></td></tr>
 <tr class="separator:adef05650cf4eb92042ca5e2688c1e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf038f331c1dc954dafc2668e7a31ca0" id="r_adf038f331c1dc954dafc2668e7a31ca0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">getMacLinkCheckAns</a> (uint8_t *margin, uint8_t *gwCnt)</td></tr>
-<tr class="memdesc:adf038f331c1dc954dafc2668e7a31ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed.  <br /></td></tr>
+<tr class="memdesc:adf038f331c1dc954dafc2668e7a31ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quality of connectivity after requesting a LinkCheck MAC command.  <br /></td></tr>
 <tr class="separator:adf038f331c1dc954dafc2668e7a31ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e6e1ce4296364606ff8b10fb5f971de" id="r_a9e6e1ce4296364606ff8b10fb5f971de"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a> (uint32_t *gpsEpoch, uint8_t *fraction, bool returnUnix=true)</td></tr>
-<tr class="memdesc:a9e6e1ce4296364606ff8b10fb5f971de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed.  <br /></td></tr>
-<tr class="separator:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb9bbbb05ebe3e6962c438def15ba027" id="r_aeb9bbbb05ebe3e6962c438def15ba027"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aeb9bbbb05ebe3e6962c438def15ba027">getMacDeviceTimeAns</a> (uint32_t *timestamp, uint16_t *milliseconds, bool returnUnix=true)</td></tr>
+<tr class="memdesc:aeb9bbbb05ebe3e6962c438def15ba027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the network time after requesting a DeviceTime MAC command. Note: the network returns the time at the end of the uplink transmission. The return value of this function automatically adjusts to the current time. This time is supposed to be &lt;100ms accurate, but may be accurate to 1 second.  <br /></td></tr>
+<tr class="separator:aeb9bbbb05ebe3e6962c438def15ba027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14e8a8a098df28ff5ee294f235500499" id="r_a14e8a8a098df28ff5ee294f235500499"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">setDatarate</a> (uint8_t drUp)</td></tr>
 <tr class="memdesc:a14e8a8a098df28ff5ee294f235500499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set uplink datarate. This should not be used when ADR is enabled.  <br /></td></tr>
 <tr class="separator:a14e8a8a098df28ff5ee294f235500499"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -722,8 +722,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9e6e1ce4296364606ff8b10fb5f971de" name="a9e6e1ce4296364606ff8b10fb5f971de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e6e1ce4296364606ff8b10fb5f971de">&#9670;&#160;</a></span>getMacDeviceTimeAns()</h2>
+<a id="aeb9bbbb05ebe3e6962c438def15ba027" name="aeb9bbbb05ebe3e6962c438def15ba027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb9bbbb05ebe3e6962c438def15ba027">&#9670;&#160;</a></span>getMacDeviceTimeAns()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -732,13 +732,13 @@ Public Attributes</h2></td></tr>
           <td class="memname">int16_t LoRaWANNode::getMacDeviceTimeAns </td>
           <td>(</td>
           <td class="paramtype">uint32_t *&#160;</td>
-          <td class="paramname"><em>gpsEpoch</em>, </td>
+          <td class="paramname"><em>timestamp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>fraction</em>, </td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>milliseconds</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -754,12 +754,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
+<p>Returns the network time after requesting a DeviceTime MAC command. Note: the network returns the time at the end of the uplink transmission. The return value of this function automatically adjusts to the current time. This time is supposed to be &lt;100ms accurate, but may be accurate to 1 second. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gpsEpoch</td><td>Number of seconds since GPS epoch (Jan. 6th 1980) </td></tr>
-    <tr><td class="paramname">fraction</td><td>Fractional-second, in 1/256-second steps </td></tr>
-    <tr><td class="paramname">returnUnix</td><td>If true, returns Unix timestamp instead of GPS (default true) </td></tr>
+    <tr><td class="paramname">timestamp</td><td>Number of seconds since GPS epoch (Jan. 6th 1980). </td></tr>
+    <tr><td class="paramname">milliseconds</td><td>Milliseconds on top of the timestamp. </td></tr>
+    <tr><td class="paramname">returnUnix</td><td>If true, returns Unix timestamp instead of GPS (default true). </td></tr>
   </table>
   </dd>
 </dl>
@@ -793,7 +793,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
+<p>Returns the quality of connectivity after requesting a LinkCheck MAC command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">margin</td><td>Link margin in dB of LinkCheckReq demodulation at gateway side. </td></tr>

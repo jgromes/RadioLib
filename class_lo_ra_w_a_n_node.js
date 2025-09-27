@@ -17,7 +17,7 @@ var class_lo_ra_w_a_n_node =
     [ "getDownlinkClassC", "class_lo_ra_w_a_n_node.html#a4b5b5fca415b4521cee211504577406e", null ],
     [ "getFCntUp", "class_lo_ra_w_a_n_node.html#ad3217975ef9959ff83ce79dd80b0d777", null ],
     [ "getLastToA", "class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305", null ],
-    [ "getMacDeviceTimeAns", "class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de", null ],
+    [ "getMacDeviceTimeAns", "class_lo_ra_w_a_n_node.html#aeb9bbbb05ebe3e6962c438def15ba027", null ],
     [ "getMacLinkCheckAns", "class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0", null ],
     [ "getMaxPayloadLen", "class_lo_ra_w_a_n_node.html#ab723160aa317cd84550d0da3a0f52811", null ],
     [ "getNFCntDown", "class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1", null ],
