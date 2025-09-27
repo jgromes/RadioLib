@@ -2997,7 +2997,7 @@ void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t di
     uint8_t id = inOut[i];
     uint8_t fLen = 0;
     // include CID byte, so if command fails, we still move one byte forward
-    (void)this->getMacLen(id, &fLen, dir, true);
+    (void)this->getMacLen(id, &fLen, dir, true, &inOut[i+1]);
 
     // only clear MAC command if it should not persist until a downlink is received
     if(!this->isPersistentMacCommand(id, dir)) {
