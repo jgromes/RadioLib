@@ -134,14 +134,14 @@ void loop() {
       Serial.println(gwCnt);
     }
 
-    uint32_t networkTime = 0;
-    uint8_t fracSecond = 0;
-    if(node.getMacDeviceTimeAns(&networkTime, &fracSecond, true) == RADIOLIB_ERR_NONE) {
+    uint32_t timestamp = 0;
+    uint16_t milliseconds = 0;
+    if(node.getMacDeviceTimeAns(&timestamp, &milliseconds, true) == RADIOLIB_ERR_NONE) {
       Serial.print(F("[LoRaWAN] DeviceTime Unix:\t"));
-      Serial.println(networkTime);
-      Serial.print(F("[LoRaWAN] DeviceTime second:\t"));
-      Serial.print(fracSecond);
-      Serial.println(F("/256"));
+      Serial.println(timestamp);
+      Serial.print(F("[LoRaWAN] DeviceTime frac:\t"));
+      Serial.print(milliseconds);
+      Serial.println(F(" ms"));
     }
   
   } else if(state == 0) {
