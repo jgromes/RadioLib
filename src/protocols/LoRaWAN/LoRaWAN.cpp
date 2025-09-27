@@ -90,6 +90,10 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   state = this->isValidUplink(lenUp + this->fOptsUpLen, fPort);
   RADIOLIB_ASSERT(state);
 
+  // clear the MAC downlink buffer as we are going to transmit a new uplink
+  memset(this->fOptsDown, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
+  this->fOptsDownLen = 0;
+
   // the first 16 bytes are reserved for MIC calculation blocks
   size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(lenUp, this->fOptsUpLen);
   #if RADIOLIB_STATIC_ONLY
@@ -1956,11 +1960,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     // a Class A downlink was received, so restart the ADR counter with the next uplink
     this->adrFCnt = this->getFCntUp() + 1;
 
-    // a Class A downlink was received, so we can clear the MAC uplink and downlink buffers
+    // a Class A downlink was received, so we can clear the MAC uplink buffer
     memset(this->fOptsUp, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
     this->fOptsUpLen = 0;
-    memset(this->fOptsDown, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
-    this->fOptsDownLen = 0;
   }
 
   #if !RADIOLIB_STATIC_ONLY
