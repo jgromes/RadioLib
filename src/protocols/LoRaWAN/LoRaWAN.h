@@ -278,7 +278,7 @@ struct LoRaWANPackage_t {
   /*! \brief Whether the package runs through the Application layer */
   bool isAppPack;
 
-  /*! \brief Whether the FPort value is fixed or may be modified */
+  /*! \brief Whether the FPort value has a fixed value by specification */
   bool fixedFPort;
 
   /*! \brief Whether the package is currently in use */
@@ -289,13 +289,13 @@ struct LoRaWANPackage_t {
 };
 
 constexpr LoRaWANPackage_t PackageTable[RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES] = {
-  { RADIOLIB_LORAWAN_PACKAGE_TS007, RADIOLIB_LORAWAN_FPORT_TS007, true,  false, false, NULL },
-  { RADIOLIB_LORAWAN_PACKAGE_TS003, RADIOLIB_LORAWAN_FPORT_TS003, true,  true,  false, NULL },
-  { RADIOLIB_LORAWAN_PACKAGE_TS005, RADIOLIB_LORAWAN_FPORT_TS005, true,  true,  false, NULL },
-  { RADIOLIB_LORAWAN_PACKAGE_TS004, RADIOLIB_LORAWAN_FPORT_TS004, true,  true,  false, NULL },
-  { RADIOLIB_LORAWAN_PACKAGE_TS006, RADIOLIB_LORAWAN_FPORT_TS006, true,  true,  false, NULL },
-  { RADIOLIB_LORAWAN_PACKAGE_TS009, RADIOLIB_LORAWAN_FPORT_TS009, true,  false, false, NULL },
-  { RADIOLIB_LORAWAN_PACKAGE_TS011, RADIOLIB_LORAWAN_FPORT_TS011, false, false, false, NULL }
+  { RADIOLIB_LORAWAN_PACKAGE_TS007, RADIOLIB_LORAWAN_FPORT_TS007, true,  true,  false, NULL },
+  { RADIOLIB_LORAWAN_PACKAGE_TS003, RADIOLIB_LORAWAN_FPORT_TS003, true,  false, false, NULL },
+  { RADIOLIB_LORAWAN_PACKAGE_TS005, RADIOLIB_LORAWAN_FPORT_TS005, true,  false, false, NULL },
+  { RADIOLIB_LORAWAN_PACKAGE_TS004, RADIOLIB_LORAWAN_FPORT_TS004, true,  false, false, NULL },
+  { RADIOLIB_LORAWAN_PACKAGE_TS006, RADIOLIB_LORAWAN_FPORT_TS006, true,  false, false, NULL },
+  { RADIOLIB_LORAWAN_PACKAGE_TS009, RADIOLIB_LORAWAN_FPORT_TS009, true,  true,  false, NULL },
+  { RADIOLIB_LORAWAN_PACKAGE_TS011, RADIOLIB_LORAWAN_FPORT_TS011, false, true,  false, NULL }
 };
 
 #define RADIOLIB_LORAWAN_PACKAGE_NONE { .packId = 0, .packFPort = 0, .isAppPack = false, .fixedFPort = false, .enabled = false, .callback = NULL }
