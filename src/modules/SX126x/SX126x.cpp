@@ -1384,7 +1384,7 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem,
   }
 
   // configure settings not accessible by API
-  state = config(modem);
+  state = config(modem, resetModule);
   RADIOLIB_ASSERT(state);
 
   if (useRegulatorLDO) {
