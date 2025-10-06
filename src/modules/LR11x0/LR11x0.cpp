@@ -471,12 +471,23 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   state = readBuffer8(data, length, offset);
   RADIOLIB_ASSERT(state);
 
+  // clear interrupt flags
+  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+  RADIOLIB_ASSERT(state);
+  
   // clear the Rx buffer
   state = clearRxBuffer();
   RADIOLIB_ASSERT(state);
 
-  // clear interrupt flags
-  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+  // Zero-length packets corrupt the buffer offset pointer
+  // Force a mode cycle (standby -> RX) to reset
+  if(length == 0) {
+    state = standby();
+    RADIOLIB_ASSERT(state);
+    
+    state = setRx(this->rxTimeout);
+    RADIOLIB_ASSERT(state);
+  }
 
   // check if CRC failed - this is done after reading data to give user the option to keep them
   RADIOLIB_ASSERT(crcState);
