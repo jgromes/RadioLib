@@ -1958,7 +1958,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     this->fOptsUpLen = 0;
   }
 
-  uint8_t* fOptsPtr;
+  uint8_t* fOptsPtr = NULL;
   // decrypt any piggy-backed FOpts (in-place)
   if(fOptsLen > 0 && isPiggyBacking) {
     fOptsPtr = &downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS];
