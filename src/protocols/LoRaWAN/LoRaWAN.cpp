@@ -171,19 +171,23 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     // handle Rx windows - returns window > 0 if a downlink is received
     state = this->receiveDownlink();
 
-    // RETRANSMIT_TIMEOUT is 2s +/- 1s (RP v1.0.4)
-    // must be present after any confirmed frame, so we force this here
-    if(isConfirmed) {
-      int min = RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MIN_MS;
-      int max = RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MAX_MS;
-      this->sleepDelay(min + rand() % (max - min));
-    }
-
     // if an error occured or a downlink was received, stop retransmission
     if(state != RADIOLIB_ERR_NONE) {
       break;
     }
     // if no downlink was received, go on
+
+    // When an end-device has requested an ACK from the Network but has not yet received it, 
+    // it SHALL wait RETRANSMIT_TIMEOUT seconds after RECEIVE_DELAY2 seconds have elapsed 
+    // after the end of the previous uplink transmission before sending a new uplink (repetition or new frame). 
+    // The RETRANSMIT_TIMEOUT delay is not required between unconfirmed uplinks, 
+    // or after the ACK has been successfully demodulated by the end-device.
+    if(isConfirmed) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Retransmit timeout");
+      int min = RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MIN_MS;
+      int max = RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MAX_MS;
+      this->sleepDelay(min + rand() % (max - min));
+    }
 
   } // end of transmission & reception
 
