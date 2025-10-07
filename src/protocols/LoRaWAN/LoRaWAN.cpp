@@ -1547,6 +1547,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // if the IRQ bit for RxTimeout is set, put chip in standby and return
   if(timedOut) {
     this->phyLayer->clearPacketReceivedAction();
+    this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
     this->phyLayer->standby();
     return(0);  // no downlink
   }
@@ -1639,6 +1640,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
     // if the IRQ bit for RxTimeout is set, put chip in standby and return
     if(timedOut) {
       this->phyLayer->clearPacketReceivedAction();
+      this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
       this->phyLayer->standby();
       return(0);  // no downlink
     }
@@ -3639,6 +3641,10 @@ void LoRaWANNode::removePackage(uint8_t packageId) {
 }
 
 void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t addr, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
+  if(len == 0) {
+    return;
+  }
+  
   // figure out how many encryption blocks are there
   size_t numBlocks = len/RADIOLIB_AES128_BLOCK_SIZE;
   if(len % RADIOLIB_AES128_BLOCK_SIZE) {
