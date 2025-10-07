@@ -2107,7 +2107,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       uint8_t fLenRe = 0;
 
       // move back to the start of the uplink buffer
-      mPtr = fOptsPtr;
+      mPtr = fOptsRe;
       // and add as many MAC commands as space is available
       while(fOptsReLen + fLenRe <= maxReLen) {
         fOptsReLen += fLenRe;
