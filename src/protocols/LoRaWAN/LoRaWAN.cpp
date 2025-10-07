@@ -1243,15 +1243,7 @@ void LoRaWANNode::adrBackoff() {
   // the next required datarate; if datarate can be decreased, try it
   if(currentDr > 0) {
 
-    // check if dwelltime limitation allows a lower datarate
-    if(this->dwellTimeUp) {
-      const ModemType_t modem = this->band->dataRates[currentDr - 1].modem;
-      const DataRate_t* dr = &this->band->dataRates[currentDr - 1].dr;
-      const PacketConfig_t* pc = &this->band->dataRates[currentDr - 1].pc;
-      if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 13) / 1000 > this->dwellTimeUp) {
-        return;
-      }
-    } 
+    // dwelltime check is already done a few lines ago
 
     // try to decrease datarate (given channelplan and radio)
     if(this->setDatarate(currentDr - 1) == RADIOLIB_ERR_NONE) {
@@ -1301,12 +1293,14 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
   // check if we have some MAC commands to append
   out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= this->fOptsUpLen;
 
-  // if the saved confirm-fCnt is set, set the ACK bit
+  // if the ConfirmFCnt is set, there is a downlink to acknowledge, so set the ACK bit
   if(this->confFCntDown != RADIOLIB_LORAWAN_FCNT_NONE) {
     out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ACK;
   }
 
+  // set FCnt and FPort fields
   LoRaWANNode::hton<uint16_t>(&out[RADIOLIB_LORAWAN_FHDR_FCNT_POS], (uint16_t)this->fCntUp);
+  out[RADIOLIB_LORAWAN_FHDR_FPORT_POS(this->fOptsUpLen)] = fPort;
 
   if(this->fOptsUpLen > 0) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink MAC payload:");
@@ -1316,14 +1310,10 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
       // in LoRaWAN v1.1, the FOpts are encrypted using the NwkSEncKey
       processAES(this->fOptsUp, this->fOptsUpLen, this->nwkSEncKey, &out[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->devAddr, this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x01, true);
     } else {
-      // in LoRaWAN v1.0.x, the FOpts are unencrypted
+      // in LoRaWAN v1.0, the FOpts are unencrypted
       memcpy(&out[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->fOptsUp, this->fOptsUpLen);
     }
-    
   }
-
-  // set the fPort
-  out[RADIOLIB_LORAWAN_FHDR_FPORT_POS(this->fOptsUpLen)] = fPort;
 
   // select encryption key based on the target fPort
   uint8_t* encKey = this->appSKey;
@@ -1359,7 +1349,7 @@ void LoRaWANNode::micUplink(uint8_t* inOut, size_t lenInOut) {
   block1[RADIOLIB_LORAWAN_MIC_DATA_RATE_POS] = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
   block1[RADIOLIB_LORAWAN_MIC_CH_INDEX_POS] = this->channels[RADIOLIB_LORAWAN_UPLINK].idx;
   
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %lu) decoded:", (unsigned long)this->fCntUp);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %lu) encoded:", (unsigned long)this->fCntUp);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(inOut, lenInOut);
 
   // calculate authentication codes
