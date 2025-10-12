@@ -1,6 +1,8 @@
 #include "LR11x0.h"
 
 #include "../../utils/Cryptography.h"
+#include "LR_common.h"
+
 #include <string.h>
 
 #if !RADIOLIB_EXCLUDE_LR11X0
@@ -176,7 +178,7 @@ int16_t LR11x0::cryptoCheckEncryptedFirmwareImage(uint32_t offset, const uint32_
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
-  return(this->writeCommon(RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE, offset, data, len, nonvolatile));
+  return(LR_writeCommon(this->mod, RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE, offset, data, len, nonvolatile));
 }
 
 int16_t LR11x0::cryptoCheckEncryptedFirmwareImageResult(bool* result) {

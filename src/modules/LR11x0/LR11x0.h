@@ -301,8 +301,8 @@
 // RADIOLIB_LR11X0_CMD_SET_SLEEP
 #define RADIOLIB_LR11X0_SLEEP_RETENTION_DISABLED                (0x00UL << 0)   //  0     0     configuration retention in sleep mode: disabled
 #define RADIOLIB_LR11X0_SLEEP_RETENTION_ENABLED                 (0x01UL << 0)   //  0     0                                            enabled
-#define RADIOLIB_LR11X0_SLEEP_WAKEUP_DISABLED                   (0x00UL << 0)   //  1     1     automated wakeup: disabled
-#define RADIOLIB_LR11X0_SLEEP_WAKEUP_ENABLED                    (0x01UL << 0)   //  1     1                       enabled
+#define RADIOLIB_LR11X0_SLEEP_WAKEUP_DISABLED                   (0x00UL << 1)   //  1     1     automated wakeup: disabled
+#define RADIOLIB_LR11X0_SLEEP_WAKEUP_ENABLED                    (0x01UL << 1)   //  1     1                       enabled
 
 // RADIOLIB_LR11X0_CMD_SET_STANDBY
 #define RADIOLIB_LR11X0_STANDBY_RC                              (0x00UL << 0)   //  7     0     standby mode: RC oscillator
@@ -1881,7 +1881,6 @@ class LR11x0: public PhysicalLayer {
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, const uint8_t* payload, size_t len);
-    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile);
     int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut);
 };
 
