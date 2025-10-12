@@ -29,7 +29,8 @@ class SX1273: public SX1272 {
       \param freq Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.
       \param bw %LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz.
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 9.
-      \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
+      \param cr %LoRa link coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
       \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
@@ -50,18 +51,22 @@ class SX1273: public SX1272 {
     int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
-      \brief Set data.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \brief Set data rate.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Check the data rate can be configured by this module.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t checkDataRate(DataRate_t dr) override;
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio

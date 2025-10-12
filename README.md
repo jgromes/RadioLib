@@ -24,8 +24,8 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __LR11x0__ series LoRa/GFSK modules (LR1110, LR1120, LR1121)
 * __nRF24L01__ 2.4 GHz module
 * __RF69__ FSK/OOK radio module
-* __RFM2x__ series FSK modules (RFM22, RM23)
-* __RFM9x__ series LoRa modules (RFM95, RM96, RFM97, RFM98)
+* __RFM2x__ series FSK modules (RFM22, RFM23)
+* __RFM9x__ series LoRa modules (RFM95, RFM96, RFM97, RFM98)
 * __Si443x__ series FSK modules (Si4430, Si4431, Si4432)
 * __STM32WL__ integrated microcontroller/LoRa module
 * __SX126x__ series LoRa modules (SX1261, SX1262, SX1268)
@@ -49,7 +49,10 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * [__POCSAG__](https://www.sigidwiki.com/wiki/POCSAG) using 2-FSK for modules:  
 SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 * [__LoRaWAN__](https://lora-alliance.org/) using LoRa and FSK for modules:  
-SX127x, RFM9x, SX126x, LR11x0 and SX128x  
+SX127x, RFM9x, SX126x, LR11x0 and SX128x
+  * Supports Class A and C (and Multicast over C).
+  * Pre-certified for Class A.
+  * See the [wiki](https://github.com/jgromes/RadioLib/wiki/LoRaWAN) and [notes](https://github.com/jgromes/RadioLib/blob/master/examples/LoRaWAN/LoRaWAN_Starter/notes.md) for more information.
 
 ### Supported Arduino platforms:
 * __Arduino__  

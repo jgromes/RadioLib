@@ -93,6 +93,8 @@ void loop() {
   delay(500);
 
   // we can also send only a tone
+  state |= pager.sendTone(1234567);
+  delay(500);
 
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -101,6 +103,6 @@ void loop() {
     Serial.println(state);
   }
 
-  // wait for a second before transmitting again
+  // wait for 3 seconds before transmitting again
   delay(3000);
 }

@@ -8,3 +8,4 @@ This example shows how to use RadioLib as ESP-IDF component, without the Arduino
 * `main/EspHal.h` - RadioLib HAL example implementation
 * `main/idf_component.yml` - declaration of the RadioLib dependency for this example
 * `main/main.cpp` - the example source code
+* `sdkconfig.defaults` - List of preset configuration option values for ESP-IDF. All other options use default values provided by ESP-IDF.

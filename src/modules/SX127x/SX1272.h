@@ -31,7 +31,8 @@
 #define RADIOLIB_SX1272_BW_125_00_KHZ                           0b00000000  //  7     6   bandwidth:  125 kHz
 #define RADIOLIB_SX1272_BW_250_00_KHZ                           0b01000000  //  7     6               250 kHz
 #define RADIOLIB_SX1272_BW_500_00_KHZ                           0b10000000  //  7     6               500 kHz
-#define RADIOLIB_SX1272_CR_4_5                                  0b00001000  //  5     3   error coding rate:  4/5
+#define RADIOLIB_SX1272_CR_4_4                                  0b00000000  //  5     3   error coding rate:  4/4 (undocumented)
+#define RADIOLIB_SX1272_CR_4_5                                  0b00001000  //  5     3                       4/5
 #define RADIOLIB_SX1272_CR_4_6                                  0b00010000  //  5     3                       4/6
 #define RADIOLIB_SX1272_CR_4_7                                  0b00011000  //  5     3                       4/7
 #define RADIOLIB_SX1272_CR_4_8                                  0b00100000  //  5     3                       4/8
@@ -109,7 +110,8 @@ class SX1272: public SX127x {
       \param freq Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.
       \param bw %LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz.
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
-      \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
+      \param cr %LoRa link coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
       \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
@@ -163,7 +165,8 @@ class SX1272: public SX127x {
     virtual int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
-      \brief Sets %LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in %LoRa mode.
+      \brief Sets %LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in %LoRa mode.
+      Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. 
       \param cr %LoRa link coding rate denominator to be set.
       \returns \ref status_codes
     */
@@ -177,18 +180,22 @@ class SX1272: public SX127x {
     int16_t setBitRate(float br) override;
     
     /*!
-      \brief Set data.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \brief Set data rate.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Check the data rate can be configured by this module.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t checkDataRate(DataRate_t dr) override;
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).
@@ -320,12 +327,6 @@ class SX1272: public SX127x {
 
     int16_t configFSK() override;
     void errataFix(bool rx) override;
-
-#if !RADIOLIB_GODMODE
-  private:
-#endif
-    bool ldroAuto = true;
-    bool ldroEnabled = false;
 
 };
 

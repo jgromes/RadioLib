@@ -179,6 +179,17 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // check packet length
+  if (this->codingRate > RADIOLIB_LR11X0_LORA_CR_4_8_SHORT) {
+    // Long Interleaver needs at least 8 bytes
+    if(len < 8) {
+      return(RADIOLIB_ERR_PACKET_TOO_SHORT);
+    }
+
+    // Long Interleaver supports up to 253 bytes if CRC is enabled
+    if (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED && (len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH - 2)) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }  
+  } 
   if(len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
@@ -223,44 +234,38 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t LR11x0::receive(uint8_t* data, size_t len) {
+int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  RadioLibTime_t timeout = 0;
+  // calculate timeout based on the configured modem
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // get currently active modem
+    uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+    state = getPacketType(&modem);
+    RADIOLIB_ASSERT(state);
+    if((modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
+      // calculate timeout (500 % of expected time-one-air)
+      size_t maxLen = len;
+      if(len == 0) { maxLen = RADIOLIB_LR11X0_MAX_PACKET_LENGTH; }
+      timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
+    
+    } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+      // this modem cannot receive
+      return(RADIOLIB_ERR_WRONG_MODEM);
 
-  // get currently active modem
-  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  state = getPacketType(&modem);
-  RADIOLIB_ASSERT(state);
-  if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    // calculate timeout (100 LoRa symbols, the default for SX127x series)
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (RadioLibTime_t)(symbolLength * 100.0f);
-  
-  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    // calculate timeout (500 % of expected time-one-air)
-    size_t maxLen = len;
-    if(len == 0) { 
-      maxLen = 0xFF;
+    } else {
+      return(RADIOLIB_ERR_UNKNOWN);
+    
     }
-    float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0f * 32.0f) / (float)this->bitRate;
-    timeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
-  
-  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    // this modem cannot receive
-    return(RADIOLIB_ERR_WRONG_MODEM);
-
-  } else {
-    return(RADIOLIB_ERR_UNKNOWN);
-  
   }
 
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0f) / 30.52f);
+  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 30.52f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -270,7 +275,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeoutInternal) {
       softTimeout = true;
       break;
     }
@@ -284,9 +289,8 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   }
 
   // check whether this was a timeout or not
-  if((getIrqStatus() & RADIOLIB_LR11X0_IRQ_TIMEOUT) || softTimeout) {
-    standby();
-    clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+  if(softTimeout || (getIrqFlags() & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+    (void)finishReceive();
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
@@ -480,6 +484,15 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
+int16_t LR11x0::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  return(clearIrqState(RADIOLIB_LR11X0_IRQ_ALL));
+}
+
 int16_t LR11x0::startChannelScan() {
   ChannelScanConfig_t cfg = {
     .cad = {
@@ -628,10 +641,13 @@ int16_t LR11x0::setCodingRate(uint8_t cr, bool longInterleave) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  RADIOLIB_CHECK_RANGE(cr, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+  RADIOLIB_CHECK_RANGE(cr, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
 
   if(longInterleave) {
     switch(cr) {
+      case 4:
+        this->codingRate = 0;
+        break;
       case 5:
       case 6:
         this->codingRate = cr;
@@ -950,13 +966,26 @@ int16_t LR11x0::setWhitening(bool enabled, uint16_t initial) {
   return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }
 
-int16_t LR11x0::setDataRate(DataRate_t dr) {
-  // select interpretation based on active modem
-  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&type);
+int16_t LR11x0::setDataRate(DataRate_t dr, ModemType_t modem) {
+  // get the current modem
+  ModemType_t currentModem;
+  int16_t state = this->getModem(&currentModem);
   RADIOLIB_ASSERT(state);
+
+  // switch over if the requested modem is different
+  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
+    state = this->standby();
+    RADIOLIB_ASSERT(state);
+    state = this->setModem(modem);
+    RADIOLIB_ASSERT(state);
+  }
   
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+  if(modem == RADIOLIB_MODEM_NONE) {
+    modem = currentModem;
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
     // set the bit rate
     state = this->setBitRate(dr.fsk.bitRate);
     RADIOLIB_ASSERT(state);
@@ -964,7 +993,7 @@ int16_t LR11x0::setDataRate(DataRate_t dr) {
     // set the frequency deviation
     state = this->setFrequencyDeviation(dr.fsk.freqDev);
 
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+  } else if(modem == RADIOLIB_MODEM_LORA) {
     // set the spreading factor
     state = this->setSpreadingFactor(dr.lora.spreadingFactor);
     RADIOLIB_ASSERT(state);
@@ -976,7 +1005,7 @@ int16_t LR11x0::setDataRate(DataRate_t dr) {
     // set the coding rate
     state = this->setCodingRate(dr.lora.codingRate);
   
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+  } else if(modem == RADIOLIB_MODEM_LRFHSS) {
     // set the basic config
     state = this->setLrFhssConfig(dr.lrFhss.bw, dr.lrFhss.cr);
     RADIOLIB_ASSERT(state);
@@ -989,26 +1018,30 @@ int16_t LR11x0::setDataRate(DataRate_t dr) {
   return(state);
 }
 
-int16_t LR11x0::checkDataRate(DataRate_t dr) {
-  // select interpretation based on active modem
-  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&type);
-  RADIOLIB_ASSERT(state);
+int16_t LR11x0::checkDataRate(DataRate_t dr, ModemType_t modem) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
 
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+  // retrieve modem if not supplied
+  if(modem == RADIOLIB_MODEM_NONE) {
+    state = this->getModem(&modem);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
     RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+  } else if(modem == RADIOLIB_MODEM_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
-    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
   
   }
 
-  return(RADIOLIB_ERR_UNKNOWN);
+  return(state);
 }
 
 int16_t LR11x0::setPreambleLength(size_t preambleLength) {
@@ -1198,71 +1231,44 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   return((size_t)len);
 }
 
-RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
+RadioLibTime_t LR11x0::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
   // check active modem
-  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  (void)getPacketType(&type);
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    // calculate number of symbols
-    float N_symbol = 0;
-    if(this->codingRate <= RADIOLIB_LR11X0_LORA_CR_4_8_SHORT) {
-      // legacy coding rate - nice and simple
-
-      // get SF coefficients
-      float coeff1 = 0;
-      int16_t coeff2 = 0;
-      int16_t coeff3 = 0;
-      if(this->spreadingFactor < 7) {
-        // SF5, SF6
-        coeff1 = 6.25;
-        coeff2 = 4*this->spreadingFactor;
-        coeff3 = 4*this->spreadingFactor;
-      } else if(this->spreadingFactor < 11) {
-        // SF7. SF8, SF9, SF10
-        coeff1 = 4.25;
-        coeff2 = 4*this->spreadingFactor + 8;
-        coeff3 = 4*this->spreadingFactor;
-      } else {
-        // SF11, SF12
-        coeff1 = 4.25;
-        coeff2 = 4*this->spreadingFactor + 8;
-        coeff3 = 4*(this->spreadingFactor - 2);
-      }
-
-      // get CRC length
-      int16_t N_bitCRC = 16;
-      if(this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_DISABLED) {
-        N_bitCRC = 0;
-      }
-
-      // get header length
-      int16_t N_symbolHeader = 20;
-      if(this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) {
-        N_symbolHeader = 0;
-      }
-
-      // calculate number of LoRa preamble symbols
-      uint32_t N_symbolPreamble = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
-
-      // calculate the number of symbols
-      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0f + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRate + 4);
-
-    } else {
-      // long interleaving - abandon hope all ye who enter here
-      /// \todo implement this mess - SX1280 datasheet v3.0 section 7.4.4.2
-
+  if (modem == ModemType_t::RADIOLIB_MODEM_LORA) {  
+    uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << dr.lora.spreadingFactor) / (dr.lora.bandwidth * 10) ;
+    uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
+    uint8_t sfCoeff2 = 8;
+    if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
+      sfCoeff1_x4 = 25; // 6.25 * 4
+      sfCoeff2 = 0;
     }
+    uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
+    if(pc.lora.ldrOptimize) {
+      sfDivisor = 4*(dr.lora.spreadingFactor - 2);
+    }
+    const int8_t bitsPerCrc = 16;
+    const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
+
+    // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
+    int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
+    if(bitCount < 0) {
+      bitCount = 0;
+    }
+    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
+    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
+
+    // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
+    uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
 
     // get time-on-air in us
-    return(((uint32_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0f);
+    return((symbolLength_us * nSymbol_x4) / 4);
 
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
-  
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+  } else if(modem == ModemType_t::RADIOLIB_MODEM_FSK) {
+    return((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (uint32_t)len * 8) / (dr.fsk.bitRate / 1000.0f)));
+
+  } else if(modem == ModemType_t::RADIOLIB_MODEM_LRFHSS) {
     // calculate the number of bits based on coding rate
     uint16_t N_bits;
-    switch(this->lrFhssCr) {
+    switch(dr.lrFhss.cr) {
       case RADIOLIB_LR11X0_LR_FHSS_CR_5_6:
         N_bits = ((len * 6) + 4) / 5; // this is from the official LR11xx driver, but why the extra +4?
         break;
@@ -1287,12 +1293,72 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
     }
 
     // add header bits
-    uint16_t N_totalBits = (RADIOLIB_LR11X0_LR_FHSS_HEADER_BITS * this->lrFhssHdrCount) + N_payBits;
+    uint16_t N_totalBits = (RADIOLIB_LR11X0_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
     return(((uint32_t)N_totalBits * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
   
+  } else {
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   return(0);
+}
+
+RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
+  ModemType_t modem;
+  int32_t state = this->getModem(&modem);
+  RADIOLIB_ASSERT(state);
+
+  DataRate_t dr = {};
+  PacketConfig_t pc = {};
+  switch(modem) {
+    case ModemType_t::RADIOLIB_MODEM_LORA: {
+      uint8_t cr = this->codingRate;
+      // We assume same calculation for short and long interleaving, so map CR values 0-4 and 5-7 to the same values
+      if (cr < 5) {
+        cr = cr + 4;
+      } else if (cr == 7) {
+        cr = cr + 1;
+      }
+
+      dr.lora.spreadingFactor = this->spreadingFactor;
+      dr.lora.bandwidth = this->bandwidthKhz;
+      dr.lora.codingRate = cr;
+
+      pc.lora.preambleLength = this->preambleLengthLoRa;
+      pc.lora.implicitHeader = (this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) ? true : false;
+      pc.lora.crcEnabled = (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED) ? true : false;
+      pc.lora.ldrOptimize = (bool)this->ldrOptimize;
+      break;
+    }
+    case ModemType_t::RADIOLIB_MODEM_FSK: {
+      dr.fsk.bitRate = (float)this->bitRate / 1000.0f;
+      dr.fsk.freqDev = (float)this->frequencyDev;
+
+      uint8_t crcLen = 0;
+      if(this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_1_BYTE || this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_1_BYTE_INV) {
+        crcLen = 1;
+      } else if(this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_2_BYTE || this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_2_BYTE_INV) {
+        crcLen = 2;
+      }
+      
+      pc.fsk.preambleLength = this->preambleLengthGFSK;
+      pc.fsk.syncWordLength = this->syncWordLength; 
+      pc.fsk.crcLength = crcLen;
+      break;
+    }
+    case ModemType_t::RADIOLIB_MODEM_LRFHSS: {
+      dr.lrFhss.bw = this->lrFhssBw;
+      dr.lrFhss.cr = this->lrFhssCr;
+      dr.lrFhss.narrowGrid = (this->lrFhssGrid == RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC) ? true : false;
+
+      pc.lrFhss.hdrCount = this->lrFhssHdrCount;
+      break;
+    }
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  return(this->calculateTimeOnAir(modem, dr, pc, len));
 }
 
 RadioLibTime_t LR11x0::calculateRxTimeout(RadioLibTime_t timeoutUs) {

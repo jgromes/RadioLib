@@ -598,9 +598,11 @@ class Si443x: public PhysicalLayer {
       For overloads to receive Arduino String, see PhysicalLayer::receive.
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
       \brief Sets the module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
@@ -717,6 +719,12 @@ class Si443x: public PhysicalLayer {
     */
     int16_t readData(uint8_t* data, size_t len) override;
 
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
+
     // configuration methods
 
     /*!
@@ -752,7 +760,7 @@ class Si443x: public PhysicalLayer {
       \param preambleLen Preamble length to be set (in bits).
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint8_t preambleLen);
+    int16_t setPreambleLength(size_t preambleLen) override;
 
      /*!
       \brief Query modem for the packet length of received payload.

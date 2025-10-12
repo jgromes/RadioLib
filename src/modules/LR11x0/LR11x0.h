@@ -443,7 +443,22 @@
 #define RADIOLIB_LR11X0_GFSK_WHITENING_ENABLED                  (0x01UL << 0)   //  7     0                enabled
 
 // RADIOLIB_LR11X0_CMD_SET_TX_PARAMS
-#define RADIOLIB_LR11X0_PA_RAMP_48U                             (0x02UL << 0)   //  7     0     PA ramp time: 48 us
+#define RADIOLIB_LR11X0_PA_RAMP_16U                             (0x00UL << 0)   //  7     0     PA ramp time: 16 us
+#define RADIOLIB_LR11X0_PA_RAMP_32U                             (0x01UL << 0)   //  7     0                   32 us
+#define RADIOLIB_LR11X0_PA_RAMP_48U                             (0x02UL << 0)   //  7     0                   48 us
+#define RADIOLIB_LR11X0_PA_RAMP_64U                             (0x03UL << 0)   //  7     0                   64 us
+#define RADIOLIB_LR11X0_PA_RAMP_80U                             (0x04UL << 0)   //  7     0                   80 us
+#define RADIOLIB_LR11X0_PA_RAMP_96U                             (0x05UL << 0)   //  7     0                   96 us
+#define RADIOLIB_LR11X0_PA_RAMP_112U                            (0x06UL << 0)   //  7     0                   112 us
+#define RADIOLIB_LR11X0_PA_RAMP_128U                            (0x07UL << 0)   //  7     0                   128 us
+#define RADIOLIB_LR11X0_PA_RAMP_144U                            (0x08UL << 0)   //  7     0                   144 us
+#define RADIOLIB_LR11X0_PA_RAMP_160U                            (0x09UL << 0)   //  7     0                   160 us
+#define RADIOLIB_LR11X0_PA_RAMP_176U                            (0x0AUL << 0)   //  7     0                   176 us
+#define RADIOLIB_LR11X0_PA_RAMP_192U                            (0x0BUL << 0)   //  7     0                   192 us
+#define RADIOLIB_LR11X0_PA_RAMP_208U                            (0x0CUL << 0)   //  7     0                   208 us
+#define RADIOLIB_LR11X0_PA_RAMP_240U                            (0x0DUL << 0)   //  7     0                   240 us
+#define RADIOLIB_LR11X0_PA_RAMP_272U                            (0x0EUL << 0)   //  7     0                   272 us
+#define RADIOLIB_LR11X0_PA_RAMP_304U                            (0x0FUL << 0)   //  7     0                   304 us
 
 // RADIOLIB_LR11X0_CMD_SET_RX_TX_FALLBACK_MODE
 #define RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC                   (0x01UL << 0)   //  1     0     fallback mode after Rx/Tx: standby with RC
@@ -918,7 +933,8 @@ class LR11x0: public PhysicalLayer {
       \brief Initialization method for LoRa modem.
       \param bw LoRa bandwidth in kHz.
       \param sf LoRa spreading factor.
-      \param cr LoRa coding rate denominator.
+      \param cr LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
       \param tcxoVoltage TCXO reference voltage to be set.
@@ -975,11 +991,13 @@ class LR11x0: public PhysicalLayer {
     /*!
       \brief Blocking binary receive method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
-      \param data Binary data to be sent.
-      \param len Number of bytes to send.
+      \param data Pointer to array to save the received binary data.
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -1103,6 +1121,12 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
     
     /*!
       \brief Interrupt-driven channel activity detection method. IRQ1 will be activated
@@ -1144,10 +1168,12 @@ class LR11x0: public PhysicalLayer {
     int16_t setSpreadingFactor(uint8_t sf, bool legacy = false);
 
     /*!
-      \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
+      \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
+      is undocumented and not recommended without your own FEC.
       \param cr LoRa coding rate denominator to be set.
       \param longInterleave Enable long interleaver when set to true.
-      Note that CR 4/7 is not possible with long interleaver enabled!
+      Note that with long interleaver enabled, CR 4/7 is not possible, there are packet length restrictions,
+      and it is not compatible with SX127x radios!
       \returns \ref status_codes
     */
     int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
@@ -1259,18 +1285,22 @@ class LR11x0: public PhysicalLayer {
     int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
 
     /*!
-      \brief Set data.
-      \param dr Data rate struct. Interpretation depends on currently active modem (GFSK or LoRa).
+      \brief Set data rate.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Check the data rate can be configured by this module.
-      \param dr Data rate struct. Interpretation depends on currently active modem (GFSK or LoRa).
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
       \returns \ref status_codes
     */
-    int16_t checkDataRate(DataRate_t dr) override;
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.
@@ -1334,9 +1364,28 @@ class LR11x0: public PhysicalLayer {
     /*!
       \brief Query modem for the packet length of received payload.
       \param update Update received packet length. Will return cached value when set to false.
+      \param offset Pointer to a variable that will hold the receive packet's offset in the RX buffer
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update, uint8_t* offset);
+
+    /*!
+      \brief Get LoRa header information from last received packet. Only valid in explicit header mode.
+      \param cr Pointer to variable to store the coding rate.
+      \param hasCRC Pointer to variable to store the CRC status.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
+
+    /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
 
     /*!
       \brief Get expected time-on-air for a given size of payload
@@ -1610,6 +1659,14 @@ class LR11x0: public PhysicalLayer {
 #endif
     Module* getMod() override;
 
+    // LR11x0 command helpers
+    /*!
+      \brief Round up a PA power ramp time to register value
+      \param rampTimeUs Ramp time in microseconds
+      \returns Register value of rounded ramp time
+    */
+    uint8_t roundRampTime(uint32_t rampTimeUs);
+
     // LR11x0 SPI command implementations
     int16_t writeRegMem32(uint32_t addr, const uint32_t* data, size_t len);
     int16_t readRegMem32(uint32_t addr, uint32_t* data, size_t len);
@@ -1688,7 +1745,6 @@ class LR11x0: public PhysicalLayer {
     int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     int16_t lrFhssSetSyncWord(uint32_t sync);
     int16_t configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len);
-    int16_t getLoRaRxHeaderInfos(uint8_t* info);
     int16_t bleBeaconSend(uint8_t chan, const uint8_t* payload, size_t len);
 
     int16_t wifiScan(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);

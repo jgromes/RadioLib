@@ -84,6 +84,7 @@
 #define RADIOLIB_SX128X_REG_FREQ_ERROR_CORRECTION               0x093C
 #define RADIOLIB_SX128X_REG_LORA_SYNC_WORD_MSB                  0x0944
 #define RADIOLIB_SX128X_REG_LORA_SYNC_WORD_LSB                  0x0945
+#define RADIOLIB_SX128X_REG_LORA_RX_CODING_RATE                 0x0950
 #define RADIOLIB_SX128X_REG_RANGING_FILTER_RSSI_OFFSET          0x0953
 #define RADIOLIB_SX128X_REG_FEI_MSB                             0x0954
 #define RADIOLIB_SX128X_REG_FEI_MID                             0x0955
@@ -252,7 +253,7 @@
 #define RADIOLIB_SX128X_LORA_CR_4_8                             0x04        //  7     0                     4/8
 #define RADIOLIB_SX128X_LORA_CR_4_5_LI                          0x05        //  7     0                     4/5, long interleaving
 #define RADIOLIB_SX128X_LORA_CR_4_6_LI                          0x06        //  7     0                     4/6, long interleaving
-#define RADIOLIB_SX128X_LORA_CR_4_7_LI                          0x07        //  7     0                     4/7, long interleaving
+#define RADIOLIB_SX128X_LORA_CR_4_8_LI                          0x07        //  7     0                     4/8, long interleaving
 
 //RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS
 #define RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_OFF                 0x00        //  7     0   GFSK/FLRC sync word used: none
@@ -370,7 +371,8 @@ class SX128x: public PhysicalLayer {
       \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 812.5 kHz.
       \param sf LoRa spreading factor. Defaults to 9.
-      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
+      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
       \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX128X_SYNC_WORD_PRIVATE (0x12).
       \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength LoRa preamble length in symbols. Defaults to 12 symbols.
@@ -433,11 +435,13 @@ class SX128x: public PhysicalLayer {
     /*!
       \brief Blocking binary receive method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
-      \param data Binary data to be sent.
-      \param len Number of bytes to send.
+      \param data Pointer to array to save the received binary data.
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -560,6 +564,12 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
     
     /*!
       \brief Read currently active IRQ flags.
@@ -626,7 +636,8 @@ class SX128x: public PhysicalLayer {
     int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
-      \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
+      \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4
+      means no coding, is undocumented and not recommended without your own FEC.
       \param cr LoRa coding rate denominator to be set.
       \param longInterleaving Whether to enable long interleaving mode. Not available for coding rate 4/7,
       defaults to false.
@@ -669,14 +680,14 @@ class SX128x: public PhysicalLayer {
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK/BLE/FLRC).
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint32_t preambleLength);
+    int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
       \brief Set data rate.
       \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
       \returns \ref status_codes
     */
-    int16_t setDataRate(DataRate_t dr) override;
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000,
@@ -796,6 +807,14 @@ class SX128x: public PhysicalLayer {
     size_t getPacketLength(bool update, uint8_t* offset);
 
     /*!
+      \brief Get LoRa header information from last received packet. Only valid in explicit header mode.
+      \param cr Pointer to variable to store the coding rate.
+      \param hasCRC Pointer to variable to store the CRC status.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
+
+    /*!
       \brief Set modem in fixed packet length mode. Available in GFSK mode only.
       \param len Packet length.
       \returns \ref status_codes
@@ -808,6 +827,16 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX128X_MAX_PACKET_LENGTH);
+
+    /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
 
     /*!
       \brief Get expected time-on-air for a given size of payload.
@@ -923,7 +952,7 @@ class SX128x: public PhysicalLayer {
     uint8_t invertIQEnabled = RADIOLIB_SX128X_LORA_IQ_STANDARD;
 
     // cached GFSK parameters
-    float modIndexReal = 0;
+    float modIndexReal = 0, frequencyDev = 0;
     uint16_t bitRateKbps = 0;
     uint8_t bitRate = 0, modIndex = 0, shaping = 0;
     uint8_t preambleLengthGFSK = 0, syncWordLen = 0, syncWordMatch = 0, crcGFSK = 0, whitening = 0;

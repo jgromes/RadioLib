@@ -211,68 +211,55 @@ int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t SX127x::receive(uint8_t* data, size_t len) {
+int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
 
-  int16_t modem = getActiveModem();
-  if(modem == RADIOLIB_SX127X_LORA) {
-    // set mode to receive
-    state = startReceive(100, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
-    RADIOLIB_ASSERT(state);
+  // calculate timeout based on the configured modem
+  RadioLibTime_t timeoutInternal = timeout;
+  uint32_t timeoutValue = 0;
+  if(!timeoutInternal) {
+    // calculate timeout (500 % of expected time-one-air)
+    size_t maxLen = len;
+    if(len == 0) { maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH; }
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
 
-    // if no DIO1 is provided, use software timeout (100 LoRa symbols, same as hardware timeout)
-    RadioLibTime_t timeout = 0;
-    if(this->mod->getGpio() == RADIOLIB_NC) {
-      float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-      timeout = (RadioLibTime_t)(symbolLength * 100.0f);
-    }
+    // convert to symbols
+    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+    timeoutValue = (float)timeoutInternal / symbolLength;
+  }
 
-    // wait for packet reception or timeout
-    RadioLibTime_t start = this->mod->hal->millis();
-    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-      this->mod->hal->yield();
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
-      if(this->mod->getGpio() == RADIOLIB_NC) {
-        // no GPIO pin provided, use software timeout
-        if(this->mod->hal->millis() - start > timeout) {
-          clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
-          return(RADIOLIB_ERR_RX_TIMEOUT);
-        }
-      } else {
-        // GPIO provided, use that
-        if(this->mod->hal->digitalRead(this->mod->getGpio())) {
-          clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
-          return(RADIOLIB_ERR_RX_TIMEOUT);
-        }
-      }
+  // start reception
+  state = startReceive(timeoutValue, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
+  RADIOLIB_ASSERT(state);
 
-    }
-
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // calculate timeout in ms (500 % of expected time-on-air)
-    RadioLibTime_t timeout = (getTimeOnAir(len) * 5) / 1000;
-
-    // set mode to receive
-    state = startReceive(0, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
-    RADIOLIB_ASSERT(state);
-
-    // wait for packet reception or timeout
-    RadioLibTime_t start = this->mod->hal->millis();
-    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-      this->mod->hal->yield();
-      if(this->mod->hal->millis() - start > timeout) {
-        clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
-        return(RADIOLIB_ERR_RX_TIMEOUT);
-      }
+  // wait for packet reception or timeout
+  bool softTimeout = false;
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+    // check the blocking timeout
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      softTimeout = true;
+      break;
     }
   }
 
-  // read the received data
-  state = readData(data, len);
+  // check whether this was a timeout or not
+  if(softTimeout || (getIRQFlags() & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+    (void)finishReceive();
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }
 
-  return(state);
+  // read the received data
+  return(readData(data, len));
+}
+
+void SX127x::reset() {
+  // should be implemented in derived class
 }
 
 int16_t SX127x::scanChannel() {
@@ -296,7 +283,12 @@ int16_t SX127x::sleep() {
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
   // set mode to sleep
-  return(setMode(RADIOLIB_SX127X_SLEEP));
+  int16_t state = setMode(RADIOLIB_SX127X_SLEEP);
+  
+  // wait for SX127x to safely enter sleep mode
+  this->mod->hal->delay(1);
+
+  return(state);
 }
 
 int16_t SX127x::standby() {
@@ -464,6 +456,11 @@ void SX127x::clearFifoFullAction() {
   this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, 0x00, 5, 4);
 }
 
+void SX127x::errataFix(bool rx) {
+  (void)rx;
+  // should be implemented in derived class
+}
+
 bool SX127x::fifoAdd(uint8_t* data, int totalLen, int* remLen) {
   // subtract first (this may be the first time we get to modify the remaining length)
   *remLen -= RADIOLIB_SX127X_FIFO_THRESH - 1;
@@ -576,6 +573,15 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
   return(state);
+}
+
+int16_t SX127x::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  return(clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL));
 }
 
 int16_t SX127x::startChannelScan() {
@@ -831,6 +837,8 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
   if(!((newFreqDev + this->bitRate/2.0f <= 250.0f) && (freqDev <= 200.0f))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   }
+
+  this->frequencyDev = newFreqDev;
 
   // set mode to STANDBY
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -1104,6 +1112,20 @@ size_t SX127x::getPacketLength(bool update) {
   return(this->packetLength);
 }
 
+int16_t SX127x::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // check if in explicit header mode
+  if(this->implicitHdr) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  if(cr) { *cr = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_STAT, 7, 5) >> 5; }
+  if(hasCRC) { *hasCRC = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6) != 0; }
+
+  return(state);
+}
+
 int16_t SX127x::fixedPacketLengthMode(uint8_t len) {
   return(SX127x::setPacketMode(RADIOLIB_SX127X_PACKET_FIXED, len));
 }
@@ -1112,66 +1134,97 @@ int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
   return(SX127x::setPacketMode(RADIOLIB_SX127X_PACKET_VARIABLE, maxLen));
 }
 
-float SX127x::getNumSymbols(size_t len) {
-  // get symbol length in us
-  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-
+float SX127x::getNumSymbols(size_t len, DataRate_t dr, PacketConfig_t pc) {
   // get Low Data Rate optimization flag
-  float de = 0;
-  if (symbolLength >= 16.0f) {
-    de = 1;
-  }
+  float de = pc.lora.ldrOptimize ? 1.0f : 0.0f;
 
   // get explicit/implicit header enabled flag
-  float ih = (float) this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0);
-  
+  float ih = (float) pc.lora.implicitHeader;
+
   // get CRC enabled flag
-  float crc = (float) (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
+  float crc = (float) pc.lora.crcEnabled;
 
   // get number of preamble symbols
-  float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
+  float n_pre = (float) pc.lora.preambleLength;
 
   // get number of payload symbols
-  float n_pay = 8.0f + RADIOLIB_MAX(ceilf((8.0f * (float) len - 4.0f * (float) this->spreadingFactor + 28.0f + 16.0f * crc - 20.0f * ih) / (4.0f * (float) this->spreadingFactor - 8.0f * de)) * (float) this->codingRate, 0.0f);
+  float n_pay = 8.0f + RADIOLIB_MAX(ceilf((8.0f * (float) len - 4.0f * (float) dr.lora.spreadingFactor + 28.0f + 16.0f * crc - 20.0f * ih) / (4.0f * (float) dr.lora.spreadingFactor - 8.0f * de)) * (float) dr.lora.codingRate, 0.0f);
 
   // add 4.25 symbols for the sync
   return(n_pre + n_pay + 4.25f);
 }
 
-RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
-  // check active modem
-  uint8_t modem = getActiveModem();
-  if (modem == RADIOLIB_SX127X_LORA) {
+RadioLibTime_t SX127x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
+  if (modem == RADIOLIB_MODEM_LORA) {
     // get symbol length in us
-    float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+    float symbolLength = (float) (uint32_t(1) << dr.lora.spreadingFactor) / (float) dr.lora.bandwidth;
 
     // get number of symbols
-    float n_sym = getNumSymbols(len);
+    float n_sym = getNumSymbols(len, dr, pc);
 
     // get time-on-air in us
     return ceil((double)symbolLength * (double)n_sym) * 1000;
 
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // get number of bits preamble
-    float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
-    // get the number of bits of the sync word
-    float n_syncWord = (float) (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 2, 0) + 1) * 8;
-    // get CRC bits
-    float crc = (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) == RADIOLIB_SX127X_CRC_ON) * 16;
-
-    if (this->packetLengthConfig == RADIOLIB_SX127X_PACKET_FIXED) {
-      // if packet size fixed -> len = fixed packet length
-      len = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK);
-    } else {
-      // if packet variable -> Add 1 extra byte for payload length
-      len += 1;
-    }
-
+  } else if(modem == RADIOLIB_MODEM_FSK) {
+    
     // calculate time-on-air in us {[(length in bytes) * (8 bits / 1 byte)] / [(Bit Rate in kbps) * (1000 bps / 1 kbps)]} * (1000000 us in 1 sec)
-    return((uint32_t) (((crc + n_syncWord + n_pre + (float) (len * 8)) / (this->bitRate * 1000.0f)) * 1000000.0f));
+    return((uint32_t) ((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (float) (len * 8)) / (dr.fsk.bitRate * 1000.0f)) * 1000000.0f));
+  } else {
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
   
   return(RADIOLIB_ERR_UNKNOWN);
+}
+
+RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
+  uint8_t modem = getActiveModem();
+  DataRate_t dr = {};
+  PacketConfig_t pc = {};
+
+  switch (modem) {
+    case(RADIOLIB_SX127X_LORA): {
+      dr.lora.spreadingFactor = this->spreadingFactor;
+      dr.lora.bandwidth = this->bandwidth;
+      dr.lora.codingRate = this->codingRate;
+
+      // Get number of preamble symbols
+      uint16_t n_pre = ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
+
+      pc.lora.preambleLength = n_pre;
+      pc.lora.implicitHeader = this->implicitHdr;
+      pc.lora.crcEnabled = this->crcEnabled;
+      pc.lora.ldrOptimize = this->ldroEnabled;
+
+      return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_LORA, dr, pc, len));
+    }
+    case(RADIOLIB_SX127X_FSK_OOK): {
+      dr.fsk.bitRate = this->bitRate;
+      dr.fsk.freqDev = this->frequencyDev;
+
+      // get number of bits preamble
+      uint16_t n_pre = (uint16_t) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
+      // get the number of bits of the sync word
+      uint8_t n_syncWord = (uint8_t) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 2, 0) + 1) * 8);
+      // get CRC enabled status
+      bool crcEn = (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) == RADIOLIB_SX127X_CRC_ON);
+
+      pc.fsk.preambleLength = n_pre;
+      pc.fsk.syncWordLength = n_syncWord;
+      pc.fsk.crcLength = (uint8_t)(crcEn * 2);
+
+      if (this->packetLengthConfig == RADIOLIB_SX127X_PACKET_FIXED) {
+        // if packet size fixed -> len = fixed packet length
+        len = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK);
+      } else {
+        // if packet variable -> Add 1 extra byte for payload length
+        len += 1;
+      }
+
+      return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_FSK, dr, pc, len));
+    }
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
 }
 
 RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {

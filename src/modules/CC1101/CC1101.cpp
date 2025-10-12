@@ -58,9 +58,12 @@ int16_t CC1101::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t CC1101::receive(uint8_t* data, size_t len) {
-  // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
-  RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0f);
+int16_t CC1101::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
+    timeoutInternal = 500 + (1.0f/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0f);
+  } 
 
   // start reception
   int16_t state = startReceive();
@@ -71,9 +74,8 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -83,9 +85,8 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -261,7 +262,6 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   // data put on FIFO
   uint8_t dataSent = 0;
-
   uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
 
   // optionally write packet length
@@ -274,7 +274,6 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // check address filtering
-  //uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
   if(filter != RADIOLIB_CC1101_ADR_CHK_NONE) {
     SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, addr);
     dataSent += 1;
@@ -343,8 +342,14 @@ int16_t CC1101::startReceive() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
 
   // set GDO0 mapping
-  // GDO0 is de-asserted at packet end, hence it is inverted here
-  state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDO0_INV | RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 6, 0);
+  // this is the only interrupt source that works reliably
+  // RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED gets triggered by both packet received as well as packet discarded,
+  // RADIOLIB_CC1101_GDOX_PKT_RECEIVED_CRC_OK does not get triggered with CRC disabled
+  state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END, 6, 0);
+  RADIOLIB_ASSERT(state);
+
+  // set Rx FIFO threshold to the maximum Rx size
+  state = SPIsetRegValue(RADIOLIB_CC1101_REG_FIFOTHR, RADIOLIB_CC1101_FIFO_THR_TX_1_RX_64, 3, 0);
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
@@ -406,14 +411,15 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 
   // Flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
   if(SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
-
-    // set mode to standby
-    standby();
-
-    // flush Rx FIFO
-    SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    finishReceive();
   }
 
+  return(state);
+}
+
+int16_t CC1101::finishReceive() {
+  int16_t state = standby();
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
   return(state);
 }
 
@@ -658,6 +664,10 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
   return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 }
 
+int16_t CC1101::setSyncWord(uint8_t* sync, size_t len) {
+  return this->setSyncWord(sync, len, 0, false);
+}
+
 int16_t CC1101::setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {
   if((maxErrBits > 1) || (len != 2)) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
@@ -686,6 +696,9 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bo
   return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense));
 }
 
+int16_t CC1101::setPreambleLength(size_t len) {
+  return this->setPreambleLength(len, len-4);
+}
 int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold) {
   // check allowed values
   uint8_t value;

@@ -122,9 +122,12 @@ int16_t RF69::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(finishTransmit());
 }
 
-int16_t RF69::receive(uint8_t* data, size_t len) {
-  // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
-  RadioLibTime_t timeout = 500 + (1.0f/(this->bitRate))*(RADIOLIB_RF69_MAX_PACKET_LENGTH*400.0f);
+int16_t RF69::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
+    timeoutInternal = 500 + (1.0f/(this->bitRate))*(RADIOLIB_RF69_MAX_PACKET_LENGTH*400.0f);
+  } 
 
   // start reception
   int16_t state = startReceive();
@@ -135,9 +138,8 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
-      standby();
-      clearIRQFlags();
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      (void)finishReceive();
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -421,12 +423,6 @@ int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, const_cast<uint8_t*>(data), packetLen);
 
-  // this is a hack, but it seems than in Stream mode, Rx FIFO level is getting triggered 1 byte before it should
-  // just add a padding byte that can be dropped without consequence
-  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
-    this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, '/');
-  }
-
   // enable +20 dBm operation
   if(this->power > 17) {
     state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_OFF | 0x0F);
@@ -483,10 +479,18 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   // clear internal flag so getPacketLength can return the new packet length
   this->packetLengthQueried = false;
 
-  // clear interrupt flags
-  clearIRQFlags();
+  finishReceive();
 
   return(RADIOLIB_ERR_NONE);
+}
+
+int16_t RF69::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  
+  // clear interrupt flags
+  clearIRQFlags();
+  return(state);
 }
 
 int16_t RF69::setOOK(bool enable) {
@@ -719,7 +723,7 @@ int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBit
   return(state);
 }
 
-int16_t RF69::setPreambleLength(uint8_t preambleLen) {
+int16_t RF69::setPreambleLength(size_t preambleLen) {
   // RF69 configures preamble length in bytes
   if(preambleLen % 8 != 0) {
     return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);

@@ -62,7 +62,7 @@ int16_t PhysicalLayer::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t PhysicalLayer::receive(String& str, size_t len) {
+int16_t PhysicalLayer::receive(String& str, size_t len, RadioLibTime_t timeout) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // user can override the length of data to read
@@ -82,7 +82,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   #endif
 
   // attempt packet reception
-  state = receive(data, length);
+  state = receive(data, length, timeout);
 
   // any of the following leads to at least some data being available
   // let's leave the decision of whether to keep it or not up to the user
@@ -108,9 +108,10 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
 }
 #endif
 
-int16_t PhysicalLayer::receive(uint8_t* data, size_t len) {
+int16_t PhysicalLayer::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   (void)data;
   (void)len;
+  (void)timeout;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -171,6 +172,10 @@ int16_t PhysicalLayer::startTransmit(const uint8_t* data, size_t len, uint8_t ad
 }
 
 int16_t PhysicalLayer::finishTransmit() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::finishReceive() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -284,13 +289,15 @@ int16_t PhysicalLayer::setPreambleLength(size_t len) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setDataRate(DataRate_t dr) {
+int16_t PhysicalLayer::setDataRate(DataRate_t dr, ModemType_t modem) {
   (void)dr;
+  (void)modem;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::checkDataRate(DataRate_t dr) {
+int16_t PhysicalLayer::checkDataRate(DataRate_t dr, ModemType_t modem) {
   (void)dr;
+  (void)modem;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -305,6 +312,14 @@ float PhysicalLayer::getRSSI() {
 
 float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+RadioLibTime_t PhysicalLayer::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
+  (void)modem;
+  (void)dr;
+  (void)pc;
+  (void)len;
+  return(0);
 }
 
 RadioLibTime_t PhysicalLayer::getTimeOnAir(size_t len) {

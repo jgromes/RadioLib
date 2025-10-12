@@ -27,8 +27,8 @@ class PiHal : public RadioLibHal {
       : RadioLibHal(PI_INPUT, PI_OUTPUT, LG_LOW, LG_HIGH, PI_RISING, PI_FALLING),
       _gpioDevice(gpioDevice),
       _spiDevice(spiDevice),
-      _spiChannel(spiChannel),
-      _spiSpeed(spiSpeed) {
+      _spiSpeed(spiSpeed),
+      _spiChannel(spiChannel) {
     }
 
     void init() override {
@@ -232,9 +232,9 @@ class PiHal : public RadioLibHal {
 
   private:
     // the HAL can contain any additional private members
-    const unsigned int _spiSpeed;
     const uint8_t _gpioDevice;
     const uint8_t _spiDevice;
+    const unsigned int _spiSpeed;
     const uint8_t _spiChannel;
     int _gpioHandle = -1;
     int _spiHandle = -1;

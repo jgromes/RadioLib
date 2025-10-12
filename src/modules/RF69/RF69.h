@@ -528,11 +528,13 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Blocking binary receive method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
-      \param data Binary data to be sent.
-      \param len Number of bytes to send.
+      \param data Pointer to array to save the received binary data.
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len) override;
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
       \brief Sets the module to sleep mode.
@@ -727,6 +729,12 @@ class RF69: public PhysicalLayer {
     */
     int16_t readData(uint8_t* data, size_t len) override;
 
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
+
     // configuration methods
 
     /*!
@@ -796,7 +804,7 @@ class RF69: public PhysicalLayer {
       \param preambleLen Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint8_t preambleLen);
+    int16_t setPreambleLength(size_t preambleLen) override;
 
     /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.

@@ -133,6 +133,7 @@ startTransmit	KEYWORD2
 finishTransmit	KEYWORD2
 startReceive	KEYWORD2
 readData	KEYWORD2
+finishReceive	KEYWORD2
 startChannelScan	KEYWORD2
 getChannelScanResult	KEYWORD2
 setBandwidth	KEYWORD2
@@ -195,6 +196,7 @@ getFHSSChannel	KEYWORD2
 clearFHSSInt	KEYWORD2
 randomByte	KEYWORD2
 getPacketLength	KEYWORD2
+getLoRaRxHeaderInfo	KEYWORD2
 setFifoEmptyAction	KEYWORD2
 clearFifoEmptyAction	KEYWORD2
 setFifoThreshold	KEYWORD2
@@ -228,6 +230,7 @@ beginFSK4	KEYWORD2
 setTCXO	KEYWORD2
 setDio2AsRfSwitch	KEYWORD2
 getTimeOnAir	KEYWORD2
+calculateTimeOnAir KEYWORD2
 implicitHeader	KEYWORD2
 explicitHeader	KEYWORD2
 setSyncBits	KEYWORD2
@@ -376,7 +379,6 @@ scheduleTransmission	KEYWORD2
 getFCntUp	KEYWORD2
 getNFCntDown	KEYWORD2
 getAFCntDown	KEYWORD2
-resetFCntDown	KEYWORD2
 getDevAddr	KEYWORD2
 getLastToA	KEYWORD2
 dutyCycleInterval	KEYWORD2
