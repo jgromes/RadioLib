@@ -187,6 +187,16 @@
 #define RADIOLIB_LR2021_IRQ_RNG_EXCH_VALID                      (0x01UL << 30)  //  31    0                master receive valid ranging response
 #define RADIOLIB_LR2021_IRQ_RNG_TIMEOUT                         (0x01UL << 31)  //  31    0                ranging timeout
 
+// RADIOLIB_LR2021_CMD_WRITE_REG_MEM
+#define RADIOLIB_LR2021_SPI_MAX_READ_WRITE_LEN                  (256)           //  7     0     maximum length of read/write SPI payload in bytes
+
+// RADIOLIB_LR2021_CMD_SET_SLEEP
+#define RADIOLIB_LR2021_SLEEP_32K_CLK_DISABLED                  (0x00UL << 0)   //  0     0     32 kHz clock: disabled
+#define RADIOLIB_LR2021_SLEEP_32K_CLK_ENABLED                   (0x01UL << 0)   //  0     0                   enabled
+#define RADIOLIB_LR2021_SLEEP_RETENTION_DISABLED                (0x00UL << 1)   //  1     1     configuration retention in sleep mode: disabled
+#define RADIOLIB_LR2021_SLEEP_RETENTION_ENABLED                 (0x01UL << 1)   //  1     1                                            enabled
+
+
 /*!
   \class LR2021
   \brief 
@@ -206,6 +216,9 @@ class LR2021: public PhysicalLayer {
     */
     explicit LR2021(Module* mod);
     
+    int16_t sleep();
+    int16_t sleep(uint8_t cfg, uint32_t time);
+    
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -223,6 +236,13 @@ class LR2021: public PhysicalLayer {
 
     static int16_t SPIparseStatus(uint8_t in);
     static int16_t SPIcheckStatus(Module* mod);
+
+    int16_t readRadioRxFifo(uint8_t* data, size_t len);
+    int16_t writeRadioTxFifo(uint8_t* data, size_t len);
+    int16_t writeRegMem32(uint32_t addr, const uint32_t* data, size_t len);
+    int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);
+    int16_t readRegMem32(uint32_t addr, uint32_t* data, size_t len);
+
 };
 
 #endif
