@@ -5,7 +5,7 @@
 
 #if !RADIOLIB_EXCLUDE_LR11X0
 
-LR11x0::LR11x0(Module* mod) : PhysicalLayer() {
+LR11x0::LR11x0(Module* mod) : PhysicalLayer(), LRxxxx(mod) {
   this->freqStep = RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_LR11X0_MAX_PACKET_LENGTH;
   this->mod = mod;
@@ -1227,7 +1227,8 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   }
 
   uint8_t len = 0;
-  (void)getRxBufferStatus(&len, offset);
+  int state = getRxBufferStatus(&len, offset);
+  RADIOLIB_DEBUG_BASIC_PRINT("getRxBufferStatus state = %d\n", state);
   return((size_t)len);
 }
 
@@ -1783,28 +1784,6 @@ int16_t LR11x0::SPIcheckStatus(Module* mod) {
   mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
   RADIOLIB_ASSERT(state);
   return(LR11x0::SPIparseStatus(buff[0]));
-}
-
-int16_t LR11x0::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out, size_t outLen) {
-  int16_t state = RADIOLIB_ERR_UNKNOWN;
-  if(!write) {
-    // the SPI interface of LR11x0 requires two separate transactions for reading
-    // send the 16-bit command
-    state = this->mod->SPIwriteStream(cmd, out, outLen, true, false);
-    RADIOLIB_ASSERT(state);
-
-    // read the result without command
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_0;
-    state = this->mod->SPIreadStream(RADIOLIB_LR11X0_CMD_NOP, data, len, true, false);
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
-
-  } else {
-    // write is just a single transaction
-    state = this->mod->SPIwriteStream(cmd, data, len, true, true);
-  
-  }
-  
-  return(state);
 }
 
 bool LR11x0::findChip(uint8_t ver) {

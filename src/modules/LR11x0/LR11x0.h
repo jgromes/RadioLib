@@ -8,6 +8,7 @@
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
+#include "../LR11x0/LR_common.h"
 
 // LR11X0 physical layer properties
 #define RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE                     1.0
@@ -886,7 +887,7 @@ struct LR11x0GnssAlmanacStatus_t {
   \brief Base class for %LR11x0 series. All derived classes for %LR11x0 (e.g. LR1110 or LR1120) inherit from this base class.
   This class should not be instantiated directly from user code, only from its derived classes.
 */
-class LR11x0: public PhysicalLayer {
+class LR11x0: public PhysicalLayer, public LRxxxx {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -1833,8 +1834,6 @@ class LR11x0: public PhysicalLayer {
     int16_t bootGetPin(uint8_t* pin);
     int16_t bootGetChipEui(uint8_t* eui);
     int16_t bootGetJoinEui(uint8_t* eui);
-    
-    int16_t SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out = NULL, size_t outLen = 0);
     
 #if !RADIOLIB_GODMODE
   protected:

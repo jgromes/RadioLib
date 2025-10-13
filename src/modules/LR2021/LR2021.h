@@ -8,6 +8,7 @@
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
+#include "../LR11x0/LR_common.h"
 
 // LR2021 physical layer properties
 #define RADIOLIB_LR2021_FREQUENCY_STEP_SIZE                     1.0
@@ -187,9 +188,6 @@
 #define RADIOLIB_LR2021_IRQ_RNG_EXCH_VALID                      (0x01UL << 30)  //  31    0                master receive valid ranging response
 #define RADIOLIB_LR2021_IRQ_RNG_TIMEOUT                         (0x01UL << 31)  //  31    0                ranging timeout
 
-// RADIOLIB_LR2021_CMD_WRITE_REG_MEM
-#define RADIOLIB_LR2021_SPI_MAX_READ_WRITE_LEN                  (256)           //  7     0     maximum length of read/write SPI payload in bytes
-
 // RADIOLIB_LR2021_CMD_SET_SLEEP
 #define RADIOLIB_LR2021_SLEEP_32K_CLK_DISABLED                  (0x00UL << 0)   //  0     0     32 kHz clock: disabled
 #define RADIOLIB_LR2021_SLEEP_32K_CLK_ENABLED                   (0x01UL << 0)   //  0     0                   enabled
@@ -201,7 +199,7 @@
   \class LR2021
   \brief 
 */
-class LR2021: public PhysicalLayer {
+class LR2021: public PhysicalLayer, public LRxxxx {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -227,7 +225,6 @@ class LR2021: public PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-    int16_t SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out = NULL, size_t outLen = 0);
 
 #if !RADIOLIB_GODMODE
   private:

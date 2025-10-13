@@ -5,7 +5,7 @@
 
 #if !RADIOLIB_EXCLUDE_LR2021
 
-LR2021::LR2021(Module* mod) : PhysicalLayer() {
+LR2021::LR2021(Module* mod) : PhysicalLayer(), LRxxxx(mod) {
   this->freqStep = RADIOLIB_LR2021_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_LR2021_MAX_PACKET_LENGTH;
   this->mod = mod;
@@ -67,28 +67,6 @@ int16_t LR2021::SPIcheckStatus(Module* mod) {
   mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
   RADIOLIB_ASSERT(state);
   return(LR2021::SPIparseStatus(buff[0]));
-}
-
-int16_t LR2021::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out, size_t outLen) {
-  int16_t state = RADIOLIB_ERR_UNKNOWN;
-  if(!write) {
-    // the SPI interface of LR2021 requires two separate transactions for reading
-    // send the 16-bit command
-    state = this->mod->SPIwriteStream(cmd, out, outLen, true, false);
-    RADIOLIB_ASSERT(state);
-
-    // read the result without command
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_0;
-    state = this->mod->SPIreadStream(RADIOLIB_LR2021_CMD_NOP, data, len, true, false);
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
-
-  } else {
-    // write is just a single transaction
-    state = this->mod->SPIwriteStream(cmd, data, len, true, true);
-  
-  }
-  
-  return(state);
 }
 
 #endif

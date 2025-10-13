@@ -56,7 +56,7 @@ int16_t LR11x0::writeRegMem32(uint32_t addr, const uint32_t* data, size_t len) {
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
-  return(LR_writeCommon(this->mod, RADIOLIB_LR11X0_CMD_WRITE_REG_MEM, addr, data, len, false));
+  return(this->writeCommon(RADIOLIB_LR11X0_CMD_WRITE_REG_MEM, addr, data, len, false));
 }
 
 int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
@@ -830,7 +830,7 @@ int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, const uint32_t* data, s
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
-  return(LR_writeCommon(this->mod, RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED, offset, data, len, nonvolatile));
+  return(this->writeCommon(RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED, offset, data, len, nonvolatile));
 }
 
 int16_t LR11x0::bootReboot(bool stay) {
