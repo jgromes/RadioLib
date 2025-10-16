@@ -1991,7 +1991,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // decrypt the frame payload (in-place to allow a fully decrypted hex-dump next)
   uint8_t* payloadPtr = &downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(fOptsLen)];
   processAES(payloadPtr, payLen, encKey, payloadPtr, addr, devFCnt32, RADIOLIB_LORAWAN_DOWNLINK, 0x00, true);
-  data = payloadPtr;
+  memcpy(data, payloadPtr, payLen);
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) decoded:", 
                                   (this->multicast && window == RADIOLIB_LORAWAN_RX_BC) ? "M" :
