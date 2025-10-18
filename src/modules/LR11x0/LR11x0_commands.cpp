@@ -143,22 +143,6 @@ int16_t LR11x0::writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_WRITE_REG_MEM_MASK, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
-  uint8_t buff[6] = { 0 };
-
-  // the status check command doesn't return status in the same place as other read commands
-  // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
-  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-
-  // pass the replies
-  if(stat1) { *stat1 = buff[0]; }
-  if(stat2) { *stat2 = buff[1]; }
-  if(irq)   { *irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5]; }
-
-  return(state);
-}
-
 int16_t LR11x0::getVersion(uint8_t* hw, uint8_t* device, uint8_t* major, uint8_t* minor) {
   uint8_t buff[4] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_VERSION, false, buff, sizeof(buff));

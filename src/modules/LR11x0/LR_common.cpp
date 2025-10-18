@@ -4,58 +4,43 @@ LRxxxx::LRxxxx(Module* mod) {
   this->mod = mod;
 }
 
-int16_t LRxxxx::writeRegMem32(uint16_t cmd, uint32_t addr, const uint32_t* data, size_t len) {
-  // check maximum size
-  if(len > (RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
-    return(RADIOLIB_ERR_SPI_CMD_INVALID);
-  }
-  return(this->writeCommon(cmd, addr, data, len, false));
-}
+int16_t LRxxxx::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
+  uint8_t buff[6] = { 0 };
 
-int16_t LRxxxx::writeRegMemMask32(uint16_t cmd, uint32_t addr, uint32_t mask, uint32_t data) {
-  uint8_t buff[12] = {
-    (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF),
-    (uint8_t)((mask >> 24) & 0xFF), (uint8_t)((mask >> 16) & 0xFF), (uint8_t)((mask >> 8) & 0xFF), (uint8_t)(mask & 0xFF),
-    (uint8_t)((data >> 24) & 0xFF), (uint8_t)((data >> 16) & 0xFF), (uint8_t)((data >> 8) & 0xFF), (uint8_t)(data & 0xFF),
-  };
-  return(this->SPIcommand(cmd, true, buff, sizeof(buff)));
-}
+  // the status check command doesn't return status in the same place as other read commands
+  // but only as the first byte (as with any other command), hence LRxxxx::SPIcommand can't be used
+  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
+  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
 
-int16_t LRxxxx::readRegMem32(uint16_t cmd, uint32_t addr, uint32_t* data, size_t len) {
-  // check maximum size
-  if(len >= (RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
-    return(RADIOLIB_ERR_SPI_CMD_INVALID);
-  }
+  // pass the replies
+  if(stat1) { *stat1 = buff[0]; }
+  if(stat2) { *stat2 = buff[1]; }
+  if(irq)   { *irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5]; }
 
-  // the request contains the address and length
-  uint8_t reqBuff[5] = {
-    (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF),
-    (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF),
-    (uint8_t)len,
-  };
-
-  // build buffers - later we need to ensure endians are correct, 
-  // so there is probably no way to do this without copying buffers and iterating
-  #if RADIOLIB_STATIC_ONLY
-    uint8_t rplBuff[RADIOLIB_LR2021_SPI_MAX_READ_WRITE_LEN];
-  #else
-    uint8_t* rplBuff = new uint8_t[len*sizeof(uint32_t)];
-  #endif
-
-  int16_t state = this->SPIcommand(cmd, false, rplBuff, len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
-
-  // convert endians
-  if(data && (state == RADIOLIB_ERR_NONE)) {
-    for(size_t i = 0; i < len; i++) {
-      data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
-    }
-  }
-
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] rplBuff;
-  #endif
-  
   return(state);
+}
+
+int16_t LRxxxx::SPIparseStatus(uint8_t in) {
+  if((in & 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_PERR) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  } else if((in & 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_FAIL) {
+    return(RADIOLIB_ERR_SPI_CMD_FAILED);
+  } else if((in == 0x00) || (in == 0xFF)) {
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t LRxxxx::SPIcheckStatus(Module* mod) {
+  // the status check command doesn't return status in the same place as other read commands,
+  // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
+  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
+  uint8_t buff[6] = { 0 };
+  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
+  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  RADIOLIB_ASSERT(state);
+  return(LRxxxx::SPIparseStatus(buff[0]));
 }
 
 int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile) {

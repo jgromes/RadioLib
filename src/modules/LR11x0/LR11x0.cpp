@@ -1763,29 +1763,6 @@ int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   return(config(modem));
 }
 
-int16_t LR11x0::SPIparseStatus(uint8_t in) {
-  if((in & 0b00001110) == RADIOLIB_LR11X0_STAT_1_CMD_PERR) {
-    return(RADIOLIB_ERR_SPI_CMD_INVALID);
-  } else if((in & 0b00001110) == RADIOLIB_LR11X0_STAT_1_CMD_FAIL) {
-    return(RADIOLIB_ERR_SPI_CMD_FAILED);
-  } else if((in == 0x00) || (in == 0xFF)) {
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }
-  return(RADIOLIB_ERR_NONE);
-}
-
-int16_t LR11x0::SPIcheckStatus(Module* mod) {
-  // the status check command doesn't return status in the same place as other read commands,
-  // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
-  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  uint8_t buff[6] = { 0 };
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
-  RADIOLIB_ASSERT(state);
-  return(LR11x0::SPIparseStatus(buff[0]));
-}
-
 bool LR11x0::findChip(uint8_t ver) {
   uint8_t i = 0;
   bool flagFound = false;

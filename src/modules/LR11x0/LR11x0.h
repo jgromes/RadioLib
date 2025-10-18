@@ -183,10 +183,6 @@
 // LR11X0 SPI command variables
 
 // RADIOLIB_LR11X0_CMD_GET_STATUS                                                   MSB   LSB   DESCRIPTION
-#define RADIOLIB_LR11X0_STAT_1_CMD_FAIL                         (0x00UL << 1)   //  3     1     command status: last command could not be executed
-#define RADIOLIB_LR11X0_STAT_1_CMD_PERR                         (0x01UL << 1)   //  3     1                     processing error
-#define RADIOLIB_LR11X0_STAT_1_CMD_OK                           (0x02UL << 1)   //  3     1                     successfully processed
-#define RADIOLIB_LR11X0_STAT_1_CMD_DAT                          (0x03UL << 1)   //  3     1                     successfully processed, data is being transmitted
 #define RADIOLIB_LR11X0_STAT_1_IRQ_INACTIVE                     (0x00UL << 0)   //  0     0     interrupt status: inactive
 #define RADIOLIB_LR11X0_STAT_1_IRQ_ACTIVE                       (0x01UL << 0)   //  0     0                       at least 1 interrupt active
 #define RADIOLIB_LR11X0_STAT_2_CMD_RST_CLEARED                  (0x00UL << 4)   //  7     4     reset status: cleared
