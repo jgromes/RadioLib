@@ -75,6 +75,7 @@
 #define RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CONFIG            (0x0224)
 #define RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_SYNCWORD          (0x0225)
 #define RADIOLIB_LR2021_CMD_SET_LORA_CAD_PARAMS                 (0x0227)
+#define RADIOLIB_LR2021_CMD_SET_LORA_CAD                        (0x0228)
 #define RADIOLIB_LR2021_CMD_GET_LORA_RX_STATS                   (0x0229)
 #define RADIOLIB_LR2021_CMD_GET_LORA_PACKET_STATUS              (0x022A)
 #define RADIOLIB_LR2021_CMD_SET_LORA_ADDRESS                    (0x022B)
@@ -354,6 +355,50 @@
 #define RADIOLIB_LR2021_PACKET_TYPE_RAW                         (0x0BUL << 0)   //  7     0                  RAW
 #define RADIOLIB_LR2021_PACKET_TYPE_Z_WAVE                      (0x0CUL << 0)   //  7     0                  Z-WAVE
 #define RADIOLIB_LR2021_PACKET_TYPE_OQPSK                       (0x0DUL << 0)   //  7     0                  OQPSK
+
+// RADIOLIB_LR2021_CMD_SET_LORA_MODULATION_PARAMS
+#define RADIOLIB_LR2021_LORA_BW_31                              (0x02UL << 0)   //  3     0     LoRa bandwidth: 31.25 kHz
+#define RADIOLIB_LR2021_LORA_BW_41                              (0x0AUL << 0)   //  3     0                     41.67 kHz
+#define RADIOLIB_LR2021_LORA_BW_83                              (0x0BUL << 0)   //  3     0                     83.34 kHz
+#define RADIOLIB_LR2021_LORA_BW_62                              (0x03UL << 0)   //  3     0                     62.50 kHz
+#define RADIOLIB_LR2021_LORA_BW_125                             (0x04UL << 0)   //  3     0                     125 kHz
+#define RADIOLIB_LR2021_LORA_BW_250                             (0x05UL << 0)   //  3     0                     250 kHz
+#define RADIOLIB_LR2021_LORA_BW_500                             (0x06UL << 0)   //  3     0                     500 kHz
+#define RADIOLIB_LR2021_LORA_BW_1000                            (0x07UL << 0)   //  3     0                     1000 kHz
+#define RADIOLIB_LR2021_LORA_BW_812                             (0x0FUL << 0)   //  3     0                     812 kHz
+#define RADIOLIB_LR2021_LORA_BW_406                             (0x0EUL << 0)   //  3     0                     406 kHz
+#define RADIOLIB_LR2021_LORA_BW_203                             (0x0DUL << 0)   //  3     0                     203 kHz
+#define RADIOLIB_LR2021_LORA_BW_101                             (0x0CUL << 0)   //  3     0                     101 kHz
+#define RADIOLIB_LR2021_LORA_CR_4_5                             (0x01UL << 0)   //  3     0     LoRa coding rate: 4/5
+#define RADIOLIB_LR2021_LORA_CR_4_6                             (0x02UL << 0)   //  3     0                       4/6
+#define RADIOLIB_LR2021_LORA_CR_4_7                             (0x03UL << 0)   //  3     0                       4/7
+#define RADIOLIB_LR2021_LORA_CR_4_8                             (0x04UL << 0)   //  3     0                       4/8
+#define RADIOLIB_LR2021_LORA_CR_4_5_LI                          (0x05UL << 0)   //  3     0                       4/5 long interleaver
+#define RADIOLIB_LR2021_LORA_CR_4_6_LI                          (0x06UL << 0)   //  3     0                       4/6 long interleaver
+#define RADIOLIB_LR2021_LORA_CR_4_7_LI                          (0x07UL << 0)   //  3     0                       4/7 long interleaver
+#define RADIOLIB_LR2021_LORA_LDRO_DISABLED                      (0x00UL << 0)   //  1     0     LDRO/PPM configuration: disabled
+#define RADIOLIB_LR2021_LORA_LDRO_ENABLED                       (0x01UL << 0)   //  1     0                             enabled
+
+// RADIOLIB_LR2021_CMD_SET_LORA_PACKET_PARAMS
+#define RADIOLIB_LR2021_LORA_HEADER_EXPLICIT                    (0x00UL << 2)   //  2     2     LoRa header mode: explicit
+#define RADIOLIB_LR2021_LORA_HEADER_IMPLICIT                    (0x01UL << 2)   //  2     2                       implicit
+#define RADIOLIB_LR2021_LORA_CRC_DISABLED                       (0x00UL << 1)   //  1     1     LoRa CRC: disabled
+#define RADIOLIB_LR2021_LORA_CRC_ENABLED                        (0x01UL << 1)   //  1     1               enabled
+#define RADIOLIB_LR2021_LORA_IQ_STANDARD                        (0x00UL << 0)   //  0     0     LoRa IQ: standard
+#define RADIOLIB_LR2021_LORA_IQ_INVERTED                        (0x01UL << 0)   //  0     0              inverted
+
+// RADIOLIB_LR2021_CMD_SET_LORA_SYNCH_TIMEOUT
+#define RADIOLIB_LR2021_LORA_SYNCH_TIMEOUT_FORMAT_SYMBOLS       (0x00UL << 0)   //  7     0     LoRa synch timeout format: number of symbols
+#define RADIOLIB_LR2021_LORA_SYNCH_TIMEOUT_FORMAT_MANT_EXP      (0x01UL << 0)   //  7     0                                mantissa-exponent
+
+// RADIOLIB_LR2021_CMD_SET_LORA_HOPPING
+#define RADIOLIB_LR2021_LORA_HOPPING_DISABLED                   (0x00UL << 6)   //  7     6     LoRa intra-packet hopping: disabled
+#define RADIOLIB_LR2021_LORA_HOPPING_ENABLED                    (0x01UL << 6)   //  7     6                                enabled
+
+// RADIOLIB_LR2021_CMD_SET_LORA_TX_SYNC
+#define RADIOLIB_LR2021_LORA_TX_SYNC_DISABLED                   (0x00UL << 6)   //  7     6     Tx sync: disabled
+#define RADIOLIB_LR2021_LORA_TX_SYNC_MASTER                     (0x01UL << 6)   //  7     6              master (wait for signal to transmit sync frame)
+#define RADIOLIB_LR2021_LORA_TX_SYNC_SLAVE                      (0x02UL << 6)   //  7     6              slave (output signal on sync frame)
 
 #endif
 

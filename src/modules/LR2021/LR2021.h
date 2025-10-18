@@ -53,6 +53,11 @@ class LR2021: public PhysicalLayer, public LRxxxx {
 #endif
     Module* mod;
 
+    // cached LoRa parameters
+    bool ldroAuto = true;
+    uint8_t bandwidth = 0, spreadingFactor = 0, ldrOptimize = 0;
+    float bandwidthKhz = 0;
+
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
     int16_t writeRadioTxFifo(uint8_t* data, size_t len);
@@ -115,6 +120,22 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     // modem configuration commands
     int16_t setPacketType(uint8_t packetType);
     int16_t getPacketType(uint8_t* packetType);
+
+    // LoRa commands
+    int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
+    int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ);
+    int16_t setLoRaSynchTimeout(uint8_t numSymbols, bool format);
+    int16_t setLoRaSyncword(uint16_t syncword);
+    int16_t setLoRaSideDetConfig(uint8_t* configs, size_t numSideDets);
+    int16_t setLoRaSideDetSyncword(uint8_t* syncwords, size_t numSideDets);
+    int16_t setLoRaCadParams(uint8_t numSymbols, bool preambleOnly, uint8_t pnrDelta, uint8_t cadExitMode, uint32_t timeout, uint8_t detPeak);
+    int16_t setLoRaCad(void);
+    int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);
+    int16_t getLoRaPacketStatus(uint8_t* crc, uint8_t* cr, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket);
+    int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, uint8_t* addr);
+    int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, uint32_t* freqHops, size_t numFreqHops);
+    int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
+    int16_t setLoRaSideDetCad(uint8_t* pnrDelta, uint8_t* detPeak, size_t numSideDets);
 };
 
 #endif

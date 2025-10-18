@@ -1,0 +1,14 @@
+#if !defined(RADIOLIB_LR2021_REGISTERS_H)
+#define RADIOLIB_LR2021_REGISTERS_H
+
+#include "../../TypeDef.h"
+
+#if !RADIOLIB_EXCLUDE_LR2021
+
+// LR2021 SPI registers
+#define RADIOLIB_LR2021_REG_LORA_MODEM_TXRX_CFG0                (0xF30A14)
+#define RADIOLIB_LR2021_REG_LORA_MODEM_MAIN_TX_CFG1             (0xF30A24)
+
+#endif
+
+#endif
