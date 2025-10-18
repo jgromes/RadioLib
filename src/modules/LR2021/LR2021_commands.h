@@ -193,100 +193,167 @@
 #define RADIOLIB_LR2021_RX_DUTY_CYCLE_MODE_CAD                  (0x01UL << 0)   //  0     0                         CAD
 
 // RADIOLIB_LR20210_CMD_AUTO_TX_RX
-#define RADIOLIB_LR20210_AUTO_MODE_NONE                         (0x00UL << 0)   //  1     0     auto rx-tx mode: never enable auto rx-tx
-#define RADIOLIB_LR20210_AUTO_MODE_ALWAYS                       (0x01UL << 0)   //  1     0                      auto rx-tx on every RxDone or TxDone event
-#define RADIOLIB_LR20210_AUTO_MODE_OK                           (0x02UL << 0)   //  1     0                      auto rx-tx on valid Rx packet only (Tx always)
-#define RADIOLIB_LR20210_AUTO_MODE_CLEAR_DISABLED               (0x00UL << 7)   //  7     7     automatically disable auto rx-tx on timeout: disabled
-#define RADIOLIB_LR20210_AUTO_MODE_CLEAR_ENABLED                (0x01UL << 7)   //  7     7                                                  enabled
+#define RADIOLIB_LR2021_AUTO_MODE_NONE                          (0x00UL << 0)   //  1     0     auto rx-tx mode: never enable auto rx-tx
+#define RADIOLIB_LR2021_AUTO_MODE_ALWAYS                        (0x01UL << 0)   //  1     0                      auto rx-tx on every RxDone or TxDone event
+#define RADIOLIB_LR2021_AUTO_MODE_OK                            (0x02UL << 0)   //  1     0                      auto rx-tx on valid Rx packet only (Tx always)
+#define RADIOLIB_LR2021_AUTO_MODE_CLEAR_DISABLED                (0x00UL << 7)   //  7     7     automatically disable auto rx-tx on timeout: disabled
+#define RADIOLIB_LR2021_AUTO_MODE_CLEAR_ENABLED                 (0x01UL << 7)   //  7     7                                                  enabled
 
 // RADIOLIB_LR2021_CMD_SET_REG_MODE
-#define RADIOLIB_LR20210_REG_MODE_SIMO_OFF                      (0x00UL << 0)   //  7     0     SIMO mode: disabled
-#define RADIOLIB_LR20210_REG_MODE_SIMO_NORMAL                   (0x02UL << 0)   //  7     0                normal
-#define RADIOLIB_LR20210_REG_MODE_RAMP_RES_2_US                 (0x00UL << 5)   //  6     5     ramp timing resolution: 2 us
-#define RADIOLIB_LR20210_REG_MODE_RAMP_RES_4_US                 (0x01UL << 5)   //  6     5                             4 us
-#define RADIOLIB_LR20210_REG_MODE_RAMP_RES_8_US                 (0x02UL << 5)   //  6     5                             8 us
-#define RADIOLIB_LR20210_REG_MODE_RAMP_RES_16_US                (0x03UL << 5)   //  6     5                             16 us
-#define RADIOLIB_LR20210_REG_MODE_RAMP_INDEX_RC2RU              (0)
-#define RADIOLIB_LR20210_REG_MODE_RAMP_INDEX_TX2RU              (1)
-#define RADIOLIB_LR20210_REG_MODE_RAMP_INDEX_RU2RC              (2)
-#define RADIOLIB_LR20210_REG_MODE_RAMP_INDEX_RAMP_DOWN          (3)
+#define RADIOLIB_LR2021_REG_MODE_SIMO_OFF                       (0x00UL << 0)   //  7     0     SIMO mode: disabled
+#define RADIOLIB_LR2021_REG_MODE_SIMO_NORMAL                    (0x02UL << 0)   //  7     0                normal
+#define RADIOLIB_LR2021_REG_MODE_RAMP_RES_2_US                  (0x00UL << 5)   //  6     5     ramp timing resolution: 2 us
+#define RADIOLIB_LR2021_REG_MODE_RAMP_RES_4_US                  (0x01UL << 5)   //  6     5                             4 us
+#define RADIOLIB_LR2021_REG_MODE_RAMP_RES_8_US                  (0x02UL << 5)   //  6     5                             8 us
+#define RADIOLIB_LR2021_REG_MODE_RAMP_RES_16_US                 (0x03UL << 5)   //  6     5                             16 us
+#define RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RC2RU               (0)
+#define RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_TX2RU               (1)
+#define RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RU2RC               (2)
+#define RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RAMP_DOWN           (3)
 
 // RADIOLIB_LR2021_CMD_CALIBRATE
-#define RADIOLIB_LR20210_CALIBRATE_LF_RC                        (0x01UL << 0)   //  0     0     blocks to calibrate: low-frequency RC
-#define RADIOLIB_LR20210_CALIBRATE_HF_RC                        (0x01UL << 1)   //  1     1                          high-frequency RC
-#define RADIOLIB_LR20210_CALIBRATE_PLL                          (0x01UL << 2)   //  2     2                          phase-locked loop
-#define RADIOLIB_LR20210_CALIBRATE_AAF                          (0x01UL << 3)   //  3     3                          anti-aliasing filter
-#define RADIOLIB_LR20210_CALIBRATE_MU                           (0x01UL << 5)   //  4     4                          measurement unit
-#define RADIOLIB_LR20210_CALIBRATE_PA_OFF                       (0x01UL << 6)   //  5     5                          power amplifier offset
-#define RADIOLIB_LR20210_CALIBRATE_ALL                          (0x6FUL << 0)   //  7     0                          everything
+#define RADIOLIB_LR2021_CALIBRATE_LF_RC                         (0x01UL << 0)   //  0     0     blocks to calibrate: low-frequency RC
+#define RADIOLIB_LR2021_CALIBRATE_HF_RC                         (0x01UL << 1)   //  1     1                          high-frequency RC
+#define RADIOLIB_LR2021_CALIBRATE_PLL                           (0x01UL << 2)   //  2     2                          phase-locked loop
+#define RADIOLIB_LR2021_CALIBRATE_AAF                           (0x01UL << 3)   //  3     3                          anti-aliasing filter
+#define RADIOLIB_LR2021_CALIBRATE_MU                            (0x01UL << 5)   //  4     4                          measurement unit
+#define RADIOLIB_LR2021_CALIBRATE_PA_OFF                        (0x01UL << 6)   //  5     5                          power amplifier offset
+#define RADIOLIB_LR2021_CALIBRATE_ALL                           (0x6FUL << 0)   //  7     0                          everything
 
 // RADIOLIB_LR2021_CMD_CALIB_FRONT_END
-#define RADIOLIB_LR20210_CALIBRATE_FE_LF_PATH                   (0x00UL << 15)  // 15    15     calibration path: low-frequency
-#define RADIOLIB_LR20210_CALIBRATE_FE_HF_PATH                   (0x01UL << 15)  // 15    15                       high-frequency
+#define RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH                    (0x00UL << 15)  // 15    15     calibration path: low-frequency
+#define RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH                    (0x01UL << 15)  // 15    15                       high-frequency
 
 // RADIOLIB_LR2021_CMD_GET_V_BAT
-#define RADIOLIB_LR20210_VBAT_FORMAT_RAW                        (0x00UL << 3)   //  3     3     readout format: raw
-#define RADIOLIB_LR20210_VBAT_FORMAT_MV                         (0x01UL << 3)   //  3     3                     millivolts
-#define RADIOLIB_LR20210_MEAS_RESOLUTION_OFFSET                 (8)
+#define RADIOLIB_LR2021_VBAT_FORMAT_RAW                         (0x00UL << 3)   //  3     3     readout format: raw
+#define RADIOLIB_LR2021_VBAT_FORMAT_MV                          (0x01UL << 3)   //  3     3                     millivolts
+#define RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET                  (8)
 
 // RADIOLIB_LR2021_CMD_GET_TEMP
-#define RADIOLIB_LR20210_TEMP_SOURCE_VBE                        (0x00UL << 4)   //  4     4     temperature source: sensor near Vbe junction
-#define RADIOLIB_LR20210_TEMP_SOURCE_XOSC                       (0x01UL << 4)   //  4     4                         sensor near XOSC
-#define RADIOLIB_LR20210_TEMP_FORMAT_RAW                        (0x00UL << 3)   //  3     3     readout format: raw
-#define RADIOLIB_LR20210_TEMP_FORMAT_DEG_C                      (0x01UL << 3)   //  3     3                     degress Celsius
+#define RADIOLIB_LR2021_TEMP_SOURCE_VBE                         (0x00UL << 4)   //  4     4     temperature source: sensor near Vbe junction
+#define RADIOLIB_LR2021_TEMP_SOURCE_XOSC                        (0x01UL << 4)   //  4     4                         sensor near XOSC
+#define RADIOLIB_LR2021_TEMP_FORMAT_RAW                         (0x00UL << 3)   //  3     3     readout format: raw
+#define RADIOLIB_LR2021_TEMP_FORMAT_DEG_C                       (0x01UL << 3)   //  3     3                     degress Celsius
 
 // RADIOLIB_LR2021_CMD_SET_EOL_CONFIG
-#define RADIOLIB_LR20210_EOL_TRIM_1V6                           (0x00UL << 1)   //  3     1     EoL trigger threshold: 1.60 V
-#define RADIOLIB_LR20210_EOL_TRIM_1V67                          (0x01UL << 1)   //  3     1                            1.67 V
-#define RADIOLIB_LR20210_EOL_TRIM_1V74                          (0x02UL << 1)   //  3     1                            1.74 V
-#define RADIOLIB_LR20210_EOL_TRIM_1V8                           (0x03UL << 1)   //  3     1                            1.80 V
-#define RADIOLIB_LR20210_EOL_TRIM_1V88                          (0x04UL << 1)   //  3     1                            1.88 V (default)
-#define RADIOLIB_LR20210_EOL_TRIM_1V95                          (0x05UL << 1)   //  3     1                            1.95 V
-#define RADIOLIB_LR20210_EOL_TRIM_2V0                           (0x06UL << 1)   //  3     1                            2.00 V
-#define RADIOLIB_LR20210_EOL_TRIM_2V1                           (0x07UL << 1)   //  3     1                            2.10 V
+#define RADIOLIB_LR2021_EOL_TRIM_1V6                            (0x00UL << 1)   //  3     1     EoL trigger threshold: 1.60 V
+#define RADIOLIB_LR2021_EOL_TRIM_1V67                           (0x01UL << 1)   //  3     1                            1.67 V
+#define RADIOLIB_LR2021_EOL_TRIM_1V74                           (0x02UL << 1)   //  3     1                            1.74 V
+#define RADIOLIB_LR2021_EOL_TRIM_1V8                            (0x03UL << 1)   //  3     1                            1.80 V
+#define RADIOLIB_LR2021_EOL_TRIM_1V88                           (0x04UL << 1)   //  3     1                            1.88 V (default)
+#define RADIOLIB_LR2021_EOL_TRIM_1V95                           (0x05UL << 1)   //  3     1                            1.95 V
+#define RADIOLIB_LR2021_EOL_TRIM_2V0                            (0x06UL << 1)   //  3     1                            2.00 V
+#define RADIOLIB_LR2021_EOL_TRIM_2V1                            (0x07UL << 1)   //  3     1                            2.10 V
 
 // RADIOLIB_LR2021_CMD_GET_ERRORS
-#define RADIOLIB_LR20210_HF_XOSC_START_ERR                      (0x01UL << 0)   // 15     0     error: high-frequency XOSC failed to start
-#define RADIOLIB_LR20210_LF_XOSC_START_ERR                      (0x01UL << 1)   // 15     0            low-frequency XOSC failed to start
-#define RADIOLIB_LR20210_PLL_LOCK_ERR                           (0x01UL << 2)   // 15     0            PLL failed to lock
-#define RADIOLIB_LR20210_LF_RC_CALIB_ERR                        (0x01UL << 3)   // 15     0            low-frequency RC calibration failed
-#define RADIOLIB_LR20210_HF_RC_CALIB_ERR                        (0x01UL << 4)   // 15     0            high-frequency RC calibration failed
-#define RADIOLIB_LR20210_PLL_CALIB_ERR                          (0x01UL << 5)   // 15     0            PLL calibration failed
-#define RADIOLIB_LR20210_AAF_CALIB_ERR                          (0x01UL << 6)   // 15     0            anti-aliasing filter calibration failed
-#define RADIOLIB_LR20210_IMG_CALIB_ERR                          (0x01UL << 7)   // 15     0            image rejection calibration failed
-#define RADIOLIB_LR20210_CHIP_BUSY_ERR                          (0x01UL << 8)   // 15     0            Tx or Rx could not be processed because chips was busy
-#define RADIOLIB_LR20210_RXFREQ_NO_FE_CAL_ERR                   (0x01UL << 9)   // 15     0            front-end calibration nto available for this Rx frequency
-#define RADIOLIB_LR20210_MEAS_UNIT_ADC_CALIB_ERR                (0x01UL << 10)  // 15     0            measurement unit ADC calibration failed
-#define RADIOLIB_LR20210_PA_OFFSET_CALIB_ERR                    (0x01UL << 11)  // 15     0            PA offset calibration failed
-#define RADIOLIB_LR20210_PPF_CALIB_ERR                          (0x01UL << 12)  // 15     0            poly-phase filter calibration failed
-#define RADIOLIB_LR20210_SRC_CALIB_ERR                          (0x01UL << 13)  // 15     0            self-reception cancellation calibration failed
+#define RADIOLIB_LR2021_HF_XOSC_START_ERR                       (0x01UL << 0)   // 15     0     error: high-frequency XOSC failed to start
+#define RADIOLIB_LR2021_LF_XOSC_START_ERR                       (0x01UL << 1)   // 15     0            low-frequency XOSC failed to start
+#define RADIOLIB_LR2021_PLL_LOCK_ERR                            (0x01UL << 2)   // 15     0            PLL failed to lock
+#define RADIOLIB_LR2021_LF_RC_CALIB_ERR                         (0x01UL << 3)   // 15     0            low-frequency RC calibration failed
+#define RADIOLIB_LR2021_HF_RC_CALIB_ERR                         (0x01UL << 4)   // 15     0            high-frequency RC calibration failed
+#define RADIOLIB_LR2021_PLL_CALIB_ERR                           (0x01UL << 5)   // 15     0            PLL calibration failed
+#define RADIOLIB_LR2021_AAF_CALIB_ERR                           (0x01UL << 6)   // 15     0            anti-aliasing filter calibration failed
+#define RADIOLIB_LR2021_IMG_CALIB_ERR                           (0x01UL << 7)   // 15     0            image rejection calibration failed
+#define RADIOLIB_LR2021_CHIP_BUSY_ERR                           (0x01UL << 8)   // 15     0            Tx or Rx could not be processed because chips was busy
+#define RADIOLIB_LR2021_RXFREQ_NO_FE_CAL_ERR                    (0x01UL << 9)   // 15     0            front-end calibration nto available for this Rx frequency
+#define RADIOLIB_LR2021_MEAS_UNIT_ADC_CALIB_ERR                 (0x01UL << 10)  // 15     0            measurement unit ADC calibration failed
+#define RADIOLIB_LR2021_PA_OFFSET_CALIB_ERR                     (0x01UL << 11)  // 15     0            PA offset calibration failed
+#define RADIOLIB_LR2021_PPF_CALIB_ERR                           (0x01UL << 12)  // 15     0            poly-phase filter calibration failed
+#define RADIOLIB_LR2021_SRC_CALIB_ERR                           (0x01UL << 13)  // 15     0            self-reception cancellation calibration failed
 
 // RADIOLIB_LR2021_CMD_SET_DIO_FUNCTION
-#define RADIOLIB_LR20210_DIO_FUNCTION_NONE                      (0x00UL << 4)   //  7     4     DIO function: none
-#define RADIOLIB_LR20210_DIO_FUNCTION_IRQ                       (0x01UL << 4)   //  7     4                   interrupt
-#define RADIOLIB_LR20210_DIO_FUNCTION_RF_SWITCH                 (0x02UL << 4)   //  7     4                   RF switch
-#define RADIOLIB_LR20210_DIO_FUNCTION_GPIO_OUTPUT_LOW           (0x05UL << 4)   //  7     4                   low output
-#define RADIOLIB_LR20210_DIO_FUNCTION_GPIO_OUTPUT_HIGH          (0x06UL << 4)   //  7     4                   high output
-#define RADIOLIB_LR20210_DIO_FUNCTION_HF_CLK_OUT                (0x07UL << 4)   //  7     4                   high-frequency clock output
-#define RADIOLIB_LR20210_DIO_FUNCTION_LF_CLK_OUT                (0x08UL << 4)   //  7     4                   low-frequency clock output (DIO7-11 only)
-#define RADIOLIB_LR20210_DIO_FUNCTION_TX_TRIGGER                (0x09UL << 4)   //  7     4                   Tx trigger
-#define RADIOLIB_LR20210_DIO_FUNCTION_RX_TRIGGER                (0x0AUL << 4)   //  7     4                   Rx trigger
-#define RADIOLIB_LR20210_DIO_SLEEP_PULL_NONE                    (0x00UL << 0)   //  3     0     pull up/down in sleep mode: none
-#define RADIOLIB_LR20210_DIO_SLEEP_PULL_DOWN                    (0x01UL << 0)   //  3     0                                 pull-down
-#define RADIOLIB_LR20210_DIO_SLEEP_PULL_UP                      (0x02UL << 0)   //  3     0                                 pull-up
-#define RADIOLIB_LR20210_DIO_SLEEP_PULL_AUTO                    (0x03UL << 0)   //  3     0                                 auto
+#define RADIOLIB_LR2021_DIO_FUNCTION_NONE                       (0x00UL << 4)   //  7     4     DIO function: none
+#define RADIOLIB_LR2021_DIO_FUNCTION_IRQ                        (0x01UL << 4)   //  7     4                   interrupt
+#define RADIOLIB_LR2021_DIO_FUNCTION_RF_SWITCH                  (0x02UL << 4)   //  7     4                   RF switch
+#define RADIOLIB_LR2021_DIO_FUNCTION_GPIO_OUTPUT_LOW            (0x05UL << 4)   //  7     4                   low output
+#define RADIOLIB_LR2021_DIO_FUNCTION_GPIO_OUTPUT_HIGH           (0x06UL << 4)   //  7     4                   high output
+#define RADIOLIB_LR2021_DIO_FUNCTION_HF_CLK_OUT                 (0x07UL << 4)   //  7     4                   high-frequency clock output
+#define RADIOLIB_LR2021_DIO_FUNCTION_LF_CLK_OUT                 (0x08UL << 4)   //  7     4                   low-frequency clock output (DIO7-11 only)
+#define RADIOLIB_LR2021_DIO_FUNCTION_TX_TRIGGER                 (0x09UL << 4)   //  7     4                   Tx trigger
+#define RADIOLIB_LR2021_DIO_FUNCTION_RX_TRIGGER                 (0x0AUL << 4)   //  7     4                   Rx trigger
+#define RADIOLIB_LR2021_DIO_SLEEP_PULL_NONE                     (0x00UL << 0)   //  3     0     pull up/down in sleep mode: none
+#define RADIOLIB_LR2021_DIO_SLEEP_PULL_DOWN                     (0x01UL << 0)   //  3     0                                 pull-down
+#define RADIOLIB_LR2021_DIO_SLEEP_PULL_UP                       (0x02UL << 0)   //  3     0                                 pull-up
+#define RADIOLIB_LR2021_DIO_SLEEP_PULL_AUTO                     (0x03UL << 0)   //  3     0                                 auto
 
 // RADIOLIB_LR2021_CMD_CONFIG_FIFO_IRQ
-#define RADIOLIB_LR20210_FIFO_IRQ_EMPTY                         (0x01UL << 0)   //  7     0     FIFO interrupt on: empty FIFO
-#define RADIOLIB_LR20210_FIFO_IRQ_LOW                           (0x01UL << 1)   //  7     0                        level below threshold
-#define RADIOLIB_LR20210_FIFO_IRQ_HIGH                          (0x01UL << 2)   //  7     0                        level above threshold
-#define RADIOLIB_LR20210_FIFO_IRQ_FULL                          (0x01UL << 3)   //  7     0                        full FIFO
-#define RADIOLIB_LR20210_FIFO_IRQ_OVERFLOW                      (0x01UL << 4)   //  7     0                        overflow
-#define RADIOLIB_LR20210_FIFO_IRQ_UNDERFLOW                     (0x01UL << 5)   //  7     0                        underflow
+#define RADIOLIB_LR2021_FIFO_IRQ_EMPTY                          (0x01UL << 0)   //  7     0     FIFO interrupt on: empty FIFO
+#define RADIOLIB_LR2021_FIFO_IRQ_LOW                            (0x01UL << 1)   //  7     0                        level below threshold
+#define RADIOLIB_LR2021_FIFO_IRQ_HIGH                           (0x01UL << 2)   //  7     0                        level above threshold
+#define RADIOLIB_LR2021_FIFO_IRQ_FULL                           (0x01UL << 3)   //  7     0                        full FIFO
+#define RADIOLIB_LR2021_FIFO_IRQ_OVERFLOW                       (0x01UL << 4)   //  7     0                        overflow
+#define RADIOLIB_LR2021_FIFO_IRQ_UNDERFLOW                      (0x01UL << 5)   //  7     0                        underflow
 
 // RADIOLIB_LR2021_CMD_CONFIG_LF_CLOCK
-#define RADIOLIB_LR20210_LF_CLOCK_INTERNAL_RC                   (0x00UL << 0)   //  7     0     low-frequency source: internal 32 kHz RC oscillator
-#define RADIOLIB_LR20210_LF_CLOCK_EXTERNAL                      (0x02UL << 0)   //  7     0                           external 32.768 kHz signal on DIO11
+#define RADIOLIB_LR2021_LF_CLOCK_INTERNAL_RC                    (0x00UL << 0)   //  7     0     low-frequency source: internal 32 kHz RC oscillator
+#define RADIOLIB_LR2021_LF_CLOCK_EXTERNAL                       (0x02UL << 0)   //  7     0                           external 32.768 kHz signal on DIO11
+
+// RADIOLIB_LR2021_CMD_SET_RX_PATH
+#define RADIOLIB_LR2021_RX_PATH_LF                              (0x00UL << 0)   //  7     0     Rx path: low-frequency
+#define RADIOLIB_LR2021_RX_PATH_HF                              (0x01UL << 0)   //  7     0              high-frequency
+
+// RADIOLIB_LR2021_CMD_SET_RSSI_CALIBRATION
+#define RADIOLIB_LR2021_RSSI_PATH_LF                            (0x01UL << 0)   //  0     0     Rx path for RSSI: low-frequency
+#define RADIOLIB_LR2021_RSSI_PATH_HF                            (0x01UL << 1)   //  1     1                       high-frequency
+#define RADIOLIB_LR2021_GAIN_TABLE_LENGTH                       (27)
+
+// RADIOLIB_LR2021_CMD_SET_TIMESTAMP_SOURCE
+#define RADIOLIB_LR2021_TIMESTAMP_SOURCE_NONE                   (0x00UL << 0)   //  3     0     timestamp source: none
+#define RADIOLIB_LR2021_TIMESTAMP_SOURCE_TX_DONE                (0x01UL << 0)   //  3     0                       Tx done
+#define RADIOLIB_LR2021_TIMESTAMP_SOURCE_RX_DONE                (0x02UL << 0)   //  3     0                       Rx done
+#define RADIOLIB_LR2021_TIMESTAMP_SOURCE_SYNC                   (0x03UL << 0)   //  3     0                       sync
+#define RADIOLIB_LR2021_TIMESTAMP_SOURCE_HEADER                 (0x04UL << 0)   //  3     0                       LoRa header
+
+// RADIOLIB_LR2021_CMD_SET_CAD_PARAMS
+#define RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK                  (0x00UL << 0)   //  1     0     CAD exit mode: the configured fallback mode
+#define RADIOLIB_LR2021_CAD_EXIT_MODE_TX                        (0x01UL << 0)   //  1     0                    Tx
+#define RADIOLIB_LR2021_CAD_EXIT_MODE_RX                        (0x02UL << 0)   //  1     0                    Rx
+
+// RADIOLIB_LR2021_CMD_SEL_PA
+#define RADIOLIB_LR2021_PA_LOW_POWER                            (0x00UL << 0)   //  1     0     PA to use: low-power
+#define RADIOLIB_LR2021_PA_HIGH_POWER                           (0x01UL << 0)   //  1     0                high-power
+
+// RADIOLIB_LR2021_CMD_SET_PA_CONFIG
+#define RADIOLIB_LR2021_PA_LF_MODE_FSM                          (0x00UL << 0)   //  1     0     PA LF mode: full single-ended mode
+#define RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED                 (0x06UL << 4)   //  7     4     PA LF duty cycle: PA not used
+#define RADIOLIB_LR2021_PA_LF_SLICES_UNUSED                     (0x07UL << 0)   //  3     0     PA LF slices: PA not used
+#define RADIOLIB_LR2021_PA_HF_DUTY_CYCLE_UNUSED                 (0x10UL << 0)   //  4     0     PA HF duty cycle: PA not used
+
+// RADIOLIB_LR2021_CMD_SET_TX_PARAMS
+#define RADIOLIB_LR2021_RAMP_TIME_2_US                          (0x00UL << 0)   //  7     0     PA ramp time: 2 us
+#define RADIOLIB_LR2021_RAMP_TIME_4_US                          (0x01UL << 0)   //  7     0                   4 us
+#define RADIOLIB_LR2021_RAMP_TIME_8_US                          (0x02UL << 0)   //  7     0                   8 us
+#define RADIOLIB_LR2021_RAMP_TIME_16_US                         (0x03UL << 0)   //  7     0                   16 us
+#define RADIOLIB_LR2021_RAMP_TIME_32_US                         (0x04UL << 0)   //  7     0                   32 us
+#define RADIOLIB_LR2021_RAMP_TIME_48_US                         (0x05UL << 0)   //  7     0                   48 us
+#define RADIOLIB_LR2021_RAMP_TIME_64_US                         (0x06UL << 0)   //  7     0                   64 us
+#define RADIOLIB_LR2021_RAMP_TIME_80_US                         (0x07UL << 0)   //  7     0                   80 us
+#define RADIOLIB_LR2021_RAMP_TIME_96_US                         (0x08UL << 0)   //  7     0                   96 us
+#define RADIOLIB_LR2021_RAMP_TIME_112_US                        (0x09UL << 0)   //  7     0                   112 us
+#define RADIOLIB_LR2021_RAMP_TIME_128_US                        (0x0AUL << 0)   //  7     0                   128 us
+#define RADIOLIB_LR2021_RAMP_TIME_144_US                        (0x0BUL << 0)   //  7     0                   144 us
+#define RADIOLIB_LR2021_RAMP_TIME_160_US                        (0x0CUL << 0)   //  7     0                   160 us
+#define RADIOLIB_LR2021_RAMP_TIME_176_US                        (0x0DUL << 0)   //  7     0                   176 us
+#define RADIOLIB_LR2021_RAMP_TIME_192_US                        (0x0EUL << 0)   //  7     0                   192 us
+#define RADIOLIB_LR2021_RAMP_TIME_208_US                        (0x0FUL << 0)   //  7     0                   208 us
+#define RADIOLIB_LR2021_RAMP_TIME_240_US                        (0x10UL << 0)   //  7     0                   240 us
+#define RADIOLIB_LR2021_RAMP_TIME_272_US                        (0x11UL << 0)   //  7     0                   272 us
+#define RADIOLIB_LR2021_RAMP_TIME_304_US                        (0x12UL << 0)   //  7     0                   304 us
+
+// RADIOLIB_LR2021_CMD_SET_PACKET_TYPE
+#define RADIOLIB_LR2021_PACKET_TYPE_LORA                        (0x00UL << 0)   //  7     0     packet type: LoRa
+#define RADIOLIB_LR2021_PACKET_TYPE_FSK                         (0x02UL << 0)   //  7     0                  FSK
+#define RADIOLIB_LR2021_PACKET_TYPE_BLE                         (0x03UL << 0)   //  7     0                  BLE
+#define RADIOLIB_LR2021_PACKET_TYPE_RTTOF                       (0x04UL << 0)   //  7     0                  RTToF
+#define RADIOLIB_LR2021_PACKET_TYPE_FLRC                        (0x05UL << 0)   //  7     0                  FLRC
+#define RADIOLIB_LR2021_PACKET_TYPE_BPSK                        (0x06UL << 0)   //  7     0                  BPSK
+#define RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS                     (0x07UL << 0)   //  7     0                  LR-FHSS
+#define RADIOLIB_LR2021_PACKET_TYPE_WM_BUS                      (0x08UL << 0)   //  7     0                  WM-BUS
+#define RADIOLIB_LR2021_PACKET_TYPE_WI_SUN                      (0x09UL << 0)   //  7     0                  WI-SUN
+#define RADIOLIB_LR2021_PACKET_TYPE_OOK                         (0x0AUL << 0)   //  7     0                  OOK
+#define RADIOLIB_LR2021_PACKET_TYPE_RAW                         (0x0BUL << 0)   //  7     0                  RAW
+#define RADIOLIB_LR2021_PACKET_TYPE_Z_WAVE                      (0x0CUL << 0)   //  7     0                  Z-WAVE
+#define RADIOLIB_LR2021_PACKET_TYPE_OQPSK                       (0x0DUL << 0)   //  7     0                  OQPSK
 
 #endif
 

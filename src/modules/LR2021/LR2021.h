@@ -95,6 +95,26 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     int16_t configClkOutputs(uint8_t scaling);
     int16_t setTcxoMode(uint8_t tune, uint32_t startTime);
     int16_t setXoscCpTrim(uint8_t xta, uint8_t xtb, uint8_t startTime);
+
+    // radio frequency front end commands
+    int16_t setRfFrequency(uint32_t rfFreq);
+    int16_t setRxPath(uint8_t rxPath, uint8_t rxBoost);
+    int16_t getRssiInst(float* rssi);
+    int16_t setRssiCalibration(uint8_t rxPath, uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]);
+    int16_t setTimestampSource(uint8_t index, uint8_t source);
+    int16_t getTimestampValue(uint8_t index, uint32_t* timestamp);
+    int16_t setCca(uint32_t duration, uint8_t gain);
+    int16_t getCcaResult(float* rssiMin, float* rssiMax, float* rssiAvg);
+    int16_t setAgcGainManual(uint8_t gain);
+    int16_t setCadParams(uint32_t cadTimeout, uint8_t threshold, uint8_t exitMode, uint32_t trxTimeout);
+    int16_t setCad(void);
+    int16_t selPa(uint8_t pa);
+    int16_t setPaConfig(uint8_t pa, uint8_t paLfMode, uint8_t paLfDutyCycle, uint8_t paLfSlices, uint8_t paHfDutyCycle);
+    int16_t setTxParams(int8_t txPower, uint8_t rampTime);
+
+    // modem configuration commands
+    int16_t setPacketType(uint8_t packetType);
+    int16_t getPacketType(uint8_t* packetType);
 };
 
 #endif
