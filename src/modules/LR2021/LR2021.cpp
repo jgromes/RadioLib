@@ -19,6 +19,9 @@ LR2021::LR2021(Module* mod) : PhysicalLayer(), LRxxxx(mod) {
   this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_LR2021_IRQ_CAD_DONE;
   this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_LR2021_IRQ_CAD_DETECTED;
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR2021_IRQ_TIMEOUT;
+  this->mod->spiConfig.stream = true;
+  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
+  this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
 }
 
 int16_t LR2021::sleep() {
@@ -44,29 +47,6 @@ int16_t LR2021::sleep(uint8_t cfg, uint32_t time) {
 
 Module* LR2021::getMod() {
   return(this->mod);
-}
-
-int16_t LR2021::SPIparseStatus(uint8_t in) {
-  /*if((in & 0b00001110) == RADIOLIB_LR11X0_STAT_1_CMD_PERR) {
-    return(RADIOLIB_ERR_SPI_CMD_INVALID);
-  } else if((in & 0b00001110) == RADIOLIB_LR11X0_STAT_1_CMD_FAIL) {
-    return(RADIOLIB_ERR_SPI_CMD_FAILED);
-  } else if((in == 0x00) || (in == 0xFF)) {
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }*/
-  return(RADIOLIB_ERR_NONE);
-}
-
-int16_t LR2021::SPIcheckStatus(Module* mod) {
-  // the status check command doesn't return status in the same place as other read commands,
-  // but only as the first byte (as with any other command), hence LR2021::SPIcommand can't be used
-  // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  uint8_t buff[6] = { 0 };
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
-  RADIOLIB_ASSERT(state);
-  return(LR2021::SPIparseStatus(buff[0]));
 }
 
 #endif
