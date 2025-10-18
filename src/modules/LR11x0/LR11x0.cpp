@@ -1229,6 +1229,7 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   uint8_t len = 0;
   int state = getRxBufferStatus(&len, offset);
   RADIOLIB_DEBUG_BASIC_PRINT("getRxBufferStatus state = %d\n", state);
+  (void)state;
   return((size_t)len);
 }
 
