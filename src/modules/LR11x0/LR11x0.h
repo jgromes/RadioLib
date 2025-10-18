@@ -1866,8 +1866,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
     uint32_t rxTimeout = 0;
 
     int16_t modSetup(float tcxoVoltage, uint8_t modem);
-    static int16_t SPIparseStatus(uint8_t in);
-    static int16_t SPIcheckStatus(Module* mod);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
