@@ -832,6 +832,10 @@ int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, const uint32_t* data, s
   return(this->writeCommon(RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED, offset, data, len, nonvolatile));
 }
 
+int16_t LR11x0::bootGetHash(uint8_t hash[RADIOLIB_LR11X0_HASH_LEN]) {
+  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_GET_HASH, false, hash, RADIOLIB_LR11X0_HASH_LEN));
+}
+
 int16_t LR11x0::bootReboot(bool stay) {
   uint8_t buff[1] = { (uint8_t)stay };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_REBOOT, true, buff, sizeof(buff)));

@@ -158,6 +158,7 @@
 #define RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE_RESULT  (0x0510)
 #define RADIOLIB_LR11X0_CMD_BOOT_ERASE_FLASH                    (0x8000)
 #define RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED          (0x8003)
+#define RADIOLIB_LR11X0_CMD_BOOT_GET_HASH                       (0x8004)
 #define RADIOLIB_LR11X0_CMD_BOOT_REBOOT                         (0x8005)
 #define RADIOLIB_LR11X0_CMD_BOOT_GET_PIN                        (0x800B)
 #define RADIOLIB_LR11X0_CMD_BOOT_GET_CHIP_EUI                   (0x800C)
@@ -297,6 +298,9 @@
 
 // RADIOLIB_LR11X0_CMD_GET_CHIP_EUI
 #define RADIOLIB_LR11X0_EUI_LEN                                 (8)
+
+// RADIOLIB_LR11X0_CMD_GET_HASH
+#define RADIOLIB_LR11X0_HASH_LEN                                (10)
 
 // RADIOLIB_LR11X0_CMD_DERIVE_ROOT_KEYS_AND_GET_PIN
 #define RADIOLIB_LR11X0_PIN_LEN                                 (4)

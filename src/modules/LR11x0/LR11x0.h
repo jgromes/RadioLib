@@ -967,6 +967,7 @@ class LR11x0: public PhysicalLayer {
 
     int16_t bootEraseFlash(void);
     int16_t bootWriteFlashEncrypted(uint32_t offset, const uint32_t* data, size_t len, bool nonvolatile);
+    int16_t bootGetHash(uint8_t hash[RADIOLIB_LR11X0_HASH_LEN]);
     int16_t bootReboot(bool stay);
     int16_t bootGetPin(uint8_t* pin);
     int16_t bootGetChipEui(uint8_t* eui);
