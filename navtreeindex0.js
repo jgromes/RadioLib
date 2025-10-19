@@ -21,7 +21,10 @@ var NAVTREEINDEX0 =
 "_l_r1120_8h_source.html":[4,0,0,1,2,2],
 "_l_r1121_8h_source.html":[4,0,0,1,2,3],
 "_l_r11x0_8h_source.html":[4,0,0,1,2,4],
-"_l_r11x0__firmware_8h_source.html":[4,0,0,1,2,5],
+"_l_r11x0__commands_8h_source.html":[4,0,0,1,2,5],
+"_l_r11x0__firmware_8h_source.html":[4,0,0,1,2,6],
+"_l_r11x0__registers_8h_source.html":[4,0,0,1,2,7],
+"_l_r11x0__types_8h_source.html":[4,0,0,1,2,8],
 "_lo_ra_w_a_n_8h_source.html":[4,0,0,2,7,0],
 "_module_8h_source.html":[4,0,0,7],
 "_morse_8h_source.html":[4,0,0,2,8,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "class_l_r1110.html#a65c08f0475f888537e55401b75e58b23":[3,0,29,9],
 "class_l_r1110.html#a7656fe337a859388247708aa143d50af":[3,0,29,1],
 "class_l_r1110.html#acc15335d41446254c3b9a87572080388":[3,0,29,3],
-"class_l_r1110.html#ade94d20ea438cbd92c61e28d2232d7e8":[3,0,29,6],
-"class_l_r1110.html#ae084d4503b2abcdc508edef40b0cadb3":[3,0,29,5],
-"class_l_r1110.html#af1f6dddd12805fdecb55ef5703d23ef1":[3,0,29,4],
-"class_l_r1110.html#afcabcd9b422581cd8a63a63373a98155":[3,0,29,2]
+"class_l_r1110.html#ade94d20ea438cbd92c61e28d2232d7e8":[3,0,29,6]
 };

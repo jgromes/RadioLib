@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"struct_receive_config__t.html#a6f10529de8f6871a102d19afa08e102a":[3,0,58,2],
+"struct_receive_config__t.html#a8a9ce1e992fda95d10e7c5de9de05dac":[3,0,58,3],
+"struct_receive_config__t.html#ac51926e9674783440b286bfb56e15c99":[3,0,58,1],
 "struct_s_s_t_v_mode__t.html":[3,0,74],
 "struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820":[3,0,74,4],
 "struct_s_s_t_v_mode__t.html#a7993c913a63cda9d927938fe0b08b8ea":[3,0,74,3],
