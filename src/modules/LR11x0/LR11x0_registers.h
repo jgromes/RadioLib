@@ -9,7 +9,9 @@
 #define RADIOLIB_LR11X0_REG_SF6_SX127X_COMPAT                   (0x00F20414)
 #define RADIOLIB_LR11X0_REG_LORA_HIGH_POWER_FIX                 (0x00F30054)
 #define RADIOLIB_LR11X0_REG_LNA_MODE                            (0x00F3008C)
-// TODO add fix for br 600/1200 bps
+#define RADIOLIB_LR11X0_REG_GFSK_FIX1                           (0x00F20344)
+#define RADIOLIB_LR11X0_REG_GFSK_FIX2                           (0x00F20348)
+#define RADIOLIB_LR11X0_REG_GFSK_FIX3                           (0x00F20244)
 
 // LR11X0 SPI register variables
 
