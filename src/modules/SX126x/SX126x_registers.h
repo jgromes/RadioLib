@@ -6,6 +6,7 @@
 #if !RADIOLIB_EXCLUDE_SX126X
 
 // SX126X register map
+#define RADIOLIB_SX126X_REG_BPSK_PACKET_PARAMS                  0x00F0
 #define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_0                 0x029F // SX1268 datasheet v1.1, section 9.6
 #define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_1                 0x02A0 // SX1268 datasheet v1.1, section 9.6
 #define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_2                 0x02A1 // SX1268 datasheet v1.1, section 9.6

@@ -160,6 +160,7 @@
 //RADIOLIB_SX126X_CMD_SET_PACKET_TYPE
 #define RADIOLIB_SX126X_PACKET_TYPE_GFSK                        0x00        //  7     0   packet type: GFSK
 #define RADIOLIB_SX126X_PACKET_TYPE_LORA                        0x01        //  7     0                LoRa
+#define RADIOLIB_SX126X_PACKET_TYPE_BPSK                        0x02        //  7     0                BPSK
 #define RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS                     0x03        //  7     0                LR-FHSS
 
 //RADIOLIB_SX126X_CMD_SET_TX_PARAMS
@@ -218,6 +219,7 @@
 #define RADIOLIB_SX126X_LORA_CR_4_8_LI                          0x07        //  7     0                     4/8, long interleaver
 #define RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_OFF         0x00        //  7     0   LoRa low data rate optimization: disabled
 #define RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON          0x01        //  7     0                                    enabled
+#define RADIOLIB_SX126X_BPSK_PULSE_SHAPE                        0x16        //  7     0   BSPK pulse shape double OSR, RRC, BT=0.7
 
 //RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS
 #define RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF                0x00        //  7     0   GFSK minimum preamble length before reception starts: detector disabled
@@ -243,6 +245,12 @@
 #define RADIOLIB_SX126X_LORA_CRC_ON                             0x01        //  7     0                  enabled
 #define RADIOLIB_SX126X_LORA_IQ_STANDARD                        0x00        //  7     0   LoRa IQ setup: standard
 #define RADIOLIB_SX126X_LORA_IQ_INVERTED                        0x01        //  7     0                  inverted
+#define RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_NONE                  0x0000      // 15     0   BPSK ramp-up time optimization: none
+#define RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_100_BPS               0x370F      // 15     0                                   for 100 bps
+#define RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_600_BPS               0x092F      // 15     0                                   for 600 bps
+#define RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_NONE                0x0000      // 15     0   BPSK ramp-down time optimization: none
+#define RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_100_BPS             0x1D70      // 15     0                                     for 100 bps
+#define RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_600_BPS             0x04E1      // 15     0                                     for 600 bps
 
 //RADIOLIB_SX126X_CMD_SET_CAD_PARAMS
 #define RADIOLIB_SX126X_CAD_ON_1_SYMB                           0x00        //  7     0   number of symbols used for CAD: 1

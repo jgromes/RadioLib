@@ -217,12 +217,18 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
 int16_t SX126x::setBitRate(float br) {
   // check active modem
   uint8_t modem = getPacketType();
-  if((modem != RADIOLIB_SX126X_PACKET_TYPE_GFSK) && (modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS)) {
+  if((modem != RADIOLIB_SX126X_PACKET_TYPE_GFSK) &&
+     (modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) &&
+     (modem != RADIOLIB_SX126X_PACKET_TYPE_BPSK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
+  if(modem == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
     RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
+    // this should be just either 100 or 600 bps, not the range
+    // but the BPSK support is so experimental it probably does not matter
+    RADIOLIB_CHECK_RANGE(br, 0.1f, 0.6f, RADIOLIB_ERR_INVALID_BIT_RATE);
   }
 
   // calculate raw bit rate value
@@ -232,6 +238,9 @@ int16_t SX126x::setBitRate(float br) {
   this->bitRate = brRaw;
 
   // update modulation parameters
+  if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
+    return(setModulationParamsBPSK(this->bitRate));
+  }
   return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 

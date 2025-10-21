@@ -87,6 +87,15 @@ class SX126x: public PhysicalLayer {
     int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
+      \brief Initialization method for BPSK modem.
+      \param br FSK bit rate in kbps. Only 100 and 600 bps is supported.
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+      \returns \ref status_codes
+    */
+    int16_t beginBPSK(float br, float tcxoVoltage, bool useRegulatorLDO = false);
+
+    /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values.
@@ -817,8 +826,10 @@ class SX126x: public PhysicalLayer {
     int16_t setTxParams(uint8_t power, uint8_t rampTime);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev);
+    int16_t setModulationParamsBPSK(uint32_t br, uint8_t sh = RADIOLIB_SX126X_BPSK_PULSE_SHAPE);
     int16_t setPacketParams(uint16_t preambleLen, uint8_t crcType, uint8_t payloadLen, uint8_t hdrType, uint8_t invertIQ);
     int16_t setPacketParamsFSK(uint16_t preambleLen, uint8_t preambleDetectorLen, uint8_t crcType, uint8_t syncWordLen, uint8_t addrCmp, uint8_t whiten, uint8_t packType = RADIOLIB_SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLen = 0xFF);
+    int16_t setPacketParamsBPSK(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t payloadLenBits);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     int16_t setRegulatorMode(uint8_t mode);
     uint8_t getStatus();

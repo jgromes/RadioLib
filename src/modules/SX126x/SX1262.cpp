@@ -49,6 +49,24 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   return(state);
 }
 
+int16_t SX1262::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
+  // execute common part
+  int16_t state = SX126x::beginBPSK(br, tcxoVoltage, useRegulatorLDO);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = SX126x::fixPaClamping();
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX1262::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
   int16_t state = SX126x::beginLRFHSS(bw, cr, narrowGrid, tcxoVoltage, useRegulatorLDO);

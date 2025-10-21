@@ -120,6 +120,22 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   return(state);
 }
 
+int16_t SX126x::beginBPSK(float br, float tcxoVoltage, bool useRegulatorLDO) {
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_BPSK);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+  
+  // set publicly accessible settings that are not a part of begin method
+  state = setDio2AsRfSwitch(true);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO) {
   this->lrFhssGridNonFcc = narrowGrid;
   
@@ -898,8 +914,21 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     dataRate.lrFhss.narrowGrid = this->lrFhssGridNonFcc;
     
     packetConfig.lrFhss.hdrCount = this->lrFhssHdrCount;
+  } else if(type == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
+    // BPSK is so experimental it does not have a specific data rate structure
+    // so just reuse FSK
+    modem = RADIOLIB_MODEM_FSK;
+
+    dataRate.fsk.bitRate = RADIOLIB_SX126X_CRYSTAL_FREQ * 32.0f * 1000.0f / (float)this->bitRate;
+    dataRate.fsk.freqDev = 0;
+
+    packetConfig.fsk.preambleLength = 0;
+    packetConfig.fsk.syncWordLength = 0;
+    packetConfig.fsk.crcLength = 0;
+
   } else {
     return(RADIOLIB_ERR_WRONG_MODEM);
+  
   }
 
   return(calculateTimeOnAir(modem, dataRate, packetConfig, len));
@@ -1015,7 +1044,16 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       
       } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
         state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType, cfg->transmit.len);
-
+      
+      } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
+        uint16_t rampUp = RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_600_BPS;
+        uint16_t rampDown = RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_600_BPS;
+        if(this->bitRate == 100) {
+          rampUp = RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_100_BPS;
+          rampDown = RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_100_BPS;
+        }
+        state = setPacketParamsBPSK(cfg->transmit.len, rampUp, rampDown, 8*cfg->transmit.len);
+      
       } else if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
         return(RADIOLIB_ERR_UNKNOWN);
       
