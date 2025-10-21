@@ -126,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a36d2c94ff9c3b9126fde23e3c54630f1" id="r_a36d2c94ff9c3b9126fde23e3c54630f1"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1">beginFSK</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:a36d2c94ff9c3b9126fde23e3c54630f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
 <tr class="separator:a36d2c94ff9c3b9126fde23e3c54630f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a633c029d32c924e2600a9066bdc761ca" id="r_a633c029d32c924e2600a9066bdc761ca"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a633c029d32c924e2600a9066bdc761ca">beginBPSK</a> (float freq=434.0, float br=0.6, int8_t power=10, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
+<tr class="memdesc:a633c029d32c924e2600a9066bdc761ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for BPSK modem. NOTE: Proceed with caution! BPSK support in <a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a> is epxerimental and poorly documented!  <br /></td></tr>
+<tr class="separator:a633c029d32c924e2600a9066bdc761ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeeea8315c04afccc8cae8ec0dba2e426" id="r_aeeea8315c04afccc8cae8ec0dba2e426"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#aeeea8315c04afccc8cae8ec0dba2e426">beginLRFHSS</a> (float freq=434.0, uint8_t bw=RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr=RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid=true, int8_t power=10, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:aeeea8315c04afccc8cae8ec0dba2e426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem. This modem only supports transmission!  <br /></td></tr>
 <tr class="separator:aeeea8315c04afccc8cae8ec0dba2e426"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,6 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e500e5b6044ccab8f6b19af4ffa917c inherit pub_methods_class_s_x126x" id="r_a2e500e5b6044ccab8f6b19af4ffa917c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c">beginFSK</a> (float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:a2e500e5b6044ccab8f6b19af4ffa917c inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
 <tr class="separator:a2e500e5b6044ccab8f6b19af4ffa917c inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebfbbddca8d3bde4501925a0e25cd43 inherit pub_methods_class_s_x126x" id="r_a8ebfbbddca8d3bde4501925a0e25cd43"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a8ebfbbddca8d3bde4501925a0e25cd43">beginBPSK</a> (float br, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
+<tr class="memdesc:a8ebfbbddca8d3bde4501925a0e25cd43 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for BPSK modem.  <br /></td></tr>
+<tr class="separator:a8ebfbbddca8d3bde4501925a0e25cd43 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af404471ef9d379c58b5b08757593fe6d inherit pub_methods_class_s_x126x" id="r_af404471ef9d379c58b5b08757593fe6d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#af404471ef9d379c58b5b08757593fe6d">beginLRFHSS</a> (uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:af404471ef9d379c58b5b08757593fe6d inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem. This modem only supports transmission!  <br /></td></tr>
 <tr class="separator:af404471ef9d379c58b5b08757593fe6d inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -656,6 +662,73 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#a76f46d146fc055b055346f87ff0b83d0">LLCC68</a>, and <a class="el" href="class_s_t_m32_w_lx.html#a8a326d469313286aa165730cf41d4994">STM32WLx</a>.</p>
+
+</div>
+</div>
+<a id="a633c029d32c924e2600a9066bdc761ca" name="a633c029d32c924e2600a9066bdc761ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a633c029d32c924e2600a9066bdc761ca">&#9670;&#160;</a></span>beginBPSK()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1262::beginBPSK </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freq</em> = <code>434.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>br</em> = <code>0.6</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tcxoVoltage</em> = <code>1.6</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useRegulatorLDO</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialization method for BPSK modem. NOTE: Proceed with caution! BPSK support in <a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a> is epxerimental and poorly documented! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz. </td></tr>
+    <tr><td class="paramname">br</td><td>FSK bit rate in kbps. Defaults to 600 bps, only 100 and 600 bps is supported </td></tr>
+    <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
+    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V. If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL. To use XTAL, either set this value to 0, or set <a class="el" href="class_s_x126x.html#ada0fe6c3d31885952b439135cf0c18f1" title="Whether the module has an XTAL (true) or TCXO (false). Defaults to false.">SX126x::XTAL</a> to true. </td></tr>
+    <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

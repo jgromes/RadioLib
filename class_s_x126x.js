@@ -3,6 +3,7 @@ var class_s_x126x =
     [ "SX126x", "class_s_x126x.html#aaca5a8fa8a3e634dd1b5b4c2bb5058d8", null ],
     [ "autoLDRO", "class_s_x126x.html#ab9ce38cfeaa36ddcc2d82b2974d7088c", null ],
     [ "begin", "class_s_x126x.html#a936a40038e05740a528f2b53f8e17010", null ],
+    [ "beginBPSK", "class_s_x126x.html#a8ebfbbddca8d3bde4501925a0e25cd43", null ],
     [ "beginFSK", "class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c", null ],
     [ "beginLRFHSS", "class_s_x126x.html#af404471ef9d379c58b5b08757593fe6d", null ],
     [ "calculateRxTimeout", "class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4", null ],

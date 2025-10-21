@@ -128,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e500e5b6044ccab8f6b19af4ffa917c" id="r_a2e500e5b6044ccab8f6b19af4ffa917c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c">beginFSK</a> (float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:a2e500e5b6044ccab8f6b19af4ffa917c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
 <tr class="separator:a2e500e5b6044ccab8f6b19af4ffa917c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebfbbddca8d3bde4501925a0e25cd43" id="r_a8ebfbbddca8d3bde4501925a0e25cd43"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a8ebfbbddca8d3bde4501925a0e25cd43">beginBPSK</a> (float br, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
+<tr class="memdesc:a8ebfbbddca8d3bde4501925a0e25cd43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for BPSK modem.  <br /></td></tr>
+<tr class="separator:a8ebfbbddca8d3bde4501925a0e25cd43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af404471ef9d379c58b5b08757593fe6d" id="r_af404471ef9d379c58b5b08757593fe6d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#af404471ef9d379c58b5b08757593fe6d">beginLRFHSS</a> (uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:af404471ef9d379c58b5b08757593fe6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem. This modem only supports transmission!  <br /></td></tr>
 <tr class="separator:af404471ef9d379c58b5b08757593fe6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -625,6 +628,51 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. </td></tr>
     <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Allowed values range from 1 to 65535. </td></tr>
+    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip. </td></tr>
+    <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8ebfbbddca8d3bde4501925a0e25cd43" name="a8ebfbbddca8d3bde4501925a0e25cd43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ebfbbddca8d3bde4501925a0e25cd43">&#9670;&#160;</a></span>beginBPSK()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::beginBPSK </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>br</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tcxoVoltage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useRegulatorLDO</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialization method for BPSK modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">br</td><td>FSK bit rate in kbps. Only 100 and 600 bps is supported. </td></tr>
     <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip. </td></tr>
     <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. </td></tr>
   </table>
