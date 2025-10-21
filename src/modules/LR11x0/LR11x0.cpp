@@ -694,7 +694,11 @@ int16_t LR11x0::setBitRate(float br) {
   // set bit rate value
   // TODO implement fractional bit rate configuration
   this->bitRate = br * 1000.0f;
-  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+  state = setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
+  RADIOLIB_ASSERT(state);
+
+  // apply workaround
+  return(workaroundGFSK());
 }
 
 int16_t LR11x0::setFrequencyDeviation(float freqDev) {
@@ -714,7 +718,11 @@ int16_t LR11x0::setFrequencyDeviation(float freqDev) {
 
   RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   this->frequencyDev = newFreqDev * 1000.0f;
-  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+  state = setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
+  RADIOLIB_ASSERT(state);
+
+  // apply workaround
+  return(workaroundGFSK());
 }
 
 int16_t LR11x0::setRxBandwidth(float rxBw) {
@@ -779,7 +787,11 @@ int16_t LR11x0::setRxBandwidth(float rxBw) {
   }
 
   // update modulation parameters
-  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+  state = setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
+  RADIOLIB_ASSERT(state);
+
+  // apply workaround
+  return(workaroundGFSK());
 }
 
 int16_t LR11x0::setSyncWord(uint8_t* syncWord, size_t len) {
@@ -1721,6 +1733,82 @@ int16_t LR11x0::launchMode() {
 
   this->stagedMode = RADIOLIB_RADIO_MODE_NONE;
   return(state);
+}
+
+uint8_t LR11x0::roundRampTime(uint32_t rampTimeUs) {
+  uint8_t regVal;
+
+  // Round up the ramp time to nearest discrete register value
+  if(rampTimeUs <= 16) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_16U;
+  } else if(rampTimeUs <= 32) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_32U;
+  } else if(rampTimeUs <= 48) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_48U;
+  } else if(rampTimeUs <= 64) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_64U;
+  } else if(rampTimeUs <= 80) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_80U;
+  } else if(rampTimeUs <= 96) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_96U;
+  } else if(rampTimeUs <= 112) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_112U;
+  } else if(rampTimeUs <= 128) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_128U;
+  } else if(rampTimeUs <= 144) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_144U;
+  } else if(rampTimeUs <= 160) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_160U;
+  } else if(rampTimeUs <= 176) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_176U;
+  } else if(rampTimeUs <= 192) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_192U;
+  } else if(rampTimeUs <= 208) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_208U;
+  } else if(rampTimeUs <= 240) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_240U;
+  } else if(rampTimeUs <= 272) {
+    regVal = RADIOLIB_LR11X0_PA_RAMP_272U;
+  } else {  // 304
+    regVal = RADIOLIB_LR11X0_PA_RAMP_304U;
+  }
+
+  return regVal;
+}
+
+int16_t LR11x0::workaroundGFSK() {
+  // first, check we are using GFSK modem
+  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    // not in GFSK, nothing to do here
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  // this seems to always be the first step (even when resetting)
+  state = this->writeRegMemMask32(RADIOLIB_LR11X0_REG_GFSK_FIX1, 0x30, 0x10);
+  RADIOLIB_ASSERT(state);
+
+  // these are the default values that will be applied if nothing matches
+  uint32_t valFix2 = 0x01;
+  uint32_t valFix3 = 0x0A01;
+
+  // next, decide what to change based on modulation properties
+  if((this->bitRate == 1200) && (this->frequencyDev == 5000) && (this->rxBandwidth == RADIOLIB_LR11X0_GFSK_RX_BW_19_5)) {
+    // workaround for 1.2 kbps
+    valFix2 = 0x04;
+
+  } else if((this->bitRate == 600) && (this->frequencyDev == 800) && (this->rxBandwidth == RADIOLIB_LR11X0_GFSK_RX_BW_4_8))  {
+    // value to write depends on the frequency
+    valFix3 = (this->freqMHz >= 1000.0f) ? 0x1100 : 0x0600;
+  
+  }
+
+  // update the registers
+  state = this->writeRegMemMask32(RADIOLIB_LR11X0_REG_GFSK_FIX2, 0x05, valFix2);
+  RADIOLIB_ASSERT(state);
+  return(this->writeRegMemMask32(RADIOLIB_LR11X0_REG_GFSK_FIX3, 0x01FF03, valFix3));
 }
 
 int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {

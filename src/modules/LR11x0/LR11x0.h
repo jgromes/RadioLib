@@ -805,6 +805,10 @@ class LR11x0: public PhysicalLayer {
     */
     uint8_t roundRampTime(uint32_t rampTimeUs);
 
+    // method that applies some magic workaround for specific bitrate, frequency deviation,
+    // receiver bandwidth and carrier frequencies for GFSK (and resets it in all other cases)
+    int16_t workaroundGFSK();
+
     // LR11x0 SPI command implementations
     int16_t writeRegMem32(uint32_t addr, const uint32_t* data, size_t len);
     int16_t readRegMem32(uint32_t addr, uint32_t* data, size_t len);
