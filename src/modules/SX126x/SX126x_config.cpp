@@ -238,10 +238,16 @@ int16_t SX126x::setBitRate(float br) {
   this->bitRate = brRaw;
 
   // update modulation parameters
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
-    return(setModulationParamsBPSK(this->bitRate));
+    state = setModulationParamsBPSK(this->bitRate);
+  } else {
+    state = setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
   }
-  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+  RADIOLIB_ASSERT(state);
+
+  // apply workaround or reset it, as needed
+  return(fixGFSK());
 }
 
 int16_t SX126x::setDataRate(DataRate_t dr, ModemType_t modem) {

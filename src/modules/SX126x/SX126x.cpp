@@ -1386,6 +1386,48 @@ int16_t SX126x::fixInvertedIQ(uint8_t iqConfig) {
   return(writeRegister(RADIOLIB_SX126X_REG_IQ_CONFIG, &iqConfigCurrent, 1));
 }
 
+int16_t SX126x::fixGFSK() {
+  // method that applies some magic workaround for specific bitrate, frequency deviation,
+  // receiver bandwidth and carrier frequencies for GFSK (and resets it in all other cases)
+  // this is not documented in the datasheet, only in Semtech repositories for SX126x and LR11xx
+
+  // first, check we are using GFSK modem
+  if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+    // not in GFSK, nothing to do here
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  // next, decide what to change based on modulation properties
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+  if(this->bitRate == 1200) {
+    // workaround for 1.2 kbps
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_3, 0x00, 4, 4);
+
+  } else if(this->bitRate == 600)  {
+    // workaround for 0.6 kbps
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_1, 0x18, 4, 3);
+    RADIOLIB_ASSERT(state);
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW, 0x04, 4, 2);
+    RADIOLIB_ASSERT(state);
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_3, 0x00, 4, 4);
+    RADIOLIB_ASSERT(state);
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_4, 0x50, 6, 4);
+  
+  } else {
+    // reset
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_1, 0x08, 4, 3);
+    RADIOLIB_ASSERT(state);
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW, 0x00, 4, 2);
+    RADIOLIB_ASSERT(state);
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_3, 0x10, 4, 4);
+    RADIOLIB_ASSERT(state);
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_4, 0x00, 6, 4);
+  
+  }
+
+  return(state);
+}
+
 Module* SX126x::getMod() {
   return(this->mod);
 }

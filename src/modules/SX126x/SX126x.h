@@ -905,6 +905,7 @@ class SX126x: public PhysicalLayer {
     int16_t fixSensitivity();
     int16_t fixImplicitTimeout();
     int16_t fixInvertedIQ(uint8_t iqConfig);
+    int16_t fixGFSK();
 
     // LR-FHSS utilities
     int16_t buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out, size_t* out_len, size_t* out_bits, size_t* out_hops);

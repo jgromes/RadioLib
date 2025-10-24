@@ -29,6 +29,7 @@
 #define RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0                 0x0587
 #define RADIOLIB_SX126X_REG_PATCH_UPDATE_ENABLE                 0x0610
 #define RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1                 0x0680
+#define RADIOLIB_SX126X_REG_GFSK_FIX_4                          0x06AC
 #define RADIOLIB_SX126X_REG_WHITENING_INITIAL_MSB               0x06B8
 #define RADIOLIB_SX126X_REG_WHITENING_INITIAL_LSB               0x06B9
 #define RADIOLIB_SX126X_REG_RX_TX_PLD_LEN                       0x06BB
@@ -46,6 +47,7 @@
 #define RADIOLIB_SX126X_REG_SYNC_WORD_7                         0x06C7
 #define RADIOLIB_SX126X_REG_NODE_ADDRESS                        0x06CD
 #define RADIOLIB_SX126X_REG_BROADCAST_ADDRESS                   0x06CE
+#define RADIOLIB_SX126X_REG_GFSK_FIX_1                          0x06D1
 #define RADIOLIB_SX126X_REG_PAYLOAD_LENGTH                      0x0702
 #define RADIOLIB_SX126X_REG_PACKET_PARAMS                       0x0704
 #define RADIOLIB_SX126X_REG_LORA_SYNC_TIMEOUT                   0x0706
@@ -67,6 +69,7 @@
 #define RADIOLIB_SX126X_REG_RF_FREQUENCY_3                      0x088E
 #define RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW                     0x089B
 #define RADIOLIB_SX126X_REG_RX_GAIN                             0x08AC
+#define RADIOLIB_SX126X_REG_GFSK_FIX_3                          0x08B8
 #define RADIOLIB_SX126X_REG_TX_CLAMP_CONFIG                     0x08D8
 #define RADIOLIB_SX126X_REG_ANA_LNA                             0x08E2
 #define RADIOLIB_SX126X_REG_LNA_CAP_TUNE_N                      0x08E3
