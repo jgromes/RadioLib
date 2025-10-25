@@ -75,7 +75,6 @@ var class_s_x126x =
     [ "setRxBandwidth", "class_s_x126x.html#a59d443c02d4620cda32c63a00c6bcc22", null ],
     [ "setRxBoostedGainMode", "class_s_x126x.html#a920aa76ff5f0f579424ef6de92e588c8", null ],
     [ "setSpreadingFactor", "class_s_x126x.html#ae5993359ace652fbdc862eb23fdd263d", null ],
-    [ "setSyncBits", "class_s_x126x.html#ac594fbb30c5010658c970a64654c7162", null ],
     [ "setSyncWord", "class_s_x126x.html#a827a4754ea53388513d263e5d9171395", null ],
     [ "setSyncWord", "class_s_x126x.html#a9d92dce566f8aefa836fe8f332e9560f", null ],
     [ "setTCXO", "class_s_x126x.html#a57bee6f4b3a3b7ec646ac8de347ee0d6", null ],
