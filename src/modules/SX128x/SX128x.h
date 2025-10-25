@@ -879,7 +879,7 @@ class SX128x: public PhysicalLayer {
 
     /*!
       \brief Enable/disable inversion of the I and Q signals
-      \param enable QI inversion enabled (true) or disabled (false);
+      \param enable IQ inversion enabled (true) or disabled (false);
       \returns \ref status_codes
     */
     int16_t invertIQ(bool enable) override;
