@@ -487,25 +487,6 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, size_t len) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
-  // check active modem
-  if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  // check sync word Length
-  if(bitsLen > 0x40) {
-    return(RADIOLIB_ERR_INVALID_SYNC_WORD);
-  }
-
-  uint8_t bytesLen = bitsLen / 8;
-  if ((bitsLen % 8) != 0) {
-    bytesLen++;
-  }
-
-  return(setSyncWord(syncWord, bytesLen));
-}
-
 int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool inverted) {
   // check active modem
   uint8_t modem = getPacketType();

@@ -234,7 +234,6 @@ getTimeOnAir	KEYWORD2
 calculateTimeOnAir KEYWORD2
 implicitHeader	KEYWORD2
 explicitHeader	KEYWORD2
-setSyncBits	KEYWORD2
 setWhitening	KEYWORD2
 startReceiveDutyCycle	KEYWORD2
 startReceiveDutyCycleAuto	KEYWORD2
