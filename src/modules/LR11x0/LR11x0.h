@@ -354,15 +354,6 @@ class LR11x0: public PhysicalLayer {
     int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
 
     /*!
-      \brief Sets GFSK sync word in the form of array of up to 8 bytes.
-      \param syncWord GFSK sync word to be set.
-      \param bitsLen GFSK sync word length in bits. If length is not divisible by 8,
-      least significant bits of syncWord will be ignored.
-      \returns \ref status_codes
-    */
-    int16_t setSyncBits(uint8_t *syncWord, uint8_t bitsLen);
-
-    /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.
       \param nodeAddr Node address to be set.
       \returns \ref status_codes

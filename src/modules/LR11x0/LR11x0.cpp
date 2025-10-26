@@ -835,27 +835,6 @@ int16_t LR11x0::setSyncWord(uint8_t* syncWord, size_t len) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t LR11x0::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
-  if((!syncWord) || (!bitsLen) || (bitsLen > 8*RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN)) {
-    return(RADIOLIB_ERR_INVALID_SYNC_WORD);
-  }
-
-  // check active modem
-  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&type);
-  RADIOLIB_ASSERT(state);
-  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  uint8_t bytesLen = bitsLen / 8;
-  if ((bitsLen % 8) != 0) {
-    bytesLen++;
-  }
-
-  return(setSyncWord(syncWord, bytesLen));
-}
-
 int16_t LR11x0::setNodeAddress(uint8_t nodeAddr) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
