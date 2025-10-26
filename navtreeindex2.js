@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"class_physical_layer.html#a63979795a7b53557560bb95b65480906":[3,0,49,16],
 "class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce":[3,0,49,12],
 "class_physical_layer.html#a6c71cdc1238e1368274670758431a977":[3,0,49,53],
 "class_physical_layer.html#a76113e10481743094a1cd0280692b0a9":[3,0,49,27],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a85ffabc9f35e2683aefdd785bf912172":[3,0,76,0,2],
 "class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a8cf0ccad0eec5fde12798e0b0347d6bf":[3,0,76,0,1],
 "class_s_t_m32_w_lx.html#ad23dafdeb21b97165be74ef8f093866c":[3,0,76,11],
-"class_s_t_m32_w_lx.html#ad96d18fea2a7fffa959b64c8c5d993a8":[3,0,76,9]
+"class_s_t_m32_w_lx.html#ad96d18fea2a7fffa959b64c8c5d993a8":[3,0,76,9],
+"class_s_t_m32_w_lx.html#ae7f54bfff828901c4effbcc38ca8edc8":[3,0,76,3]
 };
