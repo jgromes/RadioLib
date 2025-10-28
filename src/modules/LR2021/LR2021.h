@@ -155,6 +155,23 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     int16_t getFskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);
     int16_t getFskPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
 
+    // OQPSK commands
+    int16_t setOqpskParams(uint8_t mode, uint8_t rxBw, uint8_t payloadLen, uint16_t preambleLen, bool addrFilt, bool fcsManual);
+    int16_t getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
+    int16_t getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, float* rssiAvg, float* rssiSync, float* lqi);
+    int16_t setOqpskPacketLen(uint8_t len);
+    int16_t setOqpskAddress(uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId);
+
+    // BPSK commands
+    int16_t setBpskModulationParams(uint32_t bitRate, uint8_t pulseShape, bool diff, uint8_t diffInit);
+    int16_t setBpskPacketParams(uint8_t payloadLen, uint8_t mode, bool sigFoxControlMsg, uint8_t sigFoxRank);
+
+    // FLRC commands
+    int16_t setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape);
+    int16_t setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, bool fixedLength, uint8_t crc, uint16_t payloadLen);
+    int16_t getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError);
+    int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum);
+    int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);
 };
 
 #endif

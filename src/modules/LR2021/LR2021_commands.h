@@ -409,11 +409,15 @@
 #define RADIOLIB_LR2021_FSK_BITRATE_BPS                         (0x00UL << 31)  //  7     0     bitrate units: bits per second
 #define RADIOLIB_LR2021_FSK_BITRATE_FRACTIONAL                  (0x01UL << 31)  //  7     0                    fractional (1/256 bps)
 #define RADIOLIB_LR2021_FSK_SHAPING_NONE                        (0x00UL << 0)   //  7     0     shaping filter: none
-#define RADIOLIB_LR2021_FSK_SHAPING_GAUSS_BT_2_0                (0x02UL << 0)   //  7     0                     Gaussian, BT = 2.0
-#define RADIOLIB_LR2021_FSK_SHAPING_GAUSS_BT_0_3                (0x04UL << 0)   //  7     0                     Gaussian, BT = 0.3
-#define RADIOLIB_LR2021_FSK_SHAPING_GAUSS_BT_0_5                (0x05UL << 0)   //  7     0                     Gaussian, BT = 0.5
-#define RADIOLIB_LR2021_FSK_SHAPING_GAUSS_BT_0_7                (0x06UL << 0)   //  7     0                     Gaussian, BT = 0.7
-#define RADIOLIB_LR2021_FSK_SHAPING_GAUSS_BT_1_0                (0x07UL << 0)   //  7     0                     Gaussian, BT = 1.0
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_2_0      (0x02UL << 0)   //  7     0                     Gaussian, BT = 2.0
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_4   (0x03UL << 0)   //  7     0                     Root-Raised-Cosine with 0.4 roll-off
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_0_3      (0x04UL << 0)   //  7     0                     Gaussian, BT = 0.3
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_0_5      (0x05UL << 0)   //  7     0                     Gaussian, BT = 0.5
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_0_7      (0x06UL << 0)   //  7     0                     Gaussian, BT = 0.7
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_1_0      (0x07UL << 0)   //  7     0                     Gaussian, BT = 1.0
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_3   (0x08UL << 0)   //  7     0                     Root-Raised-Cosine with 0.3 roll-off
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_5   (0x09UL << 0)   //  7     0                     Root-Raised-Cosine with 0.5 roll-off
+#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_7   (0x0AUL << 0)   //  7     0                     Root-Raised-Cosine with 0.7 roll-off
 // TODO implement the other bandwidths as well (and figure out a way how to calculate it)
 #define RADIOLIB_LR2021_GFSK_RX_BW_4_8                          (39)            //  7     0     GFSK Rx bandwidth: 4.8 kHz
 #define RADIOLIB_LR2021_GFSK_RX_BW_5_8                          (215)           //  7     0                        5.8 kHz
@@ -465,6 +469,27 @@
 // RADIOLIB_LR2021_CMD_SET_FSK_WHITENING_PARAMS
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX       (0x00UL << 0)   //  7     0     whitening type: compatible with SX126x and LR11x0
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX128X              (0x01UL << 0)   //  7     0                     compatible with SX128x
+
+// RADIOLIB_LR2021_CMD_SET_OQPSK_PARAMS
+#define RADIOLIB_LR2021_OQPSK_TYPE_15_4                         (0x00UL << 0)   //  7     0     OQPSK type: 802.15.4 PHY, 250 kbps bit rate
+
+// RADIOLIB_LR2021_CMD_SET_BPSK_PACKET_PARAMS
+#define RADIOLIB_LR2021_BPSK_MODE_RAW                           (0x00UL << 0)   //  7     0     encoding mode: raw
+#define RADIOLIB_LR2021_BPSK_MODE_SIGFOX                        (0x01UL << 0)   //  7     0                    SigFox PHY
+
+// RADIOLIB_LR2021_CMD_SET_FLRC_MODULATION_PARAMS
+#define RADIOLIB_LR2021_FLRC_BR_2600                            (0x00UL << 0)   //  7     0     bitrate/bandwidth: 2600 kbps, 2666 kHz
+#define RADIOLIB_LR2021_FLRC_BR_2080                            (0x01UL << 0)   //  7     0                        2080 kbps, 2222 kHz
+#define RADIOLIB_LR2021_FLRC_BR_1300                            (0x02UL << 0)   //  7     0                        1300 kbps, 1333 kHz
+#define RADIOLIB_LR2021_FLRC_BR_1040                            (0x03UL << 0)   //  7     0                        1040 kbps, 1333 kHz
+#define RADIOLIB_LR2021_FLRC_BR_650                             (0x04UL << 0)   //  7     0                        650 kbps, 888 kHz
+#define RADIOLIB_LR2021_FLRC_BR_520                             (0x05UL << 0)   //  7     0                        520 kbps, 769 kHz
+#define RADIOLIB_LR2021_FLRC_BR_325                             (0x06UL << 0)   //  7     0                        325 kbps, 444 kHz
+#define RADIOLIB_LR2021_FLRC_BR_260                             (0x07UL << 0)   //  7     0                        260 kbps, 444 kHz
+#define RADIOLIB_LR2021_FLRC_CR_1_2                             (0x00UL << 0)   //  7     0     coding rate: 1/2
+#define RADIOLIB_LR2021_FLRC_CR_3_4                             (0x01UL << 0)   //  7     0                  3/4
+#define RADIOLIB_LR2021_FLRC_CR_1_0                             (0x02UL << 0)   //  7     0                  1 (uncoded)
+#define RADIOLIB_LR2021_FLRC_CR_2_3                             (0x03UL << 0)   //  7     0                  2/3
 
 #endif
 
