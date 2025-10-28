@@ -3,7 +3,7 @@
 #if !RADIOLIB_EXCLUDE_SX128X
 
 SX1280::SX1280(Module* mod) : SX1281(mod) {
-
+  chipType = RADIOLIB_SX1280_CHIP_TYPE;
 }
 
 int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {

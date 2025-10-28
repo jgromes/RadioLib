@@ -9,6 +9,9 @@
 #include "SX128x.h"
 #include "SX1281.h"
 
+// RADIOLIB_SX128X_REG_VERSION_STRING
+#define RADIOLIB_SX1280_CHIP_TYPE                               "SX1280"
+
 /*!
   \class SX1280
   \brief Derived class for %SX1280 modules.

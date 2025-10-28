@@ -2,7 +2,7 @@
 #if !RADIOLIB_EXCLUDE_SX128X
 
 SX1281::SX1281(Module* mod) : SX128x(mod) {
-
+  chipType = RADIOLIB_SX1281_CHIP_TYPE;
 }
 
 #endif

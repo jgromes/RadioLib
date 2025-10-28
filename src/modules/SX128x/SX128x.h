@@ -57,6 +57,7 @@
 #define RADIOLIB_SX128X_CMD_SET_ADVANCED_RANGING                0x9A
 
 // SX128X register map
+#define RADIOLIB_SX128X_REG_VERSION_STRING                      0x01F0
 #define RADIOLIB_SX128X_REG_GAIN_MODE                           0x0891
 #define RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2        0x0895
 #define RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING                 0x089E
@@ -907,7 +908,10 @@ class SX128x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
+    const char* chipType = NULL;
+
     Module* getMod() override;
+    int16_t modSetup(uint8_t modem);
 
     // cached LoRa parameters
     float bandwidthKhz = 0;
@@ -967,6 +971,7 @@ class SX128x: public PhysicalLayer {
     // cached BLE parameters
     uint8_t connectionState = 0, crcBLE = 0, bleTestPayload = 0;
 
+    bool findChip(const char* verStr);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 };
