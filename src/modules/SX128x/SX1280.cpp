@@ -152,7 +152,16 @@ int16_t SX1280::finishRanging() {
   return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->payloadLen, this->crcLoRa));
 }
 
+int32_t SX1280::getRangingResultRaw() {
+  return(getRangingResultCommon(false));
+}
+
 float SX1280::getRangingResult() {
+  int32_t raw = getRangingResultCommon(true);
+  return((float)raw * 150.0f / (4.096f * this->bandwidthKhz));
+}
+
+int32_t SX1280::getRangingResultCommon(bool filtered) {
   // set mode to standby XOSC
   int16_t state = standby(RADIOLIB_SX128X_STANDBY_XOSC);
   RADIOLIB_ASSERT(state);
@@ -171,7 +180,7 @@ float SX1280::getRangingResult() {
   RADIOLIB_ASSERT(state);
 
   data[0] &= 0xCF;
-  data[0] |= (1 << 4);
+  data[0] |= ((uint8_t)filtered << 4);
   state = writeRegister(RADIOLIB_SX128X_REG_RANGING_TYPE, data, 1);
   RADIOLIB_ASSERT(state);
 
@@ -187,10 +196,10 @@ float SX1280::getRangingResult() {
   state = standby();
   RADIOLIB_ASSERT(state);
 
-  // calculate the real result
+  // convert to signed
   uint32_t uraw = ((uint32_t)data[0] << 16) | ((uint32_t)data[1] << 8) | data[2];
   int32_t raw = (uraw & ((1UL << 23) - 1)) | (uraw >> 23 << 31);
-  return((float)raw * 150.0f / (4.096f * this->bandwidthKhz));
+  return(raw);
 }
 
 #endif

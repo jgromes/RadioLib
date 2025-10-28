@@ -51,10 +51,18 @@ class SX1280: public SX1281 {
     */
     float getRangingResult();
 
+    /*!
+      \brief Gets ranging result of the last ranging exchange.
+      \returns Ranging result in arbitrary raw units. For conversion to meters,
+      see SX1280 datasheet, or use the getRangingResult method.
+    */
+    int32_t getRangingResultRaw();
+
 #if !RADIOLIB_GODMODE
   private:
 #endif
 
+    int32_t getRangingResultCommon(bool filtered);
 };
 
 #endif
