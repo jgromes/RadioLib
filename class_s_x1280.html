@@ -125,9 +125,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a04ebee012b3b550ddc912b298de3763e" id="r_a04ebee012b3b550ddc912b298de3763e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a04ebee012b3b550ddc912b298de3763e">startRanging</a> (bool master, uint32_t addr, const uint16_t calTable[3][6]=NULL)</td></tr>
 <tr class="memdesc:a04ebee012b3b550ddc912b298de3763e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven ranging method.  <br /></td></tr>
 <tr class="separator:a04ebee012b3b550ddc912b298de3763e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac98980f6e58f522fc8d849ea111c73d0" id="r_ac98980f6e58f522fc8d849ea111c73d0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#ac98980f6e58f522fc8d849ea111c73d0">finishRanging</a> ()</td></tr>
+<tr class="memdesc:ac98980f6e58f522fc8d849ea111c73d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after ranging is done. Will set modem back to LoRa mode.  <br /></td></tr>
+<tr class="separator:ac98980f6e58f522fc8d849ea111c73d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91f4f241f02cd4e79d15a9ba08eb1e8f" id="r_a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a91f4f241f02cd4e79d15a9ba08eb1e8f">getRangingResult</a> ()</td></tr>
 <tr class="memdesc:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets ranging result of the last ranging exchange.  <br /></td></tr>
 <tr class="separator:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1013e20a398c82e62f81cb22553a9ff6" id="r_a1013e20a398c82e62f81cb22553a9ff6"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a1013e20a398c82e62f81cb22553a9ff6">getRangingResultRaw</a> ()</td></tr>
+<tr class="memdesc:a1013e20a398c82e62f81cb22553a9ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets ranging result of the last ranging exchange.  <br /></td></tr>
+<tr class="separator:a1013e20a398c82e62f81cb22553a9ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_s_x1281"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_s_x1281')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_s_x1281.html">SX1281</a></td></tr>
 <tr class="memitem:a0dd7678cdf7fad9ecfc9139c5092f998 inherit pub_methods_class_s_x1281" id="r_a0dd7678cdf7fad9ecfc9139c5092f998"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1281.html#a0dd7678cdf7fad9ecfc9139c5092f998">SX1281</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a0dd7678cdf7fad9ecfc9139c5092f998 inherit pub_methods_class_s_x1281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
@@ -496,6 +502,26 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac98980f6e58f522fc8d849ea111c73d0" name="ac98980f6e58f522fc8d849ea111c73d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac98980f6e58f522fc8d849ea111c73d0">&#9670;&#160;</a></span>finishRanging()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1280::finishRanging </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clean up after ranging is done. Will set modem back to LoRa mode. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a91f4f241f02cd4e79d15a9ba08eb1e8f" name="a91f4f241f02cd4e79d15a9ba08eb1e8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a91f4f241f02cd4e79d15a9ba08eb1e8f">&#9670;&#160;</a></span>getRangingResult()</h2>
 
@@ -513,6 +539,26 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 <p>Gets ranging result of the last ranging exchange. </p>
 <dl class="section return"><dt>Returns</dt><dd>Ranging result in meters. </dd></dl>
+
+</div>
+</div>
+<a id="a1013e20a398c82e62f81cb22553a9ff6" name="a1013e20a398c82e62f81cb22553a9ff6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1013e20a398c82e62f81cb22553a9ff6">&#9670;&#160;</a></span>getRangingResultRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t SX1280::getRangingResultRaw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets ranging result of the last ranging exchange. </p>
+<dl class="section return"><dt>Returns</dt><dd>Ranging result in arbitrary raw units. For conversion to meters, see <a class="el" href="class_s_x1280.html" title="Derived class for SX1280 modules.">SX1280</a> datasheet, or use the getRangingResult method. </dd></dl>
 
 </div>
 </div>

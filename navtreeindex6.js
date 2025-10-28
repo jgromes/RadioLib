@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"group__status__codes.html#gac314f4bd89f306c8a16237be9a9c80cb":[2,6,23],
+"group__status__codes.html#gac4185b9eaead4de110763759f01e1f4f":[2,6,86],
 "group__status__codes.html#gac4e026589229f7f737c77c641447d180":[2,6,6],
 "group__status__codes.html#gac78ef1a402159a3be27a6b92268106b7":[2,6,9],
 "group__status__codes.html#gacc0baeb3e5fc99760a07d18ba55531b6":[2,6,87],
@@ -22,8 +24,8 @@ var NAVTREEINDEX6 =
 "group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd":[2,7,1],
 "group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77":[2,7,0],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "lr1110__transceiver__0303_8h_source.html":[4,0,0,1,2,0,0],
 "lr1110__transceiver__0304_8h_source.html":[4,0,0,1,2,0,1],
 "lr1110__transceiver__0305_8h.html":[4,0,0,1,2,0,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "struct_module_1_1_s_p_i_config__t.html#a9619dcb8b269bcbd125e5a05e6c0fc77":[3,0,44,1,3],
 "struct_module_1_1_s_p_i_config__t.html#ac1e7f50d134ec054ed2074b846f1124e":[3,0,44,1,0],
 "struct_module_1_1_s_p_i_config__t.html#ae11c030be96a72cd09fdfe9778ecdd51":[3,0,44,1,2],
-"struct_r_s_s_i_scan_config__t.html":[3,0,66],
-"struct_r_s_s_i_scan_config__t.html#a8a9bf05648e82b49d43d6275ecf3cc3b":[3,0,66,0],
-"struct_receive_config__t.html":[3,0,58]
+"struct_r_s_s_i_scan_config__t.html":[3,0,66]
 };

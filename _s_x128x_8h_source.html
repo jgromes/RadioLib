@@ -644,43 +644,45 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>    int16_t setRangingRole(uint8_t role);</div>
 <div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>    int16_t setPacketType(uint8_t type);</div>
 <div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span> </div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>    <a class="code hl_class" href="class_module.html">Module</a>* mod;</div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span> </div>
-<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    <span class="comment">// common low-level SPI interface</span></div>
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>    <span class="comment">// protected so that it can be accessed from SX1280 class during reinit after ranging is complete</span></div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>    int16_t config(uint8_t modem);</div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span> </div>
+<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>    <a class="code hl_class" href="class_module.html">Module</a>* mod;</div>
 <div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span> </div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>    <span class="comment">// common parameters</span></div>
-<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>    uint8_t power = 0;</div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    uint32_t rxTimeout = 0;</div>
-<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span> </div>
-<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>    <span class="comment">// cached LoRa parameters</span></div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>    uint8_t invertIQEnabled = RADIOLIB_SX128X_LORA_IQ_STANDARD;</div>
+<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>    <span class="comment">// common low-level SPI interface</span></div>
+<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
+<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span> </div>
+<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>    <span class="comment">// common parameters</span></div>
+<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>    uint8_t power = 0;</div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>    uint32_t rxTimeout = 0;</div>
 <div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span> </div>
-<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    <span class="comment">// cached GFSK parameters</span></div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>    <span class="keywordtype">float</span> modIndexReal = 0, frequencyDev = 0;</div>
-<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>    uint16_t bitRateKbps = 0;</div>
-<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    uint8_t bitRate = 0, modIndex = 0, shaping = 0;</div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>    uint8_t preambleLengthGFSK = 0, syncWordLen = 0, syncWordMatch = 0, crcGFSK = 0, whitening = 0;</div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    uint8_t packetType = RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE;</div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span> </div>
-<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    <span class="comment">// cached FLRC parameters</span></div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>    uint8_t codingRateFLRC = 0;</div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    <span class="comment">// cached LoRa parameters</span></div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>    uint8_t invertIQEnabled = RADIOLIB_SX128X_LORA_IQ_STANDARD;</div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span> </div>
+<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    <span class="comment">// cached GFSK parameters</span></div>
+<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>    <span class="keywordtype">float</span> modIndexReal = 0, frequencyDev = 0;</div>
+<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    uint16_t bitRateKbps = 0;</div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    uint8_t bitRate = 0, modIndex = 0, shaping = 0;</div>
+<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    uint8_t preambleLengthGFSK = 0, syncWordLen = 0, syncWordMatch = 0, crcGFSK = 0, whitening = 0;</div>
+<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>    uint8_t packetType = RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE;</div>
 <div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span> </div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    <span class="comment">// cached BLE parameters</span></div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    uint8_t connectionState = 0, crcBLE = 0, bleTestPayload = 0;</div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    <span class="comment">// cached FLRC parameters</span></div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    uint8_t codingRateFLRC = 0;</div>
 <div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span> </div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    int16_t config(uint8_t modem);</div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>    int16_t setHeaderType(uint8_t hdrType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>};</div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    <span class="comment">// cached BLE parameters</span></div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    uint8_t connectionState = 0, crcBLE = 0, bleTestPayload = 0;</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span> </div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    int16_t setHeaderType(uint8_t hdrType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>};</div>
 </div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span> </div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span> </div>
 <div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span> </div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:73</div></div>
 <div class="ttc" id="aclass_module_html_a0c11551e12579bbabf57b19e12555b3c"><div class="ttname"><a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a></div><div class="ttdeci">static const size_t RFSWITCH_MAX_PINS</div><div class="ttdoc">The maximum number of pins supported by the RF switch code. Note: It is not recommended to use this c...</div><div class="ttdef"><b>Definition</b> Module.h:82</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition</b> PhysicalLayer.h:257</div></div>
