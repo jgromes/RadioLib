@@ -224,7 +224,8 @@ int16_t SX126x::setBitRate(float br) {
   }
 
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
-    RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    // at the moment only the very specific 488.28125 bps rate is supported
+    RADIOLIB_CHECK_RANGE(br, 0.488f, 0.489f, RADIOLIB_ERR_INVALID_BIT_RATE);
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
     // this should be just either 100 or 600 bps, not the range
     // but the BPSK support is so experimental it probably does not matter
