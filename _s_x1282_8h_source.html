@@ -109,24 +109,27 @@ $(document).ready(function(){initNavTree('_s_x1282_8h_source.html',''); initResi
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;SX128x.h&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;SX1280.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_s_x1282.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="class_s_x1282.html">SX1282</a>: <span class="keyword">public</span> <a class="code hl_class" href="class_s_x1280.html">SX1280</a> {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_class" href="class_s_x1282.html">SX1282</a>(<a class="code hl_class" href="class_module.html">Module</a>* mod); <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>};</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// RADIOLIB_SX128X_REG_VERSION_STRING</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define RADIOLIB_SX1282_CHIP_TYPE                               &quot;SX1282&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_s_x1282.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="class_s_x1282.html">SX1282</a>: <span class="keyword">public</span> <a class="code hl_class" href="class_s_x1280.html">SX1280</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_class" href="class_s_x1282.html">SX1282</a>(<a class="code hl_class" href="class_module.html">Module</a>* mod); <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>};</div>
 </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:73</div></div>
-<div class="ttc" id="aclass_s_x1280_html"><div class="ttname"><a href="class_s_x1280.html">SX1280</a></div><div class="ttdoc">Derived class for SX1280 modules.</div><div class="ttdef"><b>Definition</b> SX1280.h:16</div></div>
-<div class="ttc" id="aclass_s_x1282_html"><div class="ttname"><a href="class_s_x1282.html">SX1282</a></div><div class="ttdoc">Derived class for SX1282 modules.</div><div class="ttdef"><b>Definition</b> SX1282.h:16</div></div>
+<div class="ttc" id="aclass_s_x1280_html"><div class="ttname"><a href="class_s_x1280.html">SX1280</a></div><div class="ttdoc">Derived class for SX1280 modules.</div><div class="ttdef"><b>Definition</b> SX1280.h:19</div></div>
+<div class="ttc" id="aclass_s_x1282_html"><div class="ttname"><a href="class_s_x1282.html">SX1282</a></div><div class="ttdoc">Derived class for SX1282 modules.</div><div class="ttdef"><b>Definition</b> SX1282.h:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
