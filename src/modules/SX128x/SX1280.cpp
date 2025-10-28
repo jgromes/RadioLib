@@ -17,20 +17,12 @@ int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   while(!mod->hal->digitalRead(mod->getIrq())) {
     mod->hal->yield();
     if(mod->hal->millis() - start > 10000) {
-      clearIrqStatus();
-      standby();
+      (void)finishRanging();
       return(RADIOLIB_ERR_RANGING_TIMEOUT);
     }
   }
 
-  // clear interrupt flags
-  state = clearIrqStatus();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-
-  return(state);
+  return(finishRanging());
 }
 
 int16_t SX1280::startRanging(bool master, uint32_t addr, const uint16_t calTable[3][6]) {
@@ -138,6 +130,26 @@ int16_t SX1280::startRanging(bool master, uint32_t addr, const uint16_t calTable
   }
 
   return(state);
+}
+
+int16_t SX1280::finishRanging() {
+  // start by clearing interrupt flags
+  int16_t state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // restore back to LoRa communication
+  // config sets up the bare minimum
+  state = config(RADIOLIB_SX128X_PACKET_TYPE_LORA);
+  RADIOLIB_ASSERT(state);
+
+  // restore modulation and packet parameters and we're done
+  state = setModulationParams(this->spreadingFactor, this->bandwidth, this->codingRateLoRa);
+  RADIOLIB_ASSERT(state);
+  return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->payloadLen, this->crcLoRa));
 }
 
 float SX1280::getRangingResult() {

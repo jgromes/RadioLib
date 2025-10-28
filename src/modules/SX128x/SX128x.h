@@ -936,6 +936,9 @@ class SX128x: public PhysicalLayer {
     int16_t setRangingRole(uint8_t role);
     int16_t setPacketType(uint8_t type);
 
+    // protected so that it can be accessed from SX1280 class during reinit after ranging is complete
+    int16_t config(uint8_t modem);
+
 #if !RADIOLIB_GODMODE
   private:
 #endif
@@ -964,7 +967,6 @@ class SX128x: public PhysicalLayer {
     // cached BLE parameters
     uint8_t connectionState = 0, crcBLE = 0, bleTestPayload = 0;
 
-    int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 };

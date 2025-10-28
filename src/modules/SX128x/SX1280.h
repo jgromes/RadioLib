@@ -38,6 +38,12 @@ class SX1280: public SX1281 {
       \returns \ref status_codes
     */
     int16_t startRanging(bool master, uint32_t addr, const uint16_t calTable[3][6] = NULL);
+    
+    /*!
+      \brief Clean up after ranging is done. Will set modem back to LoRa mode.
+      \returns \ref status_codes
+    */
+    int16_t finishRanging();
 
     /*!
       \brief Gets ranging result of the last ranging exchange.
