@@ -227,13 +227,13 @@ setCrcFiltering	KEYWORD2
 beginFSK4	KEYWORD2
 
 # SX126x-specific
+beginBPSK	KEYWORD2
 setTCXO	KEYWORD2
 setDio2AsRfSwitch	KEYWORD2
 getTimeOnAir	KEYWORD2
 calculateTimeOnAir KEYWORD2
 implicitHeader	KEYWORD2
 explicitHeader	KEYWORD2
-setSyncBits	KEYWORD2
 setWhitening	KEYWORD2
 startReceiveDutyCycle	KEYWORD2
 startReceiveDutyCycleAuto	KEYWORD2
@@ -306,7 +306,9 @@ beginBLE	KEYWORD2
 setAccessAddress	KEYWORD2
 range	KEYWORD2
 startRanging	KEYWORD2
+finishRanging	KEYWORD2
 getRangingResult	KEYWORD2
+getRangingResultRaw	KEYWORD2
 
 # Hellschreiber
 printGlyph	KEYWORD2

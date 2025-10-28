@@ -1,5 +1,6 @@
 #include "SX128x.h"
 #include <math.h>
+#include <string.h>
 #if !RADIOLIB_EXCLUDE_SX128X
 
 SX128x::SX128x(Module* mod) : PhysicalLayer() {
@@ -19,21 +20,6 @@ SX128x::SX128x(Module* mod) : PhysicalLayer() {
 }
 
 int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX128X_CMD_READ_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX128X_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX128x");
-
   // initialize LoRa modulation variables
   this->bandwidthKhz = bw;
   this->spreadingFactor = RADIOLIB_SX128X_LORA_SF_9;
@@ -45,16 +31,8 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   this->payloadLen = 0xFF;
   this->crcLoRa = RADIOLIB_SX128X_LORA_CRC_ON;
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX128X_PACKET_TYPE_LORA);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(RADIOLIB_SX128X_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -83,21 +61,6 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
 }
 
 int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, uint16_t preambleLength) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX128X_CMD_READ_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX128X_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX128x");
-
   // initialize GFSK modulation variables
   this->bitRateKbps = br;
   this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
@@ -112,16 +75,8 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, ui
   this->crcGFSK = RADIOLIB_SX128X_GFSK_FLRC_CRC_2_BYTE;
   this->whitening = RADIOLIB_SX128X_GFSK_BLE_WHITENING_ON;
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX128X_PACKET_TYPE_GFSK);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(RADIOLIB_SX128X_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -155,21 +110,6 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, ui
 }
 
 int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uint8_t dataShaping) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX128X_CMD_READ_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX128X_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX128x");
-
   // initialize BLE modulation variables
   this->bitRateKbps = br;
   this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
@@ -181,16 +121,8 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uin
   this->crcGFSK = RADIOLIB_SX128X_BLE_CRC_3_BYTE;
   this->whitening = RADIOLIB_SX128X_GFSK_BLE_WHITENING_ON;
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX128X_PACKET_TYPE_BLE);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(RADIOLIB_SX128X_PACKET_TYPE_BLE);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -213,21 +145,6 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uin
 }
 
 int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX128X_CMD_READ_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX128X_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX128x");
-
   // initialize FLRC modulation variables
   this->bitRateKbps = br;
   this->bitRate = RADIOLIB_SX128X_FLRC_BR_0_650_BW_0_6;
@@ -241,16 +158,8 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint1
   this->crcGFSK = RADIOLIB_SX128X_GFSK_FLRC_CRC_2_BYTE;
   this->whitening = RADIOLIB_SX128X_GFSK_BLE_WHITENING_OFF;
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX128X_PACKET_TYPE_FLRC);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(RADIOLIB_SX128X_PACKET_TYPE_FLRC);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -1642,6 +1551,33 @@ Module* SX128x::getMod() {
   return(this->mod);
 }
 
+int16_t SX128x::modSetup(uint8_t modem) {
+  // set module properties
+  this->mod->init();
+  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
+  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
+  this->mod->spiConfig.statusPos = 1;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX128X_CMD_READ_REGISTER;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX128X_CMD_GET_STATUS;
+  this->mod->spiConfig.stream = true;
+  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
+
+  // find the chip - this will also reset the module and verify the module
+  if(!SX128x::findChip(this->chipType)) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("No SX128x found!");
+    this->mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX128x");
+
+  // configure settings not accessible by API
+  return(config(modem));
+}
+
 uint8_t SX128x::getStatus() {
   uint8_t data = 0;
   this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_STATUS, &data, 0);
@@ -1824,6 +1760,37 @@ int16_t SX128x::SPIparseStatus(uint8_t in) {
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   return(RADIOLIB_ERR_NONE);
+}
+
+bool SX128x::findChip(const char* verStr) {
+  uint8_t i = 0;
+  bool flagFound = false;
+  while((i < 10) && !flagFound) {
+    // reset the module
+    reset(true);
+
+    // read the version string
+    char version[16] = { 0 };
+    this->mod->SPIreadRegisterBurst(RADIOLIB_SX128X_REG_VERSION_STRING, 16, reinterpret_cast<uint8_t*>(version));
+
+    // check version register
+    if(strncmp(verStr, version, 6) == 0) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Found SX128x: RADIOLIB_SX128X_REG_VERSION_STRING:");
+      RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX128X_REG_VERSION_STRING);
+      RADIOLIB_DEBUG_BASIC_PRINTLN();
+      flagFound = true;
+    } else {
+      #if RADIOLIB_DEBUG_BASIC
+        RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x not found! (%d of 10 tries) RADIOLIB_SX128X_REG_VERSION_STRING:", i + 1);
+        RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX128X_REG_VERSION_STRING);
+        RADIOLIB_DEBUG_BASIC_PRINTLN("Expected string: %s", verStr);
+      #endif
+      this->mod->hal->delay(10);
+      i++;
+    }
+  }
+
+  return(flagFound);
 }
 
 #endif

@@ -71,13 +71,6 @@ void setup() {
     while (true) { delay(10); }
   }
 
-  // FSK modem on SX126x can handle the sync word setting in bits, not just
-  // whole bytes. The value used is left-justified.
-  // This makes same result as radio.setSyncWord(syncWord, 8):
-  state = radio.setSyncBits(syncWord, 64);
-  // This will use 0x012 as sync word (12 bits only):
-  state = radio.setSyncBits(syncWord, 12);
-
   // FSK modem allows advanced CRC configuration
   // Default is CCIT CRC16 (2 bytes, initial 0x1D0F, polynomial 0x1021, inverted)
   // Set CRC to IBM CRC (2 bytes, initial 0xFFFF, polynomial 0x8005, non-inverted)

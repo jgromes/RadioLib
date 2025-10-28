@@ -9,48 +9,6 @@
 
 #if !RADIOLIB_EXCLUDE_LR11X0
 
-uint8_t LR11x0::roundRampTime(uint32_t rampTimeUs)
-{
-  uint8_t regVal;
-
-  // Round up the ramp time to nearest discrete register value
-  if(rampTimeUs <= 16) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_16U;
-  } else if(rampTimeUs <= 32) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_32U;
-  } else if(rampTimeUs <= 48) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_48U;
-  } else if(rampTimeUs <= 64) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_64U;
-  } else if(rampTimeUs <= 80) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_80U;
-  } else if(rampTimeUs <= 96) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_96U;
-  } else if(rampTimeUs <= 112) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_112U;
-  } else if(rampTimeUs <= 128) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_128U;
-  } else if(rampTimeUs <= 144) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_144U;
-  } else if(rampTimeUs <= 160) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_160U;
-  } else if(rampTimeUs <= 176) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_176U;
-  } else if(rampTimeUs <= 192) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_192U;
-  } else if(rampTimeUs <= 208) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_208U;
-  } else if(rampTimeUs <= 240) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_240U;
-  } else if(rampTimeUs <= 272) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_272U;
-  } else {  // 304
-    regVal = RADIOLIB_LR11X0_PA_RAMP_304U;
-  }
-
-  return regVal;
-}
-
 int16_t LR11x0::writeRegMem32(uint32_t addr, const uint32_t* data, size_t len) {
   // check maximum size
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
@@ -815,6 +773,10 @@ int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, const uint32_t* data, s
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
   return(this->writeCommon(RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED, offset, data, len, nonvolatile));
+}
+
+int16_t LR11x0::bootGetHash(uint8_t hash[RADIOLIB_LR11X0_HASH_LEN]) {
+  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_GET_HASH, false, hash, RADIOLIB_LR11X0_HASH_LEN));
 }
 
 int16_t LR11x0::bootReboot(bool stay) {

@@ -202,6 +202,11 @@ int16_t SX126x::setModulationParamsFSK(uint32_t br, uint8_t sh, uint8_t rxBw, ui
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 8));
 }
 
+int16_t SX126x::setModulationParamsBPSK(uint32_t br, uint8_t sh) {
+  const uint8_t data[] = {(uint8_t)((br >> 16) & 0xFF), (uint8_t)((br >> 8) & 0xFF), (uint8_t)(br & 0xFF), sh};
+  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, sizeof(data)));
+}
+
 int16_t SX126x::setPacketParams(uint16_t preambleLen, uint8_t crcType, uint8_t payloadLen, uint8_t hdrType, uint8_t invertIQ) {
   int16_t state = fixInvertedIQ(invertIQ);
   RADIOLIB_ASSERT(state);
@@ -214,6 +219,19 @@ int16_t SX126x::setPacketParamsFSK(uint16_t preambleLen, uint8_t preambleDetecto
                      preambleDetectorLen, syncWordLen, addrCmp,
                      packType, payloadLen, crcType, whiten};
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, 9));
+}
+
+int16_t SX126x::setPacketParamsBPSK(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t payloadLenBits) {
+  const uint8_t data[] = { payloadLen,
+    (uint8_t)((rampUpDelay >> 8) & 0xFF), (uint8_t)(rampUpDelay & 0xFF),
+    (uint8_t)((rampDownDelay >> 8) & 0xFF), (uint8_t)(rampDownDelay & 0xFF),
+    (uint8_t)((payloadLenBits >> 8) & 0xFF), (uint8_t)(payloadLenBits & 0xFF)
+  };
+  
+  // this one is a bit different, it seems to be split into command transaction and then a register write
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, sizeof(uint8_t));
+  RADIOLIB_ASSERT(state);
+  return(this->writeRegister(RADIOLIB_SX126X_REG_BPSK_PACKET_PARAMS, &data[1], sizeof(data) - sizeof(uint8_t)));
 }
 
 int16_t SX126x::setBufferBaseAddress(uint8_t txBaseAddress, uint8_t rxBaseAddress) {
