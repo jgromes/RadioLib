@@ -10,6 +10,7 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 #include "../LR11x0/LR_common.h"
 #include "LR2021_commands.h"
+#include "LR2021_types.h"
 
 // LR2021 physical layer properties
 #define RADIOLIB_LR2021_FREQUENCY_STEP_SIZE                     1.0
@@ -172,6 +173,25 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     int16_t getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError);
     int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum);
     int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);
+
+    // LR-FHSS commands
+    int16_t lrFhssSetSyncword(uint32_t syncWord);
+    //! \TODO: [LR2021] Implement reading/writing LR-FHSS hopping table 
+    //int16_t readLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t* hopTableLen);
+    //int16_t writeLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t hopTableLen);
+
+    // OOK commands
+    int16_t setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint8_t depth);
+    int16_t setOokPacketParams(uint16_t preambleLen, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t manchester);
+    int16_t setOokCrcParams(uint32_t poly, uint32_t init);
+    int16_t setOokSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
+    int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);
+    int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
+    int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
+    int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, bool syncWordRaw, bool sofDelimiterRising, uint8_t sofDelimiterLen);
+
+    // test commands
+    int16_t setTxTestMode(uint8_t mode);
 };
 
 #endif

@@ -876,7 +876,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
     int16_t setRangingParameter(uint8_t symbolNum);
     int16_t setRssiCalibration(const int8_t* tune, int16_t gainOffset);
     int16_t setLoRaSyncWord(uint8_t sync);
-    int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     int16_t lrFhssSetSyncWord(uint32_t sync);
     int16_t configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len);
     int16_t bleBeaconSend(uint8_t chan, const uint8_t* payload, size_t len);

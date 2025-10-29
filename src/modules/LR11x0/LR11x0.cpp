@@ -103,7 +103,7 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoV
   RADIOLIB_ASSERT(state);
 
   // set grid spacing
-  this->lrFhssGrid = narrowGrid ? RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC;
+  this->lrFhssGrid = narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
 
   // configure publicly accessible settings
   state = setLrFhssConfig(bw, cr);
@@ -1002,7 +1002,7 @@ int16_t LR11x0::setDataRate(DataRate_t dr, ModemType_t modem) {
     RADIOLIB_ASSERT(state);
 
     // set hopping grid
-    this->lrFhssGrid = dr.lrFhss.narrowGrid ? RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC;
+    this->lrFhssGrid = dr.lrFhss.narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
   
   }
 
@@ -1262,16 +1262,16 @@ RadioLibTime_t LR11x0::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
     // calculate the number of bits based on coding rate
     uint16_t N_bits;
     switch(dr.lrFhss.cr) {
-      case RADIOLIB_LR11X0_LR_FHSS_CR_5_6:
+      case RADIOLIB_LRXXXX_LR_FHSS_CR_5_6:
         N_bits = ((len * 6) + 4) / 5; // this is from the official LR11xx driver, but why the extra +4?
         break;
-      case RADIOLIB_LR11X0_LR_FHSS_CR_2_3:
+      case RADIOLIB_LRXXXX_LR_FHSS_CR_2_3:
         N_bits = (len * 3) / 2;
         break;
-      case RADIOLIB_LR11X0_LR_FHSS_CR_1_2:
+      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_2:
         N_bits = len * 2;
         break;
-      case RADIOLIB_LR11X0_LR_FHSS_CR_1_3:
+      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_3:
         N_bits = len * 3;
         break;
       default:
@@ -1279,14 +1279,14 @@ RadioLibTime_t LR11x0::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
     }
 
     // calculate number of bits when accounting for unaligned last block
-    uint16_t N_payBits = (N_bits / RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS) * RADIOLIB_LR11X0_LR_FHSS_BLOCK_BITS;
-    uint16_t N_lastBlockBits = N_bits % RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS;
+    uint16_t N_payBits = (N_bits / RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS) * RADIOLIB_LRXXXX_LR_FHSS_BLOCK_BITS;
+    uint16_t N_lastBlockBits = N_bits % RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS;
     if(N_lastBlockBits) {
       N_payBits += N_lastBlockBits + 2;
     }
 
     // add header bits
-    uint16_t N_totalBits = (RADIOLIB_LR11X0_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
+    uint16_t N_totalBits = (RADIOLIB_LRXXXX_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
     return(((uint32_t)N_totalBits * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
   
   } else {
@@ -1342,7 +1342,7 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
     case ModemType_t::RADIOLIB_MODEM_LRFHSS: {
       dr.lrFhss.bw = this->lrFhssBw;
       dr.lrFhss.cr = this->lrFhssCr;
-      dr.lrFhss.narrowGrid = (this->lrFhssGrid == RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC) ? true : false;
+      dr.lrFhss.narrowGrid = (this->lrFhssGrid == RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC) ? true : false;
 
       pc.lrFhss.hdrCount = this->lrFhssHdrCount;
       break;
@@ -1482,9 +1482,9 @@ int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16
   }
 
   // check and cache all parameters
-  RADIOLIB_CHECK_RANGE((int8_t)cr, (int8_t)RADIOLIB_LR11X0_LR_FHSS_CR_5_6, (int8_t)RADIOLIB_LR11X0_LR_FHSS_CR_1_3, RADIOLIB_ERR_INVALID_CODING_RATE);
+  RADIOLIB_CHECK_RANGE((int8_t)cr, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_CR_5_6, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_CR_1_3, RADIOLIB_ERR_INVALID_CODING_RATE);
   this->lrFhssCr = cr;
-  RADIOLIB_CHECK_RANGE((int8_t)bw, (int8_t)RADIOLIB_LR11X0_LR_FHSS_BW_39_06, (int8_t)RADIOLIB_LR11X0_LR_FHSS_BW_1574_2, RADIOLIB_ERR_INVALID_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE((int8_t)bw, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_BW_39_06, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_BW_1574_2, RADIOLIB_ERR_INVALID_BANDWIDTH);
   this->lrFhssBw = bw;
   RADIOLIB_CHECK_RANGE(hdrCount, 1, 4, RADIOLIB_ERR_INVALID_BIT_RANGE);
   this->lrFhssHdrCount = hdrCount;
@@ -1666,7 +1666,7 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
         // in LR-FHSS mode, the packet is built by the device
         // TODO add configurable device offset
-        state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
+        state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR11X0_CMD_LR_FHSS_BUILD_FRAME, this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
       } else {

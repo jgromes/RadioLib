@@ -481,31 +481,6 @@
 #define RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE                  (0x12)
 #define RADIOLIB_LR11X0_LORA_SYNC_WORD_PUBLIC                   (0x34)
 
-// RADIOLIB_LR11X0_CMD_LR_FHSS_BUILD_FRAME
-#define RADIOLIB_LR11X0_LR_FHSS_CR_5_6                          (0x00UL << 0)   //  7     0     LR FHSS coding rate: 5/6
-#define RADIOLIB_LR11X0_LR_FHSS_CR_2_3                          (0x01UL << 0)   //  7     0                          2/3
-#define RADIOLIB_LR11X0_LR_FHSS_CR_1_2                          (0x02UL << 0)   //  7     0                          1/2
-#define RADIOLIB_LR11X0_LR_FHSS_CR_1_3                          (0x03UL << 0)   //  7     0                          1/3
-#define RADIOLIB_LR11X0_LR_FHSS_MOD_TYPE_GMSK                   (0x00UL << 0)   //  7     0     LR FHSS modulation: GMSK
-#define RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC                   (0x00UL << 0)   //  7     0     LR FHSS step size: 25.390625 kHz (FCC)
-#define RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC               (0x01UL << 0)   //  7     0                        3.90625 kHz (non-FCC)
-#define RADIOLIB_LR11X0_LR_FHSS_HOPPING_DISABLED                (0x00UL << 0)   //  7     0     LR FHSS hopping: disabled
-#define RADIOLIB_LR11X0_LR_FHSS_HOPPING_ENABLED                 (0x01UL << 0)   //  7     0                      enabled
-#define RADIOLIB_LR11X0_LR_FHSS_BW_39_06                        (0x00UL << 0)   //  7     0     LR FHSS bandwidth: 39.06 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_85_94                        (0x01UL << 0)   //  7     0                        85.94 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_136_72                       (0x02UL << 0)   //  7     0                        136.72 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_183_59                       (0x03UL << 0)   //  7     0                        183.59 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_335_94                       (0x04UL << 0)   //  7     0                        335.94 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_386_72                       (0x05UL << 0)   //  7     0                        386.72 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_722_66                       (0x06UL << 0)   //  7     0                        722.66 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_773_44                       (0x07UL << 0)   //  7     0                        773.44 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_1523_4                       (0x08UL << 0)   //  7     0                        1523.4 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BW_1574_2                       (0x09UL << 0)   //  7     0                        1574.2 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_HEADER_BITS                     (114)           //  7     0     LR FHSS packet bit widths: header
-#define RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS                       (48)            //  7     0                                payload fragment
-#define RADIOLIB_LR11X0_LR_FHSS_BLOCK_PREAMBLE_BITS             (2)             //  7     0                                block preamble
-#define RADIOLIB_LR11X0_LR_FHSS_BLOCK_BITS                      (RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS + RADIOLIB_LR11X0_LR_FHSS_BLOCK_PREAMBLE_BITS)
-
 // RADIOLIB_LR11X0_CMD_GET_LORA_RX_HEADER_INFOS
 #define RADIOLIB_LR11X0_LAST_HEADER_CRC_ENABLED                 (0x01UL << 4)   //  4     4     last header CRC: enabled
 #define RADIOLIB_LR11X0_LAST_HEADER_CRC_DISABLED                (0x00UL << 4)   //  4     4                      disabled

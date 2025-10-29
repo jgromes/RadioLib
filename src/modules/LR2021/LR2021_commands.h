@@ -406,68 +406,68 @@
 #define RADIOLIB_LR2021_RANGING_RESULT_TYPE_GAINS               (0x02UL << 0)   //  7     0                          AGC gain steps
 
 // RADIOLIB_LR2021_CMD_SET_FSK_MODULATION_PARAMS
-#define RADIOLIB_LR2021_FSK_BITRATE_BPS                         (0x00UL << 31)  //  7     0     bitrate units: bits per second
-#define RADIOLIB_LR2021_FSK_BITRATE_FRACTIONAL                  (0x01UL << 31)  //  7     0                    fractional (1/256 bps)
-#define RADIOLIB_LR2021_FSK_SHAPING_NONE                        (0x00UL << 0)   //  7     0     shaping filter: none
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_2_0      (0x02UL << 0)   //  7     0                     Gaussian, BT = 2.0
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_4   (0x03UL << 0)   //  7     0                     Root-Raised-Cosine with 0.4 roll-off
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_0_3      (0x04UL << 0)   //  7     0                     Gaussian, BT = 0.3
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_0_5      (0x05UL << 0)   //  7     0                     Gaussian, BT = 0.5
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_0_7      (0x06UL << 0)   //  7     0                     Gaussian, BT = 0.7
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_GAUSS_BT_1_0      (0x07UL << 0)   //  7     0                     Gaussian, BT = 1.0
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_3   (0x08UL << 0)   //  7     0                     Root-Raised-Cosine with 0.3 roll-off
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_5   (0x09UL << 0)   //  7     0                     Root-Raised-Cosine with 0.5 roll-off
-#define RADIOLIB_LR2021_FSK_BPSK_FLRC_SHAPING_RRC_ROLLOFF_0_7   (0x0AUL << 0)   //  7     0                     Root-Raised-Cosine with 0.7 roll-off
+#define RADIOLIB_LR2021_GFSK_BPSK_OOK_BITRATE_BPS               (0x00UL << 31)  //  7     0     bitrate units: bits per second
+#define RADIOLIB_LR2021_GFSK_BPSK_OOK_BITRATE_FRACTIONAL        (0x01UL << 31)  //  7     0                    fractional (1/256 bps)
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_NONE             (0x00UL << 0)   //  7     0     shaping filter: none
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_2_0     (0x02UL << 0)   //  7     0                     Gaussian, BT = 2.0
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_RRC_ROLLOFF_0_4  (0x03UL << 0)   //  7     0                     Root-Raised-Cosine with 0.4 roll-off
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_0_3     (0x04UL << 0)   //  7     0                     Gaussian, BT = 0.3
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_0_5     (0x05UL << 0)   //  7     0                     Gaussian, BT = 0.5
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_0_7     (0x06UL << 0)   //  7     0                     Gaussian, BT = 0.7
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_1_0     (0x07UL << 0)   //  7     0                     Gaussian, BT = 1.0
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_RRC_ROLLOFF_0_3  (0x08UL << 0)   //  7     0                     Root-Raised-Cosine with 0.3 roll-off
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_RRC_ROLLOFF_0_5  (0x09UL << 0)   //  7     0                     Root-Raised-Cosine with 0.5 roll-off
+#define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_RRC_ROLLOFF_0_7  (0x0AUL << 0)   //  7     0                     Root-Raised-Cosine with 0.7 roll-off
 // TODO implement the other bandwidths as well (and figure out a way how to calculate it)
-#define RADIOLIB_LR2021_GFSK_RX_BW_4_8                          (39)            //  7     0     GFSK Rx bandwidth: 4.8 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_5_8                          (215)           //  7     0                        5.8 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_7_4                          (87)            //  7     0                        7.4 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_9_7                          (38)            //  7     0                        9.6 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_12_0                         (30)            //  7     0                        12.0 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_14_9                         (86)            //  7     0                        14.9 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_19_2                         (37)            //  7     0                        19.2 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_23_1                         (213)           //  7     0                        21.3 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_29_8                         (85)            //  7     0                        29.8 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_38_5                         (36)            //  7     0                        38.5 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_46_3                         (212)           //  7     0                        46.3 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_59_5                         (84)            //  7     0                        59.5 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_76_9                         (35)            //  7     0                        76.9 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_92_6                         (211)           //  7     0                        92.6 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_119_0                        (83)            //  7     0                        119.0 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_153_8                        (34)            //  7     0                        153.8 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_185_2                        (210)           //  7     0                        185.2 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_238_1                        (82)            //  7     0                        238.1 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_307_7                        (33)            //  7     0                        307.7 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_370_4                        (209)           //  7     0                        370.4 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_476_2                        (81)            //  7     0                        476.2 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_555_6                        (216)           //  7     0                        555.6 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_666_7                        (152)           //  7     0                        666.7 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_769_2                        (24)            //  7     0                        769.2 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_1111                         (200)           //  7     0                        1111 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_2222                         (192)           //  7     0                        2222 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_2666                         (128)           //  7     0                        2667 kHz
-#define RADIOLIB_LR2021_GFSK_RX_BW_3076                         (0)             //  7     0                        3077 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_4_8                      (39)            //  7     0     GFSK Rx bandwidth: 4.8 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_5_8                      (215)           //  7     0                        5.8 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_7_4                      (87)            //  7     0                        7.4 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_9_7                      (38)            //  7     0                        9.6 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_12_0                     (30)            //  7     0                        12.0 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_14_9                     (86)            //  7     0                        14.9 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_19_2                     (37)            //  7     0                        19.2 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_23_1                     (213)           //  7     0                        21.3 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_29_8                     (85)            //  7     0                        29.8 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_38_5                     (36)            //  7     0                        38.5 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_46_3                     (212)           //  7     0                        46.3 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_59_5                     (84)            //  7     0                        59.5 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_76_9                     (35)            //  7     0                        76.9 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_92_6                     (211)           //  7     0                        92.6 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_119_0                    (83)            //  7     0                        119.0 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8                    (34)            //  7     0                        153.8 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_185_2                    (210)           //  7     0                        185.2 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_238_1                    (82)            //  7     0                        238.1 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_307_7                    (33)            //  7     0                        307.7 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_370_4                    (209)           //  7     0                        370.4 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_476_2                    (81)            //  7     0                        476.2 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_555_6                    (216)           //  7     0                        555.6 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_666_7                    (152)           //  7     0                        666.7 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_769_2                    (24)            //  7     0                        769.2 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_1111                     (200)           //  7     0                        1111 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_2222                     (192)           //  7     0                        2222 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_2666                     (128)           //  7     0                        2667 kHz
+#define RADIOLIB_LR2021_GFSK_OOK_RX_BW_3076                     (0)             //  7     0                        3077 kHz
 
 // RADIOLIB_LR2021_CMD_SET_FSK_PACKET_PARAMS
-#define RADIOLIB_LR2021_GFSK_ADDR_FILT_DISABLED                 (0x00UL << 0)   //  7     0     address filtering: disabled
-#define RADIOLIB_LR2021_GFSK_ADDR_FILT_NODE                     (0x01UL << 0)   //  7     0                        node only
-#define RADIOLIB_LR2021_GFSK_ADDR_FILT_NODE_BROADCAST           (0x02UL << 0)   //  7     0                        node and broadcast
-#define RADIOLIB_LR2021_GFSK_PACKET_FORMAT_FIXED                (0x00UL << 0)   //  7     0     packet format: fixed length
-#define RADIOLIB_LR2021_GFSK_PACKET_FORMAT_VARIABLE_8BIT        (0x01UL << 0)   //  7     0                    variable, 8-bit length
-#define RADIOLIB_LR2021_GFSK_PACKET_FORMAT_VARIABLE_9BIT        (0x02UL << 0)   //  7     0                    variable, 9-bit length (for SX128x compatibility)
-#define RADIOLIB_LR2021_GFSK_PACKET_FORMAT_VARIABLE_15BIT       (0x03UL << 0)   //  7     0                    variable, 15-bit length
-#define RADIOLIB_LR2021_GFSK_CRC_OFF                            (0x00UL << 0)   //  7     0     CRC: disabled
-#define RADIOLIB_LR2021_GFSK_CRC8                               (0x01UL << 0)   //  7     0          1-byte
-#define RADIOLIB_LR2021_GFSK_CRC16                              (0x02UL << 0)   //  7     0          2-byte
-#define RADIOLIB_LR2021_GFSK_CRC24                              (0x03UL << 0)   //  7     0          3-byte
-#define RADIOLIB_LR2021_GFSK_CRC32                              (0x04UL << 0)   //  7     0          4-byte
-#define RADIOLIB_LR2021_GFSK_CRC8_INV                           (0x09UL << 0)   //  7     0          1-byte, inverted
-#define RADIOLIB_LR2021_GFSK_CRC16_INV                          (0x0AUL << 0)   //  7     0          2-byte, inverted
-#define RADIOLIB_LR2021_GFSK_CRC24_INV                          (0x0BUL << 0)   //  7     0          3-byte, inverted
-#define RADIOLIB_LR2021_GFSK_CRC32_INV                          (0x0CUL << 0)   //  7     0          4-byte, inverted
+#define RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_DISABLED             (0x00UL << 0)   //  7     0     address filtering: disabled
+#define RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE                 (0x01UL << 0)   //  7     0                        node only
+#define RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE_BROADCAST       (0x02UL << 0)   //  7     0                        node and broadcast
+#define RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED            (0x00UL << 0)   //  7     0     packet format: fixed length
+#define RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_VARIABLE_8BIT    (0x01UL << 0)   //  7     0                    variable, 8-bit length
+#define RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_VARIABLE_9BIT    (0x02UL << 0)   //  7     0                    variable, 9-bit length (for SX128x compatibility)
+#define RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_VARIABLE_15BIT   (0x03UL << 0)   //  7     0                    variable, 15-bit length
+#define RADIOLIB_LR2021_GFSK_OOK_CRC_OFF                        (0x00UL << 0)   //  7     0     CRC: disabled
+#define RADIOLIB_LR2021_GFSK_OOK_CRC8                           (0x01UL << 0)   //  7     0          1-byte
+#define RADIOLIB_LR2021_GFSK_OOK_CRC16                          (0x02UL << 0)   //  7     0          2-byte
+#define RADIOLIB_LR2021_GFSK_OOK_CRC24                          (0x03UL << 0)   //  7     0          3-byte
+#define RADIOLIB_LR2021_GFSK_OOK_CRC32                          (0x04UL << 0)   //  7     0          4-byte
+#define RADIOLIB_LR2021_GFSK_OOK_CRC8_INV                       (0x09UL << 0)   //  7     0          1-byte, inverted
+#define RADIOLIB_LR2021_GFSK_OOK_CRC16_INV                      (0x0AUL << 0)   //  7     0          2-byte, inverted
+#define RADIOLIB_LR2021_GFSK_OOK_CRC24_INV                      (0x0BUL << 0)   //  7     0          3-byte, inverted
+#define RADIOLIB_LR2021_GFSK_OOK_CRC32_INV                      (0x0CUL << 0)   //  7     0          4-byte, inverted
 
 // RADIOLIB_LR2021_CMD_SET_FSK_WHITENING_PARAMS
-#define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX       (0x00UL << 0)   //  7     0     whitening type: compatible with SX126x and LR11x0
+#define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX       (0x00UL << 0)   //  7     0     whitening type: compatible with SX126x and LR2021
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX128X              (0x01UL << 0)   //  7     0                     compatible with SX128x
 
 // RADIOLIB_LR2021_CMD_SET_OQPSK_PARAMS
@@ -490,6 +490,15 @@
 #define RADIOLIB_LR2021_FLRC_CR_3_4                             (0x01UL << 0)   //  7     0                  3/4
 #define RADIOLIB_LR2021_FLRC_CR_1_0                             (0x02UL << 0)   //  7     0                  1 (uncoded)
 #define RADIOLIB_LR2021_FLRC_CR_2_3                             (0x03UL << 0)   //  7     0                  2/3
+
+// RADIOLIB_LR2021_CMD_SET_OOK_MODULATION_PARAMS
+#define RADIOLIB_LR2021_OOK_DEPTH_FULL                          (0x00UL << 0)   //  7     0     magnitude depth: limited by the PA
+#define RADIOLIB_LR2021_OOK_DEPTH_20_DB                         (0x01UL << 0)   //  7     0                      20 dB maximum
+
+// RADIOLIB_LR2021_CMD_SET_OOK_PACKET_PARAMS
+#define RADIOLIB_LR2021_OOK_MANCHESTER_OFF                      (0x00UL << 0)   //  3     0     Manchester encoding: disabled
+#define RADIOLIB_LR2021_OOK_MANCHESTER_ON                       (0x01UL << 0)   //  3     0                          enabled
+#define RADIOLIB_LR2021_OOK_MANCHESTER_ON_INV                   (0x03UL << 0)   //  3     0                          enabled, inverted
 
 #endif
 

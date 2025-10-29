@@ -662,45 +662,6 @@ int16_t LR11x0::setLoRaSyncWord(uint8_t sync) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_LORA_SYNC_WORD, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len) {
-  // check maximum size
-  const uint8_t maxLen[4][4] = {
-    { 189, 178, 167, 155, },
-    { 151, 142, 133, 123, },
-    { 112, 105,  99,  92, },
-    {  74,  69,  65,  60, },
-  };
-  if((cr > RADIOLIB_LR11X0_LR_FHSS_CR_1_3) || ((hdrCount - 1) > (int)sizeof(maxLen[0])) || (len > maxLen[cr][hdrCount - 1])) {
-    return(RADIOLIB_ERR_SPI_CMD_INVALID);
-  }
-
-  // build buffers
-  size_t buffLen = 9 + len;
-  #if RADIOLIB_STATIC_ONLY
-    uint8_t dataBuff[9 + 190];
-  #else
-    uint8_t* dataBuff = new uint8_t[buffLen];
-  #endif
-
-  // set properties of the packet
-  dataBuff[0] = hdrCount;
-  dataBuff[1] = cr;
-  dataBuff[2] = RADIOLIB_LR11X0_LR_FHSS_MOD_TYPE_GMSK;
-  dataBuff[3] = grid;
-  dataBuff[4] = (uint8_t)hop;
-  dataBuff[5] = bw;
-  dataBuff[6] = (uint8_t)((hopSeq >> 8) & 0x01);
-  dataBuff[7] = (uint8_t)(hopSeq & 0xFF);
-  dataBuff[8] = devOffset;
-  memcpy(&dataBuff[9], payload, len);
-
-  int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_LR_FHSS_BUILD_FRAME, true, dataBuff, buffLen);
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] dataBuff;
-  #endif
-  return(state);
-}
-
 int16_t LR11x0::lrFhssSetSyncWord(uint32_t sync) {
   uint8_t buff[4] = {
     (uint8_t)((sync >> 24) & 0xFF), (uint8_t)((sync >> 16) & 0xFF),

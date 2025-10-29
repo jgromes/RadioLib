@@ -57,8 +57,8 @@ class LR1120: public LR11x0 {
     /*!
       \brief Initialization method for LR-FHSS modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
-      \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values. Defaults to 2/3 coding rate.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LRXXXX_LR_FHSS_CR_* values. Defaults to 2/3 coding rate.
       \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid.
       \param power Output power in dBm. Defaults to 10 dBm.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
@@ -66,7 +66,7 @@ class LR1120: public LR11x0 {
       To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LR11X0_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LR11X0_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);
+    int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LRXXXX_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LRXXXX_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);
 
     // configuration methods
 
