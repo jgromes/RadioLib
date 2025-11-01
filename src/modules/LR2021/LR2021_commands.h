@@ -184,6 +184,10 @@
 #define RADIOLIB_LR2021_SLEEP_RETENTION_DISABLED                (0x00UL << 1)   //  1     1     configuration retention in sleep mode: disabled
 #define RADIOLIB_LR2021_SLEEP_RETENTION_ENABLED                 (0x01UL << 1)   //  1     1                                            enabled
 
+// RADIOLIB_LR2021_CMD_SET_STANDBY
+#define RADIOLIB_LR2021_STANDBY_RC                              (0x00UL << 0)   //  7     0     standby mode: RC oscillator
+#define RADIOLIB_LR2021_STANDBY_XOSC                            (0x01UL << 0)   //  7     0                   XOSC oscillator
+
 // RADIOLIB_LR2021_CMD_SET_RX_TX_FALLBACK_MODE
 #define RADIOLIB_LR2021_FALLBACK_MODE_STBY_RC                   (0x01UL << 0)   //  1     0     fallback mode after Rx/Tx: standby with RC
 #define RADIOLIB_LR2021_FALLBACK_MODE_STBY_XOSC                 (0x02UL << 0)   //  1     0                                standby with XOSC
@@ -390,6 +394,10 @@
 // RADIOLIB_LR2021_CMD_SET_LORA_SYNCH_TIMEOUT
 #define RADIOLIB_LR2021_LORA_SYNCH_TIMEOUT_FORMAT_SYMBOLS       (0x00UL << 0)   //  7     0     LoRa synch timeout format: number of symbols
 #define RADIOLIB_LR2021_LORA_SYNCH_TIMEOUT_FORMAT_MANT_EXP      (0x01UL << 0)   //  7     0                                mantissa-exponent
+
+// RADIOLIB_LR2021_CMD_SET_LORA_SYNCWORD
+#define RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE                  (0x12UL << 0)   //  7     0     LoRa sync word: 0x12 (private networks)
+#define RADIOLIB_LR2021_LORA_SYNC_WORD_LORAWAN                  (0x34UL << 0)   //  7     0                     0x34 (LoRaWAN reserved)
 
 // RADIOLIB_LR2021_CMD_SET_LORA_HOPPING
 #define RADIOLIB_LR2021_LORA_HOPPING_DISABLED                   (0x00UL << 6)   //  7     6     LoRa intra-packet hopping: disabled

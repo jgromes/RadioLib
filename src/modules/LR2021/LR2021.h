@@ -35,8 +35,39 @@ class LR2021: public PhysicalLayer, public LRxxxx {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    explicit LR2021(Module* mod);
-    
+    LR2021(Module* mod); // cppcheck-suppress noExplicitConstructor
+
+    // basic methods
+
+    /*!
+      \brief Initialization method for LoRa modem.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+      \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
+      \param sf LoRa spreading factor. Defaults to 9.
+      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+      is undocumented and not recommended without your own FEC.
+      \param syncWord 1-byte LoRa sync word. Defaults to RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE (0x12).
+      \param power Output power in dBm. Defaults to 10 dBm.
+      \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
+      \returns \ref status_codes
+    */
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8);
+
+    /*!
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \returns \ref status_codes
+    */
+    int16_t standby() override;
+
+    /*!
+      \brief Sets the module to standby mode.
+      \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_LR2021_STANDBY_RC (13 MHz RC oscillator)
+      or RADIOLIB_LR2021_STANDBY_XOSC (32 MHz external crystal oscillator).
+      \param wakeup Whether to force the module to wake up. Setting to true will immediately attempt to wake up the module.
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode, bool wakeup = true);
+
     int16_t sleep();
     int16_t sleep(uint8_t cfg, uint32_t time);
     
