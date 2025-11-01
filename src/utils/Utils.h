@@ -16,6 +16,11 @@
 #define TEST_BIT_IN_ARRAY_LSB(A, k)                             ( A[((k)/8)] & (1 << (7 - ((k)%8))) )
 #define GET_BIT_IN_ARRAY_LSB(A, k)                              ( (A[((k)/8)] & (1 << (7 - ((k)%8)))) ? 1 : 0 )
 
+// frequently used scrambling configurations
+// the final bit (x^0 term in polynomial notation) is assumed to always be present
+#define RADIOLIB_SCRAMBLER_G3RUH_POLY                           (0x00021001UL)    // x^17 + x^12 + 1
+#define RADIOLIB_SCRAMBLER_G3RUH_INIT                           (0x00000000UL)
+
 /*!
   \brief Function to reflect bits within a byte.
   \param in The input to reflect.
@@ -23,6 +28,16 @@
   \return The reflected input.
 */
 uint32_t rlb_reflect(uint32_t in, uint8_t bits);
+
+/*!
+  \brief Function to scramble or descramble input using a linear feedback shift register (LFSR).
+  \param data The input data to (de)scramble.
+  \param len Number of input bytes.
+  \param poly Polynomial to use for scrambling.
+  \param init Initial LFSR value, sometimes called seed.
+  \param scramble Whether to perform scrambling (true) or de-scrambling (false).
+*/
+void rlb_scrambler(uint8_t* data, size_t len, const uint32_t poly, const uint32_t init, bool scramble);
 
 /*!
   \brief Function to dump data as hex into the debug port.
