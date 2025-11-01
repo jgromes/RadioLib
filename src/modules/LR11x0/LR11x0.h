@@ -112,12 +112,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
     int16_t beginGNSS(uint8_t constellations = RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS | RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU, float tcxoVoltage = 1.6);
 
     /*!
-      \brief Reset method. Will reset the chip to the default state using RST pin.
-      \returns \ref status_codes
-    */
-    int16_t reset();
-
-    /*!
       \brief Blocking binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.

@@ -6,6 +6,29 @@ LRxxxx::LRxxxx(Module* mod) {
   this->mod = mod;
 }
 
+int16_t LRxxxx::reset() {
+  // run the reset sequence
+  this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
+  this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelLow);
+  this->mod->hal->delay(10);
+  this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelHigh);
+
+  // the typical transition duration should be 273 ms
+  this->mod->hal->delay(300);
+  
+  // wait for BUSY to go low
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->millis() - start >= 3000) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("BUSY pin timeout after reset!");
+      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+    }
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LRxxxx::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
   uint8_t buff[6] = { 0 };
 

@@ -150,29 +150,6 @@ int16_t LR11x0::beginGNSS(uint8_t constellations, float tcxoVoltage) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::reset() {
-  // run the reset sequence
-  this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
-  this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelLow);
-  this->mod->hal->delay(10);
-  this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelHigh);
-
-  // the typical transition duration should be 273 ms
-  this->mod->hal->delay(300);
-  
-  // wait for BUSY to go low
-  RadioLibTime_t start = this->mod->hal->millis();
-  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
-    this->mod->hal->yield();
-    if(this->mod->hal->millis() - start >= 3000) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("BUSY pin timeout after reset!");
-      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
-    }
-  }
-
-  return(RADIOLIB_ERR_NONE);
-}
-
 int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
    // set mode to standby
   int16_t state = standby();

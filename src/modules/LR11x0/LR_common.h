@@ -45,6 +45,12 @@ class LRxxxx {
   public:
     LRxxxx(Module* mod);
 
+    /*!
+      \brief Reset method. Will reset the chip to the default state using RST pin.
+      \returns \ref status_codes
+    */
+    int16_t reset();
+
   protected:
     // a lot of SPI commands have the same structure and arguments on both LR11xx as well as LR2021
     // the only difference is the 16-bit command code - however, having everything in this base class
