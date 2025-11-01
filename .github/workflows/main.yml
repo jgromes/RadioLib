@@ -47,17 +47,17 @@ jobs:
           - id: arduino:avr:mega
             run: |
               echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: arduino:mbed:nano33ble
           - id: arduino:mbed:envie_m4
           - id: arduino:megaavr:uno2018
             run: |
               echo "options=':mode=on'" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: arduino:sam:arduino_due_x
           - id: arduino:samd:arduino_zero_native
             run: |
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: adafruit:samd:adafruit_feather_m0
             run: |
               echo "options=':usbstack=arduino,debug=off'" >> $GITHUB_OUTPUT
@@ -72,7 +72,7 @@ jobs:
               echo "/home/runner/.local/bin" >> $GITHUB_PATH
               echo "options=':softdevice=s132v6,debug=l0'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: esp32:esp32:esp32
             run: |
               python -m pip install pyserial
@@ -80,47 +80,47 @@ jobs:
               echo "index-url=--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
           - id: esp8266:esp8266:generic
             run: |
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
               echo "options=':xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> $GITHUB_OUTPUT
           - id: STMicroelectronics:stm32:GenF3
             run: |
               echo "options=':pnum=BLACKPILL_F303CC'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: STMicroelectronics:stm32:Nucleo_64
             run: |
               echo "options=':pnum=NUCLEO_WL55JC1'" >> $GITHUB_OUTPUT
               # Do *not* skip STM32WL examples
-              echo "skip-pattern=(LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
           - id: stm32duino:STM32F1:mapleMini
             run: |
               echo "options=':bootloader_version=original,cpu_speed=speed_72mhz'" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
           - id: MegaCoreX:megaavr:4809
             run: |
               echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|LoRaWAN|_ESP32_)" >> $GITHUB_OUTPUT
           - id: arduino:mbed_rp2040:pico
           - id: rp2040:rp2040:rpipico
             run: echo "index-url=--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
           - id: CubeCell:CubeCell:CubeCell-Board
             run: |
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json" >> $GITHUB_OUTPUT
           - id: MegaCore:avr:1281
             run: |
               echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: teensy:avr:teensy41
             run: |
-              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|_ESP32_)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://www.pjrc.com/teensy/package_teensy_index.json" >> $GITHUB_OUTPUT
           - id: arduino:renesas_uno:minima
             run: |
-              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update|_ESP32_)" >> $GITHUB_OUTPUT
           - id: SiliconLabs:silabs:xg24explorerkit
             run: | 
               echo "index-url=--additional-urls https://siliconlabs.github.io/arduino/package_arduinosilabs_index.json" >> $GITHUB_OUTPUT

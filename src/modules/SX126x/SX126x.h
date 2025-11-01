@@ -69,9 +69,10 @@ class SX126x: public PhysicalLayer {
       \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+      \param resetModule Whether to perform a module reset during initialization. Defaults to true.
       \returns \ref status_codes
     */
-    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false, bool resetModule = true);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -883,9 +884,9 @@ class SX126x: public PhysicalLayer {
     size_t lrFhssFrameHopsRem = 0;
     size_t lrFhssHopNum = 0;
 
-    int16_t modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem);
-    int16_t config(uint8_t modem);
-    bool findChip(const char* verStr);
+    int16_t modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem, bool resetModule = true);
+    int16_t config(uint8_t modem, bool resetModule = true);
+    bool findChip(const char* verStr, bool resetModule = true);
     int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
