@@ -162,10 +162,7 @@ int16_t LR11x0::setDioIrqParams(uint32_t irq) {
 }
 
 int16_t LR11x0::clearIrqState(uint32_t irq) {
-  uint8_t buff[4] = {
-    (uint8_t)((irq >> 24) & 0xFF), (uint8_t)((irq >> 16) & 0xFF), (uint8_t)((irq >> 8) & 0xFF), (uint8_t)(irq & 0xFF),
-  };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CLEAR_IRQ, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR11X0_CMD_CLEAR_IRQ, irq));
 }
 
 int16_t LR11x0::configLfClock(uint8_t setup) {
@@ -431,11 +428,7 @@ int16_t LR11x0::setTx(uint32_t timeout) {
 }
 
 int16_t LR11x0::setRfFrequency(uint32_t rfFreq) {
-  uint8_t buff[4] = {
-    (uint8_t)((rfFreq >> 24) & 0xFF), (uint8_t)((rfFreq >> 16) & 0xFF),
-    (uint8_t)((rfFreq >> 8) & 0xFF), (uint8_t)(rfFreq & 0xFF),
-  };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RF_FREQUENCY, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR11X0_CMD_SET_RF_FREQUENCY, rfFreq));
 }
 
 int16_t LR11x0::autoTxRx(uint32_t delay, uint8_t intMode, uint32_t timeout) {
@@ -584,11 +577,7 @@ int16_t LR11x0::setRangingAddr(uint32_t addr, uint8_t checkLen) {
 }
 
 int16_t LR11x0::setRangingReqAddr(uint32_t addr) {
-  uint8_t buff[4] = {
-    (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF),
-    (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF)
-  };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RANGING_REQ_ADDR, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR11X0_CMD_SET_RANGING_REQ_ADDR, addr));
 }
 
 int16_t LR11x0::getRangingResult(uint8_t type, float* res) {
@@ -610,11 +599,7 @@ int16_t LR11x0::getRangingResult(uint8_t type, float* res) {
 }
 
 int16_t LR11x0::setRangingTxRxDelay(uint32_t delay) {
-  uint8_t buff[4] = {
-    (uint8_t)((delay >> 24) & 0xFF), (uint8_t)((delay >> 16) & 0xFF),
-    (uint8_t)((delay >> 8) & 0xFF), (uint8_t)(delay & 0xFF)
-  };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RANGING_TX_RX_DELAY, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR11X0_CMD_SET_RANGING_TX_RX_DELAY, delay));
 }
 
 int16_t LR11x0::setGfskCrcParams(uint32_t init, uint32_t poly) {
@@ -663,11 +648,7 @@ int16_t LR11x0::setLoRaSyncWord(uint8_t sync) {
 }
 
 int16_t LR11x0::lrFhssSetSyncWord(uint32_t sync) {
-  uint8_t buff[4] = {
-    (uint8_t)((sync >> 24) & 0xFF), (uint8_t)((sync >> 16) & 0xFF),
-    (uint8_t)((sync >> 8) & 0xFF), (uint8_t)(sync & 0xFF)
-  };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_LR_FHSS_SET_SYNC_WORD, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR11X0_CMD_LR_FHSS_SET_SYNC_WORD, sync));
 }
 
 int16_t LR11x0::configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len) {

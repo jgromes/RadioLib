@@ -221,11 +221,7 @@ int16_t LR2021::setDioIrqConfig(uint8_t dio, uint32_t irq) {
 }
 
 int16_t LR2021::clearIrq(uint32_t irq) {
-  uint8_t buff[] = {
-    (uint8_t)((irq >> 24) & 0xFF), (uint8_t)((irq >> 16) & 0xFF),
-    (uint8_t)((irq >> 8) & 0xFF), (uint8_t)(irq & 0xFF),
-  };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_CLEAR_IRQ, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR2021_CMD_CLEAR_IRQ, irq));
 }
 
 int16_t LR2021::getAndClearIrqStatus(uint32_t* irq) {

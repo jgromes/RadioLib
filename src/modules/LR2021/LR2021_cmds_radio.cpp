@@ -8,11 +8,7 @@
 #if !RADIOLIB_EXCLUDE_LR2021
 
 int16_t LR2021::setRfFrequency(uint32_t rfFreq) {
-  uint8_t buff[] = {
-    (uint8_t)((rfFreq >> 24) & 0xFF), (uint8_t)((rfFreq >> 16) & 0xFF),
-    (uint8_t)((rfFreq >> 8) & 0xFF), (uint8_t)(rfFreq & 0xFF),
-  };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RF_FREQUENCY, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR2021_CMD_SET_RF_FREQUENCY, rfFreq));
 }
 
 int16_t LR2021::setRxPath(uint8_t rxPath, uint8_t rxBoost) {

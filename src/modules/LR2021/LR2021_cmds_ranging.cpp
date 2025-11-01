@@ -53,11 +53,7 @@ int16_t LR2021::getRangingStats(uint16_t* exchangeValid, uint16_t* requestValid,
 }
 
 int16_t LR2021::setRangingTxRxDelay(uint32_t delay) {
-  uint8_t buff[] = { 
-    (uint8_t)((delay >> 24) & 0xFF), (uint8_t)((delay >> 16) & 0xFF),
-    (uint8_t)((delay >> 8) & 0xFF), (uint8_t)(delay & 0xFF),
-  };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RANGING_TX_RX_DELAY, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR2021_CMD_SET_RANGING_TX_RX_DELAY, delay));
 }
 
 int16_t LR2021::setRangingParams(bool spyMode, uint8_t nbSymbols) {

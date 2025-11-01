@@ -59,6 +59,9 @@ class LRxxxx {
     int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
 
+    // several commands just send unsigned 32-bit number
+    int16_t setU32(uint16_t cmd, uint32_t u32);
+
     int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile);
     int16_t SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out = NULL, size_t outLen = 0);
 

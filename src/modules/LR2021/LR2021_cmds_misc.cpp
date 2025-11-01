@@ -25,11 +25,7 @@ int16_t LR2021::setBpskPacketParams(uint8_t payloadLen, uint8_t mode, bool sigFo
 }
 
 int16_t LR2021::lrFhssSetSyncword(uint32_t syncWord) {
-  uint8_t buff[] = { 
-    (uint8_t)((syncWord >> 24) & 0xFF), (uint8_t)((syncWord >> 16) & 0xFF),
-    (uint8_t)((syncWord >> 8) & 0xFF), (uint8_t)(syncWord & 0xFF),
-  };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_LR_FHSS_SET_SYNCWORD, true, buff, sizeof(buff)));
+  return(this->setU32(RADIOLIB_LR2021_CMD_LR_FHSS_SET_SYNCWORD, syncWord));
 }
 
 int16_t LR2021::setTxTestMode(uint8_t mode) {

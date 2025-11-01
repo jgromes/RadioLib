@@ -84,6 +84,14 @@ int16_t LRxxxx::lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uin
   return(state);
 }
 
+int16_t LRxxxx::setU32(uint16_t cmd, uint32_t u32) {
+  uint8_t buff[] = { 
+    (uint8_t)((u32 >> 24) & 0xFF), (uint8_t)((u32 >> 16) & 0xFF),
+    (uint8_t)((u32 >> 8) & 0xFF), (uint8_t)(u32 & 0xFF),
+  };
+  return(this->SPIcommand(cmd, true, buff, sizeof(buff)));
+}
+
 int16_t LRxxxx::SPIparseStatus(uint8_t in) {
   if((in & 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_PERR) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
