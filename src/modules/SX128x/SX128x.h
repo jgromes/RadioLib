@@ -816,14 +816,14 @@ class SX128x: public PhysicalLayer {
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
-      \brief Set modem in fixed packet length mode. Available in GFSK mode only.
+      \brief Set modem in fixed packet length mode. Available in GFSK and FLRC modes only.
       \param len Packet length.
       \returns \ref status_codes
     */
     int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_SX128X_MAX_PACKET_LENGTH);
 
     /*!
-      \brief Set modem in variable packet length mode. Available in GFSK mode only.
+      \brief Set modem in variable packet length mode. Available in GFSK and FLRC modes only.
       \param maxLen Maximum packet length.
       \returns \ref status_codes
     */
