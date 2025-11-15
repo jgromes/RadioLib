@@ -247,13 +247,13 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // Needs a bit more time for reliability
   RadioLibTime_t start = this->mod->hal->micros();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {
-    if(this->mod->hal->micros() - start > 800) {
+    if(this->mod->hal->micros() - start > 1600) {
       standby();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
-  // set GDO0 mapping only if we aren't refilling the FIFO
+  // set GDO2 mapping only if we aren't refilling the FIFO
   int16_t state = RADIOLIB_ERR_NONE;
   if(len <= RADIOLIB_CC1101_FIFO_SIZE) {
     state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 5, 0);
