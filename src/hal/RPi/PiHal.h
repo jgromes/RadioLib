@@ -119,8 +119,10 @@ class PiHal : public RadioLibHal {
 
       // enable emulated interrupt
       interruptEnabled[interruptNum] = true;
-      interruptModes[interruptNum] = mode;
       interruptCallbacks[interruptNum] = interruptCb;
+
+      // lpgio reports the value of level after an interrupt, not the actual direction
+      interruptModes[interruptNum] = (mode == this->GpioInterruptFalling) ? LG_LOW : LG_HIGH;
 
       lgGpioSetAlertsFunc(_gpioHandle, interruptNum, lgpioAlertHandler, (void *)this);
     }
