@@ -438,7 +438,7 @@ class SX128x: public PhysicalLayer {
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
-      \param timeout Reception timeout in milliseconds. If set to 0,
+      \param timeout Reception timeout in microseconds. If set to 0,
       timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
