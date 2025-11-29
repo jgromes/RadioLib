@@ -21,7 +21,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer() {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX126X_IRQ_TIMEOUT;
 }
 
-int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO, bool resetModule) {
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   // set the defaults, this will get overwritten later anyway
   this->bandwidthKhz = 500.0;
@@ -38,7 +38,7 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   this->implicitLen = 0xFF;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_LORA, resetModule);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -1432,7 +1432,7 @@ Module* SX126x::getMod() {
   return(this->mod);
 }
 
-int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem) {
+int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem, bool resetModule) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -1447,8 +1447,8 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   this->mod->spiConfig.stream = true;
   this->mod->spiConfig.parseStatusCb = SPIparseStatus;
 
-  // find the SX126x chip - this will also reset the module and verify the module
-  if(!SX126x::findChip(this->chipType)) {
+  // try to find the SX126x chip
+  if(!SX126x::findChip(this->chipType, resetModule)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
     this->mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
@@ -1464,7 +1464,7 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   }
 
   // configure settings not accessible by API
-  state = config(modem);
+  state = config(modem, resetModule);
   RADIOLIB_ASSERT(state);
 
   if (useRegulatorLDO) {
@@ -1488,12 +1488,13 @@ int16_t SX126x::SPIparseStatus(uint8_t in) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool SX126x::findChip(const char* verStr) {
+bool SX126x::findChip(const char* verStr, bool resetModule) {
   uint8_t i = 0;
-  bool flagFound = false;
-  while((i < 10) && !flagFound) {
+  do {
     // reset the module
-    reset(true);
+    if (resetModule) {
+      reset(true);
+    }
 
     // read the version string
     char version[16] = { 0 };
@@ -1504,19 +1505,18 @@ bool SX126x::findChip(const char* verStr) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found SX126x: RADIOLIB_SX126X_REG_VERSION_STRING:");
       RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX126X_REG_VERSION_STRING);
       RADIOLIB_DEBUG_BASIC_PRINTLN();
-      flagFound = true;
-    } else {
-      #if RADIOLIB_DEBUG_BASIC
-        RADIOLIB_DEBUG_BASIC_PRINTLN("SX126x not found! (%d of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:", i + 1);
-        RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX126X_REG_VERSION_STRING);
-        RADIOLIB_DEBUG_BASIC_PRINTLN("Expected string: %s", verStr);
-      #endif
-      this->mod->hal->delay(10);
-      i++;
+      return(true);
     }
-  }
 
-  return(flagFound);
+    #if RADIOLIB_DEBUG_BASIC
+      RADIOLIB_DEBUG_BASIC_PRINTLN("SX126x not found! (%d of %d tries) RADIOLIB_SX126X_REG_VERSION_STRING:", i + 1, resetModule ? 10 : 1);
+      RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Expected string: %s", verStr);
+    #endif
+    this->mod->hal->delay(10);
+  } while (resetModule && ++i < 10);
+
+  return(false);
 }
 
 #endif

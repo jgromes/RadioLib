@@ -754,10 +754,13 @@ int16_t SX126x::setFrequencyRaw(float freq) {
   return(setRfFrequency(frf));
 }
 
-int16_t SX126x::config(uint8_t modem) {
-  // reset buffer base address
-  int16_t state = setBufferBaseAddress();
-  RADIOLIB_ASSERT(state);
+int16_t SX126x::config(uint8_t modem, bool resetModule) {
+  int16_t state;
+  if (resetModule) {
+    // reset buffer base address
+    state = setBufferBaseAddress();
+    RADIOLIB_ASSERT(state);
+  }
 
   // set modem
   uint8_t data[7];
