@@ -44,6 +44,17 @@ class SX126x: public PhysicalLayer {
     using PhysicalLayer::readData;
 
     /*!
+      \struct paTableEntry_t
+      \brief This structure is used as entry in the PA lookup table, 
+      to optimize PA configuration for minimum power consumption.
+    */
+    struct __attribute__((packed)) paTableEntry_t {
+      uint8_t paDutyCycle: 4;
+      uint8_t hpMax: 4;
+      int8_t paVal;
+    };
+
+    /*!
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */

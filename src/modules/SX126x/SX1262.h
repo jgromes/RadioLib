@@ -122,6 +122,14 @@ class SX1262: public SX126x {
     virtual int16_t setOutputPower(int8_t power) override;
 
     /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
+      This method is virtual to allow override from the SX1261 class.
+      \param power Output power to be set in dBm.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power, bool optimize);
+
+    /*!
       \brief Check if output power is configurable.
       \param power Output power in dBm.
       \param clipped Clipped output power value to what is possible within the module's range.
@@ -140,6 +148,43 @@ class SX1262: public SX126x {
 #if !RADIOLIB_GODMODE
   private:
 #endif
+
+  // this is a lookup table for optimized PA configuration
+  // it was determined by testing in https://github.com/jgromes/RadioLib/issues/1628
+  const SX126x::paTableEntry_t paOptTable[32] = {
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = -1 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal =  1 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal =  2 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal =  3 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal =  4 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal =  6 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal =  7 },
+    { .paDutyCycle = 1, .hpMax = 1, .paVal =  7 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 10 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 11 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 13 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 15 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 19 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 20 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 21 },
+    { .paDutyCycle = 0, .hpMax = 1, .paVal = 22 },
+    { .paDutyCycle = 1, .hpMax = 1, .paVal = 22 },
+    { .paDutyCycle = 2, .hpMax = 1, .paVal = 22 },
+    { .paDutyCycle = 0, .hpMax = 2, .paVal = 19 },
+    { .paDutyCycle = 0, .hpMax = 2, .paVal = 20 },
+    { .paDutyCycle = 0, .hpMax = 2, .paVal = 21 },
+    { .paDutyCycle = 0, .hpMax = 2, .paVal = 22 },
+    { .paDutyCycle = 1, .hpMax = 2, .paVal = 22 },
+    { .paDutyCycle = 0, .hpMax = 3, .paVal = 21 },
+    { .paDutyCycle = 1, .hpMax = 3, .paVal = 21 },
+    { .paDutyCycle = 0, .hpMax = 4, .paVal = 22 },
+    { .paDutyCycle = 0, .hpMax = 5, .paVal = 22 },
+    { .paDutyCycle = 1, .hpMax = 5, .paVal = 22 },
+    { .paDutyCycle = 1, .hpMax = 6, .paVal = 22 },
+    { .paDutyCycle = 2, .hpMax = 3, .paVal = 22 },
+    { .paDutyCycle = 4, .hpMax = 6, .paVal = 21 },
+    { .paDutyCycle = 4, .hpMax = 7, .paVal = 22 },
+  };
 
 };
 
