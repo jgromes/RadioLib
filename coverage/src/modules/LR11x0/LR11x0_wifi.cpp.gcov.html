@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - src/modules/LR11x0/LR11x0_wifi.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">src/modules/LR11x0</a> - LR11x0_wifi.cpp<span style="font-size: 80%;"> (source / <a href="LR11x0_wifi.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">167</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2025-12-14 19:32:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;LR11x0.h&quot;</a>
+<a name="2"><span class="lineNum">       2 </span>            : </a>
+<a name="3"><span class="lineNum">       3 </span>            : #include &lt;string.h&gt;</a>
+<a name="4"><span class="lineNum">       4 </span>            : </a>
+<a name="5"><span class="lineNum">       5 </span>            : #if !RADIOLIB_EXCLUDE_LR11X0</a>
+<a name="6"><span class="lineNum">       6 </span>            : </a>
+<a name="7"><span class="lineNum">       7 </span><span class="lineNoCov">          0 : int16_t LR11x0::startWifiScan(char wifiType, uint8_t mode, uint16_t chanMask, uint8_t numScans, uint16_t timeout) {</span></a>
+<a name="8"><span class="lineNum">       8 </span>            :   // LR1121 cannot do WiFi scanning</a>
+<a name="9"><span class="lineNum">       9 </span><span class="lineNoCov">          0 :   if(this-&gt;chipType == RADIOLIB_LR11X0_DEVICE_LR1121) {</span></a>
+<a name="10"><span class="lineNum">      10 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_UNSUPPORTED);</span></a>
+<a name="11"><span class="lineNum">      11 </span>            :   }</a>
+<a name="12"><span class="lineNum">      12 </span>            : </a>
+<a name="13"><span class="lineNum">      13 </span>            :   uint8_t type;</a>
+<a name="14"><span class="lineNum">      14 </span><span class="lineNoCov">          0 :   switch(wifiType) {</span></a>
+<a name="15"><span class="lineNum">      15 </span><span class="lineNoCov">          0 :     case('b'):</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineNoCov">          0 :       type = RADIOLIB_LR11X0_WIFI_SCAN_802_11_B;</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="18"><span class="lineNum">      18 </span><span class="lineNoCov">          0 :     case('g'):</span></a>
+<a name="19"><span class="lineNum">      19 </span><span class="lineNoCov">          0 :       type = RADIOLIB_LR11X0_WIFI_SCAN_802_11_G;</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineNoCov">          0 :     case('n'):</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :       type = RADIOLIB_LR11X0_WIFI_SCAN_802_11_N;</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 :     case('*'):</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineNoCov">          0 :       type = RADIOLIB_LR11X0_WIFI_SCAN_ALL;</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineNoCov">          0 :     default:</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_INVALID_WIFI_TYPE);</span></a>
+<a name="29"><span class="lineNum">      29 </span>            :   }</a>
+<a name="30"><span class="lineNum">      30 </span>            : </a>
+<a name="31"><span class="lineNum">      31 </span>            :   // go to standby</a>
+<a name="32"><span class="lineNum">      32 </span><span class="lineNoCov">          0 :   int16_t state = standby();</span></a>
+<a name="33"><span class="lineNum">      33 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="34"><span class="lineNum">      34 </span>            : </a>
+<a name="35"><span class="lineNum">      35 </span>            :   // reset cumulative timings</a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 :   state = wifiResetCumulTimings();</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="38"><span class="lineNum">      38 </span>            : </a>
+<a name="39"><span class="lineNum">      39 </span>            :   // set DIO mapping</a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 :   state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_WIFI_DONE);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<a name="43"><span class="lineNum">      43 </span>            :   // start scan with the maximum number of results and abort on timeout</a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :   this-&gt;wifiScanMode = mode;</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :   state = wifiScan(type, chanMask, this-&gt;wifiScanMode, RADIOLIB_LR11X0_WIFI_MAX_NUM_RESULTS, numScans, timeout, RADIOLIB_LR11X0_WIFI_ABORT_ON_TIMEOUT_ENABLED);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="47"><span class="lineNum">      47 </span>            : }</a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 : void LR11x0::setWiFiScanAction(void (*func)(void)) {</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :   this-&gt;setIrqAction(func);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 : void LR11x0::clearWiFiScanAction() {</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :   this-&gt;clearIrqAction();</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="56"><span class="lineNum">      56 </span>            : </a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 : int16_t LR11x0::getWifiScanResultsCount(uint8_t* count) {</span></a>
+<a name="58"><span class="lineNum">      58 </span>            :   // clear IRQ first, as this is likely to be called right after scan has finished</a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :   int16_t state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="61"><span class="lineNum">      61 </span>            : </a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :   uint8_t buff[1] = { 0 };</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :   state = this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_GET_NB_RESULTS, false, buff, sizeof(buff));</span></a>
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<a name="65"><span class="lineNum">      65 </span>            :   // pass the replies</a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :   if(count) { *count = buff[0]; }</span></a>
+<a name="67"><span class="lineNum">      67 </span>            : </a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="69"><span class="lineNum">      69 </span>            : }</a>
+<a name="70"><span class="lineNum">      70 </span>            : </a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 : int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, bool brief) {</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT_PTR(result);</span></a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span>            :   // read a single result</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :   uint8_t format = brief ? RADIOLIB_LR11X0_WIFI_RESULT_TYPE_BASIC : RADIOLIB_LR11X0_WIFI_RESULT_TYPE_COMPLETE;</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :   uint8_t raw[RADIOLIB_LR11X0_WIFI_RESULT_MAX_LEN] = { 0 };</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :   int16_t state = wifiReadResults(index, 1, format, raw);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span>            :   // parse the information</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :   switch(raw[0] &amp; 0x03) {</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :     case(RADIOLIB_LR11X0_WIFI_SCAN_802_11_B):</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :       result-&gt;type = 'b';</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :     case(RADIOLIB_LR11X0_WIFI_SCAN_802_11_G):</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :       result-&gt;type = 'g';</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :     case(RADIOLIB_LR11X0_WIFI_SCAN_802_11_N):</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :       result-&gt;type = 'n';</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :       break;</span></a>
+<a name="91"><span class="lineNum">      91 </span>            :   }</a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :   result-&gt;dataRateId = (raw[0] &amp; 0xFC) &gt;&gt; 2;</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :   result-&gt;channelFreq = 2407 + (raw[1] &amp; 0x0F)*5;</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :   result-&gt;origin = (raw[1] &amp; 0x30) &gt;&gt; 4;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :   result-&gt;ap = (raw[1] &amp; 0x40) != 0;</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :   result-&gt;rssi = (float)raw[2] / -2.0f;;</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :   memcpy(result-&gt;mac, &amp;raw[3], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);</span></a>
+<a name="98"><span class="lineNum">      98 </span>            : </a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :   if(!brief) {</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :     if(this-&gt;wifiScanMode == RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON) {</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :       LR11x0WifiResultExtended_t* resultExtended = reinterpret_cast&lt;LR11x0WifiResultExtended_t*&gt;(result);</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 :       resultExtended-&gt;rate = raw[3];</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :       resultExtended-&gt;service = (((uint16_t)raw[4] &lt;&lt; 8) | ((uint16_t)raw[5]));</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :       resultExtended-&gt;length = (((uint16_t)raw[6] &lt;&lt; 8) | ((uint16_t)raw[7]));</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :       resultExtended-&gt;frameType = raw[9] &amp; 0x03;</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :       resultExtended-&gt;frameSubType = (raw[9] &amp; 0x3C) &gt;&gt; 2;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :       resultExtended-&gt;toDistributionSystem = (raw[9] &amp; 0x40) != 0;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :       resultExtended-&gt;fromDistributionSystem = (raw[9] &amp; 0x80) != 0;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :       memcpy(resultExtended-&gt;mac0, &amp;raw[10], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :       memcpy(resultExtended-&gt;mac, &amp;raw[16], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :       memcpy(resultExtended-&gt;mac2, &amp;raw[22], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :       resultExtended-&gt;timestamp = (((uint64_t)raw[28] &lt;&lt; 56) | ((uint64_t)raw[29] &lt;&lt; 48)) | </span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :                                   (((uint64_t)raw[30] &lt;&lt; 40) | ((uint64_t)raw[31] &lt;&lt; 32)) | </span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :                                   (((uint64_t)raw[32] &lt;&lt; 24) | ((uint64_t)raw[33] &lt;&lt; 16)) | </span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :                                   (((uint64_t)raw[34] &lt;&lt; 8) | (uint64_t)raw[35]);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :       resultExtended-&gt;periodBeacon = (((uint16_t)raw[36] &lt;&lt; 8) | ((uint16_t)raw[37])) * 1024UL;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :       resultExtended-&gt;seqCtrl = (((uint16_t)raw[38] &lt;&lt; 8) | ((uint16_t)raw[39]));</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :       memcpy(resultExtended-&gt;ssid, &amp;raw[40], RADIOLIB_LR11X0_WIFI_RESULT_SSID_LEN);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :       resultExtended-&gt;currentChannel = raw[72];</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :       memcpy(resultExtended-&gt;countryCode, &amp;raw[73], 2);</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :       resultExtended-&gt;countryCode[2] = '\0';</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :       resultExtended-&gt;ioReg = raw[75];</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :       resultExtended-&gt;fcsCheckOk = (raw[76] != 0);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :       resultExtended-&gt;phiOffset = (((uint16_t)raw[77] &lt;&lt; 8) | ((uint16_t)raw[78]));</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_NONE);</span></a>
+<a name="126"><span class="lineNum">     126 </span>            :     }</a>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :     LR11x0WifiResultFull_t* resultFull = reinterpret_cast&lt;LR11x0WifiResultFull_t*&gt;(result);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :     resultFull-&gt;frameType = raw[3] &amp; 0x03;</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :     resultFull-&gt;frameSubType = (raw[3] &amp; 0x3C) &gt;&gt; 2;</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :     resultFull-&gt;toDistributionSystem = (raw[3] &amp; 0x40) != 0;</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :     resultFull-&gt;fromDistributionSystem = (raw[3] &amp; 0x80) != 0;</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :     memcpy(resultFull-&gt;mac, &amp;raw[4], RADIOLIB_LR11X0_WIFI_RESULT_MAC_LEN);</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :     resultFull-&gt;phiOffset = (((uint16_t)raw[10] &lt;&lt; 8) | ((uint16_t)raw[11]));</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :     resultFull-&gt;timestamp = (((uint64_t)raw[12] &lt;&lt; 56) | ((uint64_t)raw[13] &lt;&lt; 48)) | </span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                             (((uint64_t)raw[14] &lt;&lt; 40) | ((uint64_t)raw[15] &lt;&lt; 32)) | </span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                             (((uint64_t)raw[16] &lt;&lt; 24) | ((uint64_t)raw[17] &lt;&lt; 16)) | </span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :                             (((uint64_t)raw[18] &lt;&lt; 8) | (uint64_t)raw[19]);</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :     resultFull-&gt;periodBeacon = (((uint16_t)raw[20] &lt;&lt; 8) | ((uint16_t)raw[21])) * 1024UL;</span></a>
+<a name="140"><span class="lineNum">     140 </span>            :   }</a>
+<a name="141"><span class="lineNum">     141 </span>            : </a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :   return(RADIOLIB_ERR_NONE);</span></a>
+<a name="143"><span class="lineNum">     143 </span>            : }</a>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiScan(uint8_t wifiType, uint8_t* count, uint8_t mode, uint16_t chanMask, uint8_t numScans, uint16_t timeout) {</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT_PTR(count);</span></a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span>            :   // start scan</a>
+<a name="149"><span class="lineNum">     149 </span>            :   RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;WiFi scan start&quot;);</a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :   int16_t state = startWifiScan(wifiType, mode, chanMask, numScans, timeout);</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="152"><span class="lineNum">     152 </span>            : </a>
+<a name="153"><span class="lineNum">     153 </span>            :   // wait for scan finished or timeout</a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :   RadioLibTime_t softTimeout = 30UL * 1000UL;</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :   RadioLibTime_t start = this-&gt;mod-&gt;hal-&gt;millis();</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :   while(!this-&gt;mod-&gt;hal-&gt;digitalRead(this-&gt;mod-&gt;getIrq())) {</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :     this-&gt;mod-&gt;hal-&gt;yield();</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :     if(this-&gt;mod-&gt;hal-&gt;millis() - start &gt; softTimeout) {</span></a>
+<a name="159"><span class="lineNum">     159 </span>            :       RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;Timeout waiting for IRQ&quot;);</a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :       this-&gt;standby();</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_RX_TIMEOUT);</span></a>
+<a name="162"><span class="lineNum">     162 </span>            :     }</a>
+<a name="163"><span class="lineNum">     163 </span>            :   }</a>
+<a name="164"><span class="lineNum">     164 </span>            :   RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;WiFi scan done in %lu ms&quot;, (long unsigned int)(this-&gt;mod-&gt;hal-&gt;millis() - start));</a>
+<a name="165"><span class="lineNum">     165 </span>            : </a>
+<a name="166"><span class="lineNum">     166 </span>            :   // read number of results</a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :   return(getWifiScanResultsCount(count));</span></a>
+<a name="168"><span class="lineNum">     168 </span>            : }</a>
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiScan(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout) {</span></a>
+<a name="171"><span class="lineNum">     171 </span>            :   uint8_t buff[9] = {</a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :     type, (uint8_t)((mask &gt;&gt; 8) &amp; 0xFF), (uint8_t)(mask &amp; 0xFF),</span></a>
+<a name="173"><span class="lineNum">     173 </span>            :     acqMode, nbMaxRes, nbScanPerChan,</a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :     (uint8_t)((timeout &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timeout &amp; 0xFF),</span></a>
+<a name="175"><span class="lineNum">     175 </span>            :     abortOnTimeout</a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="177"><span class="lineNum">     177 </span>            : </a>
+<a name="178"><span class="lineNum">     178 </span>            :   // call the SPI write stream directly to skip waiting for BUSY - it will be set to high once the scan starts</a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :   return(this-&gt;mod-&gt;SPIwriteStream(RADIOLIB_LR11X0_CMD_WIFI_SCAN, buff, sizeof(buff), false, false));</span></a>
+<a name="180"><span class="lineNum">     180 </span>            : }</a>
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiScanTimeLimit(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout) {</span></a>
+<a name="183"><span class="lineNum">     183 </span>            :   uint8_t buff[9] = {</a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :     type, (uint8_t)((mask &gt;&gt; 8) &amp; 0xFF), (uint8_t)(mask &amp; 0xFF),</span></a>
+<a name="185"><span class="lineNum">     185 </span>            :     acqMode, nbMaxRes,</a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :     (uint8_t)((timePerChan &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timePerChan &amp; 0xFF),</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :     (uint8_t)((timeout &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timeout &amp; 0xFF)</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_SCAN_TIME_LIMIT, true, buff, sizeof(buff)));</span></a>
+<a name="190"><span class="lineNum">     190 </span>            : }</a>
+<a name="191"><span class="lineNum">     191 </span>            : </a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiCountryCode(uint16_t mask, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout) {</span></a>
+<a name="193"><span class="lineNum">     193 </span>            :   uint8_t buff[7] = {</a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :     (uint8_t)((mask &gt;&gt; 8) &amp; 0xFF), (uint8_t)(mask &amp; 0xFF),</span></a>
+<a name="195"><span class="lineNum">     195 </span>            :     nbMaxRes, nbScanPerChan,</a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :     (uint8_t)((timeout &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timeout &amp; 0xFF),</span></a>
+<a name="197"><span class="lineNum">     197 </span>            :     abortOnTimeout</a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_COUNTRY_CODE, true, buff, sizeof(buff)));</span></a>
+<a name="200"><span class="lineNum">     200 </span>            : }</a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiCountryCodeTimeLimit(uint16_t mask, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout) {</span></a>
+<a name="203"><span class="lineNum">     203 </span>            :   uint8_t buff[7] = {</a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :     (uint8_t)((mask &gt;&gt; 8) &amp; 0xFF), (uint8_t)(mask &amp; 0xFF),</span></a>
+<a name="205"><span class="lineNum">     205 </span>            :     nbMaxRes,</a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :     (uint8_t)((timePerChan &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timePerChan &amp; 0xFF),</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :     (uint8_t)((timeout &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timeout &amp; 0xFF)</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_COUNTRY_CODE_TIME_LIMIT, true, buff, sizeof(buff)));</span></a>
+<a name="210"><span class="lineNum">     210 </span>            : }</a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiReadResults(uint8_t index, uint8_t nbResults, uint8_t format, uint8_t* results) {</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :   uint8_t buff[3] = { index, nbResults, format };</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_READ_RESULTS, false, results, RADIOLIB_LR11X0_WIFI_RESULT_MAX_LEN, buff, sizeof(buff)));</span></a>
+<a name="215"><span class="lineNum">     215 </span>            : }</a>
+<a name="216"><span class="lineNum">     216 </span>            : </a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiResetCumulTimings(void) {</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_RESET_CUMUL_TIMINGS, true, NULL, 0));</span></a>
+<a name="219"><span class="lineNum">     219 </span>            : }</a>
+<a name="220"><span class="lineNum">     220 </span>            : </a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiReadCumulTimings(uint32_t* detection, uint32_t* capture, uint32_t* demodulation) {</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :   uint8_t buff[16] = { 0 };</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_READ_CUMUL_TIMINGS, false, buff, sizeof(buff));</span></a>
+<a name="224"><span class="lineNum">     224 </span>            : </a>
+<a name="225"><span class="lineNum">     225 </span>            :   // pass the replies</a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :   if(detection) { *detection = ((uint32_t)(buff[4]) &lt;&lt; 24) | ((uint32_t)(buff[5]) &lt;&lt; 16) | ((uint32_t)(buff[6]) &lt;&lt; 8) | (uint32_t)buff[7]; }</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :   if(capture) { *capture = ((uint32_t)(buff[8]) &lt;&lt; 24) | ((uint32_t)(buff[9]) &lt;&lt; 16) | ((uint32_t)(buff[10]) &lt;&lt; 8) | (uint32_t)buff[11]; }</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :   if(demodulation) { *demodulation = ((uint32_t)(buff[12]) &lt;&lt; 24) | ((uint32_t)(buff[13]) &lt;&lt; 16) | ((uint32_t)(buff[14]) &lt;&lt; 8) | (uint32_t)buff[15]; }</span></a>
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="231"><span class="lineNum">     231 </span>            : }</a>
+<a name="232"><span class="lineNum">     232 </span>            : </a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiGetNbCountryCodeResults(uint8_t* nbResults) {</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :   uint8_t buff[1] = { 0 };</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_GET_NB_COUNTRY_CODE_RESULTS, false, buff, sizeof(buff));</span></a>
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<a name="237"><span class="lineNum">     237 </span>            :   // pass the replies</a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :   if(nbResults) { *nbResults = buff[0]; }</span></a>
+<a name="239"><span class="lineNum">     239 </span>            : </a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="241"><span class="lineNum">     241 </span>            : }</a>
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiReadCountryCodeResults(uint8_t index, uint8_t nbResults, uint8_t* results) {</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :   uint8_t reqBuff[2] = { index, nbResults };</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_READ_COUNTRY_CODE_RESULTS, false, results, nbResults, reqBuff, sizeof(reqBuff)));</span></a>
+<a name="246"><span class="lineNum">     246 </span>            : }</a>
+<a name="247"><span class="lineNum">     247 </span>            : </a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiCfgTimestampAPphone(uint32_t timestamp) {</span></a>
+<a name="249"><span class="lineNum">     249 </span>            :   uint8_t buff[4] = {</a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :     (uint8_t)((timestamp &gt;&gt; 24) &amp; 0xFF), (uint8_t)((timestamp &gt;&gt; 16) &amp; 0xFF),</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :     (uint8_t)((timestamp &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timestamp &amp; 0xFF)</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_COUNTRY_CODE_TIME_LIMIT, true, buff, sizeof(buff)));</span></a>
+<a name="254"><span class="lineNum">     254 </span>            : }</a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 : int16_t LR11x0::wifiReadVersion(uint8_t* major, uint8_t* minor) {</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :   uint8_t buff[2] = { 0 };</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;SPIcommand(RADIOLIB_LR11X0_CMD_WIFI_READ_VERSION, false, buff, sizeof(buff));</span></a>
+<a name="259"><span class="lineNum">     259 </span>            : </a>
+<a name="260"><span class="lineNum">     260 </span>            :   // pass the replies</a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :   if(major) { *major = buff[0]; }</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :   if(minor) { *minor = buff[1]; }</span></a>
+<a name="263"><span class="lineNum">     263 </span>            : </a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="265"><span class="lineNum">     265 </span>            : }</a>
+<a name="266"><span class="lineNum">     266 </span>            : </a>
+<a name="267"><span class="lineNum">     267 </span>            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
