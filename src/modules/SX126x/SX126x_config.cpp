@@ -798,19 +798,7 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   // check calibration result
-  state = this->mod->SPIcheckStream();
-
-  // if something failed, show the device errors
-  #if RADIOLIB_DEBUG_BASIC
-  if(state != RADIOLIB_ERR_NONE) {
-    // unless mode is forced to standby, device errors will be 0
-    standby();
-    uint16_t errors = getDeviceErrors();
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
-  }
-  #endif
-
-  return(state);
+  return(this->mod->SPIcheckStream());
 }
 
 #endif

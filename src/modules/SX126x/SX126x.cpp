@@ -1465,6 +1465,27 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
 
   // configure settings not accessible by API
   state = config(modem);
+
+  // if something failed, check the device errors
+  if(state != RADIOLIB_ERR_NONE) {
+    // unless mode is forced to standby, device errors will be 0
+    (void)standby();
+    uint16_t errors = getDeviceErrors();
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Config failed, device errors: 0x%X", errors);
+
+    // SPI command fail and oscillator start error flag indicate incorrectly set oscillator
+    if((state == RADIOLIB_ERR_SPI_CMD_FAILED) && (errors & RADIOLIB_SX126X_XOSC_START_ERR)) {
+      // typically users with XTAL devices will try to call the default begin method
+      // disable TCXO and try to run config again
+      this->XTAL = false;
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Bad oscillator selected, trying XTAL");
+
+      state = setTCXO(0);
+      RADIOLIB_ASSERT(state);
+
+      state = config(modem);
+    }
+  }
   RADIOLIB_ASSERT(state);
 
   if (useRegulatorLDO) {
