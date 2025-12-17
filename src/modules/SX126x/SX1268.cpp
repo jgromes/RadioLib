@@ -104,6 +104,10 @@ int16_t SX1268::setFrequency(float freq, bool skipCalibration) {
 }
 
 int16_t SX1268::setOutputPower(int8_t power) {
+  return(setOutputPower(power, true));
+}
+
+int16_t SX1268::setOutputPower(int8_t power, bool optimize) {
   // check if power value is configurable
   int16_t state = checkOutputPower(power, NULL);
   RADIOLIB_ASSERT(state);
@@ -114,11 +118,14 @@ int16_t SX1268::setOutputPower(int8_t power) {
   RADIOLIB_ASSERT(state);
 
   // set PA config
-  state = SX126x::setPaConfig(0x04, RADIOLIB_SX126X_PA_CONFIG_SX1268);
+  uint8_t paDutyCycle = optimize ? this->paOptTable[power + 9].paDutyCycle : 0x04;
+  uint8_t hpMax = optimize ? this->paOptTable[power + 9].hpMax : 0x07;
+  state = SX126x::setPaConfig(paDutyCycle, RADIOLIB_SX126X_PA_CONFIG_SX1268, hpMax);
   RADIOLIB_ASSERT(state);
 
   // set output power with default 200us ramp
-  state = SX126x::setTxParams(power, RADIOLIB_SX126X_PA_RAMP_200U);
+  int8_t paVal = optimize ? this->paOptTable[power + 9].paVal : power;
+  state = SX126x::setTxParams(paVal, RADIOLIB_SX126X_PA_RAMP_200U);
   RADIOLIB_ASSERT(state);
 
   // restore OCP configuration
