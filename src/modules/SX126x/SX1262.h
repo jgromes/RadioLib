@@ -123,8 +123,8 @@ class SX1262: public SX126x {
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
-      This method is virtual to allow override from the SX1261 class.
       \param power Output power to be set in dBm.
+      \param optimize Whether to use power-optimized PA configuration (true) or datasheet default (false).
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power, bool optimize);
