@@ -806,6 +806,21 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setPaRampTime(uint8_t rampTime);
 
+    /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
+      This method allows user full control over PA configuration parameters.
+      If you set incorrect PA configuration values, you can fail to reach the
+      desired output power level or damage your device.
+      Unless you can verify the output power, it is strongly advised to use
+      SX1262::setOutputPower(power) or SX1268::setOutputPower(power).
+      \param power Output power to be set in dBm.
+      \param paDutyCycle Raw PA duty cycle value.
+      \param hpMax Raw hpMax value.
+      \param deviceSel Device select. Use either RADIOLIB_SX126X_PA_CONFIG_SX1262 or RADIOLIB_SX126X_PA_CONFIG_SX1268.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
