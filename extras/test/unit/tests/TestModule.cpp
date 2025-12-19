@@ -23,8 +23,8 @@ struct ModuleFixture {
   ~ModuleFixture() { 
     BOOST_TEST_MESSAGE("--- Module fixture teardown ---");
     mod->term();
-    delete[] mod;
-    delete[] hal;
+    delete mod;
+    delete hal;
   }
 };
 
