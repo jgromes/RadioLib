@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2025-12-14 19:32:54</td>
+            <td class="headerValue">2025-12-19 21:12:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -111,15 +111,15 @@
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          4 :       this-&gt;gpio-&gt;func = PIN_GPIO;</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineCov">          4 :     }</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">       4192 :     virtual uint8_t HandleSPI(uint8_t b) {</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">       4197 :     virtual uint8_t HandleSPI(uint8_t b) {</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :       (void)b;</a>
 <a name="54"><span class="lineNum">      54 </span>            :       // handle the SPI input and generate output here</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">       4192 :       return(EMULATED_RADIO_SPI_RETURN);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">       4197 :       return(EMULATED_RADIO_SPI_RETURN);</span></a>
 <a name="56"><span class="lineNum">      56 </span>            :     }</a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       2932 :     virtual void HandleGPIO() {</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       2934 :     virtual void HandleGPIO() {</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :       // handle discrete GPIO signals here (e.g. reset state machine on NSS falling edge)</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       2932 :     }</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       2934 :     }</span></a>
 <a name="61"><span class="lineNum">      61 </span>            :   </a>
 <a name="62"><span class="lineNum">      62 </span>            :   protected:</a>
 <a name="63"><span class="lineNum">      63 </span>            :     // pointers to emulated GPIO pins</a>
