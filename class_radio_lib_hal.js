@@ -1,6 +1,7 @@
 var class_radio_lib_hal =
 [
     [ "RadioLibHal", "class_radio_lib_hal.html#ae75a54271cb8bea37d32dd146b9c6513", null ],
+    [ "~RadioLibHal", "class_radio_lib_hal.html#a12a796e5dbc039e548bab02d6fc8d1c6", null ],
     [ "attachInterrupt", "class_radio_lib_hal.html#af142f747becacd1e3e13503f79fd5ebe", null ],
     [ "delay", "class_radio_lib_hal.html#aa2de4fcafad28470f7d46073fa29da79", null ],
     [ "delayMicroseconds", "class_radio_lib_hal.html#ab93dc492291dfe6fc0dd763bee966161", null ],
