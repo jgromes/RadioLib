@@ -177,6 +177,7 @@
 #define RADIOLIB_LR2021_IRQ_RNG_REQ_DIS                         (0x01UL << 29)  //  31    0                ranging request discarded
 #define RADIOLIB_LR2021_IRQ_RNG_EXCH_VALID                      (0x01UL << 30)  //  31    0                master receive valid ranging response
 #define RADIOLIB_LR2021_IRQ_RNG_TIMEOUT                         (0x01UL << 31)  //  31    0                ranging timeout
+#define RADIOLIB_LR2021_IRQ_ALL                                 (0xFFFFFFFFUL)  //  31    0                all interrupts
 
 // RADIOLIB_LR2021_CMD_SET_SLEEP
 #define RADIOLIB_LR2021_SLEEP_32K_CLK_DISABLED                  (0x00UL << 0)   //  0     0     32 kHz clock: disabled
@@ -359,6 +360,7 @@
 #define RADIOLIB_LR2021_PACKET_TYPE_RAW                         (0x0BUL << 0)   //  7     0                  RAW
 #define RADIOLIB_LR2021_PACKET_TYPE_Z_WAVE                      (0x0CUL << 0)   //  7     0                  Z-WAVE
 #define RADIOLIB_LR2021_PACKET_TYPE_OQPSK                       (0x0DUL << 0)   //  7     0                  OQPSK
+#define RADIOLIB_LR2021_PACKET_TYPE_NONE                        (0xFFUL << 0)   //  2     0                  none
 
 // RADIOLIB_LR2021_CMD_SET_LORA_MODULATION_PARAMS
 #define RADIOLIB_LR2021_LORA_BW_31                              (0x02UL << 0)   //  3     0     LoRa bandwidth: 31.25 kHz

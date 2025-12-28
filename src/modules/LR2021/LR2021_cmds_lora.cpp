@@ -37,9 +37,8 @@ int16_t LR2021::setLoRaSynchTimeout(uint8_t numSymbols, bool format) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SYNCH_TIMEOUT, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setLoRaSyncword(uint16_t syncword) {
-  uint8_t buff[] = { (uint8_t)((syncword >> 8) & 0xFF), (uint8_t)(syncword & 0xFF) };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SYNCWORD, true, buff, sizeof(buff)));
+int16_t LR2021::setLoRaSyncword(uint8_t syncword) {
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SYNCWORD, true, &syncword, sizeof(syncword)));
 }
 
 int16_t LR2021::setLoRaSideDetConfig(uint8_t* configs, size_t numSideDets) {

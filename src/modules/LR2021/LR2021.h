@@ -49,9 +49,12 @@ class LR2021: public PhysicalLayer, public LRxxxx {
       \param syncWord 1-byte LoRa sync word. Defaults to RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE (0x12).
       \param power Output power in dBm. Defaults to 10 dBm.
       \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
+      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
@@ -71,6 +74,76 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     int16_t sleep();
     int16_t sleep(uint8_t cfg, uint32_t time);
     
+    // configuration methods
+
+    /*!
+      \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
+      101.56, 203.13, 250.0, 406.25, 500.0 kHz, 812.5 kHz and 1000.0 kHz.
+      \param bw LoRa bandwidth to be set in kHz.
+      \returns \ref status_codes
+    */
+    int16_t setBandwidth(float bw);
+
+    /*!
+      \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
+      \param sf LoRa spreading factor to be set.
+      \param legacy Enable legacy mode for SF6 - this allows to communicate with SX127x at SF6.
+      \returns \ref status_codes
+    */
+    int16_t setSpreadingFactor(uint8_t sf, bool legacy = false);
+
+    /*!
+      \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
+      is undocumented and not recommended without your own FEC.
+      \param cr LoRa coding rate denominator to be set.
+      \param longInterleave Enable long interleaver when set to true.
+      Note that with long interleaver enabled, CR 4/7 is not possible, there are packet length restrictions,
+      and it is not compatible with SX127x radios!
+      \returns \ref status_codes
+    */
+    int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
+
+    /*!
+      \brief Sets LoRa sync word.
+      \param syncWord LoRa sync word to be set.
+      \returns \ref status_codes
+    */
+    int16_t setSyncWord(uint8_t syncWord);
+
+    /*!
+      \brief Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.
+      \param preambleLength Preamble length to be set in symbols (LoRa) or bits (GFSK).
+      \returns \ref status_codes
+    */
+    int16_t setPreambleLength(size_t preambleLength) override;
+
+    /*!
+      \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
+      \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
+      Set to 0 to disable TCXO.
+      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
+      \param delay TCXO timeout in us. Defaults to 5000 us.
+      \returns \ref status_codes
+    */
+    int16_t setTCXO(float voltage, uint32_t delay = 5000);
+
+    /*!
+      \brief Sets CRC configuration.
+      \param len CRC length in bytes, Allowed values are 1 or 2, set to 0 to disable CRC.
+      \param initial Initial CRC value. GFSK only. Defaults to 0x1D0F (CCIT CRC).
+      \param polynomial Polynomial for CRC calculation. GFSK only. Defaults to 0x1021 (CCIT CRC).
+      \param inverted Invert CRC bytes. GFSK only. Defaults to true (CCIT CRC).
+      \returns \ref status_codes
+    */
+    int16_t setCRC(uint8_t len, uint32_t initial = 0x00001D0FUL, uint32_t polynomial = 0x00001021UL, bool inverted = true);
+
+    /*!
+      \brief Enable/disable inversion of the I and Q signals
+      \param enable IQ inversion enabled (true) or disabled (false);
+      \returns \ref status_codes
+    */
+    int16_t invertIQ(bool enable) override;
+    
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -83,12 +156,9 @@ class LR2021: public PhysicalLayer, public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    Module* mod;
 
-    // cached LoRa parameters
-    bool ldroAuto = true;
-    uint8_t bandwidth = 0, spreadingFactor = 0, ldrOptimize = 0;
-    float bandwidthKhz = 0;
+    bool findChip(void);
+    int16_t config(uint8_t modem);
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
@@ -157,7 +227,7 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ);
     int16_t setLoRaSynchTimeout(uint8_t numSymbols, bool format);
-    int16_t setLoRaSyncword(uint16_t syncword);
+    int16_t setLoRaSyncword(uint8_t syncword);
     int16_t setLoRaSideDetConfig(uint8_t* configs, size_t numSideDets);
     int16_t setLoRaSideDetSyncword(uint8_t* syncwords, size_t numSideDets);
     int16_t setLoRaCadParams(uint8_t numSymbols, bool preambleOnly, uint8_t pnrDelta, uint8_t cadExitMode, uint32_t timeout, uint8_t detPeak);
