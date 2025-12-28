@@ -2,6 +2,7 @@
 #define RADIOLIB_LR_COMMON_H
 
 #include "../../Module.h"
+#include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 #define RADIOLIB_LRXXXX_CMD_NOP                                 (0x0000)
 #define RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN                  (256)
@@ -52,9 +53,14 @@
 #define RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_0                        (0x06UL << 0)   //  2     0                          3.0V
 #define RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_3                        (0x07UL << 0)   //  2     0                          3.3V
 
-class LRxxxx {
+class LRxxxx: public PhysicalLayer {
   public:
     LRxxxx(Module* mod);
+
+    /*!
+      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
+    */
+    bool XTAL;
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -62,13 +68,49 @@ class LRxxxx {
     */
     int16_t reset();
 
-    /*!
-      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
+        /*!
+      \brief Sets interrupt service routine to call when IRQ1 activates.
+      \param func ISR to call.
     */
-    bool XTAL;
+    void setIrqAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when IRQ1 activates.
+    */
+    void clearIrqAction();
+
+    /*!
+      \brief Sets interrupt service routine to call when a packet is received.
+      \param func ISR to call.
+    */
+    void setPacketReceivedAction(void (*func)(void)) override;
+
+    /*!
+      \brief Clears interrupt service routine to call when a packet is received.
+    */
+    void clearPacketReceivedAction() override;
+
+    /*!
+      \brief Sets interrupt service routine to call when a packet is sent.
+      \param func ISR to call.
+    */
+    void setPacketSentAction(void (*func)(void)) override;
+
+    /*!
+      \brief Clears interrupt service routine to call when a packet is sent.
+    */
+    void clearPacketSentAction() override;
+
+    /*!
+      \brief Reads the current IRQ status.
+      \returns IRQ status bits
+    */
+    uint32_t getIrqStatus();
 
   protected:
     Module* mod;
+    
+    float dataRateMeasured = 0;
 
     // cached LoRa parameters
     uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;

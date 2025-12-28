@@ -7,7 +7,6 @@
 
 #include "../../Module.h"
 
-#include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 #include "../LR11x0/LR_common.h"
 
 #include "LR11x0_commands.h"
@@ -25,7 +24,7 @@
   \brief Base class for %LR11x0 series. All derived classes for %LR11x0 (e.g. LR1110 or LR1120) inherit from this base class.
   This class should not be instantiated directly from user code, only from its derived classes.
 */
-class LR11x0: public PhysicalLayer, public LRxxxx {
+class LR11x0: public LRxxxx {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -188,39 +187,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
     // interrupt methods
 
     /*!
-      \brief Sets interrupt service routine to call when IRQ1 activates.
-      \param func ISR to call.
-    */
-    void setIrqAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when IRQ1 activates.
-    */
-    void clearIrqAction();
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
       \brief Clean up after transmission is done.
       \returns \ref status_codes
     */
@@ -233,12 +199,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
       \returns \ref status_codes
     */
     int16_t startReceive() override;
-
-    /*!
-      \brief Reads the current IRQ status.
-      \returns IRQ status bits
-    */
-    uint32_t getIrqStatus();
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
@@ -974,8 +934,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
     // cached LR-FHSS parameters
     uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0, lrFhssGrid = 0;
     uint16_t lrFhssHopSeq = 0;
-
-    float dataRateMeasured = 0;
 
     uint8_t wifiScanMode = 0;
     bool gnss = false;

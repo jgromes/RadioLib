@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-LRxxxx::LRxxxx(Module* mod) {
+LRxxxx::LRxxxx(Module* mod) : PhysicalLayer() {
   this->mod = mod;
   this->XTAL = false;
   this->mod->spiConfig.stream = true;
@@ -12,6 +12,40 @@ LRxxxx::LRxxxx(Module* mod) {
   this->mod->spiConfig.statusPos = 0;
   this->mod->spiConfig.parseStatusCb = SPIparseStatus;
   this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
+}
+
+void LRxxxx::setIrqAction(void (*func)(void)) {
+  this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptRising);
+}
+
+void LRxxxx::clearIrqAction() {
+  this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
+}
+
+void LRxxxx::setPacketReceivedAction(void (*func)(void)) {
+  this->setIrqAction(func);
+}
+
+void LRxxxx::clearPacketReceivedAction() {
+  this->clearIrqAction();
+}
+
+void LRxxxx::setPacketSentAction(void (*func)(void)) {
+  this->setIrqAction(func);
+}
+
+void LRxxxx::clearPacketSentAction() {
+  this->clearIrqAction();
+}
+
+uint32_t LRxxxx::getIrqStatus() {
+  // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
+  uint8_t buff[6] = { 0 };
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
+  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  uint32_t irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5];
+  return(irq);
 }
 
 int16_t LRxxxx::reset() {

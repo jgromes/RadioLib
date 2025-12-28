@@ -5,7 +5,7 @@
 
 #if !RADIOLIB_EXCLUDE_LR11X0
 
-LR11x0::LR11x0(Module* mod) : PhysicalLayer(), LRxxxx(mod) {
+LR11x0::LR11x0(Module* mod) : LRxxxx(mod) {
   this->freqStep = RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_LR11X0_MAX_PACKET_LENGTH;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR11X0_IRQ_TX_DONE;
@@ -368,30 +368,6 @@ int16_t LR11x0::sleep(bool retainConfig, uint32_t sleepTime) {
   return(state);
 }
 
-void LR11x0::setIrqAction(void (*func)(void)) {
-  this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptRising);
-}
-
-void LR11x0::clearIrqAction() {
-  this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
-}
-
-void LR11x0::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func);
-}
-
-void LR11x0::clearPacketReceivedAction() {
-  this->clearIrqAction();
-}
-
-void LR11x0::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func);
-}
-
-void LR11x0::clearPacketSentAction() {
-  this->clearIrqAction();
-}
-
 int16_t LR11x0::finishTransmit() {
   // clear interrupt flags
   clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
@@ -402,16 +378,6 @@ int16_t LR11x0::finishTransmit() {
 
 int16_t LR11x0::startReceive() {
   return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
-}
-
-uint32_t LR11x0::getIrqStatus() {
-  // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
-  uint8_t buff[6] = { 0 };
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
-  uint32_t irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5];
-  return(irq);
 }
 
 int16_t LR11x0::readData(uint8_t* data, size_t len) {
