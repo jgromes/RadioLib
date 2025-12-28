@@ -273,16 +273,6 @@
 #define RADIOLIB_LR11X0_LF_BUSY_RELEASE_DISABLED                (0x00UL << 2)   //  2     2
 #define RADIOLIB_LR11X0_LF_BUSY_RELEASE_ENABLED                 (0x01UL << 2)   //  2     2
 
-// RADIOLIB_LR11X0_CMD_SET_TCXO_MODE
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_1_6                        (0x00UL << 0)   //  2     0     TCXO supply voltage: 1.6V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_1_7                        (0x01UL << 0)   //  2     0                          1.7V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_1_8                        (0x02UL << 0)   //  2     0                          1.8V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_2_2                        (0x03UL << 0)   //  2     0                          2.2V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_2_4                        (0x04UL << 0)   //  2     0                          2.4V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_2_7                        (0x05UL << 0)   //  2     0                          2.7V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_3_0                        (0x06UL << 0)   //  2     0                          3.0V
-#define RADIOLIB_LR11X0_TCXO_VOLTAGE_3_3                        (0x07UL << 0)   //  2     0                          3.3V
-
 // RADIOLIB_LR11X0_CMD_SET_SLEEP
 #define RADIOLIB_LR11X0_SLEEP_RETENTION_DISABLED                (0x00UL << 0)   //  0     0     configuration retention in sleep mode: disabled
 #define RADIOLIB_LR11X0_SLEEP_RETENTION_ENABLED                 (0x01UL << 0)   //  0     0                                            enabled

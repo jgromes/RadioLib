@@ -41,6 +41,17 @@
 #define RADIOLIB_LRXXXX_LR_FHSS_BLOCK_PREAMBLE_BITS             (2)             //  7     0                                block preamble
 #define RADIOLIB_LRXXXX_LR_FHSS_BLOCK_BITS                      (RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS + RADIOLIB_LRXXXX_LR_FHSS_BLOCK_PREAMBLE_BITS)
 
+// RADIOLIB_LR11X0_CMD_SET_TCXO_MODE
+// RADIOLIB_LR2021_CMD_SET_TCXO_MODE
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_6                        (0x00UL << 0)   //  2     0     TCXO supply voltage: 1.6V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_7                        (0x01UL << 0)   //  2     0                          1.7V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_8                        (0x02UL << 0)   //  2     0                          1.8V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_2                        (0x03UL << 0)   //  2     0                          2.2V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_4                        (0x04UL << 0)   //  2     0                          2.4V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_7                        (0x05UL << 0)   //  2     0                          2.7V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_0                        (0x06UL << 0)   //  2     0                          3.0V
+#define RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_3                        (0x07UL << 0)   //  2     0                          3.3V
+
 class LRxxxx {
   public:
     LRxxxx(Module* mod);
@@ -51,7 +62,22 @@ class LRxxxx {
     */
     int16_t reset();
 
+    /*!
+      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
+    */
+    bool XTAL;
+
   protected:
+    Module* mod;
+
+    // cached LoRa parameters
+    uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
+    uint16_t preambleLengthLoRa = 0;
+    float bandwidthKhz = 0;
+    bool ldroAuto = true;
+    size_t implicitLen = 0;
+    bool invertIQEnabled = false;
+
     // a lot of SPI commands have the same structure and arguments on both LR11xx as well as LR2021
     // the only difference is the 16-bit command code - however, having everything in this base class
     // will actually increase the binary size, because of the extra method calls that are needed
@@ -69,7 +95,6 @@ class LRxxxx {
     static int16_t SPIcheckStatus(Module* mod);
 
   private:
-    Module* mod;
 };
 
 #endif

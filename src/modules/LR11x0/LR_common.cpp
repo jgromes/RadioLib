@@ -4,6 +4,14 @@
 
 LRxxxx::LRxxxx(Module* mod) {
   this->mod = mod;
+  this->XTAL = false;
+  this->mod->spiConfig.stream = true;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_32;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  this->mod->spiConfig.statusPos = 0;
+  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
+  this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
 }
 
 int16_t LRxxxx::reset() {

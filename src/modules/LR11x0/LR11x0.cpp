@@ -8,8 +8,6 @@
 LR11x0::LR11x0(Module* mod) : PhysicalLayer(), LRxxxx(mod) {
   this->freqStep = RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_LR11X0_MAX_PACKET_LENGTH;
-  this->mod = mod;
-  this->XTAL = false;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR11X0_IRQ_TX_DONE;
   this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_LR11X0_IRQ_RX_DONE;
   this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED;
@@ -1059,21 +1057,21 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   // check allowed voltage values
   uint8_t tune = 0;
   if(fabsf(voltage - 1.6f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_6;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_6;
   } else if(fabsf(voltage - 1.7f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_7;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_7;
   } else if(fabsf(voltage - 1.8f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_8;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_8;
   } else if(fabsf(voltage - 2.2f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_2;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_2;
   } else if(fabsf(voltage - 2.4f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_4;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_4;
   } else if(fabsf(voltage - 2.7f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_7;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_7;
   } else if(fabsf(voltage - 3.0f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_3_0;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_0;
   } else if(fabsf(voltage - 3.3f) <= 0.001f) {
-    tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_3_3;
+    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_3;
   } else {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
   }
@@ -1773,17 +1771,10 @@ int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_32;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 0;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR11X0_CMD_READ_REG_MEM;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_LR11X0_CMD_WRITE_REG_MEM;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_LR11X0_CMD_NOP;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_LR11X0_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
   this->gnss = false;
 
   // try to find the LR11x0 chip - this will also reset the module at least once

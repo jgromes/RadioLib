@@ -62,11 +62,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
         /*! WiFi scanning mode */
         MODE_WIFI,
     };
-
-    /*!
-      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
-    */
-    bool XTAL;
     
     /*!
       \brief Initialization method for LoRa modem.
@@ -971,16 +966,6 @@ class LR11x0: public PhysicalLayer, public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    Module* mod;
-
-    // cached LoRa parameters
-    uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
-    uint16_t preambleLengthLoRa = 0;
-    float bandwidthKhz = 0;
-    bool ldroAuto = true;
-    size_t implicitLen = 0;
-    bool invertIQEnabled = false;
-
     // cached GFSK parameters
     uint32_t bitRate = 0, frequencyDev = 0;
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
