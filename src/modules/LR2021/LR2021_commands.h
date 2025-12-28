@@ -189,6 +189,10 @@
 #define RADIOLIB_LR2021_STANDBY_RC                              (0x00UL << 0)   //  7     0     standby mode: RC oscillator
 #define RADIOLIB_LR2021_STANDBY_XOSC                            (0x01UL << 0)   //  7     0                   XOSC oscillator
 
+// RADIOLIB_LR2021_CMD_SET_RX
+#define RADIOLIB_LR2021_RX_TIMEOUT_NONE                         (0x000000UL)    //  23    0     Rx timeout duration: no timeout (Rx single mode)
+#define RADIOLIB_LR2021_RX_TIMEOUT_INF                          (0xFFFFFFUL)    //  23    0                          infinite (Rx continuous mode)
+
 // RADIOLIB_LR2021_CMD_SET_RX_TX_FALLBACK_MODE
 #define RADIOLIB_LR2021_FALLBACK_MODE_STBY_RC                   (0x01UL << 0)   //  1     0     fallback mode after Rx/Tx: standby with RC
 #define RADIOLIB_LR2021_FALLBACK_MODE_STBY_XOSC                 (0x02UL << 0)   //  1     0                                standby with XOSC
@@ -314,6 +318,7 @@
 #define RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK                  (0x00UL << 0)   //  1     0     CAD exit mode: the configured fallback mode
 #define RADIOLIB_LR2021_CAD_EXIT_MODE_TX                        (0x01UL << 0)   //  1     0                    Tx
 #define RADIOLIB_LR2021_CAD_EXIT_MODE_RX                        (0x02UL << 0)   //  1     0                    Rx
+#define RADIOLIB_LR2021_CAD_PARAM_DEFAULT                       (0xFFUL << 0)   //  7     0     used by the CAD methods to specify default parameter value
 
 // RADIOLIB_LR2021_CMD_SEL_PA
 #define RADIOLIB_LR2021_PA_LOW_POWER                            (0x00UL << 0)   //  1     0     PA to use: low-power
@@ -509,6 +514,12 @@
 #define RADIOLIB_LR2021_OOK_MANCHESTER_OFF                      (0x00UL << 0)   //  3     0     Manchester encoding: disabled
 #define RADIOLIB_LR2021_OOK_MANCHESTER_ON                       (0x01UL << 0)   //  3     0                          enabled
 #define RADIOLIB_LR2021_OOK_MANCHESTER_ON_INV                   (0x03UL << 0)   //  3     0                          enabled, inverted
+
+// RADIOLIB_LR2021_CMD_SET_TX_TEST_MODE
+#define RADIOLIB_LR2021_TX_TEST_MODE_NORMAL_TX                  (0x00UL << 0)   //  7     0     Tx test mode: normal
+#define RADIOLIB_LR2021_TX_TEST_MODE_INF_PREAMBLE               (0x01UL << 0)   //  7     0                   infinite preamble
+#define RADIOLIB_LR2021_TX_TEST_MODE_CW                         (0x02UL << 0)   //  7     0                   continuous wave
+#define RADIOLIB_LR2021_TX_TEST_MODE_PRBS9                      (0x03UL << 0)   //  7     0                   pseudo-random bits
 
 #endif
 

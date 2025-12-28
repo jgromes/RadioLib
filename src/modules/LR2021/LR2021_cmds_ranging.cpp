@@ -28,7 +28,7 @@ int16_t LR2021::getRangingResult(uint8_t type, uint32_t* rng1, uint8_t* rssi1, u
   uint8_t reqBuff[] = { type };
   uint8_t rplBuff[7] = { 0 };
 
-  // TODO implement AGC gains readout
+  //! \TODO: [LR2021] implement AGC gains readout
   size_t rplLen = (type == RADIOLIB_LR2021_RANGING_RESULT_TYPE_RAW) ? 7 : 4;
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_RANGING_RESULT, false, rplBuff, sizeof(rplBuff), reqBuff, rplLen);
   

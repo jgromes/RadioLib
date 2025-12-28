@@ -76,7 +76,7 @@ int16_t LR2021::setSpreadingFactor(uint8_t sf, bool legacy) {
 
   RADIOLIB_CHECK_RANGE(sf, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
 
-  // TODO enable SF6 legacy mode
+  //! \TODO: [LR2021] enable SF6 legacy mode
   if(legacy && (sf == 6)) {
     //this->mod->SPIsetRegValue(RADIOLIB_LR11X0_REG_SF6_SX127X_COMPAT, RADIOLIB_LR11X0_SF6_SX127X, 18, 18);
   }
@@ -144,7 +144,7 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
     return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   }
 
-  // TODO implement other modems
+  //! \TODO: [LR2021] implement other modems
 
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
@@ -159,7 +159,7 @@ int16_t LR2021::setTCXO(float voltage, uint32_t delay) {
   standby();
 
   // check oscillator startup error flag and clear it
-  // TODO legacy from LR11x0, chech if this really works on LR2021
+  //! \TODO: [LR2021] legacy from LR11x0, chech if this really works on LR2021
   uint16_t errors = 0;
   int16_t state = getErrors(&errors);
   RADIOLIB_ASSERT(state);
@@ -216,7 +216,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled);
   }
   
-  // TODO implement other modems
+  //! \TODO: [LR2021] implement other modems
   (void)initial;
   (void)polynomial;
   (void)inverted;

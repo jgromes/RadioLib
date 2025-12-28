@@ -5,7 +5,7 @@
 
 #if !RADIOLIB_EXCLUDE_LR2021
 
-LR2021::LR2021(Module* mod) : PhysicalLayer(), LRxxxx(mod) {
+LR2021::LR2021(Module* mod) : LRxxxx(mod) {
   this->freqStep = RADIOLIB_LR2021_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_LR2021_MAX_PACKET_LENGTH;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR2021_IRQ_TX_DONE;
@@ -77,6 +77,183 @@ int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
+   // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // check packet length
+  if (this->codingRate > RADIOLIB_LR2021_LORA_CR_4_8) {
+    // Long Interleaver needs at least 8 bytes
+    if(len < 8) {
+      return(RADIOLIB_ERR_PACKET_TOO_SHORT);
+    }
+
+    // Long Interleaver supports up to 253 bytes if CRC is enabled
+    if (this->crcTypeLoRa == RADIOLIB_LR2021_LORA_CRC_ENABLED && (len > RADIOLIB_LR2021_MAX_PACKET_LENGTH - 2)) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }  
+  } 
+  if(len > RADIOLIB_LR2021_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // get currently active modem
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  RadioLibTime_t timeout = getTimeOnAir(len);
+  if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    // calculate timeout (150% of expected time-on-air)
+    timeout = (timeout * 3) / 2;
+
+  } else if((modem == RADIOLIB_LR2021_PACKET_TYPE_FSK) || (modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS)) {
+    // calculate timeout (500% of expected time-on-air)
+    timeout = timeout * 5;
+
+  } else {
+    return(RADIOLIB_ERR_UNKNOWN);
+  }
+
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu us", timeout);
+
+  // start transmission
+  state = startTransmit(data, len, addr);
+  RADIOLIB_ASSERT(state);
+
+  // wait for packet transmission or timeout
+  RadioLibTime_t start = this->mod->hal->micros();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->micros() - start > timeout) {
+      finishTransmit();
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }
+  }
+  RadioLibTime_t elapsed = this->mod->hal->micros() - start;
+
+  // update data rate
+  this->dataRateMeasured = (len*8.0f)/((float)elapsed/1000000.0f);
+
+  return(finishTransmit());
+}
+
+int16_t LR2021::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // calculate timeout based on the configured modem
+  RadioLibTime_t timeoutInternal = timeout;
+  if(!timeoutInternal) {
+    // get currently active modem
+    uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+    state = getPacketType(&modem);
+    RADIOLIB_ASSERT(state);
+    if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR2021_PACKET_TYPE_FSK)) {
+      // calculate timeout (500 % of expected time-one-air)
+      size_t maxLen = len;
+      if(len == 0) { maxLen = RADIOLIB_LR2021_MAX_PACKET_LENGTH; }
+      timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
+    
+    } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
+      // this modem cannot receive
+      return(RADIOLIB_ERR_WRONG_MODEM);
+
+    } else {
+      return(RADIOLIB_ERR_UNKNOWN);
+    
+    }
+  }
+
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
+
+  // start reception
+  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 30.52f);
+  state = startReceive(timeoutValue);
+  RADIOLIB_ASSERT(state);
+
+  // wait for packet reception or timeout
+  bool softTimeout = false;
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+    // safety check, the timeout should be done by the radio
+    if(this->mod->hal->millis() - start > timeoutInternal) {
+      softTimeout = true;
+      break;
+    }
+  }
+
+  // if it was a timeout, this will return an error code
+  //! \TODO: [LR2021] taken from SX126x, does this really work?
+  state = standby();
+  if((state != RADIOLIB_ERR_NONE) && (state != RADIOLIB_ERR_SPI_CMD_TIMEOUT)) {
+    return(state);
+  }
+
+  // check whether this was a timeout or not
+  if(softTimeout || (getIrqFlags() & this->irqMap[RADIOLIB_IRQ_TIMEOUT])) {
+    (void)finishReceive();
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }
+
+  // read the received data
+  return(readData(data, len));
+}
+
+int16_t LR2021::transmitDirect(uint32_t frf) {
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_TX);
+
+  // user requested to start transmitting immediately (required for RTTY)
+  int16_t state = RADIOLIB_ERR_NONE;
+  if(frf != 0) {
+    state = setRfFrequency(frf);
+  }
+  RADIOLIB_ASSERT(state);
+
+  // start transmitting
+  return(setTxTestMode(RADIOLIB_LR2021_TX_TEST_MODE_CW));
+}
+
+int16_t LR2021::receiveDirect() {
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_RX);
+
+  // LR2021 is unable to output received data directly
+  return(RADIOLIB_ERR_UNKNOWN);
+}
+
+int16_t LR2021::scanChannel() {
+  ChannelScanConfig_t cfg = {
+    .cad = {
+      .symNum = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
+    },
+  };
+  return(this->scanChannel(cfg));
+}
+
+int16_t LR2021::scanChannel(const ChannelScanConfig_t &config) {
+  // set mode to CAD
+  int state = startChannelScan(config);
+  RADIOLIB_ASSERT(state);
+
+  // wait for channel activity detected or timeout
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+  }
+
+  // check CAD result
+  return(getChannelScanResult());
+}
+
 int16_t LR2021::standby() {
   return(this->standby(RADIOLIB_LR2021_STANDBY_RC));
 }
@@ -96,16 +273,16 @@ int16_t LR2021::standby(uint8_t mode, bool wakeup) {
 }
 
 int16_t LR2021::sleep() {
-  return(this->sleep(RADIOLIB_LR2021_SLEEP_RETENTION_ENABLED, 0));
+  return(this->sleep(true, 0));
 }
 
-int16_t LR2021::sleep(uint8_t cfg, uint32_t time) {
+int16_t LR2021::sleep(bool retainConfig, uint32_t sleepTime) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
-  uint8_t buff[] = { cfg,
-    (uint8_t)((time >> 24) & 0xFF), (uint8_t)((time >> 16) & 0xFF),
-    (uint8_t)((time >> 8) & 0xFF), (uint8_t)(time & 0xFF),
+  uint8_t buff[] = { (uint8_t)(retainConfig ? RADIOLIB_LR2021_SLEEP_RETENTION_ENABLED : RADIOLIB_LR2021_SLEEP_RETENTION_DISABLED),
+    (uint8_t)((sleepTime >> 24) & 0xFF), (uint8_t)((sleepTime >> 16) & 0xFF),
+    (uint8_t)((sleepTime >> 8) & 0xFF), (uint8_t)(sleepTime & 0xFF),
   };
 
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_SLEEP, true, buff, sizeof(buff));
@@ -114,6 +291,154 @@ int16_t LR2021::sleep(uint8_t cfg, uint32_t time) {
   this->mod->hal->delay(1);
 
   return(state);
+}
+
+size_t LR2021::getPacketLength(bool update) {
+  (void)update;
+
+  // in implicit mode, return the cached value
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  (void)getPacketType(&type);
+  if((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT)) {
+    return(this->implicitLen);
+  }
+
+  uint16_t len = 0;
+  (void)getRxPktLength(&len);
+  return((size_t)len);
+}
+
+int16_t LR2021::finishTransmit() {
+  // clear interrupt flags
+  clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+
+  // set mode to standby to disable transmitter/RF switch
+  return(standby());
+}
+
+int16_t LR2021::startReceive() {
+  return(this->startReceive(RADIOLIB_LR2021_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
+}
+
+int16_t LR2021::readData(uint8_t* data, size_t len) {
+  // check active modem
+  int16_t state = RADIOLIB_ERR_NONE;
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if((modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) && 
+     (modem != RADIOLIB_LR2021_PACKET_TYPE_FSK)) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // check integrity CRC
+  uint32_t irq = getIrqStatus();
+  int16_t crcState = RADIOLIB_ERR_NONE;
+  // Report CRC mismatch when there's a payload CRC error, or a header error and no valid header (to avoid false alarm from previous packet)
+  //! \TODO: [LR2021] legacy from LR11x0, is it still needed?
+  if((irq & RADIOLIB_LR2021_IRQ_CRC_ERROR) || (!(irq & RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {
+    crcState = RADIOLIB_ERR_CRC_MISMATCH;
+  }
+
+  // get packet length
+  size_t length = getPacketLength();
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    length = len;
+  }
+
+  // read packet data
+  state = readRadioRxFifo(data, length);
+  RADIOLIB_ASSERT(state);
+
+  // clear the Rx buffer
+  state = clearRxFifo();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+
+  // check if CRC failed - this is done after reading data to give user the option to keep them
+  RADIOLIB_ASSERT(crcState);
+
+  return(state);
+}
+
+int16_t LR2021::finishReceive() {
+  // set mode to standby to disable RF switch
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  return(clearIrq(RADIOLIB_LR2021_IRQ_ALL));
+}
+
+int16_t LR2021::startChannelScan() {
+  ChannelScanConfig_t cfg = {
+    .cad = {
+      .symNum = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
+    },
+  };
+  return(this->startChannelScan(cfg));
+}
+
+int16_t LR2021::startChannelScan(const ChannelScanConfig_t &config) {
+  // check active modem
+  int16_t state = RADIOLIB_ERR_NONE;
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_RX);
+
+  // set DIO pin mapping
+  uint32_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_LR2021_IRQ_CAD_DETECTED | RADIOLIB_LR2021_IRQ_CAD_DONE : config.cad.irqFlags;
+  state = setDioIrqConfig(this->irqDioNum, getIrqMapped(irqFlags));
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+  RADIOLIB_ASSERT(state);
+
+  // set mode to CAD
+  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout));
+}
+
+int16_t LR2021::getChannelScanResult() {
+  // check active modem
+  int16_t state = RADIOLIB_ERR_NONE;
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // check CAD result
+  uint32_t cadResult = getIrqStatus();
+  if(cadResult & RADIOLIB_LR2021_IRQ_CAD_DETECTED) {
+    // detected some LoRa activity
+    return(RADIOLIB_LORA_DETECTED);
+  } else if(cadResult & RADIOLIB_LR2021_IRQ_CAD_DONE) {
+    // channel is free
+    return(RADIOLIB_CHANNEL_FREE);
+  }
+
+  return(RADIOLIB_ERR_UNKNOWN);
 }
 
 Module* LR2021::getMod() {
@@ -160,6 +485,15 @@ int16_t LR2021::config(uint8_t modem) {
   state = this->clearIrq(RADIOLIB_LR2021_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
+  // validate DIO pin number
+  if((this->irqDioNum < 5) || (this->irqDioNum > 11)) {
+    return(RADIOLIB_ERR_INVALID_DIO_PIN);
+  }
+
+  // set the DIO to IRQ
+  state = this->setDioFunction(this->irqDioNum, RADIOLIB_LR2021_DIO_FUNCTION_IRQ, RADIOLIB_LR2021_DIO_SLEEP_PULL_NONE);
+  RADIOLIB_ASSERT(state);
+
   // calibrate all blocks
   (void)this->calibrate(RADIOLIB_LR2021_CALIBRATE_ALL);
 
@@ -170,7 +504,7 @@ int16_t LR2021::config(uint8_t modem) {
   }
   
   // if something failed, show the device errors
-  // TODO legacy from LR11x0, chech if this really works on LR2021
+  //! \TODO: [LR2021] legacy from LR11x0, check if this really works on LR2021
   #if RADIOLIB_DEBUG_BASIC
   if(state != RADIOLIB_ERR_NONE) {
     // unless mode is forced to standby, device errors will be 0
@@ -184,6 +518,53 @@ int16_t LR2021::config(uint8_t modem) {
   // set modem
   state = this->setPacketType(modem);
   return(state);
+}
+
+int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // select CAD parameters
+  //! \TODO: [LR2021] the magic numbers for CAD are based on Semtech examples, this is probably suboptimal
+  uint8_t num = symbolNum;
+  if(num == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
+    num = 2;
+  }
+  
+  const uint8_t detPeakValues[8] = { 48, 48, 50, 55, 55, 59, 61, 65 };
+  uint8_t peak = detPeak;
+  if(peak == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
+    peak = detPeakValues[this->spreadingFactor - 5];
+  }
+
+  uint8_t min = detMin;
+  if(min == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
+    min = 10;
+  }
+
+  uint8_t mode = exitMode; 
+  if(mode == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
+    mode = RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK;
+  }
+
+  uint32_t timeout_raw = (float)timeout / 30.52f;
+
+  //! \TODO: [LR2021] The datasheet says this CAD is only based on RSSI, but the reference to the LoRa CAD is GetLoraRxStats ...?
+  (void)peak;
+  (void)min;
+
+  // set CAD parameters
+  //! \TODO: [LR2021] add configurable exit mode and timeout
+  state = setCadParams(timeout_raw, num, mode, timeout_raw);
+  RADIOLIB_ASSERT(state);
+
+  // start CAD
+  return(setCad());
 }
 
 #endif

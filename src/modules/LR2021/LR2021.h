@@ -22,7 +22,7 @@
   \class LR2021
   \brief 
 */
-class LR2021: public PhysicalLayer, public LRxxxx {
+class LR2021: public LRxxxx {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -36,6 +36,11 @@ class LR2021: public PhysicalLayer, public LRxxxx {
       \param mod Instance of Module that will be used to communicate with the radio.
     */
     LR2021(Module* mod); // cppcheck-suppress noExplicitConstructor
+
+    /*!
+      \brief Which DIO pin is to be used as the interrupt pin.
+    */
+    uint32_t irqDioNum = 5;
 
     // basic methods
 
@@ -57,6 +62,54 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
 
     /*!
+      \brief Blocking binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+      \param data Binary data to be sent.
+      \param len Number of bytes to send.
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+      \returns \ref status_codes
+    */
+    int16_t transmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
+
+    /*!
+      \brief Blocking binary receive method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+      \param data Pointer to array to save the received binary data.
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param timeout Reception timeout in milliseconds. If set to 0,
+      timeout period will be calculated automatically based on the radio configuration.
+      \returns \ref status_codes
+    */
+    int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
+
+    /*!
+      \brief Starts direct mode transmission.
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+      \returns \ref status_codes
+    */
+    int16_t transmitDirect(uint32_t frf = 0) override;
+
+    /*!
+      \brief Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as LR2021 does not support direct mode reception.
+      Will always return RADIOLIB_ERR_UNKNOWN.
+      \returns \ref status_codes
+    */
+    int16_t receiveDirect() override;
+
+    /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel() override;
+
+    /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \param config CAD configuration structure.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel(const ChannelScanConfig_t &config) override;
+
+    /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
       \returns \ref status_codes
     */
@@ -71,8 +124,81 @@ class LR2021: public PhysicalLayer, public LRxxxx {
     */
     int16_t standby(uint8_t mode, bool wakeup = true);
 
-    int16_t sleep();
-    int16_t sleep(uint8_t cfg, uint32_t time);
+    /*!
+      \brief Sets the module to sleep mode. To wake the device up, call standby().
+      Overload with warm start enabled for PhysicalLayer compatibility.
+      \returns \ref status_codes
+    */
+    int16_t sleep() override;
+
+    /*!
+      \brief Sets the module to sleep mode. To wake the device up, call standby().
+      \param retainConfig Set to true to retain configuration of the currently active modem ("warm start")
+      or to false to discard current configuration ("cold start"). Defaults to true.
+      \param sleepTime Sleep duration (enables automatic wakeup), in multiples of 30.52 us. Ignored if set to 0.
+      \returns \ref status_codes
+    */
+    int16_t sleep(bool retainConfig, uint32_t sleepTime);
+
+    /*!
+      \brief Query modem for the packet length of received payload.
+      \param update Update received packet length. Will return cached value when set to false.
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update = true) override;
+
+    // interrupt methods
+
+    /*!
+      \brief Clean up after transmission is done.
+      \returns \ref status_codes
+    */
+    int16_t finishTransmit() override;
+
+    /*!
+      \brief Interrupt-driven receive method with default parameters.
+      Implemented for compatibility with PhysicalLayer.
+
+      \returns \ref status_codes
+    */
+    int16_t startReceive() override;
+
+    /*!
+      \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
+      getPacketLength method must be called BEFORE calling readData!
+      \param data Pointer to array to save the received binary data.
+      \param len Number of bytes that will be read. When set to 0, the packet length will be retrieved automatically.
+      When more bytes than received are requested, only the number of bytes requested will be returned.
+      \returns \ref status_codes
+    */
+    int16_t readData(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Clean up after reception is done.
+      \returns \ref status_codes
+    */
+    int16_t finishReceive() override;
+    
+    /*!
+      \brief Interrupt-driven channel activity detection method. IRQ1 will be activated
+      when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan() override;
+
+    /*!
+      \brief Interrupt-driven channel activity detection method. IRQ pin will be activated
+      when LoRa preamble is detected, or upon timeout.
+      \param config CAD configuration structure.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+
+    /*!
+      \brief Read the channel scan result
+      \returns \ref status_codes
+    */
+    int16_t getChannelScanResult() override;
     
     // configuration methods
 
@@ -159,6 +285,7 @@ class LR2021: public PhysicalLayer, public LRxxxx {
 
     bool findChip(void);
     int16_t config(uint8_t modem);
+    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
