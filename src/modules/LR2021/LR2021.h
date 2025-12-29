@@ -203,6 +203,56 @@ class LR2021: public LRxxxx {
     // configuration methods
 
     /*!
+      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz,
+      1900 - 2200 MHz and 2400 - 2500 MHz.
+      Will automatically perform image calibration if the frequency changes by
+      more than RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG MHz.
+      NOTE: When switching between sub-GHz and high-frequency bands, after changing the frequency,
+      setOutputPower() must be called in order to set the correct power amplifier!
+      \param freq Carrier frequency to be set in MHz.
+      \returns \ref status_codes
+    */
+    int16_t setFrequency(float freq) override;
+
+    /*!
+      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz,
+      1900 - 2200 MHz and 2400 - 2500 MHz.
+      Will automatically perform image calibration if the frequency changes by
+      more than RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG MHz.
+      NOTE: When switching between sub-GHz and high-frequency bands, after changing the frequency,
+      setOutputPower() must be called in order to set the correct power amplifier!
+      \param freq Carrier frequency to be set in MHz.
+      \param skipCalibration Skip automated image calibration.
+      \returns \ref status_codes
+    */
+    int16_t setFrequency(float freq, bool skipCalibration);
+
+    /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (sub-GHz PA) or -19 to 12 dBm (high-frequency PA).
+      \param power Output power to be set in dBm.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power) override;
+
+    /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (sub-GHz PA) or -19 to 12 dBm (high-frequency PA).
+      \param power Output power to be set in dBm.
+      \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
+      nearest discrete ramp time supported by the PA.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power, uint32_t rampTimeUs);
+
+    /*!
+      \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, PA will be determined automatically.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
       \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
       101.56, 203.13, 250.0, 406.25, 500.0 kHz, 812.5 kHz and 1000.0 kHz.
       \param bw LoRa bandwidth to be set in kHz.
@@ -282,6 +332,9 @@ class LR2021: public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
+    // flag to determine whether we are in the sub-GHz or 2.4 GHz range
+    // this is needed to automatically detect which PA to use
+    bool highFreq = false;
 
     bool findChip(void);
     int16_t config(uint8_t modem);

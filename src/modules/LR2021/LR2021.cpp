@@ -52,6 +52,9 @@ int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
   state = setBandwidth(bw);
   RADIOLIB_ASSERT(state);
 
@@ -62,6 +65,9 @@ int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   RADIOLIB_ASSERT(state);
 
   state = setSyncWord(syncWord);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);

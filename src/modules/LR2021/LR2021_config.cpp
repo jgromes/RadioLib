@@ -6,6 +6,79 @@
 
 #if !RADIOLIB_EXCLUDE_LR2021
 
+int16_t LR2021::setFrequency(float freq) {
+  return(this->setFrequency(freq, false));
+}
+
+int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
+  #if RADIOLIB_CHECK_PARAMS
+  if(!(((freq >= 150.0f) && (freq <= 960.0f)) ||
+    ((freq >= 1900.0f) && (freq <= 2200.0f)) ||
+    ((freq >= 2400.0f) && (freq <= 2500.0f)))) {
+      return(RADIOLIB_ERR_INVALID_FREQUENCY);
+  }
+  #endif
+
+  // check if we need to recalibrate image
+  int16_t state;
+  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG_MHZ)) {
+    // we do, get the nearest multiple of 4 MHz
+    uint16_t frequencies[3] = { (uint16_t)((freq / 4.0f) + 0.5f), 0, 0 };
+    frequencies[0] |= (freq > 1000.0f) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;
+    state = calibrateFrontEnd(frequencies);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // set frequency
+  state = setRfFrequency((uint32_t)(freq*1000000.0f));
+  RADIOLIB_ASSERT(state);
+  this->freqMHz = freq;
+  this->highFreq = (freq > 1000.0f);
+  return(state);
+}
+
+int16_t LR2021::setOutputPower(int8_t power) {
+  return(this->setOutputPower(power, false));
+}
+
+int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
+  // check if power value is configurable
+  int16_t state = this->checkOutputPower(power, NULL);
+  RADIOLIB_ASSERT(state);
+  
+  //! \TODO: [LR2021] how and when to configure OCP?
+  //! \TODO: [LR2021] Determine the optimal PA configuration
+  // update PA config
+  state = setPaConfig(this->highFreq, 
+    RADIOLIB_LR2021_PA_LF_MODE_FSM, 
+    RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED, 
+    RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, 
+    RADIOLIB_LR2021_PA_HF_DUTY_CYCLE_UNUSED);
+  RADIOLIB_ASSERT(state);
+
+  // set output power
+  state = setTxParams(power, roundRampTime(rampTimeUs));
+  return(state);
+}
+
+int16_t LR2021::checkOutputPower(int8_t power, int8_t* clipped) {
+  if(this->highFreq) {
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-19, RADIOLIB_MIN(12, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -19, 12, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+
+  } else {
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+
+  }
+  
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LR2021::setBandwidth(float bw) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;

@@ -233,6 +233,7 @@
 // RADIOLIB_LR2021_CMD_CALIB_FRONT_END
 #define RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH                    (0x00UL << 15)  // 15    15     calibration path: low-frequency
 #define RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH                    (0x01UL << 15)  // 15    15                       high-frequency
+#define RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG_MHZ                   (20.0f)
 
 // RADIOLIB_LR2021_CMD_GET_V_BAT
 #define RADIOLIB_LR2021_VBAT_FORMAT_RAW                         (0x00UL << 3)   //  3     3     readout format: raw
