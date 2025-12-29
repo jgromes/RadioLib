@@ -88,14 +88,14 @@
 #define RADIOLIB_LR2021_CMD_GET_RANGING_STATS                   (0x027D)
 #define RADIOLIB_LR2021_CMD_SET_RANGING_TX_RX_DELAY             (0x027B)
 #define RADIOLIB_LR2021_CMD_SET_RANGING_PARAMS                  (0x027C)
-#define RADIOLIB_LR2021_CMD_SET_FSK_MODULATION_PARAMS           (0x0240)
-#define RADIOLIB_LR2021_CMD_SET_FSK_PACKET_PARAMS               (0x0241)
-#define RADIOLIB_LR2021_CMD_SET_FSK_WHITENING_PARAMS            (0x0242)
-#define RADIOLIB_LR2021_CMD_SET_FSK_CRC_PARAMS                  (0x0243)
-#define RADIOLIB_LR2021_CMD_SET_FSK_SYNCWORD                    (0x0244)
-#define RADIOLIB_LR2021_CMD_SET_FSK_ADDRESS                     (0x0245)
-#define RADIOLIB_LR2021_CMD_GET_FSK_RX_STATS                    (0x0246)
-#define RADIOLIB_LR2021_CMD_GET_FSK_PACKET_STATUS               (0x0247)
+#define RADIOLIB_LR2021_CMD_SET_GFSK_MODULATION_PARAMS          (0x0240)
+#define RADIOLIB_LR2021_CMD_SET_GFSK_PACKET_PARAMS              (0x0241)
+#define RADIOLIB_LR2021_CMD_SET_GFSK_WHITENING_PARAMS           (0x0242)
+#define RADIOLIB_LR2021_CMD_SET_GFSK_CRC_PARAMS                 (0x0243)
+#define RADIOLIB_LR2021_CMD_SET_GFSK_SYNCWORD                   (0x0244)
+#define RADIOLIB_LR2021_CMD_SET_GFSK_ADDRESS                    (0x0245)
+#define RADIOLIB_LR2021_CMD_GET_GFSK_RX_STATS                   (0x0246)
+#define RADIOLIB_LR2021_CMD_GET_GFSK_PACKET_STATUS              (0x0247)
 #define RADIOLIB_LR2021_CMD_SET_WMBUS_PARAMS                    (0x026A)
 #define RADIOLIB_LR2021_CMD_GET_WMBUS_RX_STATS                  (0x026C)
 #define RADIOLIB_LR2021_CMD_GET_WMBUS_PACKET_STATUS             (0x026D)
@@ -333,7 +333,7 @@
 
 // RADIOLIB_LR2021_CMD_SET_PACKET_TYPE
 #define RADIOLIB_LR2021_PACKET_TYPE_LORA                        (0x00UL << 0)   //  7     0     packet type: LoRa
-#define RADIOLIB_LR2021_PACKET_TYPE_FSK                         (0x02UL << 0)   //  7     0                  FSK
+#define RADIOLIB_LR2021_PACKET_TYPE_GFSK                        (0x02UL << 0)   //  7     0                  FSK
 #define RADIOLIB_LR2021_PACKET_TYPE_BLE                         (0x03UL << 0)   //  7     0                  BLE
 #define RADIOLIB_LR2021_PACKET_TYPE_RTTOF                       (0x04UL << 0)   //  7     0                  RTToF
 #define RADIOLIB_LR2021_PACKET_TYPE_FLRC                        (0x05UL << 0)   //  7     0                  FLRC
@@ -400,7 +400,7 @@
 #define RADIOLIB_LR2021_RANGING_RESULT_TYPE_RAW_EXT             (0x01UL << 0)   //  7     0                          extended raw
 #define RADIOLIB_LR2021_RANGING_RESULT_TYPE_GAINS               (0x02UL << 0)   //  7     0                          AGC gain steps
 
-// RADIOLIB_LR2021_CMD_SET_FSK_MODULATION_PARAMS
+// RADIOLIB_LR2021_CMD_SET_GFSK_MODULATION_PARAMS
 #define RADIOLIB_LR2021_GFSK_BPSK_OOK_BITRATE_BPS               (0x00UL << 31)  //  7     0     bitrate units: bits per second
 #define RADIOLIB_LR2021_GFSK_BPSK_OOK_BITRATE_FRACTIONAL        (0x01UL << 31)  //  7     0                    fractional (1/256 bps)
 #define RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_NONE             (0x00UL << 0)   //  7     0     shaping filter: none
@@ -443,7 +443,7 @@
 #define RADIOLIB_LR2021_GFSK_OOK_RX_BW_2666                     (128)           //  7     0                        2667 kHz
 #define RADIOLIB_LR2021_GFSK_OOK_RX_BW_3076                     (0)             //  7     0                        3077 kHz
 
-// RADIOLIB_LR2021_CMD_SET_FSK_PACKET_PARAMS
+// RADIOLIB_LR2021_CMD_SET_GFSK_PACKET_PARAMS
 #define RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_DISABLED             (0x00UL << 0)   //  7     0     address filtering: disabled
 #define RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE                 (0x01UL << 0)   //  7     0                        node only
 #define RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE_BROADCAST       (0x02UL << 0)   //  7     0                        node and broadcast
@@ -461,7 +461,7 @@
 #define RADIOLIB_LR2021_GFSK_OOK_CRC24_INV                      (0x0BUL << 0)   //  7     0          3-byte, inverted
 #define RADIOLIB_LR2021_GFSK_OOK_CRC32_INV                      (0x0CUL << 0)   //  7     0          4-byte, inverted
 
-// RADIOLIB_LR2021_CMD_SET_FSK_WHITENING_PARAMS
+// RADIOLIB_LR2021_CMD_SET_GFSK_WHITENING_PARAMS
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX       (0x00UL << 0)   //  7     0     whitening type: compatible with SX126x and LR2021
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX128X              (0x01UL << 0)   //  7     0                     compatible with SX128x
 

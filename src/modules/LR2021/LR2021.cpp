@@ -113,7 +113,7 @@ int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     // calculate timeout (150% of expected time-on-air)
     timeout = (timeout * 3) / 2;
 
-  } else if((modem == RADIOLIB_LR2021_PACKET_TYPE_FSK) || (modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS)) {
+  } else if((modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || (modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS)) {
     // calculate timeout (500% of expected time-on-air)
     timeout = timeout * 5;
 
@@ -156,7 +156,7 @@ int16_t LR2021::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
     state = getPacketType(&modem);
     RADIOLIB_ASSERT(state);
-    if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR2021_PACKET_TYPE_FSK)) {
+    if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
       // calculate timeout (500 % of expected time-one-air)
       size_t maxLen = len;
       if(len == 0) { maxLen = RADIOLIB_LR2021_MAX_PACKET_LENGTH; }
@@ -333,7 +333,7 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
   if((modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR2021_PACKET_TYPE_FSK)) {
+     (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 

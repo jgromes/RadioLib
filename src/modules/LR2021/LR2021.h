@@ -428,14 +428,14 @@ class LR2021: public LRxxxx {
     int16_t setRangingParams(bool spyMode, uint8_t nbSymbols);
 
     // GFSK commands
-    int16_t setFskModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
-    int16_t setFskPacketParams(uint16_t preambleLen, uint8_t preambleDetect, bool longPreamble, bool pldLenBits, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t dcFree);
-    int16_t setFskWhiteningParams(uint8_t whitenType, uint16_t init);
-    int16_t setFskCrcParams(uint32_t poly, uint32_t init);
-    int16_t setFskSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
-    int16_t setFskAddress(uint8_t addrNode, uint8_t addrBroadcast);
-    int16_t getFskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);
-    int16_t getFskPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
+    int16_t setGfskModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
+    int16_t setGfskPacketParams(uint16_t preambleLen, uint8_t preambleDetect, bool longPreamble, bool pldLenBits, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t dcFree);
+    int16_t setGfskWhiteningParams(uint8_t whitenType, uint16_t init);
+    int16_t setGfskCrcParams(uint32_t poly, uint32_t init);
+    int16_t setGfskSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
+    int16_t setGfskAddress(uint8_t addrNode, uint8_t addrBroadcast);
+    int16_t getGfskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);
+    int16_t getGfskPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
 
     // OQPSK commands
     int16_t setOqpskParams(uint8_t mode, uint8_t rxBw, uint8_t payloadLen, uint16_t preambleLen, bool addrFilt, bool fcsManual);
