@@ -330,27 +330,6 @@
 #define RADIOLIB_LR2021_PA_LF_SLICES_UNUSED                     (0x07UL << 0)   //  3     0     PA LF slices: PA not used
 #define RADIOLIB_LR2021_PA_HF_DUTY_CYCLE_UNUSED                 (0x10UL << 0)   //  4     0     PA HF duty cycle: PA not used
 
-// RADIOLIB_LR2021_CMD_SET_TX_PARAMS
-#define RADIOLIB_LR2021_RAMP_TIME_2_US                          (0x00UL << 0)   //  7     0     PA ramp time: 2 us
-#define RADIOLIB_LR2021_RAMP_TIME_4_US                          (0x01UL << 0)   //  7     0                   4 us
-#define RADIOLIB_LR2021_RAMP_TIME_8_US                          (0x02UL << 0)   //  7     0                   8 us
-#define RADIOLIB_LR2021_RAMP_TIME_16_US                         (0x03UL << 0)   //  7     0                   16 us
-#define RADIOLIB_LR2021_RAMP_TIME_32_US                         (0x04UL << 0)   //  7     0                   32 us
-#define RADIOLIB_LR2021_RAMP_TIME_48_US                         (0x05UL << 0)   //  7     0                   48 us
-#define RADIOLIB_LR2021_RAMP_TIME_64_US                         (0x06UL << 0)   //  7     0                   64 us
-#define RADIOLIB_LR2021_RAMP_TIME_80_US                         (0x07UL << 0)   //  7     0                   80 us
-#define RADIOLIB_LR2021_RAMP_TIME_96_US                         (0x08UL << 0)   //  7     0                   96 us
-#define RADIOLIB_LR2021_RAMP_TIME_112_US                        (0x09UL << 0)   //  7     0                   112 us
-#define RADIOLIB_LR2021_RAMP_TIME_128_US                        (0x0AUL << 0)   //  7     0                   128 us
-#define RADIOLIB_LR2021_RAMP_TIME_144_US                        (0x0BUL << 0)   //  7     0                   144 us
-#define RADIOLIB_LR2021_RAMP_TIME_160_US                        (0x0CUL << 0)   //  7     0                   160 us
-#define RADIOLIB_LR2021_RAMP_TIME_176_US                        (0x0DUL << 0)   //  7     0                   176 us
-#define RADIOLIB_LR2021_RAMP_TIME_192_US                        (0x0EUL << 0)   //  7     0                   192 us
-#define RADIOLIB_LR2021_RAMP_TIME_208_US                        (0x0FUL << 0)   //  7     0                   208 us
-#define RADIOLIB_LR2021_RAMP_TIME_240_US                        (0x10UL << 0)   //  7     0                   240 us
-#define RADIOLIB_LR2021_RAMP_TIME_272_US                        (0x11UL << 0)   //  7     0                   272 us
-#define RADIOLIB_LR2021_RAMP_TIME_304_US                        (0x12UL << 0)   //  7     0                   304 us
-
 // RADIOLIB_LR2021_CMD_SET_PACKET_TYPE
 #define RADIOLIB_LR2021_PACKET_TYPE_LORA                        (0x00UL << 0)   //  7     0     packet type: LoRa
 #define RADIOLIB_LR2021_PACKET_TYPE_FSK                         (0x02UL << 0)   //  7     0                  FSK

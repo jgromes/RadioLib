@@ -102,7 +102,8 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   RADIOLIB_ASSERT(state);
 
   // set output power
-  state = setTxParams(power, roundRampTime(rampTimeUs));
+  // the value returned by LRxxxx class is offset by 3 for LR11x0
+  state = setTxParams(power, roundRampTime(rampTimeUs) - 0x03);
   return(state);
 }
 

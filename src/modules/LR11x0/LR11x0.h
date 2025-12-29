@@ -738,14 +738,6 @@ class LR11x0: public LRxxxx {
 #endif
     Module* getMod() override;
 
-    // LR11x0 command helpers
-    /*!
-      \brief Round up a PA power ramp time to register value
-      \param rampTimeUs Ramp time in microseconds
-      \returns Register value of rounded ramp time
-    */
-    uint8_t roundRampTime(uint32_t rampTimeUs);
-
     // method that applies some magic workaround for specific bitrate, frequency deviation,
     // receiver bandwidth and carrier frequencies for GFSK (and resets it in all other cases)
     int16_t workaroundGFSK();
@@ -921,7 +913,6 @@ class LR11x0: public LRxxxx {
   protected:
 #endif
     uint8_t chipType = 0;
-    float freqMHz = 0;
 
 #if !RADIOLIB_GODMODE
   private:

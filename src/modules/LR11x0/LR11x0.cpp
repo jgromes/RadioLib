@@ -1657,47 +1657,6 @@ int16_t LR11x0::launchMode() {
   return(state);
 }
 
-uint8_t LR11x0::roundRampTime(uint32_t rampTimeUs) {
-  uint8_t regVal;
-
-  // Round up the ramp time to nearest discrete register value
-  if(rampTimeUs <= 16) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_16U;
-  } else if(rampTimeUs <= 32) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_32U;
-  } else if(rampTimeUs <= 48) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_48U;
-  } else if(rampTimeUs <= 64) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_64U;
-  } else if(rampTimeUs <= 80) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_80U;
-  } else if(rampTimeUs <= 96) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_96U;
-  } else if(rampTimeUs <= 112) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_112U;
-  } else if(rampTimeUs <= 128) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_128U;
-  } else if(rampTimeUs <= 144) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_144U;
-  } else if(rampTimeUs <= 160) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_160U;
-  } else if(rampTimeUs <= 176) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_176U;
-  } else if(rampTimeUs <= 192) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_192U;
-  } else if(rampTimeUs <= 208) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_208U;
-  } else if(rampTimeUs <= 240) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_240U;
-  } else if(rampTimeUs <= 272) {
-    regVal = RADIOLIB_LR11X0_PA_RAMP_272U;
-  } else {  // 304
-    regVal = RADIOLIB_LR11X0_PA_RAMP_304U;
-  }
-
-  return regVal;
-}
-
 int16_t LR11x0::workaroundGFSK() {
   // first, check we are using GFSK modem
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;

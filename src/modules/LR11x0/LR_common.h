@@ -53,6 +53,28 @@
 #define RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_0                        (0x06UL << 0)   //  2     0                          3.0V
 #define RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_3                        (0x07UL << 0)   //  2     0                          3.3V
 
+// RADIOLIB_LR11X0_CMD_SET_TX_PARAMS
+// RADIOLIB_LR2021_CMD_SET_TX_PARAMS
+#define RADIOLIB_LRXXXX_PA_RAMP_2U                              (0x00UL << 0)   //  7     0     PA ramp time: 2 us (LR2021 only)
+#define RADIOLIB_LRXXXX_PA_RAMP_4U                              (0x01UL << 0)   //  7     0                   4 us (LR2021 only)
+#define RADIOLIB_LRXXXX_PA_RAMP_8U                              (0x02UL << 0)   //  7     0                   8 us (LR2021 only)
+#define RADIOLIB_LRXXXX_PA_RAMP_16U                             (0x03UL << 0)   //  7     0                   16 us
+#define RADIOLIB_LRXXXX_PA_RAMP_32U                             (0x04UL << 0)   //  7     0                   32 us
+#define RADIOLIB_LRXXXX_PA_RAMP_48U                             (0x05UL << 0)   //  7     0                   48 us
+#define RADIOLIB_LRXXXX_PA_RAMP_64U                             (0x06UL << 0)   //  7     0                   64 us
+#define RADIOLIB_LRXXXX_PA_RAMP_80U                             (0x07UL << 0)   //  7     0                   80 us
+#define RADIOLIB_LRXXXX_PA_RAMP_96U                             (0x08UL << 0)   //  7     0                   96 us
+#define RADIOLIB_LRXXXX_PA_RAMP_112U                            (0x09UL << 0)   //  7     0                   112 us
+#define RADIOLIB_LRXXXX_PA_RAMP_128U                            (0x0AUL << 0)   //  7     0                   128 us
+#define RADIOLIB_LRXXXX_PA_RAMP_144U                            (0x0BUL << 0)   //  7     0                   144 us
+#define RADIOLIB_LRXXXX_PA_RAMP_160U                            (0x0CUL << 0)   //  7     0                   160 us
+#define RADIOLIB_LRXXXX_PA_RAMP_176U                            (0x0DUL << 0)   //  7     0                   176 us
+#define RADIOLIB_LRXXXX_PA_RAMP_192U                            (0x0EUL << 0)   //  7     0                   192 us
+#define RADIOLIB_LRXXXX_PA_RAMP_208U                            (0x0FUL << 0)   //  7     0                   208 us
+#define RADIOLIB_LRXXXX_PA_RAMP_240U                            (0x10UL << 0)   //  7     0                   240 us
+#define RADIOLIB_LRXXXX_PA_RAMP_272U                            (0x11UL << 0)   //  7     0                   272 us
+#define RADIOLIB_LRXXXX_PA_RAMP_304U                            (0x12UL << 0)   //  7     0                   304 us
+
 class LRxxxx: public PhysicalLayer {
   public:
     LRxxxx(Module* mod);
@@ -110,6 +132,7 @@ class LRxxxx: public PhysicalLayer {
   protected:
     Module* mod;
     
+    float freqMHz = 0;
     float dataRateMeasured = 0;
 
     // cached LoRa parameters
@@ -126,6 +149,7 @@ class LRxxxx: public PhysicalLayer {
     // for that reason, only the methods that are 100% the same are kept here
     int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
+    uint8_t roundRampTime(uint32_t rampTimeUs);
 
     // several commands just send unsigned 32-bit number
     int16_t setU32(uint16_t cmd, uint32_t u32);
