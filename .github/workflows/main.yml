@@ -257,7 +257,7 @@ jobs:
           rm -rf ~/esp
           mkdir -p ~/esp
           cd ~/esp
-          git clone --recursive https://github.com/espressif/esp-idf.git
+          git clone https://github.com/espressif/esp-idf.git
           cd esp-idf
           git checkout v5.4.3
           git submodule update --init --recursive
