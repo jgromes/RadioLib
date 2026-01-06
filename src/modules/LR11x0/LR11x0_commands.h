@@ -352,10 +352,16 @@
 #define RADIOLIB_LR11X0_PACKET_TYPE_BLE                         (0x06UL << 0)   //  2     0                  BLE beacon
 
 // RADIOLIB_LR11X0_CMD_SET_MODULATION_PARAMS
-#define RADIOLIB_LR11X0_LORA_BW_62_5                            (0x03UL << 0)   //  7     0     LoRa bandwidth: 62.5 kHz
+#define RADIOLIB_LR11X0_LORA_BW_7_8                             (0x00UL << 0)   //  7     0     LoRa bandwidth:  7.8  kHz
+#define RADIOLIB_LR11X0_LORA_BW_15_6                            (0x01UL << 0)   //  7     0                     15.6  kHz
+#define RADIOLIB_LR11X0_LORA_BW_31_25                           (0x02UL << 0)   //  7     0                     31.25 kHz
+#define RADIOLIB_LR11X0_LORA_BW_62_5                            (0x03UL << 0)   //  7     0                      62.5 kHz
 #define RADIOLIB_LR11X0_LORA_BW_125_0                           (0x04UL << 0)   //  7     0                     125.0 kHz
 #define RADIOLIB_LR11X0_LORA_BW_250_0                           (0x05UL << 0)   //  7     0                     250.0 kHz
 #define RADIOLIB_LR11X0_LORA_BW_500_0                           (0x06UL << 0)   //  7     0                     500.0 kHz
+#define RADIOLIB_LR11X0_LORA_BW_10_42                           (0x08UL << 0)   //  7     0                     10.42 kHz
+#define RADIOLIB_LR11X0_LORA_BW_20_83                           (0x09UL << 0)   //  7     0                     20.83 kHz
+#define RADIOLIB_LR11X0_LORA_BW_41_67                           (0x0AUL << 0)   //  7     0                     41.67 kHz
 #define RADIOLIB_LR11X0_LORA_BW_203_125                         (0x0DUL << 0)   //  7     0                     203.0 kHz (2.4GHz only)
 #define RADIOLIB_LR11X0_LORA_BW_406_25                          (0x0EUL << 0)   //  7     0                     406.0 kHz (2.4GHz only)
 #define RADIOLIB_LR11X0_LORA_BW_812_50                          (0x0FUL << 0)   //  7     0                     812.0 kHz (2.4GHz only)

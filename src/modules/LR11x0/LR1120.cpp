@@ -86,19 +86,23 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   RADIOLIB_ASSERT(state);
 
   // determine whether to use HP or LP PA and check range accordingly
-  uint8_t paSel = 0;
-  uint8_t paSupply = 0;
+  uint8_t paSel = RADIOLIB_LR11X0_PA_SEL_LP;
+  uint8_t paSupply = RADIOLIB_LR11X0_PA_SUPPLY_INTERNAL;
+  uint8_t paDutyCycle = 0x04;
+  uint8_t paHpSel = 0x07;
   if(this->highFreq) {
-    paSel = 2;
-  } else if(forceHighPower || (power > 14)) {
-    paSel = 1;
-    paSupply = 1;
+    paSel = RADIOLIB_LR11X0_PA_SEL_HF;
+    paDutyCycle = 0x00;
+    paHpSel = 0x00;
+  } else if(forceHighPower || (power > 10)) {
+    paSel = RADIOLIB_LR11X0_PA_SEL_HP;
+    paSupply = RADIOLIB_LR11X0_PA_SUPPLY_VBAT;
   }
   
   // TODO how and when to configure OCP?
 
   // update PA config - always use VBAT for high-power PA
-  state = setPaConfig(paSel, paSupply, 0x04, 0x07);
+  state = setPaConfig(paSel, paSupply, paDutyCycle, paHpSel);
   RADIOLIB_ASSERT(state);
 
   // set output power

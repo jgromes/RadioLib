@@ -572,38 +572,58 @@ int16_t LR11x0::setBandwidth(float bw, bool high) {
 
   // ensure byte conversion doesn't overflow
   if (high) {
-    RADIOLIB_CHECK_RANGE(bw, 203.125f, 815.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
-
-    if(fabsf(bw - 203.125f) <= 0.001f) {
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
-    } else if(fabsf(bw - 406.25f) <= 0.001f) {
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
-    } else if(fabsf(bw - 812.5f) <= 0.001f) {
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
-    } else {
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
-    }
+    RADIOLIB_CHECK_RANGE(bw, 0.0f, 815.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
   } else {
     RADIOLIB_CHECK_RANGE(bw, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
-    
-    // check allowed bandwidth values
-    uint8_t bw_div2 = bw / 2 + 0.01f;
-    switch (bw_div2)  {
-      case 31: // 62.5:
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
-        break;
-      case 62: // 125.0:
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_125_0;
-        break;
-      case 125: // 250.0
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_250_0;
-        break;
-      case 250: // 500.0
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_500_0;
-        break;
-      default:
+  }
+  // check allowed bandwidth values
+  uint8_t bw_div2 = bw / 2 + 0.01f;
+  switch (bw_div2)  {
+    case 3: // 7.8
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_7_8;
+      break;
+    case 5: // 10.42
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_10_42;
+      break;
+    case 7: // 15.6
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_15_6;
+      break;
+    case 10: // 20.83
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_20_83;
+      break;
+    case 15: // 31.25
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_31_25;
+      break;
+    case 20: // 41.67
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_41_67;
+      break;
+    case 31: // 62.5
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
+      break;
+    case 62: // 125.0
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_125_0;
+      break;
+    case 125: // 250.0
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_250_0;
+      break;
+    case 250: // 500.0
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_500_0;
+      break;
+    default:
+      if (high) {
+        if(fabsf(bw - 203.125f) <= 0.001f) {
+          this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
+        } else if(fabsf(bw - 406.25f) <= 0.001f) {
+          this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
+        } else if(fabsf(bw - 812.5f) <= 0.001f) {
+          this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
+        } else {
+          return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+        }
+      } else {
         return(RADIOLIB_ERR_INVALID_BANDWIDTH);
-    }
+      }
+      break;
   }
 
   // update modulation parameters
