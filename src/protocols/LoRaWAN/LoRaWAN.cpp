@@ -323,7 +323,8 @@ void LoRaWANNode::clearSession() {
   this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
   this->adrFCnt = 0;
 
-  // set Tx power limit
+  // reset Tx steps and power limit
+  this->txPowerSteps = 0;
   this->txPowerMax = this->band->powerMax;
 
   // clear CSMA settings
@@ -339,7 +340,11 @@ void LoRaWANNode::clearSession() {
   srand(this->phyLayer->random(INT32_MAX));
 
   // reset all channels
+  memset(this->channels, 0, sizeof(this->channels));
   memset(this->dynamicChannels, 0, sizeof(this->dynamicChannels));
+
+  // reset the JoinRequest datarate
+  this->channels[RADIOLIB_LORAWAN_UPLINK].dr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
 
   // reset Rx2 channel to default value
   this->channels[RADIOLIB_LORAWAN_RX2] = this->band->rx2;
@@ -361,19 +366,25 @@ void LoRaWANNode::createSession() {
   this->enableDefaultChannels();
 
   // set default MAC state
+  uint8_t cOcts[5];                       // 5 = maximum downlink payload length
 
   // set data rate and Tx power
-  uint8_t cOcts[5];                       // 5 = maximum downlink payload length
   uint8_t cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
   uint8_t cLen = 1;                       // only apply Dr/Tx field
-  uint8_t drUp;
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    drUp = (this->band->txFreqs[0].drMin + this->band->txFreqs[0].drMax + 1) / 2;
-  } else {                // RADIOLIB_LORAWAN_BAND_FIXED
-    drUp = (this->band->txSpans[0].drMin + this->band->txSpans[0].drMin + 1) / 2;
+
+  // DR and TxPower may have been configured before creating session, 
+  // otherwise they are default values (see ::clearSession)
+  uint8_t drUp = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;  
+  if(drUp == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+    if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
+      drUp = (this->band->txFreqs[0].drMin + this->band->txFreqs[0].drMax + 1) / 2;
+    } else {                // RADIOLIB_LORAWAN_BAND_FIXED
+      drUp = (this->band->txSpans[0].drMin + this->band->txSpans[0].drMin + 1) / 2;
+    }
   }
-  cOcts[0]  = (drUp << 4);                // set requested datarate
-  cOcts[0] |= 0x00;                       // set maximum Tx power
+  uint8_t txSteps = this->txPowerSteps;
+  cOcts[0]  = (drUp << 4);
+  cOcts[0] |= txSteps;
   (void)execMacCommand(cid, cOcts, cLen);
 
   // set maximum dutycycle
@@ -3024,6 +3035,10 @@ void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t di
 }
 
 int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
+  // if called before activation, already create a session
+  if(this->sessionStatus == RADIOLIB_LORAWAN_SESSION_NONE) {
+    this->createSession();
+  }
   uint8_t cOcts[1];
   uint8_t cAck[1];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
@@ -3042,6 +3057,10 @@ int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
 }
 
 int16_t LoRaWANNode::setTxPower(int8_t txPower) {
+  // if called before activation, already create a session
+  if(this->sessionStatus == RADIOLIB_LORAWAN_SESSION_NONE) {
+    this->createSession();
+  }
   // only allow values within the band's (or MAC state) maximum
   if(txPower > this->txPowerMax) {
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
