@@ -47,6 +47,7 @@ var hierarchy =
     ] ],
     [ "PacketConfig_t", "union_packet_config__t.html", null ],
     [ "PagerClient", "class_pager_client.html", null ],
+    [ "paTableEntry_t", "structpa_table_entry__t.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
       [ "ExternalRadio", "class_external_radio.html", null ],

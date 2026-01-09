@@ -9,5 +9,6 @@ var class_s_x1262 =
     [ "setFrequency", "class_s_x1262.html#a2122feee1a3bffaaa20e85b24dc8a899", null ],
     [ "setFrequency", "class_s_x1262.html#a87e496bf7f1ac2857e3f67438ea754db", null ],
     [ "setModem", "class_s_x1262.html#a7cdbfc39c779b3846aa5fd04d50d3eb8", null ],
-    [ "setOutputPower", "class_s_x1262.html#aa455a7f0e69abdcca55cf35388d9dc52", null ]
+    [ "setOutputPower", "class_s_x1262.html#aa455a7f0e69abdcca55cf35388d9dc52", null ],
+    [ "setOutputPower", "class_s_x1262.html#aeeb2efcadb9db21652f9b72294ddff54", null ]
 ];

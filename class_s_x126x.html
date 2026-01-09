@@ -119,6 +119,9 @@ Inheritance diagram for SX126x:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:aa19e5eb2626259ff47415c050579f747" id="r_aa19e5eb2626259ff47415c050579f747"><td class="memItemLeft" align="right" valign="top"><a id="aa19e5eb2626259ff47415c050579f747" name="aa19e5eb2626259ff47415c050579f747"></a>
+struct&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((packed)) <a class="el" href="structpa_table_entry__t.html">paTableEntry_t</a></td></tr>
+<tr class="separator:aa19e5eb2626259ff47415c050579f747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaca5a8fa8a3e634dd1b5b4c2bb5058d8" id="r_aaca5a8fa8a3e634dd1b5b4c2bb5058d8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aaca5a8fa8a3e634dd1b5b4c2bb5058d8">SX126x</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:aaca5a8fa8a3e634dd1b5b4c2bb5058d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:aaca5a8fa8a3e634dd1b5b4c2bb5058d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -405,6 +408,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>spectralScanAbort</b>
 <tr class="memitem:ad90a56cb55c5bb64037a0d412d84a80d" id="r_ad90a56cb55c5bb64037a0d412d84a80d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ad90a56cb55c5bb64037a0d412d84a80d">setPaRampTime</a> (uint8_t rampTime)</td></tr>
 <tr class="memdesc:ad90a56cb55c5bb64037a0d412d84a80d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set PA ramp-up time. Set to 200us by default.  <br /></td></tr>
 <tr class="separator:ad90a56cb55c5bb64037a0d412d84a80d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3836e4459046aef28fb6337fb58be3a9" id="r_a3836e4459046aef28fb6337fb58be3a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a3836e4459046aef28fb6337fb58be3a9">setOutputPower</a> (int8_t power, uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel)</td></tr>
+<tr class="memdesc:a3836e4459046aef28fb6337fb58be3a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm. This method allows user full control over PA configuration parameters. If you set incorrect PA configuration values, you can fail to reach the desired output power level or damage your device. Unless you can verify the output power, it is strongly advised to use SX1262::setOutputPower(power) or SX1268::setOutputPower(power).  <br /></td></tr>
+<tr class="separator:a3836e4459046aef28fb6337fb58be3a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2768,6 +2774,58 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
     <tr><td class="paramname">cr</td><td>LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values. </td></tr>
     <tr><td class="paramname">hdrCount</td><td>Header packet count, 1 - 4. Defaults to 3. </td></tr>
     <tr><td class="paramname">hopSeqId</td><td>9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3836e4459046aef28fb6337fb58be3a9" name="a3836e4459046aef28fb6337fb58be3a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3836e4459046aef28fb6337fb58be3a9">&#9670;&#160;</a></span>setOutputPower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::setOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>paDutyCycle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hpMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>deviceSel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets output power. Allowed values are in range from -9 to 22 dBm. This method allows user full control over PA configuration parameters. If you set incorrect PA configuration values, you can fail to reach the desired output power level or damage your device. Unless you can verify the output power, it is strongly advised to use SX1262::setOutputPower(power) or SX1268::setOutputPower(power). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power to be set in dBm. </td></tr>
+    <tr><td class="paramname">paDutyCycle</td><td>Raw PA duty cycle value. </td></tr>
+    <tr><td class="paramname">hpMax</td><td>Raw hpMax value. </td></tr>
+    <tr><td class="paramname">deviceSel</td><td>Device select. Use either RADIOLIB_SX126X_PA_CONFIG_SX1262 or RADIOLIB_SX126X_PA_CONFIG_SX1268. </td></tr>
   </table>
   </dd>
 </dl>

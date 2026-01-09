@@ -63,6 +63,7 @@ var class_s_x126x =
     [ "setFrequencyDeviation", "class_s_x126x.html#a7cd95a5f2e39ae8fb1a3040e77fa21a3", null ],
     [ "setIrqFlags", "class_s_x126x.html#a50e757c2a63e5c7da5b0d0d6c00f91b5", null ],
     [ "setLrFhssConfig", "class_s_x126x.html#aa1e7777fc8237e2c9d933cd4b6304e28", null ],
+    [ "setOutputPower", "class_s_x126x.html#a3836e4459046aef28fb6337fb58be3a9", null ],
     [ "setPacketReceivedAction", "class_s_x126x.html#a7603aa60ae8d975eb262a4b7e2aed1d0", null ],
     [ "setPacketSentAction", "class_s_x126x.html#ac79f7ebab97ae91fff6933be3207c873", null ],
     [ "setPaConfig", "class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208", null ],
