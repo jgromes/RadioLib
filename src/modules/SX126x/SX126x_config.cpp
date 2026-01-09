@@ -711,8 +711,27 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
   uint8_t data = enable ? RADIOLIB_SX126X_DIO2_AS_RF_SWITCH : RADIOLIB_SX126X_DIO2_AS_IRQ;
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
 }
+
 int16_t SX126x::setPaRampTime(uint8_t rampTime) {
   return(this->setTxParams(this->pwr, rampTime));
+}
+
+int16_t SX126x::setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel) {
+  // get current OCP configuration
+  uint8_t ocp = 0;
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  RADIOLIB_ASSERT(state);
+
+  // set PA config
+  state = SX126x::setPaConfig(paDutyCycle, deviceSel, hpMax);
+  RADIOLIB_ASSERT(state);
+
+  // set output power with default 200us ramp
+  state = SX126x::setTxParams(power, RADIOLIB_SX126X_PA_RAMP_200U);
+  RADIOLIB_ASSERT(state);
+
+  // restore OCP configuration
+  return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
 
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
