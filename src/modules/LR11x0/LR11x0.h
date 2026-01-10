@@ -594,6 +594,26 @@ class LR11x0: public PhysicalLayer {
     */
     int16_t setRxBoostedGainMode(bool en);
 
+    /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA),
+      -17 to 14 dBm (low-power PA) and -18 to 13 dBm (high-frequency PA).
+      This method allows user full control over PA configuration parameters.
+      If you set incorrect PA configuration values, you can fail to reach the
+      desired output power level or damage your device.
+      Unless you can verify the output power, it is strongly advised to use
+      LR1110::setOutputPower(power) or LR1120::setOutputPower(power).
+      \param power Output power to be set in dBm.
+      \param paSel PA selection, low-power, high-power or high-frequency. One of RADIOLIB_LR11X0_PA_SEL_* macros.
+      \param regPaSupply PA power source selection, internal regulator or VBAT. One of RADIOLIB_LR11X0_PA_SUPPLY_* macros.
+      Must be set to RADIOLIB_LR11X0_PA_SUPPLY_VBAT when output power is more than 14 dBm.
+      \param paDutyCycle PA duty cycle.
+      \param paHpSel High-power PA size control.
+      \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
+      nearest discrete ramp time supported by the PA. Defaults to 48 us.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint32_t rampTimeUs = 48);
+
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 

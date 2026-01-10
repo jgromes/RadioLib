@@ -1402,6 +1402,16 @@ int16_t LR11x0::setRxBoostedGainMode(bool en) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RX_BOOSTED, true, buff, sizeof(buff)));
 }
 
+int16_t LR11x0::setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint32_t rampTimeUs) {
+  // set PA config
+  int16_t state = setPaConfig(paSel, regPaSupply, paDutyCycle, paHpSel);
+  RADIOLIB_ASSERT(state);
+
+  // set output power
+  state = setTxParams(power, roundRampTime(rampTimeUs));
+  return(state);
+}
+
 void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   // find which pins are used
   uint8_t enable = 0;

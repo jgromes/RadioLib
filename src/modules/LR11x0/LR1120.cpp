@@ -97,12 +97,8 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   
   // TODO how and when to configure OCP?
 
-  // update PA config - always use VBAT for high-power PA
-  state = setPaConfig(paSel, paSupply, 0x04, 0x07);
-  RADIOLIB_ASSERT(state);
-
-  // set output power
-  state = setTxParams(power, roundRampTime(rampTimeUs));
+  // update PA config and set output power - always use VBAT for high-power PA
+  state = LR11x0::setOutputPower(power, paSel, paSupply, 0x04, 0x07, rampTimeUs);
   return(state);
 }
 
