@@ -77,6 +77,7 @@ var class_l_r11x0 =
     [ "setIrqFlags", "class_l_r11x0.html#a62c715ab18ea8a2e08a2791d3e764ee9", null ],
     [ "setLrFhssConfig", "class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35", null ],
     [ "setNodeAddress", "class_l_r11x0.html#a605f5c74ce523abad256866abe133d2e", null ],
+    [ "setOutputPower", "class_l_r11x0.html#adaedd226eff954dfc80dd2d5c9856301", null ],
     [ "setPacketReceivedAction", "class_l_r11x0.html#ac2a8ece736198c966e3870dac09f4e87", null ],
     [ "setPacketSentAction", "class_l_r11x0.html#a92299e41f839590008b4e344776838a1", null ],
     [ "setPreambleLength", "class_l_r11x0.html#aa5d7ae65666f8f9abcb7e9b169884a4a", null ],

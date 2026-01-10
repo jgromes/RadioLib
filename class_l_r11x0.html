@@ -349,6 +349,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memitem:ab0cf34cc0b67484fbf0f258bff7e9a9a" id="r_ab0cf34cc0b67484fbf0f258bff7e9a9a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a">setRxBoostedGainMode</a> (bool en)</td></tr>
 <tr class="memdesc:ab0cf34cc0b67484fbf0f258bff7e9a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption).  <br /></td></tr>
 <tr class="separator:ab0cf34cc0b67484fbf0f258bff7e9a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaedd226eff954dfc80dd2d5c9856301" id="r_adaedd226eff954dfc80dd2d5c9856301"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#adaedd226eff954dfc80dd2d5c9856301">setOutputPower</a> (int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint32_t rampTimeUs=48)</td></tr>
+<tr class="memdesc:adaedd226eff954dfc80dd2d5c9856301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA) and -18 to 13 dBm (high-frequency PA). This method allows user full control over PA configuration parameters. If you set incorrect PA configuration values, you can fail to reach the desired output power level or damage your device. Unless you can verify the output power, it is strongly advised to use LR1110::setOutputPower(power) or LR1120::setOutputPower(power).  <br /></td></tr>
+<tr class="separator:adaedd226eff954dfc80dd2d5c9856301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1981f0dfceca2b6175a69530ea13d643" id="r_a1981f0dfceca2b6175a69530ea13d643"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1981f0dfceca2b6175a69530ea13d643">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
 <tr class="memdesc:a1981f0dfceca2b6175a69530ea13d643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.    <br /></td></tr>
 <tr class="separator:a1981f0dfceca2b6175a69530ea13d643"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2875,6 +2878,72 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nodeAddr</td><td>Node address to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="adaedd226eff954dfc80dd2d5c9856301" name="adaedd226eff954dfc80dd2d5c9856301"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaedd226eff954dfc80dd2d5c9856301">&#9670;&#160;</a></span>setOutputPower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>paSel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>regPaSupply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>paDutyCycle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>paHpSel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rampTimeUs</em> = <code>48</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA) and -18 to 13 dBm (high-frequency PA). This method allows user full control over PA configuration parameters. If you set incorrect PA configuration values, you can fail to reach the desired output power level or damage your device. Unless you can verify the output power, it is strongly advised to use LR1110::setOutputPower(power) or LR1120::setOutputPower(power). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power to be set in dBm. </td></tr>
+    <tr><td class="paramname">paSel</td><td>PA selection, low-power, high-power or high-frequency. One of RADIOLIB_LR11X0_PA_SEL_* macros. </td></tr>
+    <tr><td class="paramname">regPaSupply</td><td>PA power source selection, internal regulator or VBAT. One of RADIOLIB_LR11X0_PA_SUPPLY_* macros. Must be set to RADIOLIB_LR11X0_PA_SUPPLY_VBAT when output power is more than 14 dBm. </td></tr>
+    <tr><td class="paramname">paDutyCycle</td><td>PA duty cycle. </td></tr>
+    <tr><td class="paramname">paHpSel</td><td>High-power PA size control. </td></tr>
+    <tr><td class="paramname">rampTimeUs</td><td>PA power ramping time in microseconds. Provided value is rounded up to the nearest discrete ramp time supported by the PA. Defaults to 48 us. </td></tr>
   </table>
   </dd>
 </dl>
