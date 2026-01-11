@@ -149,44 +149,6 @@ class SX1262: public SX126x {
   private:
 #endif
 
-  // this is a lookup table for optimized PA configuration
-  // it was determined by testing in https://github.com/jgromes/RadioLib/issues/1628
-  // see also https://github.com/radiolib-org/power-tests
-  const SX126x::paTableEntry_t paOptTable[32] = {
-    { .paDutyCycle = 2, .hpMax = 2, .paVal = -5 },
-    { .paDutyCycle = 2, .hpMax = 1, .paVal = 0 },
-    { .paDutyCycle = 1, .hpMax = 1, .paVal = 3 },
-    { .paDutyCycle = 1, .hpMax = 2, .paVal = 0 },
-    { .paDutyCycle = 1, .hpMax = 1, .paVal = 6 },
-    { .paDutyCycle = 1, .hpMax = 2, .paVal = 3 },
-    { .paDutyCycle = 2, .hpMax = 2, .paVal = 2 },
-    { .paDutyCycle = 4, .hpMax = 1, .paVal = 6 },
-    { .paDutyCycle = 1, .hpMax = 1, .paVal = 11 },
-    { .paDutyCycle = 2, .hpMax = 1, .paVal = 11 },
-    { .paDutyCycle = 1, .hpMax = 1, .paVal = 14 },
-    { .paDutyCycle = 2, .hpMax = 1, .paVal = 14 },
-    { .paDutyCycle = 1, .hpMax = 1, .paVal = 20 },
-    { .paDutyCycle = 1, .hpMax = 1, .paVal = 22 },
-    { .paDutyCycle = 2, .hpMax = 2, .paVal = 11 },
-    { .paDutyCycle = 3, .hpMax = 1, .paVal = 21 },
-    { .paDutyCycle = 1, .hpMax = 2, .paVal = 17 },
-    { .paDutyCycle = 4, .hpMax = 2, .paVal = 13 },
-    { .paDutyCycle = 1, .hpMax = 2, .paVal = 20 },
-    { .paDutyCycle = 1, .hpMax = 2, .paVal = 22 },
-    { .paDutyCycle = 2, .hpMax = 2, .paVal = 21 },
-    { .paDutyCycle = 3, .hpMax = 2, .paVal = 21 },
-    { .paDutyCycle = 1, .hpMax = 4, .paVal = 19 },
-    { .paDutyCycle = 1, .hpMax = 4, .paVal = 20 },
-    { .paDutyCycle = 3, .hpMax = 3, .paVal = 20 },
-    { .paDutyCycle = 2, .hpMax = 5, .paVal = 19 },
-    { .paDutyCycle = 1, .hpMax = 6, .paVal = 22 },
-    { .paDutyCycle = 2, .hpMax = 5, .paVal = 22 },
-    { .paDutyCycle = 3, .hpMax = 5, .paVal = 22 },
-    { .paDutyCycle = 3, .hpMax = 6, .paVal = 22 },
-    { .paDutyCycle = 4, .hpMax = 6, .paVal = 22 },
-    { .paDutyCycle = 4, .hpMax = 7, .paVal = 22 },
-  };
-
 };
 
 #endif
