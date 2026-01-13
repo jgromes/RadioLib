@@ -40,6 +40,13 @@ uint32_t RadioLibHal::pinToInterrupt(uint32_t pin) {
   return(pin);
 }
 
+void RadioLibHal::pullUpDown(uint32_t pin, bool enable, bool up) {
+  // the default implementation does nothing
+  (void)pin;
+  (void)enable;
+  (void)up;
+}
+
 RadioLibTime_t rlb_time_us() {
   return(rlb_timestamp_hal == nullptr ? 0 : rlb_timestamp_hal->micros());
 }
