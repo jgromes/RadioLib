@@ -63,13 +63,12 @@ class PiHal : public RadioLibHal {
       }
 
       int result;
-      int flags = 0;
       switch(mode) {
         case PI_INPUT:
-          result = lgGpioClaimInput(_gpioHandle, 0, pin);
+          result = lgGpioClaimInput(_gpioHandle, LG_SET_PULL_UP, pin);
           break;
         case PI_OUTPUT:
-          result = lgGpioClaimOutput(_gpioHandle, flags, pin, LG_HIGH);
+          result = lgGpioClaimOutput(_gpioHandle, 0, pin, LG_HIGH);
           break;
         default:
           fprintf(stderr, "Unknown pinMode mode %" PRIu32 "\n", mode);
