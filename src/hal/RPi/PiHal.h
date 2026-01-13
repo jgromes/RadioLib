@@ -65,7 +65,7 @@ class PiHal : public RadioLibHal {
       int result;
       switch(mode) {
         case PI_INPUT:
-          result = lgGpioClaimInput(_gpioHandle, LG_SET_PULL_UP, pin);
+          result = lgGpioClaimInput(_gpioHandle, 0, pin);
           break;
         case PI_OUTPUT:
           result = lgGpioClaimOutput(_gpioHandle, 0, pin, LG_HIGH);
@@ -223,6 +223,17 @@ class PiHal : public RadioLibHal {
 
     void noTone(uint32_t pin) {
       lgTxPwm(_gpioHandle, pin, 0, 0, 0, 0);
+    }
+
+    void pullUpDown(uint32_t pin, bool enable, bool up) {
+      if(pin == RADIOLIB_NC) {
+        return;
+      }
+
+      int flags = enable ? (up ? LG_SET_PULL_UP : LG_SET_PULL_DOWN) : LG_SET_PULL_NONE;
+      int result = lgGpioClaimInput(_gpioHandle, flags, pin);
+      fprintf(stderr, "Could not claim pin %" PRIu32 " with flags %" PRIu32 ": %s\n",
+            pin, flags, lguErrorText(result));
     }
 
     // interrupt emulation

@@ -215,6 +215,14 @@ class RadioLibHal {
       \returns The interrupt number of a given pin.
     */
     virtual uint32_t pinToInterrupt(uint32_t pin);
+
+    /*!
+      \brief Enable or disable pull up or pull down for a specific pin.
+      \param pin Pin to change.
+      \param enable True to enable, false to disable.
+      \param up Pull direction, true for pull up, false for pull down.
+    */
+    virtual void pullUpDown(uint32_t pin, bool enable, bool up);
 };
 
 #endif
