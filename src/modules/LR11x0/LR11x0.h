@@ -558,11 +558,10 @@ class LR11x0: public LRxxxx {
       Must be set to RADIOLIB_LR11X0_PA_SUPPLY_VBAT when output power is more than 14 dBm.
       \param paDutyCycle PA duty cycle.
       \param paHpSel High-power PA size control.
-      \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
-      nearest discrete ramp time supported by the PA. Defaults to 48 us.
+      \param rampTime PA power ramping time raw value, one of RADIOLIB_LRXXXX_PA_RAMP_* macros.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint32_t rampTimeUs = 48);
+    int16_t setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint8_t rampTime);
 
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
