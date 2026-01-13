@@ -941,13 +941,8 @@ class LR11x0: public LRxxxx {
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
     uint16_t preambleLengthGFSK = 0;
 
-    // cached LR-FHSS parameters
-    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0, lrFhssGrid = 0;
-    uint16_t lrFhssHopSeq = 0;
-
     uint8_t wifiScanMode = 0;
     bool gnss = false;
-    uint32_t rxTimeout = 0;
 
     int16_t modSetup(float tcxoVoltage, uint8_t modem);
     bool findChip(uint8_t ver);

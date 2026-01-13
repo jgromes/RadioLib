@@ -193,6 +193,9 @@
 #define RADIOLIB_LR2021_RX_TIMEOUT_NONE                         (0x000000UL)    //  23    0     Rx timeout duration: no timeout (Rx single mode)
 #define RADIOLIB_LR2021_RX_TIMEOUT_INF                          (0xFFFFFFUL)    //  23    0                          infinite (Rx continuous mode)
 
+// RADIOLIB_LR2021_CMD_SET_TX
+#define RADIOLIB_LR2021_TX_TIMEOUT_NONE                         (0x000000UL)    //  23    0     disable Tx timeout
+
 // RADIOLIB_LR2021_CMD_SET_RX_TX_FALLBACK_MODE
 #define RADIOLIB_LR2021_FALLBACK_MODE_STBY_RC                   (0x01UL << 0)   //  1     0     fallback mode after Rx/Tx: standby with RC
 #define RADIOLIB_LR2021_FALLBACK_MODE_STBY_XOSC                 (0x02UL << 0)   //  1     0                                standby with XOSC

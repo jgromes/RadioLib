@@ -11,8 +11,8 @@ int16_t LR2021::readRadioRxFifo(uint8_t* data, size_t len) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_READ_RX_FIFO, false, data, len, NULL, 0));
 }
 
-int16_t LR2021::writeRadioTxFifo(uint8_t* data, size_t len) {
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_WRITE_TX_FIFO, true, data, len, NULL, 0));
+int16_t LR2021::writeRadioTxFifo(const uint8_t* data, size_t len) {
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_WRITE_TX_FIFO, true, const_cast<uint8_t*>(data), len, NULL, 0));
 }
 
 int16_t LR2021::writeRegMem32(uint32_t addr, const uint32_t* data, size_t len) {

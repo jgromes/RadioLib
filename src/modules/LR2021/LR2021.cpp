@@ -576,4 +576,126 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
   return(setCad());
 }
 
+int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
+  int16_t state;
+
+  switch(mode) {
+    case(RADIOLIB_RADIO_MODE_RX): {
+      // check active modem
+      uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+      state = getPacketType(&modem);
+      RADIOLIB_ASSERT(state);
+      if((modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) && 
+        (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
+        return(RADIOLIB_ERR_WRONG_MODEM);
+      }
+
+      // set DIO mapping
+      if(cfg->receive.timeout != RADIOLIB_LR2021_RX_TIMEOUT_INF) {
+        cfg->receive.irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
+      }
+      state = setDioIrqConfig(this->irqDioNum, getIrqMapped(cfg->receive.irqFlags & cfg->receive.irqMask));
+      RADIOLIB_ASSERT(state);
+
+      // clear interrupt flags
+      state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+      RADIOLIB_ASSERT(state);
+
+      // set implicit mode and expected len if applicable
+      if((this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR2021_PACKET_TYPE_LORA)) {
+        state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, this->invertIQEnabled);
+        RADIOLIB_ASSERT(state);
+      }
+
+      // if max(uint32_t) is used, revert to RxContinuous
+      if(cfg->receive.timeout == 0xFFFFFFFF) {
+        cfg->receive.timeout = 0xFFFFFF;
+      }
+      this->rxTimeout = cfg->receive.timeout;
+    } break;
+  
+    case(RADIOLIB_RADIO_MODE_TX): {
+      // check packet length
+      if(cfg->transmit.len > RADIOLIB_LR2021_MAX_PACKET_LENGTH) {
+        return(RADIOLIB_ERR_PACKET_TOO_LONG);
+      }
+
+      // maximum packet length is decreased by 1 when address filtering is active
+      //! \todo [LR2021] implement GFSK address filtering
+
+      // set packet Length
+      state = RADIOLIB_ERR_NONE;
+      uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+      state = getPacketType(&modem);
+      RADIOLIB_ASSERT(state);
+      if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+        state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, cfg->transmit.len, this->crcTypeLoRa, this->invertIQEnabled);
+      
+      } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+        //! \todo [LR2021] implement GFSK
+        //state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
+      
+      } else if(modem != RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
+        return(RADIOLIB_ERR_UNKNOWN);
+      
+      }
+      RADIOLIB_ASSERT(state);
+
+      // set DIO mapping
+      state = setDioIrqConfig(this->irqDioNum, RADIOLIB_LR2021_IRQ_TX_DONE | RADIOLIB_LR2021_IRQ_TIMEOUT);
+      RADIOLIB_ASSERT(state);
+
+      if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
+        // in LR-FHSS mode, the packet is built by the device
+        //! \todo [LR2021] add configurable LR-FHSS device offset
+        state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME, this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
+        RADIOLIB_ASSERT(state);
+
+      } else {
+        // write packet to buffer
+        state = writeRadioTxFifo(cfg->transmit.data, cfg->transmit.len);
+        RADIOLIB_ASSERT(state);
+
+      }
+
+      // clear interrupt flags
+      state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+      RADIOLIB_ASSERT(state);
+    } break;
+    
+    default:
+      return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  this->stagedMode = mode;
+  return(state);
+}
+
+int16_t LR2021::launchMode() {
+  int16_t state;
+  switch(this->stagedMode) {
+    case(RADIOLIB_RADIO_MODE_RX): {
+      this->mod->setRfSwitchState(Module::MODE_RX);
+      state = setRx(this->rxTimeout);
+    } break;
+  
+    case(RADIOLIB_RADIO_MODE_TX): {
+      this->mod->setRfSwitchState(Module::MODE_TX);
+      state = setTx(RADIOLIB_LR2021_TX_TIMEOUT_NONE);
+      RADIOLIB_ASSERT(state);
+
+      // wait for BUSY to go low (= PA ramp up done)
+      while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+        this->mod->hal->yield();
+      }
+    } break;
+    
+    default:
+      return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  this->stagedMode = RADIOLIB_RADIO_MODE_NONE;
+  return(state);
+}
+
 #endif

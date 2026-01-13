@@ -319,6 +319,12 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t invertIQ(bool enable) override;
+
+    /*! \copydoc PhysicalLayer::stageMode */
+    int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
+
+    /*! \copydoc PhysicalLayer::launchMode */
+    int16_t launchMode() override;
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -342,7 +348,7 @@ class LR2021: public LRxxxx {
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
-    int16_t writeRadioTxFifo(uint8_t* data, size_t len);
+    int16_t writeRadioTxFifo(const uint8_t* data, size_t len);
     int16_t writeRegMem32(uint32_t addr, const uint32_t* data, size_t len);
     int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);
     int16_t readRegMem32(uint32_t addr, uint32_t* data, size_t len);

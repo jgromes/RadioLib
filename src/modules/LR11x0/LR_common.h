@@ -134,6 +134,7 @@ class LRxxxx: public PhysicalLayer {
     
     float freqMHz = 0;
     float dataRateMeasured = 0;
+    uint32_t rxTimeout = 0;
 
     // cached LoRa parameters
     uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
@@ -142,6 +143,10 @@ class LRxxxx: public PhysicalLayer {
     bool ldroAuto = true;
     size_t implicitLen = 0;
     bool invertIQEnabled = false;
+
+    // cached LR-FHSS parameters
+    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0, lrFhssGrid = 0;
+    uint16_t lrFhssHopSeq = 0;
 
     // a lot of SPI commands have the same structure and arguments on both LR11xx as well as LR2021
     // the only difference is the 16-bit command code - however, having everything in this base class
