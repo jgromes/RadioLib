@@ -114,7 +114,7 @@ int16_t LR2021::setPacketType(uint8_t packetType) {
 }
 
 int16_t LR2021::getPacketType(uint8_t* packetType) {
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_TYPE, true, packetType, sizeof(uint8_t)));
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_TYPE, false, packetType, sizeof(uint8_t)));
 }
 
 #endif
