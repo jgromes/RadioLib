@@ -498,7 +498,9 @@ int16_t LR2021::config(uint8_t modem) {
   }
 
   // set the DIO to IRQ
-  state = this->setDioFunction(this->irqDioNum, RADIOLIB_LR2021_DIO_FUNCTION_IRQ, RADIOLIB_LR2021_DIO_SLEEP_PULL_NONE);
+  // DIO5 can only be pull up
+  uint8_t pull = this->irqDioNum == 5 ? RADIOLIB_LR2021_DIO_SLEEP_PULL_UP : RADIOLIB_LR2021_DIO_SLEEP_PULL_NONE;
+  state = this->setDioFunction(this->irqDioNum, RADIOLIB_LR2021_DIO_FUNCTION_IRQ, pull);
   RADIOLIB_ASSERT(state);
 
   // calibrate all blocks
