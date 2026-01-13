@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"group__status__codes.html#gabc695a4fae689e856ae6f618e334066f":[2,6,82],
+"group__status__codes.html#gabc97efb9f410af5c0a9c1e5f882e41d8":[2,6,43],
 "group__status__codes.html#gabf529b0d150265c071c2255cb45f9e4f":[2,6,79],
 "group__status__codes.html#gac0673e69b893d8f23e339f218d376a52":[2,6,63],
 "group__status__codes.html#gac1902fa5b8d5c9469dd9261880ba2957":[2,6,83],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "struct_module_1_1_rf_switch_mode__t.html#a694fecae172f868d8ca400319920ed66":[3,0,44,0,1],
 "struct_module_1_1_s_p_i_config__t.html":[3,0,44,1],
 "struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681":[3,0,44,1,5],
-"struct_module_1_1_s_p_i_config__t.html#a56ecc0b9c1207d655c581e90faa77bb5":[3,0,44,1,6],
-"struct_module_1_1_s_p_i_config__t.html#a57ecca17835380862426d3cf38561185":[3,0,44,1,1],
-"struct_module_1_1_s_p_i_config__t.html#a5b689d2722b8980a211a562ed394d23e":[3,0,44,1,4]
+"struct_module_1_1_s_p_i_config__t.html#a56ecc0b9c1207d655c581e90faa77bb5":[3,0,44,1,6]
 };

@@ -11,6 +11,7 @@ var class_pi_hal =
     [ "millis", "class_pi_hal.html#a162b953dbc7bb96be6d7ec037c4d465e", null ],
     [ "noTone", "class_pi_hal.html#a06ee4519e6226013798e03f303fe3941", null ],
     [ "pinMode", "class_pi_hal.html#ad2986ed862d4c429d6527bd54e472530", null ],
+    [ "pullUpDown", "class_pi_hal.html#abe295a4882df31ef795be8dd46ac782a", null ],
     [ "pulseIn", "class_pi_hal.html#a3350f8cc20008dbe69e7180599fb80ee", null ],
     [ "spiBegin", "class_pi_hal.html#a40d237c2f5f4ead26c39f33481b4d7e3", null ],
     [ "spiBeginTransaction", "class_pi_hal.html#ab8c97e2b1c42368793d48d08b815fd69", null ],

@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('_pi_hal_8h_source.html',''); initResiz
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordtype">int</span> result;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">switch</span>(mode) {</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">case</span> PI_INPUT:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>          result = lgGpioClaimInput(_gpioHandle, LG_SET_PULL_UP, pin);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>          result = lgGpioClaimInput(_gpioHandle, 0, pin);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>          <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">case</span> PI_OUTPUT:</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>          result = lgGpioClaimOutput(_gpioHandle, 0, pin, LG_HIGH);</div>
@@ -362,42 +362,55 @@ $(document).ready(function(){initNavTree('_pi_hal_8h_source.html',''); initResiz
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    }</div>
 </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="comment">// interrupt emulation</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordtype">bool</span> interruptEnabled[PI_MAX_USER_GPIO + 1];</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    uint32_t interruptModes[PI_MAX_USER_GPIO + 1];</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keyword">typedef</span> void (*RadioLibISR)(void);</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    RadioLibISR interruptCallbacks[PI_MAX_USER_GPIO + 1];</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="comment">// the HAL can contain any additional private members</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keyword">const</span> uint8_t _gpioDevice;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keyword">const</span> uint8_t _spiDevice;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _spiSpeed;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keyword">const</span> uint8_t _spiChannel;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordtype">int</span> _gpioHandle = -1;</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordtype">int</span> _spiHandle = -1;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>};</div>
+<div class="foldopen" id="foldopen00228" data-start="{" data-end="}">
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="class_pi_hal.html#abe295a4882df31ef795be8dd46ac782a">  228</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_pi_hal.html#abe295a4882df31ef795be8dd46ac782a">pullUpDown</a>(uint32_t pin, <span class="keywordtype">bool</span> enable, <span class="keywordtype">bool</span> up) {</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>      <span class="keywordflow">if</span>(pin == RADIOLIB_NC) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>      }</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      <span class="keywordtype">int</span> flags = enable ? (up ? LG_SET_PULL_UP : LG_SET_PULL_DOWN) : LG_SET_PULL_NONE;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>      <span class="keywordtype">int</span> result = lgGpioClaimInput(_gpioHandle, flags, pin);</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>      fprintf(stderr, <span class="stringliteral">&quot;Could not claim pin %&quot;</span> PRIu32 <span class="stringliteral">&quot; with flags %&quot;</span> PRIu32 <span class="stringliteral">&quot;: %s\n&quot;</span>,</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            pin, flags, lguErrorText(result));</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    }</div>
 </div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment">// this handler emulates interrupts</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="keyword">static</span> <span class="keywordtype">void</span> lgpioAlertHandler(<span class="keywordtype">int</span> num_alerts, lgGpioAlert_p alerts, <span class="keywordtype">void</span> *userdata) {</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="keywordflow">if</span>(!userdata)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="comment">// PiHal instance is passed via the user data</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <a class="code hl_class" href="class_pi_hal.html">PiHal</a>* hal = (<a class="code hl_class" href="class_pi_hal.html">PiHal</a>*)userdata;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="comment">// check the interrupt is enabled, the level matches and a callback exists</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="keywordflow">for</span>(lgGpioAlert_t *alert = alerts; alert &lt; (alerts + num_alerts); alert++) {</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">if</span>((hal-&gt;interruptEnabled[alert-&gt;report.gpio]) &amp;&amp;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>       (hal-&gt;interruptModes[alert-&gt;report.gpio] == alert-&gt;report.level) &amp;&amp;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>       (hal-&gt;interruptCallbacks[alert-&gt;report.gpio])) {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      hal-&gt;interruptCallbacks[alert-&gt;report.gpio]();</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  }</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>}</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="comment">// interrupt emulation</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordtype">bool</span> interruptEnabled[PI_MAX_USER_GPIO + 1];</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    uint32_t interruptModes[PI_MAX_USER_GPIO + 1];</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keyword">typedef</span> void (*RadioLibISR)(void);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    RadioLibISR interruptCallbacks[PI_MAX_USER_GPIO + 1];</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="comment">// the HAL can contain any additional private members</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keyword">const</span> uint8_t _gpioDevice;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keyword">const</span> uint8_t _spiDevice;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _spiSpeed;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keyword">const</span> uint8_t _spiChannel;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordtype">int</span> _gpioHandle = -1;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordtype">int</span> _spiHandle = -1;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>};</div>
+</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">// this handler emulates interrupts</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="keyword">static</span> <span class="keywordtype">void</span> lgpioAlertHandler(<span class="keywordtype">int</span> num_alerts, lgGpioAlert_p alerts, <span class="keywordtype">void</span> *userdata) {</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="keywordflow">if</span>(!userdata)</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="comment">// PiHal instance is passed via the user data</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <a class="code hl_class" href="class_pi_hal.html">PiHal</a>* hal = (<a class="code hl_class" href="class_pi_hal.html">PiHal</a>*)userdata;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="comment">// check the interrupt is enabled, the level matches and a callback exists</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordflow">for</span>(lgGpioAlert_t *alert = alerts; alert &lt; (alerts + num_alerts); alert++) {</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordflow">if</span>((hal-&gt;interruptEnabled[alert-&gt;report.gpio]) &amp;&amp;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>       (hal-&gt;interruptModes[alert-&gt;report.gpio] == alert-&gt;report.level) &amp;&amp;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>       (hal-&gt;interruptCallbacks[alert-&gt;report.gpio])) {</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      hal-&gt;interruptCallbacks[alert-&gt;report.gpio]();</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    }</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>}</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_pi_hal_html"><div class="ttname"><a href="class_pi_hal.html">PiHal</a></div><div class="ttdef"><b>Definition</b> PiHal.h:23</div></div>
 <div class="ttc" id="aclass_pi_hal_html_a06ee4519e6226013798e03f303fe3941"><div class="ttname"><a href="class_pi_hal.html#a06ee4519e6226013798e03f303fe3941">PiHal::noTone</a></div><div class="ttdeci">void noTone(uint32_t pin)</div><div class="ttdoc">Method to stop producing a tone.</div><div class="ttdef"><b>Definition</b> PiHal.h:224</div></div>
 <div class="ttc" id="aclass_pi_hal_html_a162b953dbc7bb96be6d7ec037c4d465e"><div class="ttname"><a href="class_pi_hal.html#a162b953dbc7bb96be6d7ec037c4d465e">PiHal::millis</a></div><div class="ttdeci">unsigned long millis() override</div><div class="ttdoc">Get number of milliseconds since start. Must be implemented by the platform-specific hardware abstrac...</div><div class="ttdef"><b>Definition</b> PiHal.h:166</div></div>
@@ -414,6 +427,7 @@ $(document).ready(function(){initNavTree('_pi_hal_8h_source.html',''); initResiz
 <div class="ttc" id="aclass_pi_hal_html_ab9a8fc4f0c7c5190db9d8770bc7d635e"><div class="ttname"><a href="class_pi_hal.html#ab9a8fc4f0c7c5190db9d8770bc7d635e">PiHal::digitalRead</a></div><div class="ttdeci">uint32_t digitalRead(uint32_t pin) override</div><div class="ttdoc">Digital read method. Must be implemented by the platform-specific hardware abstraction!</div><div class="ttdef"><b>Definition</b> PiHal.h:95</div></div>
 <div class="ttc" id="aclass_pi_hal_html_ab9ade61749459b508291d81e205ddacf"><div class="ttname"><a href="class_pi_hal.html#ab9ade61749459b508291d81e205ddacf">PiHal::delayMicroseconds</a></div><div class="ttdeci">void delayMicroseconds(unsigned long us) override</div><div class="ttdoc">Blocking microsecond wait function. Must be implemented by the platform-specific hardware abstraction...</div><div class="ttdef"><b>Definition</b> PiHal.h:153</div></div>
 <div class="ttc" id="aclass_pi_hal_html_abcd33b2d926e14d98ead593e3cded31f"><div class="ttname"><a href="class_pi_hal.html#abcd33b2d926e14d98ead593e3cded31f">PiHal::attachInterrupt</a></div><div class="ttdeci">void attachInterrupt(uint32_t interruptNum, void(*interruptCb)(void), uint32_t mode) override</div><div class="ttdoc">Method to attach function to an external interrupt. Must be implemented by the platform-specific hard...</div><div class="ttdef"><b>Definition</b> PiHal.h:107</div></div>
+<div class="ttc" id="aclass_pi_hal_html_abe295a4882df31ef795be8dd46ac782a"><div class="ttname"><a href="class_pi_hal.html#abe295a4882df31ef795be8dd46ac782a">PiHal::pullUpDown</a></div><div class="ttdeci">void pullUpDown(uint32_t pin, bool enable, bool up)</div><div class="ttdoc">Enable or disable pull up or pull down for a specific pin.</div><div class="ttdef"><b>Definition</b> PiHal.h:228</div></div>
 <div class="ttc" id="aclass_pi_hal_html_ad2986ed862d4c429d6527bd54e472530"><div class="ttname"><a href="class_pi_hal.html#ad2986ed862d4c429d6527bd54e472530">PiHal::pinMode</a></div><div class="ttdeci">void pinMode(uint32_t pin, uint32_t mode) override</div><div class="ttdoc">GPIO pin mode (input/output/...) configuration method. Must be implemented by the platform-specific h...</div><div class="ttdef"><b>Definition</b> PiHal.h:60</div></div>
 <div class="ttc" id="aclass_pi_hal_html_adf1482ac38f67d58e4d41e3e74323e5a"><div class="ttname"><a href="class_pi_hal.html#adf1482ac38f67d58e4d41e3e74323e5a">PiHal::delay</a></div><div class="ttdeci">void delay(unsigned long ms) override</div><div class="ttdoc">Blocking wait function. Must be implemented by the platform-specific hardware abstraction!</div><div class="ttdef"><b>Definition</b> PiHal.h:144</div></div>
 <div class="ttc" id="aclass_pi_hal_html_ae5821694030ae6364012be3a34ef584d"><div class="ttname"><a href="class_pi_hal.html#ae5821694030ae6364012be3a34ef584d">PiHal::term</a></div><div class="ttdeci">void term() override</div><div class="ttdoc">Module termination method. This will be called by all radio modules when the destructor is called....</div><div class="ttdef"><b>Definition</b> PiHal.h:49</div></div>

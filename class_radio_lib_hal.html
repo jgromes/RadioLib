@@ -184,6 +184,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~RadioLibHal</b> (
 <tr class="memitem:a300a47d4d43dbe0c624f6e5dc1cf7a00" id="r_a300a47d4d43dbe0c624f6e5dc1cf7a00"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00">pinToInterrupt</a> (uint32_t pin)</td></tr>
 <tr class="memdesc:a300a47d4d43dbe0c624f6e5dc1cf7a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to convert from pin number to interrupt number.  <br /></td></tr>
 <tr class="separator:a300a47d4d43dbe0c624f6e5dc1cf7a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae05c8c165f9c1a62249ee6a1f4cfa12f" id="r_ae05c8c165f9c1a62249ee6a1f4cfa12f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ae05c8c165f9c1a62249ee6a1f4cfa12f">pullUpDown</a> (uint32_t pin, bool enable, bool up)</td></tr>
+<tr class="memdesc:ae05c8c165f9c1a62249ee6a1f4cfa12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable pull up or pull down for a specific pin.  <br /></td></tr>
+<tr class="separator:ae05c8c165f9c1a62249ee6a1f4cfa12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -731,6 +734,60 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The interrupt number of a given pin. </dd></dl>
+
+</div>
+</div>
+<a id="ae05c8c165f9c1a62249ee6a1f4cfa12f" name="ae05c8c165f9c1a62249ee6a1f4cfa12f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae05c8c165f9c1a62249ee6a1f4cfa12f">&#9670;&#160;</a></span>pullUpDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RadioLibHal::pullUpDown </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>up</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable or disable pull up or pull down for a specific pin. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin to change. </td></tr>
+    <tr><td class="paramname">enable</td><td>True to enable, false to disable. </td></tr>
+    <tr><td class="paramname">up</td><td>Pull direction, true for pull up, false for pull down. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_pi_hal.html#abe295a4882df31ef795be8dd46ac782a">PiHal</a>.</p>
 
 </div>
 </div>

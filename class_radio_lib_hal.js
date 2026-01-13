@@ -14,6 +14,7 @@ var class_radio_lib_hal =
     [ "noTone", "class_radio_lib_hal.html#a6b5341c59728a1932e33216feee04ea5", null ],
     [ "pinMode", "class_radio_lib_hal.html#af01b4e5e01352b99ce4329c9f9f8433b", null ],
     [ "pinToInterrupt", "class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00", null ],
+    [ "pullUpDown", "class_radio_lib_hal.html#ae05c8c165f9c1a62249ee6a1f4cfa12f", null ],
     [ "pulseIn", "class_radio_lib_hal.html#a3f38db9475dcd0967d6dfe240b8695c9", null ],
     [ "spiBegin", "class_radio_lib_hal.html#aa1f8e5cd323e53ef9fa977734a05d030", null ],
     [ "spiBeginTransaction", "class_radio_lib_hal.html#abe787d5e556190eef2c63e1581235460", null ],

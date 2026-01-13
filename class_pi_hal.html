@@ -179,6 +179,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06ee4519e6226013798e03f303fe3941" id="r_a06ee4519e6226013798e03f303fe3941"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pi_hal.html#a06ee4519e6226013798e03f303fe3941">noTone</a> (uint32_t pin)</td></tr>
 <tr class="memdesc:a06ee4519e6226013798e03f303fe3941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to stop producing a tone.  <br /></td></tr>
 <tr class="separator:a06ee4519e6226013798e03f303fe3941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe295a4882df31ef795be8dd46ac782a" id="r_abe295a4882df31ef795be8dd46ac782a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pi_hal.html#abe295a4882df31ef795be8dd46ac782a">pullUpDown</a> (uint32_t pin, bool enable, bool up)</td></tr>
+<tr class="memdesc:abe295a4882df31ef795be8dd46ac782a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable pull up or pull down for a specific pin.  <br /></td></tr>
+<tr class="separator:abe295a4882df31ef795be8dd46ac782a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_radio_lib_hal"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_radio_lib_hal')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_radio_lib_hal.html">RadioLibHal</a></td></tr>
 <tr class="memitem:ae75a54271cb8bea37d32dd146b9c6513 inherit pub_methods_class_radio_lib_hal" id="r_ae75a54271cb8bea37d32dd146b9c6513"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ae75a54271cb8bea37d32dd146b9c6513">RadioLibHal</a> (const uint32_t input, const uint32_t output, const uint32_t low, const uint32_t high, const uint32_t rising, const uint32_t falling)</td></tr>
 <tr class="memdesc:ae75a54271cb8bea37d32dd146b9c6513 inherit pub_methods_class_radio_lib_hal"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
@@ -644,6 +647,60 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 </dl>
 
 <p>Implements <a class="el" href="class_radio_lib_hal.html#af01b4e5e01352b99ce4329c9f9f8433b">RadioLibHal</a>.</p>
+
+</div>
+</div>
+<a id="abe295a4882df31ef795be8dd46ac782a" name="abe295a4882df31ef795be8dd46ac782a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe295a4882df31ef795be8dd46ac782a">&#9670;&#160;</a></span>pullUpDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PiHal::pullUpDown </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>up</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable or disable pull up or pull down for a specific pin. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin to change. </td></tr>
+    <tr><td class="paramname">enable</td><td>True to enable, false to disable. </td></tr>
+    <tr><td class="paramname">up</td><td>Pull direction, true for pull up, false for pull down. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_radio_lib_hal.html#ae05c8c165f9c1a62249ee6a1f4cfa12f">RadioLibHal</a>.</p>
 
 </div>
 </div>
