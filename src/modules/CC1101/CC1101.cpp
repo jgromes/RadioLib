@@ -39,7 +39,7 @@ int16_t CC1101::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     this->mod->hal->yield();
 
     if(this->mod->hal->millis() - start > timeout) {
-      finishTransmit();
+      (void)finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
@@ -50,7 +50,7 @@ int16_t CC1101::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     this->mod->hal->yield();
 
     if(this->mod->hal->millis() - start > timeout) {
-      finishTransmit();
+      (void)finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
@@ -247,13 +247,13 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // Needs a bit more time for reliability
   RadioLibTime_t start = this->mod->hal->micros();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {
-    if(this->mod->hal->micros() - start > 800) {
+    if(this->mod->hal->micros() - start > 1600) {
       standby();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
-  // set GDO0 mapping only if we aren't refilling the FIFO
+  // set GDO2 mapping only if we aren't refilling the FIFO
   int16_t state = RADIOLIB_ERR_NONE;
   if(len <= RADIOLIB_CC1101_FIFO_SIZE) {
     state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 5, 0);
@@ -329,8 +329,9 @@ int16_t CC1101::finishTransmit() {
 
   // flush Tx FIFO
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
-
-  return(state);
+  
+  // reset GDO2 back to high-Z
+  return(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_HIGH_Z, 5, 0));
 }
 
 int16_t CC1101::startReceive() {
@@ -389,7 +390,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   // check if status bytes are enabled (default: RADIOLIB_CC1101_APPEND_STATUS_ON)
   bool isAppendStatus = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 2, 2) == RADIOLIB_CC1101_APPEND_STATUS_ON;
 
-  // If status byte is enabled at least 2 bytes (2 status bytes + any following packet) will remain in FIFO.
+  // if status byte is enabled at least 2 bytes (2 status bytes + any following packet) will remain in FIFO.
   int16_t state = RADIOLIB_ERR_NONE;
   if (isAppendStatus) {
     // read RSSI byte
@@ -409,18 +410,22 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   // clear internal flag so getPacketLength can return the new packet length
   this->packetLengthQueried = false;
 
-  // Flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
+  // flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
   if(SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
-    finishReceive();
+    (void)finishReceive();
   }
 
   return(state);
 }
 
 int16_t CC1101::finishReceive() {
+  // go to standby and flush the FIFO
   int16_t state = standby();
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
-  return(state);
+  RADIOLIB_ASSERT(state);
+
+  // reset GDO0 back to high-Z
+  return(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_HIGH_Z, 5, 0));
 }
 
 int16_t CC1101::setFrequency(float freq) {

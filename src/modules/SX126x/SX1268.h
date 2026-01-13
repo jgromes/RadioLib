@@ -120,6 +120,14 @@ class SX1268: public SX126x {
     int16_t setOutputPower(int8_t power) override;
 
     /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
+      \param power Output power to be set in dBm.
+      \param optimize Whether to use power-optimized PA configuration (true) or datasheet default (false).
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power, bool optimize);
+
+    /*!
       \brief Check if output power is configurable.
       \param power Output power in dBm.
       \param clipped Clipped output power value to what is possible within the module's range.

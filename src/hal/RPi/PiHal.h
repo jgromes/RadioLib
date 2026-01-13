@@ -63,13 +63,12 @@ class PiHal : public RadioLibHal {
       }
 
       int result;
-      int flags = 0;
       switch(mode) {
         case PI_INPUT:
-          result = lgGpioClaimInput(_gpioHandle, 0, pin);
+          result = lgGpioClaimInput(_gpioHandle, LG_SET_PULL_UP, pin);
           break;
         case PI_OUTPUT:
-          result = lgGpioClaimOutput(_gpioHandle, flags, pin, LG_HIGH);
+          result = lgGpioClaimOutput(_gpioHandle, 0, pin, LG_HIGH);
           break;
         default:
           fprintf(stderr, "Unknown pinMode mode %" PRIu32 "\n", mode);
@@ -119,8 +118,10 @@ class PiHal : public RadioLibHal {
 
       // enable emulated interrupt
       interruptEnabled[interruptNum] = true;
-      interruptModes[interruptNum] = mode;
       interruptCallbacks[interruptNum] = interruptCb;
+
+      // lpgio reports the value of level after an interrupt, not the actual direction
+      interruptModes[interruptNum] = (mode == this->GpioInterruptFalling) ? LG_LOW : LG_HIGH;
 
       lgGpioSetAlertsFunc(_gpioHandle, interruptNum, lgpioAlertHandler, (void *)this);
     }

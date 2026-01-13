@@ -157,7 +157,7 @@ int32_t SX1280::getRangingResultRaw() {
 }
 
 float SX1280::getRangingResult() {
-  int32_t raw = getRangingResultCommon(true);
+  int32_t raw = getRangingResultCommon(false);
   return((float)raw * 150.0f / (4.096f * this->bandwidthKhz));
 }
 
@@ -167,7 +167,7 @@ int32_t SX1280::getRangingResultCommon(bool filtered) {
   RADIOLIB_ASSERT(state);
 
   // enable clock
-  uint8_t data[4];
+  uint8_t data[3] = { 0 };
   state = readRegister(RADIOLIB_SX128X_REG_RANGING_LORA_CLOCK_ENABLE, data, 1);
   RADIOLIB_ASSERT(state);
 
@@ -175,7 +175,10 @@ int32_t SX1280::getRangingResultCommon(bool filtered) {
   state = writeRegister(RADIOLIB_SX128X_REG_RANGING_LORA_CLOCK_ENABLE, data, 1);
   RADIOLIB_ASSERT(state);
 
-  // set result type to filtered
+  // set result type filtered/raw
+  // TODO: at the moment, filtered values do not work and just return huge numbers
+  // the datasheet also isn't exactly clear on how to use the filtering
+  // (when to reset, when are samples added etc.)
   state = readRegister(RADIOLIB_SX128X_REG_RANGING_TYPE, data, 1);
   RADIOLIB_ASSERT(state);
 
@@ -185,20 +188,15 @@ int32_t SX1280::getRangingResultCommon(bool filtered) {
   RADIOLIB_ASSERT(state);
 
   // read the register values
-  state = readRegister(RADIOLIB_SX128X_REG_RANGING_RESULT_MSB, &data[0], 1);
-  RADIOLIB_ASSERT(state);
-  state = readRegister(RADIOLIB_SX128X_REG_RANGING_RESULT_MID, &data[1], 1);
-  RADIOLIB_ASSERT(state);
-  state = readRegister(RADIOLIB_SX128X_REG_RANGING_RESULT_LSB, &data[2], 1);
+  state = readRegister(RADIOLIB_SX128X_REG_RANGING_RESULT_MSB, data, 3);
   RADIOLIB_ASSERT(state);
 
   // set mode to standby RC
   state = standby();
   RADIOLIB_ASSERT(state);
 
-  // convert to signed
-  uint32_t uraw = ((uint32_t)data[0] << 16) | ((uint32_t)data[1] << 8) | data[2];
-  int32_t raw = (uraw & ((1UL << 23) - 1)) | (uraw >> 23 << 31);
+  // shifting everything by 8 bits more to the left will convert the result to signed number
+  int32_t raw = ((((int32_t)data[0]) << 24) | (((int32_t)data[1]) << 16) | (((int32_t)data[2]) << 8)) >> 8;
   return(raw);
 }
 

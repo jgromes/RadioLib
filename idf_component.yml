@@ -1,4 +1,4 @@
-version: "7.4.0"
+version: "7.5.0"
 description: "Universal wireless communication library. User-friendly library for sub-GHz radio modules (SX1278, RF69, CC1101, SX1268, and many others), as well as ham radio digital modes (RTTY, SSTV, AX.25 etc.) and other protocols (Pagers, LoRaWAN)."
 tags:
   - radio

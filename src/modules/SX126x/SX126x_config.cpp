@@ -224,7 +224,8 @@ int16_t SX126x::setBitRate(float br) {
   }
 
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
-    RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    // at the moment only the very specific 488.28125 bps rate is supported
+    RADIOLIB_CHECK_RANGE(br, 0.488f, 0.489f, RADIOLIB_ERR_INVALID_BIT_RATE);
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
     // this should be just either 100 or 600 bps, not the range
     // but the BPSK support is so experimental it probably does not matter
@@ -710,8 +711,27 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
   uint8_t data = enable ? RADIOLIB_SX126X_DIO2_AS_RF_SWITCH : RADIOLIB_SX126X_DIO2_AS_IRQ;
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
 }
+
 int16_t SX126x::setPaRampTime(uint8_t rampTime) {
   return(this->setTxParams(this->pwr, rampTime));
+}
+
+int16_t SX126x::setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel) {
+  // get current OCP configuration
+  uint8_t ocp = 0;
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  RADIOLIB_ASSERT(state);
+
+  // set PA config
+  state = SX126x::setPaConfig(paDutyCycle, deviceSel, hpMax);
+  RADIOLIB_ASSERT(state);
+
+  // set output power with default 200us ramp
+  state = SX126x::setTxParams(power, RADIOLIB_SX126X_PA_RAMP_200U);
+  RADIOLIB_ASSERT(state);
+
+  // restore OCP configuration
+  return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
 
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
@@ -797,19 +817,7 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   // check calibration result
-  state = this->mod->SPIcheckStream();
-
-  // if something failed, show the device errors
-  #if RADIOLIB_DEBUG_BASIC
-  if(state != RADIOLIB_ERR_NONE) {
-    // unless mode is forced to standby, device errors will be 0
-    standby();
-    uint16_t errors = getDeviceErrors();
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
-  }
-  #endif
-
-  return(state);
+  return(this->mod->SPIcheckStream());
 }
 
 #endif

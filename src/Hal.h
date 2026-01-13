@@ -60,6 +60,11 @@ class RadioLibHal {
     */
     RadioLibHal(const uint32_t input, const uint32_t output, const uint32_t low, const uint32_t high, const uint32_t rising, const uint32_t falling);
 
+    /*!
+      \brief Default destructor.
+    */
+    virtual ~RadioLibHal() = default;
+
     // pure virtual methods - these must be implemented by the hardware abstraction for RadioLib to function
 
     /*!

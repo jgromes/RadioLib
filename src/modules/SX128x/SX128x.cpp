@@ -1699,7 +1699,8 @@ int16_t SX128x::setPacketType(uint8_t type) {
 
 int16_t SX128x::setPacketMode(uint8_t mode, uint8_t len) {
   // check active modem
-  if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_GFSK) {
+  uint8_t modem = getPacketType();
+  if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC))) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 

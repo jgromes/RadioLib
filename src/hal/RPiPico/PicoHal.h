@@ -12,7 +12,28 @@
 #include "hardware/timer.h"
 #include "hardware/pwm.h"
 #include "hardware/clocks.h"
+#include "hardware/gpio.h"
 #include "pico/multicore.h"
+
+#define PI_PICO_MAX_USER_GPIO  (48)
+
+// because the Pico SDK does not allow to pass user data into interrupt handlers,
+// we keep it as a global here. This is hacky and means that multiple PicoHal
+// instances share the same interrupts, which is weird and will probably break.
+// However, there seems to be no real use case for creating multiple intances of the HAL
+static irq_handler_t picoHalUserCallbacks[PI_PICO_MAX_USER_GPIO] = { 0 };
+static uint32_t picoHalIrqEventMasks[PI_PICO_MAX_USER_GPIO] = { 0 };
+
+static void picoInterruptHandler(void) {
+  for(int gpio = 0; gpio < PI_PICO_MAX_USER_GPIO; gpio++) {
+    if(gpio_get_irq_event_mask(gpio) == picoHalIrqEventMasks[gpio]) {
+      gpio_acknowledge_irq(gpio, picoHalIrqEventMasks[gpio]);
+      if(picoHalUserCallbacks[gpio]) {
+        picoHalUserCallbacks[gpio]();
+      }
+    }
+  }
+}
 
 // create a new Raspberry Pi Pico hardware abstraction 
 // layer using the Pico SDK
@@ -69,7 +90,14 @@ public:
       return;
     }
 
-    gpio_set_irq_enabled_with_callback(interruptNum, mode, true, (gpio_irq_callback_t)interruptCb);
+    // set callbacks
+    picoHalUserCallbacks[interruptNum] = (irq_handler_t)interruptCb;
+    picoHalIrqEventMasks[interruptNum] = mode;
+
+    // enable IRQ and set the internal callback
+    gpio_set_irq_enabled(interruptNum, mode, true);
+    gpio_add_raw_irq_handler_masked(1UL << interruptNum, picoInterruptHandler);
+    irq_set_enabled(IO_IRQ_BANK0, true);
   }
 
   void detachInterrupt(uint32_t interruptNum) override {
@@ -77,7 +105,12 @@ public:
       return;
     }
 
-    gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, false, NULL);
+    // disable the IRQ
+    gpio_set_irq_enabled(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, false);
+
+    // clear callbacks
+    picoHalUserCallbacks[interruptNum] = NULL;
+    picoHalIrqEventMasks[interruptNum] = 0;
   }
 
   void delay(unsigned long ms) override {

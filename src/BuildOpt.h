@@ -388,6 +388,13 @@
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
+#elif defined(ARDUINO_ARCH_ZEPHYR) && defined(ARDUINO_UNO_Q)
+  // Arduino Uno Q (Zephyr OS)
+  #define RADIOLIB_PLATFORM                           "Arduino Uno Q (Zephyr OS)"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
+
 #else
   // other Arduino platforms not covered by the above list - this may or may not work
   #define RADIOLIB_PLATFORM                           "Unknown Arduino"
@@ -604,7 +611,7 @@
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  7
-#define RADIOLIB_VERSION_MINOR  4
+#define RADIOLIB_VERSION_MINOR  5
 #define RADIOLIB_VERSION_PATCH  0
 #define RADIOLIB_VERSION_EXTRA  0
 

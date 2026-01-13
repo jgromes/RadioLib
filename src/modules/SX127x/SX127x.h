@@ -1263,7 +1263,7 @@ class SX127x: public PhysicalLayer {
     bool crcEnabled = false;
     bool ookEnabled = false;
     bool implicitHdr = false;
-    bool ldroAuto = false;
+    bool ldroAuto = true;
     bool ldroEnabled = false;
 
     virtual int16_t configFSK();

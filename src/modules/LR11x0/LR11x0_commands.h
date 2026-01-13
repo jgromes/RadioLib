@@ -436,6 +436,8 @@
 #define RADIOLIB_LR11X0_PA_SEL_HF                               (0x02UL << 0)   //  7     0                high frequency PA
 #define RADIOLIB_LR11X0_PA_SUPPLY_INTERNAL                      (0x00UL << 0)   //  7     0     PA power source: internal
 #define RADIOLIB_LR11X0_PA_SUPPLY_VBAT                          (0x01UL << 0)   //  7     0                      VBAT (required for >= 14 dBm)
+#define RADIOLIB_LR11X0_PA_DC_DEFAULT                           (0x04UL << 0)   //  7     0     PA duty cycle: default value
+#define RADIOLIB_LR11X0_PA_DC_MAX                               (0x07UL << 0)   //  7     0                    maximum value
 
 // RADIOLIB_LR11X0_CMD_STOP_TIMEOUT_ON_PREAMBLE
 #define RADIOLIB_LR11X0_STOP_ON_SYNC_HEADER                     (0x00UL << 0)   //  0     0     stop timeout on: sync word or header (default)

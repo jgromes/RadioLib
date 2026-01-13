@@ -15,6 +15,55 @@ uint32_t rlb_reflect(uint32_t in, uint8_t bits) {
   return(res);
 }
 
+// fast-ish popcount function for use in calculating LFSR feedback value
+// without relying on __builtin_popcount() which may or may not be available
+// from https://stackoverflow.com/a/51388846
+static uint8_t rlb_popcount(uint32_t in) {
+  in = (in & 0x55555555UL) + ((in >> 1) & 0x55555555UL);
+  in = (in & 0x33333333UL) + ((in >> 2) & 0x33333333UL);
+  in = (in & 0x0F0F0F0FUL) + ((in >> 4) & 0x0F0F0F0FUL);
+  in = (in & 0x00FF00FFUL) + ((in >> 8) & 0x00FF00FFUL);
+  in = (in & 0x0000FFFFUL) + ((in >>16) & 0x0000FFFFUL);
+  return(in);
+}
+
+void rlb_scrambler(uint8_t* data, size_t len, const uint32_t poly, const uint32_t init, bool scramble) {
+  if(!poly) {
+    return;
+  }
+
+  // set the inital feedback register state
+  uint32_t lsfr = init;
+  
+  // now do the shifting
+  uint8_t out = 0;
+  for(size_t i = 0; i < len; i++) {
+    // for each data byte
+    for(int j = 7; j >= 0; j--) {
+      // for each bit in each data byte, calculate the next bit
+      uint8_t feedback = rlb_popcount(lsfr & poly) & 1UL;
+      uint8_t inbit = (data[i] & (1UL << j)) >> j;
+      uint32_t nextbit = feedback ^ inbit;
+
+      // shift the feedback register
+      lsfr <<= 1;
+      
+      // now add the next bit
+      // when scrambling, it is the calculated next bit
+      // when descrambling, it is the input bit
+      lsfr |= scramble ? nextbit : inbit;
+
+      // shift the output buffer and add the next bit
+      out <<= 1;
+      out |= nextbit;
+    }
+    
+    // extract the new byte
+    data[i] = out;
+    out = 0;
+  }
+}
+
 void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   #if RADIOLIB_DEBUG
   size_t rem_len = len;
