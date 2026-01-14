@@ -298,10 +298,11 @@ class LR2021: public LRxxxx {
       \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
       Set to 0 to disable TCXO.
       NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
-      \param delay TCXO timeout in us. Defaults to 5000 us.
+      \param delay TCXO timeout in us. Defaults to 1000000 (1 second), because especially on the first startup,
+      this delay may be measured very inaccurately.
       \returns \ref status_codes
     */
-    int16_t setTCXO(float voltage, uint32_t delay = 5000);
+    int16_t setTCXO(float voltage, uint32_t delay = 1000000);
 
     /*!
       \brief Sets CRC configuration.
