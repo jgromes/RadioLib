@@ -1783,7 +1783,7 @@ int16_t LR11x0::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // calibrate all blocks
-  (void)this->calibrate(RADIOLIB_LR11X0_CALIBRATE_ALL);
+  state = this->calibrate(RADIOLIB_LR11X0_CALIBRATE_ALL);
 
   // wait for calibration completion
   this->mod->hal->delay(5);
@@ -1800,6 +1800,8 @@ int16_t LR11x0::config(uint8_t modem) {
     getErrors(&errors);
     RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
   }
+  #else
+  RADIOLIB_ASSERT(state);
   #endif
 
   // set modem
