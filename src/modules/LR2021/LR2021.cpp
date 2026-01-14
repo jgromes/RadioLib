@@ -504,7 +504,7 @@ int16_t LR2021::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // calibrate all blocks
-  (void)this->calibrate(RADIOLIB_LR2021_CALIBRATE_ALL);
+  state = this->calibrate(RADIOLIB_LR2021_CALIBRATE_ALL);
 
   // wait for calibration completion
   this->mod->hal->delay(5);
@@ -513,15 +513,14 @@ int16_t LR2021::config(uint8_t modem) {
   }
   
   // if something failed, show the device errors
-  //! \TODO: [LR2021] legacy from LR11x0, check if this really works on LR2021
   #if RADIOLIB_DEBUG_BASIC
   if(state != RADIOLIB_ERR_NONE) {
-    // unless mode is forced to standby, device errors will be 0
-    standby();
     uint16_t errors = 0;
     getErrors(&errors);
     RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
   }
+  #else
+  RADIOLIB_ASSERT(state);
   #endif
 
   // set modem
