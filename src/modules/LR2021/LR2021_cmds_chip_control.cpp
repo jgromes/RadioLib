@@ -292,12 +292,12 @@ int16_t LR2021::setTcxoMode(uint8_t tune, uint32_t startTime) {
     (uint8_t)((startTime >> 24) & 0xFF), (uint8_t)((startTime >> 16) & 0xFF),
     (uint8_t)((startTime >> 8) & 0xFF), (uint8_t)(startTime & 0xFF),
   };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_CONFIG_CLK_OUTPUTS, true, buff, sizeof(buff)));
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TCXO_MODE, true, buff, sizeof(buff)));
 }
 
 int16_t LR2021::setXoscCpTrim(uint8_t xta, uint8_t xtb, uint8_t startTime) {
   uint8_t buff[] = { (uint8_t)(xta & 0x3F), (uint8_t)(xtb & 0x3F), startTime };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_CONFIG_CLK_OUTPUTS, true, buff, sizeof(buff)));
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_XOSC_CP_TRIM, true, buff, sizeof(buff)));
 }
 
 #endif

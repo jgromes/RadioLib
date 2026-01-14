@@ -232,7 +232,6 @@ int16_t LR2021::setTCXO(float voltage, uint32_t delay) {
   standby();
 
   // check oscillator startup error flag and clear it
-  //! \TODO: [LR2021] legacy from LR11x0, chech if this really works on LR2021
   uint16_t errors = 0;
   int16_t state = getErrors(&errors);
   RADIOLIB_ASSERT(state);

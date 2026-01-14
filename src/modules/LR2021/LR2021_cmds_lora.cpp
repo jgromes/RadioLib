@@ -124,7 +124,7 @@ int16_t LR2021::setLoRaSideDetCad(uint8_t* pnrDelta, uint8_t* detPeak, size_t nu
     buff[2*i] = pnrDelta[i] & 0x0F;
     buff[2*i + 1] = detPeak[i] & 0x7F;
   }
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_TX_SYNC, true, buff, 2*numSideDets));
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CAD, true, buff, 2*numSideDets));
 }
 
 #endif

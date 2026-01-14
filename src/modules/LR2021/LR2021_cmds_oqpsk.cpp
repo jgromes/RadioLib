@@ -27,7 +27,7 @@ int16_t LR2021::getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t
 
 int16_t LR2021::getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, float* rssiAvg, float* rssiSync, float* lqi) {
   uint8_t buff[7] = { 0 };
-  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OQPSK_RX_STATS, false, buff, sizeof(buff));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OQPSK_PACKET_STATUS, false, buff, sizeof(buff));
   if(rxHeader) { *rxHeader = buff[0]; }
   if(payloadLen) { *payloadLen = ((uint16_t)(buff[1]) << 8) | (uint16_t)buff[2]; }
   uint16_t raw = 0;

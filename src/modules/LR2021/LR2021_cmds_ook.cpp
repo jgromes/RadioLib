@@ -42,7 +42,7 @@ int16_t LR2021::setOokSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFi
     buff[3 - i] = syncWord[i];
   }
   buff[4] = (uint8_t)msbFirst << 7 | ((syncWordLen*8) & 0x7F);
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_GFSK_SYNCWORD, true, buff, sizeof(buff)));
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_SYNCWORD, true, buff, sizeof(buff)));
 }
 
 int16_t LR2021::setOokAddress(uint8_t addrNode, uint8_t addrBroadcast) {
@@ -52,7 +52,7 @@ int16_t LR2021::setOokAddress(uint8_t addrNode, uint8_t addrBroadcast) {
 
 int16_t LR2021::getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError) {
   uint8_t buff[6] = { 0 };
-  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_GFSK_RX_STATS, false, buff, sizeof(buff));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OOK_RX_STATS, false, buff, sizeof(buff));
   if(packetRx) { *packetRx = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1]; }
   if(crcError) { *crcError = ((uint16_t)(buff[2]) << 8) | (uint16_t)buff[3]; }
   if(lenError) { *lenError = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5]; }
@@ -61,7 +61,7 @@ int16_t LR2021::getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* 
 
 int16_t LR2021::getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi) {
   uint8_t buff[6] = { 0 };
-  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_GFSK_RX_STATS, false, buff, sizeof(buff));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OOK_PACKET_STATUS, false, buff, sizeof(buff));
   uint16_t raw = 0;
   if(packetLen) { *packetLen = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1]; }
   if(rssiAvg) {
@@ -86,7 +86,7 @@ int16_t LR2021::setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uin
     (uint8_t)(patternLen & 0x0F), (uint8_t)(patternNumRepeaters & 0x1F),
     (uint8_t)(((uint8_t)syncWordRaw << 5) | ((uint8_t)sofDelimiterRising << 4) | (sofDelimiterLen & 0x0F)),
   };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_CRC_PARAMS, true, buff, sizeof(buff)));
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_DETECTOR, true, buff, sizeof(buff)));
 }
 
 #endif
