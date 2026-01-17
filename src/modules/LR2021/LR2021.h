@@ -333,6 +333,21 @@ class LR2021: public LRxxxx {
 
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
+
+    /*!
+      \brief Read the supply voltage on the Vbat pin.
+      \param bits Measurement resolution in bits, 8 to 13.
+      \returns \ref Supply voltage in volts.
+    */
+    float getVoltage(uint8_t bits = 13);
+    
+    /*!
+      \brief Read the temperature.
+      \param source Measurement source, one of RADIOLIB_LR2021_TEMP_SOURCE_* macros.
+      \param bits Measurement resolution in bits, 8 to 13.
+      \returns \ref Temperature in degrees Celsius.
+    */
+    float getTemperature(uint8_t source, uint8_t bits = 13);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:

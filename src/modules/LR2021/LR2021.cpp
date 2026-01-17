@@ -718,4 +718,30 @@ int16_t LR2021::launchMode() {
   return(state);
 }
 
+float LR2021::getVoltage(uint8_t bits) {
+  if((bits < 8) || (bits > 13)) {
+    return(0);
+  }
+
+  uint16_t val;
+  if(getVbat(bits, &val) != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
+  
+  return((float)val / 1000.0f);
+}
+
+float LR2021::getTemperature(uint8_t source, uint8_t bits) {
+  if((bits < 8) || (bits > 13)) {
+    return(0);
+  }
+
+  float val;
+  if(getTemp(source, bits, &val) != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
+
+  return(val);
+}
+
 #endif
