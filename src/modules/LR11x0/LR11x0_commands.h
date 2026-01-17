@@ -387,17 +387,11 @@
 #define RADIOLIB_LR11X0_GFSK_RX_BW_312_0                        (0x19UL << 0)   //  7     0                        312.0 kHz
 #define RADIOLIB_LR11X0_GFSK_RX_BW_373_6                        (0x11UL << 0)   //  7     0                        373.6 kHz
 #define RADIOLIB_LR11X0_GFSK_RX_BW_467_0                        (0x09UL << 0)   //  7     0                        467.0 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BIT_RATE                        (488.28215f)    //  31    0     LR FHSS bit rate: 488.28215 bps
-#define RADIOLIB_LR11X0_LR_FHSS_BIT_RATE_RAW                    (0x8001E848UL)  //  31    0                       488.28215 bps in raw
 #define RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0         (0x0BUL << 0)   //  7     0     shaping filter: Gaussian, BT = 1.0
 #define RADIOLIB_LR11X0_SIGFOX_SHAPING_GAUSSIAN_BT_0_7          (0x16UL << 0)   //  7     0     shaping filter: Gaussian, BT = 0.7
 
 // RADIOLIB_LR11X0_CMD_SET_PACKET_PARAMS
-#define RADIOLIB_LR11X0_LORA_HEADER_EXPLICIT                    (0x00UL << 0)   //  7     0     LoRa header mode: explicit
-#define RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT                    (0x01UL << 0)   //  7     0                       implicit
 #define RADIOLIB_LR11X0_LORA_PAYLOAD_LEN_ANY                    (0x00UL << 0)   //  7     0     accept any payload length
-#define RADIOLIB_LR11X0_LORA_CRC_ENABLED                        (0x01UL << 0)   //  7     0     CRC: enabled
-#define RADIOLIB_LR11X0_LORA_CRC_DISABLED                       (0x00UL << 0)   //  7     0          disabled
 #define RADIOLIB_LR11X0_LORA_IQ_STANDARD                        (0x00UL << 0)   //  7     0     IQ setup: standard
 #define RADIOLIB_LR11X0_LORA_IQ_INVERTED                        (0x01UL << 0)   //  7     0               inverted
 #define RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_DISABLED           (0x00UL << 0)   //  7     0     preamble detector: disabled

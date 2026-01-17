@@ -320,6 +320,13 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t invertIQ(bool enable) override;
+    
+    /*!
+      \brief Get modem currently in use by the radio.
+      \param modem Pointer to a variable to save the retrieved configuration into.
+      \returns \ref status_codes
+    */
+    int16_t getModem(ModemType_t* modem);
 
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;

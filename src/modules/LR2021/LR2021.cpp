@@ -575,6 +575,28 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
   return(setCad());
 }
 
+int16_t LR2021::getModem(ModemType_t* modem) {
+  RADIOLIB_ASSERT_PTR(modem);
+
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+
+  switch(type) {
+    case(RADIOLIB_LR2021_PACKET_TYPE_LORA):
+      *modem = ModemType_t::RADIOLIB_MODEM_LORA;
+      return(RADIOLIB_ERR_NONE);
+    case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
+      *modem = ModemType_t::RADIOLIB_MODEM_FSK;
+      return(RADIOLIB_ERR_NONE);
+    case(RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS):
+      *modem = ModemType_t::RADIOLIB_MODEM_LRFHSS;
+      return(RADIOLIB_ERR_NONE);
+  }
+  
+  return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
 int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   int16_t state;
 

@@ -115,7 +115,7 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoV
   RADIOLIB_ASSERT(state);
 
   // set fixed configuration
-  return(setModulationParamsLrFhss(RADIOLIB_LR11X0_LR_FHSS_BIT_RATE_RAW, RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0));
+  return(setModulationParamsLrFhss(RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE_RAW, RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0));
 }
 
 int16_t LR11x0::beginGNSS(uint8_t constellations, float tcxoVoltage) {
@@ -161,7 +161,7 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     }
 
     // Long Interleaver supports up to 253 bytes if CRC is enabled
-    if (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED && (len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH - 2)) {
+    if (this->crcTypeLoRa == RADIOLIB_LRXXXX_LORA_CRC_ENABLED && (len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH - 2)) {
       return(RADIOLIB_ERR_PACKET_TOO_LONG);
     }  
   } 
@@ -1059,7 +1059,7 @@ int16_t LR11x0::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
-    this->crcTypeLoRa = len > 0 ? RADIOLIB_LR11X0_LORA_CRC_ENABLED : RADIOLIB_LR11X0_LORA_CRC_DISABLED;
+    this->crcTypeLoRa = len > 0 ? RADIOLIB_LRXXXX_LORA_CRC_ENABLED : RADIOLIB_LRXXXX_LORA_CRC_DISABLED;
     state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled);
   
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
@@ -1086,6 +1086,7 @@ int16_t LR11x0::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
         return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
     }
 
+    this->crcLenGFSK = len;
     state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
@@ -1154,7 +1155,7 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   // in implicit mode, return the cached value
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   (void)getPacketType(&type);
-  if((type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT)) {
+  if((type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT)) {
     return(this->implicitLen);
   }
 
@@ -1163,136 +1164,6 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   RADIOLIB_DEBUG_BASIC_PRINT("getRxBufferStatus state = %d\n", state);
   (void)state;
   return((size_t)len);
-}
-
-RadioLibTime_t LR11x0::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
-  // check active modem
-  if (modem == ModemType_t::RADIOLIB_MODEM_LORA) {  
-    uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << dr.lora.spreadingFactor) / (dr.lora.bandwidth * 10) ;
-    uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
-    uint8_t sfCoeff2 = 8;
-    if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
-      sfCoeff1_x4 = 25; // 6.25 * 4
-      sfCoeff2 = 0;
-    }
-    uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
-    if(pc.lora.ldrOptimize) {
-      sfDivisor = 4*(dr.lora.spreadingFactor - 2);
-    }
-    const int8_t bitsPerCrc = 16;
-    const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
-
-    // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
-    int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
-    if(bitCount < 0) {
-      bitCount = 0;
-    }
-    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
-    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
-
-    // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
-    uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
-
-    // get time-on-air in us
-    return((symbolLength_us * nSymbol_x4) / 4);
-
-  } else if(modem == ModemType_t::RADIOLIB_MODEM_FSK) {
-    return((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (uint32_t)len * 8) / (dr.fsk.bitRate / 1000.0f)));
-
-  } else if(modem == ModemType_t::RADIOLIB_MODEM_LRFHSS) {
-    // calculate the number of bits based on coding rate
-    uint16_t N_bits;
-    switch(dr.lrFhss.cr) {
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_5_6:
-        N_bits = ((len * 6) + 4) / 5; // this is from the official LR11xx driver, but why the extra +4?
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_2_3:
-        N_bits = (len * 3) / 2;
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_2:
-        N_bits = len * 2;
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_3:
-        N_bits = len * 3;
-        break;
-      default:
-        return(RADIOLIB_ERR_INVALID_CODING_RATE);
-    }
-
-    // calculate number of bits when accounting for unaligned last block
-    uint16_t N_payBits = (N_bits / RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS) * RADIOLIB_LRXXXX_LR_FHSS_BLOCK_BITS;
-    uint16_t N_lastBlockBits = N_bits % RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS;
-    if(N_lastBlockBits) {
-      N_payBits += N_lastBlockBits + 2;
-    }
-
-    // add header bits
-    uint16_t N_totalBits = (RADIOLIB_LRXXXX_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
-    return(((uint32_t)N_totalBits * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
-  
-  } else {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  return(0);
-}
-
-RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
-  ModemType_t modem;
-  int32_t state = this->getModem(&modem);
-  RADIOLIB_ASSERT(state);
-
-  DataRate_t dr = {};
-  PacketConfig_t pc = {};
-  switch(modem) {
-    case ModemType_t::RADIOLIB_MODEM_LORA: {
-      uint8_t cr = this->codingRate;
-      // We assume same calculation for short and long interleaving, so map CR values 0-4 and 5-7 to the same values
-      if (cr < 5) {
-        cr = cr + 4;
-      } else if (cr == 7) {
-        cr = cr + 1;
-      }
-
-      dr.lora.spreadingFactor = this->spreadingFactor;
-      dr.lora.bandwidth = this->bandwidthKhz;
-      dr.lora.codingRate = cr;
-
-      pc.lora.preambleLength = this->preambleLengthLoRa;
-      pc.lora.implicitHeader = (this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) ? true : false;
-      pc.lora.crcEnabled = (this->crcTypeLoRa == RADIOLIB_LR11X0_LORA_CRC_ENABLED) ? true : false;
-      pc.lora.ldrOptimize = (bool)this->ldrOptimize;
-      break;
-    }
-    case ModemType_t::RADIOLIB_MODEM_FSK: {
-      dr.fsk.bitRate = (float)this->bitRate / 1000.0f;
-      dr.fsk.freqDev = (float)this->frequencyDev;
-
-      uint8_t crcLen = 0;
-      if(this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_1_BYTE || this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_1_BYTE_INV) {
-        crcLen = 1;
-      } else if(this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_2_BYTE || this->crcTypeGFSK == RADIOLIB_LR11X0_GFSK_CRC_2_BYTE_INV) {
-        crcLen = 2;
-      }
-      
-      pc.fsk.preambleLength = this->preambleLengthGFSK;
-      pc.fsk.syncWordLength = this->syncWordLength; 
-      pc.fsk.crcLength = crcLen;
-      break;
-    }
-    case ModemType_t::RADIOLIB_MODEM_LRFHSS: {
-      dr.lrFhss.bw = this->lrFhssBw;
-      dr.lrFhss.cr = this->lrFhssCr;
-      dr.lrFhss.narrowGrid = (this->lrFhssGrid == RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC) ? true : false;
-
-      pc.lrFhss.hdrCount = this->lrFhssHdrCount;
-      break;
-    }
-    default:
-      return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  return(this->calculateTimeOnAir(modem, dr, pc, len));
 }
 
 RadioLibTime_t LR11x0::calculateRxTimeout(RadioLibTime_t timeoutUs) {
@@ -1321,11 +1192,11 @@ uint8_t LR11x0::randomByte() {
 }
 
 int16_t LR11x0::implicitHeader(size_t len) {
-  return(this->setHeaderType(RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT, len));
+  return(this->setHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT, len));
 }
 
 int16_t LR11x0::explicitHeader() {
-  return(this->setHeaderType(RADIOLIB_LR11X0_LORA_HEADER_EXPLICIT));
+  return(this->setHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT));
 }
 
 float LR11x0::getDataRate() const {
@@ -1570,7 +1441,7 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       RADIOLIB_ASSERT(state);
 
       // set implicit mode and expected len if applicable
-      if((this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA)) {
+      if((this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA)) {
         state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, this->invertIQEnabled);
         RADIOLIB_ASSERT(state);
       }
