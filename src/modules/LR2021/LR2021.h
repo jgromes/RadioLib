@@ -446,7 +446,7 @@ class LR2021: public LRxxxx {
     int16_t setGfskPacketParams(uint16_t preambleLen, uint8_t preambleDetect, bool longPreamble, bool pldLenBits, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t dcFree);
     int16_t setGfskWhiteningParams(uint8_t whitenType, uint16_t init);
     int16_t setGfskCrcParams(uint32_t poly, uint32_t init);
-    int16_t setGfskSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
+    int16_t setGfskSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
     int16_t setGfskAddress(uint8_t addrNode, uint8_t addrBroadcast);
     int16_t getGfskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);
     int16_t getGfskPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
@@ -479,7 +479,7 @@ class LR2021: public LRxxxx {
     int16_t setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint8_t depth);
     int16_t setOokPacketParams(uint16_t preambleLen, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t manchester);
     int16_t setOokCrcParams(uint32_t poly, uint32_t init);
-    int16_t setOokSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
+    int16_t setOokSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
     int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);
     int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
     int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);

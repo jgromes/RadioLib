@@ -29,10 +29,10 @@ int16_t LR2021::getRssiInst(float* rssi) {
 int16_t LR2021::setRssiCalibration(uint8_t rxPath, const uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], const uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]) {
   uint8_t buff[1 + 3*RADIOLIB_LR2021_GAIN_TABLE_LENGTH] = { 0 };
   buff[0] = rxPath;
-  for(uint8_t i = 0; i < 3*RADIOLIB_LR2021_GAIN_TABLE_LENGTH; i+=3) {
-    buff[1 + i] = (uint8_t)((gain[i] & 0x300) >> 8);
-    buff[2 + i] = (uint8_t)(gain[i] & 0xFF);
-    buff[3 + i] = noiseFloor[i];
+  for(uint8_t i = 0; i < RADIOLIB_LR2021_GAIN_TABLE_LENGTH; i++) {
+    buff[1 + 3*i] = (uint8_t)((gain[i] & 0x300) >> 8);
+    buff[2 + 3*i] = (uint8_t)(gain[i] & 0xFF);
+    buff[3 + 3*i] = noiseFloor[i];
   }
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RSSI_CALIBRATION, true, buff, sizeof(buff)));
 }

@@ -36,7 +36,7 @@ int16_t LR2021::setOokCrcParams(uint32_t poly, uint32_t init) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_CRC_PARAMS, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setOokSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst) {
+int16_t LR2021::setOokSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst) {
   uint8_t buff[5] = { 0 };
   for(size_t i = 0; i < syncWordLen; i++) {
     buff[3 - i] = syncWord[i];
