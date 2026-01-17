@@ -26,6 +26,16 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
     uint16_t frequencies[3] = { (uint16_t)((freq / 4.0f) + 0.5f), 0, 0 };
     frequencies[0] |= (freq > 1000.0f) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;
     state = calibrateFrontEnd(frequencies);
+    // if something failed, show the device errors
+    #if RADIOLIB_DEBUG_BASIC
+    if(state != RADIOLIB_ERR_NONE) {
+      uint16_t errors = 0;
+      getErrors(&errors);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Frontend calibration failed, device errors: 0x%X", errors);
+    }
+    #else
+    RADIOLIB_ASSERT(state);
+    #endif
     RADIOLIB_ASSERT(state);
   }
 

@@ -274,6 +274,8 @@
 #define RADIOLIB_LR2021_PA_OFFSET_CALIB_ERR                     (0x01UL << 11)  // 15     0            PA offset calibration failed
 #define RADIOLIB_LR2021_PPF_CALIB_ERR                           (0x01UL << 12)  // 15     0            poly-phase filter calibration failed
 #define RADIOLIB_LR2021_SRC_CALIB_ERR                           (0x01UL << 13)  // 15     0            self-reception cancellation calibration failed
+#define RADIOLIB_LR2021_SRC_SATURATION_CALIB_ERR                (0x01UL << 14)  // 15     0            RSSI saturation during SRC calibration
+#define RADIOLIB_LR2021_SRC_TOLERANCE_CALIB_ERR                 (0x01UL << 15)  // 15     0            self-reception cancellation values out of tolernce
 
 // RADIOLIB_LR2021_CMD_SET_DIO_FUNCTION
 #define RADIOLIB_LR2021_DIO_FUNCTION_NONE                       (0x00UL << 4)   //  7     4     DIO function: none
