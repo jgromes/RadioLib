@@ -62,7 +62,7 @@ int16_t LR2021::getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* 
 int16_t LR2021::getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi) {
   uint8_t buff[6] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OOK_PACKET_STATUS, false, buff, sizeof(buff));
-  uint16_t raw = 0;
+  uint16_t raw;
   if(packetLen) { *packetLen = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1]; }
   if(rssiAvg) {
     raw = (uint16_t)buff[2] << 1;

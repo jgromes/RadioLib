@@ -1465,7 +1465,6 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       }
 
       // set packet Length
-      state = RADIOLIB_ERR_NONE;
       uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
       state = getPacketType(&modem);
       RADIOLIB_ASSERT(state);

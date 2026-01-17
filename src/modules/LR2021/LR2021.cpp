@@ -645,7 +645,6 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       //! \todo [LR2021] implement GFSK address filtering
 
       // set packet Length
-      state = RADIOLIB_ERR_NONE;
       uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
       state = getPacketType(&modem);
       RADIOLIB_ASSERT(state);
