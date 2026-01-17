@@ -27,9 +27,9 @@ int16_t LR2021::getRssiInst(float* rssi) {
 }
 
 int16_t LR2021::setRssiCalibration(uint8_t rxPath, uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]) {
-  uint8_t buff[1 + RADIOLIB_LR2021_GAIN_TABLE_LENGTH] = { 0 };
+  uint8_t buff[1 + 3*RADIOLIB_LR2021_GAIN_TABLE_LENGTH] = { 0 };
   buff[0] = rxPath;
-  for(uint8_t i = 0; i < RADIOLIB_LR2021_GAIN_TABLE_LENGTH; i++) {
+  for(uint8_t i = 0; i < 3*RADIOLIB_LR2021_GAIN_TABLE_LENGTH; i+=3) {
     buff[1 + i] = (uint8_t)((gain[i] & 0x300) >> 8);
     buff[2 + i] = (uint8_t)(gain[i] & 0xFF);
     buff[3 + i] = noiseFloor[i];
