@@ -6,6 +6,9 @@
 
 #if !RADIOLIB_EXCLUDE_LR2021
 
+// maximum number of allowed frontend calibration attempts
+#define RADIOLIB_LR2021_MAX_CAL_ATTEMPTS    (10)
+
 int16_t LR2021::setFrequency(float freq) {
   return(this->setFrequency(freq, false));
 }
@@ -22,21 +25,40 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
   // check if we need to recalibrate image
   int16_t state;
   if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG_MHZ)) {
-    // we do, get the nearest multiple of 4 MHz
-    uint16_t frequencies[3] = { (uint16_t)((freq / 4.0f) + 0.5f), 0, 0 };
-    frequencies[0] |= (freq > 1000.0f) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;
-    state = calibrateFrontEnd(frequencies);
-    // if something failed, show the device errors
-    #if RADIOLIB_DEBUG_BASIC
-    if(state != RADIOLIB_ERR_NONE) {
-      uint16_t errors = 0;
-      getErrors(&errors);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Frontend calibration failed, device errors: 0x%X", errors);
+    // calibration can fail if there is a strong interfering source
+    // run it several times until it passes
+    int i = 0;
+    for(; i < RADIOLIB_LR2021_MAX_CAL_ATTEMPTS; i++) {
+      // get the nearest multiple of 4 MHz
+      uint16_t frequencies[3] = { (uint16_t)((freq / 4.0f) + 0.5f), 0, 0 };
+      frequencies[0] |= (freq > 1000.0f) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;
+      state = calibrateFrontEnd(frequencies);
+
+      // if something failed, check the device errors
+      if(state != RADIOLIB_ERR_NONE) {
+        uint16_t errors = 0;
+        getErrors(&errors);
+        RADIOLIB_DEBUG_BASIC_PRINTLN("Frontend calibration #%d failed, device errors: 0x%X", i, errors);
+
+        // if this is casued by something else than RSSI saturation, repeating will not help
+        if((errors & RADIOLIB_LR2021_SRC_SATURATION_CALIB_ERR) == 0) {
+          return(state);
+        }
+
+        // wait a little while before the next attempt
+        this->mod->hal->delay(5);
+      
+      } else {
+        // calibration passed
+        break;
+      }
+
     }
-    #else
-    RADIOLIB_ASSERT(state);
-    #endif
-    RADIOLIB_ASSERT(state);
+
+    if(i == RADIOLIB_LR2021_MAX_CAL_ATTEMPTS) {
+      return(RADIOLIB_ERR_FRONTEND_CALIBRATION_FAILED);
+    }
+
   }
 
   // set frequency
