@@ -657,7 +657,7 @@ int16_t LR11x0::configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len
 
 int16_t LR11x0::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
   // check if in explicit header mode
-  if(this->headerType == RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT) {
+  if(this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 

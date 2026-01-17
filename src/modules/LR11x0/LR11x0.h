@@ -457,23 +457,6 @@ class LR11x0: public LRxxxx {
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
-      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
-      \param modem Modem type.
-      \param dr Data rate.
-      \param pc Packet config.
-      \param len Payload length in bytes.
-      \returns Expected time-on-air in microseconds.
-    */
-    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
-
-    /*!
-      \brief Get expected time-on-air for a given size of payload
-      \param len Payload length in bytes.
-      \returns Expected time-on-air in microseconds.
-    */
-    RadioLibTime_t getTimeOnAir(size_t len) override;
-
-    /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
@@ -936,11 +919,6 @@ class LR11x0: public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    // cached GFSK parameters
-    uint32_t bitRate = 0, frequencyDev = 0;
-    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
-    uint16_t preambleLengthGFSK = 0;
-
     uint8_t wifiScanMode = 0;
     bool gnss = false;
 

@@ -75,6 +75,14 @@
 #define RADIOLIB_LRXXXX_PA_RAMP_272U                            (0x11UL << 0)   //  7     0                   272 us
 #define RADIOLIB_LRXXXX_PA_RAMP_304U                            (0x12UL << 0)   //  7     0                   304 us
 
+// common configuration values
+#define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE                        (488.28215f)    //  31    0     LR FHSS bit rate: 488.28215 bps
+#define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE_RAW                    (0x8001E848UL)  //  31    0                       488.28215 bps in raw
+#define RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT                    (0x00UL << 0)   //  7     0     LoRa header mode: explicit
+#define RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT                    (0x01UL << 0)   //  7     0                       implicit
+#define RADIOLIB_LRXXXX_LORA_CRC_ENABLED                        (0x01UL << 0)   //  7     0     CRC: enabled
+#define RADIOLIB_LRXXXX_LORA_CRC_DISABLED                       (0x00UL << 0)   //  7     0          disabled
+
 class LRxxxx: public PhysicalLayer {
   public:
     LRxxxx(Module* mod);
@@ -129,6 +137,23 @@ class LRxxxx: public PhysicalLayer {
     */
     uint32_t getIrqStatus();
 
+    /*!
+      \brief Get expected time-on-air for a given size of payload
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
+      \param modem Modem type.
+      \param dr Data rate.
+      \param pc Packet config.
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
+
   protected:
     Module* mod;
     
@@ -143,6 +168,11 @@ class LRxxxx: public PhysicalLayer {
     bool ldroAuto = true;
     size_t implicitLen = 0;
     bool invertIQEnabled = false;
+
+    // cached GFSK parameters
+    uint32_t bitRate = 0, frequencyDev = 0;
+    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, crcLenGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
+    uint16_t preambleLengthGFSK = 0;
 
     // cached LR-FHSS parameters
     uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0, lrFhssGrid = 0;
