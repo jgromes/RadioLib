@@ -57,8 +57,8 @@ void setup() {
   // the following settings can also
   // be modified at run-time
   state = radio.setFrequency(433.5);
-  state = radio.setLrFhssConfig(RADIOLIB_LR11X0_LR_FHSS_BW_1523_4,  // bandwidth
-                                RADIOLIB_LR11X0_LR_FHSS_CR_1_2,     // coding rate
+  state = radio.setLrFhssConfig(RADIOLIB_LRXXXX_LR_FHSS_BW_1523_4,  // bandwidth
+                                RADIOLIB_LRXXXX_LR_FHSS_CR_1_2,     // coding rate
                                 3,                                  // header count
                                 0x13A);                             // hopping sequence seed
   state = radio.setOutputPower(10.0);
