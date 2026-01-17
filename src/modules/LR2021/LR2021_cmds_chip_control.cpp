@@ -231,7 +231,7 @@ int16_t LR2021::clearIrq(uint32_t irq) {
 int16_t LR2021::getAndClearIrqStatus(uint32_t* irq) {
   uint8_t buff[4] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_AND_CLEAR_IRQ_STATUS, false, buff, sizeof(buff));
-  if(irq) { *irq = ((uint16_t)(buff[0]) << 24) | ((uint16_t)(buff[1]) << 16) | ((uint16_t)(buff[2]) << 8) |(uint16_t)buff[3]; }
+  if(irq) { *irq = ((uint32_t)(buff[0]) << 24) | ((uint32_t)(buff[1]) << 16) | ((uint32_t)(buff[2]) << 8) |(uint32_t)buff[3]; }
   return(state);
 }
 
