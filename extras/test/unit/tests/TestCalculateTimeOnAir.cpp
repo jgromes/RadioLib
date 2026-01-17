@@ -29,6 +29,7 @@ std::vector<RadioConfig> allConfigs = {
     { "SX128x", RADIOLIB_MODEM_LORA, {.lora={12,800,7}}, {.lora={16,false,true,true}}, {10,100,250}, {216319,861440,1936640} }, // 212.99, 848.19, 1910
     { "SX128x", RADIOLIB_MODEM_FSK,  {.fsk={250,100}},  {.fsk={16,16,2}}, {1,32,64,128}, {224,1216,2240,4288} },
 
+    // also covers LR2021 as the calculation is shared in the LRxxxx base class
     { "LR11x0", RADIOLIB_MODEM_LORA, {.lora={10,250,5}}, {.lora={8,false,true,true}}, {1,20,100}, {103424,205824,615424} }, // 103.42, 205.82, 615.42
     { "LR11x0", RADIOLIB_MODEM_LORA, {.lora={11,500,6}}, {.lora={32,true,false,false}}, {10,25,200}, {205824,279552,1065984} }, // 205.82, 279.55, 1070
     { "LR11x0", RADIOLIB_MODEM_FSK,  {.fsk={200,50}},   {.fsk={16,32,2}}, {1,32,64,200}, {360,1600,2880,8320} },
@@ -45,17 +46,20 @@ BOOST_AUTO_TEST_CASE(TimeOnAir_AllRadios) {
             auto len = cfg.payload_len[i];
             RadioLibTime_t toa = 0;
 
+            // create a dummy module class instance that the derived classes may reference
+            Module mod(nullptr, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC);
+
             if (cfg.name == "SX126x") {
-                SX126x dummy(nullptr);
+                SX126x dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "SX127x") {
-                SX127x dummy(nullptr);
+                SX127x dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "SX128x") {
-                SX128x dummy(nullptr);
+                SX128x dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "LR11x0") {
-                LR11x0 dummy(nullptr);
+                LR11x0 dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             }
 
