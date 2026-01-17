@@ -320,13 +320,13 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t invertIQ(bool enable) override;
-    
+
     /*!
       \brief Get modem currently in use by the radio.
       \param modem Pointer to a variable to save the retrieved configuration into.
       \returns \ref status_codes
     */
-    int16_t getModem(ModemType_t* modem);
+    int16_t getModem(ModemType_t* modem) override;
 
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
@@ -370,9 +370,9 @@ class LR2021: public LRxxxx {
     int16_t getRxPktLength(uint16_t* len);
     int16_t resetRxStats(void);
     int16_t setDefaultRxTxTimeout(uint32_t rxTimeout, uint32_t txTimeout);
-    int16_t setRegMode(uint8_t simoUsage, uint8_t rampTimes[4]);
+    int16_t setRegMode(uint8_t simoUsage, const uint8_t rampTimes[4]);
     int16_t calibrate(uint8_t blocks);
-    int16_t calibrateFrontEnd(uint16_t freq[3]);
+    int16_t calibrateFrontEnd(const uint16_t freq[3]);
     int16_t getVbat(uint8_t resolution, uint16_t* vbat);
     int16_t getTemp(uint8_t source, uint8_t resolution, float* temp);
     int16_t setEolConfig(bool enable, uint8_t trim);
@@ -382,7 +382,7 @@ class LR2021: public LRxxxx {
     int16_t getErrors(uint16_t* err);
     int16_t setDioFunction(uint8_t dio, uint8_t func, uint8_t pullDrive);
     int16_t setDioIrqConfig(uint8_t dio, uint32_t irq);
-    int16_t clearIrq(uint32_t irq);
+    int16_t clearIrqState(uint32_t irq);
     int16_t getAndClearIrqStatus(uint32_t* irq);
     int16_t configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint8_t rxHighThreshold, uint8_t txHighThreshold);
     int16_t getFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);
@@ -401,7 +401,7 @@ class LR2021: public LRxxxx {
     int16_t setRfFrequency(uint32_t rfFreq);
     int16_t setRxPath(uint8_t rxPath, uint8_t rxBoost);
     int16_t getRssiInst(float* rssi);
-    int16_t setRssiCalibration(uint8_t rxPath, uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]);
+    int16_t setRssiCalibration(uint8_t rxPath, const uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], const uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]);
     int16_t setTimestampSource(uint8_t index, uint8_t source);
     int16_t getTimestampValue(uint8_t index, uint32_t* timestamp);
     int16_t setCca(uint32_t duration, uint8_t gain);
@@ -428,10 +428,10 @@ class LR2021: public LRxxxx {
     int16_t setLoRaCad(void);
     int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);
     int16_t getLoRaPacketStatus(uint8_t* crc, uint8_t* cr, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket);
-    int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, uint8_t* addr);
-    int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, uint32_t* freqHops, size_t numFreqHops);
+    int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, const uint8_t* addr);
+    int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops);
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
-    int16_t setLoRaSideDetCad(uint8_t* pnrDelta, uint8_t* detPeak, size_t numSideDets);
+    int16_t setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets);
 
     // ranging commands
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
@@ -456,7 +456,7 @@ class LR2021: public LRxxxx {
     int16_t getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
     int16_t getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, float* rssiAvg, float* rssiSync, float* lqi);
     int16_t setOqpskPacketLen(uint8_t len);
-    int16_t setOqpskAddress(uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId);
+    int16_t setOqpskAddress(const uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId);
 
     // BPSK commands
     int16_t setBpskModulationParams(uint32_t bitRate, uint8_t pulseShape, bool diff, uint8_t diffInit);

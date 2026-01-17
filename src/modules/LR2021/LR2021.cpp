@@ -317,7 +317,7 @@ size_t LR2021::getPacketLength(bool update) {
 
 int16_t LR2021::finishTransmit() {
   // clear interrupt flags
-  clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+  clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
 
   // set mode to standby to disable transmitter/RF switch
   return(standby());
@@ -363,7 +363,7 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+  state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
 
   // check if CRC failed - this is done after reading data to give user the option to keep them
   RADIOLIB_ASSERT(crcState);
@@ -377,7 +377,7 @@ int16_t LR2021::finishReceive() {
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  return(clearIrq(RADIOLIB_LR2021_IRQ_ALL));
+  return(clearIrqState(RADIOLIB_LR2021_IRQ_ALL));
 }
 
 int16_t LR2021::startChannelScan() {
@@ -418,7 +418,7 @@ int16_t LR2021::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+  state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
@@ -489,7 +489,7 @@ int16_t LR2021::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // clear IRQ
-  state = this->clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+  state = this->clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
   // validate DIO pin number
@@ -619,7 +619,7 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       RADIOLIB_ASSERT(state);
 
       // clear interrupt flags
-      state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+      state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
       RADIOLIB_ASSERT(state);
 
       // set implicit mode and expected len if applicable
@@ -680,7 +680,7 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       }
 
       // clear interrupt flags
-      state = clearIrq(RADIOLIB_LR2021_IRQ_ALL);
+      state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
       RADIOLIB_ASSERT(state);
     } break;
     

@@ -75,7 +75,7 @@ int16_t LR2021::getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint
 int16_t LR2021::getLoRaPacketStatus(uint8_t* crc, uint8_t* cr, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket) {
   uint8_t buff[6] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_LORA_PACKET_STATUS, false, buff, sizeof(buff));
-  uint16_t raw = 0;
+  uint16_t raw;
   if(crc) { *crc = (buff[0] & 0x10) >> 4; }
   if(cr) { *cr = buff[0] & 0x0F; }
   if(packetLen) { *packetLen = buff[1]; }
@@ -93,14 +93,14 @@ int16_t LR2021::getLoRaPacketStatus(uint8_t* crc, uint8_t* cr, uint8_t* packetLe
   return(state);
 }
 
-int16_t LR2021::setLoRaAddress(uint8_t addrLen, uint8_t addrPos, uint8_t* addr) {
+int16_t LR2021::setLoRaAddress(uint8_t addrLen, uint8_t addrPos, const uint8_t* addr) {
   if(addrLen > 8) { return(RADIOLIB_ERR_UNKNOWN); }
   uint8_t buff[9] = { (uint8_t)(((addrLen & 0x0F) << 4) | (addrPos & 0x0F)) };
   memcpy(&buff[1], addr, addrLen);
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_ADDRESS, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, uint32_t* freqHops, size_t numFreqHops) {
+int16_t LR2021::setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops) {
   if(numFreqHops > 40) { return(RADIOLIB_ERR_UNKNOWN); }
   uint8_t buff[2 + 160] = { (uint8_t)(hopCtrl | ((hopPeriod & 0xF00) >> 8)), (uint8_t)(hopPeriod & 0xFF) };
   for(uint8_t i = 0; i < numFreqHops; i++) {
@@ -117,7 +117,7 @@ int16_t LR2021::setLoRaTxSync(uint8_t function, uint8_t dioNum) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_TX_SYNC, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setLoRaSideDetCad(uint8_t* pnrDelta, uint8_t* detPeak, size_t numSideDets) {
+int16_t LR2021::setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets) {
   uint8_t buff[6] = { 0 };
   for(uint8_t i = 0; i < numSideDets; i++) {
     if(i >= 3) { return(RADIOLIB_ERR_UNKNOWN); }

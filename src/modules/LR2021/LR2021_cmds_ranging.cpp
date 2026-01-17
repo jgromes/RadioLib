@@ -25,7 +25,7 @@ int16_t LR2021::setRangingReqAddr(uint32_t addr) {
 }
 
 int16_t LR2021::getRangingResult(uint8_t type, uint32_t* rng1, uint8_t* rssi1, uint32_t* rng2) {
-  uint8_t reqBuff[] = { type };
+  const uint8_t reqBuff[] = { type };
   uint8_t rplBuff[7] = { 0 };
 
   //! \TODO: [LR2021] implement AGC gains readout

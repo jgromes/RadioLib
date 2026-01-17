@@ -30,7 +30,7 @@ int16_t LR2021::getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, fl
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OQPSK_PACKET_STATUS, false, buff, sizeof(buff));
   if(rxHeader) { *rxHeader = buff[0]; }
   if(payloadLen) { *payloadLen = ((uint16_t)(buff[1]) << 8) | (uint16_t)buff[2]; }
-  uint16_t raw = 0;
+  uint16_t raw;
   if(rssiAvg) {
     raw = (uint16_t)buff[3] << 1;
     raw |= (buff[5] & 0x04) >> 2;
@@ -49,7 +49,7 @@ int16_t LR2021::setOqpskPacketLen(uint8_t len) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OQPSK_PACKET_LEN, true, &len, sizeof(len)));
 }
 
-int16_t LR2021::setOqpskAddress(uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId) {
+int16_t LR2021::setOqpskAddress(const uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId) {
   uint8_t buff[] = { 
     longDestAddr[7], longDestAddr[6], longDestAddr[5], longDestAddr[4], 
     longDestAddr[3], longDestAddr[2], longDestAddr[1], longDestAddr[0],

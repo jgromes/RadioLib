@@ -33,7 +33,7 @@ int16_t LR2021::getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uin
 int16_t LR2021::getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum) {
   uint8_t buff[5] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_FLRC_PACKET_STATUS, false, buff, sizeof(buff));
-  uint16_t raw = 0;
+  uint16_t raw;
   if(packetLen) { *packetLen = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1]; }
   if(rssiAvg) {
     raw = (uint16_t)buff[2] << 1;

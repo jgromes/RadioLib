@@ -32,7 +32,7 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
       // get the nearest multiple of 4 MHz
       uint16_t frequencies[3] = { (uint16_t)((freq / 4.0f) + 0.5f), 0, 0 };
       frequencies[0] |= (freq > 1000.0f) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;
-      state = calibrateFrontEnd(frequencies);
+      state = calibrateFrontEnd(const_cast<const uint16_t*>(frequencies));
 
       // if something failed, check the device errors
       if(state != RADIOLIB_ERR_NONE) {

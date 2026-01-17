@@ -140,7 +140,7 @@ int16_t LR2021::setDefaultRxTxTimeout(uint32_t rxTimeout, uint32_t txTimeout) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_DEFAULT_RX_TX_TIMEOUT, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setRegMode(uint8_t simoUsage, uint8_t rampTimes[4]) {
+int16_t LR2021::setRegMode(uint8_t simoUsage, const uint8_t rampTimes[4]) {
   uint8_t buff[] = { simoUsage, 
     rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RC2RU], rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_TX2RU], 
     rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RU2RC], rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RAMP_DOWN],
@@ -152,7 +152,7 @@ int16_t LR2021::calibrate(uint8_t blocks) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_CALIBRATE, true, &blocks, sizeof(blocks)));
 }
 
-int16_t LR2021::calibrateFrontEnd(uint16_t freq[3]) {
+int16_t LR2021::calibrateFrontEnd(const uint16_t freq[3]) {
   uint8_t buff[] = {
     (uint8_t)((freq[0] >> 8) & 0xFF), (uint8_t)(freq[0] & 0xFF),
     (uint8_t)((freq[1] >> 8) & 0xFF), (uint8_t)(freq[1] & 0xFF),
@@ -224,7 +224,7 @@ int16_t LR2021::setDioIrqConfig(uint8_t dio, uint32_t irq) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_DIO_IRQ_CONFIG, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::clearIrq(uint32_t irq) {
+int16_t LR2021::clearIrqState(uint32_t irq) {
   return(this->setU32(RADIOLIB_LR2021_CMD_CLEAR_IRQ, irq));
 }
 

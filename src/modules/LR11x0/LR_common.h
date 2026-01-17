@@ -85,7 +85,7 @@
 
 class LRxxxx: public PhysicalLayer {
   public:
-    LRxxxx(Module* mod);
+    explicit LRxxxx(Module* mod);
 
     /*!
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
