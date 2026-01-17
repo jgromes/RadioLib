@@ -752,7 +752,6 @@ class LR11x0: public LRxxxx {
     int16_t clearRxBuffer(void);
     int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);
 
-    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t getVersion(uint8_t* hw, uint8_t* device, uint8_t* major, uint8_t* minor);
     int16_t getErrors(uint16_t* err);
     int16_t clearErrors(void);
