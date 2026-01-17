@@ -45,7 +45,7 @@ int16_t LR2021::setGfskCrcParams(uint32_t poly, uint32_t init) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_GFSK_CRC_PARAMS, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setGfskSyncword(uint8_t* syncWord, size_t syncWordLen, bool msbFirst) {
+int16_t LR2021::setGfskSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst) {
   uint8_t buff[9] = { 0 };
   for(size_t i = 0; i < syncWordLen; i++) {
     buff[7 - i] = syncWord[i];
