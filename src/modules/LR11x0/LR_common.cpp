@@ -6,7 +6,6 @@ LRxxxx::LRxxxx(Module* mod) : PhysicalLayer() {
   this->mod = mod;
   this->XTAL = false;
   this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_32;
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
   this->mod->spiConfig.statusPos = 0;
   this->mod->spiConfig.parseStatusCb = SPIparseStatus;
@@ -341,10 +340,15 @@ int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
   #endif
 
   // set the address or offset
-  dataBuff[0] = (uint8_t)((addrOffset >> 24) & 0xFF);
-  dataBuff[1] = (uint8_t)((addrOffset >> 16) & 0xFF);
-  dataBuff[2] = (uint8_t)((addrOffset >> 8) & 0xFF);
-  dataBuff[3] = (uint8_t)(addrOffset & 0xFF);
+  uint8_t* dataBuffPtr = (uint8_t*)dataBuff;
+  if(this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] >= Module::BITS_32) {
+    // LR2021 has 24-bit address, whereas LR11x0 has 32-bit
+    *(dataBuffPtr++) = (uint8_t)((addrOffset >> 24) & 0xFF);
+  }
+  
+  *(dataBuffPtr++) = (uint8_t)((addrOffset >> 16) & 0xFF);
+  *(dataBuffPtr++) = (uint8_t)((addrOffset >> 8) & 0xFF);
+  *(dataBuffPtr++) = (uint8_t)(addrOffset & 0xFF);
 
   // convert endians
   for(size_t i = 0; i < len; i++) {
@@ -355,10 +359,10 @@ int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
     } else {
       bin = data[i];
     }
-    dataBuff[4 + i*sizeof(uint32_t)] = (uint8_t)((bin >> 24) & 0xFF);
-    dataBuff[5 + i*sizeof(uint32_t)] = (uint8_t)((bin >> 16) & 0xFF);
-    dataBuff[6 + i*sizeof(uint32_t)] = (uint8_t)((bin >> 8) & 0xFF);
-    dataBuff[7 + i*sizeof(uint32_t)] = (uint8_t)(bin & 0xFF);
+    *(dataBuffPtr++) = (uint8_t)((bin >> 24) & 0xFF);
+    *(dataBuffPtr++) = (uint8_t)((bin >> 16) & 0xFF);
+    *(dataBuffPtr++) = (uint8_t)((bin >> 8) & 0xFF);
+    *(dataBuffPtr++) = (uint8_t)(bin & 0xFF);
   }
 
   int16_t state = this->mod->SPIwriteStream(cmd, dataBuff, buffLen, true, false);

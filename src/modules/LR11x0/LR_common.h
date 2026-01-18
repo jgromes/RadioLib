@@ -5,7 +5,7 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 #define RADIOLIB_LRXXXX_CMD_NOP                                 (0x0000)
-#define RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN                  (256)
+#define RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN                  (128) // intentionally limited to the length supported by LR2021
 
 // RADIOLIB_LR11X0_CMD_GET_STATUS
 // RADIOLIB_LR2021_CMD_GET_STATUS                                                   MSB   LSB   DESCRIPTION
