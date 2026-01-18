@@ -385,6 +385,7 @@ class LR2021: public LRxxxx {
     // this is needed to automatically detect which PA to use
     bool highFreq = false;
 
+    int16_t modSetup(float freq, float tcxoVoltage, uint8_t modem);
     bool findChip(void);
     int16_t config(uint8_t modem);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);

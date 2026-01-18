@@ -21,42 +21,11 @@ LR2021::LR2021(Module* mod) : LRxxxx(mod) {
 }
 
 int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR2021_CMD_READ_REG_MEM_32;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_LR2021_CMD_WRITE_REG_MEM_32;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_LR2021_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_LR2021_CMD_GET_STATUS;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_24;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_16;
-
-  // try to find the chip - this will also reset the module at least once
-  if(!this->findChip()) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR2021 found!");
-    this->mod->term();
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR2021");
-
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0f) {
-    state = setTCXO(tcxoVoltage);
-    RADIOLIB_ASSERT(state);
-  }
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_LR2021_PACKET_TYPE_LORA);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
-  RADIOLIB_ASSERT(state);
-
   state = setBandwidth(bw);
   RADIOLIB_ASSERT(state);
 
@@ -451,6 +420,43 @@ int16_t LR2021::getChannelScanResult() {
 
 Module* LR2021::getMod() {
   return(this->mod);
+}
+
+int16_t LR2021::modSetup(float freq, float tcxoVoltage, uint8_t modem) {
+  this->mod->init();
+  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
+  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR2021_CMD_READ_REG_MEM_32;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_LR2021_CMD_WRITE_REG_MEM_32;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_LR2021_CMD_NOP;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_LR2021_CMD_GET_STATUS;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_24;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_16;
+
+  // try to find the chip - this will also reset the module at least once
+  if(!this->findChip()) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR2021 found!");
+    this->mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR2021");
+
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set TCXO control, if requested
+  if(!this->XTAL && tcxoVoltage > 0.0f) {
+    state = setTCXO(tcxoVoltage);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // configure settings not accessible by API
+  state = config(modem);
+  RADIOLIB_ASSERT(state);
+
+  state = setFrequency(freq);
+  return(state);
 }
 
 bool LR2021::findChip(void) {
