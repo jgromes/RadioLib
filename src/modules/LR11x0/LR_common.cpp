@@ -340,7 +340,7 @@ int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
   #endif
 
   // set the address or offset
-  uint8_t* dataBuffPtr = (uint8_t*)dataBuff;
+  uint8_t* dataBuffPtr = reinterpret_cast<uint8_t*>(dataBuff);
   if(this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] >= Module::BITS_32) {
     // LR2021 has 24-bit address, whereas LR11x0 has 32-bit
     *(dataBuffPtr++) = (uint8_t)((addrOffset >> 24) & 0xFF);
