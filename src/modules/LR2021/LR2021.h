@@ -348,6 +348,26 @@ class LR2021: public LRxxxx {
       \returns \ref Temperature in degrees Celsius.
     */
     float getTemperature(uint8_t source, uint8_t bits = 13);
+
+    /*!
+      \brief Gets recorded signal strength indicator.
+      Overload with packet mode enabled for PhysicalLayer compatibility.
+      \returns RSSI value in dBm.
+    */
+    float getRSSI() override;
+
+    /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator).
+      \param packet Whether to read last packet RSSI, or the current value.
+      \returns RSSI value in dBm.
+    */
+    float getRSSI(bool packet);
+
+    /*!
+      \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
+      \returns SNR of the last received packet in dB.
+    */
+    float getSNR() override;
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:

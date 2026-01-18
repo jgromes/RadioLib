@@ -745,4 +745,45 @@ float LR2021::getTemperature(uint8_t source, uint8_t bits) {
   return(val);
 }
 
+float LR2021::getRSSI() {
+  return(this->getRSSI(true));
+}
+
+float LR2021::getRSSI(bool packet) {
+  float rssi = 0;
+  int16_t state;
+  if(!packet) { 
+    // get instantenous RSSI value
+    state = this->getRssiInst(&rssi);
+    if(state != RADIOLIB_ERR_NONE) { return(0); }
+    return(rssi);
+  }
+
+  // check modem type
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  state = this->getPacketType(&modem);
+  if(state != RADIOLIB_ERR_NONE) { return(0); }
+  if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    state = this->getLoRaPacketStatus(NULL, NULL, NULL, NULL, &rssi, NULL);
+  } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+    state = this->getGfskPacketStatus(NULL, &rssi, NULL, NULL, NULL, NULL);
+  } else {
+    return(0);
+  }
+
+  if(state != RADIOLIB_ERR_NONE) { return(0); }
+  return(rssi);
+}
+
+float LR2021::getSNR() {
+  float snr;
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = this->getPacketType(&modem);
+  if(state != RADIOLIB_ERR_NONE) { return(0); }
+  if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) { return(0); }
+  state = this->getLoRaPacketStatus(NULL, NULL, NULL, &snr, NULL, NULL);
+  if(state != RADIOLIB_ERR_NONE) { return(0); }
+  return(snr);  
+}
+
 #endif
