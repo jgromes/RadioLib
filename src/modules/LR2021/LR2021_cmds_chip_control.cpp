@@ -28,8 +28,8 @@ int16_t LR2021::writeRegMem32(uint32_t addr, const uint32_t* data, size_t len) {
 }
 
 int16_t LR2021::writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data) {
-  uint8_t buff[12] = {
-    (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF),
+  uint8_t buff[11] = {
+    (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF),
     (uint8_t)((mask >> 24) & 0xFF), (uint8_t)((mask >> 16) & 0xFF), (uint8_t)((mask >> 8) & 0xFF), (uint8_t)(mask & 0xFF),
     (uint8_t)((data >> 24) & 0xFF), (uint8_t)((data >> 16) & 0xFF), (uint8_t)((data >> 8) & 0xFF), (uint8_t)(data & 0xFF),
   };
@@ -38,15 +38,14 @@ int16_t LR2021::writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data) {
 
 int16_t LR2021::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   // check maximum size
-  if(len >= (RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
+  if(len > (RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
 
   // the request contains the address and length
-  uint8_t reqBuff[5] = {
-    (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF),
-    (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF),
-    (uint8_t)len,
+  uint8_t reqBuff[4] = {
+    (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF),
+    (uint8_t)(addr & 0xFF), (uint8_t)len,
   };
 
   // build buffers - later we need to ensure endians are correct, 
