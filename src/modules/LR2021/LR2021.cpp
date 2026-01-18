@@ -617,6 +617,10 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
         return(RADIOLIB_ERR_WRONG_MODEM);
       }
+      
+      // set the correct Rx path
+      state = setRxPath(this->highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this->highFreq ? RADIOLIB_LR2021_RX_BOOST_HF : RADIOLIB_LR2021_RX_BOOST_LF);
+      RADIOLIB_ASSERT(state);
 
       // set DIO mapping
       if(cfg->receive.timeout != RADIOLIB_LR2021_RX_TIMEOUT_INF) {

@@ -307,6 +307,8 @@
 // RADIOLIB_LR2021_CMD_SET_RX_PATH
 #define RADIOLIB_LR2021_RX_PATH_LF                              (0x00UL << 0)   //  7     0     Rx path: low-frequency
 #define RADIOLIB_LR2021_RX_PATH_HF                              (0x01UL << 0)   //  7     0              high-frequency
+#define RADIOLIB_LR2021_RX_BOOST_LF                             (0x00UL << 0)   //  7     0     Rx boost: low-frequency
+#define RADIOLIB_LR2021_RX_BOOST_HF                             (0x04UL << 0)   //  7     0               high-frequency
 
 // RADIOLIB_LR2021_CMD_SET_RSSI_CALIBRATION
 #define RADIOLIB_LR2021_RSSI_PATH_LF                            (0x01UL << 0)   //  0     0     Rx path for RSSI: low-frequency
