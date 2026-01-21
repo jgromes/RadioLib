@@ -336,8 +336,7 @@ int16_t SX126x::transmitDirect(uint32_t frf) {
   RADIOLIB_ASSERT(state);
 
   // direct mode activation intentionally skipped here, as it seems to lead to much worse results
-  const uint8_t data[] = { RADIOLIB_SX126X_CMD_NOP };
-  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_CONTINUOUS_WAVE, data, 1));
+  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_CONTINUOUS_WAVE, NULL, 0));
 }
 
 int16_t SX126x::receiveDirect() {
