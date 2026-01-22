@@ -796,4 +796,10 @@ float LR2021::getSNR() {
   return(snr);  
 }
 
+uint8_t LR2021::randomByte() {
+  uint32_t num = 0;
+  (void)getRandomNumber(&num);
+  return((uint8_t)num);
+}
+
 #endif

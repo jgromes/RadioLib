@@ -368,6 +368,12 @@ class LR2021: public LRxxxx {
       \returns SNR of the last received packet in dB.
     */
     float getSNR() override;
+
+    /*!
+      \brief Get one truly random byte from RSSI noise.
+      \returns TRNG byte.
+    */
+    uint8_t randomByte() override;
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
