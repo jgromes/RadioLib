@@ -1166,13 +1166,6 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   return((size_t)len);
 }
 
-RadioLibTime_t LR11x0::calculateRxTimeout(RadioLibTime_t timeoutUs) {
-  // the timeout value is given in units of 30.52 microseconds
-  // the calling function should provide some extra width, as this number of units is truncated to integer
-  RadioLibTime_t timeout = timeoutUs / 30.52;
-  return(timeout);
-}
-
 uint32_t LR11x0::getIrqFlags() {
   return((uint32_t)this->getIrqStatus());
 }

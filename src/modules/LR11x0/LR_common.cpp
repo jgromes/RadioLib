@@ -172,6 +172,13 @@ RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
   return(0);
 }
 
+RadioLibTime_t LRxxxx::calculateRxTimeout(RadioLibTime_t timeoutUs) {
+  // the timeout value is given in units of 30.52 microseconds
+  // the calling function should provide some extra width, as this number of units is truncated to integer
+  RadioLibTime_t timeout = timeoutUs / 30.52;
+  return(timeout);
+}
+
 int16_t LRxxxx::reset() {
   // run the reset sequence
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);

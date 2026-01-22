@@ -457,13 +457,6 @@ class LR11x0: public LRxxxx {
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
-      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
-      \param timeoutUs Timeout in microseconds to listen for
-      \returns Timeout value in a unit that is specific for the used module
-    */
-    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
-
-    /*!
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
     */

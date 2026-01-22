@@ -154,6 +154,13 @@ class LRxxxx: public PhysicalLayer {
     */
     RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
 
+    /*!
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
+      \param timeoutUs Timeout in microseconds to listen for
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
+
   protected:
     Module* mod;
     
