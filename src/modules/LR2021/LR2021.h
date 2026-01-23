@@ -537,8 +537,8 @@ class LR2021: public LRxxxx {
     bool highFreq = false;
 
     // cached FLRC parameters
-    uint16_t bitRateFlrc;
-    uint8_t codingRateFlrc;
+    uint16_t  = 0;
+    uint8_t codingRateFlrc = 0;
 
     int16_t modSetup(float freq, float tcxoVoltage, uint8_t modem);
     bool findChip(void);
