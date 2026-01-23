@@ -472,6 +472,9 @@
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX       (0x00UL << 0)   //  7     0     whitening type: compatible with SX126x and LR2021
 #define RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX128X              (0x01UL << 0)   //  7     0                     compatible with SX128x
 
+// RADIOLIB_LR2021_CMD_SET_GFSK_SYNCWORD
+#define RADIOLIB_LR2021_GFSK_SYNC_WORD_LEN                      (8)
+
 // RADIOLIB_LR2021_CMD_SET_OQPSK_PARAMS
 #define RADIOLIB_LR2021_OQPSK_TYPE_15_4                         (0x00UL << 0)   //  7     0     OQPSK type: 802.15.4 PHY, 250 kbps bit rate
 

@@ -62,6 +62,47 @@ class LR2021: public LRxxxx {
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
 
     /*!
+      \brief Initialization method for FSK modem.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+      \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
+      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 5.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 153.8 kHz.
+      \param power Output power in dBm. Defaults to 10 dBm.
+      \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
+      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
+      \returns \ref status_codes
+    */
+    int16_t beginGFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 153.8, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
+    
+    /*!
+      \brief Initialization method for LR-FHSS modem.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LRXXXX_LR_FHSS_CR_* values. Defaults to 2/3 coding rate.
+      \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid.
+      \param power Output power in dBm. Defaults to 10 dBm.
+      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
+      \returns \ref status_codes
+    */
+    int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LRXXXX_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LRXXXX_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);
+
+    /*!
+      \brief Initialization method for FLRC modem.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+      \param br FLRC bit rate in kbps. Defaults to 650 kbps.
+      \param cr FLRC coding rate. Defaults to 3 (coding rate 3/4).
+      \param pwr Output power in dBm. Defaults to 10 dBm.
+      \param preambleLength FLRC preamble length in bits. Defaults to 16 bits.
+      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
+      \returns \ref status_codes
+    */
+    int16_t beginFLRC(float freq = 434.0, uint16_t br = 650, uint8_t cr = 3, int8_t pwr = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5, float tcxoVoltage = 1.6);
+
+    /*!
       \brief Blocking binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
@@ -322,6 +363,103 @@ class LR2021: public LRxxxx {
     int16_t invertIQ(bool enable) override;
 
     /*!
+      \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
+      \param br FSK bit rate to be set in kbps.
+      \returns \ref status_codes
+    */
+    int16_t setBitRate(float br) override;
+
+    /*!
+      \brief Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
+      \param freqDev GFSK frequency deviation to be set in kHz.
+      \returns \ref status_codes
+    */
+    int16_t setFrequencyDeviation(float freqDev) override;
+
+    /*!
+      \brief Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
+      23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
+      \param rxBw GFSK receiver bandwidth to be set in kHz.
+      \returns \ref status_codes
+    */
+    int16_t setRxBandwidth(float rxBw);
+    
+    /*!
+      \brief Sets GFSK sync word in the form of array of up to 8 bytes.
+      \param syncWord GFSK sync word to be set.
+      \param len GFSK sync word length in bytes.
+      \returns \ref status_codes
+    */
+    int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
+
+    /*!
+      \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
+      Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0.
+      Set to RADIOLIB_SHAPING_NONE to disable data shaping.
+      \param sh Time-bandwidth product of Gaussian filter to be set.
+      \returns \ref status_codes
+    */
+    int16_t setDataShaping(uint8_t sh) override;
+
+    /*!
+      \brief Sets transmission encoding. Available in GFSK mode only. Serves only as alias for PhysicalLayer compatibility.
+      \param encoding Encoding to be used. Set to 0 for NRZ, and 2 for whitening.
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding) override;
+
+    /*!
+      \brief Set modem in fixed packet length mode. Available in GFSK mode only.
+      \param len Packet length.
+      \returns \ref status_codes
+    */
+    int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+
+    /*!
+      \brief Set modem in variable packet length mode. Available in GFSK mode only.
+      \param maxLen Maximum packet length.
+      \returns \ref status_codes
+    */
+    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+
+    /*!
+      \brief Sets GFSK whitening parameters.
+      \param enabled True = Whitening enabled
+      \param initial Initial value used for the whitening LFSR in GFSK mode.
+      By default set to 0x01FF for compatibility with SX127x and LoRaWAN.
+      \returns \ref status_codes
+    */
+    int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
+
+    /*!
+      \brief Set data rate.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
+
+    /*!
+      \brief Check the data rate can be configured by this module.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
+      \returns \ref status_codes
+    */
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
+
+    /*!
+      \brief Sets LR-FHSS configuration.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LRXXXX_LR_FHSS_CR_* values.
+      \param hdrCount Header packet count, 1 - 4. Defaults to 3.
+      \param hopSeed 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
+      \returns \ref status_codes
+    */
+    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
+
+    /*!
       \brief Get expected time-on-air for a given size of payload
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
@@ -398,9 +536,14 @@ class LR2021: public LRxxxx {
     // this is needed to automatically detect which PA to use
     bool highFreq = false;
 
+    // cached FLRC parameters
+    uint16_t bitRateFlrc;
+    uint8_t codingRateFlrc;
+
     int16_t modSetup(float freq, float tcxoVoltage, uint8_t modem);
     bool findChip(void);
     int16_t config(uint8_t modem);
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
 
     // chip control commands

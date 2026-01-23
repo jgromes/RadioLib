@@ -49,9 +49,111 @@ int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   RADIOLIB_ASSERT(state);
 
   state = invertIQ(false);
+  return(state);
+}
+
+int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
+  this->frequencyDev = freqDev * 1000.0f;
+
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
-  return(RADIOLIB_ERR_NONE);
+  // configure publicly accessible settings
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+
+  state = setFrequencyDeviation(freqDev);
+  RADIOLIB_ASSERT(state);
+
+  state = setRxBandwidth(rxBw);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  state = setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  // set publicly accessible settings that are not a part of begin method
+  uint8_t sync[] = { 0x12, 0xAD };
+  state = setSyncWord(sync, 2);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
+  RADIOLIB_ASSERT(state);
+
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
+  RADIOLIB_ASSERT(state);
+
+  state = variablePacketLengthMode(RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+  RADIOLIB_ASSERT(state);
+
+  state = setCRC(2);
+  return(state);
+}
+    
+int16_t LR2021::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
+// set module properties and perform initial setup
+  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
+  RADIOLIB_ASSERT(state);
+
+  // set grid spacing
+  this->lrFhssGrid = narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
+
+  // configure publicly accessible settings
+  state = setLrFhssConfig(bw, cr);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  uint8_t syncWord[] = { 0x12, 0xAD, 0x10, 0x1B };
+  state = setSyncWord(syncWord, 4);
+  return(state);
+}
+
+int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage) {
+  // initialize FLRC modulation variables
+  this->bitRateFlrc = br;
+  this->codingRateFlrc = RADIOLIB_LR2021_FLRC_CR_3_4;
+  this->pulseShape = RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_0_5;
+
+  // initialize FLRC packet variables
+  this->preambleLengthGFSK = preambleLength;
+  this->crcLenGFSK = 1;
+
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+
+  state = setCodingRate(cr);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(pwr);
+  RADIOLIB_ASSERT(state);
+
+  state = setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(dataShaping);
+  RADIOLIB_ASSERT(state);
+
+  // set publicly accessible settings that are not a part of begin method
+  uint8_t sync[] = { 0x2D, 0x01, 0x4B, 0x1D};
+  state = setSyncWord(sync, 4);
+  RADIOLIB_ASSERT(state);
+
+  state = variablePacketLengthMode(RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+  return(state);
 }
 
 int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
@@ -84,12 +186,14 @@ int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     // calculate timeout (150% of expected time-on-air)
     timeout = (timeout * 3) / 2;
 
-  } else if((modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || (modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS)) {
+  } else if((modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || 
+            (modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) ||
+            (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC)) {
     // calculate timeout (500% of expected time-on-air)
     timeout = timeout * 5;
 
   } else {
-    return(RADIOLIB_ERR_UNKNOWN);
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu us", timeout);
@@ -127,7 +231,9 @@ int16_t LR2021::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
     state = getPacketType(&modem);
     RADIOLIB_ASSERT(state);
-    if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) || (modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
+    if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) ||
+       (modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) ||
+       (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC)) {
       // calculate timeout (500 % of expected time-one-air)
       size_t maxLen = len;
       if(len == 0) { maxLen = RADIOLIB_LR2021_MAX_PACKET_LENGTH; }
@@ -620,7 +726,8 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = getPacketType(&modem);
       RADIOLIB_ASSERT(state);
       if((modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) && 
-        (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
+        (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK) && 
+        (modem != RADIOLIB_LR2021_PACKET_TYPE_FLRC)) {
         return(RADIOLIB_ERR_WRONG_MODEM);
       }
       
@@ -669,13 +776,15 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, cfg->transmit.len, this->crcTypeLoRa, this->invertIQEnabled);
       
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
-        //! \todo [LR2021] implement GFSK
-        //state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
+        state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
+
+      } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
+        state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, cfg->transmit.len);
       
-      } else if(modem != RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
-        return(RADIOLIB_ERR_UNKNOWN);
-      
+      } else {
+        return(RADIOLIB_ERR_WRONG_MODEM);
       }
+
       RADIOLIB_ASSERT(state);
 
       // set DIO mapping
