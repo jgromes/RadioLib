@@ -47,11 +47,7 @@ uint32_t LRxxxx::getIrqStatus() {
   return(irq);
 }
 
-RadioLibTime_t LRxxxx::getTimeOnAir(size_t len) {
-  ModemType_t modem;
-  int32_t state = this->getModem(&modem);
-  RADIOLIB_ASSERT(state);
-
+RadioLibTime_t LRxxxx::getTimeOnAir(size_t len, ModemType_t modem) {
   DataRate_t dr = {};
   PacketConfig_t pc = {};
   switch(modem) {

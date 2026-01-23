@@ -986,6 +986,7 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
     return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType,  this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     this->preambleLengthGFSK = preambleLength;
+    //! \TODO: [LR11x0] this can probably be simplified with a simple calculation
     this->preambleDetLength = preambleLength >= 32 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_32_BITS :
                               preambleLength >= 24 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_24_BITS :
                               preambleLength >= 16 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_16_BITS :
@@ -1164,6 +1165,12 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   RADIOLIB_DEBUG_BASIC_PRINT("getRxBufferStatus state = %d\n", state);
   (void)state;
   return((size_t)len);
+}
+
+RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
+  ModemType_t modem;
+  getModem(&modem);
+  return(LRxxxx::getTimeOnAir(len, modem));
 }
 
 uint32_t LR11x0::getIrqFlags() {

@@ -138,13 +138,6 @@ class LRxxxx: public PhysicalLayer {
     uint32_t getIrqStatus();
 
     /*!
-      \brief Get expected time-on-air for a given size of payload
-      \param len Payload length in bytes.
-      \returns Expected time-on-air in microseconds.
-    */
-    RadioLibTime_t getTimeOnAir(size_t len) override;
-
-    /*!
       \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
       \param modem Modem type.
       \param dr Data rate.
@@ -192,6 +185,7 @@ class LRxxxx: public PhysicalLayer {
     int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     uint8_t roundRampTime(uint32_t rampTimeUs);
+    RadioLibTime_t getTimeOnAir(size_t len, ModemType_t modem);
 
     // several commands just send unsigned 32-bit number
     int16_t setU32(uint16_t cmd, uint32_t u32);

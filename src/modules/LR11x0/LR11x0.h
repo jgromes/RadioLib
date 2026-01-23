@@ -457,6 +457,13 @@ class LR11x0: public LRxxxx {
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
+      \brief Get expected time-on-air for a given size of payload
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
     */

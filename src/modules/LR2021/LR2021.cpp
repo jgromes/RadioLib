@@ -582,6 +582,12 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
   return(setCad());
 }
 
+RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
+  ModemType_t modem;
+  getModem(&modem);
+  return(LRxxxx::getTimeOnAir(len, modem));
+}
+
 int16_t LR2021::getModem(ModemType_t* modem) {
   RADIOLIB_ASSERT_PTR(modem);
 

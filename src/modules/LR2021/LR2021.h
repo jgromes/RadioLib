@@ -322,6 +322,13 @@ class LR2021: public LRxxxx {
     int16_t invertIQ(bool enable) override;
 
     /*!
+      \brief Get expected time-on-air for a given size of payload
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
       \brief Get modem currently in use by the radio.
       \param modem Pointer to a variable to save the retrieved configuration into.
       \returns \ref status_codes
