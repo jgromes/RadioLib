@@ -910,7 +910,7 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
     return(RADIOLIB_ERR_NONE);
   }
 
-  if(((cfg == nullptr) && (numDetectors > 0)) || (numDetectors > 3)) {
+  if(numDetectors > 3) {
     return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
   }
 
