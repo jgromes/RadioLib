@@ -33,6 +33,7 @@ tags:
   - lr1110
   - lr1120
   - lr1121
+  - lr2021
 url: "https://github.com/jgromes/RadioLib"
 repository: "https://github.com/jgromes/RadioLib.git"
 license: "MIT"
