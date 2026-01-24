@@ -766,4 +766,82 @@ int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t LR2021::setLoRaHeaderType(uint8_t hdrType, size_t len) {
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  state = setLoRaPacketParams(this->preambleLengthLoRa, hdrType, len, this->crcTypeLoRa, this->invertIQEnabled);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  this->headerType = hdrType;
+  this->implicitLen = len;
+
+  return(state);
+}
+
+int16_t LR2021::implicitHeader(size_t len) {
+  return(this->setLoRaHeaderType(RADIOLIB_LR2021_LORA_HEADER_IMPLICIT, len));
+}
+
+int16_t LR2021::explicitHeader() {
+  return(this->setLoRaHeaderType(RADIOLIB_LR2021_LORA_HEADER_EXPLICIT));
+}
+
+int16_t LR2021::setNodeAddress(uint8_t nodeAddr) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // enable address filtering (node only)
+  this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE;
+  state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  RADIOLIB_ASSERT(state);
+
+  // set node address
+  this->node = nodeAddr;
+  return(setGfskAddress(this->node, 0));
+}
+
+int16_t LR2021::setBroadcastAddress(uint8_t broadAddr) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // enable address filtering (node and broadcast)
+  this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE_BROADCAST;
+  state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  RADIOLIB_ASSERT(state);
+
+  // set node and broadcast address
+  return(setGfskAddress(this->node, broadAddr));
+}
+
+int16_t LR2021::disableAddressFiltering() {
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // disable address filterin
+  this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_DISABLED;
+  return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+}
+
 #endif

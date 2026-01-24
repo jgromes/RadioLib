@@ -393,6 +393,27 @@ class LR2021: public LRxxxx {
     int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
 
     /*!
+      \brief Sets node address. Calling this method will also enable address filtering for node address only.
+      \param nodeAddr Node address to be set.
+      \returns \ref status_codes
+    */
+    int16_t setNodeAddress(uint8_t nodeAddr);
+
+    /*!
+      \brief Sets broadcast address. Calling this method will also enable address
+      filtering for node and broadcast address.
+      \param broadAddr Node address to be set.
+      \returns \ref status_codes
+    */
+    int16_t setBroadcastAddress(uint8_t broadAddr);
+
+    /*!
+      \brief Disables address filtering. Calling this method will also erase previously set addresses.
+      \returns \ref status_codes
+    */
+    int16_t disableAddressFiltering();
+
+    /*!
       \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
       Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0.
       Set to RADIOLIB_SHAPING_NONE to disable data shaping.
