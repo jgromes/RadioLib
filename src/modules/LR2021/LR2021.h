@@ -637,7 +637,7 @@ class LR2021: public LRxxxx {
     int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops);
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
     int16_t setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets);
-    int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
+    int16_t setLoRaHeaderType(uint8_t hdrType, size_t len = 0xFF);
 
     // ranging commands
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
