@@ -917,4 +917,31 @@ uint8_t LR2021::randomByte() {
   return((uint8_t)num);
 }
 
+int16_t LR2021::setHeaderType(uint8_t hdrType, size_t len) {
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  state = setLoRaPacketParams(this->preambleLengthLoRa, hdrType, len, this->crcTypeLoRa, this->invertIQEnabled);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  this->headerType = hdrType;
+  this->implicitLen = len;
+
+  return(state);
+}
+
+int16_t LR2021::implicitHeader(size_t len) {
+  return(this->setHeaderType(RADIOLIB_LR2021_LORA_HEADER_IMPLICIT, len));
+}
+
+int16_t LR2021::explicitHeader() {
+  return(this->setHeaderType(RADIOLIB_LR2021_LORA_HEADER_EXPLICIT));
+}
+
 #endif
