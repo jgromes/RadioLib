@@ -580,6 +580,22 @@ class LR2021: public LRxxxx {
     */
     int16_t ookDetector(uint16_t pattern = 0x0285, uint8_t len = 10, uint8_t repeats = 0, bool syncRaw = false, bool rising = false, uint8_t sofLen = 0);
 
+    /*!
+      \brief Configure LoRa side detector, which enables to detect mutiple spreading factors and receive one of them.
+      The following limitations apply:
+        * In Rx mode, all side-detector spreading factors must be higher than the primary one (configured via begin or setSpreadingFactor)
+        * For CAD mode, the above condition is inverted - all side-detector spreading factors must be smaller
+        * All packets to be detected must have the same header type (implicit or explicit)
+        * If bandwidth is higher than 500 kHz, at most 2 side detectors are allowed.
+        * If the primary spreading factor is 10, 11 or 12, at most 2 side detectors are allowed.
+        * All spreading factors must be different.
+        * The diference between maximum and minimum spreading factor used must be less than or equal to 4.
+      \param cfg Pointer to an array of side detector configuration structures. Set to null to disable all side detectors.
+      \param numDetectors Number of side detectors to configure. Maximum of 3, set to 0 to to disable all side detectors.
+      \returns \ref status_codes
+    */
+    int16_t setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numDetectors);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif

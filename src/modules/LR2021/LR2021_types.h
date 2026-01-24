@@ -19,6 +19,24 @@ struct LR2021LrFhssHopTableEntry_t {
   uint16_t numSymbols;
 };
 
+/*!
+  \struct LR2021LoRaSideDetector_t
+  \brief Structure to configure multi-SF detection
+*/
+struct LR2021LoRaSideDetector_t {
+  /*! \brief Spreading factor value */
+  uint8_t sf;
+  
+  /*! \brief Low datarate optimization enabled for this detector */
+  bool ldro;
+  
+  /*! \brief IQ inversion for this detector */
+  bool invertIQ;
+
+  /*! \brief LoRa sync word for this detector */
+  uint8_t syncWord;
+};
+
 #endif
 
 #endif

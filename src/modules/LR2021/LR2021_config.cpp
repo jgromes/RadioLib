@@ -904,4 +904,75 @@ int16_t LR2021::ookDetector(uint16_t pattern, uint8_t len, uint8_t repeats, bool
   return(setOokDetector(pattern, len - 1, repeats, syncRaw, rising, sofLen));
 }
 
+int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numDetectors) {
+  // some basic sanity checks
+  if((cfg == nullptr) || (numDetectors == 0)) {
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  if(((cfg == nullptr) && (numDetectors > 0)) || (numDetectors > 3)) {
+    return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+  }
+
+  // if bandwidth is higher than 500 kHz, at most 2 side detectors are allowed
+  if((this->bandwidthKhz > 500.0f) && (numDetectors > 2)) {
+    return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+  }
+
+  // if the primary spreading factor is 10, 11 or 12, at most 2 side detectors are allowed
+  if((this->spreadingFactor >= 10) && (numDetectors > 2)) {
+    return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+  }
+
+  // condition of the primary spreading factor being the smallest/largest is not checked
+  // this is intentional, because it depends on whether the user wants to start Rx or CAD
+
+  uint8_t detectors[3] = { 0 };
+  uint8_t syncWords[3] = { 0 };
+  uint8_t minSf = this->spreadingFactor;
+  for(size_t i = 0; i < numDetectors; i++) {
+    // all side-detector spreading factors must be higher than the primary one
+    //! \todo [LR2021] implement multi-SF for CAD (main SF must be smallest!)
+    if(this->spreadingFactor >= cfg[i].sf) {
+      return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+    }
+
+    // the diference between maximum and minimum spreading factor used must be less than or equal to 4
+    if(cfg[i].sf - minSf > 4) {
+      return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+    }
+
+    if(cfg[i].sf < minSf) { minSf = cfg[i].sf; }
+
+    detectors[i] = cfg[i].sf << 4 | cfg[i].ldro << 2 | cfg[i].invertIQ;
+    syncWords[i] = cfg[i].syncWord;
+  }
+
+  // all spreading factors must be different
+  if(numDetectors >= 2) {
+    if(cfg[0].sf == cfg[1].sf) { 
+      return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+    }
+  }
+
+  if(numDetectors == 3) {
+    if((cfg[1].sf == cfg[2].sf) || (cfg[0].sf == cfg[2].sf)) { 
+      return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
+    }
+  }
+
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  state = setLoRaSideDetConfig(detectors, numDetectors);
+  RADIOLIB_ASSERT(state);
+
+  return(setLoRaSideDetSyncword(syncWords, numDetectors));
+}
+
 #endif

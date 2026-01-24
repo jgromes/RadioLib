@@ -638,6 +638,11 @@
 #define RADIOLIB_ERR_FRONTEND_CALIBRATION_FAILED                (-1300)
 
 /*!
+  \brief Multi-SF side detector configuration is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_SIDE_DETECT                        (-1301)
+
+/*!
   \}
 */
 
