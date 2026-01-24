@@ -93,6 +93,44 @@ int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_
   state = setCRC(2);
   return(state);
 }
+
+int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
+
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_OOK);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+
+  state = setRxBandwidth(rxBw);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  state = setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  // set publicly accessible settings that are not a part of begin method
+  uint8_t sync[] = { 0x12, 0xAD };
+  state = setSyncWord(sync, 2);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
+  RADIOLIB_ASSERT(state);
+
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
+  RADIOLIB_ASSERT(state);
+
+  state = variablePacketLengthMode(RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+  RADIOLIB_ASSERT(state);
+
+  state = setCRC(2);
+  return(state);
+}
     
 int16_t LR2021::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
 // set module properties and perform initial setup
@@ -188,7 +226,8 @@ int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   } else if((modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || 
             (modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) ||
-            (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC)) {
+            (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) ||
+            (modem == RADIOLIB_LR2021_PACKET_TYPE_OOK)) {
     // calculate timeout (500% of expected time-on-air)
     timeout = timeout * 5;
 
@@ -233,7 +272,8 @@ int16_t LR2021::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     RADIOLIB_ASSERT(state);
     if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) ||
        (modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) ||
-       (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC)) {
+       (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) ||
+       (modem == RADIOLIB_LR2021_PACKET_TYPE_OOK)) {
       // calculate timeout (500 % of expected time-one-air)
       size_t maxLen = len;
       if(len == 0) { maxLen = RADIOLIB_LR2021_MAX_PACKET_LENGTH; }
@@ -410,7 +450,9 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
   if((modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK)) {
+     (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK) && 
+     (modem != RADIOLIB_LR2021_PACKET_TYPE_FLRC) && 
+     (modem != RADIOLIB_LR2021_PACKET_TYPE_OOK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -727,7 +769,8 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       RADIOLIB_ASSERT(state);
       if((modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) && 
         (modem != RADIOLIB_LR2021_PACKET_TYPE_GFSK) && 
-        (modem != RADIOLIB_LR2021_PACKET_TYPE_FLRC)) {
+        (modem != RADIOLIB_LR2021_PACKET_TYPE_FLRC) && 
+        (modem != RADIOLIB_LR2021_PACKET_TYPE_OOK)) {
         return(RADIOLIB_ERR_WRONG_MODEM);
       }
       
@@ -777,6 +820,9 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
         state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
+
+      } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+        state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
 
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
         state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, cfg->transmit.len);

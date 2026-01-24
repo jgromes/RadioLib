@@ -89,4 +89,12 @@ int16_t LR2021::setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uin
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_DETECTOR, true, buff, sizeof(buff)));
 }
 
+int16_t LR2021::setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init) {
+  uint8_t buff[] = {
+    (uint8_t)((bitIdx << 4) | ((poly >> 8) & 0x0FF)), (uint8_t)(poly & 0xFF),
+     (uint8_t)((init >> 8) & 0xFF), (uint8_t)(init & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_WHITENING_PARAMS, true, buff, sizeof(buff)));
+}
+
 #endif

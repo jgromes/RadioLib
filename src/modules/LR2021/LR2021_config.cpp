@@ -262,6 +262,11 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
     this->preambleDetLength = (preambleLength / 8) << 3;
     return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+    this->preambleLengthGFSK = preambleLength;
+    this->preambleDetLength = (preambleLength / 8) << 3;
+    return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+    
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
     this->preambleLengthGFSK = preambleLength / 4;
     return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, RADIOLIB_LR2021_MAX_PACKET_LENGTH));
@@ -346,14 +351,27 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
       this->crcTypeGFSK += 0x08;
     }
 
-    this->crcLenGFSK = len;
     state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     return(setGfskCrcParams(initial, polynomial));
 
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+    if(len > 4) {
+      return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
+    }
+
+    this->crcTypeGFSK = len;
+    if(inverted) {
+      this->crcTypeGFSK += 0x08;
+    }
+
+    state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+    RADIOLIB_ASSERT(state);
+
+    return(setOokCrcParams(initial, polynomial));
   
-  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
     if((len == 1) || (len > 4)) {
       return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
     }
@@ -389,6 +407,14 @@ int16_t LR2021::setBitRate(float br) {
     //! \TODO: [LR2021] implement fractional bit rate configuration
     this->bitRate = br * 1000.0f;
     state = setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
+    return(state);
+  
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+    RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    //! \TODO: [LR2021] implement fractional bit rate configuration
+    this->bitRate = br * 1000.0f;
+    //! \TODO: [LR2021] implement OOK magnitude depth configuration
+    state = setOokModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, RADIOLIB_LR2021_OOK_DEPTH_FULL);
     return(state);
     
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
@@ -445,7 +471,8 @@ int16_t LR2021::setRxBandwidth(float rxBw) {
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
-  if(type != RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+  if(!((type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || 
+       (type == RADIOLIB_LR2021_PACKET_TYPE_OOK))) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -511,7 +538,11 @@ int16_t LR2021::setRxBandwidth(float rxBw) {
   }
 
   // update modulation parameters
-  state = setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
+  if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+    state = setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
+  } else {
+    state = setOokModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, RADIOLIB_LR2021_OOK_DEPTH_FULL);
+  }
   return(state);
 }
 
@@ -528,13 +559,12 @@ int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
   uint32_t sync = 0;
   switch(type) {
     case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
-      // update sync word length
-      this->syncWordLength = len*8;
-      state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
-      RADIOLIB_ASSERT(state);
-
       // default to MSB-first
       return(setGfskSyncword(const_cast<const uint8_t*>(syncWord), len, true));
+    
+      case(RADIOLIB_LR2021_PACKET_TYPE_OOK):
+      // default to MSB-first
+      return(setOokSyncword(const_cast<const uint8_t*>(syncWord), len, true));
     
     case(RADIOLIB_LR2021_PACKET_TYPE_LORA):
       // with length set to 1 and LoRa modem active, assume it is the LoRa sync word
@@ -574,9 +604,6 @@ int16_t LR2021::setDataShaping(uint8_t sh) {
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
-  if(!((type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || (type == RADIOLIB_LR2021_PACKET_TYPE_FLRC))) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
 
   // set data shaping
   switch(sh) {
@@ -602,8 +629,12 @@ int16_t LR2021::setDataShaping(uint8_t sh) {
   // update modulation parameters
   if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
     return(setFlrcModulationParams(this->bitRateFlrc, this->codingRateFlrc, this->pulseShape));
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
+    return(setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+    return(setOokModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, RADIOLIB_LR2021_OOK_DEPTH_FULL));
   }
-  return(setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 int16_t LR2021::setEncoding(uint8_t encoding) {
@@ -623,22 +654,30 @@ int16_t LR2021::setWhitening(bool enabled, uint16_t initial) {
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
-  if(type != RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+  
+  switch(type) {
+    case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
+      //! \TODO: [LR2021] Implement SX128x-compatible whitening
+      if(enabled) {
+        state = setGfskWhiteningParams(RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX, initial);
+        RADIOLIB_ASSERT(state);
+      }
+      this->whitening = enabled;
+      return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+    
+    case(RADIOLIB_LR2021_PACKET_TYPE_OOK):
+      this->whitening = enabled;
+      if(enabled) {
+        //! \TODO: [LR2021] Implement configurable index and polynomial
+        state = setOokWhiteningParams(12, 0x01FF, initial);
+      } else {
+        state = setOokWhiteningParams(0, 0, 0);
+      }
+      RADIOLIB_ASSERT(state);
+      return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   }
 
-  this->whitening = (uint8_t)enabled;
-  if(enabled) {
-    // enable whitening
-    //! \TODO: [LR2021] Implement SX128x-compatible whitening
-    this->whitening = RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX;
-
-    // write initial whitening value
-    state = setGfskWhiteningParams(RADIOLIB_LR2021_GFSK_WHITENING_TYPE_SX126X_LR11XX, initial);
-    RADIOLIB_ASSERT(state);
-  }
-
-  return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 int16_t LR2021::setDataRate(DataRate_t dr, ModemType_t modem ) {
@@ -754,6 +793,15 @@ int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
     this->packetType = mode;
     return(state);
   
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+    // set requested packet mode
+    state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, len, this->crcTypeGFSK, this->whitening);
+    RADIOLIB_ASSERT(state);
+
+    // update cached value
+    this->packetType = mode;
+    return(state);
+  
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
     state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, mode == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, len);
     RADIOLIB_ASSERT(state);
@@ -842,6 +890,18 @@ int16_t LR2021::disableAddressFiltering() {
   // disable address filterin
   this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_DISABLED;
   return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+}
+
+int16_t LR2021::ookDetector(uint16_t pattern, uint8_t len, uint8_t repeats, bool syncRaw, bool rising, uint8_t sofLen) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_OOK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  return(setOokDetector(pattern, len - 1, repeats, syncRaw, rising, sofLen));
 }
 
 #endif

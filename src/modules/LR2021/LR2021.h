@@ -56,7 +56,7 @@ class LR2021: public LRxxxx {
       \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
+      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
       \returns \ref status_codes
     */
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
@@ -71,10 +71,24 @@ class LR2021: public LRxxxx {
       \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
+      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
       \returns \ref status_codes
     */
     int16_t beginGFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 153.8, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
+    
+    /*!
+      \brief Initialization method for OOK modem.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+      \param br OOK bit rate in kbps. Defaults to 4.8 kbps.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 153.8 kHz.
+      \param power Output power in dBm. Defaults to 10 dBm.
+      \param preambleLength OOK preamble length in bits. Defaults to 16 bits.
+      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
+      \returns \ref status_codes
+    */
+    int16_t beginOOK(float freq = 434.0, float br = 4.8, float rxBw = 153.8, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
     
     /*!
       \brief Initialization method for LR-FHSS modem.
@@ -85,7 +99,7 @@ class LR2021: public LRxxxx {
       \param power Output power in dBm. Defaults to 10 dBm.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
+      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LRXXXX_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LRXXXX_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);
@@ -554,6 +568,18 @@ class LR2021: public LRxxxx {
     */
     int16_t explicitHeader();
 
+    /*!
+      \brief Set OOK detector properties. The default values are set to allow ADS-B reception.
+      \param pattern Preamble pattern, should end with 01 or 10 (binary).
+      \param len Preamble patter length in bits.
+      \param repeats Number of preamble repeats, maximum of 31.
+      \param syncRaw Whether the sync word is send raw (unencoded) or encoded. Set to true for encoded sync word.
+      \param rising Whether the start of frame delimiter edge is rising (true) or falling (false).
+      \param sofLen Start-of-frame length in bits.
+      \returns \ref status_codes
+    */
+    int16_t ookDetector(uint16_t pattern = 0x0285, uint8_t len = 10, uint8_t repeats = 0, bool syncRaw = false, bool rising = false, uint8_t sofLen = 0);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -658,7 +684,7 @@ class LR2021: public LRxxxx {
     int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops);
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
     int16_t setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets);
-    int16_t setLoRaHeaderType(uint8_t hdrType, size_t len = 0xFF);
+    int16_t setLoRaHeaderType(uint8_t hdrType, size_t len = RADIOLIB_LR2021_MAX_PACKET_LENGTH);
 
     // ranging commands
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
@@ -711,6 +737,7 @@ class LR2021: public LRxxxx {
     int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
     int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
     int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, bool syncWordRaw, bool sofDelimiterRising, uint8_t sofDelimiterLen);
+    int16_t setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init);
 
     // test commands
     int16_t setTxTestMode(uint8_t mode);
