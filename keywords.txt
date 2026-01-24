@@ -107,7 +107,7 @@ LR11x0GnssAlmanacStatusPart_t	KEYWORD1
 LR11x0GnssAlmanacStatus_t	KEYWORD1
 
 # LR2021 structures
-LR2021LoRaSideDetector_t
+LR2021LoRaSideDetector_t	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -286,6 +286,7 @@ getGnssSatellites	KEYWORD2
 
 # LR2021
 beginOOK	KEYWORD2
+setSideDetector	KEYWORD2
 
 # RTTY
 idle	KEYWORD2
