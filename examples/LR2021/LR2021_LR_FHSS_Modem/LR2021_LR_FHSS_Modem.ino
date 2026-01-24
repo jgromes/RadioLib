@@ -11,7 +11,7 @@
         methods.
 
   For default module settings, see the wiki page
-  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr11x0---lr-fhss-modem
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr2021---lr-fhss-modem
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/

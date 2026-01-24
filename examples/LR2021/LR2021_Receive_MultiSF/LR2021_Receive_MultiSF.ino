@@ -22,7 +22,7 @@
     must be less than or equal to 4.
 
   For default module settings, see the wiki page
-  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr11x0---lora-modem
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr2021---lora-modem
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/
