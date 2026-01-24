@@ -393,6 +393,27 @@ class LR2021: public LRxxxx {
     int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
 
     /*!
+      \brief Sets node address. Calling this method will also enable address filtering for node address only.
+      \param nodeAddr Node address to be set.
+      \returns \ref status_codes
+    */
+    int16_t setNodeAddress(uint8_t nodeAddr);
+
+    /*!
+      \brief Sets broadcast address. Calling this method will also enable address
+      filtering for node and broadcast address.
+      \param broadAddr Node address to be set.
+      \returns \ref status_codes
+    */
+    int16_t setBroadcastAddress(uint8_t broadAddr);
+
+    /*!
+      \brief Disables address filtering. Calling this method will also erase previously set addresses.
+      \returns \ref status_codes
+    */
+    int16_t disableAddressFiltering();
+
+    /*!
       \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
       Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0.
       Set to RADIOLIB_SHAPING_NONE to disable data shaping.
@@ -519,7 +540,20 @@ class LR2021: public LRxxxx {
       \returns TRNG byte.
     */
     uint8_t randomByte() override;
-    
+
+    /*!
+      \brief Set implicit header mode for future reception/transmission.
+      \param len Payload length in bytes.
+      \returns \ref status_codes
+    */
+    int16_t implicitHeader(size_t len);
+
+    /*!
+      \brief Set explicit header mode for future reception/transmission.
+      \returns \ref status_codes
+    */
+    int16_t explicitHeader();
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -624,6 +658,7 @@ class LR2021: public LRxxxx {
     int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops);
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
     int16_t setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets);
+    int16_t setLoRaHeaderType(uint8_t hdrType, size_t len = 0xFF);
 
     // ranging commands
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
