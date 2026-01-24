@@ -247,7 +247,7 @@
 #define RADIOLIB_LR2021_TEMP_SOURCE_VBE                         (0x00UL << 4)   //  4     4     temperature source: sensor near Vbe junction
 #define RADIOLIB_LR2021_TEMP_SOURCE_XOSC                        (0x01UL << 4)   //  4     4                         sensor near XOSC
 #define RADIOLIB_LR2021_TEMP_FORMAT_RAW                         (0x00UL << 3)   //  3     3     readout format: raw
-#define RADIOLIB_LR2021_TEMP_FORMAT_DEG_C                       (0x01UL << 3)   //  3     3                     degress Celsius
+#define RADIOLIB_LR2021_TEMP_FORMAT_DEG_C                       (0x01UL << 3)   //  3     3                     degrees Celsius
 
 // RADIOLIB_LR2021_CMD_SET_EOL_CONFIG
 #define RADIOLIB_LR2021_EOL_TRIM_1V6                            (0x00UL << 1)   //  3     1     EoL trigger threshold: 1.60 V

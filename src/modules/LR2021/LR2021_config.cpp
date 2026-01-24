@@ -41,7 +41,7 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
         getErrors(&errors);
         RADIOLIB_DEBUG_BASIC_PRINTLN("Frontend calibration #%d failed, device errors: 0x%X", i, errors);
 
-        // if this is casued by something else than RSSI saturation, repeating will not help
+        // if this is caused by something else than RSSI saturation, repeating will not help
         if((errors & RADIOLIB_LR2021_SRC_SATURATION_CALIB_ERR) == 0) {
           return(state);
         }
@@ -937,7 +937,7 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
       return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
     }
 
-    // the diference between maximum and minimum spreading factor used must be less than or equal to 4
+    // the difference between maximum and minimum spreading factor used must be less than or equal to 4
     if(cfg[i].sf - minSf > 4) {
       return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
     }

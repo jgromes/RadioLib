@@ -924,7 +924,7 @@ float LR2021::getRSSI(bool packet) {
   float rssi = 0;
   int16_t state;
   if(!packet) { 
-    // get instantenous RSSI value
+    // get instantaneous RSSI value
     state = this->getRssiInst(&rssi);
     if(state != RADIOLIB_ERR_NONE) { return(0); }
     return(rssi);
