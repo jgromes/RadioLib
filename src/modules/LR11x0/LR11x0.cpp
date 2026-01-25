@@ -822,7 +822,7 @@ int16_t LR11x0::disableAddressFiltering() {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  // disable address filterin
+  // disable address filtering
   this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_DISABLED;
   return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }

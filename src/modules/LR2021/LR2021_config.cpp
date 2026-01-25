@@ -887,7 +887,7 @@ int16_t LR2021::disableAddressFiltering() {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  // disable address filterin
+  // disable address filtering
   this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_DISABLED;
   return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }
