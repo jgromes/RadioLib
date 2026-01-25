@@ -1237,7 +1237,7 @@ void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
 
     // only keep DIO pins, there may be some GPIOs in the switch tabke
     if(pins[i] & RFSWITCH_PIN_FLAG) {
-      enable |= 1UL << RADIOLIB_LR11X0_DIOx_VAL(pins[i]);
+      enable |= 1UL << RADIOLIB_LRXXXX_DIOx_VAL(pins[i]);
     }
     
   }

@@ -37,6 +37,7 @@
 #define RADIOLIB_LR2021_CMD_CLEAR_ERRORS                        (0x0111)
 #define RADIOLIB_LR2021_CMD_GET_ERRORS                          (0x0110)
 #define RADIOLIB_LR2021_CMD_SET_DIO_FUNCTION                    (0x0112)
+#define RADIOLIB_LR2021_CMD_SET_DIO_RF_SWITCH_CONFIG            (0x0113)
 #define RADIOLIB_LR2021_CMD_SET_DIO_IRQ_CONFIG                  (0x0115)
 #define RADIOLIB_LR2021_CMD_CLEAR_IRQ                           (0x0116)
 #define RADIOLIB_LR2021_CMD_GET_AND_CLEAR_IRQ_STATUS            (0x0117)
@@ -291,6 +292,15 @@
 #define RADIOLIB_LR2021_DIO_SLEEP_PULL_DOWN                     (0x01UL << 0)   //  3     0                                 pull-down
 #define RADIOLIB_LR2021_DIO_SLEEP_PULL_UP                       (0x02UL << 0)   //  3     0                                 pull-up
 #define RADIOLIB_LR2021_DIO_SLEEP_PULL_AUTO                     (0x03UL << 0)   //  3     0                                 auto
+
+// RADIOLIB_LR2021_CMD_SET_DIO_RF_SWITCH_CONFIG
+#define RADIOLIB_LR2021_DIO5                                    (RADIOLIB_LRXXXX_DIOx(0))
+#define RADIOLIB_LR2021_DIO6                                    (RADIOLIB_LRXXXX_DIOx(1))
+#define RADIOLIB_LR2021_DIO7                                    (RADIOLIB_LRXXXX_DIOx(2))
+#define RADIOLIB_LR2021_DIO8                                    (RADIOLIB_LRXXXX_DIOx(3))
+#define RADIOLIB_LR2021_DIO9                                    (RADIOLIB_LRXXXX_DIOx(4))
+#define RADIOLIB_LR2021_DIO10                                   (RADIOLIB_LRXXXX_DIOx(5))
+#define RADIOLIB_LR2021_DIO11                                   (RADIOLIB_LRXXXX_DIOx(6))
 
 // RADIOLIB_LR2021_CMD_CONFIG_FIFO_IRQ
 #define RADIOLIB_LR2021_FIFO_IRQ_EMPTY                          (0x01UL << 0)   //  7     0     FIFO interrupt on: empty FIFO

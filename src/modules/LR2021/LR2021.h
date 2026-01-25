@@ -42,6 +42,25 @@ class LR2021: public LRxxxx {
     */
     uint32_t irqDioNum = 5;
 
+    /*!
+      \brief Custom operation modes for LR2021.
+      Needed because LR2021 has several modems (sub-GHz, 2.4 GHz etc.) in one package
+    */
+    enum OpMode_t {
+        /*! End of table marker, use \ref END_OF_MODE_TABLE constant instead */
+        MODE_END_OF_TABLE = Module::MODE_END_OF_TABLE,
+        /*! Standby/idle mode */
+        MODE_STBY = Module::MODE_IDLE,
+        /*! Receive mode */
+        MODE_RX = Module::MODE_RX,
+        /*! Transmission mode */
+        MODE_TX = Module::MODE_TX,
+        /*! High frequency receive mode */
+        MODE_RX_HF,
+        /*! High frequency transmission mode */
+        MODE_TX_HF,
+    };
+
     // basic methods
 
     /*!
@@ -306,6 +325,9 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+    
+    /*! \copydoc Module::setRfSwitchTable */
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
@@ -649,6 +671,7 @@ class LR2021: public LRxxxx {
     int16_t clearErrors(void);
     int16_t getErrors(uint16_t* err);
     int16_t setDioFunction(uint8_t dio, uint8_t func, uint8_t pullDrive);
+    int16_t setDioRfSwitchConfig(uint8_t dio, uint8_t func);
     int16_t setDioIrqConfig(uint8_t dio, uint32_t irq);
     int16_t clearIrqState(uint32_t irq);
     int16_t getAndClearIrqStatus(uint32_t* irq);

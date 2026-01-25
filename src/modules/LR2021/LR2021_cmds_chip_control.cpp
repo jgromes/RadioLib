@@ -215,6 +215,11 @@ int16_t LR2021::setDioFunction(uint8_t dio, uint8_t func, uint8_t pullDrive) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_DIO_FUNCTION, true, buff, sizeof(buff)));
 }
 
+int16_t LR2021::setDioRfSwitchConfig(uint8_t dio, uint8_t func) {
+  uint8_t buff[] = { dio, func };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_DIO_RF_SWITCH_CONFIG, true, buff, sizeof(buff)));
+}
+
 int16_t LR2021::setDioIrqConfig(uint8_t dio, uint32_t irq) {
   uint8_t buff[] = { dio, 
     (uint8_t)((irq >> 24) & 0xFF), (uint8_t)((irq >> 16) & 0xFF),

@@ -75,6 +75,11 @@
 #define RADIOLIB_LRXXXX_PA_RAMP_272U                            (0x11UL << 0)   //  7     0                   272 us
 #define RADIOLIB_LRXXXX_PA_RAMP_304U                            (0x12UL << 0)   //  7     0                   304 us
 
+// RADIOLIB_LR11X0_CMD_SET_DIO_AS_RF_SWITCH
+// RADIOLIB_LR2021_CMD_SET_DIO_AS_RF_SWITCH
+#define RADIOLIB_LRXXXX_DIOx(X)                                 ((X) | RFSWITCH_PIN_FLAG)
+#define RADIOLIB_LRXXXX_DIOx_VAL(X)                             ((X) & ~RFSWITCH_PIN_FLAG)
+
 // common configuration values
 #define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE                        (488.28215f)    //  31    0     LR FHSS bit rate: 488.28215 bps
 #define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE_RAW                    (0x8001E848UL)  //  31    0                       488.28215 bps in raw

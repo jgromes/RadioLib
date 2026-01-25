@@ -235,13 +235,11 @@
 #define RADIOLIB_LR11X0_RFSW_DIO8_DISABLED                      (0x00UL << 3)   //  4     0                DIO8 disabled (default)
 #define RADIOLIB_LR11X0_RFSW_DIO10_ENABLED                      (0x01UL << 4)   //  4     0     RF switch: DIO10 enabled
 #define RADIOLIB_LR11X0_RFSW_DIO10_DISABLED                     (0x00UL << 4)   //  4     0                DIO10 disabled (default)
-#define RADIOLIB_LR11X0_DIOx(X)                                 ((X) | RFSWITCH_PIN_FLAG)
-#define RADIOLIB_LR11X0_DIOx_VAL(X)                             ((X) & ~RFSWITCH_PIN_FLAG)
-#define RADIOLIB_LR11X0_DIO5                                    (RADIOLIB_LR11X0_DIOx(0))
-#define RADIOLIB_LR11X0_DIO6                                    (RADIOLIB_LR11X0_DIOx(1))
-#define RADIOLIB_LR11X0_DIO7                                    (RADIOLIB_LR11X0_DIOx(2))
-#define RADIOLIB_LR11X0_DIO8                                    (RADIOLIB_LR11X0_DIOx(3))
-#define RADIOLIB_LR11X0_DIO10                                   (RADIOLIB_LR11X0_DIOx(4))
+#define RADIOLIB_LR11X0_DIO5                                    (RADIOLIB_LRXXXX_DIOx(0))
+#define RADIOLIB_LR11X0_DIO6                                    (RADIOLIB_LRXXXX_DIOx(1))
+#define RADIOLIB_LR11X0_DIO7                                    (RADIOLIB_LRXXXX_DIOx(2))
+#define RADIOLIB_LR11X0_DIO8                                    (RADIOLIB_LRXXXX_DIOx(3))
+#define RADIOLIB_LR11X0_DIO10                                   (RADIOLIB_LRXXXX_DIOx(4))
 
 // RADIOLIB_LR11X0_CMD_SET_DIO_IRQ_PARAMS
 #define RADIOLIB_LR11X0_IRQ_TX_DONE                             (0x01UL << 2)   //  31    0     interrupt: packet transmitted

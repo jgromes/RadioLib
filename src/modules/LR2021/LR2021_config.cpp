@@ -112,6 +112,31 @@ int16_t LR2021::checkOutputPower(int8_t power, int8_t* clipped) {
   return(RADIOLIB_ERR_NONE);
 }
 
+void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  // find which pins are used
+  // on LR2021, modes are configured per DIO (exact opposite of LR11x0)
+  uint8_t dioConfigs[7] = { 0 };
+  for(size_t i = 0; i < Module::RFSWITCH_MAX_PINS; i++) {
+    // check if this pin is unused
+    if(pins[i] == RADIOLIB_NC) { continue; }
+
+    // only keep DIO pins, there may be some GPIOs in the switch tabke
+    if((pins[i] & RFSWITCH_PIN_FLAG) == 0) { continue; }
+    
+    // find modes in which this pin is used
+    uint32_t dioNum = RADIOLIB_LRXXXX_DIOx_VAL(pins[i]);
+    size_t j = 0;
+    while(table[j].mode != LR2021::MODE_END_OF_TABLE) {
+      dioConfigs[dioNum] |= (table[j].values[i] == this->mod->hal->GpioLevelHigh) ? (1UL << (table[j].mode - 1)) : 0;
+      j++;
+    }
+
+    // enable RF control for this pin and set the modes in which it is active
+    (void)this->setDioFunction(dioNum + 5, RADIOLIB_LR2021_DIO_FUNCTION_RF_SWITCH, RADIOLIB_LR2021_DIO_SLEEP_PULL_AUTO);
+    (void)this->setDioRfSwitchConfig(dioNum + 5, dioConfigs[i]);
+  }
+}
+
 int16_t LR2021::setBandwidth(float bw) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
