@@ -337,7 +337,7 @@ int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
   // so there is probably no way to do this without copying buffers and iterating
   size_t buffLen = sizeof(uint32_t) + len*sizeof(uint32_t);
   #if RADIOLIB_STATIC_ONLY
-    uint8_t dataBuff[sizeof(uint32_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
+    uint8_t dataBuff[sizeof(uint32_t) + RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN];
   #else
     uint8_t* dataBuff = new uint8_t[buffLen];
   #endif
