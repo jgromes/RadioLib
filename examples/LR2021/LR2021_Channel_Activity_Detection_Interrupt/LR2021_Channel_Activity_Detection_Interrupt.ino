@@ -49,6 +49,11 @@ void setFlag(void) {
 void setup() {
   Serial.begin(9600);
 
+  // LR2021 allows to use any DIO pin as the interrupt
+  // as an example, we set DIO10 to be the IRQ
+  // this has to be done prior to calling begin()!
+  radio.irqDioNum = 10;
+
   // initialize LR2021 with default settings
   Serial.print(F("[LR2021] Initializing ... "));
   int state = radio.begin();
