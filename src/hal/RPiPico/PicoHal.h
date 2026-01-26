@@ -23,6 +23,7 @@
 // However, there seems to be no real use case for creating multiple intances of the HAL
 static irq_handler_t picoHalUserCallbacks[PI_PICO_MAX_USER_GPIO] = { 0 };
 static uint32_t picoHalIrqEventMasks[PI_PICO_MAX_USER_GPIO] = { 0 };
+static uint64_t picoHalIrqMask = 0;
 
 static void picoInterruptHandler(void) {
   for(int gpio = 0; gpio < PI_PICO_MAX_USER_GPIO; gpio++) {
@@ -94,10 +95,24 @@ public:
     picoHalUserCallbacks[interruptNum] = (irq_handler_t)interruptCb;
     picoHalIrqEventMasks[interruptNum] = mode;
 
-    // enable IRQ and set the internal callback
+    // is it a new interrupt for us to grab ?
+    if (!(picoHalIrqMask & (1ULL << interruptNum))) {
+      // if we have a handler in place, we must remove it to avoid 'assert' in the PDK
+      // and we must disable interrupt to make sure we don't miss anything during that
+      // shuffling
+      if (picoHalIrqMask) {
+        irq_set_enabled(IO_IRQ_BANK0, false);
+        gpio_remove_raw_irq_handler_masked64(picoHalIrqMask, picoInterruptHandler);
+      }
+
+      // (re-)add shared handler with the new mask
+      picoHalIrqMask |= (1ULL << interruptNum);
+      gpio_add_raw_irq_handler_masked64(picoHalIrqMask, picoInterruptHandler);
+      irq_set_enabled(IO_IRQ_BANK0, true);
+    }
+
+    // enable GPIO to generate interrupt
     gpio_set_irq_enabled(interruptNum, mode, true);
-    gpio_add_raw_irq_handler_masked(1UL << interruptNum, picoInterruptHandler);
-    irq_set_enabled(IO_IRQ_BANK0, true);
   }
 
   void detachInterrupt(uint32_t interruptNum) override {
