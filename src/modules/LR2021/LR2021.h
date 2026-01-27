@@ -517,6 +517,13 @@ class LR2021: public LRxxxx {
     int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
 
     /*!
+      \brief Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption).
+      \param level Rx gain boost level. 0 (disabled) to 7 (maximum boost).
+      \returns \ref status_codes
+    */
+    int16_t setRxBoostedGainMode(uint8_t level);
+
+    /*!
       \brief Get expected time-on-air for a given size of payload
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
@@ -633,6 +640,7 @@ class LR2021: public LRxxxx {
     // flag to determine whether we are in the sub-GHz or 2.4 GHz range
     // this is needed to automatically detect which PA to use
     bool highFreq = false;
+    uint8_t gainMode = RADIOLIB_LR2021_RX_BOOST_LF;
 
     // cached FLRC parameters
     uint16_t bitRateFlrc = 0;

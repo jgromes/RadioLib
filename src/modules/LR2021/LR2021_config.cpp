@@ -816,6 +816,13 @@ int16_t LR2021::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t LR2021::setRxBoostedGainMode(uint8_t level) {
+  int16_t state = this->setRxPath(this->highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this->gainMode);
+  RADIOLIB_ASSERT(state);
+  this->gainMode = level;
+  return(state);
+}
+
 int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
