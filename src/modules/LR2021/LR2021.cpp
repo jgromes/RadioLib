@@ -734,9 +734,52 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
 }
 
 RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
-  ModemType_t modem;
-  getModem(&modem);
-  return(LRxxxx::getTimeOnAir(len, modem));
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+
+  switch(type) {
+    // basic modems are supported by the LRxxxx base class
+    case(RADIOLIB_LR2021_PACKET_TYPE_LORA):
+      return(LRxxxx::getTimeOnAir(len, ModemType_t::RADIOLIB_MODEM_LORA));
+    case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
+      return(LRxxxx::getTimeOnAir(len, ModemType_t::RADIOLIB_MODEM_FSK));
+    case(RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS):
+      return(LRxxxx::getTimeOnAir(len, ModemType_t::RADIOLIB_MODEM_LRFHSS));
+    case(RADIOLIB_LR2021_PACKET_TYPE_FLRC): {
+      //! \todo [LR2021] Add FLRC to the modems supported in ModemType_t
+
+      // calculate the bits of the uncoded part of the packet
+      size_t n_uncoded_bits = (this->preambleLengthGFSK + 1)*4 + 21 + this->syncWordLength*16;
+      if(this->packetType != RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) { n_uncoded_bits+= 16; }
+
+      // calculate bits in the coded part
+      size_t n_coded_bits = len*8;
+      if(this->crcLenGFSK != 0) { n_coded_bits += (this->crcLenGFSK + 1)*8; }
+      if(this->codingRateFlrc <= RADIOLIB_LR2021_FLRC_CR_3_4) { n_coded_bits += 6; }
+      float n_coded_bits_flt = n_coded_bits;
+      switch(this->codingRateFlrc) {
+        case(RADIOLIB_LR2021_FLRC_CR_1_2):
+          n_coded_bits += 6;
+          n_coded_bits_flt = (float)n_coded_bits*2.0f;
+          break;
+        case(RADIOLIB_LR2021_FLRC_CR_3_4):
+          n_coded_bits += 6;
+          n_coded_bits_flt = ((float)n_coded_bits*4.0f)/3.0f;
+          break;
+        case(RADIOLIB_LR2021_FLRC_CR_2_3):
+          n_coded_bits_flt = ((float)n_coded_bits*3.0f)/2.0f;
+          break;
+      }
+      n_coded_bits = n_coded_bits_flt + 0.5f;
+
+      // now calculate the real time on air
+      return((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate / 1000.0f));
+    } 
+  }
+
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", type);
+  return(0);
 }
 
 int16_t LR2021::getModem(ModemType_t* modem) {
