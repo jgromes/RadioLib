@@ -817,9 +817,13 @@ int16_t LR2021::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16
 }
 
 int16_t LR2021::setRxBoostedGainMode(uint8_t level) {
-  int16_t state = this->setRxPath(this->highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this->gainMode);
+  int16_t state = this->setRxPath(this->highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this->highFreq ? this->gainModeHf : this->gainModeLf);
   RADIOLIB_ASSERT(state);
-  this->gainMode = level;
+  if(this->highFreq) {
+    this->gainModeHf = level;
+  } else {
+    this->gainModeLf = level;
+  }
   return(state);
 }
 

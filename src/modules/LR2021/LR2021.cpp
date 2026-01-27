@@ -821,7 +821,7 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       }
       
       // set the correct Rx path
-      state = setRxPath(this->highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this->gainMode);
+      state = setRxPath(this->highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this->highFreq ? this->gainModeHf : this->gainModeLf);
       RADIOLIB_ASSERT(state);
 
       // set DIO mapping
