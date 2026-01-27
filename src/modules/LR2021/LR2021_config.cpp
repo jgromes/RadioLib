@@ -624,7 +624,10 @@ int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
       state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, RADIOLIB_LR2021_MAX_PACKET_LENGTH);
       RADIOLIB_ASSERT(state);
 
-      memcpy(&sync, syncWord, sizeof(uint32_t));
+      sync |= (uint32_t)syncWord[0] << 24;
+      sync |= (uint32_t)syncWord[1] << 16;
+      sync |= (uint32_t)syncWord[2] << 8;
+      sync |= (uint32_t)syncWord[3];
       return(setFlrcSyncWord(1, sync));
   }
 
