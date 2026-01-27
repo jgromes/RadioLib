@@ -191,6 +191,9 @@ int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint1
   RADIOLIB_ASSERT(state);
 
   state = variablePacketLengthMode(RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+  RADIOLIB_ASSERT(state);
+
+  state = setCRC(2);
   return(state);
 }
 
