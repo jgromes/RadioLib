@@ -253,7 +253,7 @@ int16_t LR2021::setCodingRate(uint8_t cr, bool longInterleave) {
     RADIOLIB_CHECK_RANGE(cr, 2, 4, RADIOLIB_ERR_INVALID_CODING_RATE);
 
     // update modulation parameters
-    this->codingRateFlrc = (cr - 2) * 2;
+    this->codingRateFlrc = cr;
     return(setFlrcModulationParams(this->bitRateFlrc, this->codingRateFlrc, this->pulseShape));
   
   }
@@ -293,7 +293,10 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
     return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
     
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
-    this->preambleLengthGFSK = preambleLength / 4;
+    if((preambleLength % 4) != 0) {
+      return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
+    }
+    this->preambleLengthGFSK = (preambleLength / 4) - 1;
     return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, RADIOLIB_LR2021_MAX_PACKET_LENGTH));
 
   }
@@ -401,7 +404,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
       return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
     }
     
-    this->crcLenGFSK = len;
+    this->crcLenGFSK = len ? len - 1 : 0;
     return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, RADIOLIB_LR2021_MAX_PACKET_LENGTH));
       
   }
@@ -462,6 +465,10 @@ int16_t LR2021::setBitRate(float br) {
     } else {
       return(RADIOLIB_ERR_INVALID_BIT_RATE);
     }
+
+    // it is slightly weird to reuse the GFSK bitrate variable in this way
+    // but if GFSK gets enabled it should get reset anyway ... I think
+    this->bitRate = br;
 
     // update modulation parameters
     return(setFlrcModulationParams(this->bitRateFlrc, this->codingRateFlrc, this->pulseShape));
@@ -613,7 +620,7 @@ int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
       }
 
       // update sync word length
-      this->syncWordLength = len*8;
+      this->syncWordLength = len/2;
       state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, RADIOLIB_LR2021_MAX_PACKET_LENGTH);
       RADIOLIB_ASSERT(state);
 
