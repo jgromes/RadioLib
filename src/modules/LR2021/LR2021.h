@@ -127,13 +127,13 @@ class LR2021: public LRxxxx {
       \brief Initialization method for FLRC modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FLRC bit rate in kbps. Defaults to 650 kbps.
-      \param cr FLRC coding rate. Defaults to 3 (coding rate 3/4).
+      \param cr FLRC coding rate. Defaults to RADIOLIB_LR2021_FLRC_CR_2_3 (coding rate 2/3).
       \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength FLRC preamble length in bits. Defaults to 16 bits.
       \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
       \returns \ref status_codes
     */
-    int16_t beginFLRC(float freq = 434.0, uint16_t br = 650, uint8_t cr = 3, int8_t pwr = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5, float tcxoVoltage = 1.6);
+    int16_t beginFLRC(float freq = 434.0, uint16_t br = 650, uint8_t cr = RADIOLIB_LR2021_FLRC_CR_2_3, int8_t pwr = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5, float tcxoVoltage = 1.6);
 
     /*!
       \brief Blocking binary transmit method.

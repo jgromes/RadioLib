@@ -250,7 +250,9 @@ int16_t LR2021::setCodingRate(uint8_t cr, bool longInterleave) {
     return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
-    RADIOLIB_CHECK_RANGE(cr, 0, 4, RADIOLIB_ERR_INVALID_CODING_RATE);
+    if(cr > RADIOLIB_LR2021_FLRC_CR_2_3) {
+      return(RADIOLIB_ERR_INVALID_CODING_RATE);
+    }
 
     // update modulation parameters
     this->codingRateFlrc = cr;
