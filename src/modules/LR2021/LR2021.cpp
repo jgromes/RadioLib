@@ -750,7 +750,7 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
       //! \todo [LR2021] Add FLRC to the modems supported in ModemType_t
 
       // calculate the bits of the uncoded part of the packet
-      size_t n_uncoded_bits = (this->preambleLengthGFSK + 1)*4 + 21 + this->syncWordLength*16;
+      size_t n_uncoded_bits = (this->preambleLengthGFSK + 1)*4 + 21 + this->syncWordLength*8;
       if(this->packetType != RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) { n_uncoded_bits+= 16; }
 
       // calculate bits in the coded part

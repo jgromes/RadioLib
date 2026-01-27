@@ -250,7 +250,7 @@ int16_t LR2021::setCodingRate(uint8_t cr, bool longInterleave) {
     return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
-    RADIOLIB_CHECK_RANGE(cr, 2, 4, RADIOLIB_ERR_INVALID_CODING_RATE);
+    RADIOLIB_CHECK_RANGE(cr, 0, 4, RADIOLIB_ERR_INVALID_CODING_RATE);
 
     // update modulation parameters
     this->codingRateFlrc = cr;
@@ -620,7 +620,7 @@ int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
       }
 
       // update sync word length
-      this->syncWordLength = len/2;
+      this->syncWordLength = len;
       state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, RADIOLIB_LR2021_MAX_PACKET_LENGTH);
       RADIOLIB_ASSERT(state);
 
