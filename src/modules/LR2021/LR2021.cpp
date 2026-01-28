@@ -384,6 +384,10 @@ int16_t LR2021::standby() {
   return(this->standby(RADIOLIB_LR2021_STANDBY_RC));
 }
 
+int16_t LR2021::standby(uint8_t mode) {
+  return(this->standby(mode, true));
+}
+
 int16_t LR2021::standby(uint8_t mode, bool wakeup) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
@@ -567,6 +571,34 @@ int16_t LR2021::getChannelScanResult() {
   }
 
   return(RADIOLIB_ERR_UNKNOWN);
+}
+
+uint32_t LR2021::getIrqFlags() {
+  return(getIrqStatus());
+}
+
+int16_t LR2021::setIrqFlags(uint32_t irq) {
+  return(this->setDioIrqConfig(this->irqDioNum, irq));
+}
+
+int16_t LR2021::clearIrqFlags(uint32_t irq) {
+  return(this->clearIrqState(irq));
+}
+
+int16_t LR2021::setModem(ModemType_t modem) {
+  switch(modem) {
+    case(ModemType_t::RADIOLIB_MODEM_LORA): {
+      return(this->begin());
+    } break;
+    case(ModemType_t::RADIOLIB_MODEM_FSK): {
+      return(this->beginGFSK());
+    } break;
+    case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
+      return(this->beginLRFHSS());
+    } break;
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
 }
 
 Module* LR2021::getMod() {

@@ -193,10 +193,18 @@ class LR2021: public LRxxxx {
       \brief Sets the module to standby mode.
       \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_LR2021_STANDBY_RC (13 MHz RC oscillator)
       or RADIOLIB_LR2021_STANDBY_XOSC (32 MHz external crystal oscillator).
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
+
+    /*!
+      \brief Sets the module to standby mode.
+      \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_LR2021_STANDBY_RC (13 MHz RC oscillator)
+      or RADIOLIB_LR2021_STANDBY_XOSC (32 MHz external crystal oscillator).
       \param wakeup Whether to force the module to wake up. Setting to true will immediately attempt to wake up the module.
       \returns \ref status_codes
     */
-    int16_t standby(uint8_t mode, bool wakeup = true);
+    int16_t standby(uint8_t mode, bool wakeup);
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -273,6 +281,34 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t getChannelScanResult() override;
+
+    /*!
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
+    */
+    uint32_t getIrqFlags() override;
+
+    /*!
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t setIrqFlags(uint32_t irq) override;
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq) override;
+    
+    /*!
+      \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
+      using its default parameters.
+      \param modem Modem type to set - FSK, LoRa or LR-FHSS.
+      \returns \ref status_codes
+    */
+    int16_t setModem(ModemType_t modem) override;
     
     // configuration methods
 
