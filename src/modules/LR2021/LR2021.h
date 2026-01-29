@@ -636,14 +636,14 @@ class LR2021: public LRxxxx {
     /*!
       \brief Set OOK detector properties. The default values are set to allow ADS-B reception.
       \param pattern Preamble pattern, should end with 01 or 10 (binary).
-      \param len Preamble patter length in bits.
+      \param len Preamble pattern length in bits.
       \param repeats Number of preamble repeats, maximum of 31.
       \param syncRaw Whether the sync word is send raw (unencoded) or encoded. Set to true for encoded sync word.
       \param rising Whether the start of frame delimiter edge is rising (true) or falling (false).
       \param sofLen Start-of-frame length in bits.
       \returns \ref status_codes
     */
-    int16_t ookDetector(uint16_t pattern = 0x0285, uint8_t len = 10, uint8_t repeats = 0, bool syncRaw = false, bool rising = false, uint8_t sofLen = 0);
+    int16_t ookDetector(uint16_t pattern = 0x0285, uint8_t len = 16, uint8_t repeats = 0, bool syncRaw = false, bool rising = false, uint8_t sofLen = 0);
 
     /*!
       \brief Configure LoRa side detector, which enables to detect mutiple spreading factors and receive one of them.
