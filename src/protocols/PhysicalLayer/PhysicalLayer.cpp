@@ -349,7 +349,7 @@ int16_t PhysicalLayer::checkIrq(RadioLibIrqType_t irq) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
   
-  return(getIrqFlags() & this->irqMap[irq]);
+  return((getIrqFlags() & this->irqMap[irq]) != 0);
 }
 
 int16_t PhysicalLayer::setIrq(RadioLibIrqFlags_t irq) {
