@@ -415,7 +415,8 @@ int16_t LR2021::sleep(bool retainConfig, uint32_t sleepTime) {
     (uint8_t)((sleepTime >> 8) & 0xFF), (uint8_t)(sleepTime & 0xFF),
   };
 
-  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_SLEEP, true, buff, sizeof(buff));
+  // in sleep, the busy line will remain high, so we have to use this method to disable waiting for it to go low
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_LR2021_CMD_SET_SLEEP, buff, sizeof(buff), false, false);
 
   // wait for the module to safely enter sleep mode
   this->mod->hal->delay(1);
