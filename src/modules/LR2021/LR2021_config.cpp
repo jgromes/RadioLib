@@ -71,7 +71,7 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
 }
 
 int16_t LR2021::setOutputPower(int8_t power) {
-  return(this->setOutputPower(power, false));
+  return(this->setOutputPower(power, 48));
 }
 
 int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
@@ -368,7 +368,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
-    this->crcTypeLoRa = len > 0 ? RADIOLIB_LR2021_LORA_CRC_ENABLED : RADIOLIB_LR2021_LORA_CRC_DISABLED;
+    this->crcTypeLoRa = len > 0;
     return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
