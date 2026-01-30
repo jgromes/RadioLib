@@ -631,6 +631,17 @@
 #define RADIOLIB_ERR_GNSS_SOLVER(X)                             (RADIOLIB_ERR_GNSS_SOLVER_OFFSET - (X))
 #define RADIOLIB_GET_GNSS_SOLVER_ERROR(X)                       (-((X) - RADIOLIB_ERR_GNSS_SOLVER_OFFSET))
 
+// LR2021-specific status codes
+/*!
+  \brief Front end calibration failed. Often this is caused by a neraby high-power transmitter.
+*/
+#define RADIOLIB_ERR_FRONTEND_CALIBRATION_FAILED                (-1300)
+
+/*!
+  \brief Multi-SF side detector configuration is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_SIDE_DETECT                        (-1301)
+
 /*!
   \}
 */

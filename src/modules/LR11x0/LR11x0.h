@@ -7,7 +7,7 @@
 
 #include "../../Module.h"
 
-#include "../../protocols/PhysicalLayer/PhysicalLayer.h"
+#include "../LR11x0/LR_common.h"
 
 #include "LR11x0_commands.h"
 #include "LR11x0_registers.h"
@@ -24,7 +24,7 @@
   \brief Base class for %LR11x0 series. All derived classes for %LR11x0 (e.g. LR1110 or LR1120) inherit from this base class.
   This class should not be instantiated directly from user code, only from its derived classes.
 */
-class LR11x0: public PhysicalLayer {
+class LR11x0: public LRxxxx {
   public:
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
@@ -61,11 +61,6 @@ class LR11x0: public PhysicalLayer {
         /*! WiFi scanning mode */
         MODE_WIFI,
     };
-
-    /*!
-      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
-    */
-    bool XTAL;
     
     /*!
       \brief Initialization method for LoRa modem.
@@ -109,12 +104,6 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginGNSS(uint8_t constellations = RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS | RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU, float tcxoVoltage = 1.6);
-
-    /*!
-      \brief Reset method. Will reset the chip to the default state using RST pin.
-      \returns \ref status_codes
-    */
-    int16_t reset();
 
     /*!
       \brief Blocking binary transmit method.
@@ -198,39 +187,6 @@ class LR11x0: public PhysicalLayer {
     // interrupt methods
 
     /*!
-      \brief Sets interrupt service routine to call when IRQ1 activates.
-      \param func ISR to call.
-    */
-    void setIrqAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when IRQ1 activates.
-    */
-    void clearIrqAction();
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
       \brief Clean up after transmission is done.
       \returns \ref status_codes
     */
@@ -243,12 +199,6 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t startReceive() override;
-
-    /*!
-      \brief Reads the current IRQ status.
-      \returns IRQ status bits
-    */
-    uint32_t getIrqStatus();
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
@@ -507,28 +457,11 @@ class LR11x0: public PhysicalLayer {
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
 
     /*!
-      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
-      \param modem Modem type.
-      \param dr Data rate.
-      \param pc Packet config.
-      \param len Payload length in bytes.
-      \returns Expected time-on-air in microseconds.
-    */
-    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
-
-    /*!
       \brief Get expected time-on-air for a given size of payload
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
-
-    /*!
-      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
-      \param timeoutUs Timeout in microseconds to listen for
-      \returns Timeout value in a unit that is specific for the used module
-    */
-    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
       \brief Read currently active IRQ flags.
@@ -608,11 +541,10 @@ class LR11x0: public PhysicalLayer {
       Must be set to RADIOLIB_LR11X0_PA_SUPPLY_VBAT when output power is more than 14 dBm.
       \param paDutyCycle PA duty cycle.
       \param paHpSel High-power PA size control.
-      \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
-      nearest discrete ramp time supported by the PA. Defaults to 48 us.
+      \param rampTime PA power ramping time raw value, one of RADIOLIB_LRXXXX_PA_RAMP_* macros.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint32_t rampTimeUs = 48);
+    int16_t setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint8_t rampTime);
 
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
@@ -808,14 +740,6 @@ class LR11x0: public PhysicalLayer {
 #endif
     Module* getMod() override;
 
-    // LR11x0 command helpers
-    /*!
-      \brief Round up a PA power ramp time to register value
-      \param rampTimeUs Ramp time in microseconds
-      \returns Register value of rounded ramp time
-    */
-    uint8_t roundRampTime(uint32_t rampTimeUs);
-
     // method that applies some magic workaround for specific bitrate, frequency deviation,
     // receiver bandwidth and carrier frequencies for GFSK (and resets it in all other cases)
     int16_t workaroundGFSK();
@@ -828,7 +752,6 @@ class LR11x0: public PhysicalLayer {
     int16_t clearRxBuffer(void);
     int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);
 
-    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t getVersion(uint8_t* hw, uint8_t* device, uint8_t* major, uint8_t* minor);
     int16_t getErrors(uint16_t* err);
     int16_t clearErrors(void);
@@ -895,7 +818,6 @@ class LR11x0: public PhysicalLayer {
     int16_t setRangingParameter(uint8_t symbolNum);
     int16_t setRssiCalibration(const int8_t* tune, int16_t gainOffset);
     int16_t setLoRaSyncWord(uint8_t sync);
-    int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     int16_t lrFhssSetSyncWord(uint32_t sync);
     int16_t configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len);
     int16_t bleBeaconSend(uint8_t chan, const uint8_t* payload, size_t len);
@@ -988,45 +910,18 @@ class LR11x0: public PhysicalLayer {
     int16_t bootGetChipEui(uint8_t* eui);
     int16_t bootGetJoinEui(uint8_t* eui);
     
-    int16_t SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out = NULL, size_t outLen = 0);
-    
 #if !RADIOLIB_GODMODE
   protected:
 #endif
     uint8_t chipType = 0;
-    float freqMHz = 0;
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    Module* mod;
-
-    // cached LoRa parameters
-    uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
-    uint16_t preambleLengthLoRa = 0;
-    float bandwidthKhz = 0;
-    bool ldroAuto = true;
-    size_t implicitLen = 0;
-    bool invertIQEnabled = false;
-
-    // cached GFSK parameters
-    uint32_t bitRate = 0, frequencyDev = 0;
-    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
-    uint16_t preambleLengthGFSK = 0;
-
-    // cached LR-FHSS parameters
-    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0, lrFhssGrid = 0;
-    uint16_t lrFhssHopSeq = 0;
-
-    float dataRateMeasured = 0;
-
     uint8_t wifiScanMode = 0;
     bool gnss = false;
-    uint32_t rxTimeout = 0;
 
     int16_t modSetup(float tcxoVoltage, uint8_t modem);
-    static int16_t SPIparseStatus(uint8_t in);
-    static int16_t SPIcheckStatus(Module* mod);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
@@ -1035,7 +930,6 @@ class LR11x0: public PhysicalLayer {
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, const uint8_t* payload, size_t len);
-    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile);
     int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut);
 };
 

@@ -177,6 +177,7 @@ class Module {
       BITS_0 = 0,
       BITS_8 = 8,
       BITS_16 = 16,
+      BITS_24 = 24,
       BITS_32 = 32,
     };
 

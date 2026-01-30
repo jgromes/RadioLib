@@ -1,7 +1,7 @@
 /*
-  RadioLib LR11x0 LR-FHSS Modem Example
+  RadioLib LR2021 LR-FHSS Modem Example
 
-  This example shows how to use LR-FHSS modem in LR11x0 chips.
+  This example shows how to use LR-FHSS modem in LR2021 chips.
   This modem can only transmit data, and is not able to receive.
 
   NOTE: The sketch below is just a guide on how to use
@@ -11,7 +11,7 @@
         methods.
 
   For default module settings, see the wiki page
-  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr11x0---lr-fhss-modem
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr2021---lr-fhss-modem
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/
@@ -20,12 +20,12 @@
 // include the library
 #include <RadioLib.h>
 
-// LR1110 has the following connections:
+// LR2021 has the following connections:
 // NSS pin:   10
 // IRQ pin:   2
 // NRST pin:  3
 // BUSY pin:  9
-LR1110 radio = new Module(10, 2, 3, 9);
+LR2021 radio = new Module(10, 2, 3, 9);
 
 // or detect the pinout automatically using RadioBoards
 // https://github.com/radiolib-org/RadioBoards
@@ -38,8 +38,13 @@ Radio radio = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize LR1110 with default settings
-  Serial.print(F("[LR1110] Initializing ... "));
+  // LR2021 allows to use any DIO pin as the interrupt
+  // as an example, we set DIO10 to be the IRQ
+  // this has to be done prior to calling begin()!
+  radio.irqDioNum = 10;
+
+  // initialize LR2021 with default settings
+  Serial.print(F("[LR2021] Initializing ... "));
   int state = radio.beginLRFHSS();
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -83,13 +88,13 @@ void loop() {
     int state = radio.transmit(byteArr, 8);
   */
   if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("[LR1110] Packet transmitted successfully!"));
+    Serial.println(F("[LR2021] Packet transmitted successfully!"));
   } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
-    Serial.println(F("[LR1110] Packet too long!"));
+    Serial.println(F("[LR2021] Packet too long!"));
   } else if (state == RADIOLIB_ERR_TX_TIMEOUT) {
-    Serial.println(F("[LR1110] Timed out while transmitting!"));
+    Serial.println(F("[LR2021] Timed out while transmitting!"));
   } else {
-    Serial.println(F("[LR1110] Failed to transmit packet, code "));
+    Serial.println(F("[LR2021] Failed to transmit packet, code "));
     Serial.println(state);
   }
 

@@ -19,7 +19,7 @@ std::vector<RadioConfig> allConfigs = {
     { "SX126x", RADIOLIB_MODEM_LORA,  {.lora={7,125,5}}, {.lora={8,false,true,true}}, {1,10,50,255}, {30976,46336,128256,548096} }, // 30.97, 46.33, 128.25, 548.09
     { "SX126x", RADIOLIB_MODEM_LORA,  {.lora={11,250,8}}, {.lora={16,true,false,false}}, {5,15,100,200}, {296960,362496,1411072,2590720} }, // 296.96, 362.49, 1410, 2590
     { "SX126x", RADIOLIB_MODEM_FSK,   {.fsk={100,10}},   {.fsk={16,16,2}}, {1,16,64,200}, {560,1760,5600,16480} },
-    { "SX126x", RADIOLIB_MODEM_LRFHSS,{.lrFhss={RADIOLIB_LR11X0_LR_FHSS_BW_386_72,RADIOLIB_SX126X_LR_FHSS_CR_2_3,false}}, {.lrFhss={2}}, {1,20,100}, {3784697,4259832,6324212} },
+    { "SX126x", RADIOLIB_MODEM_LRFHSS,{.lrFhss={RADIOLIB_SX126X_LR_FHSS_BW_386_72,RADIOLIB_SX126X_LR_FHSS_CR_2_3,false}}, {.lrFhss={2}}, {1,20,100}, {3784697,4259832,6324212} },
 
     { "SX127x", RADIOLIB_MODEM_LORA, {.lora={6,125,6}}, {.lora={8,false,true,false}}, {7,23,98,156}, {23000,39000,115000,174000} }, // 20.61, 39.04, 115.84, 174.21 
     { "SX127x", RADIOLIB_MODEM_LORA, {.lora={8,250,8}}, {.lora={32,true,true,false}}, {10,20,80,160}, {70000,87000,210000,373000} }, // 69.89, 86.27, 209.15, 372.99
@@ -29,10 +29,11 @@ std::vector<RadioConfig> allConfigs = {
     { "SX128x", RADIOLIB_MODEM_LORA, {.lora={12,800,7}}, {.lora={16,false,true,true}}, {10,100,250}, {216319,861440,1936640} }, // 212.99, 848.19, 1910
     { "SX128x", RADIOLIB_MODEM_FSK,  {.fsk={250,100}},  {.fsk={16,16,2}}, {1,32,64,128}, {224,1216,2240,4288} },
 
+    // also covers LR2021 as the calculation is shared in the LRxxxx base class
     { "LR11x0", RADIOLIB_MODEM_LORA, {.lora={10,250,5}}, {.lora={8,false,true,true}}, {1,20,100}, {103424,205824,615424} }, // 103.42, 205.82, 615.42
     { "LR11x0", RADIOLIB_MODEM_LORA, {.lora={11,500,6}}, {.lora={32,true,false,false}}, {10,25,200}, {205824,279552,1065984} }, // 205.82, 279.55, 1070
     { "LR11x0", RADIOLIB_MODEM_FSK,  {.fsk={200,50}},   {.fsk={16,32,2}}, {1,32,64,200}, {360,1600,2880,8320} },
-    { "LR11x0", RADIOLIB_MODEM_LRFHSS,{.lrFhss={RADIOLIB_LR11X0_LR_FHSS_BW_136_72,RADIOLIB_LR11X0_LR_FHSS_CR_1_3,true}}, {.lrFhss={1}}, {1,10,50}, {1949692,2392059,4456440} },    
+    { "LR11x0", RADIOLIB_MODEM_LRFHSS,{.lrFhss={RADIOLIB_LRXXXX_LR_FHSS_BW_136_72,RADIOLIB_LRXXXX_LR_FHSS_CR_1_3,true}}, {.lrFhss={1}}, {1,10,50}, {1949692,2392059,4456440} },    
 };
 
 BOOST_AUTO_TEST_SUITE(suite_TimeOnAir)
@@ -45,17 +46,20 @@ BOOST_AUTO_TEST_CASE(TimeOnAir_AllRadios) {
             auto len = cfg.payload_len[i];
             RadioLibTime_t toa = 0;
 
+            // create a dummy module class instance that the derived classes may reference
+            Module mod(nullptr, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC);
+
             if (cfg.name == "SX126x") {
-                SX126x dummy(nullptr);
+                SX126x dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "SX127x") {
-                SX127x dummy(nullptr);
+                SX127x dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "SX128x") {
-                SX128x dummy(nullptr);
+                SX128x dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             } else if (cfg.name == "LR11x0") {
-                LR11x0 dummy(nullptr);
+                LR11x0 dummy(&mod);
                 toa = dummy.calculateTimeOnAir(cfg.modem, cfg.dr, cfg.pc, len);
             }
 

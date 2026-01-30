@@ -1,6 +1,8 @@
 #include "LR11x0.h"
 
 #include "../../utils/Cryptography.h"
+#include "LR_common.h"
+
 #include <string.h>
 
 #if !RADIOLIB_EXCLUDE_LR11X0
