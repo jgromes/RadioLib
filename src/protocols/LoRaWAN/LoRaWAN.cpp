@@ -1568,6 +1568,18 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   while(!downlinkAction && mod->hal->millis() - tOpen < toaMaxMs + this->scanGuard) {
     mod->hal->yield();
   }
+  
+  // sometimes we can get to a state when reception is still ongoing, but has not finished yet
+  // this has been observed on LR2021 - wait until either timeout, or Rx done is raised
+  // it should never take more than 300 ms
+  RadioLibTime_t start = mod->hal->millis();
+  while(!this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT) && !this->phyLayer->checkIrq(RADIOLIB_IRQ_RX_DONE)) {
+    mod->hal->yield();
+    if(mod->hal->millis() - start >= 300) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Timeout without IRQ!");
+      break;
+    }
+  }
 
   // update time of downlink reception
   if(downlinkAction) {
