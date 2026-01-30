@@ -356,7 +356,7 @@ jobs:
           mkdir -p ~/rpi-pico
           cd ~/rpi-pico
           git clone https://github.com/raspberrypi/pico-sdk.git
-          cd pico-sdk && git checkout 1.5.1
+          cd pico-sdk && git checkout 2.2.0
       
       - name: Build the example
         run: |
