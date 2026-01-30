@@ -226,7 +226,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:acaec05c056dacb2c2171eaa8521be4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done.  <br /></td></tr>
 <tr class="separator:acaec05c056dacb2c2171eaa8521be4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fa5723724393576ed597509200e17d1" id="r_a6fa5723724393576ed597509200e17d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a6fa5723724393576ed597509200e17d1">startChannelScan</a> () override</td></tr>
-<tr class="memdesc:a6fa5723724393576ed597509200e17d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected. DIO1 will be activated if there's no preamble detected before timeout.  <br /></td></tr>
+<tr class="memdesc:a6fa5723724393576ed597509200e17d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected. DIO0 will be activated if there's no preamble detected before timeout.  <br /></td></tr>
 <tr class="separator:a6fa5723724393576ed597509200e17d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81189ce77541d78fc8feb99c2a3f35b2" id="r_a81189ce77541d78fc8feb99c2a3f35b2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a81189ce77541d78fc8feb99c2a3f35b2">getChannelScanResult</a> () override</td></tr>
 <tr class="memdesc:a81189ce77541d78fc8feb99c2a3f35b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <br /></td></tr>
@@ -3438,7 +3438,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected. DIO1 will be activated if there's no preamble detected before timeout. </p>
+<p>Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected. DIO0 will be activated if there's no preamble detected before timeout. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">PhysicalLayer</a>.</p>
