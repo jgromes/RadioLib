@@ -26,6 +26,10 @@ var searchData=
   ['lr11x0wifiresult_5ft_23',['LR11x0WifiResult_t',['../struct_l_r11x0_wifi_result__t.html',1,'']]],
   ['lr11x0wifiresultextended_5ft_24',['LR11x0WifiResultExtended_t',['../struct_l_r11x0_wifi_result_extended__t.html',1,'']]],
   ['lr11x0wifiresultfull_5ft_25',['LR11x0WifiResultFull_t',['../struct_l_r11x0_wifi_result_full__t.html',1,'']]],
-  ['lrfhsspacketconfig_5ft_26',['LrFhssPacketConfig_t',['../struct_lr_fhss_packet_config__t.html',1,'']]],
-  ['lrfhssrate_5ft_27',['LrFhssRate_t',['../struct_lr_fhss_rate__t.html',1,'']]]
+  ['lr2021_26',['LR2021',['../class_l_r2021.html',1,'']]],
+  ['lr2021lorasidedetector_5ft_27',['LR2021LoRaSideDetector_t',['../struct_l_r2021_lo_ra_side_detector__t.html',1,'']]],
+  ['lr2021lrfhsshoptableentry_5ft_28',['LR2021LrFhssHopTableEntry_t',['../struct_l_r2021_lr_fhss_hop_table_entry__t.html',1,'']]],
+  ['lrfhsspacketconfig_5ft_29',['LrFhssPacketConfig_t',['../struct_lr_fhss_packet_config__t.html',1,'']]],
+  ['lrfhssrate_5ft_30',['LrFhssRate_t',['../struct_lr_fhss_rate__t.html',1,'']]],
+  ['lrxxxx_31',['LRxxxx',['../class_l_rxxxx.html',1,'']]]
 ];

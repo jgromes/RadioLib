@@ -55,13 +55,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
-"class_l_r1110.html#ae084d4503b2abcdc508edef40b0cadb3",
-"class_physical_layer.html#a63979795a7b53557560bb95b65480906",
-"class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a8cf0ccad0eec5fde12798e0b0347d6bf",
-"class_s_x127x.html#a3563453988a83d22dd07d4691543a300",
-"classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303",
-"group__status__codes.html#gabc695a4fae689e856ae6f618e334066f",
-"struct_module_1_1_s_p_i_config__t.html#a57ecca17835380862426d3cf38561185"
+"class_l_r1110.html#a4e492901900ad1d85c818ec473b3d123",
+"class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb",
+"class_r_f_m22.html",
+"class_s_x1272.html#a3a377445cb4b8fd41781a3210a819a47",
+"class_s_x128x.html#ac69cc622020419cb3393eac5cc88915b",
+"globals_defs.html",
+"struct_l_r11x0_wifi_result_extended__t.html#a640fdd5b33e6ab2f6867cd63da567147"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
