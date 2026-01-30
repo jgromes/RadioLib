@@ -360,7 +360,8 @@ int16_t LR11x0::sleep(bool retainConfig, uint32_t sleepTime) {
     buff[0] |= RADIOLIB_LR11X0_SLEEP_WAKEUP_ENABLED;
   }
 
-  int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_SLEEP, true, buff, sizeof(buff));
+  // in sleep, the busy line will remain high, so we have to use this method to disable waiting for it to go low
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_LR11X0_CMD_SET_SLEEP, buff, sizeof(buff), false, false);
 
   // wait for the module to safely enter sleep mode
   this->mod->hal->delay(1);
