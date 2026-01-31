@@ -65,9 +65,6 @@ int16_t SX127x::begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t 
   state = SX127x::invertIQ(false);
   RADIOLIB_ASSERT(state);
 
-  // initialize internal variables
-  this->dataRate = 0.0;
-
   return(state);
 }
 
@@ -203,10 +200,6 @@ int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-
-  // update data rate
-  RadioLibTime_t elapsed = this->mod->hal->millis() - start;
-  this->dataRate = (len*8.0f)/((float)elapsed/1000.0f);
 
   return(finishTransmit());
 }
@@ -795,10 +788,6 @@ float SX127x::getSNR() {
   // get SNR value
   int8_t rawSNR = (int8_t)this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PKT_SNR_VALUE);
   return(rawSNR / 4.0);
-}
-
-float SX127x::getDataRate() const {
-  return(this->dataRate);
 }
 
 int16_t SX127x::setBitRateCommon(float br, uint8_t fracRegAddr) {

@@ -908,12 +908,6 @@ class SX127x: public PhysicalLayer {
     float getSNR() override;
 
     /*!
-      \brief Get data rate of the latest transmitted packet.
-      \returns Last packet data rate in bps (bits per second).
-    */
-    float getDataRate() const;
-
-    /*!
       \brief Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.
       \param freqDev Frequency deviation to be set (in kHz).
       \returns \ref status_codes
@@ -1295,7 +1289,6 @@ class SX127x: public PhysicalLayer {
 
     float bitRate = 0, frequencyDev = 0;
     bool crcOn = true; // default value used in FSK mode
-    float dataRate = 0;
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;
     uint8_t rxMode = RADIOLIB_SX127X_RXCONTINUOUS;
