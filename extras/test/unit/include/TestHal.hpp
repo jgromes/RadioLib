@@ -32,6 +32,8 @@
 
 class TestHal : public RadioLibHal {
   public:
+    bool spiLogEnabled = true;
+
     TestHal() : RadioLibHal(TEST_HAL_INPUT, TEST_HAL_OUTPUT, TEST_HAL_LOW, TEST_HAL_HIGH, TEST_HAL_RISING, TEST_HAL_FALLING) { }
 
     void init() override {
@@ -191,7 +193,9 @@ class TestHal : public RadioLibHal {
       
       for(size_t i = 0; i < len; i++) {
         // append to log
-        (*this->spiLogPtr++) = out[i];
+        if(this->spiLogEnabled) {
+          (*this->spiLogPtr++) = out[i];
+        }
 
         // process the SPI byte
         in[i] = this->radio->HandleSPI(out[i]);

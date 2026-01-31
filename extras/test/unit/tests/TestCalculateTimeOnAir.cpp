@@ -15,7 +15,7 @@ struct RadioConfig {
 };
 
 // --- Test configurations with golden values ---
-std::vector<RadioConfig> allConfigs = {
+static std::vector<RadioConfig> allConfigs = {
     { "SX126x", RADIOLIB_MODEM_LORA,  {.lora={7,125,5}}, {.lora={8,false,true,true}}, {1,10,50,255}, {30976,46336,128256,548096} }, // 30.97, 46.33, 128.25, 548.09
     { "SX126x", RADIOLIB_MODEM_LORA,  {.lora={11,250,8}}, {.lora={16,true,false,false}}, {5,15,100,200}, {296960,362496,1411072,2590720} }, // 296.96, 362.49, 1410, 2590
     { "SX126x", RADIOLIB_MODEM_FSK,   {.fsk={100,10}},   {.fsk={16,16,2}}, {1,16,64,200}, {560,1760,5600,16480} },
