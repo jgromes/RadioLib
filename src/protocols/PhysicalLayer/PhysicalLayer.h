@@ -747,14 +747,6 @@ class PhysicalLayer {
     #endif
 
     /*!
-      \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).
-      \param pin Pin number onto which a signal is to be placed.
-      \param value The value that indicates which function to place on that pin. See chip datasheet for details.
-      \returns \ref status_codes
-    */
-    virtual int16_t setDIOMapping(uint32_t pin, uint32_t value);
-
-    /*!
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */

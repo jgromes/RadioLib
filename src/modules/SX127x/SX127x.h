@@ -1236,7 +1236,7 @@ class SX127x: public PhysicalLayer {
       \param value The value that indicates which function to place on that pin. See chip datasheet for details.
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(uint32_t pin, uint32_t value) override;
+    int16_t setDIOMapping(uint32_t pin, uint32_t value);
 
     /*!
       \brief Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.
