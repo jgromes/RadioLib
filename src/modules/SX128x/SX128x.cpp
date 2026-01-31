@@ -395,6 +395,10 @@ int16_t SX128x::standby() {
   return(SX128x::standby(RADIOLIB_SX128X_STANDBY_RC));
 }
 
+int16_t SX128x::standby(uint8_t mode) {
+  return(SX128x::standby(mode, true));
+}
+
 int16_t SX128x::standby(uint8_t mode, bool wakeup) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
@@ -813,6 +817,32 @@ int16_t SX128x::setDataRate(DataRate_t dr, ModemType_t modem) {
   return(state);
 }
 
+int16_t SX128x::checkDataRate(DataRate_t dr, ModemType_t modem) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+
+  // retrieve modem if not supplied
+  if(modem == RADIOLIB_MODEM_NONE) {
+    state = this->getModem(&modem);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 125.0f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 62.5f, 1000.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    return(RADIOLIB_ERR_NONE);
+
+  } else if(modem == RADIOLIB_MODEM_LORA) {
+    RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 203.0f, 1625.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+    return(RADIOLIB_ERR_NONE);
+  
+  }
+
+  return(state);
+}
+
 int16_t SX128x::setBitRate(float br) {
   // check active modem
   uint8_t modem = getPacketType();
@@ -934,7 +964,7 @@ int16_t SX128x::setDataShaping(uint8_t sh) {
   }
 }
 
-int16_t SX128x::setSyncWord(const uint8_t* syncWord, uint8_t len) {
+int16_t SX128x::setSyncWord(uint8_t* sync, size_t len) {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC))) {
@@ -963,7 +993,7 @@ int16_t SX128x::setSyncWord(const uint8_t* syncWord, uint8_t len) {
   }
 
   // update sync word
-  int16_t state = SX128x::writeRegister(RADIOLIB_SX128X_REG_SYNC_WORD_1_BYTE_4 + (5 - len), const_cast<uint8_t*>(syncWord), len);
+  int16_t state = SX128x::writeRegister(RADIOLIB_SX128X_REG_SYNC_WORD_1_BYTE_4 + (5 - len), sync, len);
   RADIOLIB_ASSERT(state);
 
   // update packet parameters
@@ -1365,6 +1395,13 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
+}
+
+RadioLibTime_t SX128x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
+  // the timeout value is given in units of 15.625 microseconds
+  // the calling function should provide some extra width, as this number of units is truncated to integer
+  RadioLibTime_t timeout = timeoutUs / 15.625f;
+  return(timeout);
 }
 
 int16_t SX128x::implicitHeader(size_t len) {

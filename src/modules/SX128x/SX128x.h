@@ -496,10 +496,18 @@ class SX128x: public PhysicalLayer {
       \brief Sets the module to standby mode.
       \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_SX128X_STANDBY_RC
       (13 MHz RC oscillator) or RADIOLIB_SX128X_STANDBY_XOSC (52 MHz external crystal oscillator).
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
+
+    /*!
+      \brief Sets the module to standby mode.
+      \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_SX128X_STANDBY_RC
+      (13 MHz RC oscillator) or RADIOLIB_SX128X_STANDBY_XOSC (52 MHz external crystal oscillator).
       \param wakeup Whether to force the module to wake up. Setting to true will immediately attempt to wake up the module.
       \returns \ref status_codes
     */
-    int16_t standby(uint8_t mode, bool wakeup = false);
+    int16_t standby(uint8_t mode, bool wakeup);
 
     // interrupt methods
 
@@ -691,6 +699,15 @@ class SX128x: public PhysicalLayer {
     int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
+      \brief Check the data rate can be configured by this module.
+      \param dr Data rate struct.
+      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
+      Defaults to currently active modem if not supplied.
+      \returns \ref status_codes
+    */
+    int16_t checkDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
+
+    /*!
       \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000,
       1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).
       \param br FSK/FLRC bit rate to be set in kbps.
@@ -716,11 +733,11 @@ class SX128x: public PhysicalLayer {
     /*!
       \brief Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem,
       the sync word must be exactly 4 bytes long
-      \param syncWord Sync word to be set.
+      \param sync Sync word to be set.
       \param len Sync word length in bytes.
       \returns \ref status_codes
     */
-    int16_t setSyncWord(const uint8_t* syncWord, uint8_t len);
+    int16_t setSyncWord(uint8_t* sync, size_t len) override;
 
     /*!
       \brief Sets LoRa sync word.
@@ -845,6 +862,13 @@ class SX128x: public PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
+      \param timeoutUs Timeout in microseconds to listen for
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
