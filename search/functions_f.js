@@ -123,7 +123,7 @@ var searchData=
   ['spireadregisterburst_120',['SPIreadRegisterBurst',['../class_module.html#ac993ab8e2ea0f5aa93339d1f6ffb54ee',1,'Module']]],
   ['spireadstream_121',['spireadstream',['../class_module.html#adacceb57ecfecb09150c135b2b44436f',1,'Module::SPIreadStream(uint16_t cmd, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)'],['../class_module.html#ad4af5fc5fd60e0aadb8a69606e511946',1,'Module::SPIreadStream(const uint8_t *cmd, uint8_t cmdLen, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)']]],
   ['spisetregvalue_122',['SPIsetRegValue',['../class_module.html#aed95fba2ee72d7a2a21f98dd63ae4ad1',1,'Module']]],
-  ['spitransfer_123',['spitransfer',['../class_module.html#a2bfbddb1ff044f8b1865aac89246445d',1,'Module::SPItransfer()'],['../class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a',1,'RadioLibHal::spiTransfer()'],['../class_pi_hal.html#a96a0f36efd8e23893add3242bdef8be4',1,'PiHal::spiTransfer()']]],
+  ['spitransfer_123',['spitransfer',['../class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a',1,'RadioLibHal::spiTransfer()'],['../class_pi_hal.html#a96a0f36efd8e23893add3242bdef8be4',1,'PiHal::spiTransfer()'],['../class_module.html#a2bfbddb1ff044f8b1865aac89246445d',1,'Module::SPItransfer(uint16_t cmd, uint32_t reg, const uint8_t *dataOut, uint8_t *dataIn, size_t numBytes)']]],
   ['spitransferstream_124',['SPItransferStream',['../class_module.html#a2b3f89fc63a82eb5fd55a7ddd72318fe',1,'Module']]],
   ['spiwriteregister_125',['SPIwriteRegister',['../class_module.html#a60ca6b4cae98f7d935191a569d519913',1,'Module']]],
   ['spiwriteregisterburst_126',['SPIwriteRegisterBurst',['../class_module.html#a10809e942c686b4e605269e58bd637b9',1,'Module']]],
