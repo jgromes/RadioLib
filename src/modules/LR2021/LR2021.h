@@ -661,6 +661,12 @@ class LR2021: public LRxxxx {
     */
     int16_t setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numDetectors);
 
+    /*!
+      \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.
+      \returns Effective data rate in bps.
+    */
+    float getDataRate() const;
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif

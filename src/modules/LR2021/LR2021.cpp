@@ -1042,4 +1042,8 @@ uint8_t LR2021::randomByte() {
   return((uint8_t)num);
 }
 
+float LR2021::getDataRate() const {
+  return(this->dataRateMeasured);
+}
+
 #endif
