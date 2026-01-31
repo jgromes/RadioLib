@@ -898,7 +898,7 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, cfg->transmit.len, this->crcTypeLoRa, this->invertIQEnabled);
       
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
-        state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, true, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
+        state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
 
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
         state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, cfg->transmit.len, this->crcTypeGFSK, this->whitening);
