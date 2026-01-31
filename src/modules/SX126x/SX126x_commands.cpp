@@ -29,7 +29,11 @@ int16_t SX126x::sleep(bool retainConfig) {
 }
 
 int16_t SX126x::standby() {
-  return(SX126x::standby(this->standbyXOSC ? RADIOLIB_SX126X_STANDBY_XOSC : RADIOLIB_SX126X_STANDBY_RC));
+  return(SX126x::standby(this->standbyXOSC ? RADIOLIB_SX126X_STANDBY_XOSC : RADIOLIB_SX126X_STANDBY_RC, true));
+}
+
+int16_t SX126x::standby(uint8_t mode) {
+  return(SX126x::standby(mode, true));
 }
 
 int16_t SX126x::standby(uint8_t mode, bool wakeup) {
