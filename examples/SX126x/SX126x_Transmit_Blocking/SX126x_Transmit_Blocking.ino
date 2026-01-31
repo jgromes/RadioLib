@@ -84,11 +84,6 @@ void loop() {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
-    // print measured data rate
-    Serial.print(F("[SX1262] Datarate:\t"));
-    Serial.print(radio.getDataRate());
-    Serial.println(F(" bps"));
-
   } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
     Serial.println(F("too long!"));

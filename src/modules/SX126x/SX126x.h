@@ -528,12 +528,6 @@ class SX126x: public PhysicalLayer {
     int16_t setDio2AsRfSwitch(bool enable = true);
 
     /*!
-      \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.
-      \returns Effective data rate in bps.
-    */
-    float getDataRate() const;
-
-    /*!
       \brief Gets recorded signal strength indicator.
       Overload with packet mode enabled for PhysicalLayer compatibility.
       \returns RSSI value in dBm.
@@ -892,8 +886,6 @@ class SX126x: public PhysicalLayer {
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, whitening = 0, packetType = 0;
     uint16_t preambleLengthFSK = 0;
     float rxBandwidthKhz = 0;
-
-    float dataRateMeasured = 0;
 
     uint32_t tcxoDelay = 0;
     uint8_t pwr = 0;

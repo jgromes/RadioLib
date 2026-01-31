@@ -269,10 +269,6 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     }
   }
 
-  // update data rate
-  RadioLibTime_t elapsed = this->mod->hal->millis() - start;
-  this->dataRateMeasured = (len*8.0f)/((float)elapsed/1000.0f);
-
   return(finishTransmit());
 }
 
@@ -685,10 +681,6 @@ int16_t SX126x::getChannelScanResult() {
   }
 
   return(RADIOLIB_ERR_UNKNOWN);
-}
-
-float SX126x::getDataRate() const {
-  return(this->dataRateMeasured);
 }
 
 float SX126x::getRSSI() {
