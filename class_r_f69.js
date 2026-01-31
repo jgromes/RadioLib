@@ -43,7 +43,7 @@ var class_r_f69 =
     [ "setDataShaping", "class_r_f69.html#a42b99e437454e92c6932c3b7acc1fc4a", null ],
     [ "setDio0Action", "class_r_f69.html#a9e50a1183d13ff9984f8438a7e9e4a77", null ],
     [ "setDio1Action", "class_r_f69.html#aa72ad2ac5238bd87886684064b7494cf", null ],
-    [ "setDIOMapping", "class_r_f69.html#a7243b3396edc1e6e67575894a5033afe", null ],
+    [ "setDIOMapping", "class_r_f69.html#a0d7720672c0aa0cf4464d544540cbada", null ],
     [ "setDirectAction", "class_r_f69.html#a9852fe520aec018d2bb4aff0cd17de77", null ],
     [ "setEncoding", "class_r_f69.html#aae828ce8dda16da4e54d2f18b1fb8af2", null ],
     [ "setFifoEmptyAction", "class_r_f69.html#a788023a0de9d6b43cb4079d12ca90b8d", null ],

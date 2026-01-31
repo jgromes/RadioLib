@@ -140,6 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a13ae97e18744dc617bc9326cfbaad3a3" id="r_a13ae97e18744dc617bc9326cfbaad3a3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a13ae97e18744dc617bc9326cfbaad3a3">scanChannel</a> () override</td></tr>
 <tr class="memdesc:a13ae97e18744dc617bc9326cfbaad3a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for valid LoRa preamble in the current channel.  <br /></td></tr>
 <tr class="separator:a13ae97e18744dc617bc9326cfbaad3a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a126a1473895b8c91301aff95c4fff2a4" id="r_a126a1473895b8c91301aff95c4fff2a4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a126a1473895b8c91301aff95c4fff2a4">scanChannel</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config) override</td></tr>
+<tr class="memdesc:a126a1473895b8c91301aff95c4fff2a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.  <br /></td></tr>
+<tr class="separator:a126a1473895b8c91301aff95c4fff2a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ff85ee7979da08b4e66316f1ba2c6a9" id="r_a1ff85ee7979da08b4e66316f1ba2c6a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1ff85ee7979da08b4e66316f1ba2c6a9">sleep</a> () override</td></tr>
 <tr class="memdesc:a1ff85ee7979da08b4e66316f1ba2c6a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the LoRa module to sleep to save power. Module will not be able to transmit or receive any data while in sleep mode. Module will wake up automatically when methods like transmit or receive are called.  <br /></td></tr>
 <tr class="separator:a1ff85ee7979da08b4e66316f1ba2c6a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +231,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:a6fa5723724393576ed597509200e17d1" id="r_a6fa5723724393576ed597509200e17d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a6fa5723724393576ed597509200e17d1">startChannelScan</a> () override</td></tr>
 <tr class="memdesc:a6fa5723724393576ed597509200e17d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected. DIO0 will be activated if there's no preamble detected before timeout.  <br /></td></tr>
 <tr class="separator:a6fa5723724393576ed597509200e17d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13018717b7f00778e89322bf1feda051" id="r_a13018717b7f00778e89322bf1feda051"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a13018717b7f00778e89322bf1feda051">startChannelScan</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config) override</td></tr>
+<tr class="memdesc:a13018717b7f00778e89322bf1feda051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout.  <br /></td></tr>
+<tr class="separator:a13018717b7f00778e89322bf1feda051"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81189ce77541d78fc8feb99c2a3f35b2" id="r_a81189ce77541d78fc8feb99c2a3f35b2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a81189ce77541d78fc8feb99c2a3f35b2">getChannelScanResult</a> () override</td></tr>
 <tr class="memdesc:a81189ce77541d78fc8feb99c2a3f35b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <br /></td></tr>
 <tr class="separator:a81189ce77541d78fc8feb99c2a3f35b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -397,9 +403,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFHSSInt</b> (void)</td></tr>
 <tr class="memdesc:a41089d9e5b45217d3e31ac22b5326b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the FHSS interrupt. <br /></td></tr>
 <tr class="separator:a41089d9e5b45217d3e31ac22b5326b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d373bc93e99790912cebe8d5ae6403" id="r_af7d373bc93e99790912cebe8d5ae6403"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af7d373bc93e99790912cebe8d5ae6403">setDIOMapping</a> (uint32_t pin, uint32_t value) override</td></tr>
-<tr class="memdesc:af7d373bc93e99790912cebe8d5ae6403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <br /></td></tr>
-<tr class="separator:af7d373bc93e99790912cebe8d5ae6403"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103b606166eba8c69bff061270744768" id="r_a103b606166eba8c69bff061270744768"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a103b606166eba8c69bff061270744768">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
+<tr class="memdesc:a103b606166eba8c69bff061270744768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <br /></td></tr>
+<tr class="separator:a103b606166eba8c69bff061270744768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b85344084b800966a46ace59dcb5277" id="r_a7b85344084b800966a46ace59dcb5277"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">setDIOPreambleDetect</a> (bool usePreambleDetect)</td></tr>
 <tr class="memdesc:a7b85344084b800966a46ace59dcb5277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.  <br /></td></tr>
 <tr class="separator:a7b85344084b800966a46ace59dcb5277"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -484,12 +490,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:af9a7e739e39705a72ffa8b63ec09bb15 inherit pub_methods_class_physical_layer" id="r_af9a7e739e39705a72ffa8b63ec09bb15"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af9a7e739e39705a72ffa8b63ec09bb15">clearIrq</a> (<a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irq)</td></tr>
 <tr class="memdesc:af9a7e739e39705a72ffa8b63ec09bb15 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone). Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!  <br /></td></tr>
 <tr class="separator:af9a7e739e39705a72ffa8b63ec09bb15 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82a52062d9259c2c546d7bf8072b7a72 inherit pub_methods_class_physical_layer" id="r_a82a52062d9259c2c546d7bf8072b7a72"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a82a52062d9259c2c546d7bf8072b7a72">startChannelScan</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config)</td></tr>
-<tr class="memdesc:a82a52062d9259c2c546d7bf8072b7a72 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. interrupt will be activated when packet is detected. Must be implemented in module class.  <br /></td></tr>
-<tr class="separator:a82a52062d9259c2c546d7bf8072b7a72 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af788cf83ceb0222cd0fa4a1323b9041b inherit pub_methods_class_physical_layer" id="r_af788cf83ceb0222cd0fa4a1323b9041b"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af788cf83ceb0222cd0fa4a1323b9041b">scanChannel</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config)</td></tr>
-<tr class="memdesc:af788cf83ceb0222cd0fa4a1323b9041b inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules, or RSSI measurement for FSK modules.  <br /></td></tr>
-<tr class="separator:af788cf83ceb0222cd0fa4a1323b9041b inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer" id="r_acd9171bd71aa80fb86113b612c42de53"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
 <tr class="memdesc:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <br /></td></tr>
 <tr class="separator:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2063,7 +2063,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <a id="a13ae97e18744dc617bc9326cfbaad3a3" name="a13ae97e18744dc617bc9326cfbaad3a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13ae97e18744dc617bc9326cfbaad3a3">&#9670;&#160;</a></span>scanChannel()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a13ae97e18744dc617bc9326cfbaad3a3">&#9670;&#160;</a></span>scanChannel() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2089,6 +2089,43 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a126a1473895b8c91301aff95c4fff2a4" name="a126a1473895b8c91301aff95c4fff2a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a126a1473895b8c91301aff95c4fff2a4">&#9670;&#160;</a></span>scanChannel() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::scanChannel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Performs scan for LoRa transmission in the current channel. Detects both preamble and payload. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Ignored. Implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af788cf83ceb0222cd0fa4a1323b9041b">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2364,14 +2401,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="af7d373bc93e99790912cebe8d5ae6403" name="af7d373bc93e99790912cebe8d5ae6403"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7d373bc93e99790912cebe8d5ae6403">&#9670;&#160;</a></span>setDIOMapping()</h2>
+<a id="a103b606166eba8c69bff061270744768" name="a103b606166eba8c69bff061270744768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a103b606166eba8c69bff061270744768">&#9670;&#160;</a></span>setDIOMapping()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX127x::setDIOMapping </td>
@@ -2391,11 +2425,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
@@ -2407,8 +2436,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -3416,7 +3443,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <a id="a6fa5723724393576ed597509200e17d1" name="a6fa5723724393576ed597509200e17d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fa5723724393576ed597509200e17d1">&#9670;&#160;</a></span>startChannelScan()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fa5723724393576ed597509200e17d1">&#9670;&#160;</a></span>startChannelScan() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3442,6 +3469,43 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a13018717b7f00778e89322bf1feda051" name="a13018717b7f00778e89322bf1feda051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13018717b7f00778e89322bf1feda051">&#9670;&#160;</a></span>startChannelScan() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::startChannelScan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Ignored. Implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a82a52062d9259c2c546d7bf8072b7a72">PhysicalLayer</a>.</p>
 
 </div>
 </div>

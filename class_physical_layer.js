@@ -40,7 +40,6 @@ var class_physical_layer =
     [ "setChannelScanAction", "class_physical_layer.html#ae11c191a7edf3116bf468b9153237260", null ],
     [ "setDataRate", "class_physical_layer.html#ac5f1e0c24d8bf878f2c9fe729b6e1610", null ],
     [ "setDataShaping", "class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9", null ],
-    [ "setDIOMapping", "class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c", null ],
     [ "setDirectAction", "class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966", null ],
     [ "setDirectSyncWord", "class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab", null ],
     [ "setEncoding", "class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488", null ],

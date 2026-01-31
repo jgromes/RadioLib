@@ -161,9 +161,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2be8cc6c3b61b59cb6a6ca4f6a030b45" id="r_a2be8cc6c3b61b59cb6a6ca4f6a030b45"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45">standby</a> () override</td></tr>
 <tr class="memdesc:a2be8cc6c3b61b59cb6a6ca4f6a030b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, uses 13 MHz RC oscillator).  <br /></td></tr>
 <tr class="separator:a2be8cc6c3b61b59cb6a6ca4f6a030b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a389aab93e24ec8c7cc9c14de90e5dfae" id="r_a389aab93e24ec8c7cc9c14de90e5dfae"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a389aab93e24ec8c7cc9c14de90e5dfae">standby</a> (uint8_t mode, bool wakeup=false)</td></tr>
-<tr class="memdesc:a389aab93e24ec8c7cc9c14de90e5dfae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
-<tr class="separator:a389aab93e24ec8c7cc9c14de90e5dfae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46ff4db28d0c1617d160104e8f1e5dd8" id="r_a46ff4db28d0c1617d160104e8f1e5dd8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a46ff4db28d0c1617d160104e8f1e5dd8">standby</a> (uint8_t mode) override</td></tr>
+<tr class="memdesc:a46ff4db28d0c1617d160104e8f1e5dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
+<tr class="separator:a46ff4db28d0c1617d160104e8f1e5dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a202449d07b0bec9798493d51c659cd1c" id="r_a202449d07b0bec9798493d51c659cd1c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a202449d07b0bec9798493d51c659cd1c">standby</a> (uint8_t mode, bool wakeup)</td></tr>
+<tr class="memdesc:a202449d07b0bec9798493d51c659cd1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
+<tr class="separator:a202449d07b0bec9798493d51c659cd1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0759fb31b3ce5bf1c832259c9c2245ed" id="r_a0759fb31b3ce5bf1c832259c9c2245ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a0759fb31b3ce5bf1c832259c9c2245ed">setDio1Action</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a0759fb31b3ce5bf1c832259c9c2245ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <br /></td></tr>
 <tr class="separator:a0759fb31b3ce5bf1c832259c9c2245ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,6 +249,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memitem:acd1b4f675b03a584fde1694c19d24653" id="r_acd1b4f675b03a584fde1694c19d24653"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#acd1b4f675b03a584fde1694c19d24653">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE) override</td></tr>
 <tr class="memdesc:acd1b4f675b03a584fde1694c19d24653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate.  <br /></td></tr>
 <tr class="separator:acd1b4f675b03a584fde1694c19d24653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e2a2d40acc497a61a4785de6afd7a5f" id="r_a1e2a2d40acc497a61a4785de6afd7a5f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a1e2a2d40acc497a61a4785de6afd7a5f">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE) override</td></tr>
+<tr class="memdesc:a1e2a2d40acc497a61a4785de6afd7a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module.  <br /></td></tr>
+<tr class="separator:a1e2a2d40acc497a61a4785de6afd7a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6570f33bae09bc8b7617f9da39033ac" id="r_ad6570f33bae09bc8b7617f9da39033ac"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad6570f33bae09bc8b7617f9da39033ac">setBitRate</a> (float br) override</td></tr>
 <tr class="memdesc:ad6570f33bae09bc8b7617f9da39033ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000, 1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).  <br /></td></tr>
 <tr class="separator:ad6570f33bae09bc8b7617f9da39033ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,9 +261,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memitem:a99491c705e88dddc820f884b778f1660" id="r_a99491c705e88dddc820f884b778f1660"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a99491c705e88dddc820f884b778f1660">setDataShaping</a> (uint8_t sh) override</td></tr>
 <tr class="memdesc:a99491c705e88dddc820f884b778f1660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <br /></td></tr>
 <tr class="separator:a99491c705e88dddc820f884b778f1660"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9584464d2e4cc09686cf4e83e65d3e0" id="r_ad9584464d2e4cc09686cf4e83e65d3e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad9584464d2e4cc09686cf4e83e65d3e0">setSyncWord</a> (const uint8_t *syncWord, uint8_t len)</td></tr>
-<tr class="memdesc:ad9584464d2e4cc09686cf4e83e65d3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem, the sync word must be exactly 4 bytes long.  <br /></td></tr>
-<tr class="separator:ad9584464d2e4cc09686cf4e83e65d3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eef935cc2170908aae1ec356d70dc5d" id="r_a6eef935cc2170908aae1ec356d70dc5d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a6eef935cc2170908aae1ec356d70dc5d">setSyncWord</a> (uint8_t *sync, size_t len) override</td></tr>
+<tr class="memdesc:a6eef935cc2170908aae1ec356d70dc5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem, the sync word must be exactly 4 bytes long.  <br /></td></tr>
+<tr class="separator:a6eef935cc2170908aae1ec356d70dc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bef6b6f3058be6b1681c78334342bc1" id="r_a1bef6b6f3058be6b1681c78334342bc1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a1bef6b6f3058be6b1681c78334342bc1">setSyncWord</a> (uint8_t syncWord, uint8_t controlBits=0x44)</td></tr>
 <tr class="memdesc:a1bef6b6f3058be6b1681c78334342bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <br /></td></tr>
 <tr class="separator:a1bef6b6f3058be6b1681c78334342bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,6 +315,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memitem:ae7d3676df8f28c79b9bee23df884fa55" id="r_ae7d3676df8f28c79b9bee23df884fa55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ae7d3676df8f28c79b9bee23df884fa55">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:ae7d3676df8f28c79b9bee23df884fa55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <br /></td></tr>
 <tr class="separator:ae7d3676df8f28c79b9bee23df884fa55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f073c411928ed6a059ceb4a0dcc5632" id="r_a0f073c411928ed6a059ceb4a0dcc5632"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a0f073c411928ed6a059ceb4a0dcc5632">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
+<tr class="memdesc:a0f073c411928ed6a059ceb4a0dcc5632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <br /></td></tr>
+<tr class="separator:a0f073c411928ed6a059ceb4a0dcc5632"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac69cc622020419cb3393eac5cc88915b" id="r_ac69cc622020419cb3393eac5cc88915b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ac69cc622020419cb3393eac5cc88915b">implicitHeader</a> (size_t len)</td></tr>
 <tr class="memdesc:ac69cc622020419cb3393eac5cc88915b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set implicit header mode for future reception/transmission.  <br /></td></tr>
 <tr class="separator:ac69cc622020419cb3393eac5cc88915b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -378,21 +387,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer" id="r_a7d5da4311092e3df6b193ff303a0c5e8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
-<tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <br /></td></tr>
-<tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
 <tr class="separator:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer" id="r_a6c71cdc1238e1368274670758431a977"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
-<tr class="memdesc:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c5c902d9f8ffe9866b7f178b14d34f6 inherit pub_methods_class_physical_layer" id="r_a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a9c5c902d9f8ffe9866b7f178b14d34f6">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
-<tr class="memdesc:a9c5c902d9f8ffe9866b7f178b14d34f6 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:a9c5c902d9f8ffe9866b7f178b14d34f6 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer" id="r_a7f8d12a90158864a8ebc471b0ec89dc9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs)</td></tr>
-<tr class="memdesc:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time).  <br /></td></tr>
-<tr class="separator:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae602ebd46d60da8670c9f353cef695d9 inherit pub_methods_class_physical_layer" id="r_ae602ebd46d60da8670c9f353cef695d9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae602ebd46d60da8670c9f353cef695d9">getIrqMapped</a> (<a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irq)</td></tr>
 <tr class="memdesc:ae602ebd46d60da8670c9f353cef695d9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from radio-agnostic IRQ flags to radio-specific flags.  <br /></td></tr>
 <tr class="separator:ae602ebd46d60da8670c9f353cef695d9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -427,9 +424,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memitem:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer" id="r_a4d5b30493c8d7fcfb784e128362d596c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">read</a> (bool drop=true)</td></tr>
 <tr class="memdesc:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <br /></td></tr>
 <tr class="separator:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer" id="r_a349e8a22cd28ad89d45460fdeeefc05c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
-<tr class="memdesc:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <br /></td></tr>
-<tr class="separator:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11c191a7edf3116bf468b9153237260 inherit pub_methods_class_physical_layer" id="r_ae11c191a7edf3116bf468b9153237260"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">setChannelScanAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:ae11c191a7edf3116bf468b9153237260 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a channel scan is finished.  <br /></td></tr>
 <tr class="separator:ae11c191a7edf3116bf468b9153237260 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -744,6 +738,43 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="a0f073c411928ed6a059ceb4a0dcc5632" name="a0f073c411928ed6a059ceb4a0dcc5632"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f073c411928ed6a059ceb4a0dcc5632">&#9670;&#160;</a></span>calculateRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> SX128x::calculateRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
+          <td class="paramname"><em>timeoutUs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculate the timeout value for this specific module / series (in number of symbols or units of time) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeoutUs</td><td>Timeout in microseconds to listen for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a4b458bf709ee126106b53e9478ad4c96" name="a4b458bf709ee126106b53e9478ad4c96"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b458bf709ee126106b53e9478ad4c96">&#9670;&#160;</a></span>calculateTimeOnAir()</h2>
 
@@ -803,6 +834,54 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ac1974cb6218782c557a673aeb4a99928">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a1e2a2d40acc497a61a4785de6afd7a5f" name="a1e2a2d40acc497a61a4785de6afd7a5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e2a2d40acc497a61a4785de6afd7a5f">&#9670;&#160;</a></span>checkDataRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX128x::checkDataRate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em> = <code>RADIOLIB_MODEM_NONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check the data rate can be configured by this module. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dr</td><td>Data rate struct. </td></tr>
+    <tr><td class="paramname">modem</td><td>The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). Defaults to currently active modem if not supplied. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a9c5c902d9f8ffe9866b7f178b14d34f6">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2755,22 +2834,25 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="ad9584464d2e4cc09686cf4e83e65d3e0" name="ad9584464d2e4cc09686cf4e83e65d3e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9584464d2e4cc09686cf4e83e65d3e0">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+<a id="a6eef935cc2170908aae1ec356d70dc5d" name="a6eef935cc2170908aae1ec356d70dc5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eef935cc2170908aae1ec356d70dc5d">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX128x::setSyncWord </td>
           <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>syncWord</em>, </td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>sync</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>len</em>&#160;</td>
         </tr>
         <tr>
@@ -2779,18 +2861,25 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem, the sync word must be exactly 4 bytes long. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>Sync word to be set. </td></tr>
+    <tr><td class="paramname">sync</td><td>Sync word to be set. </td></tr>
     <tr><td class="paramname">len</td><td>Sync word length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>add support for multiple sync words </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2965,7 +3054,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <a id="a2be8cc6c3b61b59cb6a6ca4f6a030b45" name="a2be8cc6c3b61b59cb6a6ca4f6a030b45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2be8cc6c3b61b59cb6a6ca4f6a030b45">&#9670;&#160;</a></span>standby() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2be8cc6c3b61b59cb6a6ca4f6a030b45">&#9670;&#160;</a></span>standby() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2994,8 +3083,45 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a389aab93e24ec8c7cc9c14de90e5dfae" name="a389aab93e24ec8c7cc9c14de90e5dfae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a389aab93e24ec8c7cc9c14de90e5dfae">&#9670;&#160;</a></span>standby() <span class="overload">[2/2]</span></h2>
+<a id="a46ff4db28d0c1617d160104e8f1e5dd8" name="a46ff4db28d0c1617d160104e8f1e5dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46ff4db28d0c1617d160104e8f1e5dd8">&#9670;&#160;</a></span>standby() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX128x::standby </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the module to standby mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Oscillator to be used in standby mode. Can be set to RADIOLIB_SX128X_STANDBY_RC (13 MHz RC oscillator) or RADIOLIB_SX128X_STANDBY_XOSC (52 MHz external crystal oscillator). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a202449d07b0bec9798493d51c659cd1c" name="a202449d07b0bec9798493d51c659cd1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a202449d07b0bec9798493d51c659cd1c">&#9670;&#160;</a></span>standby() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3010,7 +3136,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>wakeup</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>wakeup</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
