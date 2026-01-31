@@ -258,9 +258,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:a47b3f7464303085d34191dd334c1976f" id="r_a47b3f7464303085d34191dd334c1976f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a47b3f7464303085d34191dd334c1976f">getSNR</a> () override</td></tr>
 <tr class="memdesc:a47b3f7464303085d34191dd334c1976f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets signal-to-noise ratio of the latest received packet. Only available in LoRa mode.  <br /></td></tr>
 <tr class="separator:a47b3f7464303085d34191dd334c1976f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc25b685de0859b799488bf7729350b6" id="r_adc25b685de0859b799488bf7729350b6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adc25b685de0859b799488bf7729350b6">getDataRate</a> () const</td></tr>
-<tr class="memdesc:adc25b685de0859b799488bf7729350b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data rate of the latest transmitted packet.  <br /></td></tr>
-<tr class="separator:adc25b685de0859b799488bf7729350b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a448ea8a6a6011a9cdddd4e09bd6c9679" id="r_a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.  <br /></td></tr>
 <tr class="separator:a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1211,26 +1208,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 <p>Read version SPI register. Should return SX1278_CHIP_VERSION (0x12) or SX1272_CHIP_VERSION (0x22) if <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> is connected and working. </p>
 <dl class="section return"><dt>Returns</dt><dd>Version register contents or <a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="adc25b685de0859b799488bf7729350b6" name="adc25b685de0859b799488bf7729350b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc25b685de0859b799488bf7729350b6">&#9670;&#160;</a></span>getDataRate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float SX127x::getDataRate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get data rate of the latest transmitted packet. </p>
-<dl class="section return"><dt>Returns</dt><dd>Last packet data rate in bps (bits per second). </dd></dl>
 
 </div>
 </div>

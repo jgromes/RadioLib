@@ -23,7 +23,6 @@ var class_s_x126x =
     [ "forceLDRO", "class_s_x126x.html#a420c23bb1861646e29f44c0f4c646ee8", null ],
     [ "getChannelScanResult", "class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317", null ],
     [ "getCurrentLimit", "class_s_x126x.html#aa668babb0bd129b2facee9fd280525ab", null ],
-    [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
     [ "getFrequencyError", "class_s_x126x.html#a068d709ffb79ae66d718ffb76ffae997", null ],
     [ "getIrqFlags", "class_s_x126x.html#ab4f9b0c6496a796211e9816bf92146a7", null ],
     [ "getLoRaRxHeaderInfo", "class_s_x126x.html#a1631a3b8ce88da58d0a1fb5179319daf", null ],

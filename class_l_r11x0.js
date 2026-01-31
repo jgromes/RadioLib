@@ -27,7 +27,6 @@ var class_l_r11x0 =
     [ "fixedPacketLengthMode", "class_l_r11x0.html#a5df4c1ed45bf59aa25bc400bcb5dc1ba", null ],
     [ "forceLDRO", "class_l_r11x0.html#ae0a47e772fe24c7b3f3d3288c4cd0941", null ],
     [ "getChannelScanResult", "class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f", null ],
-    [ "getDataRate", "class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9", null ],
     [ "getFrequencyError", "class_l_r11x0.html#ad9046bccdb4ef60718e2e8ed2bd7f036", null ],
     [ "getGnssAlmanacStatus", "class_l_r11x0.html#a748d30cb7a0b419066f6361a966b306f", null ],
     [ "getGnssPosition", "class_l_r11x0.html#a19a4b4a138dbd0e5c8f980de0f6419e4", null ],

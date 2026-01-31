@@ -25,7 +25,6 @@ var class_s_x127x =
     [ "getAFCError", "class_s_x127x.html#a5094ba2d9268340b7aba99afe5da0544", null ],
     [ "getChannelScanResult", "class_s_x127x.html#a81189ce77541d78fc8feb99c2a3f35b2", null ],
     [ "getChipVersion", "class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd", null ],
-    [ "getDataRate", "class_s_x127x.html#adc25b685de0859b799488bf7729350b6", null ],
     [ "getFHSSChannel", "class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c", null ],
     [ "getFHSSHoppingPeriod", "class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617", null ],
     [ "getFrequencyError", "class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362", null ],

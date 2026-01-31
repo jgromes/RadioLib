@@ -287,9 +287,6 @@ struct&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> (
 <tr class="memitem:ae46e08d579f4acbad029b4cd4f4fffaf" id="r_ae46e08d579f4acbad029b4cd4f4fffaf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ae46e08d579f4acbad029b4cd4f4fffaf">setDio2AsRfSwitch</a> (bool enable=true)</td></tr>
 <tr class="memdesc:ae46e08d579f4acbad029b4cd4f4fffaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set DIO2 to function as RF switch (default in Semtech example designs).  <br /></td></tr>
 <tr class="separator:ae46e08d579f4acbad029b4cd4f4fffaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbe2d75b1e2df8bcc58c4fd9d8e6e4f9" id="r_acbe2d75b1e2df8bcc58c4fd9d8e6e4f9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9">getDataRate</a> () const</td></tr>
-<tr class="memdesc:acbe2d75b1e2df8bcc58c4fd9d8e6e4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.  <br /></td></tr>
-<tr class="separator:acbe2d75b1e2df8bcc58c4fd9d8e6e4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a2e4ab7779369c0dc0cb4779fda81" id="r_a782a2e4ab7779369c0dc0cb4779fda81"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a782a2e4ab7779369c0dc0cb4779fda81">getRSSI</a> () override</td></tr>
 <tr class="memdesc:a782a2e4ab7779369c0dc0cb4779fda81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="separator:a782a2e4ab7779369c0dc0cb4779fda81"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1353,26 +1350,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 <p>Reads current protection limit. </p>
 <dl class="section return"><dt>Returns</dt><dd>Currently configured overcurrent protection limit in mA. </dd></dl>
-
-</div>
-</div>
-<a id="acbe2d75b1e2df8bcc58c4fd9d8e6e4f9" name="acbe2d75b1e2df8bcc58c4fd9d8e6e4f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9">&#9670;&#160;</a></span>getDataRate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float SX126x::getDataRate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes. </p>
-<dl class="section return"><dt>Returns</dt><dd>Effective data rate in bps. </dd></dl>
 
 </div>
 </div>
