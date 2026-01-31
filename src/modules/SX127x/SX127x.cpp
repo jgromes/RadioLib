@@ -263,6 +263,14 @@ void SX127x::reset() {
 }
 
 int16_t SX127x::scanChannel() {
+  // the configuration is not actually used
+  const ChannelScanConfig_t cfg = { .rssi = { .limit = 0 } };
+  return(scanChannel(cfg));
+}
+
+int16_t SX127x::scanChannel(const ChannelScanConfig_t &config) {
+  (void)config;
+
   // start CAD
   int16_t state = startChannelScan();
   RADIOLIB_ASSERT(state);
@@ -585,6 +593,14 @@ int16_t SX127x::finishReceive() {
 }
 
 int16_t SX127x::startChannelScan() {
+  // the configuration is not actually used
+  const ChannelScanConfig_t cfg = { .rssi = { .limit = 0 } };
+  return(startChannelScan(cfg));
+}
+
+int16_t SX127x::startChannelScan(const ChannelScanConfig_t &config) {
+  (void)config;
+
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
