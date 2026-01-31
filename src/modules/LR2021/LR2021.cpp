@@ -253,10 +253,6 @@ int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  RadioLibTime_t elapsed = this->mod->hal->micros() - start;
-
-  // update data rate
-  this->dataRateMeasured = (len*8.0f)/((float)elapsed/1000000.0f);
 
   return(finishTransmit());
 }

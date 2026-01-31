@@ -126,10 +126,6 @@ void loop() {
       // packet was successfully sent
       Serial.println(F("transmission finished!"));
 
-      // NOTE: when using interrupt-driven transmit method,
-      //       it is not possible to automatically measure
-      //       transmission data rate using getDataRate()
-
     } else {
       Serial.print(F("failed, code "));
       Serial.println(transmissionState);

@@ -511,12 +511,6 @@ class LR11x0: public LRxxxx {
     int16_t explicitHeader();
 
     /*!
-      \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.
-      \returns Effective data rate in bps.
-    */
-    float getDataRate() const;
-
-    /*!
       \brief Set regulator mode to LDO.
       \returns \ref status_codes
     */

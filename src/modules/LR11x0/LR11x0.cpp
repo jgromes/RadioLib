@@ -201,10 +201,6 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  RadioLibTime_t elapsed = this->mod->hal->micros() - start;
-
-  // update data rate
-  this->dataRateMeasured = (len*8.0f)/((float)elapsed/1000000.0f);
 
   return(finishTransmit());
 }
@@ -1202,10 +1198,6 @@ int16_t LR11x0::implicitHeader(size_t len) {
 
 int16_t LR11x0::explicitHeader() {
   return(this->setHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT));
-}
-
-float LR11x0::getDataRate() const {
-  return(this->dataRateMeasured);
 }
 
 int16_t LR11x0::setRegulatorLDO() {

@@ -163,7 +163,6 @@ class LRxxxx: public PhysicalLayer {
     Module* mod;
     
     float freqMHz = 0;
-    float dataRateMeasured = 0;
     uint32_t rxTimeout = 0;
 
     // cached LoRa parameters
