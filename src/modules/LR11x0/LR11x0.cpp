@@ -329,6 +329,10 @@ int16_t LR11x0::standby() {
   return(LR11x0::standby(RADIOLIB_LR11X0_STANDBY_RC));
 }
 
+int16_t LR11x0::standby(uint8_t mode) {
+  return(LR11x0::standby(mode, true));
+}
+
 int16_t LR11x0::standby(uint8_t mode, bool wakeup) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);

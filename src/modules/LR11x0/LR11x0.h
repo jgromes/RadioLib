@@ -163,10 +163,18 @@ class LR11x0: public LRxxxx {
       \brief Sets the module to standby mode.
       \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_LR11X0_STANDBY_RC (13 MHz RC oscillator)
       or RADIOLIB_LR11X0_STANDBY_XOSC (32 MHz external crystal oscillator).
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
+
+    /*!
+      \brief Sets the module to standby mode.
+      \param mode Oscillator to be used in standby mode. Can be set to RADIOLIB_LR11X0_STANDBY_RC (13 MHz RC oscillator)
+      or RADIOLIB_LR11X0_STANDBY_XOSC (32 MHz external crystal oscillator).
       \param wakeup Whether to force the module to wake up. Setting to true will immediately attempt to wake up the module.
       \returns \ref status_codes
     */
-    int16_t standby(uint8_t mode, bool wakeup = true);
+    int16_t standby(uint8_t mode, bool wakeup);
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
