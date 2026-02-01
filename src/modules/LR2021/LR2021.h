@@ -442,7 +442,7 @@ class LR2021: public LRxxxx {
     int16_t setBitRate(float br) override;
 
     /*!
-      \brief Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
+      \brief Sets GFSK frequency deviation. Allowed values range from 0.6 to 500.0 kHz.
       \param freqDev GFSK frequency deviation to be set in kHz.
       \returns \ref status_codes
     */
