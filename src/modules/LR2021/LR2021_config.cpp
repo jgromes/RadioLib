@@ -809,7 +809,7 @@ int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     // set requested packet mode
-    state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, len, this->crcTypeGFSK, this->whitening);
+    state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, mode, len, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     // update cached value
@@ -818,7 +818,7 @@ int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     // set requested packet mode
-    state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, len, this->crcTypeGFSK, this->whitening);
+    state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, mode, len, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     // update cached value
