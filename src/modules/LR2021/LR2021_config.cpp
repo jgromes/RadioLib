@@ -556,7 +556,7 @@ int16_t LR2021::setRxBandwidth(float rxBw) {
 }
 
 int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
-  if((!syncWord) || (!len) || (len > RADIOLIB_LR2021_GFSK_SYNC_WORD_LEN)) {
+  if(len > RADIOLIB_LR2021_GFSK_SYNC_WORD_LEN) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
   }
 
