@@ -245,22 +245,23 @@ $(document).ready(function(){initNavTree('_l_r__common_8h_source.html',''); init
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, <span class="keyword">const</span> uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    uint8_t roundRampTime(uint32_t rampTimeUs);</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <a class="code hl_typedef" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> getTimeOnAir(<span class="keywordtype">size_t</span> len, ModemType_t modem);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// several commands just send unsigned 32-bit number</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    int16_t setU32(uint16_t cmd, uint32_t u32);</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    int16_t SPIcommand(uint16_t cmd, <span class="keywordtype">bool</span> write, uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keyword">const</span> uint8_t* out = NULL, <span class="keywordtype">size_t</span> outLen = 0);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keyword">static</span> int16_t SPIcheckStatus(<a class="code hl_class" href="class_module.html">Module</a>* mod);</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>};</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    int16_t findRxBw(<span class="keywordtype">float</span> rxBw, <span class="keyword">const</span> uint8_t* lut, <span class="keywordtype">size_t</span> lutSize, <span class="keywordtype">float</span> rxBwMax, uint8_t* val);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <a class="code hl_typedef" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> getTimeOnAir(<span class="keywordtype">size_t</span> len, ModemType_t modem);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="comment">// several commands just send unsigned 32-bit number</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    int16_t setU32(uint16_t cmd, uint32_t u32);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    int16_t SPIcommand(uint16_t cmd, <span class="keywordtype">bool</span> write, uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keyword">const</span> uint8_t* out = NULL, <span class="keywordtype">size_t</span> outLen = 0);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keyword">static</span> int16_t SPIcheckStatus(<a class="code hl_class" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>};</div>
 </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_l_rxxxx_html"><div class="ttname"><a href="class_l_rxxxx.html">LRxxxx</a></div><div class="ttdef"><b>Definition</b> LR_common.h:91</div></div>
 <div class="ttc" id="aclass_l_rxxxx_html_a4d2cfba89348f0b909758e451155bbaa"><div class="ttname"><a href="class_l_rxxxx.html#a4d2cfba89348f0b909758e451155bbaa">LRxxxx::getIrqStatus</a></div><div class="ttdeci">uint32_t getIrqStatus()</div><div class="ttdoc">Reads the current IRQ status.</div><div class="ttdef"><b>Definition</b> LR_common.cpp:39</div></div>
 <div class="ttc" id="aclass_l_rxxxx_html_a51974c95b458ec80c73d2c4a62d83684"><div class="ttname"><a href="class_l_rxxxx.html#a51974c95b458ec80c73d2c4a62d83684">LRxxxx::setPacketReceivedAction</a></div><div class="ttdeci">void setPacketReceivedAction(void(*func)(void)) override</div><div class="ttdoc">Sets interrupt service routine to call when a packet is received.</div><div class="ttdef"><b>Definition</b> LR_common.cpp:23</div></div>
