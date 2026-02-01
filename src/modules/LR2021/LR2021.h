@@ -435,7 +435,7 @@ class LR2021: public LRxxxx {
     int16_t invertIQ(bool enable) override;
 
     /*!
-      \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
+      \brief Sets GFSK bit rate. Allowed values range from 0.5 to 2000.0 kbps.
       \param br FSK bit rate to be set in kbps.
       \returns \ref status_codes
     */
