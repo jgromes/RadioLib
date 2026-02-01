@@ -435,14 +435,14 @@ int16_t LR2021::setBitRate(float br) {
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
-    RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 0.5f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
     //! \TODO: [LR2021] implement fractional bit rate configuration
     this->bitRate = br * 1000.0f;
     state = setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
     return(state);
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
-    RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 0.5f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
     //! \TODO: [LR2021] implement fractional bit rate configuration
     this->bitRate = br * 1000.0f;
     //! \TODO: [LR2021] implement OOK magnitude depth configuration
@@ -755,8 +755,8 @@ int16_t LR2021::checkDataRate(DataRate_t dr, ModemType_t modem) {
 
   // select interpretation based on modem
   if(modem == RADIOLIB_MODEM_FSK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
-    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 500.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f,  500.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_MODEM_LORA) {
