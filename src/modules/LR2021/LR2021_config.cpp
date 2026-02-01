@@ -492,11 +492,11 @@ int16_t LR2021::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
-  if(freqDev < 0.0f) {
+  if(freqDev < 0.6f) {
     newFreqDev = 0.6f;
   }
 
-  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 500.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   this->frequencyDev = newFreqDev * 1000.0f;
   state = setGfskModulationParams(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
   return(state);
@@ -784,7 +784,7 @@ int16_t LR2021::checkDataRate(DataRate_t dr, ModemType_t modem) {
   // select interpretation based on modem
   if(modem == RADIOLIB_MODEM_FSK) {
     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
-    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 500.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_MODEM_LORA) {
