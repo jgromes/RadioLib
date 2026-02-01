@@ -16,7 +16,7 @@ int16_t LR2021::setFrequency(float freq) {
 
 int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
   #if RADIOLIB_CHECK_PARAMS
-  if(!(((freq >= 150.0f) && (freq <= 960.0f)) ||
+  if(!(((freq >= 150.0f) && (freq <= 1090.0f)) ||
     ((freq >= 1900.0f) && (freq <= 2200.0f)) ||
     ((freq >= 2400.0f) && (freq <= 2500.0f)))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY);
@@ -66,7 +66,7 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
   state = setRfFrequency((uint32_t)(freq*1000000.0f));
   RADIOLIB_ASSERT(state);
   this->freqMHz = freq;
-  this->highFreq = (freq > 1000.0f);
+  this->highFreq = (freq > 1100.0f);
   return(state);
 }
 
