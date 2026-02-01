@@ -502,15 +502,17 @@ int16_t LR2021::setFrequencyDeviation(float freqDev) {
   return(state);
 }
 
-int16_t LR2021::findRxBw(float rxBw, uint8_t* val) {
-  // lookup tables to avoid comparing a whole bunch of floats
-  uint16_t rxBwAvg[] = {
-    53, 66, 85, 108, 134, 170, 211, 264,
-    341, 424, 529, 682, 847, 1058, 1364,
-    1695, 2116, 2729, 3390, 4233, 5159,
-    6111, 7179, 9401, 16665, 24440, 28710,
-  };
-  uint8_t rxBwRaw[] = {
+int16_t LR2021::setRxBandwidth(float rxBw) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(!((type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || 
+       (type == RADIOLIB_LR2021_PACKET_TYPE_OOK))) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  const uint8_t rxBwLut[] = {
     RADIOLIB_LR2021_GFSK_OOK_RX_BW_4_8,
     RADIOLIB_LR2021_GFSK_OOK_RX_BW_5_8,
     RADIOLIB_LR2021_GFSK_OOK_RX_BW_7_4,
@@ -541,37 +543,7 @@ int16_t LR2021::findRxBw(float rxBw, uint8_t* val) {
     RADIOLIB_LR2021_GFSK_OOK_RX_BW_3076,
   };
 
-  // iterate through the table and find whether the user-provided value
-  // is lower than the pre-computed average of the adjacent bandwidth values
-  // if it is, we consider that to be a match even though the actual value is not precise
-  uint16_t rxBwInt = rxBw*10.0f;
-  for(size_t i = 0; i < sizeof(rxBwAvg)/sizeof(rxBwAvg[0]); i++) {
-    if(rxBwInt < rxBwAvg[i]) {
-      *val = rxBwRaw[i];
-      return(RADIOLIB_ERR_NONE);
-    }
-  }
-
-  // if nothing matched up to here, match with the last value
-  if(rxBwInt <= 30760) {
-    *val = rxBwRaw[sizeof(rxBwRaw) - 1];
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-}
-
-int16_t LR2021::setRxBandwidth(float rxBw) {
-  // check active modem
-  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&type);
-  RADIOLIB_ASSERT(state);
-  if(!((type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) || 
-       (type == RADIOLIB_LR2021_PACKET_TYPE_OOK))) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  state = findRxBw(rxBw, &this->rxBandwidth);
+  state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 3076.0f, &this->rxBandwidth);
   RADIOLIB_ASSERT(state);
 
   // update modulation parameters

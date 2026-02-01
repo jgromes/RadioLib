@@ -681,52 +681,32 @@ int16_t LR11x0::setRxBandwidth(float rxBw) {
     return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
   }*/
 
-  // check allowed receiver bandwidth values
-  if(fabsf(rxBw - 4.8f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_4_8;
-  } else if(fabsf(rxBw - 5.8f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_5_8;
-  } else if(fabsf(rxBw - 7.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_7_3;
-  } else if(fabsf(rxBw - 9.7f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_9_7;
-  } else if(fabsf(rxBw - 11.7f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_11_7;
-  } else if(fabsf(rxBw - 14.6f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_14_6;
-  } else if(fabsf(rxBw - 19.5f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_19_5;
-  } else if(fabsf(rxBw - 23.4f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_23_4;
-  } else if(fabsf(rxBw - 29.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_29_3;
-  } else if(fabsf(rxBw - 39.0f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_39_0;
-  } else if(fabsf(rxBw - 46.9f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_46_9;
-  } else if(fabsf(rxBw - 58.6f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_58_6;
-  } else if(fabsf(rxBw - 78.2f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_78_2;
-  } else if(fabsf(rxBw - 93.8f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_93_8;
-  } else if(fabsf(rxBw - 117.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_117_3;
-  } else if(fabsf(rxBw - 156.2f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_156_2;
-  } else if(fabsf(rxBw - 187.2f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_187_2;
-  } else if(fabsf(rxBw - 234.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_234_3;
-  } else if(fabsf(rxBw - 312.0f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_312_0;
-  } else if(fabsf(rxBw - 373.6f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_373_6;
-  } else if(fabsf(rxBw - 467.0f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_467_0;
-  } else {
-    return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-  }
+  const uint8_t rxBwLut[] = {
+    RADIOLIB_LR11X0_GFSK_RX_BW_4_8,
+    RADIOLIB_LR11X0_GFSK_RX_BW_5_8,
+    RADIOLIB_LR11X0_GFSK_RX_BW_7_3,
+    RADIOLIB_LR11X0_GFSK_RX_BW_9_7,
+    RADIOLIB_LR11X0_GFSK_RX_BW_11_7,
+    RADIOLIB_LR11X0_GFSK_RX_BW_14_6,
+    RADIOLIB_LR11X0_GFSK_RX_BW_19_5,
+    RADIOLIB_LR11X0_GFSK_RX_BW_23_4,
+    RADIOLIB_LR11X0_GFSK_RX_BW_29_3,
+    RADIOLIB_LR11X0_GFSK_RX_BW_39_0,
+    RADIOLIB_LR11X0_GFSK_RX_BW_46_9,
+    RADIOLIB_LR11X0_GFSK_RX_BW_58_6,
+    RADIOLIB_LR11X0_GFSK_RX_BW_78_2,
+    RADIOLIB_LR11X0_GFSK_RX_BW_93_8,
+    RADIOLIB_LR11X0_GFSK_RX_BW_117_3,
+    RADIOLIB_LR11X0_GFSK_RX_BW_156_2,
+    RADIOLIB_LR11X0_GFSK_RX_BW_187_2,
+    RADIOLIB_LR11X0_GFSK_RX_BW_234_3,
+    RADIOLIB_LR11X0_GFSK_RX_BW_312_0,
+    RADIOLIB_LR11X0_GFSK_RX_BW_373_6,
+    RADIOLIB_LR11X0_GFSK_RX_BW_467_0,
+  };
+
+  state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 467.0f, &this->rxBandwidth);
+  RADIOLIB_ASSERT(state);
 
   // update modulation parameters
   state = setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);

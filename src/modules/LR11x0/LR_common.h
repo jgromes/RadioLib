@@ -189,6 +189,7 @@ class LRxxxx: public PhysicalLayer {
     int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     uint8_t roundRampTime(uint32_t rampTimeUs);
+    int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
     RadioLibTime_t getTimeOnAir(size_t len, ModemType_t modem);
 
     // several commands just send unsigned 32-bit number

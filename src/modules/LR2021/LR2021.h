@@ -688,7 +688,6 @@ class LR2021: public LRxxxx {
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
-    int16_t findRxBw(float rxBw, uint8_t* val);
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
