@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-02-01 10:08:02</td>
+            <td class="headerValue">2026-02-01 10:09:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -497,14 +497,14 @@
 <a name="435"><span class="lineNum">     435 </span><span class="lineCov">          1 :   int16_t state = getPacketType(&amp;type);</span></a>
 <a name="436"><span class="lineNum">     436 </span><span class="lineCov">          1 :   RADIOLIB_ASSERT(state);</span></a>
 <a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :   if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(br, 0.5f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);</span></a>
 <a name="439"><span class="lineNum">     439 </span>            :     //! \TODO: [LR2021] implement fractional bit rate configuration</a>
 <a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :     this-&gt;bitRate = br * 1000.0f;</span></a>
 <a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :     state = setGfskModulationParams(this-&gt;bitRate, this-&gt;pulseShape, this-&gt;rxBandwidth, this-&gt;frequencyDev);</span></a>
 <a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :     return(state);</span></a>
 <a name="443"><span class="lineNum">     443 </span>            :   </a>
 <a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {</span></a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(br, 0.5f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);</span></a>
 <a name="446"><span class="lineNum">     446 </span>            :     //! \TODO: [LR2021] implement fractional bit rate configuration</a>
 <a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :     this-&gt;bitRate = br * 1000.0f;</span></a>
 <a name="448"><span class="lineNum">     448 </span>            :     //! \TODO: [LR2021] implement OOK magnitude depth configuration</a>
@@ -817,8 +817,8 @@
 <a name="755"><span class="lineNum">     755 </span>            : </a>
 <a name="756"><span class="lineNum">     756 </span>            :   // select interpretation based on modem</a>
 <a name="757"><span class="lineNum">     757 </span><span class="lineNoCov">          0 :   if(modem == RADIOLIB_MODEM_FSK) {</span></a>
-<a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);</span></a>
-<a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 500.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);</span></a>
+<a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5f, 2000.0f, RADIOLIB_ERR_INVALID_BIT_RATE);</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f,  500.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);</span></a>
 <a name="760"><span class="lineNum">     760 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_NONE);</span></a>
 <a name="761"><span class="lineNum">     761 </span>            : </a>
 <a name="762"><span class="lineNum">     762 </span><span class="lineNoCov">          0 :   } else if(modem == RADIOLIB_MODEM_LORA) {</span></a>

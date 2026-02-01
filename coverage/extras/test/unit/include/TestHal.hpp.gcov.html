@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-02-01 10:08:02</td>
+            <td class="headerValue">2026-02-01 10:09:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">16</td>
@@ -204,7 +204,7 @@
 <a name="142"><span class="lineNum">     142 </span>            : </a>
 <a name="143"><span class="lineNum">     143 </span>            :       // busy wait is needed for microseconds precision</a>
 <a name="144"><span class="lineNum">     144 </span><span class="lineCov">      30626 :       const auto len = std::chrono::microseconds(us);</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">   40454867 :       while(std::chrono::high_resolution_clock::now() - start &lt; len);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">   40467062 :       while(std::chrono::high_resolution_clock::now() - start &lt; len);</span></a>
 <a name="146"><span class="lineNum">     146 </span>            : </a>
 <a name="147"><span class="lineNum">     147 </span>            :       // measure and print</a>
 <a name="148"><span class="lineNum">     148 </span><span class="lineCov">      30626 :       const auto end = std::chrono::high_resolution_clock::now();</span></a>
