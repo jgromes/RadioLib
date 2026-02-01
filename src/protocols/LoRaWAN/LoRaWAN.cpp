@@ -82,6 +82,20 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
 
+  Module *mod = this->phyLayer->getMod();
+  RadioLibTime_t tNow = mod->hal->millis();
+  // if scheduled uplink time is in the past, reschedule to now
+  if(this->tUplink < tNow) {
+    this->tUplink = tNow;
+  }
+
+  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
+  if(this->dutyCycleEnabled) {
+    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
+      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
+    }
+  }
+
   if(lenUp == 0 && fPort == 0) {
     this->isMACPayload = true;
   }
@@ -154,8 +168,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     // send it (without the MIC calculation blocks)
     state = this->transmitUplink(&this->channels[RADIOLIB_LORAWAN_UPLINK],
                                 &uplinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS], 
-                                (uint8_t)(uplinkMsgLen - RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS),
-                                trans > 0);
+                                (uint8_t)(uplinkMsgLen - RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS));
     if(state != RADIOLIB_ERR_NONE) {
       // sometimes, a spurious error can occur even though the uplink was transmitted
       // therefore, just to be safe, increase frame counter by one for the next uplink
@@ -912,6 +925,20 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
     this->createSession();
   }
 
+  Module *mod = this->phyLayer->getMod();
+  RadioLibTime_t tNow = mod->hal->millis();
+  // if scheduled uplink time is in the past, reschedule to now
+  if(this->tUplink < tNow) {
+    this->tUplink = tNow;
+  }
+
+  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
+  if(this->dutyCycleEnabled) {
+    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
+      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
+    }
+  }
+
   // starting a new session, so make sure to update event fields already
   if(joinEvent) {
     joinEvent->newSession = true;
@@ -1378,23 +1405,9 @@ void LoRaWANNode::micUplink(uint8_t* inOut, size_t lenInOut) {
   }
 }
 
-int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans) {
+int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
   Module* mod = this->phyLayer->getMod();
-
-  RadioLibTime_t tNow = mod->hal->millis();
-  // if scheduled uplink time is in the past, reschedule to now
-  if(this->tUplink < tNow) {
-    this->tUplink = tNow;
-  }
-
-  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
-  // but: don't check this for retransmissions
-  if(!retrans && this->dutyCycleEnabled) {
-    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
-      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
-    }
-  }
 
   const uint8_t currentDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
   const ModemType_t modem = this->band->dataRates[currentDr].modem;
@@ -1423,7 +1436,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   RADIOLIB_ASSERT(state);
   
   // if requested, wait until transmitting uplink
-  tNow = mod->hal->millis();
+  RadioLibTime_t tNow = mod->hal->millis();
   if(this->tUplink > tNow + this->launchDuration) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
     tNow = mod->hal->millis();

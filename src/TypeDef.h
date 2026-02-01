@@ -534,7 +534,7 @@
 #define RADIOLIB_ERR_INVALID_CID                                (-1107)
 
 /*!
-  \brief User requested to start uplink while still inside RX window or under dutycycle.
+  \brief User requested to start uplink while under dutycycle.
 */
 #define RADIOLIB_ERR_UPLINK_UNAVAILABLE                         (-1108)
 

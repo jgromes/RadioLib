@@ -1130,7 +1130,7 @@ class LoRaWANNode {
     void micUplink(uint8_t* inOut, size_t lenInOut);
 
     // transmit uplink buffer on a specified channel
-    int16_t transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans = false);
+    int16_t transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len);
 
     // handle one of the Class A receive windows with a given channel and certain timestamps
     int16_t receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference);
