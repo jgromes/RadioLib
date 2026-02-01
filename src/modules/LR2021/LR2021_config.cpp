@@ -379,7 +379,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     }
 
     this->crcTypeGFSK = len;
-    if(inverted) {
+    if((this->crcTypeGFSK != RADIOLIB_LR2021_GFSK_OOK_CRC_OFF) && inverted) {
       this->crcTypeGFSK += 0x08;
     }
 
@@ -394,7 +394,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     }
 
     this->crcTypeGFSK = len;
-    if(inverted) {
+    if((this->crcTypeGFSK != RADIOLIB_LR2021_GFSK_OOK_CRC_OFF) && inverted) {
       this->crcTypeGFSK += 0x08;
     }
 
