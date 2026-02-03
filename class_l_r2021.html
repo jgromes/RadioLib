@@ -324,9 +324,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a444ec095ed8bd08df909b3b1b899d35e" id="r_a444ec095ed8bd08df909b3b1b899d35e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a444ec095ed8bd08df909b3b1b899d35e">getRSSI</a> () override</td></tr>
 <tr class="memdesc:a444ec095ed8bd08df909b3b1b899d35e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="separator:a444ec095ed8bd08df909b3b1b899d35e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ff5cc6b2bcad81afbb9128986edcba7" id="r_a7ff5cc6b2bcad81afbb9128986edcba7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a7ff5cc6b2bcad81afbb9128986edcba7">getRSSI</a> (bool packet)</td></tr>
-<tr class="memdesc:a7ff5cc6b2bcad81afbb9128986edcba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator).  <br /></td></tr>
-<tr class="separator:a7ff5cc6b2bcad81afbb9128986edcba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11674102f4d704d02d27eaceeaeccd35" id="r_a11674102f4d704d02d27eaceeaeccd35"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a11674102f4d704d02d27eaceeaeccd35">getRSSI</a> (bool packet, bool skipReceive=false)</td></tr>
+<tr class="memdesc:a11674102f4d704d02d27eaceeaeccd35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator).  <br /></td></tr>
+<tr class="separator:a11674102f4d704d02d27eaceeaeccd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addaf960d942fbff38c12ccb38b137122" id="r_addaf960d942fbff38c12ccb38b137122"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#addaf960d942fbff38c12ccb38b137122">getSNR</a> () override</td></tr>
 <tr class="memdesc:addaf960d942fbff38c12ccb38b137122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <br /></td></tr>
 <tr class="separator:addaf960d942fbff38c12ccb38b137122"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,6 +345,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aca2d2d22e793e32c50efd5f01881979e" id="r_aca2d2d22e793e32c50efd5f01881979e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#aca2d2d22e793e32c50efd5f01881979e">setSideDetector</a> (const <a class="el" href="struct_l_r2021_lo_ra_side_detector__t.html">LR2021LoRaSideDetector_t</a> *cfg, size_t numDetectors)</td></tr>
 <tr class="memdesc:aca2d2d22e793e32c50efd5f01881979e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure LoRa side detector, which enables to detect mutiple spreading factors and receive one of them. The following limitations apply: In Rx mode, all side-detector spreading factors must be higher than the primary one (configured via begin or setSpreadingFactor) For CAD mode, the above condition is inverted - all side-detector spreading factors must be smaller All packets to be detected must have the same header type (implicit or explicit) If bandwidth is higher than 500 kHz, at most 2 side detectors are allowed. If the primary spreading factor is 10, 11 or 12, at most 2 side detectors are allowed. All spreading factors must be different. The difference between maximum and minimum spreading factor used must be less than or equal to 4.  <br /></td></tr>
 <tr class="separator:aca2d2d22e793e32c50efd5f01881979e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a874b2522d4b296505278d943df308a99" id="r_a874b2522d4b296505278d943df308a99"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a874b2522d4b296505278d943df308a99">setGain</a> (uint8_t gain)</td></tr>
+<tr class="memdesc:a874b2522d4b296505278d943df308a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13, where 13 is the highest gain. Set to 0 to enable automatic gain control (recommended).  <br /></td></tr>
+<tr class="separator:a874b2522d4b296505278d943df308a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1327,8 +1330,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a7ff5cc6b2bcad81afbb9128986edcba7" name="a7ff5cc6b2bcad81afbb9128986edcba7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ff5cc6b2bcad81afbb9128986edcba7">&#9670;&#160;</a></span>getRSSI() <span class="overload">[2/2]</span></h2>
+<a id="a11674102f4d704d02d27eaceeaeccd35" name="a11674102f4d704d02d27eaceeaeccd35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11674102f4d704d02d27eaceeaeccd35">&#9670;&#160;</a></span>getRSSI() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1337,8 +1340,18 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
           <td class="memname">float LR2021::getRSSI </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>packet</em></td><td>)</td>
+          <td class="paramname"><em>packet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>skipReceive</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1347,6 +1360,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. </td></tr>
+    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2397,6 +2411,33 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a874b2522d4b296505278d943df308a99" name="a874b2522d4b296505278d943df308a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a874b2522d4b296505278d943df308a99">&#9670;&#160;</a></span>setGain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setGain </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>gain</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13, where 13 is the highest gain. Set to 0 to enable automatic gain control (recommended). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier) to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
