@@ -995,12 +995,14 @@ float LR2021::getRSSI() {
   return(this->getRSSI(true));
 }
 
-float LR2021::getRSSI(bool packet) {
+float LR2021::getRSSI(bool packet, bool skipReceive) {
   float rssi = 0;
   int16_t state;
   if(!packet) { 
     // get instantaneous RSSI value
+    if(!skipReceive) { (void)startReceive(); }
     state = this->getRssiInst(&rssi);
+    if(!skipReceive) { (void)standby(); }
     if(state != RADIOLIB_ERR_NONE) { return(0); }
     return(rssi);
   }
