@@ -21,7 +21,7 @@ int16_t LR2021::setOokPacketParams(uint16_t preambleLen, uint8_t addrComp, uint8
     (uint8_t)((preambleLen >> 8) & 0xFF), (uint8_t)(preambleLen & 0xFF),
     (uint8_t)((addrComp << 2) | ((uint8_t)packetFormat & 0x03)),
     (uint8_t)((payloadLen >> 8) & 0xFF), (uint8_t)(payloadLen & 0xFF),
-    (uint8_t)((crc << 4) | (manchester << 4)),
+    (uint8_t)(((crc << 4) & 0xF0) | (manchester & 0x0F)),
   };
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_PACKET_PARAMS, true, buff, sizeof(buff)));
 }
