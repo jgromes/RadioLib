@@ -998,4 +998,11 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
   return(setLoRaSideDetSyncword(syncWords, numDetectors));
 }
 
+int16_t LR2021::setGain(uint8_t gain) {
+  if(gain > 13) {
+    return(RADIOLIB_ERR_INVALID_GAIN);
+  }
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_AGC_GAIN_MANUAL, true, &gain, sizeof(gain)));
+}
+
 #endif

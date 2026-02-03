@@ -76,10 +76,6 @@ int16_t LR2021::getCcaResult(float* rssiMin, float* rssiMax, float* rssiAvg) {
   return(state);
 }
 
-int16_t LR2021::setAgcGainManual(uint8_t gain) {
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_AGC_GAIN_MANUAL, true, &gain, sizeof(gain)));
-}
-
 int16_t LR2021::setCadParams(uint32_t cadTimeout, uint8_t threshold, uint8_t exitMode, uint32_t trxTimeout) {
   uint8_t buff[] = {
     (uint8_t)((cadTimeout >> 16) & 0xFF), (uint8_t)((cadTimeout >> 8) & 0xFF), (uint8_t)(cadTimeout & 0xFF),

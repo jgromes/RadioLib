@@ -662,6 +662,14 @@ class LR2021: public LRxxxx {
     */
     int16_t setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numDetectors);
 
+    /*!
+      \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13,
+      where 13 is the highest gain. Set to 0 to enable automatic gain control (recommended).
+      \param gain Gain of receiver LNA (low-noise amplifier) to be set.
+      \returns \ref status_codes
+    */
+    int16_t setGain(uint8_t gain);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
