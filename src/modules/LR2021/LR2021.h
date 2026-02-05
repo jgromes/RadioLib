@@ -645,6 +645,13 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t ookDetector(uint16_t pattern = 0x0285, uint8_t len = 16, uint8_t repeats = 0, bool syncRaw = false, bool rising = false, uint8_t sofLen = 0);
+    
+    /*!
+      \brief Set OOK detection threshold.
+      \param level Threshold level in dB
+      \returns \ref status_codes
+    */
+    int16_t setOokDetectionThreshold(int16_t level);
 
     /*!
       \brief Configure LoRa side detector, which enables to detect mutiple spreading factors and receive one of them.
@@ -751,7 +758,6 @@ class LR2021: public LRxxxx {
     int16_t getTimestampValue(uint8_t index, uint32_t* timestamp);
     int16_t setCca(uint32_t duration, uint8_t gain);
     int16_t getCcaResult(float* rssiMin, float* rssiMax, float* rssiAvg);
-    int16_t setAgcGainManual(uint8_t gain);
     int16_t setCadParams(uint32_t cadTimeout, uint8_t threshold, uint8_t exitMode, uint32_t trxTimeout);
     int16_t setCad(void);
     int16_t selPa(uint8_t pa);

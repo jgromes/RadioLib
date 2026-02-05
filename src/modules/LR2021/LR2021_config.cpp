@@ -1,6 +1,7 @@
 #include "LR2021.h"
 
 #include "../LR11x0/LR_common.h"
+#include "LR2021_registers.h"
 
 #include <math.h>
 #include <string.h>
@@ -952,6 +953,11 @@ int16_t LR2021::ookDetector(uint16_t pattern, uint8_t len, uint8_t repeats, bool
   }
 
   return(setOokDetector(pattern, len - 1, repeats, syncRaw, rising, sofLen));
+}
+
+int16_t LR2021::setOokDetectionThreshold(int16_t level) {
+  int16_t levelRaw = 64 + level;
+  return(this->writeRegMemMask32(RADIOLIB_LR2021_REG_OOK_DETECTION_THRESHOLD, (0x7FUL << 20), (uint32_t)levelRaw << 20));
 }
 
 int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numDetectors) {
