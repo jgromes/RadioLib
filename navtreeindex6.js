@@ -8,8 +8,9 @@ var NAVTREEINDEX6 =
 "globals_defs.html":[4,1,2],
 "globals_vars.html":[4,1,1],
 "group__config__encoding.html":[2,4],
-"group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,4,1],
-"group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,4,2],
+"group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,4,2],
+"group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,4,3],
+"group__config__encoding.html#ga12b094eb1fa67815c4965e67256cd11d":[2,4,1],
 "group__config__encoding.html#gaffff394bbc47c05ed1bfde2e16a596e8":[2,4,0],
 "group__config__shaping.html":[2,3],
 "group__config__shaping.html#ga677dde0ea956d5e99af30cf501a727ad":[2,3,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "struct_l_r11x0_wifi_result__t.html#a9fb28ba0ff8e6625322b081a4bda5628":[3,0,39,3],
 "struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd":[3,0,39,2],
 "struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f":[3,0,39,5],
-"struct_l_r11x0_wifi_result__t.html#aedbfd390bee0e0995321e0a5caedac53":[3,0,39,4],
-"struct_l_r11x0_wifi_result_extended__t.html":[3,0,40]
+"struct_l_r11x0_wifi_result__t.html#aedbfd390bee0e0995321e0a5caedac53":[3,0,39,4]
 };
