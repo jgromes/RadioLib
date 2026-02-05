@@ -62,6 +62,11 @@
 #define RADIOLIB_ENCODING_WHITENING                             (0x02)
 
 /*!
+  \brief Inverted Manchester encoding.
+*/
+#define RADIOLIB_ENCODING_MANCHESTER_INV                        (0x03)
+
+/*!
   \}
 */
 
