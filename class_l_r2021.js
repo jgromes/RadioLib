@@ -60,6 +60,7 @@ var class_l_r2021 =
     [ "setLrFhssConfig", "class_l_r2021.html#afc9eef45712d5daae3c0a38e7dfd5d73", null ],
     [ "setModem", "class_l_r2021.html#ab8923a4d2a3cf8a7834ae6c53c6d3eb0", null ],
     [ "setNodeAddress", "class_l_r2021.html#abecc461944b46e15a4573288a752a4c2", null ],
+    [ "setOokDetectionThreshold", "class_l_r2021.html#a4e88077f2e75c598e0ca820196d7ed9d", null ],
     [ "setOutputPower", "class_l_r2021.html#aca2599a31c088a5e8c59317ae132d4d0", null ],
     [ "setOutputPower", "class_l_r2021.html#a2d38e9fa1f3250d78482c8fb755f22a2", null ],
     [ "setPreambleLength", "class_l_r2021.html#abfe825d8bf2bf526058914bf99b71a92", null ],

@@ -342,6 +342,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af4aaffbca82fd163c09e004d9df205f1" id="r_af4aaffbca82fd163c09e004d9df205f1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#af4aaffbca82fd163c09e004d9df205f1">ookDetector</a> (uint16_t pattern=0x0285, uint8_t len=16, uint8_t repeats=0, bool syncRaw=false, bool rising=false, uint8_t sofLen=0)</td></tr>
 <tr class="memdesc:af4aaffbca82fd163c09e004d9df205f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set OOK detector properties. The default values are set to allow ADS-B reception.  <br /></td></tr>
 <tr class="separator:af4aaffbca82fd163c09e004d9df205f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e88077f2e75c598e0ca820196d7ed9d" id="r_a4e88077f2e75c598e0ca820196d7ed9d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a4e88077f2e75c598e0ca820196d7ed9d">setOokDetectionThreshold</a> (int16_t level)</td></tr>
+<tr class="memdesc:a4e88077f2e75c598e0ca820196d7ed9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set OOK detection threshold.  <br /></td></tr>
+<tr class="separator:a4e88077f2e75c598e0ca820196d7ed9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca2d2d22e793e32c50efd5f01881979e" id="r_aca2d2d22e793e32c50efd5f01881979e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#aca2d2d22e793e32c50efd5f01881979e">setSideDetector</a> (const <a class="el" href="struct_l_r2021_lo_ra_side_detector__t.html">LR2021LoRaSideDetector_t</a> *cfg, size_t numDetectors)</td></tr>
 <tr class="memdesc:aca2d2d22e793e32c50efd5f01881979e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure LoRa side detector, which enables to detect mutiple spreading factors and receive one of them. The following limitations apply: In Rx mode, all side-detector spreading factors must be higher than the primary one (configured via begin or setSpreadingFactor) For CAD mode, the above condition is inverted - all side-detector spreading factors must be smaller All packets to be detected must have the same header type (implicit or explicit) If bandwidth is higher than 500 kHz, at most 2 side detectors are allowed. If the primary spreading factor is 10, 11 or 12, at most 2 side detectors are allowed. All spreading factors must be different. The difference between maximum and minimum spreading factor used must be less than or equal to 4.  <br /></td></tr>
 <tr class="separator:aca2d2d22e793e32c50efd5f01881979e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2587,6 +2590,33 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nodeAddr</td><td>Node address to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4e88077f2e75c598e0ca820196d7ed9d" name="a4e88077f2e75c598e0ca820196d7ed9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e88077f2e75c598e0ca820196d7ed9d">&#9670;&#160;</a></span>setOokDetectionThreshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setOokDetectionThreshold </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set OOK detection threshold. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>Threshold level in dB </td></tr>
   </table>
   </dd>
 </dl>
