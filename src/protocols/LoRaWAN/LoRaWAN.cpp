@@ -3229,9 +3229,12 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   state = this->phyLayer->setDataRate(*dr, this->band->dataRates[chnl->dr].modem);
   RADIOLIB_ASSERT(state);
 
+  float frequency = chnl->freq / 10000.0;
+  int frequencyIntegral = (int) frequency;
+  int frequencyDecimal = (int) ((frequency - frequencyIntegral) * 1000);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Frequency = %7.3f MHz, TX = %d dBm", chnl->freq / 10000.0, pwr);
-  state = this->phyLayer->setFrequency(chnl->freq / 10000.0);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Frequency = %d.%d MHz, TX = %d dBm", frequencyIntegral, frequencyDecimal, pwr);
+  state = this->phyLayer->setFrequency(frequency);
   RADIOLIB_ASSERT(state);
   
   // at this point, assume that Tx power value is already checked, so ignore the return value
