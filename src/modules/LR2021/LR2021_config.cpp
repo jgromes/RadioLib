@@ -650,7 +650,34 @@ int16_t LR2021::setDataShaping(uint8_t sh) {
 }
 
 int16_t LR2021::setEncoding(uint8_t encoding) {
-  return(setWhitening(encoding));
+  // check active modem
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+
+  switch(type) {
+    case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
+      return(setWhitening(encoding == RADIOLIB_ENCODING_WHITENING));
+    
+    case(RADIOLIB_LR2021_PACKET_TYPE_OOK):
+      switch(encoding) {
+        case(RADIOLIB_ENCODING_NRZ):
+        case(RADIOLIB_ENCODING_WHITENING):
+          return(setWhitening(encoding == RADIOLIB_ENCODING_WHITENING));
+        case(RADIOLIB_ENCODING_MANCHESTER):
+        case(RADIOLIB_ENCODING_MANCHESTER_INV):
+          state = setWhitening(false);
+          this->whitening = encoding;
+          return(state);
+        default:
+          return(RADIOLIB_ERR_INVALID_ENCODING);
+      }
+    
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  return(state);
 }
 
 int16_t LR2021::fixedPacketLengthMode(uint8_t len) {
