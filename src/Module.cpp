@@ -423,7 +423,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("R\t");
     }
     size_t n = 0;
-    for(; n < cmdLen; n++) {
+    for(n = 0; n < cmdLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", cmd[n]);
     }
     RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
@@ -433,7 +433,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
     for(n = 0; n < cmdLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("\t");
     }
-    for(; n < buffLen; n++) {
+    for(n = 0; n < buffLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", buffOut[n]);
     }
     RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
