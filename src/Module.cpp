@@ -81,7 +81,7 @@ int16_t Module::SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb, uint8_t
     #if RADIOLIB_DEBUG_SPI
     uint8_t readValue = 0x00;
     #endif
-    while(this->hal->micros() - start < (checkInterval * 1000)) {
+    while(this->hal->micros() - start < ((RadioLibTime_t)checkInterval * 1000UL)) {
       uint8_t val = SPIreadRegister(reg);
       if((val & checkMask) == (newValue & checkMask)) {
         // check passed, we can stop the loop
