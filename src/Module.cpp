@@ -433,6 +433,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
     for(n = 0; n < cmdLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("\t");
     }
+    // initialization of n to 0 is skipped here, because we want to skip the command bytes
     for(; n < buffLen; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", buffOut[n]);
     }
