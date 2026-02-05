@@ -3232,6 +3232,9 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   float frequency = chnl->freq / 10000.0;
   int frequencyIntegral = (int) frequency;
   int frequencyDecimal = (int) ((frequency - frequencyIntegral) * 1000);
+  (void) frequencyIntegral;
+  (void) frequencyDecimal;
+  
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Frequency = %d.%d MHz, TX = %d dBm", frequencyIntegral, frequencyDecimal, pwr);
   state = this->phyLayer->setFrequency(frequency);
