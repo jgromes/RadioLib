@@ -2435,8 +2435,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t rx2DrAck = 0;
       uint8_t rx2FreqAck = 0;
 
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RXParamSetupReq: Rx1DrOffset = %d, rx2DataRate = %d, freq = %7.3f", 
-                                      macRx1DrOffset, macRx2Dr, macRx2Freq / 10000.0);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("RXParamSetupReq: Rx1DrOffset = %d, rx2DataRate = %d, freq = ", macRx1DrOffset, macRx2Dr);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG(macRx2Freq / 10000.0, 3);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
       
       // check the requested configuration
       uint8_t uplinkDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
