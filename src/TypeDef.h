@@ -647,6 +647,17 @@
 */
 #define RADIOLIB_ERR_INVALID_SIDE_DETECT                        (-1301)
 
+// ADS-B-specific status codes
+/*!
+  \brief The message type is invalid for this operation.
+*/
+#define RADIOLIB_ERR_ADSB_INVALID_MSG_TYPE                      (-1400)
+
+/*!
+  \brief The parsed aircraft category is invalid.
+*/
+#define RADIOLIB_ERR_ADSB_INVALID_CATEGORY                      (-1401)
+
 /*!
   \}
 */
