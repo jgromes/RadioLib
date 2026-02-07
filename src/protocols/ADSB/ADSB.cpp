@@ -21,7 +21,7 @@ int16_t ADSBClient::begin() {
   return(state);
 }
 
-int16_t ADSBClient::decode(uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSBFrame* out) {
+int16_t ADSBClient::decode(const uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSBFrame* out) {
   RADIOLIB_ASSERT_PTR(out);
 
   // get the basic information
@@ -123,7 +123,7 @@ int16_t ADSBClient::parseCallsign(ADSBFrame* in, char callsign[RADIOLIB_ADSB_CAL
   // in real world values overflowing the lookup table should not appear,
   // but better to check anyway
   size_t index = (type - 2)*7 + (category - 1);
-  if(index > sizeof(catLut)/sizeof(catLut[0])) {
+  if(index >= sizeof(catLut)/sizeof(catLut[0])) {
     return(RADIOLIB_ERR_ADSB_INVALID_CATEGORY);
   }
 

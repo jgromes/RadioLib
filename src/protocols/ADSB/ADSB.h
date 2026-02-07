@@ -109,7 +109,7 @@ class ADSBClient {
       \param out Pointer to ADSBFrame where the decoded frame will be saved.
       \returns \ref status_codes
     */
-    int16_t decode(uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSBFrame* out);
+    int16_t decode(const uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSBFrame* out);
 
     /*!
       \brief Method to parse callsign from a received frame.
