@@ -157,7 +157,7 @@ void loop() {
         Serial.print(F("[ADS-B] CA = "));
         Serial.println(frame.capability);
         Serial.print(F("[ADS-B] Message type = "));
-        Serial.println(frame.messageType);
+        Serial.println((int)frame.messageType);
 
         // try to also decode the aircraft callsign
         state = adsb.parseCallsign(&frame, callsign, &category);
