@@ -165,7 +165,7 @@ void loop() {
           Serial.print(F("[ADS-B] Callsign = "));
           Serial.println(callsign);
           Serial.print(F("[ADS-B] Category = "));
-          Serial.println(category);
+          Serial.println((int)category);
 
         }
 
