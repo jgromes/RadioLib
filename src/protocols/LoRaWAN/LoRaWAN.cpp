@@ -2435,8 +2435,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t rx2DrAck = 0;
       uint8_t rx2FreqAck = 0;
 
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RXParamSetupReq: Rx1DrOffset = %d, rx2DataRate = %d, freq = %7.3f", 
-                                      macRx1DrOffset, macRx2Dr, macRx2Freq / 10000.0);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("RXParamSetupReq: Rx1DrOffset = %d, rx2DataRate = %d, freq = ", macRx1DrOffset, macRx2Dr);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG(macRx2Freq / 10000.0, 3);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
       
       // check the requested configuration
       uint8_t uplinkDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
@@ -3230,7 +3231,9 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   RADIOLIB_ASSERT(state);
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Frequency = %7.3f MHz, TX = %d dBm", chnl->freq / 10000.0, pwr);
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("Frequency = ");
+  RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG(chnl->freq / 10000.0, 3);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" MHz, TX = %d dBm", pwr);
   state = this->phyLayer->setFrequency(chnl->freq / 10000.0);
   RADIOLIB_ASSERT(state);
   
@@ -3257,8 +3260,12 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 8);
       syncWord[2] = (uint8_t)RADIOLIB_LORAWAN_GFSK_SYNC_WORD;
       syncWordLen = 3;
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("[FSK] BR = %4.1f, FD = %4.1f kHz", 
-                                      (double)dr->fsk.bitRate, (double)dr->fsk.freqDev);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("[FSK] BR = ");
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->fsk.bitRate, 1);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT(", FD = ");
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->fsk.freqDev, 1);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" kHz");
+                                      
     } break;
 
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
@@ -3273,8 +3280,10 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
 
       syncWord[0] = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
       syncWordLen = 1;
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("[LoRa] SF = %d, BW = %5.1f kHz, CR = 4/%d, IQ: %c", 
-                                    dr->lora.spreadingFactor, (double)dr->lora.bandwidth, dr->lora.codingRate, dir ? 'D' : 'U');
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("[LoRa] SF = %d, BW = ", dr->lora.spreadingFactor);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->lora.bandwidth, 1);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" kHz, CR = 4/%d, IQ: %c", dr->lora.codingRate, dir ? 'D' : 'U');
+
     } break;
 
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
