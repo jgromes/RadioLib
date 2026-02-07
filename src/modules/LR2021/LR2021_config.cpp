@@ -387,7 +387,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
-    return(setGfskCrcParams(initial, polynomial));
+    return(setGfskCrcParams(polynomial, initial));
 
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     if(len > 4) {
@@ -402,7 +402,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
-    return(setOokCrcParams(initial, polynomial));
+    return(setOokCrcParams(polynomial, initial));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
     if((len == 1) || (len > 4)) {

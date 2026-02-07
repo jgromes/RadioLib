@@ -639,7 +639,7 @@ class LR2021: public LRxxxx {
       \param pattern Preamble pattern, should end with 01 or 10 (binary).
       \param len Preamble pattern length in bits.
       \param repeats Number of preamble repeats, maximum of 31.
-      \param syncRaw Whether the sync word is send raw (unencoded) or encoded. Set to true for encoded sync word.
+      \param syncRaw Whether the sync word is send raw (unencoded) or encoded. Set to false for encoded sync word.
       \param rising Whether the start of frame delimiter edge is rising (true) or falling (false).
       \param sofLen Start-of-frame length in bits.
       \returns \ref status_codes
