@@ -66,6 +66,17 @@ int16_t ADSBClient::decode(const uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSB
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t ADSBClient::parseHexId(ADSBFrame* in, char id[RADIOLIB_ADSB_HEX_ID_LEN]) {
+  RADIOLIB_ASSERT_PTR(in);
+
+  for(int i = 0; i < RADIOLIB_ADSB_HEX_ID_LEN / 2; i++) {
+    snprintf(&id[2*i], 3, "%02X", in->icao[i]);
+  }
+
+  id[RADIOLIB_ADSB_HEX_ID_LEN - 1] = '\0';
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t ADSBClient::parseCallsign(ADSBFrame* in, char callsign[RADIOLIB_ADSB_CALLSIGN_LEN], ADSBAircraftCategory* cat) {
   RADIOLIB_ASSERT_PTR(in);
 

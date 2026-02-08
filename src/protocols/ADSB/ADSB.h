@@ -19,6 +19,9 @@
 #define RADIOLIB_ADSB_FRAME_PARITY_INTERROGATOR_LEN_BYTES       (3)
 #define RADIOLIB_ADSB_FRAME_PARITY_INTERROGATOR_POS             (11)
 
+// length of the ICAO address, including a terminating null
+#define RADIOLIB_ADSB_HEX_ID_LEN                                (6 + 1)
+
 // length of the callsign, including a terminating null
 #define RADIOLIB_ADSB_CALLSIGN_LEN                              (8 + 1)
 
@@ -110,6 +113,14 @@ class ADSBClient {
       \returns \ref status_codes
     */
     int16_t decode(const uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSBFrame* out);
+
+    /*!
+      \brief Method to parse the transponder ICAO address (hex ID).
+      \param in Pointer to ADSBFrame where decoded frame was saved.
+      \param callsign Buffer where the parsed ID will be saved as null-terminated string.
+      \returns \ref status_codes
+    */
+    int16_t parseHexId(ADSBFrame* in, char id[RADIOLIB_ADSB_HEX_ID_LEN]);
 
     /*!
       \brief Method to parse callsign from a received frame.
