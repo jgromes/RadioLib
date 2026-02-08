@@ -665,11 +665,19 @@ int16_t LR2021::setEncoding(uint8_t encoding) {
         case(RADIOLIB_ENCODING_NRZ):
         case(RADIOLIB_ENCODING_WHITENING):
           return(setWhitening(encoding == RADIOLIB_ENCODING_WHITENING));
+        
         case(RADIOLIB_ENCODING_MANCHESTER):
+          state = setWhitening(false);
+          RADIOLIB_ASSERT(state);
+          this->whitening = RADIOLIB_LR2021_OOK_MANCHESTER_ON;
+          return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+        
         case(RADIOLIB_ENCODING_MANCHESTER_INV):
           state = setWhitening(false);
-          this->whitening = encoding;
-          return(state);
+          RADIOLIB_ASSERT(state);
+          this->whitening = RADIOLIB_LR2021_OOK_MANCHESTER_ON_INV;
+          return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+        
         default:
           return(RADIOLIB_ERR_INVALID_ENCODING);
       }
