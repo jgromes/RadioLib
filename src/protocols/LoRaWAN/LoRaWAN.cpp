@@ -2503,8 +2503,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t macDrMax = (optIn[4] & 0xF0) >> 4;
       uint8_t macDrMin = optIn[4] & 0x0F;
       
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("NewChannelReq: index = %d, freq = %7.3f MHz, DR %d-%d", 
-                                      macChIndex, macFreq / 10000.0, macDrMin, macDrMax);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("NewChannelReq: index = %d, freq = ", macChIndex);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)macFreq / 10000.0, 3);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" MHz, DR %d-%d", macDrMin, macDrMax);
 
       uint8_t drAck = 0;
       uint8_t freqAck = 0;
@@ -2578,7 +2579,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // get the configuration
       uint8_t macChIndex = optIn[0];
       uint32_t macFreq = LoRaWANNode::ntoh<uint32_t>(&optIn[1], 3);
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("DlChannelReq: index = %d, freq = %7.3f MHz", macChIndex, macFreq / 10000.0);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT("DlChannelReq: index = %d, freq = ", macChIndex);
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)macFreq / 10000.0, 3);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("  MHz");
       uint8_t freqDlAck = 0;
       uint8_t freqUlAck = 0;
       
