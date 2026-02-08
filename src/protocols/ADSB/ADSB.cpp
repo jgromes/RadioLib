@@ -51,11 +51,14 @@ int16_t ADSBClient::decode(const uint8_t in[RADIOLIB_ADSB_FRAME_LEN_BYTES], ADSB
     ADSBMessageType::RESERVED, ADSBMessageType::RESERVED, ADSBMessageType::RESERVED,
     ADSBMessageType::AIRCRAFT_STATUS,
     ADSBMessageType::TARGET_STATE,
+    ADSBMessageType::RESERVED,
     ADSBMessageType::AIRCRAFT_OPS_STATUS,
   };
 
   // get the message type and then the message itself
-  out->messageType = msgTypeLut[in[RADIOLIB_ADSB_FRAME_MESSAGE_POS] & 0x1F];
+  uint8_t typeCode = (in[RADIOLIB_ADSB_FRAME_MESSAGE_POS] & (0x1F << 3)) >> 3;
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADS-B Type Code = %d", typeCode);
+  out->messageType = msgTypeLut[typeCode];
   for(int i = 0; i < RADIOLIB_ADSB_FRAME_MESSAGE_LEN_BYTES; i++) {
     out->message[i] = in[RADIOLIB_ADSB_FRAME_MESSAGE_POS + i];
   }
@@ -71,15 +74,26 @@ int16_t ADSBClient::parseCallsign(ADSBFrame* in, char callsign[RADIOLIB_ADSB_CAL
   }
 
   // precomputed bitshifts
-  callsign[0] = in->message[1] & (0x3F << 2) >> 2;
-  callsign[1] = (in->message[1] & (0x03 >> 0) << 4) | ((in->message[2] & (0x0F << 4)) >> 4);
-  callsign[2] = (in->message[2] & (0x0F << 0) << 2) | ((in->message[3] & (0x03 << 6)) >> 6);
+  callsign[0] = (in->message[1] & (0x3F << 2)) >> 2;
+  callsign[1] = ((in->message[1] & (0x03 >> 0)) << 4) | ((in->message[2] & (0x0F << 4)) >> 4);
+  callsign[2] = ((in->message[2] & (0x0F << 0)) << 2) | ((in->message[3] & (0x03 << 6)) >> 6);
   callsign[3] = in->message[3] & 0x3F;
-  callsign[4] = in->message[4] & (0x3F << 2) >> 2;
-  callsign[5] = (in->message[4] & (0x03 >> 0) << 4) | ((in->message[5] & (0x0F << 4)) >> 4);
-  callsign[6] = (in->message[5] & (0x0F << 0) << 2) | ((in->message[6] & (0x03 << 6)) >> 6);
+  callsign[4] = (in->message[4] & (0x3F << 2)) >> 2;
+  callsign[5] = ((in->message[4] & (0x03 >> 0)) << 4) | ((in->message[5] & (0x0F << 4)) >> 4);
+  callsign[6] = ((in->message[5] & (0x0F << 0)) << 2) | ((in->message[6] & (0x03 << 6)) >> 6);
   callsign[7] = in->message[6] & 0x3F;
   callsign[RADIOLIB_ADSB_CALLSIGN_LEN - 1] = '\0';
+
+  // convert to ASCII
+  for(int i = 0; i < RADIOLIB_ADSB_CALLSIGN_LEN - 1; i++) {
+    if((callsign[i] >= 1) && (callsign[i] <= 26)) {
+      callsign[i] += '@';
+    } else if(callsign[i] == 32) {
+      callsign[i] = ' ';
+    } else if(!((callsign[i] >= '0') && (callsign[i] <= '9'))) {
+      callsign[i] = '\0';
+    }
+  }
 
   // only continue processing if category was requested by user
   if(!cat) { return(RADIOLIB_ERR_NONE);}
