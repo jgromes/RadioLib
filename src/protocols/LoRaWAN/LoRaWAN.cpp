@@ -349,9 +349,6 @@ void LoRaWANNode::clearSession() {
   // revert to default Class A
   this->lwClass = RADIOLIB_LORAWAN_CLASS_A;
 
-  // set a seed for the pseudo-rng using a truly random value from radio noise
-  srand(this->phyLayer->random(INT32_MAX));
-
   // reset all channels
   memset(this->channels, 0, sizeof(this->channels));
   memset(this->dynamicChannels, 0, sizeof(this->dynamicChannels));
@@ -365,7 +362,10 @@ void LoRaWANNode::clearSession() {
   this->sessionStatus = RADIOLIB_LORAWAN_SESSION_NONE;
 }
 
-void LoRaWANNode::createSession() {
+void LoRaWANNode::createSession() {  
+  // set a seed for the pseudo-rng using a truly random value from radio noise
+  srand(this->phyLayer->random(INT32_MAX));
+
   // setup default channels
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     for(int num = 0; num < 3; num++) {
