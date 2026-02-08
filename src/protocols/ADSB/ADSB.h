@@ -120,7 +120,7 @@ class ADSBClient {
       \param callsign Buffer where the parsed ID will be saved as null-terminated string.
       \returns \ref status_codes
     */
-    int16_t parseHexId(ADSBFrame* in, char id[RADIOLIB_ADSB_HEX_ID_LEN]);
+    int16_t parseHexId(const ADSBFrame* in, char id[RADIOLIB_ADSB_HEX_ID_LEN]);
 
     /*!
       \brief Method to parse callsign from a received frame.
@@ -129,7 +129,7 @@ class ADSBClient {
       \param cat If set, parsed aircraft category will be saved here.
       \returns \ref status_codes
     */
-    int16_t parseCallsign(ADSBFrame* in, char callsign[RADIOLIB_ADSB_CALLSIGN_LEN], ADSBAircraftCategory* cat = NULL);
+    int16_t parseCallsign(const ADSBFrame* in, char callsign[RADIOLIB_ADSB_CALLSIGN_LEN], ADSBAircraftCategory* cat = NULL);
   
 #if !RADIOLIB_GODMODE
   private:
