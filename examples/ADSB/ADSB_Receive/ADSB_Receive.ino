@@ -82,6 +82,7 @@ void setup() {
   // apply LR2021-specific settings
   Serial.print(F("[LR2021] Setting configuration ... "));
   state = radio.setRxBoostedGainMode(7);
+  state += radio.setEncoding(RADIOLIB_ENCODING_MANCHESTER_INV);
   state += radio.setCRC(3, 0, 0x1FFF409UL, false);
   state += radio.ookDetector();
   state += radio.fixedPacketLengthMode(11);
