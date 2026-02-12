@@ -3199,6 +3199,14 @@ void LoRaWANNode::scheduleTransmission(RadioLibTime_t tUplink) {
   this->tUplink = tUplink;
 }
 
+const LoRaWANBand_t* LoRaWANNode::getBand() {
+  return(this->band);
+}
+
+uint8_t LoRaWANNode::getClass() {
+  return(this->lwClass);
+}
+
 // return fCnt of last uplink; also return 0 if no uplink occured yet
 uint32_t LoRaWANNode::getFCntUp() {
   if(this->fCntUp == 0) {
