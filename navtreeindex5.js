@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"class_s_x128x.html#aa17ffcb939f6b2eb0712e63b6ee7a71f":[3,0,100,19],
+"class_s_x128x.html#aa4b1e0b96347011522e053f30202c0fe":[3,0,100,46],
 "class_s_x128x.html#ab0c26aebd432d36974b3066055df6b01":[3,0,100,68],
 "class_s_x128x.html#ab2335d91c7899291312e3cd6576446e5":[3,0,100,12],
 "class_s_x128x.html#ab55112682432f369fb17f8107ba5158b":[3,0,100,41],
@@ -189,8 +191,8 @@ var NAVTREEINDEX5 =
 "functions_enum.html":[3,3,4],
 "functions_eval.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1,0],
 "functions_func.html":[3,3,1],
+"functions_func.html":[3,3,1,0],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "functions_vars_s.html":[3,3,2,16],
 "functions_vars_t.html":[3,3,2,17],
 "functions_vars_u.html":[3,3,2,18],
-"functions_vars_v.html":[3,3,2,19],
-"functions_vars_w.html":[3,3,2,20],
-"functions_vars_x.html":[3,3,2,21]
+"functions_vars_v.html":[3,3,2,19]
 };

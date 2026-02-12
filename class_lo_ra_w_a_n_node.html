@@ -210,6 +210,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>stopMulticastSession<
 <tr class="memitem:a16c7ae2edfe324e11498b13aa042665f" id="r_a16c7ae2edfe324e11498b13aa042665f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a16c7ae2edfe324e11498b13aa042665f">scheduleTransmission</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> tUplink)</td></tr>
 <tr class="memdesc:a16c7ae2edfe324e11498b13aa042665f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the exact time a transmission should occur. Note: this is the internal clock time. On Arduino platforms, this is the usual time supplied by millis(). If the supplied time is larger than the current time, <a class="el" href="class_lo_ra_w_a_n_node.html#a11c2fbe631063da69355f8d74f4bf3b8" title="Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.">sendReceive()</a> or uplink() will delay until the scheduled time.  <br /></td></tr>
 <tr class="separator:a16c7ae2edfe324e11498b13aa042665f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ae18373ffb534a2616aab835fd1ef4" id="r_a33ae18373ffb534a2616aab835fd1ef4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a33ae18373ffb534a2616aab835fd1ef4">getBand</a> ()</td></tr>
+<tr class="memdesc:a33ae18373ffb534a2616aab835fd1ef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LoRaWAN band used by this node.  <br /></td></tr>
+<tr class="separator:a33ae18373ffb534a2616aab835fd1ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2180d3dd4a74783e4b51177b061d6ba1" id="r_a2180d3dd4a74783e4b51177b061d6ba1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2180d3dd4a74783e4b51177b061d6ba1">getClass</a> ()</td></tr>
+<tr class="memdesc:a2180d3dd4a74783e4b51177b061d6ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LoRaWAN class of this node.  <br /></td></tr>
+<tr class="separator:a2180d3dd4a74783e4b51177b061d6ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3217975ef9959ff83ce79dd80b0d777" id="r_ad3217975ef9959ff83ce79dd80b0d777"><td class="memItemLeft" align="right" valign="top"><a id="ad3217975ef9959ff83ce79dd80b0d777" name="ad3217975ef9959ff83ce79dd80b0d777"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>getFCntUp</b> ()</td></tr>
 <tr class="memdesc:ad3217975ef9959ff83ce79dd80b0d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last uplink's frame counter; also 0 if no uplink occured yet. <br /></td></tr>
@@ -597,6 +603,26 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a33ae18373ffb534a2616aab835fd1ef4" name="a33ae18373ffb534a2616aab835fd1ef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33ae18373ffb534a2616aab835fd1ef4">&#9670;&#160;</a></span>getBand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> * LoRaWANNode::getBand </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the LoRaWAN band used by this node. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the used band. </dd></dl>
+
+</div>
+</div>
 <a id="a84004883006b4a498d4899874952445b" name="a84004883006b4a498d4899874952445b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84004883006b4a498d4899874952445b">&#9670;&#160;</a></span>getBufferNonces()</h2>
 
@@ -634,6 +660,26 @@ Public Attributes</h2></td></tr>
 
 <p>Returns the pointer to the internal buffer that holds the LW session parameters. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LORAWAN_SESSION_BUF_SIZE </dd></dl>
+
+</div>
+</div>
+<a id="a2180d3dd4a74783e4b51177b061d6ba1" name="a2180d3dd4a74783e4b51177b061d6ba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2180d3dd4a74783e4b51177b061d6ba1">&#9670;&#160;</a></span>getClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t LoRaWANNode::getClass </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the LoRaWAN class of this node. </p>
+<dl class="section return"><dt>Returns</dt><dd>Class type (RADIOLIB_LORAWAN_CLASS_*). </dd></dl>
 
 </div>
 </div>
