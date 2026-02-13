@@ -392,7 +392,7 @@ void LoRaWANNode::createSession() {
     if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
       drUp = (this->band->txFreqs[0].drMin + this->band->txFreqs[0].drMax + 1) / 2;
     } else {                // RADIOLIB_LORAWAN_BAND_FIXED
-      drUp = (this->band->txSpans[0].drMin + this->band->txSpans[0].drMin + 1) / 2;
+      drUp = (this->band->txSpans[0].drMin + this->band->txSpans[0].drMax + 1) / 2;
     }
   }
   uint8_t txSteps = this->txPowerSteps;
