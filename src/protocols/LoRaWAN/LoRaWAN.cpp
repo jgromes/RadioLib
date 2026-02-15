@@ -1157,7 +1157,7 @@ int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, const u
   if(mcDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
     mcDr = this->channels[RADIOLIB_LORAWAN_RX2].dr;
   }
-  if(this->band->dataRates[mcDr].modem != RADIOLIB_MODEM_NONE) {
+  if(this->band->dataRates[mcDr].modem == RADIOLIB_MODEM_NONE) {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
 
