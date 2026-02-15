@@ -2,6 +2,8 @@
 
 #if !RADIOLIB_EXCLUDE_ADSB
 
+#include <math.h>
+
 ADSBClient::ADSBClient(PhysicalLayer* phy) {
   phyLayer = phy;
 }
@@ -153,6 +155,101 @@ int16_t ADSBClient::parseCallsign(const ADSBFrame* in, char callsign[RADIOLIB_AD
   }
 
   *cat = catLut[index];
+  return(RADIOLIB_ERR_NONE);
+}
+
+void ADSBClient::setReferencePosition(float lat, float lon) {
+  this->refPos[0] = lat;
+  this->refPos[1] = lon;
+}
+
+// lookup table for longitude zones
+// having this as lookup avoids a whole bunch of floating-point calculations
+static const float lonZoneLut[] = {
+  87.0000000000000f, 86.5353699751210f, 85.7554162094442f, 84.8916619070209f, 83.9917356298057f, 
+  83.0719944471981f, 82.1395698051061f, 81.1980134927195f, 80.2492321328051f, 79.2942822545693f, 
+  78.3337408292275f, 77.3678946132819f, 76.3968439079447f, 75.4205625665336f, 74.4389341572514f, 
+  73.4517744166787f, 72.4588454472895f, 71.4598647302898f, 70.4545107498760f, 69.4424263114402f, 
+  68.4232202208333f, 67.3964677408467f, 66.3617100838262f, 65.3184530968209f, 64.2661652256744f, 
+  63.2042747938193f, 62.1321665921033f, 61.0491777424635f, 59.9545927669403f, 58.8476377614846f, 
+  57.7274735386611f, 56.5931875620592f, 55.4437844449504f, 54.2781747227290f, 53.0951615279600f, 
+  51.8934246916877f, 50.6715016555384f, 49.4277643925569f, 48.1603912809662f, 46.8673325249875f, 
+  45.5462672266023f, 44.1945495141927f, 42.8091401224356f, 41.3865183226024f, 39.9225668433386f, 
+  38.4124189241226f, 36.8502510759353f, 35.2289959779639f, 33.5399343629848f, 31.7720970768108f, 
+  29.9113568573181f, 27.9389871012190f, 25.8292470705878f, 23.5450448655707f, 21.0293949260285f, 
+  18.1862635707134f, 14.8281743686868f, 10.4704712999685f, 
+};
+
+int16_t ADSBClient::parseAirbornePosition(const ADSBFrame* in, int* alt, float* lat, float* lon, bool* altGnss) {
+  RADIOLIB_ASSERT_PTR(in);
+
+  if((in->messageType != ADSBMessageType::AIRBORNE_POS_ALT_BARO) &&
+     (in->messageType != ADSBMessageType::AIRBORNE_POS_ALT_GNSS)) {
+    return(RADIOLIB_ERR_ADSB_INVALID_MSG_TYPE);
+  }
+
+  // parse altitude
+  if(alt) {
+    if(in->messageType == ADSBMessageType::AIRBORNE_POS_ALT_BARO) {
+      // barometric altitude, get the raw value without the Q bit
+      uint16_t altRaw = ((in->message[1] & 0xFE) << 3) | ((in->message[2] & 0xF0) >> 4);
+
+      // now get the step size based on the Q bit and calculate
+      int step = (in->message[1] & 0x01) ? 25 : 100;
+      *alt = step*(int)altRaw - 1000;
+
+    } else {
+      // GNSS altitude, which is just meters
+      *alt = (in->message[1] << 4) | ((in->message[2] & 0xF0) >> 4);
+
+    }
+
+    // pass the source flag, if requested
+    if(altGnss) { *altGnss = (in->messageType == ADSBMessageType::AIRBORNE_POS_ALT_GNSS); }
+  }
+
+  // check if this is an even or odd frame
+  bool odd = in->message[2] & 0x04;
+
+  // always calculate the latitude - it is needed to also calculate longitude
+  uint32_t latRaw = (((uint32_t)(in->message[2] & 0x03)) << 15) | ((uint32_t)in->message[3] << 7) | (uint32_t)((in->message[4] & 0xFE) >> 1);
+  float latCpr = (float)latRaw / (float)(1UL << 17);
+  float latZoneSize = odd ? 360.0f/59.0f : 6.0f;
+  int latZoneIdx = floor(this->refPos[0] / latZoneSize) + floor((fmod(this->refPos[0], latZoneSize) / latZoneSize) - latCpr + 0.5f);
+  float tmpLat = latZoneSize * (latZoneIdx + (float)latCpr);
+  if(lat) { *lat = tmpLat; }
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("latRaw=%d\n", latRaw);
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("latCpr=%f\n", latCpr);
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("latZoneSize=%f\n", latZoneSize);
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("latZoneIdx=%d\n", latZoneIdx);
+
+  // only calculate longitude if the user requested it
+  if(lon) {
+    int lonZone = 1;
+    if(abs(tmpLat) < 87.0f) {
+      for(size_t i = 0; i < sizeof(lonZoneLut)/sizeof(lonZoneLut[0]); i++) {
+        if(abs(tmpLat) >= lonZoneLut[i]) {
+          lonZone = i + 1;
+          break;
+        }
+      }
+      if(lonZone == 1) {
+        lonZone = 59;
+      }
+    }
+    uint32_t lonRaw = (((uint32_t)(in->message[4] & 0x01)) << 16) | ((uint32_t)in->message[5] << 8) | (uint32_t)in->message[6];
+    float lonCpr = (float)lonRaw / (float)(1UL << 17);
+    float lonZoneSize = 360.0f / RADIOLIB_MAX(lonZone - (int)odd, 1);
+    int lonZoneIdx = floor(this->refPos[1] / lonZoneSize) + floor((fmod(this->refPos[1], lonZoneSize) / lonZoneSize) - lonCpr + 0.5f);
+    *lon = lonZoneSize * (lonZoneIdx + (float)lonCpr);
+
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonRaw=%d\n", lonRaw);
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonCpr=%f\n", lonCpr);
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZone=%d\n", lonZone);
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZoneSize=%f\n", lonZoneSize);
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZoneIdx=%d\n", lonZoneIdx);
+  }
+
   return(RADIOLIB_ERR_NONE);
 }
 

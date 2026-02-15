@@ -130,11 +130,34 @@ class ADSBClient {
       \returns \ref status_codes
     */
     int16_t parseCallsign(const ADSBFrame* in, char callsign[RADIOLIB_ADSB_CALLSIGN_LEN], ADSBAircraftCategory* cat = NULL);
+
+    /*!
+      \brief Method to set reference position to be used during airborne position calculation.
+      \param lat Reference latitude in degrees (north positive, south negative).
+      \param lat Reference longitude in degrees (east positive, west negative).
+    */
+    void setReferencePosition(float lat, float lon);
+
+    /*!
+      \brief Parse aircraft position from incoming frame, uasing reference position set by setReferencePosition.
+      The reference position is the "rough area" where the aircraft is located, typically it is the receiver location.
+      Aircraft position will be calcualted accurately only within 180 nautical miles (about 333 km) from the reference position!
+      \param in Pointer to ADSBFrame where decoded frame was saved.
+      \param alt Pointer to variable where the parsed altitude will be saved. Can be set to null to skip altitude calculation.
+      Units are feet for barometric altitude, meters for GNSS altitude.
+      \param lat Pointer to variable where the parsed latitude in degrees will be saved. Can be set to null to skip latitude calculation.
+      \param lon Pointer to variable where the parsed longitude in degrees will be saved. Can be set to null to skip longitude calculation.
+      \param altGnss If set, this variable will be set to true if the altitude source is GNSS, or false if the altitude is barometric.
+    */
+    int16_t parseAirbornePosition(const ADSBFrame* in, int* alt, float* lat, float* lon, bool* altGnss = NULL);
   
 #if !RADIOLIB_GODMODE
   private:
 #endif
     PhysicalLayer* phyLayer;
+    
+    // reference position
+    float refPos[2] = { 0, 0 };
 };
 
 #endif
