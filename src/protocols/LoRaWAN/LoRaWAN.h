@@ -870,6 +870,12 @@ class LoRaWANNode {
     uint8_t getClass();
 
     /*! 
+      \brief Get the LoRaWAN version of this node.
+      \returns Version major number (0 for LoRaWAN 1.0.x, 1 for LoRaWAN 1.1).
+    */
+    uint8_t getVersionMajor();
+
+    /*! 
         \brief Returns the last uplink's frame counter; 
         also 0 if no uplink occured yet. 
     */

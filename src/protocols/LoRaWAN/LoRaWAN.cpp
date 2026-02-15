@@ -3207,6 +3207,10 @@ uint8_t LoRaWANNode::getClass() {
   return(this->lwClass);
 }
 
+uint8_t LoRaWANNode::getVersionMajor() {
+  return(this->rev);
+}
+
 // return fCnt of last uplink; also return 0 if no uplink occured yet
 uint32_t LoRaWANNode::getFCntUp() {
   if(this->fCntUp == 0) {
