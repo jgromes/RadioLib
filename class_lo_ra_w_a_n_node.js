@@ -23,6 +23,7 @@ var class_lo_ra_w_a_n_node =
     [ "getMacLinkCheckAns", "class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0", null ],
     [ "getMaxPayloadLen", "class_lo_ra_w_a_n_node.html#ab723160aa317cd84550d0da3a0f52811", null ],
     [ "getNFCntDown", "class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1", null ],
+    [ "getVersionMajor", "class_lo_ra_w_a_n_node.html#a5bd7301e0f65dc791e89b117ba7bd234", null ],
     [ "isActivated", "class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d", null ],
     [ "removePackage", "class_lo_ra_w_a_n_node.html#afdbea8fc354e23d78e2044064ed8058d", null ],
     [ "scheduleTransmission", "class_lo_ra_w_a_n_node.html#a16c7ae2edfe324e11498b13aa042665f", null ],

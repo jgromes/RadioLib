@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd":[3,0,39,2],
 "struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f":[3,0,39,5],
 "struct_l_r11x0_wifi_result__t.html#aedbfd390bee0e0995321e0a5caedac53":[3,0,39,4],
 "struct_l_r11x0_wifi_result_extended__t.html":[3,0,40],
