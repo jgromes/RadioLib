@@ -111,6 +111,10 @@ void setup() {
     while (true) { delay(10); }
   }
 
+  // set the reference position (position of the receiver)
+  // this will be used later to calculate the aircraft position
+  adsb.setReferencePosition(46.24722039359617f, 12.097993784412322f);
+
   // set the function that will be called
   // when new packet is received
   radio.setPacketReceivedAction(setFlag);
@@ -131,6 +135,11 @@ void setup() {
 ADSBFrame frame;
 ADSBAircraftCategory category;
 char callsign[RADIOLIB_ADSB_CALLSIGN_LEN];
+char hexId[RADIOLIB_ADSB_HEX_ID_LEN];
+ADSBAircraftCategory cat;
+int alt;
+float lat, lon;
+bool altGnss;
 
 void loop() {
   // check if the flag is set
@@ -150,8 +159,8 @@ void loop() {
 
       state = adsb.decode(buff, &frame);
       if (state == RADIOLIB_ERR_NONE) {
-        // print the decoded information
         Serial.println(F("[ADS-B] Decoded frame!"));
+        // print the decoded information
         Serial.print(F("[ADS-B] DF = "));
         Serial.println(frame.downlinkFormat);
         Serial.print(F("[ADS-B] CA = "));
@@ -159,14 +168,38 @@ void loop() {
         Serial.print(F("[ADS-B] Message type = "));
         Serial.println((int)frame.messageType);
 
-        // try to also decode the aircraft callsign
-        state = adsb.parseCallsign(&frame, callsign, &category);
+        // get the hexadecimal ID (ICAO address) of the transceiver
+        state = adsb.parseHexId(&frame, hexId);
         if (state == RADIOLIB_ERR_NONE) {
-          Serial.print(F("[ADS-B] Callsign = "));
-          Serial.println(callsign);
-          Serial.print(F("[ADS-B] Category = "));
-          Serial.println((int)category);
+          Serial.print(F("[ADS-B] Hex ID = "));
+          Serial.println(hexId);
+        }
 
+        // further information depends on the message type
+        switch(frame.messageType) {
+          case(ADSBMessageType::AIRCRAFT_ID):
+            adsb.parseCallsign(&frame, callsign, &cat);
+            Serial.print(F("[ADS-B] Callsign = "));
+            Serial.println(callsign);
+            Serial.print(F("[ADS-B] Category = "));
+            Serial.println((int)category);
+            break;
+          
+          case(ADSBMessageType::AIRBORNE_POS_ALT_BARO):
+          case(ADSBMessageType::AIRBORNE_POS_ALT_GNSS):
+            adsb.parseAirbornePosition(&frame, &alt, &lat, &lon, &altGnss);
+            Serial.print(F("[ADS-B] Altitude = "));
+            Serial.print(alt);
+            if(altGnss) {  Serial.println(" meters\n"); } else {  Serial.println(" feet\n"); }
+            Serial.print(F("[ADS-B] Latitude = "));
+            Serial.println(lat, 6);
+            Serial.print(F("[ADS-B] Longitude = "));
+            Serial.println(lon, 6);
+            break;
+
+          default:
+            break;
+          
         }
 
       } else {
