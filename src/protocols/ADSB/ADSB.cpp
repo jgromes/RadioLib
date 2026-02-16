@@ -219,8 +219,8 @@ int16_t ADSBClient::parseAirbornePosition(const ADSBFrame* in, int* alt, float* 
   float tmpLat = latZoneSize * (latZoneIdx + (float)latCpr);
   if(lat) { *lat = tmpLat; }
   RADIOLIB_DEBUG_PROTOCOL_PRINT("latRaw=%d\n", latRaw);
-  RADIOLIB_DEBUG_PROTOCOL_PRINT("latCpr=%f\n", latCpr);
-  RADIOLIB_DEBUG_PROTOCOL_PRINT("latZoneSize=%f\n", latZoneSize);
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("latCpr=%f\n", (double)latCpr);
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("latZoneSize=%f\n", (double)latZoneSize);
   RADIOLIB_DEBUG_PROTOCOL_PRINT("latZoneIdx=%d\n", latZoneIdx);
 
   // only calculate longitude if the user requested it
@@ -244,9 +244,9 @@ int16_t ADSBClient::parseAirbornePosition(const ADSBFrame* in, int* alt, float* 
     *lon = lonZoneSize * (lonZoneIdx + (float)lonCpr);
 
     RADIOLIB_DEBUG_PROTOCOL_PRINT("lonRaw=%d\n", lonRaw);
-    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonCpr=%f\n", lonCpr);
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonCpr=%f\n", (double)lonCpr);
     RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZone=%d\n", lonZone);
-    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZoneSize=%f\n", lonZoneSize);
+    RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZoneSize=%f\n", (double)lonZoneSize);
     RADIOLIB_DEBUG_PROTOCOL_PRINT("lonZoneIdx=%d\n", lonZoneIdx);
   }
 
