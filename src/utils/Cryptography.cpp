@@ -65,9 +65,9 @@ void RadioLibAES128::initCMAC(RadioLibCmacState* st) {
   st->subkeys_generated = false;
 }
 
-void RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len) {
+int16_t RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len) {
   if(!st || (!data && len != 0)) {
-    return;
+    return(RADIOLIB_ERR_NULL_POINTER);
   }
 
   // ensure subkeys are present
@@ -90,7 +90,7 @@ void RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, size
 
     // if still not a full block, wait for more data
     if(st->buffer_len < RADIOLIB_AES128_BLOCK_SIZE) {
-      return;
+      return(RADIOLIB_ERR_CMAC_NOT_ENOUGH_DATA);
     }
 
     // we have a full block in buffer -> process it as a normal block
