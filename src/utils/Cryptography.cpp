@@ -112,6 +112,8 @@ int16_t RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, s
     memcpy(st->buffer, &data[offset], len);
     st->buffer_len = len;
   }
+  
+  return(RADIOLIB_ERR_NONE);
 }
 
 void RadioLibAES128::finishCMAC(RadioLibCmacState* st, uint8_t* out) {
