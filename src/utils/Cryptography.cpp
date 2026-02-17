@@ -43,43 +43,111 @@ size_t RadioLibAES128::decryptECB(const uint8_t* in, size_t len, uint8_t* out) {
   return(num_blocks*RADIOLIB_AES128_BLOCK_SIZE);
 }
 
-void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) {
-  uint8_t key1[RADIOLIB_AES128_BLOCK_SIZE];
-  uint8_t key2[RADIOLIB_AES128_BLOCK_SIZE];
-  this->generateSubkeys(key1, key2);
+/*
+ * CMAC streaming API
+ *
+ * Usage:
+ *   RadioLibCMAC_State st;
+ *   RadioLibAES128_initCMACState(&RadioLibAES128Instance, &st);
+ *   RadioLibAES128_updateCMACState(&RadioLibAES128Instance, &st, chunk1, len1);
+ *   RadioLibAES128_updateCMACState(&RadioLibAES128Instance, &st, chunk2, len2);
+ *   uint8_t mac[16];
+ *   RadioLibAES128_finishCMACState(&RadioLibAES128Instance, &st, mac);
+ */
 
-  size_t num_blocks = len / RADIOLIB_AES128_BLOCK_SIZE;
-  bool flag = true;
-  if(len % RADIOLIB_AES128_BLOCK_SIZE) {
-    num_blocks++;
-    flag = false;
+void RadioLibAES128::initCMAC(RadioLibCmacState* st) {
+  if(!st) {
+    return;
+  }
+  memset(st->X, 0x00, RADIOLIB_AES128_BLOCK_SIZE);
+  memset(st->buffer, 0x00, RADIOLIB_AES128_BLOCK_SIZE);
+  st->buffer_len = 0;
+  st->subkeys_generated = false;
+}
+
+void RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len) {
+  if(!st || (!data && len != 0)) {
+    return;
   }
 
-  uint8_t* buff = new uint8_t[num_blocks * RADIOLIB_AES128_BLOCK_SIZE];
-  memset(buff, 0, num_blocks * RADIOLIB_AES128_BLOCK_SIZE);
-  memcpy(buff, in, len);
-  if (flag) {
-    this->blockXor(&buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], &buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], key1);
-  } else {
-    buff[len] = 0x80;
-    this->blockXor(&buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], &buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], key2);
+  // ensure subkeys are present
+  if(!st->subkeys_generated) {
+    this->generateSubkeys(st->k1, st->k2);
+    st->subkeys_generated = true;
   }
 
-  uint8_t X[] = {
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00
-  };
+  uint8_t tmp[RADIOLIB_AES128_BLOCK_SIZE];
+  size_t offset = 0;
+
+  // if we have leftover partial block from previous update, try to fill it
+  if(st->buffer_len > 0) {
+    size_t need = RADIOLIB_AES128_BLOCK_SIZE - st->buffer_len;
+    size_t to_copy = (len < need) ? len : need;
+    memcpy(&st->buffer[st->buffer_len], data, to_copy);
+    st->buffer_len += to_copy;
+    offset += to_copy;
+    len -= to_copy;
+
+    // if still not a full block, wait for more data
+    if(st->buffer_len < RADIOLIB_AES128_BLOCK_SIZE) {
+      return;
+    }
+
+    // we have a full block in buffer -> process it as a normal block
+    this->blockXor(tmp, st->buffer, st->X);
+    this->encryptECB(tmp, RADIOLIB_AES128_BLOCK_SIZE, st->X);
+    st->buffer_len = 0;
+  }
+
+  // process any full blocks from data directly
+  while(len >= RADIOLIB_AES128_BLOCK_SIZE) {
+    this->blockXor(tmp, &data[offset], st->X);
+    this->encryptECB(tmp, RADIOLIB_AES128_BLOCK_SIZE, st->X);
+    offset += RADIOLIB_AES128_BLOCK_SIZE;
+    len -= RADIOLIB_AES128_BLOCK_SIZE;
+  }
+
+  // any remaining bytes become the new partial block
+  if(len > 0) {
+    memcpy(st->buffer, &data[offset], len);
+    st->buffer_len = len;
+  }
+}
+
+void RadioLibAES128::finishCMAC(RadioLibCmacState* st, uint8_t* out) {
+  if(!st || !out) {
+    return;
+  }
+
+  // ensure subkeys are present
+  if(!st->subkeys_generated) {
+    this->generateSubkeys(st->k1, st->k2);
+    st->subkeys_generated = true;
+  }
+
+  uint8_t last[RADIOLIB_AES128_BLOCK_SIZE];
   uint8_t Y[RADIOLIB_AES128_BLOCK_SIZE];
 
-  for(size_t i = 0; i < num_blocks - 1; i++) {
-    this->blockXor(Y, &buff[i*RADIOLIB_AES128_BLOCK_SIZE], X);
-    this->encryptECB(Y, RADIOLIB_AES128_BLOCK_SIZE, X);
+  if(st->buffer_len == RADIOLIB_AES128_BLOCK_SIZE) {
+    this->blockXor(last, st->buffer, st->k1);
+  } else {
+    memset(last, 0x00, RADIOLIB_AES128_BLOCK_SIZE);
+    if(st->buffer_len > 0) {
+      memcpy(last, st->buffer, st->buffer_len);
+    }
+    last[st->buffer_len] = 0x80;
+    this->blockXor(last, last, st->k2);
   }
-  this->blockXor(Y, &buff[(num_blocks - 1)*RADIOLIB_AES128_BLOCK_SIZE], X);
-  this->encryptECB(Y, RADIOLIB_AES128_BLOCK_SIZE, cmac);
-  delete[] buff;
+
+  this->blockXor(Y, last, st->X);
+  this->encryptECB(Y, RADIOLIB_AES128_BLOCK_SIZE, out);
+}
+
+void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) {
+  RadioLibCmacState st;
+  this->initCMAC(&st);
+  this->updateCMAC(&st, in, len);
+  this->finishCMAC(&st, cmac);
 }
 
 bool RadioLibAES128::verifyCMAC(const uint8_t* in, size_t len, const uint8_t* cmac) {
