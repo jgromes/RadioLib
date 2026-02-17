@@ -1119,6 +1119,14 @@ int16_t LoRaWANNode::setClass(uint8_t cls) {
   // for LoRaWAN v1.0.4, simply switch class
   if(this->rev == 0) {
     this->lwClass = cls;
+
+    // stop any ongoing activity
+    this->phyLayer->standby();
+
+    // if switching to Class C, open the RxC window
+    if(cls == RADIOLIB_LORAWAN_CLASS_C) {
+      this->receiveClassC();
+    }
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -1178,11 +1186,24 @@ int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, const u
   this->mcAFCnt = mcFCntMin;
   this->mcAFCntMax = mcFCntMax;
 
+  // open the RxC window with Multicast configuration
+  if(cls == RADIOLIB_LORAWAN_CLASS_C) {
+    this->receiveClassC();
+  }
+
   return(RADIOLIB_ERR_NONE);
 }
 
 void LoRaWANNode::stopMulticastSession() {
   this->multicast = false;
+
+  // stop any ongoing activity
+  this->phyLayer->standby();
+
+  // if in Class C, re-open RxC window with normal unicast configuration
+  if(this->lwClass == RADIOLIB_LORAWAN_CLASS_C) {
+    this->receiveClassC();
+  }
 }
 
 int16_t LoRaWANNode::isValidUplink(size_t len, uint8_t fPort) {
@@ -1732,10 +1753,9 @@ int16_t LoRaWANNode::receiveDownlink() {
   RADIOLIB_ASSERT(state);
   
   // for LoRaWAN v1.1 Class C, there is no Rx2 window: it keeps RxC open uninterrupted
-  if(this->lwClass == RADIOLIB_LORAWAN_CLASS_C && this->rev == 1) {
-    state = this->receiveClassC();
-    return(state);
-  }
+  // HOWEVER, since Multicast sessions may use different frequency and datarate,
+  // and it is NOT specified by the spec if the device should then ignore normal Rx2,
+  // we choose to ignore this part of the spec and open Rx2 as specified in v1.0.4
 
   // for LoRaWAN v1.0.4 Class C, there is an RxC window between Rx1 and Rx2
   timeoutClassC = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
