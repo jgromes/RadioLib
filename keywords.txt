@@ -386,6 +386,9 @@ setDwellTime	KEYWORD2
 setCSMA	KEYWORD2
 setDeviceStatus	KEYWORD2
 scheduleTransmission	KEYWORD2
+getBand	KEYWORD2
+getClass	KEYWORD2
+getVersionMajor	KEYWORD2
 getFCntUp	KEYWORD2
 getNFCntDown	KEYWORD2
 getAFCntDown	KEYWORD2
