@@ -48,33 +48,31 @@ static const unsigned char testVectEx4[] = {
 BOOST_AUTO_TEST_SUITE(suite_Crypto)
 
 BOOST_AUTO_TEST_CASE(Crypto_CMAC) {
-  RadioLibAES128* aes = new RadioLibAES128();
-
   uint8_t cmac[RADIOLIB_AES128_BLOCK_SIZE];
   size_t testLen;
 
   // RFC 4493 chapter 4 Example 1: len = 0
   testLen = 0;
-  aes->init(key);
-  aes->generateCMAC(msg, testLen, cmac);
+  RadioLibAES128Instance.init(key);
+  RadioLibAES128Instance.generateCMAC(msg, testLen, cmac);
   BOOST_TEST(memcmp(cmac, testVectEx1, RADIOLIB_AES128_BLOCK_SIZE) == 0);
 
   // RFC 4493 chapter 4 Example 2: len = 16
   testLen = 16;
-  aes->init(key);
-  aes->generateCMAC(msg, testLen, cmac);
+  RadioLibAES128Instance.init(key);
+  RadioLibAES128Instance.generateCMAC(msg, testLen, cmac);
   BOOST_TEST(memcmp(cmac, testVectEx2, RADIOLIB_AES128_BLOCK_SIZE) == 0);
 
   // RFC 4493 chapter 4 Example 3: len = 40
   testLen = 40;
-  aes->init(key);
-  aes->generateCMAC(msg, testLen, cmac);
+  RadioLibAES128Instance.init(key);
+  RadioLibAES128Instance.generateCMAC(msg, testLen, cmac);
   BOOST_TEST(memcmp(cmac, testVectEx3, RADIOLIB_AES128_BLOCK_SIZE) == 0);
 
   // RFC 4493 chapter 4 Example 1: len = 64
   testLen = 64;
-  aes->init(key);
-  aes->generateCMAC(msg, testLen, cmac);
+  RadioLibAES128Instance.init(key);
+  RadioLibAES128Instance.generateCMAC(msg, testLen, cmac);
   BOOST_TEST(memcmp(cmac, testVectEx4, RADIOLIB_AES128_BLOCK_SIZE) == 0);
 }
 
