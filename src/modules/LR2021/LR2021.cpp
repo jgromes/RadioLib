@@ -463,10 +463,16 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
   // check integrity CRC
   uint32_t irq = getIrqStatus();
   int16_t crcState = RADIOLIB_ERR_NONE;
-  // Report CRC mismatch when there's a payload CRC error, or a header error and no valid header (to avoid false alarm from previous packet)
-  //! \TODO: [LR2021] legacy from LR11x0, is it still needed?
-  if((irq & RADIOLIB_LR2021_IRQ_CRC_ERROR) || (!(irq & RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {
+  // report CRC mismatch when there's a payload CRC error
+  if(irq & RADIOLIB_LR2021_IRQ_CRC_ERROR) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
+  }
+
+  // for LoRa modem and explicit header mode, check also also header valid flag
+  if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) &&
+     (this->headerType == RADIOLIB_LR2021_LORA_HEADER_EXPLICIT) && 
+     (!(irq & RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {
+    crcState = RADIOLIB_ERR_LORA_HEADER_DAMAGED;
   }
 
   // get packet length
