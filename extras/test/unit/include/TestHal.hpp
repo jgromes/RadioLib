@@ -140,14 +140,15 @@ class TestHal : public RadioLibHal {
       HAL_LOG("TestHal::delayMicroseconds(us=" << us << ")");
       const auto start = std::chrono::high_resolution_clock::now();
 
-      // busy wait is needed for microseconds precision
-      const auto len = std::chrono::microseconds(us);
-      while(std::chrono::high_resolution_clock::now() - start < len);
+      // this is incredibly hacky, but there is no reliable way for sub-ms sleeping
+      std::this_thread::sleep_for(std::chrono::duration<unsigned long, std::milli>(1));
 
       // measure and print
       const auto end = std::chrono::high_resolution_clock::now();
-      const std::chrono::duration<double, std::micro> elapsed = end - start;
-      HAL_LOG("TestHal::delayMicroseconds(us=" << us << ")=" << elapsed.count() << "us");
+      const std::chrono::duration<double, std::milli> elapsed = end - start;
+
+      HAL_LOG("TestHal::delayMicroseconds(us=" << us << ")=" << elapsed.count() << "ms");
+      (void)us;
     }
 
     void yield() override {

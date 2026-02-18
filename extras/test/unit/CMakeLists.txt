@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(radiolib-unittest)
 
-set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Debug)
 
 # add RadioLib sources
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CURRENT_BINARY_DIR}/RadioLib")
