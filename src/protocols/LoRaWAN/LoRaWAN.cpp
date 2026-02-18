@@ -993,10 +993,10 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
   LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
 
-  (void)this->calculateChannelFlags();
-  
   this->sessionStatus = RADIOLIB_LORAWAN_SESSION_ACTIVE;
 
+  (void)this->calculateChannelFlags();
+  
   return(RADIOLIB_LORAWAN_NEW_SESSION);
 }
 
