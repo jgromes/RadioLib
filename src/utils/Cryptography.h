@@ -12,6 +12,15 @@
 #define RADIOLIB_AES128_N_R                                     (10)
 #define RADIOLIB_AES128_KEY_EXP_SIZE                            (176)
 
+typedef struct {
+  uint8_t X[RADIOLIB_AES128_BLOCK_SIZE];
+  uint8_t buffer[RADIOLIB_AES128_BLOCK_SIZE];
+  size_t buffer_len;
+  uint8_t k1[RADIOLIB_AES128_BLOCK_SIZE];
+  uint8_t k2[RADIOLIB_AES128_BLOCK_SIZE];
+  bool subkeys_generated;
+} RadioLibCmacState;
+
 // helper type
 typedef uint8_t state_t[4][4];
 
@@ -134,6 +143,27 @@ class RadioLibAES128 {
       \param cmac Buffer to save the output MAC into. The buffer must be at least 16 bytes long!
     */
     void generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac);
+
+    /*!
+      \brief Initialize the CMAC state. This must be called before any updateCMAC calls.
+      \param st State to initialize.
+    */
+    void initCMAC(RadioLibCmacState* st);
+
+    /*!
+      \brief Update the CMAC state with a chunk of data. This can be called multiple times to process the data in chunks.
+      \param st State to update.
+      \param data Input data (unpadded).
+      \param len Length of the input data.
+    */
+    void updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len);
+    
+    /*!
+      \brief Finalize the CMAC calculation and save the result. This must be called after all updateCMAC calls are done.
+      \param st State to finalize.
+      \param out Buffer to save the output MAC into. The buffer must be at least 16 bytes long!
+    */
+    void finishCMAC(RadioLibCmacState* st, uint8_t* out);
 
     /*!
       \brief Verify the received CMAC. This just calculates the CMAC again and compares the results.
