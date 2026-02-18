@@ -65,9 +65,9 @@ void RadioLibAES128::initCMAC(RadioLibCmacState* st) {
   st->subkeys_generated = false;
 }
 
-int16_t RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len) {
+void RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len) {
   if(!st || (!data && len != 0)) {
-    return(RADIOLIB_ERR_NULL_POINTER);
+    return;
   }
 
   // ensure subkeys are present
@@ -101,8 +101,6 @@ int16_t RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, s
       st->buffer_len = 0;
     }
   }
-
-  return(RADIOLIB_ERR_NONE);
 }
 
 void RadioLibAES128::finishCMAC(RadioLibCmacState* st, uint8_t* out) {

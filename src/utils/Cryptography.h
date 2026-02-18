@@ -155,9 +155,8 @@ class RadioLibAES128 {
       \param st State to update.
       \param data Input data (unpadded).
       \param len Length of the input data.
-      \returns \ref status_codes
     */
-    int16_t updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len);
+    void updateCMAC(RadioLibCmacState* st, const uint8_t* data, size_t len);
     
     /*!
       \brief Finalize the CMAC calculation and save the result. This must be called after all updateCMAC calls are done.

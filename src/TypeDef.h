@@ -608,12 +608,6 @@
 */
 #define RADIOLIB_ERR_INVALID_MODE                               (-1121)
 
-/*!
-  \brief There was not enough data to continue with CMAC calculation.
-  Call the method again once RADIOLIB_AES128_BLOCK_SIZE or more bytes are available.
-*/
-#define RADIOLIB_ERR_CMAC_NOT_ENOUGH_DATA                        (-1122)
-
 // LR11x0-specific status codes
 
 /*!
