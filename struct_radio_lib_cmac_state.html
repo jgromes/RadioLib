@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RadioLib: Class Members</title>
+<title>RadioLib: RadioLibCmacState Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('functions_u.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('struct_radio_lib_cmac_state.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -89,22 +89,44 @@ $(document).ready(function(){initNavTree('functions_u.html',''); initResizable()
 </div>
 </div>
 
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="struct_radio_lib_cmac_state-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">RadioLibCmacState Struct Reference</div></div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
-
-<h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
-<li>updateCMAC()&#160;:&#160;<a class="el" href="class_radio_lib_a_e_s128.html#aeec27beaeabfd82807db2f09e7c8dd4e">RadioLibAES128</a></li>
-<li>updateFirmware()&#160;:&#160;<a class="el" href="class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85">LR11x0</a></li>
-<li>updateGnssAlmanac()&#160;:&#160;<a class="el" href="class_l_r11x0.html#a96aa9566399e46fc03f2b73b44058e3f">LR11x0</a></li>
-<li>uploadPatch()&#160;:&#160;<a class="el" href="class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1">SX126x</a></li>
-<li>user&#160;:&#160;<a class="el" href="struct_lo_ra_w_a_n_mac_command__t.html#a269530a63c3e2a66393fb10286a3b5b6">LoRaWANMacCommand_t</a></li>
-<li>useRepeaters()&#160;:&#160;<a class="el" href="class_a_p_r_s_client.html#a454fb0a3423f75e909b16640b27b176a">APRSClient</a></li>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a05d90bfd4887f5b886505b04012494a4" id="r_a05d90bfd4887f5b886505b04012494a4"><td class="memItemLeft" align="right" valign="top"><a id="a05d90bfd4887f5b886505b04012494a4" name="a05d90bfd4887f5b886505b04012494a4"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>X</b> [RADIOLIB_AES128_BLOCK_SIZE]</td></tr>
+<tr class="separator:a05d90bfd4887f5b886505b04012494a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51e7328a35a0819a9e5b8ba9ed09fc6d" id="r_a51e7328a35a0819a9e5b8ba9ed09fc6d"><td class="memItemLeft" align="right" valign="top"><a id="a51e7328a35a0819a9e5b8ba9ed09fc6d" name="a51e7328a35a0819a9e5b8ba9ed09fc6d"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer</b> [RADIOLIB_AES128_BLOCK_SIZE]</td></tr>
+<tr class="separator:a51e7328a35a0819a9e5b8ba9ed09fc6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb13196180626e1828200f1176f5871f" id="r_afb13196180626e1828200f1176f5871f"><td class="memItemLeft" align="right" valign="top"><a id="afb13196180626e1828200f1176f5871f" name="afb13196180626e1828200f1176f5871f"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_len</b></td></tr>
+<tr class="separator:afb13196180626e1828200f1176f5871f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b387b4747c4e026d3c348ff8908a92" id="r_a50b387b4747c4e026d3c348ff8908a92"><td class="memItemLeft" align="right" valign="top"><a id="a50b387b4747c4e026d3c348ff8908a92" name="a50b387b4747c4e026d3c348ff8908a92"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>k1</b> [RADIOLIB_AES128_BLOCK_SIZE]</td></tr>
+<tr class="separator:a50b387b4747c4e026d3c348ff8908a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a469fa423878d3ecbbaa5e298f7dd1e83" id="r_a469fa423878d3ecbbaa5e298f7dd1e83"><td class="memItemLeft" align="right" valign="top"><a id="a469fa423878d3ecbbaa5e298f7dd1e83" name="a469fa423878d3ecbbaa5e298f7dd1e83"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>k2</b> [RADIOLIB_AES128_BLOCK_SIZE]</td></tr>
+<tr class="separator:a469fa423878d3ecbbaa5e298f7dd1e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8402754cb77e6586e5b69ad27a0f660" id="r_aa8402754cb77e6586e5b69ad27a0f660"><td class="memItemLeft" align="right" valign="top"><a id="aa8402754cb77e6586e5b69ad27a0f660" name="aa8402754cb77e6586e5b69ad27a0f660"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>subkeys_generated</b></td></tr>
+<tr class="separator:aa8402754cb77e6586e5b69ad27a0f660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/utils/<a class="el" href="_cryptography_8h_source.html">Cryptography.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

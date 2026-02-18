@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"functions_vars_s.html":[3,3,2,16],
+"functions_vars_t.html":[3,3,2,17],
+"functions_vars_u.html":[3,3,2,18],
 "functions_vars_v.html":[3,3,2,19],
 "functions_vars_w.html":[3,3,2,20],
 "functions_vars_x.html":[3,3,2,21],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "struct_l_r11x0_version_info__t.html#ad1839f1cb6a067cc21651d95908cff67":[3,0,38,0],
 "struct_l_r11x0_version_info__t.html#add0c362641afcfff4a2ef3563e5f1c36":[3,0,38,4],
 "struct_l_r11x0_wifi_result__t.html":[3,0,39],
-"struct_l_r11x0_wifi_result__t.html#a18a5615328bfc7b549a7ef1a5514c087":[3,0,39,0],
-"struct_l_r11x0_wifi_result__t.html#a520382420ad088ac1ace3754192cbfeb":[3,0,39,1],
-"struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a":[3,0,39,6],
-"struct_l_r11x0_wifi_result__t.html#a9fb28ba0ff8e6625322b081a4bda5628":[3,0,39,3]
+"struct_l_r11x0_wifi_result__t.html#a18a5615328bfc7b549a7ef1a5514c087":[3,0,39,0]
 };

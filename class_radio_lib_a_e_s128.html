@@ -120,6 +120,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1330c5668c22e5f0b65681cf875f5fe3" id="r_a1330c5668c22e5f0b65681cf875f5fe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a1330c5668c22e5f0b65681cf875f5fe3">generateCMAC</a> (const uint8_t *in, size_t len, uint8_t *cmac)</td></tr>
 <tr class="memdesc:a1330c5668c22e5f0b65681cf875f5fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate message authentication code according to RFC4493.  <br /></td></tr>
 <tr class="separator:a1330c5668c22e5f0b65681cf875f5fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a690472340695512f2471d06829d0b4df" id="r_a690472340695512f2471d06829d0b4df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a690472340695512f2471d06829d0b4df">initCMAC</a> (<a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a> *st)</td></tr>
+<tr class="memdesc:a690472340695512f2471d06829d0b4df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the CMAC state. This must be called before any updateCMAC calls.  <br /></td></tr>
+<tr class="separator:a690472340695512f2471d06829d0b4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec27beaeabfd82807db2f09e7c8dd4e" id="r_aeec27beaeabfd82807db2f09e7c8dd4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#aeec27beaeabfd82807db2f09e7c8dd4e">updateCMAC</a> (<a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a> *st, const uint8_t *data, size_t len)</td></tr>
+<tr class="memdesc:aeec27beaeabfd82807db2f09e7c8dd4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the CMAC state with a chunk of data. This can be called multiple times to process the data in chunks.  <br /></td></tr>
+<tr class="separator:aeec27beaeabfd82807db2f09e7c8dd4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a9c14e2d112af23ff2cb0f2c42fec2e" id="r_a8a9c14e2d112af23ff2cb0f2c42fec2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a8a9c14e2d112af23ff2cb0f2c42fec2e">finishCMAC</a> (<a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a> *st, uint8_t *out)</td></tr>
+<tr class="memdesc:a8a9c14e2d112af23ff2cb0f2c42fec2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalize the CMAC calculation and save the result. This must be called after all updateCMAC calls are done.  <br /></td></tr>
+<tr class="separator:a8a9c14e2d112af23ff2cb0f2c42fec2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a793795f82f27abd34409a5c0e0e7c455" id="r_a793795f82f27abd34409a5c0e0e7c455"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455">verifyCMAC</a> (const uint8_t *in, size_t len, const uint8_t *cmac)</td></tr>
 <tr class="memdesc:a793795f82f27abd34409a5c0e0e7c455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verify the received CMAC. This just calculates the CMAC again and compares the results.  <br /></td></tr>
 <tr class="separator:a793795f82f27abd34409a5c0e0e7c455"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +227,43 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8a9c14e2d112af23ff2cb0f2c42fec2e" name="a8a9c14e2d112af23ff2cb0f2c42fec2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a9c14e2d112af23ff2cb0f2c42fec2e">&#9670;&#160;</a></span>finishCMAC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RadioLibAES128::finishCMAC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a> *&#160;</td>
+          <td class="paramname"><em>st</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finalize the CMAC calculation and save the result. This must be called after all updateCMAC calls are done. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">st</td><td>State to finalize. </td></tr>
+    <tr><td class="paramname">out</td><td>Buffer to save the output MAC into. The buffer must be at least 16 bytes long! </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a1330c5668c22e5f0b65681cf875f5fe3" name="a1330c5668c22e5f0b65681cf875f5fe3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1330c5668c22e5f0b65681cf875f5fe3">&#9670;&#160;</a></span>generateCMAC()</h2>
 
@@ -282,6 +328,76 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>AES key to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a690472340695512f2471d06829d0b4df" name="a690472340695512f2471d06829d0b4df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a690472340695512f2471d06829d0b4df">&#9670;&#160;</a></span>initCMAC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RadioLibAES128::initCMAC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a> *&#160;</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize the CMAC state. This must be called before any updateCMAC calls. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">st</td><td>State to initialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeec27beaeabfd82807db2f09e7c8dd4e" name="aeec27beaeabfd82807db2f09e7c8dd4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec27beaeabfd82807db2f09e7c8dd4e">&#9670;&#160;</a></span>updateCMAC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RadioLibAES128::updateCMAC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_radio_lib_cmac_state.html">RadioLibCmacState</a> *&#160;</td>
+          <td class="paramname"><em>st</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update the CMAC state with a chunk of data. This can be called multiple times to process the data in chunks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">st</td><td>State to update. </td></tr>
+    <tr><td class="paramname">data</td><td>Input data (unpadded). </td></tr>
+    <tr><td class="paramname">len</td><td>Length of the input data. </td></tr>
   </table>
   </dd>
 </dl>

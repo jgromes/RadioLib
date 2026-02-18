@@ -58,6 +58,7 @@ var annotated_dup =
     [ "PiHal", "class_pi_hal.html", "class_pi_hal" ],
     [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", "class_radio_lib_a_e_s128" ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", "class_radio_lib_b_c_h" ],
+    [ "RadioLibCmacState", "struct_radio_lib_cmac_state.html", null ],
     [ "RadioLibConvCode", "class_radio_lib_conv_code.html", "class_radio_lib_conv_code" ],
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", "class_radio_lib_c_r_c" ],
     [ "RadioLibHal", "class_radio_lib_hal.html", "class_radio_lib_hal" ],
