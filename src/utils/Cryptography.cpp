@@ -79,40 +79,29 @@ int16_t RadioLibAES128::updateCMAC(RadioLibCmacState* st, const uint8_t* data, s
   uint8_t tmp[RADIOLIB_AES128_BLOCK_SIZE];
   size_t offset = 0;
 
-  // if we have leftover partial block from previous update, try to fill it
-  if(st->buffer_len > 0) {
-    size_t need = RADIOLIB_AES128_BLOCK_SIZE - st->buffer_len;
-    size_t to_copy = (len < need) ? len : need;
-    memcpy(&st->buffer[st->buffer_len], data, to_copy);
+  while(len > 0) {
+
+    // fill buffer up to one full block
+    size_t to_copy = RADIOLIB_AES128_BLOCK_SIZE - st->buffer_len;
+    if(to_copy > len) {
+      to_copy = len;
+    }
+
+    // copy the data into the buffer
+    memcpy(&st->buffer[st->buffer_len], &data[offset], to_copy);
     st->buffer_len += to_copy;
     offset += to_copy;
     len -= to_copy;
 
-    // if still not a full block, wait for more data
-    if(st->buffer_len < RADIOLIB_AES128_BLOCK_SIZE) {
-      return(RADIOLIB_ERR_CMAC_NOT_ENOUGH_DATA);
+    // if we now have a full block AND there is still more input remaining,
+    // this block is NOT the final one, so process it.
+    if(st->buffer_len == RADIOLIB_AES128_BLOCK_SIZE && len > 0) {
+      this->blockXor(tmp, st->buffer, st->X);
+      this->encryptECB(tmp, RADIOLIB_AES128_BLOCK_SIZE, st->X);
+      st->buffer_len = 0;
     }
-
-    // we have a full block in buffer -> process it as a normal block
-    this->blockXor(tmp, st->buffer, st->X);
-    this->encryptECB(tmp, RADIOLIB_AES128_BLOCK_SIZE, st->X);
-    st->buffer_len = 0;
   }
 
-  // process any full blocks from data directly
-  while(len >= RADIOLIB_AES128_BLOCK_SIZE) {
-    this->blockXor(tmp, &data[offset], st->X);
-    this->encryptECB(tmp, RADIOLIB_AES128_BLOCK_SIZE, st->X);
-    offset += RADIOLIB_AES128_BLOCK_SIZE;
-    len -= RADIOLIB_AES128_BLOCK_SIZE;
-  }
-
-  // any remaining bytes become the new partial block
-  if(len > 0) {
-    memcpy(st->buffer, &data[offset], len);
-    st->buffer_len = len;
-  }
-  
   return(RADIOLIB_ERR_NONE);
 }
 
