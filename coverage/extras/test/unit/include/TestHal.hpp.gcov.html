@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-02-19 19:07:10</td>
+            <td class="headerValue">2026-02-19 19:53:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">16</td>
@@ -133,26 +133,26 @@
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">          5 :       this-&gt;gpio[pin].mode = mode;</span></a>
 <a name="72"><span class="lineNum">      72 </span><span class="lineCov">          5 :     }</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       6811 :     void digitalWrite(uint32_t pin, uint32_t value) override {</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       6809 :     void digitalWrite(uint32_t pin, uint32_t value) override {</span></a>
 <a name="75"><span class="lineNum">      75 </span>            :       HAL_LOG(&quot;TestHal::digitalWrite(pin=&quot; &lt;&lt; pin &lt;&lt; &quot;, value=&quot; &lt;&lt; value &lt;&lt; &quot; [&quot; &lt;&lt; ((value == TEST_HAL_LOW) ? &quot;LOW&quot; : &quot;HIGH&quot;) &lt;&lt; &quot;])&quot;);</a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            :       // check the range</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">       6811 :       BOOST_ASSERT_MSG(pin &lt; TEST_HAL_NUM_GPIO_PINS, &quot;Pin number out of range&quot;);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">       6809 :       BOOST_ASSERT_MSG(pin &lt; TEST_HAL_NUM_GPIO_PINS, &quot;Pin number out of range&quot;);</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
 <a name="80"><span class="lineNum">      80 </span>            :       // check it is output</a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">       6811 :       BOOST_ASSERT_MSG(this-&gt;gpio[pin].mode == TEST_HAL_OUTPUT, &quot;GPIO is not output!&quot;);</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">       6809 :       BOOST_ASSERT_MSG(this-&gt;gpio[pin].mode == TEST_HAL_OUTPUT, &quot;GPIO is not output!&quot;);</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            :       // check known values</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">       6811 :       BOOST_ASSERT_MSG(((value == TEST_HAL_LOW) || (value == TEST_HAL_HIGH)), &quot;Invalid output value&quot;);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">       6809 :       BOOST_ASSERT_MSG(((value == TEST_HAL_LOW) || (value == TEST_HAL_HIGH)), &quot;Invalid output value&quot;);</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
 <a name="86"><span class="lineNum">      86 </span>            :       // set value</a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">       6811 :       this-&gt;gpio[pin].value = value;</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       6811 :       this-&gt;gpio[pin].event = true;</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">       6811 :       if(radio) {</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">       6811 :         this-&gt;radio-&gt;HandleGPIO();</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">       6809 :       this-&gt;gpio[pin].value = value;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       6809 :       this-&gt;gpio[pin].event = true;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">       6809 :       if(radio) {</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">       6809 :         this-&gt;radio-&gt;HandleGPIO();</span></a>
 <a name="91"><span class="lineNum">      91 </span>            :       }</a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">       6811 :       this-&gt;gpio[pin].event = false;</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       6811 :     }</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">       6809 :       this-&gt;gpio[pin].event = false;</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       6809 :     }</span></a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
 <a name="95"><span class="lineNum">      95 </span><span class="lineCov">       6414 :     uint32_t digitalRead(uint32_t pin) override {</span></a>
 <a name="96"><span class="lineNum">      96 </span>            :       HAL_LOG(&quot;TestHal::digitalRead(pin=&quot; &lt;&lt; pin &lt;&lt; &quot;)&quot;);</a>
@@ -198,20 +198,20 @@
 <a name="136"><span class="lineNum">     136 </span>            :       HAL_LOG(&quot;TestHal::delay(ms=&quot; &lt;&lt; ms &lt;&lt; &quot;)=&quot; &lt;&lt; elapsed.count() &lt;&lt; &quot;ms&quot;);</a>
 <a name="137"><span class="lineNum">     137 </span><span class="lineCov">         25 :     }</span></a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">      18632 :     void delayMicroseconds(unsigned long us) override {</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">      18630 :     void delayMicroseconds(unsigned long us) override {</span></a>
 <a name="140"><span class="lineNum">     140 </span>            :       HAL_LOG(&quot;TestHal::delayMicroseconds(us=&quot; &lt;&lt; us &lt;&lt; &quot;)&quot;);</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">      18632 :       const auto start = std::chrono::high_resolution_clock::now();</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">      18630 :       const auto start = std::chrono::high_resolution_clock::now();</span></a>
 <a name="142"><span class="lineNum">     142 </span>            : </a>
 <a name="143"><span class="lineNum">     143 </span>            :       // this is incredibly hacky, but there is no reliable way for sub-ms sleeping</a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">      18632 :       std::this_thread::sleep_for(std::chrono::duration&lt;unsigned long, std::milli&gt;(1));</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">      18630 :       std::this_thread::sleep_for(std::chrono::duration&lt;unsigned long, std::milli&gt;(1));</span></a>
 <a name="145"><span class="lineNum">     145 </span>            : </a>
 <a name="146"><span class="lineNum">     146 </span>            :       // measure and print</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">      18632 :       const auto end = std::chrono::high_resolution_clock::now();</span></a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">      18632 :       const std::chrono::duration&lt;double, std::milli&gt; elapsed = end - start;</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">      18630 :       const auto end = std::chrono::high_resolution_clock::now();</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">      18630 :       const std::chrono::duration&lt;double, std::milli&gt; elapsed = end - start;</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
 <a name="150"><span class="lineNum">     150 </span>            :       HAL_LOG(&quot;TestHal::delayMicroseconds(us=&quot; &lt;&lt; us &lt;&lt; &quot;)=&quot; &lt;&lt; elapsed.count() &lt;&lt; &quot;ms&quot;);</a>
 <a name="151"><span class="lineNum">     151 </span>            :       (void)us;</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">      18632 :     }</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">      18630 :     }</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
 <a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :     void yield() override {</span></a>
 <a name="155"><span class="lineNum">     155 </span>            :       HAL_LOG(&quot;TestHal::yield()&quot;);</a>
@@ -225,12 +225,12 @@
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">       6414 :       return(res.count());</span></a>
 <a name="164"><span class="lineNum">     164 </span>            :     }</a>
 <a name="165"><span class="lineNum">     165 </span>            : </a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        715 :     unsigned long micros() override {</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        714 :     unsigned long micros() override {</span></a>
 <a name="167"><span class="lineNum">     167 </span>            :       HAL_LOG(&quot;TestHal::micros()&quot;);</a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        715 :       std::chrono::time_point now = std::chrono::high_resolution_clock::now();</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        715 :       auto res = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(now - this-&gt;start);</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        714 :       std::chrono::time_point now = std::chrono::high_resolution_clock::now();</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        714 :       auto res = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(now - this-&gt;start);</span></a>
 <a name="170"><span class="lineNum">     170 </span>            :       HAL_LOG(&quot;TestHal::micros()=&quot; &lt;&lt; res.count());</a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        715 :       return(res.count());</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        714 :       return(res.count());</span></a>
 <a name="172"><span class="lineNum">     172 </span>            :     }</a>
 <a name="173"><span class="lineNum">     173 </span>            : </a>
 <a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :     long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override {</span></a>
@@ -247,35 +247,35 @@
 <a name="185"><span class="lineNum">     185 </span>            :       HAL_LOG(&quot;TestHal::spiBegin()&quot;);</a>
 <a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : </a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">       3403 :     void spiBeginTransaction() {</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">       3402 :     void spiBeginTransaction() {</span></a>
 <a name="189"><span class="lineNum">     189 </span>            :       HAL_LOG(&quot;TestHal::spiBeginTransaction()&quot;);</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       3403 :     }</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       3402 :     }</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : </a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       3403 :     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       3402 :     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {</span></a>
 <a name="193"><span class="lineNum">     193 </span>            :       HAL_LOG(&quot;TestHal::spiTransfer(len=&quot; &lt;&lt; len &lt;&lt; &quot;)&quot;);</a>
 <a name="194"><span class="lineNum">     194 </span>            :       </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">      18822 :       for(size_t i = 0; i &lt; len; i++) {</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">      18819 :       for(size_t i = 0; i &lt; len; i++) {</span></a>
 <a name="196"><span class="lineNum">     196 </span>            :         // append to log</a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">      15419 :         if(this-&gt;spiLogEnabled) {</span></a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">        457 :           (*this-&gt;spiLogPtr++) = out[i];</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">      15417 :         if(this-&gt;spiLogEnabled) {</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">        455 :           (*this-&gt;spiLogPtr++) = out[i];</span></a>
 <a name="199"><span class="lineNum">     199 </span>            :         }</a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
 <a name="201"><span class="lineNum">     201 </span>            :         // process the SPI byte</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">      15419 :         in[i] = this-&gt;radio-&gt;HandleSPI(out[i]);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">      15417 :         in[i] = this-&gt;radio-&gt;HandleSPI(out[i]);</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : </a>
 <a name="204"><span class="lineNum">     204 </span>            :         // artificial delay to emulate SPI running at a finite speed</a>
 <a name="205"><span class="lineNum">     205 </span>            :         // this is added because timeouts are based on time duration,</a>
 <a name="206"><span class="lineNum">     206 </span>            :         // so we need to make sure some time actually elapses</a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">      15419 :         this-&gt;delayMicroseconds(100);</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">      15417 :         this-&gt;delayMicroseconds(100);</span></a>
 <a name="208"><span class="lineNum">     208 </span>            : </a>
 <a name="209"><span class="lineNum">     209 </span>            :         // output debug</a>
 <a name="210"><span class="lineNum">     210 </span>            :         HAL_LOG(fmt::format(&quot;out={:#02x}, in={:#02x}&quot;, out[i], in[i]));</a>
 <a name="211"><span class="lineNum">     211 </span>            :       }</a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">       3403 :     }</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">       3402 :     }</span></a>
 <a name="213"><span class="lineNum">     213 </span>            : </a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">       3403 :     void spiEndTransaction() {</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">       3402 :     void spiEndTransaction() {</span></a>
 <a name="215"><span class="lineNum">     215 </span>            :       HAL_LOG(&quot;TestHal::spiEndTransaction()&quot;);</a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">       3403 :     }</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">       3402 :     }</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
 <a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :     void spiEnd() {</span></a>
 <a name="219"><span class="lineNum">     219 </span>            :       HAL_LOG(&quot;TestHal::spiEnd()&quot;);</a>

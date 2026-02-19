@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-02-19 19:07:10</td>
+            <td class="headerValue">2026-02-19 19:53:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -95,7 +95,7 @@
 <a name="33"><span class="lineNum">      33 </span><span class="lineNoCov">          0 :     for(; i &lt; RADIOLIB_LR2021_MAX_CAL_ATTEMPTS; i++) {</span></a>
 <a name="34"><span class="lineNum">      34 </span>            :       // get the nearest multiple of 4 MHz</a>
 <a name="35"><span class="lineNum">      35 </span><span class="lineNoCov">          0 :       uint16_t frequencies[3] = { (uint16_t)((freq / 4.0f) + 0.5f), 0, 0 };</span></a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 :       frequencies[0] |= (freq &gt; 1000.0f) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 :       frequencies[0] |= (freq &gt; RADIOLIB_LR2021_LF_CUTOFF_FREQ) ? RADIOLIB_LR2021_CALIBRATE_FE_HF_PATH : RADIOLIB_LR2021_CALIBRATE_FE_LF_PATH;</span></a>
 <a name="37"><span class="lineNum">      37 </span><span class="lineNoCov">          0 :       state = calibrateFrontEnd(const_cast&lt;const uint16_t*&gt;(frequencies));</span></a>
 <a name="38"><span class="lineNum">      38 </span>            : </a>
 <a name="39"><span class="lineNum">      39 </span>            :       // if something failed, check the device errors</a>
@@ -129,7 +129,7 @@
 <a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :   state = setRfFrequency((uint32_t)(freq*1000000.0f));</span></a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :   this-&gt;freqMHz = freq;</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :   this-&gt;highFreq = (freq &gt; 1100.0f);</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :   this-&gt;highFreq = (freq &gt; RADIOLIB_LR2021_LF_CUTOFF_FREQ);</span></a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : }</a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-02-19 19:07:10</td>
+            <td class="headerValue">2026-02-19 19:53:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">18</td>
@@ -143,9 +143,9 @@
 <a name="81"><span class="lineNum">      81 </span>            :     #if RADIOLIB_DEBUG_SPI</a>
 <a name="82"><span class="lineNum">      82 </span>            :     uint8_t readValue = 0x00;</a>
 <a name="83"><span class="lineNum">      83 </span>            :     #endif</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        515 :     while(this-&gt;hal-&gt;micros() - start &lt; ((RadioLibTime_t)checkInterval * 1000UL)) {</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        321 :       uint8_t val = SPIreadRegister(reg);</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        321 :       if((val &amp; checkMask) == (newValue &amp; checkMask)) {</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        514 :     while(this-&gt;hal-&gt;micros() - start &lt; ((RadioLibTime_t)checkInterval * 1000UL)) {</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        320 :       uint8_t val = SPIreadRegister(reg);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        320 :       if((val &amp; checkMask) == (newValue &amp; checkMask)) {</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :         // check passed, we can stop the loop</a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineCov">          2 :         return(RADIOLIB_ERR_NONE);</span></a>
 <a name="89"><span class="lineNum">      89 </span>            :       }</a>
@@ -186,10 +186,10 @@
 <a name="124"><span class="lineNum">     124 </span>            :   }</a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineCov">         33 : }</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : </a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       2517 : uint8_t Module::SPIreadRegister(uint32_t reg) {</span></a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">       2517 :   uint8_t resp = 0;</span></a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       2517 :   if(!spiConfig.stream) {</span></a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineCov">        106 :     SPItransfer(this-&gt;spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ], reg, NULL, &amp;resp, 1);</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       2516 : uint8_t Module::SPIreadRegister(uint32_t reg) {</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">       2516 :   uint8_t resp = 0;</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       2516 :   if(!spiConfig.stream) {</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">        105 :     SPItransfer(this-&gt;spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ], reg, NULL, &amp;resp, 1);</span></a>
 <a name="131"><span class="lineNum">     131 </span>            :   } else {</a>
 <a name="132"><span class="lineNum">     132 </span>            :     uint8_t cmd[6];</a>
 <a name="133"><span class="lineNum">     133 </span><span class="lineCov">       2411 :     uint8_t* cmdPtr = cmd;</span></a>
@@ -201,7 +201,7 @@
 <a name="139"><span class="lineNum">     139 </span>            :     }</a>
 <a name="140"><span class="lineNum">     140 </span><span class="lineCov">       2411 :     SPItransferStream(cmd, this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8, false, NULL, &amp;resp, 1, true);</span></a>
 <a name="141"><span class="lineNum">     141 </span>            :   }</a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">       2517 :   return(resp);</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">       2516 :   return(resp);</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : }</a>
 <a name="144"><span class="lineNum">     144 </span>            : </a>
 <a name="145"><span class="lineNum">     145 </span><span class="lineCov">          6 : void Module::SPIwriteRegisterBurst(uint32_t reg, const uint8_t* data, size_t numBytes) {</span></a>
@@ -236,44 +236,44 @@
 <a name="174"><span class="lineNum">     174 </span>            :   }</a>
 <a name="175"><span class="lineNum">     175 </span><span class="lineCov">        220 : }</span></a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        111 : void Module::SPItransfer(uint16_t cmd, uint32_t reg, const uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        110 : void Module::SPItransfer(uint16_t cmd, uint32_t reg, const uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {</span></a>
 <a name="178"><span class="lineNum">     178 </span>            :   // prepare the buffers</a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        111 :   size_t buffLen = this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8 + numBytes;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        110 :   size_t buffLen = this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8 + numBytes;</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :   #if RADIOLIB_STATIC_ONLY</a>
 <a name="181"><span class="lineNum">     181 </span>            :     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];</a>
 <a name="182"><span class="lineNum">     182 </span>            :     uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];</a>
 <a name="183"><span class="lineNum">     183 </span>            :   #else</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        111 :     uint8_t* buffOut = new uint8_t[buffLen];</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        111 :     uint8_t* buffIn = new uint8_t[buffLen];</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        110 :     uint8_t* buffOut = new uint8_t[buffLen];</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        110 :     uint8_t* buffIn = new uint8_t[buffLen];</span></a>
 <a name="186"><span class="lineNum">     186 </span>            :   #endif</a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        111 :   uint8_t* buffOutPtr = buffOut;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        110 :   uint8_t* buffOutPtr = buffOut;</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
 <a name="189"><span class="lineNum">     189 </span>            :   // copy the command</a>
 <a name="190"><span class="lineNum">     190 </span>            :   // TODO properly handle variable commands and addresses</a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">        111 :   if(this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] &lt;= 8) {</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        111 :     *(buffOutPtr++) = reg | cmd;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">        110 :   if(this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] &lt;= 8) {</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        110 :     *(buffOutPtr++) = reg | cmd;</span></a>
 <a name="193"><span class="lineNum">     193 </span>            :   } else {</a>
 <a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :     *(buffOutPtr++) = (reg &gt;&gt; 8) | cmd;</span></a>
 <a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :     *(buffOutPtr++) = reg &amp; 0xFF;</span></a>
 <a name="196"><span class="lineNum">     196 </span>            :   }</a>
 <a name="197"><span class="lineNum">     197 </span>            : </a>
 <a name="198"><span class="lineNum">     198 </span>            :   // copy the data</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">        111 :   if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE]) {</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">        110 :   if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE]) {</span></a>
 <a name="200"><span class="lineNum">     200 </span><span class="lineCov">          5 :     memcpy(buffOutPtr, dataOut, numBytes);</span></a>
 <a name="201"><span class="lineNum">     201 </span>            :   } else {</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        106 :     memset(buffOutPtr, this-&gt;spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP], numBytes);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        105 :     memset(buffOutPtr, this-&gt;spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP], numBytes);</span></a>
 <a name="203"><span class="lineNum">     203 </span>            :   }</a>
 <a name="204"><span class="lineNum">     204 </span>            : </a>
 <a name="205"><span class="lineNum">     205 </span>            :   // do the transfer</a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">        111 :   this-&gt;hal-&gt;spiBeginTransaction();</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">        111 :   this-&gt;hal-&gt;digitalWrite(this-&gt;csPin, this-&gt;hal-&gt;GpioLevelLow);</span></a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">        111 :   this-&gt;hal-&gt;spiTransfer(buffOut, buffLen, buffIn);</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">        111 :   this-&gt;hal-&gt;digitalWrite(this-&gt;csPin, this-&gt;hal-&gt;GpioLevelHigh);</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">        111 :   this-&gt;hal-&gt;spiEndTransaction();</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">        110 :   this-&gt;hal-&gt;spiBeginTransaction();</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">        110 :   this-&gt;hal-&gt;digitalWrite(this-&gt;csPin, this-&gt;hal-&gt;GpioLevelLow);</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">        110 :   this-&gt;hal-&gt;spiTransfer(buffOut, buffLen, buffIn);</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">        110 :   this-&gt;hal-&gt;digitalWrite(this-&gt;csPin, this-&gt;hal-&gt;GpioLevelHigh);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">        110 :   this-&gt;hal-&gt;spiEndTransaction();</span></a>
 <a name="211"><span class="lineNum">     211 </span>            :   </a>
 <a name="212"><span class="lineNum">     212 </span>            :   // copy the data</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">        111 :   if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ]) {</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        106 :     memcpy(dataIn, &amp;buffIn[this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8], numBytes);</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">        110 :   if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ]) {</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        105 :     memcpy(dataIn, &amp;buffIn[this-&gt;spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8], numBytes);</span></a>
 <a name="215"><span class="lineNum">     215 </span>            :   }</a>
 <a name="216"><span class="lineNum">     216 </span>            : </a>
 <a name="217"><span class="lineNum">     217 </span>            :   // print debug information</a>
@@ -293,10 +293,10 @@
 <a name="231"><span class="lineNum">     231 </span>            :   #endif</a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
 <a name="233"><span class="lineNum">     233 </span>            :   #if !RADIOLIB_STATIC_ONLY</a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        111 :     delete[] buffOut;</span></a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        111 :     delete[] buffIn;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        110 :     delete[] buffOut;</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        110 :     delete[] buffIn;</span></a>
 <a name="236"><span class="lineNum">     236 </span>            :   #endif</a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">        111 : }</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">        110 : }</span></a>
 <a name="238"><span class="lineNum">     238 </span>            : </a>
 <a name="239"><span class="lineNum">     239 </span><span class="lineCov">        257 : int16_t Module::SPIreadStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {</span></a>
 <a name="240"><span class="lineNum">     240 </span>            :   uint8_t cmdBuf[2];</a>
