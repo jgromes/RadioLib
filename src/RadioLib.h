@@ -117,6 +117,7 @@
 #include "protocols/Print/Print.h"
 #include "protocols/BellModem/BellModem.h"
 #include "protocols/LoRaWAN/LoRaWAN.h"
+#include "protocols/ADSB/ADSB.h"
 
 // utilities
 #include "utils/CRC.h"
