@@ -1,5 +1,7 @@
 var hierarchy =
 [
+    [ "ADSBClient", "class_a_d_s_b_client.html", null ],
+    [ "ADSBFrame", "struct_a_d_s_b_frame.html", null ],
     [ "AFSKClient", "class_a_f_s_k_client.html", [
       [ "BellClient", "class_bell_client.html", null ]
     ] ],

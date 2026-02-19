@@ -1,5 +1,7 @@
 var annotated_dup =
 [
+    [ "ADSBClient", "class_a_d_s_b_client.html", "class_a_d_s_b_client" ],
+    [ "ADSBFrame", "struct_a_d_s_b_frame.html", "struct_a_d_s_b_frame" ],
     [ "AFSKClient", "class_a_f_s_k_client.html", "class_a_f_s_k_client" ],
     [ "APRSClient", "class_a_p_r_s_client.html", "class_a_p_r_s_client" ],
     [ "AX25Client", "class_a_x25_client.html", "class_a_x25_client" ],

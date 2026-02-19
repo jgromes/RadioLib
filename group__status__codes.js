@@ -3,6 +3,8 @@ var group__status__codes =
     [ "RADIOLIB_CHANNEL_FREE", "group__status__codes.html#ga4673596b2cc7290be5ee0a2e9ee42718", null ],
     [ "RADIOLIB_ERR_ACK_NOT_RECEIVED", "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063", null ],
     [ "RADIOLIB_ERR_ADDRESS_NOT_FOUND", "group__status__codes.html#ga806183ed238159d317132b0d44d7a0a2", null ],
+    [ "RADIOLIB_ERR_ADSB_INVALID_CATEGORY", "group__status__codes.html#ga07f5bd5f1eb62c8129f808c90e96a21d", null ],
+    [ "RADIOLIB_ERR_ADSB_INVALID_MSG_TYPE", "group__status__codes.html#ga75a3b3f2299a04a0bb52c22d868a1a7b", null ],
     [ "RADIOLIB_ERR_CHECKSUM_MISMATCH", "group__status__codes.html#gace49554c055f7b2d02ef0c39c006529c", null ],
     [ "RADIOLIB_ERR_CHIP_NOT_FOUND", "group__status__codes.html#ga5d11e8ce64fb412c2169d0f30b9e9c62", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_FULL", "group__status__codes.html#ga442250961d11f2582857cd1eafe0df17", null ],
