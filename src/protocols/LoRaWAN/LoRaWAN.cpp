@@ -995,6 +995,7 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
 
   this->sessionStatus = RADIOLIB_LORAWAN_SESSION_ACTIVE;
 
+  // calculate channel flags after setting session to active
   (void)this->calculateChannelFlags();
   
   return(RADIOLIB_LORAWAN_NEW_SESSION);
@@ -3443,7 +3444,7 @@ bool LoRaWANNode::calculateChannelFlags() {
   } else {                // RADIOLIB_LORAWAN_BAND_FIXED
     // during activation of fixed bands, flag all available channels
     // the datarate will be determined from there
-    if(!this->isActivated() && this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED) {
+    if(!this->isActivated()) {
       memcpy(this->channelFlags, this->channelMasks, sizeof(this->channelMasks));
       return(true);
     }
