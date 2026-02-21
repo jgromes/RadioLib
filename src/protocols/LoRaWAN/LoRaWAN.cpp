@@ -25,7 +25,7 @@ int16_t LoRaWANNode::sendReceive(const String& strUp, uint8_t fPort, String& str
   // build a temporary buffer
   // LoRaWAN downlinks can have 250 bytes at most with 1 extra byte for NULL
   size_t lenDown = 0;
-  uint8_t dataDown[RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE + 1];
+  uint8_t dataDown[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE + 1];
 
   state = this->sendReceive(reinterpret_cast<const uint8_t*>(dataUp), strlen(dataUp), fPort, dataDown, &lenDown, isConfirmed, eventUp, eventDown);
 
@@ -45,7 +45,7 @@ int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t fPort, bool isConfir
   // build a temporary buffer
   // LoRaWAN downlinks can have 250 bytes at most with 1 extra byte for NULL
   size_t lenDown = 0;
-  uint8_t dataDown[RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE + 1];
+  uint8_t dataDown[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE + 1];
   
   return(this->sendReceive(reinterpret_cast<uint8_t*>(const_cast<char*>(strUp)), strlen(strUp), fPort, dataDown, &lenDown, isConfirmed, eventUp, eventDown));
 }
@@ -58,7 +58,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   // build a temporary buffer
   // LoRaWAN downlinks can have 250 bytes at most with 1 extra byte for NULL
   size_t lenDown = 0;
-  uint8_t dataDown[RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE + 1];
+  uint8_t dataDown[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE + 1];
 
   return(this->sendReceive(dataUp, lenUp, fPort, dataDown, &lenDown, isConfirmed, eventUp, eventDown));
 }
@@ -1798,7 +1798,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   #if !RADIOLIB_STATIC_ONLY
     uint8_t* downlinkMsg = new uint8_t[RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen];
   #else
-    uint8_t downlinkMsg[RADIOLIB_STATIC_ARRAY_SIZE];
+    uint8_t downlinkMsg[RADIOLIB_AES128_BLOCK_SIZE + RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
 
   // read the data
@@ -2061,7 +2061,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   if(fOptsLen > 0) {
     uint8_t* mPtr = fOptsPtr;
     uint8_t procLen = 0;
-    uint8_t fOptsRe[RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE] = { 0 };
+    uint8_t fOptsRe[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE] = { 0 };
     uint8_t fOptsReLen = 0;
 
     // indication whether LinkAdr MAC command has been processed

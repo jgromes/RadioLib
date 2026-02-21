@@ -207,7 +207,7 @@
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_UP                 (2)
 #define RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS                   (8)
 
-#define RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE                      (250)
+#define RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE                      (242)
 
 // session states
 #define RADIOLIB_LORAWAN_SESSION_NONE                           (0x00)
