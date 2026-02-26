@@ -270,14 +270,14 @@ class SX1278: public SX127x {
     int16_t setDataShapingOOK(uint8_t sh);
 
     /*!
-      \brief Gets recorded signal strength indicator.
+      \brief Gets received signal strength indicator.
       Overload with packet mode enabled for PhysicalLayer compatibility.
       \returns RSSI value in dBm.
     */
     float getRSSI() override;
 
     /*!
-      \brief Gets recorded signal strength indicator.
+      \brief Gets received signal strength indicator.
       \param packet Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.
       \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.
       \returns RSSI value in dBm.

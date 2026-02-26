@@ -785,13 +785,13 @@ class SX128x: public PhysicalLayer {
     int16_t setGainControl(uint8_t gain = 0);
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+      \brief Gets RSSI (Received Signal Strength Indicator) of the last received packet.
       \returns RSSI of the last received packet in dBm.
     */
     float getRSSI() override;
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator).
+      \brief Gets RSSI (Received Signal Strength Indicator).
       \param packet Whether to read last packet RSSI, or the current value.
       \returns RSSI value in dBm.
     */

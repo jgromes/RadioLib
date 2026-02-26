@@ -900,7 +900,7 @@ class CC1101: public PhysicalLayer {
     int16_t setOOK(bool enableOOK);
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+      \brief Gets RSSI (Received Signal Strength Indicator) of the last received packet.
       In direct or asynchronous direct mode, returns the current RSSI level.
       \returns RSSI in dBm.
     */

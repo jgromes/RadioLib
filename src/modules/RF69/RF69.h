@@ -957,7 +957,7 @@ class RF69: public PhysicalLayer {
     int16_t setLnaTestBoost(bool value);
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+      \brief Gets RSSI (Received Signal Strength Indicator) of the last received packet.
       \returns Last packet RSSI in dBm.
     */
     float getRSSI() override;

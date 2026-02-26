@@ -528,14 +528,14 @@ class SX126x: public PhysicalLayer {
     int16_t setDio2AsRfSwitch(bool enable = true);
 
     /*!
-      \brief Gets recorded signal strength indicator.
+      \brief Gets received signal strength indicator.
       Overload with packet mode enabled for PhysicalLayer compatibility.
       \returns RSSI value in dBm.
     */
     float getRSSI() override;
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator).
+      \brief Gets RSSI (Received Signal Strength Indicator).
       \param packet Whether to read last packet RSSI, or the current value.
       \returns RSSI value in dBm.
     */

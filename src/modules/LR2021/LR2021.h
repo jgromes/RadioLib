@@ -595,14 +595,14 @@ class LR2021: public LRxxxx {
     float getTemperature(uint8_t source, uint8_t bits = 13);
 
     /*!
-      \brief Gets recorded signal strength indicator.
+      \brief Gets received signal strength indicator.
       Overload with packet mode enabled for PhysicalLayer compatibility.
       \returns RSSI value in dBm.
     */
     float getRSSI() override;
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator).
+      \brief Gets RSSI (Received Signal Strength Indicator).
       \param packet Whether to read last packet RSSI, or the current value.
       \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.
       \returns RSSI value in dBm.

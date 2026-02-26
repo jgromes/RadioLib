@@ -547,7 +547,7 @@ class PhysicalLayer {
     virtual size_t getPacketLength(bool update = true);
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+      \brief Gets RSSI (Received Signal Strength Indicator) of the last received packet.
       \returns RSSI of the last received packet in dBm.
     */
     virtual float getRSSI();
