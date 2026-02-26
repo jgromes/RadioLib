@@ -1109,6 +1109,19 @@ float LR11x0::getRSSI() {
   return(val);
 }
 
+float LR11x0::getRSSI(bool packet) {
+  float val = 0;
+
+  // check if RSSI of packet is requested
+  if (packet) {
+    val = getRSSI();
+  } else {
+    getRssiInst(&val);
+  }
+
+  return(val);
+}
+
 float LR11x0::getSNR() {
   float val = 0;
 
