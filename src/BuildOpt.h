@@ -255,6 +255,11 @@
   // Adafruit nRF52 boards
   #define RADIOLIB_PLATFORM                           "Adafruit nRF52"
 
+#elif defined(NRF54L15_XXAA)
+  // Arduino nRF54 core by lolren (https://github.com/lolren/NRF54L15-Clean-Arduino-core)
+  #define RADIOLIB_PLATFORM                           "Nordic nRF54 (unofficial)"
+  #include <cstdio>
+
 #elif defined(ARDUINO_ARC32_TOOLS)
   // Intel Curie
   #define RADIOLIB_PLATFORM                           "Intel Curie"
