@@ -394,6 +394,8 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
 }
 
 int16_t SX126x::setRxBoostedGainMode(bool rxbgm, bool persist) {
+  this->rxBoostedGainMode = rxbgm;
+
   // update RX gain setting register
   uint8_t rxGain = rxbgm ? RADIOLIB_SX126X_RX_GAIN_BOOSTED : RADIOLIB_SX126X_RX_GAIN_POWER_SAVING;
   int16_t state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
@@ -708,6 +710,7 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
 }
 
 int16_t SX126x::setDio2AsRfSwitch(bool enable) {
+  this->dio2RfSwitch = enable;
   uint8_t data = enable ? RADIOLIB_SX126X_DIO2_AS_RF_SWITCH : RADIOLIB_SX126X_DIO2_AS_IRQ;
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
 }

@@ -8,6 +8,42 @@
 
 #if !RADIOLIB_EXCLUDE_SX126X
 
+int16_t SX126x::resetAGC() {
+  // warm sleep to power down the analog frontend
+  int16_t state = sleep(true);
+  RADIOLIB_ASSERT(state);
+
+  // wake to RC standby
+  state = standby(RADIOLIB_SX126X_STANDBY_RC, true);
+  RADIOLIB_ASSERT(state);
+
+  // recalibrate all blocks
+  state = calibrate(RADIOLIB_SX126X_CALIBRATE_ALL);
+  RADIOLIB_ASSERT(state);
+
+  // re-calibrate image rejection for the operating frequency
+  state = calibrateImage(this->freqMHz);
+  RADIOLIB_ASSERT(state);
+
+  // re-apply DIO2 RF switch if it was configured
+  if(this->dio2RfSwitch) {
+    state = setDio2AsRfSwitch(true);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // re-apply RX boosted gain if it was configured
+  if(this->rxBoostedGainMode) {
+    state = setRxBoostedGainMode(true);
+    RADIOLIB_ASSERT(state);
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t SX126x::calibrate(uint8_t params) {
+  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE, &params, 1, true, false));
+}
+
 int16_t SX126x::sleep() {
   return(SX126x::sleep(true));
 }
