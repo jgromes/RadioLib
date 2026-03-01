@@ -1111,14 +1111,13 @@ float LR11x0::getRSSI() {
 
 float LR11x0::getRSSI(bool packet, bool skipReceive) {
   float val = 0;
-  int16_t state;
 
   // check if RSSI of packet is requested
   if (packet) {
     val = getRSSI();
   } else {
     if(!skipReceive) { (void)startReceive(); }
-    state = getRssiInst(&val);
+    int16_t state = getRssiInst(&val);
     if(!skipReceive) { (void)standby(); }
     if(state != RADIOLIB_ERR_NONE) { return(0); }
   }
