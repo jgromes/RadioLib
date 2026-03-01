@@ -432,9 +432,11 @@ class LR11x0: public LRxxxx {
     /*!
       \brief Gets RSSI (Received Signal Strength Indicator).
       \param packet Whether to read last packet RSSI, or the current value.
+      \param skipReceive Set to true to skip putting radio in receive mode for instantaneous RSSI measurement.
+      If false, after the RSSI measurement, the radio will be in standby mode.
       \returns RSSI value in dBm.
     */
-    float getRSSI(bool packet);
+    float getRSSI(bool packet, bool skipReceive = false);
 
     /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
