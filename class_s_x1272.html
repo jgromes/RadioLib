@@ -170,10 +170,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3a377445cb4b8fd41781a3210a819a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets filter cutoff frequency that will be used for data shaping. Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping. Only available in FSK mode with OOK modulation.  <br /></td></tr>
 <tr class="separator:a3a377445cb4b8fd41781a3210a819a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54a4b070d6899bd1edae6ae4a17c7d90" id="r_a54a4b070d6899bd1edae6ae4a17c7d90"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a54a4b070d6899bd1edae6ae4a17c7d90">getRSSI</a> () override</td></tr>
-<tr class="memdesc:a54a4b070d6899bd1edae6ae4a17c7d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
+<tr class="memdesc:a54a4b070d6899bd1edae6ae4a17c7d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets received signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="separator:a54a4b070d6899bd1edae6ae4a17c7d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a171656d12a9909bbb04fc81be86ec2a6" id="r_a171656d12a9909bbb04fc81be86ec2a6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a171656d12a9909bbb04fc81be86ec2a6">getRSSI</a> (bool packet, bool skipReceive=false)</td></tr>
-<tr class="memdesc:a171656d12a9909bbb04fc81be86ec2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator.  <br /></td></tr>
+<tr class="memdesc:a171656d12a9909bbb04fc81be86ec2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets received signal strength indicator.  <br /></td></tr>
 <tr class="separator:a171656d12a9909bbb04fc81be86ec2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd912314a977f92c464d36d862329ffc" id="r_abd912314a977f92c464d36d862329ffc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#abd912314a977f92c464d36d862329ffc">setCRC</a> (bool enable, bool mode=false)</td></tr>
 <tr class="memdesc:abd912314a977f92c464d36d862329ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables CRC check of received packets.  <br /></td></tr>
@@ -996,7 +996,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>Gets recorded signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </p>
+<p>Gets received signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </p>
 <dl class="section return"><dt>Returns</dt><dd>RSSI value in dBm. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">PhysicalLayer</a>.</p>
@@ -1029,7 +1029,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
       </table>
 </div><div class="memdoc">
 
-<p>Gets recorded signal strength indicator. </p>
+<p>Gets received signal strength indicator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK. </td></tr>

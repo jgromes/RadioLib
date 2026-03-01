@@ -271,8 +271,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af85c16956c2250dbf338a298c074d28c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <br /></td></tr>
 <tr class="separator:af85c16956c2250dbf338a298c074d28c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cd2b2363501b2de064c9d1f32fabaa3" id="r_a6cd2b2363501b2de064c9d1f32fabaa3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a6cd2b2363501b2de064c9d1f32fabaa3">getRSSI</a> () override</td></tr>
-<tr class="memdesc:a6cd2b2363501b2de064c9d1f32fabaa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. Only available for LoRa or GFSK modem.  <br /></td></tr>
+<tr class="memdesc:a6cd2b2363501b2de064c9d1f32fabaa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Received Signal Strength Indicator) of the last received packet. Only available for LoRa or GFSK modem.  <br /></td></tr>
 <tr class="separator:a6cd2b2363501b2de064c9d1f32fabaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34bf9148cd5c0f31de8daec226a6c0dd" id="r_a34bf9148cd5c0f31de8daec226a6c0dd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a34bf9148cd5c0f31de8daec226a6c0dd">getRSSI</a> (bool packet, bool skipReceive=false)</td></tr>
+<tr class="memdesc:a34bf9148cd5c0f31de8daec226a6c0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Received Signal Strength Indicator).  <br /></td></tr>
+<tr class="separator:a34bf9148cd5c0f31de8daec226a6c0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a004782e6e5c6ad213c3b0c677bb8642d" id="r_a004782e6e5c6ad213c3b0c677bb8642d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a004782e6e5c6ad213c3b0c677bb8642d">getSNR</a> () override</td></tr>
 <tr class="memdesc:a004782e6e5c6ad213c3b0c677bb8642d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <br /></td></tr>
 <tr class="separator:a004782e6e5c6ad213c3b0c677bb8642d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1467,7 +1470,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <a id="a6cd2b2363501b2de064c9d1f32fabaa3" name="a6cd2b2363501b2de064c9d1f32fabaa3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cd2b2363501b2de064c9d1f32fabaa3">&#9670;&#160;</a></span>getRSSI()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cd2b2363501b2de064c9d1f32fabaa3">&#9670;&#160;</a></span>getRSSI() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1489,10 +1492,48 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. Only available for LoRa or GFSK modem. </p>
+<p>Gets RSSI (Received Signal Strength Indicator) of the last received packet. Only available for LoRa or GFSK modem. </p>
 <dl class="section return"><dt>Returns</dt><dd>RSSI of the last received packet in dBm. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a34bf9148cd5c0f31de8daec226a6c0dd" name="a34bf9148cd5c0f31de8daec226a6c0dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34bf9148cd5c0f31de8daec226a6c0dd">&#9670;&#160;</a></span>getRSSI() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float LR11x0::getRSSI </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>packet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>skipReceive</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets RSSI (Received Signal Strength Indicator). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. </td></tr>
+    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for instantaneous RSSI measurement. If false, after the RSSI measurement, the radio will be in standby mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>RSSI value in dBm. </dd></dl>
 
 </div>
 </div>

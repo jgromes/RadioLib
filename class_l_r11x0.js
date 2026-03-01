@@ -37,6 +37,7 @@ var class_l_r11x0 =
     [ "getPacketLength", "class_l_r11x0.html#af96883b2ca7a36a8921ee1cd222adebf", null ],
     [ "getPacketLength", "class_l_r11x0.html#ac1f541bdee1d983126ceae47940b8f9d", null ],
     [ "getRSSI", "class_l_r11x0.html#a6cd2b2363501b2de064c9d1f32fabaa3", null ],
+    [ "getRSSI", "class_l_r11x0.html#a34bf9148cd5c0f31de8daec226a6c0dd", null ],
     [ "getSNR", "class_l_r11x0.html#a004782e6e5c6ad213c3b0c677bb8642d", null ],
     [ "getTimeOnAir", "class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d", null ],
     [ "getVersionInfo", "class_l_r11x0.html#ac6b6b460ba12cd92a08df16e1fe33779", null ],
