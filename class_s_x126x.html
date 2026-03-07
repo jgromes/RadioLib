@@ -161,6 +161,12 @@ struct&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> (
 <tr class="memitem:a373012fb3276872238f654b66879a710" id="r_a373012fb3276872238f654b66879a710"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a373012fb3276872238f654b66879a710">scanChannel</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config) override</td></tr>
 <tr class="memdesc:a373012fb3276872238f654b66879a710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.  <br /></td></tr>
 <tr class="separator:a373012fb3276872238f654b66879a710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9abfc0187497ba4fe9a4b0765c41a4" id="r_a4e9abfc0187497ba4fe9a4b0765c41a4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a4e9abfc0187497ba4fe9a4b0765c41a4">resetAGC</a> ()</td></tr>
+<tr class="memdesc:a4e9abfc0187497ba4fe9a4b0765c41a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the AGC gain state by performing a warm sleep, recalibration, and image rejection calibration cycle. Re-applies DIO2 RF switch and RX boosted gain settings if previously configured. Leaves the radio in standby mode.  <br /></td></tr>
+<tr class="separator:a4e9abfc0187497ba4fe9a4b0765c41a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3febfd55b2759f98987afe681e82be1" id="r_ab3febfd55b2759f98987afe681e82be1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ab3febfd55b2759f98987afe681e82be1">calibrate</a> (uint8_t params)</td></tr>
+<tr class="memdesc:ab3febfd55b2759f98987afe681e82be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform calibration of the specified blocks.  <br /></td></tr>
+<tr class="separator:ab3febfd55b2759f98987afe681e82be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a882cec40d9aa98a0d536e6afb65b1719" id="r_a882cec40d9aa98a0d536e6afb65b1719"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a882cec40d9aa98a0d536e6afb65b1719">sleep</a> () override</td></tr>
 <tr class="memdesc:a882cec40d9aa98a0d536e6afb65b1719"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. Overload with warm start enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="separator:a882cec40d9aa98a0d536e6afb65b1719"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -900,6 +906,33 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ac1974cb6218782c557a673aeb4a99928">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ab3febfd55b2759f98987afe681e82be1" name="ab3febfd55b2759f98987afe681e82be1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3febfd55b2759f98987afe681e82be1">&#9670;&#160;</a></span>calibrate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::calibrate </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Perform calibration of the specified blocks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td>Calibration parameters - bitfield of RADIOLIB_SX126X_CALIBRATE_* values. Use RADIOLIB_SX126X_CALIBRATE_ALL to calibrate all blocks. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -2116,6 +2149,26 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4e9abfc0187497ba4fe9a4b0765c41a4" name="a4e9abfc0187497ba4fe9a4b0765c41a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e9abfc0187497ba4fe9a4b0765c41a4">&#9670;&#160;</a></span>resetAGC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::resetAGC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset the AGC gain state by performing a warm sleep, recalibration, and image rejection calibration cycle. Re-applies DIO2 RF switch and RX boosted gain settings if previously configured. Leaves the radio in standby mode. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>

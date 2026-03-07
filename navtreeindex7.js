@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"struct_l_r11x0_gnss_position__t.html#aa43d5bcce01522eb518cd8db0f73a057":[3,0,37,2],
+"struct_l_r11x0_gnss_position__t.html#afd8b7a02f519af12ddb7d0dba5288b3f":[3,0,37,3],
 "struct_l_r11x0_gnss_result__t.html":[3,0,38],
 "struct_l_r11x0_gnss_result__t.html#a2fcd901f5815f3e4760f61d2bc7a7a9b":[3,0,38,2],
 "struct_l_r11x0_gnss_result__t.html#a6142622b9fb790108546b4d09b063b6c":[3,0,38,0],
