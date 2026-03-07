@@ -185,6 +185,22 @@ class SX126x: public PhysicalLayer {
     int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
+      \brief Reset the AGC gain state by performing a warm sleep, recalibration, and
+      image rejection calibration cycle. Re-applies DIO2 RF switch and RX boosted gain
+      settings if previously configured. Leaves the radio in standby mode.
+      \returns \ref status_codes
+    */
+    int16_t resetAGC();
+
+    /*!
+      \brief Perform calibration of the specified blocks.
+      \param params Calibration parameters - bitfield of RADIOLIB_SX126X_CALIBRATE_* values.
+      Use RADIOLIB_SX126X_CALIBRATE_ALL to calibrate all blocks.
+      \returns \ref status_codes
+    */
+    int16_t calibrate(uint8_t params);
+
+    /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
       Overload with warm start enabled for PhysicalLayer compatibility.
       \returns \ref status_codes
@@ -889,6 +905,8 @@ class SX126x: public PhysicalLayer {
 
     uint32_t tcxoDelay = 0;
     uint8_t pwr = 0;
+    bool dio2RfSwitch = false;
+    bool rxBoostedGainMode = false;
 
     size_t implicitLen = 0;
     uint8_t invertIQEnabled = RADIOLIB_SX126X_LORA_IQ_STANDARD;

@@ -931,7 +931,6 @@ class LR11x0: public LRxxxx {
 #endif
     uint8_t wifiScanMode = 0;
     bool gnss = false;
-
     int16_t modSetup(float tcxoVoltage, uint8_t modem);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
