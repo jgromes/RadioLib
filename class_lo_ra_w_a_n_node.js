@@ -32,6 +32,7 @@ var class_lo_ra_w_a_n_node =
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#aafb2006b8d75549f667608156b5f8a5a", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#af9d5fcdbbb4fa357beedb820e395ae37", null ],
+    [ "setActivityLeds", "class_lo_ra_w_a_n_node.html#aea3edcd00d47db9a49db00dadefbea7b", null ],
     [ "setADR", "class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff", null ],
     [ "setBufferNonces", "class_lo_ra_w_a_n_node.html#ad99e2fa4738648a6f3efe72ff785def2", null ],
     [ "setBufferSession", "class_lo_ra_w_a_n_node.html#aedeb50c9ccb81e8092233d34e039cfa4", null ],

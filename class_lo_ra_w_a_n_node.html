@@ -207,6 +207,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>stopMulticastSession<
 <tr class="memitem:a5449e301634dff1838a1b024b4067034" id="r_a5449e301634dff1838a1b024b4067034"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">setDeviceStatus</a> (uint8_t battLevel)</td></tr>
 <tr class="memdesc:a5449e301634dff1838a1b024b4067034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set device status.  <br /></td></tr>
 <tr class="separator:a5449e301634dff1838a1b024b4067034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea3edcd00d47db9a49db00dadefbea7b" id="r_aea3edcd00d47db9a49db00dadefbea7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aea3edcd00d47db9a49db00dadefbea7b">setActivityLeds</a> (const uint32_t pins[4])</td></tr>
+<tr class="memdesc:aea3edcd00d47db9a49db00dadefbea7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pins for activity LEDs that will indicate when the radio is transmitting (Tx) or receiving (Rx).  <br /></td></tr>
+<tr class="separator:aea3edcd00d47db9a49db00dadefbea7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c7ae2edfe324e11498b13aa042665f" id="r_a16c7ae2edfe324e11498b13aa042665f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a16c7ae2edfe324e11498b13aa042665f">scheduleTransmission</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> tUplink)</td></tr>
 <tr class="memdesc:a16c7ae2edfe324e11498b13aa042665f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the exact time a transmission should occur. Note: this is the internal clock time. On Arduino platforms, this is the usual time supplied by millis(). If the supplied time is larger than the current time, <a class="el" href="class_lo_ra_w_a_n_node.html#a11c2fbe631063da69355f8d74f4bf3b8" title="Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.">sendReceive()</a> or uplink() will delay until the scheduled time.  <br /></td></tr>
 <tr class="separator:a16c7ae2edfe324e11498b13aa042665f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1234,6 +1237,32 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Window number &gt; 0 if downlink was received, 0 is no downlink was received, otherwise <a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aea3edcd00d47db9a49db00dadefbea7b" name="aea3edcd00d47db9a49db00dadefbea7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea3edcd00d47db9a49db00dadefbea7b">&#9670;&#160;</a></span>setActivityLeds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANNode::setActivityLeds </td>
+          <td>(</td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>pins</em>[4]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set pins for activity LEDs that will indicate when the radio is transmitting (Tx) or receiving (Rx). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pins</td><td>Array of 4 pin numbers: [Tx, Rx1, Rx2, RxBC]. Use RADIOLIB_NC to disable individual indicators. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"functions_vars_c.html":[3,3,2,2],
 "functions_vars_d.html":[3,3,2,3],
 "functions_vars_e.html":[3,3,2,4],
 "functions_vars_f.html":[3,3,2,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "struct_l_r11x0_gnss_almanac_status__t.html#acec44165b211b49be3ca624ae03bc7cc":[3,0,35,2],
 "struct_l_r11x0_gnss_almanac_status_part__t.html":[3,0,36],
 "struct_l_r11x0_gnss_position__t.html":[3,0,37],
-"struct_l_r11x0_gnss_position__t.html#a1dc2c58c51b870cccf6542005f8afdc8":[3,0,37,1],
-"struct_l_r11x0_gnss_position__t.html#a3fd469e32f9df19574cab167e32124e5":[3,0,37,0]
+"struct_l_r11x0_gnss_position__t.html#a1dc2c58c51b870cccf6542005f8afdc8":[3,0,37,1]
 };
