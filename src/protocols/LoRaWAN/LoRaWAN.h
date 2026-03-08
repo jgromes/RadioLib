@@ -849,6 +849,13 @@ class LoRaWANNode {
     void setDeviceStatus(uint8_t battLevel);
 
     /*!
+      \brief Set pins for activity LEDs that will indicate when the radio is transmitting (Tx) or receiving (Rx).
+      \param pins Array of 4 pin numbers: [Tx, Rx1, Rx2, RxBC]. 
+                  Use RADIOLIB_NC to disable individual indicators.
+    */
+    void setActivityLeds(const uint32_t pins[4]);
+
+    /*!
       \brief Set the exact time a transmission should occur. Note: this is the internal clock time.
       On Arduino platforms, this is the usual time supplied by millis().
       If the supplied time is larger than the current time, sendReceive() or uplink() will delay
@@ -1092,6 +1099,8 @@ class LoRaWANNode {
                                    RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, 
                                    RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS,
                                    0 };
+
+    uint32_t ledPins[4] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
 
     // offset between Tx and Rx1 (such that Rx1 has equal or lower DR)
     uint8_t rx1DrOffset = 0;

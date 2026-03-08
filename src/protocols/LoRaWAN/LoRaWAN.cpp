@@ -1200,6 +1200,11 @@ void LoRaWANNode::stopMulticastSession() {
 
   // stop any ongoing activity
   this->phyLayer->standby();
+  
+  if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
+    Module *mod = this->phyLayer->getMod();
+    mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
+  }
 
   // if in Class C, re-open RxC window with normal unicast configuration
   if(this->lwClass == RADIOLIB_LORAWAN_CLASS_C) {
@@ -1467,6 +1472,10 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
     }
   }
 
+  if(this->ledPins[0] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[0], mod->hal->GpioLevelHigh);
+  }
+
   // start transmission, and time the duration of launchMode() to offset window timing
   RadioLibTime_t spiStart = mod->hal->millis();
   state = this->phyLayer->launchMode();
@@ -1491,6 +1500,11 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
 
   // set the timestamp so that we can measure when to start receiving
   this->tUplinkEnd = mod->hal->millis();
+
+  if(this->ledPins[0] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[0], mod->hal->GpioLevelLow);
+  }
+
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink sent (ToA = %d ms)", toa);
 
   // increase Time on Air of the uplink sequence
@@ -1568,6 +1582,10 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
     this->sleepDelay(tWindow - tNow);
   }
 
+  if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelHigh);
+  }
+
   // open Rx window by starting receive with specified timeout
   state = this->phyLayer->launchMode();
   RadioLibTime_t tOpen = mod->hal->millis();
@@ -1595,6 +1613,9 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
     this->phyLayer->clearPacketReceivedAction();
     this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
     this->phyLayer->standby();
+    if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
+      mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
+    }
     return(0);  // no downlink
   }
   
@@ -1624,6 +1645,9 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // we have a message, clear actions, go to standby
   this->phyLayer->clearPacketReceivedAction();
   this->phyLayer->standby();
+  if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
+  }
 
   // if all windows passed without receiving anything, return 0 for no window
   if(!downlinkAction) {
@@ -1675,6 +1699,10 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
 
+  if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelHigh);
+  }
+
   // open RxC window by starting receive with specified timeout
   state = this->phyLayer->launchMode();
   RadioLibTime_t tOpen = mod->hal->millis();
@@ -1683,8 +1711,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
 
   if(timeout) {
     // wait for the DIO interrupt to fire (RxDone or RxTimeout)
-    // use a small additional delay in case the RxTimeout interrupt is slow to fire
-    while(!downlinkAction && mod->hal->millis() - tOpen <= timeout + this->scanGuard) {
+    while(!downlinkAction && mod->hal->millis() - tOpen <= timeout) {
       mod->hal->yield();
     }
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closed RxC window");
@@ -1700,6 +1727,9 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
       this->phyLayer->clearPacketReceivedAction();
       this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
       this->phyLayer->standby();
+      if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
+        mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
+      }
       return(0);  // no downlink
     }
 
@@ -1711,6 +1741,9 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
     // we have a message, clear actions, go to standby
     this->phyLayer->clearPacketReceivedAction();
     this->phyLayer->standby();
+    if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
+      mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
+    }
 
     // if all windows passed without receiving anything, return 0 for no window
     if(!downlinkAction) {
@@ -3214,6 +3247,17 @@ void LoRaWANNode::setCSMA(bool csmaEnabled, uint8_t maxChanges, uint8_t backoffM
 
 void LoRaWANNode::setDeviceStatus(uint8_t battLevel) {
   this->battLevel = battLevel;
+}
+
+void LoRaWANNode::setActivityLeds(const uint32_t pins[4]) {
+  Module *mod = this->phyLayer->getMod();
+  // configure each provided pin and store in the ledPins array
+  for(uint8_t i = 0; i < 4; i++) {
+    if(pins[i] != RADIOLIB_NC) {
+      mod->hal->pinMode(pins[i], mod->hal->GpioModeOutput);
+    }
+    this->ledPins[i] = pins[i];
+  }
 }
 
 void LoRaWANNode::scheduleTransmission(RadioLibTime_t tUplink) {

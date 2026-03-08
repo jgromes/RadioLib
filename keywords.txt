@@ -385,6 +385,7 @@ setDutyCycle	KEYWORD2
 setDwellTime	KEYWORD2
 setCSMA	KEYWORD2
 setDeviceStatus	KEYWORD2
+setActivityLeds	KEYWORD2
 scheduleTransmission	KEYWORD2
 getBand	KEYWORD2
 getClass	KEYWORD2
