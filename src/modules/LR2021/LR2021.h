@@ -678,6 +678,19 @@ class LR2021: public LRxxxx {
     */
     int16_t setGain(uint8_t gain);
 
+    /*!
+      \brief Read status of the last received packet.
+      Each parameter can be set to NULL if the caller is not intending to process it.
+      \param cr Coding rate of the last received packet
+      \param crc Will be set to true if the last packet had a CRC, false otherwise
+      \param packetLen Length of the last received packet in bytes
+      \param snrPacket SNR of the last received packet in dB
+      \param rssiPacket RSSI of the last received packet in dBm
+      \param rssiSignalPacket Estimation of the RSSI of LoRa signal after despreading in dBm
+      \returns \ref status_codes
+    */
+    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL);
+    
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -779,7 +792,6 @@ class LR2021: public LRxxxx {
     int16_t setLoRaCadParams(uint8_t numSymbols, bool preambleOnly, uint8_t pnrDelta, uint8_t cadExitMode, uint32_t timeout, uint8_t detPeak);
     int16_t setLoRaCad(void);
     int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);
-    int16_t getLoRaPacketStatus(uint8_t* crc, uint8_t* cr, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket);
     int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, const uint8_t* addr);
     int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops);
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
