@@ -24,6 +24,7 @@ var class_l_r2021 =
     [ "fixedPacketLengthMode", "class_l_r2021.html#a934a871e6f92b290541fe975f6f32bae", null ],
     [ "getChannelScanResult", "class_l_r2021.html#a5c8560915043a2c21892b51bc576ea73", null ],
     [ "getIrqFlags", "class_l_r2021.html#a3ed89cc7405fc0e0157a146cb1aee07c", null ],
+    [ "getLoRaPacketStatus", "class_l_r2021.html#a766ef834a27b53d2ab74b0e98c77e2c2", null ],
     [ "getModem", "class_l_r2021.html#a8d7069e59abecae1e4b48de5920da4b3", null ],
     [ "getPacketLength", "class_l_r2021.html#aea734806d4056f8ea47b4f828bcf8b3b", null ],
     [ "getRSSI", "class_l_r2021.html#a444ec095ed8bd08df909b3b1b899d35e", null ],
