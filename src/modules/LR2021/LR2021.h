@@ -835,7 +835,7 @@ class LR2021: public LRxxxx {
     int16_t setOokSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
     int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);
     int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
-    int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
+    int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiHigh, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
     int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, bool syncWordRaw, bool sofDelimiterRising, uint8_t sofDelimiterLen);
     int16_t setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init);
 
