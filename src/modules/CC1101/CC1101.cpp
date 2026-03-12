@@ -291,6 +291,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
 
   // Keep feeding the FIFO until the packet is done
+  start = this->mod->hal->micros();
   while (dataSent < len) {
     uint8_t fifoBytes = 0;
     uint8_t prevFifobytes = 0;
@@ -307,6 +308,10 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
         SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(&data[dataSent]), bytesToWrite);
         dataSent += bytesToWrite;
     }
+    if(this->mod->hal->micros() - start > 1600) {
+      //standby();
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }    
   }
   return(state);
 }
