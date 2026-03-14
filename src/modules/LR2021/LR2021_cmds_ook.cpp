@@ -64,7 +64,7 @@ int16_t LR2021::getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* 
   return(state);
 }
 
-int16_t LR2021::getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi) {
+int16_t LR2021::getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiHigh, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi) {
   uint8_t buff[6] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_OOK_PACKET_STATUS, false, buff, sizeof(buff));
   uint16_t raw;
@@ -74,10 +74,10 @@ int16_t LR2021::getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* r
     raw |= (buff[4] & 0x04) >> 2;
     *rssiAvg = (float)raw / -2.0f;
   }
-  if(rssiSync) {
+  if(rssiHigh) {
     raw = (uint16_t)buff[3] << 1;
     raw |= (buff[4] & 0x01);
-    *rssiSync = (float)raw / -2.0f;
+    *rssiHigh = (float)raw / -2.0f;
   }
   if(addrMatchNode) { *addrMatchNode = (buff[4] & 0x10); }
   if(addrMatchBroadcast) { *addrMatchBroadcast = (buff[4] & 0x20); }

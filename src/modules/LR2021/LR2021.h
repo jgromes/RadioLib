@@ -604,6 +604,7 @@ class LR2021: public LRxxxx {
     /*!
       \brief Gets RSSI (Received Signal Strength Indicator).
       \param packet Whether to read last packet RSSI, or the current value.
+      NOTE: With OOK modem, the "packet" RSSI value is the received power level of the high bits (digital 1).
       \param skipReceive Set to true to skip putting radio in receive mode for instantaneous RSSI measurement.
       If false, after the RSSI measurement, the radio will be in standby mode.
       \returns RSSI value in dBm.
@@ -847,7 +848,7 @@ class LR2021: public LRxxxx {
     int16_t setOokSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
     int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);
     int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
-    int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
+    int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiHigh, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
     int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, bool syncWordRaw, bool sofDelimiterRising, uint8_t sofDelimiterLen);
     int16_t setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init);
 
