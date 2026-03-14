@@ -516,6 +516,9 @@
 #define RADIOLIB_LR2021_OOK_MANCHESTER_ON                       (0x01UL << 0)   //  3     0                          enabled
 #define RADIOLIB_LR2021_OOK_MANCHESTER_ON_INV                   (0x09UL << 0)   //  3     0                          enabled, inverted
 
+// RADIOLIB_LR2021_CMD_SET_OOK_SYNCWORD
+#define RADIOLIB_LR2021_OOK_SYNC_WORD_LEN                       (4)
+
 // RADIOLIB_LR2021_CMD_SET_TX_TEST_MODE
 #define RADIOLIB_LR2021_TX_TEST_MODE_NORMAL_TX                  (0x00UL << 0)   //  7     0     Tx test mode: normal
 #define RADIOLIB_LR2021_TX_TEST_MODE_INF_PREAMBLE               (0x01UL << 0)   //  7     0                   infinite preamble
