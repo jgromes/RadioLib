@@ -1431,7 +1431,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <p>Gets RSSI (Received Signal Strength Indicator). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. </td></tr>
+    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. NOTE: With OOK modem, the "packet" RSSI value is the received power level of the high bits (digital 1). </td></tr>
     <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for instantaneous RSSI measurement. If false, after the RSSI measurement, the radio will be in standby mode. </td></tr>
   </table>
   </dd>
