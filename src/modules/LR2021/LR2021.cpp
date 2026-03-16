@@ -514,8 +514,7 @@ int16_t LR2021::startChannelScan() {
     .cad = {
       .symNum = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
-      .pblAny = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
-      .pnrDelta = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
