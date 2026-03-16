@@ -739,17 +739,17 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t pblAny, uin
     num = 2;
   }
   
-  // Reference values ​​from the datasheet, for num = 2.
+  // reference values ​​from the datasheet, for num = 2.
   const uint8_t detPeakValues[8] = { 56, 56, 56, 58, 58, 60, 64, 68 };
   uint8_t peak = detPeak;
   if(peak == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
     peak = detPeakValues[this->spreadingFactor - 5];
   }
 
-  //default use Detect only preamble.
+  // default use Detect only preamble.
   bool pbl = (pblAny >= 1 );
 
-  //default don't use acceleration.
+  // default don't use acceleration.
   uint8_t delta = pnrDelta; 
   if(delta == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
     delta = 0;
