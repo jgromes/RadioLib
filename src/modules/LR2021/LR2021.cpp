@@ -352,7 +352,8 @@ int16_t LR2021::scanChannel() {
     .cad = {
       .symNum = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
-      .detMin = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .pblAny = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .pnrDelta = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
@@ -513,7 +514,8 @@ int16_t LR2021::startChannelScan() {
     .cad = {
       .symNum = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
-      .detMin = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .pblAny = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .pnrDelta = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
@@ -550,7 +552,7 @@ int16_t LR2021::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout));
+  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.pblAny, config.cad.pnrDelta, config.cad.exitMode, config.cad.timeout));
 }
 
 int16_t LR2021::getChannelScanResult() {
@@ -721,7 +723,7 @@ int16_t LR2021::config(uint8_t modem) {
   return(state);
 }
 
-int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
+int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t pblAny, uint8_t pnrDelta, uint8_t exitMode, RadioLibTime_t timeout) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -737,16 +739,21 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
     num = 2;
   }
   
-  const uint8_t detPeakValues[8] = { 48, 48, 50, 55, 55, 59, 61, 65 };
+  // Reference values ​​from the datasheet, for num = 2.
+  const uint8_t detPeakValues[8] = { 56, 56, 56, 58, 58, 60, 64, 68 };
   uint8_t peak = detPeak;
   if(peak == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
     peak = detPeakValues[this->spreadingFactor - 5];
   }
 
-  uint8_t min = detMin;
-  if(min == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
-    min = 10;
-  }
+  //default use Detect only preamble.
+  bool pbl = (pblAny >= 1 );
+
+  //default don't use acceleration.
+  uint8_t delta = pnrDelta; 
+  if(delta == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
+    delta = 0;
+  } 
 
   uint8_t mode = exitMode; 
   if(mode == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
@@ -755,17 +762,12 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
 
   uint32_t timeout_raw = (float)timeout / 30.52f;
 
-  //! \TODO: [LR2021] The datasheet says this CAD is only based on RSSI, but the reference to the LoRa CAD is GetLoraRxStats ...?
-  (void)peak;
-  (void)min;
-
-  // set CAD parameters
-  //! \TODO: [LR2021] add configurable exit mode and timeout
-  state = setCadParams(timeout_raw, num, mode, timeout_raw);
+  // set Lora CAD parameters
+  state = setLoRaCadParams(num, pbl, delta, mode, timeout_raw, peak);
   RADIOLIB_ASSERT(state);
 
-  // start CAD
-  return(setCad());
+  // start LoraCAD
+  return(setLoRaCad());
 }
 
 RadioLibTime_t LR2021::getTimeOnAir(size_t len) {

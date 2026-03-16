@@ -135,6 +135,12 @@ struct CADScanConfig_t {
   
   /*! \brief Number of minimum detection symbols */
   uint8_t detMin;
+
+  /*! \brief Determines the type of symbols that trigger CAD detection. */
+  uint8_t pblAny;
+ 
+  /*! \brief Controls the possible acceleration of CAD detection */
+  uint8_t pnrDelta;
   
   /*! \brief Exit mode after signal detection is complete - module-specific value */
   uint8_t exitMode;
