@@ -18,7 +18,7 @@
 
 // frequently used scrambling configurations
 // the final bit (x^0 term in polynomial notation) is assumed to always be present
-#define RADIOLIB_SCRAMBLER_G3RUH_POLY                           (0x00021001UL)    // x^17 + x^12 + 1
+#define RADIOLIB_SCRAMBLER_G3RUH_POLY                           (0x00010800UL)    // x^17 + x^12 + 1
 #define RADIOLIB_SCRAMBLER_G3RUH_INIT                           (0x00000000UL)
 
 /*!

@@ -263,6 +263,11 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t preL
   return(phyLayer->startDirect());
 }
 
+void AX25Client::setScrambler(uint32_t poly, uint32_t init) {
+  this->scramblerPoly = poly;
+  this->scramblerInit = init;
+}
+
 #if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t AX25Client::transmit(String& str, const char* destCallsign, uint8_t destSSID) {
   return(transmit(str.c_str(), destCallsign, destSSID));
@@ -472,6 +477,11 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
         SET_BIT_IN_ARRAY_MSB(stuffedFrameBuff, currBitPos);
       }
     }
+  }
+
+  // do the scrambling
+  if(scramblerPoly) {
+    rlb_scrambler(stuffedFrameBuff, stuffedFrameBuffLen, scramblerPoly, scramblerInit, true);
   }
 
   // transmit
