@@ -123,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aadeefb210a0b5170d4e8d281c2257e73" id="r_aadeefb210a0b5170d4e8d281c2257e73"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#aadeefb210a0b5170d4e8d281c2257e73">begin</a> (const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preLen=8)</td></tr>
 <tr class="memdesc:aadeefb210a0b5170d4e8d281c2257e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="separator:aadeefb210a0b5170d4e8d281c2257e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee6698d4368cd724a4a0505ab55a845" id="r_a2ee6698d4368cd724a4a0505ab55a845"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a2ee6698d4368cd724a4a0505ab55a845">setScrambler</a> (uint32_t poly, uint32_t init=0)</td></tr>
+<tr class="memdesc:a2ee6698d4368cd724a4a0505ab55a845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set scrambling polynomail and initial value.  <br /></td></tr>
+<tr class="separator:a2ee6698d4368cd724a4a0505ab55a845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a985790943f3f3e06a2dfdd36977d0b98" id="r_a985790943f3f3e06a2dfdd36977d0b98"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">transmit</a> (const char *str, const char *destCallsign, uint8_t destSSID=0x00)</td></tr>
 <tr class="memdesc:a985790943f3f3e06a2dfdd36977d0b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit unnumbered information (UI) frame.  <br /></td></tr>
 <tr class="separator:a985790943f3f3e06a2dfdd36977d0b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -374,6 +377,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2ee6698d4368cd724a4a0505ab55a845" name="a2ee6698d4368cd724a4a0505ab55a845"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee6698d4368cd724a4a0505ab55a845">&#9670;&#160;</a></span>setScrambler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AX25Client::setScrambler </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>poly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>init</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set scrambling polynomail and initial value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">poly</td><td>Scramling polynomial. Use RADIOLIB_SCRAMBLER_G3RUH_POLY for G3RUH coding. </td></tr>
+    <tr><td class="paramname">poly</td><td>Initial scrambler value. Use RADIOLIB_SCRAMBLER_G3RUH_INIT for G3RUH coding. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
