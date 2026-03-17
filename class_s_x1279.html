@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2a0634c2a60c21045388377a2c8c2617"><td class="mdescLeft">&#160;</td><td class="mdescRight">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <br /></td></tr>
 <tr class="separator:a2a0634c2a60c21045388377a2c8c2617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab60691d073ca75ef09dab7a8f28fb7fb" id="r_ab60691d073ca75ef09dab7a8f28fb7fb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1279.html#ab60691d073ca75ef09dab7a8f28fb7fb">setFrequency</a> (float freq) override</td></tr>
-<tr class="memdesc:ab60691d073ca75ef09dab7a8f28fb7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 960.0 MHz.  <br /></td></tr>
+<tr class="memdesc:ab60691d073ca75ef09dab7a8f28fb7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 160.0 MHz, 410.0 to 480.0 MHz and 779.0 to 960 MHz.  <br /></td></tr>
 <tr class="separator:ab60691d073ca75ef09dab7a8f28fb7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea8bd74e7c5d7b97d4fe4a8182680d5c" id="r_aea8bd74e7c5d7b97d4fe4a8182680d5c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1279.html#aea8bd74e7c5d7b97d4fe4a8182680d5c">setModem</a> (ModemType_t modem) override</td></tr>
 <tr class="memdesc:aea8bd74e7c5d7b97d4fe4a8182680d5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <br /></td></tr>
@@ -801,7 +801,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>Sets carrier frequency. Allowed values range from 137.0 MHz to 960.0 MHz. </p>
+<p>Sets carrier frequency. Allowed values range from 137.0 MHz to 160.0 MHz, 410.0 to 480.0 MHz and 779.0 to 960 MHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
