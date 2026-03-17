@@ -352,8 +352,7 @@ int16_t LR2021::scanChannel() {
     .cad = {
       .symNum = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
-      .pblAny = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
-      .pnrDelta = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR2021_CAD_PARAM_DEFAULT,
       .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
@@ -551,7 +550,7 @@ int16_t LR2021::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.pblAny, config.cad.pnrDelta, config.cad.exitMode, config.cad.timeout));
+  return(startCad(config.cad.symNum, config.cad.detPeak, this->pblAny, this->pnrDelta, config.cad.exitMode, config.cad.timeout));
 }
 
 int16_t LR2021::getChannelScanResult() {
@@ -745,14 +744,10 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t pblAny, uin
     peak = detPeakValues[this->spreadingFactor - 5];
   }
 
-  // default use Detect only preamble.
   bool pbl = (pblAny >= 1 );
 
   // default don't use acceleration.
   uint8_t delta = pnrDelta; 
-  if(delta == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
-    delta = 0;
-  } 
 
   uint8_t mode = exitMode; 
   if(mode == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {

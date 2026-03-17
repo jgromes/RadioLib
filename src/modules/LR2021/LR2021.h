@@ -42,6 +42,12 @@ class LR2021: public LRxxxx {
     */
     uint32_t irqDioNum = 5;
 
+    /*! \brief Determines the type of symbols that trigger CAD detection. */
+    uint8_t pblAny = 0;
+  
+    /*! \brief Controls the possible acceleration of CAD detection */
+    uint8_t pnrDelta = 0;
+
     /*!
       \brief Custom operation modes for LR2021.
       Needed because LR2021 has several modems (sub-GHz, 2.4 GHz etc.) in one package
