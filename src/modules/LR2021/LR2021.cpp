@@ -550,7 +550,7 @@ int16_t LR2021::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  return(startCad(config.cad.symNum, config.cad.detPeak, this->pblAny, this->pnrDelta, config.cad.exitMode, config.cad.timeout));
+  return(startCad(config.cad.symNum, config.cad.detPeak, this->fastCad, config.cad.exitMode, config.cad.timeout));
 }
 
 int16_t LR2021::getChannelScanResult() {
@@ -721,7 +721,7 @@ int16_t LR2021::config(uint8_t modem) {
   return(state);
 }
 
-int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t pblAny, uint8_t pnrDelta, uint8_t exitMode, RadioLibTime_t timeout) {
+int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t exitMode, RadioLibTime_t timeout) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -731,23 +731,21 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t pblAny, uin
   }
 
   // select CAD parameters
-  //! \TODO: [LR2021] the magic numbers for CAD are based on Semtech examples, this is probably suboptimal
   uint8_t num = symbolNum;
   if(num == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
     num = 2;
   }
   
-  // reference values ​​from the datasheet, for num = 2.
+  // reference values ​​from the datasheet for 2 symbols
+  //! \TODO: [LR2021] allow CAD peak detection autoconfiguration
   const uint8_t detPeakValues[8] = { 56, 56, 56, 58, 58, 60, 64, 68 };
   uint8_t peak = detPeak;
   if(peak == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
     peak = detPeakValues[this->spreadingFactor - 5];
   }
 
-  bool pbl = (pblAny >= 1 );
-
-  // default don't use acceleration.
-  uint8_t delta = pnrDelta; 
+  // in Fast CAD mode enable acceleration
+  uint8_t pnrDelta = fast ? RADIOLIB_LR2021_LORA_CAD_PNR_DELTA_FAST : RADIOLIB_LR2021_LORA_CAD_PNR_DELTA_STANDARD;
 
   uint8_t mode = exitMode; 
   if(mode == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
@@ -756,8 +754,9 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t pblAny, uin
 
   uint32_t timeout_raw = (float)timeout / 30.52f;
 
-  // set Lora CAD parameters
-  state = setLoRaCadParams(num, pbl, delta, mode, timeout_raw, peak);
+  // set LoRa CAD parameters
+  // preamble only mode is intentionally disabled, as it is unreliable according to the datasheet
+  state = setLoRaCadParams(num, false, pnrDelta, mode, timeout_raw, peak);
   RADIOLIB_ASSERT(state);
 
   // start LoraCAD

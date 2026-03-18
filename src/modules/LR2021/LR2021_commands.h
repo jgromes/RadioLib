@@ -404,6 +404,10 @@
 #define RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE                  (0x12UL << 0)   //  7     0     LoRa sync word: 0x12 (private networks)
 #define RADIOLIB_LR2021_LORA_SYNC_WORD_LORAWAN                  (0x34UL << 0)   //  7     0                     0x34 (LoRaWAN reserved)
 
+// RADIOLIB_LR2021_CMD_SET_LORA_CAD_PARAMS
+#define RADIOLIB_LR2021_LORA_CAD_PNR_DELTA_STANDARD             (0x00UL << 0)   //  7     0     LoRa CAD speed: normal
+#define RADIOLIB_LR2021_LORA_CAD_PNR_DELTA_FAST                 (0x08UL << 0)   //  7     0                     fast CAD
+
 // RADIOLIB_LR2021_CMD_SET_LORA_HOPPING
 #define RADIOLIB_LR2021_LORA_HOPPING_DISABLED                   (0x00UL << 6)   //  7     6     LoRa intra-packet hopping: disabled
 #define RADIOLIB_LR2021_LORA_HOPPING_ENABLED                    (0x01UL << 6)   //  7     6                                enabled

@@ -42,11 +42,12 @@ class LR2021: public LRxxxx {
     */
     uint32_t irqDioNum = 5;
 
-    /*! \brief Determines the type of symbols that trigger CAD detection. */
-    uint8_t pblAny = 0;
-  
-    /*! \brief Controls the possible acceleration of CAD detection */
-    uint8_t pnrDelta = 0;
+    /*! 
+      \brief Determines the type of Lora CAD to perform, either "standard" CAD
+      (same as is implem,ented LR11x0, SX126x and others), or a "fast" CAD if set to true.
+      If there is no signal to be detected, fast CAD should return faster than standard CAD.
+    */
+    bool fastCad = false;
 
     /*!
       \brief Custom operation modes for LR2021.
@@ -724,7 +725,7 @@ class LR2021: public LRxxxx {
     bool findChip(void);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
-    int16_t startCad(uint8_t symbolNum, uint8_t detPeak,  uint8_t pblAny, uint8_t pnrDelta, uint8_t exitMode, RadioLibTime_t timeout);
+    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t exitMode, RadioLibTime_t timeout);
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
