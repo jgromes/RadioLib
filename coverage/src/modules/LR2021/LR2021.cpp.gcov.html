@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">143</td>
-            <td class="headerCovTableEntry">566</td>
+            <td class="headerCovTableEntry">565</td>
             <td class="headerCovTableEntryLo">25.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-03-19 17:12:47</td>
+            <td class="headerValue">2026-03-19 17:32:05</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">32</td>
@@ -1106,12 +1106,10 @@
 <a name="1044"><span class="lineNum">    1044 </span>            : }</a>
 <a name="1045"><span class="lineNum">    1045 </span>            : </a>
 <a name="1046"><span class="lineNum">    1046 </span><span class="lineNoCov">          0 : int16_t LR2021::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC){</span></a>
-<a name="1047"><span class="lineNum">    1047 </span>            :   int16_t state;</a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineNoCov">          0 :   state = this-&gt;getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL);</span></a>
-<a name="1049"><span class="lineNum">    1049 </span><span class="lineNoCov">          0 :   return (state);</span></a>
-<a name="1050"><span class="lineNum">    1050 </span>            : }</a>
-<a name="1051"><span class="lineNum">    1051 </span>            : </a>
-<a name="1052"><span class="lineNum">    1052 </span>            : #endif</a>
+<a name="1047"><span class="lineNum">    1047 </span><span class="lineNoCov">          0 :   return(this-&gt;getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL));</span></a>
+<a name="1048"><span class="lineNum">    1048 </span>            : }</a>
+<a name="1049"><span class="lineNum">    1049 </span>            : </a>
+<a name="1050"><span class="lineNum">    1050 </span>            : #endif</a>
 </pre>
       </td>
     </tr>
