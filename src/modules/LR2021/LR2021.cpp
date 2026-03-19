@@ -1043,4 +1043,10 @@ uint8_t LR2021::randomByte() {
   return((uint8_t)num);
 }
 
+int16_t LR2021::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC){
+  int16_t state;
+  state = this->getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL);
+  return (state);
+}
+
 #endif
