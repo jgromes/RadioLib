@@ -691,7 +691,15 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL);
-    
+
+    /*!
+      \brief Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.
+      \param cr Pointer to variable to store the coding rate.
+      \param hasCRC Pointer to variable to store the CRC status.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
