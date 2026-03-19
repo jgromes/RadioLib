@@ -354,6 +354,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a766ef834a27b53d2ab74b0e98c77e2c2" id="r_a766ef834a27b53d2ab74b0e98c77e2c2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a766ef834a27b53d2ab74b0e98c77e2c2">getLoRaPacketStatus</a> (uint8_t *cr, bool *crc, uint8_t *packetLen=NULL, float *snrPacket=NULL, float *rssiPacket=NULL, float *rssiSignalPacket=NULL)</td></tr>
 <tr class="memdesc:a766ef834a27b53d2ab74b0e98c77e2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read status of the last received packet. Each parameter can be set to NULL if the caller is not intending to process it.  <br /></td></tr>
 <tr class="separator:a766ef834a27b53d2ab74b0e98c77e2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f88f57889841379423aef67aaf8a7e0" id="r_a1f88f57889841379423aef67aaf8a7e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a1f88f57889841379423aef67aaf8a7e0">getLoRaRxHeaderInfo</a> (uint8_t *cr, bool *hasCRC)</td></tr>
+<tr class="memdesc:a1f88f57889841379423aef67aaf8a7e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.  <br /></td></tr>
+<tr class="separator:a1f88f57889841379423aef67aaf8a7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1295,6 +1298,44 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
     <tr><td class="paramname">snrPacket</td><td>SNR of the last received packet in dB </td></tr>
     <tr><td class="paramname">rssiPacket</td><td>RSSI of the last received packet in dBm </td></tr>
     <tr><td class="paramname">rssiSignalPacket</td><td>Estimation of the RSSI of LoRa signal after despreading in dBm </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1f88f57889841379423aef67aaf8a7e0" name="a1f88f57889841379423aef67aaf8a7e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f88f57889841379423aef67aaf8a7e0">&#9670;&#160;</a></span>getLoRaRxHeaderInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getLoRaRxHeaderInfo </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool *&#160;</td>
+          <td class="paramname"><em>hasCRC</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cr</td><td>Pointer to variable to store the coding rate. </td></tr>
+    <tr><td class="paramname">hasCRC</td><td>Pointer to variable to store the CRC status. </td></tr>
   </table>
   </dd>
 </dl>

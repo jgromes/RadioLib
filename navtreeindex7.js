@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"struct_l_r11x0_gnss_almanac_status__t.html#acec44165b211b49be3ca624ae03bc7cc":[3,0,35,2],
 "struct_l_r11x0_gnss_almanac_status_part__t.html":[3,0,36],
 "struct_l_r11x0_gnss_position__t.html":[3,0,37],
 "struct_l_r11x0_gnss_position__t.html#a1dc2c58c51b870cccf6542005f8afdc8":[3,0,37,1],
