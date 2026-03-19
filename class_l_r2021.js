@@ -92,5 +92,6 @@ var class_l_r2021 =
     [ "transmit", "class_l_r2021.html#a8126dd09cf4c51eabcf7f72dc03b068d", null ],
     [ "transmitDirect", "class_l_r2021.html#a670691f6a40a82f2e6b25e90c4200f57", null ],
     [ "variablePacketLengthMode", "class_l_r2021.html#a68728e2b6347b49bae942a9360f40988", null ],
+    [ "fastCad", "class_l_r2021.html#a24b3a41d84fc6a0ebc214479f163eb71", null ],
     [ "irqDioNum", "class_l_r2021.html#a66b9703e39e95dc14e72328aee9becd0", null ]
 ];
