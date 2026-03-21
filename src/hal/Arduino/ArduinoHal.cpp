@@ -10,7 +10,7 @@ void ArduinoHal::init() {
   if(initInterface) {
     spiBegin();
   }
-  #if defined(ARDUINO_ARCH_STM32)
+  #if defined(ARDUINO_ARCH_STM32) && defined(DWT_BASE)
     dwt_init();
   #endif
 }
