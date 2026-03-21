@@ -84,7 +84,7 @@ void SX1278::reset() {
 
 int16_t SX1278::setFrequency(float freq) {
   if(!(((freq >= 137.0f) && (freq <= 175.0f)) ||
-       ((freq >= 410.0f) && (freq <= 525.0f)))) {
+       ((freq >= 400.0f) && (freq <= 525.0f)))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
 

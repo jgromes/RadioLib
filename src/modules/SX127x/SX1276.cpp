@@ -70,7 +70,7 @@ int16_t SX1276::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 
 int16_t SX1276::setFrequency(float freq) {
   if(!(((freq >= 137.0f) && (freq <= 175.0f)) ||
-       ((freq >= 410.0f) && (freq <= 525.0f)) ||
+       ((freq >= 400.0f) && (freq <= 525.0f)) ||
        ((freq >= 862.0f) && (freq <= 1020.0f)))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
