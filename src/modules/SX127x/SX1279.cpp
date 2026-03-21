@@ -69,8 +69,12 @@ int16_t SX1279::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 }
 
 int16_t SX1279::setFrequency(float freq) {
+  // NOTE: The datasheet specifies Band 2 as 410-480 MHz, but the hardware has been
+  // verified to work down to ~395 MHz. The lower bound is set here to 395 MHz to
+  // accommodate real-world use cases (e.g. TinyGS satellites, radiosondes) while
+  // adding a small margin below the 400 MHz practical limit.
   if(!(((freq >= 137.0f) && (freq <= 160.0f)) ||
-       ((freq >= 400.0f) && (freq <= 480.0f)) ||
+       ((freq >= 395.0f) && (freq <= 480.0f)) ||
        ((freq >= 779.0f) && (freq <= 960.0f)))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
