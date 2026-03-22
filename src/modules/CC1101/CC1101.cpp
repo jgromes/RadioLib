@@ -293,7 +293,10 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
 
   // keep feeding the FIFO until the packet is done
-  while (dataSent < len) {
+  // calculate timeout (5ms + 500 % of expected time-on-air)
+  RadioLibTime_t timeout = 5 + (RadioLibTime_t)((((float)(len * 8)) / this->bitRate) * 5);
+  start = this->mod->hal->millis();
+  while(dataSent < len) {
     uint8_t fifoBytes = 0;
     uint8_t prevFifobytes = 0;
 
@@ -304,11 +307,17 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
       prevFifobytes = SPIgetRegValue(RADIOLIB_CC1101_REG_TXBYTES, 6, 0);
     } while(fifoBytes != prevFifobytes);
 
-    //If there is room add more data to the FIFO
+    // if there is room, add more data to the FIFO
     if(fifoBytes < RADIOLIB_CC1101_FIFO_SIZE) {
       uint8_t bytesToWrite = RADIOLIB_MIN((uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - fifoBytes), (uint8_t)(len - dataSent));
       SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(&data[dataSent]), bytesToWrite);
       dataSent += bytesToWrite;
+    }
+
+    // check a timeout - this really shouldn't happen, but some packets can be quite long
+    if(this->mod->hal->millis() - start > timeout) {
+      (void)finishTransmit();
+      return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
