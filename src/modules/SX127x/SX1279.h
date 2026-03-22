@@ -58,7 +58,7 @@ class SX1279: public SX1278 {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values range from 137.0 MHz to 160.0 MHz, 410.0 to 480.0 MHz and 779.0 to 960 MHz.
+      \brief Sets carrier frequency. Allowed values range from 137.0 MHz to 160.0 MHz, 395.0 to 480.0 MHz (datasheet minimum is 410.0 MHz, hardware works lower) and 779.0 to 960 MHz.
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */

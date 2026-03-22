@@ -83,8 +83,12 @@ void SX1278::reset() {
 }
 
 int16_t SX1278::setFrequency(float freq) {
+  // NOTE: The datasheet specifies Band 2 as 410-525 MHz, but the hardware has been
+  // verified to work down to ~395 MHz. The lower bound is set here to 395 MHz to
+  // accommodate real-world use cases (e.g. TinyGS satellites, radiosondes) while
+  // adding a small margin below the 400 MHz practical limit.
   if(!(((freq >= 137.0f) && (freq <= 175.0f)) ||
-       ((freq >= 410.0f) && (freq <= 525.0f)))) {
+       ((freq >= 395.0f) && (freq <= 525.0f)))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
 
