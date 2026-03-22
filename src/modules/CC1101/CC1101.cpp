@@ -311,6 +311,11 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
       dataSent += bytesToWrite;
     }
   }
+
+  // enable interrupt for the final part of the packet
+  if(len > RADIOLIB_CC1101_FIFO_SIZE) {
+    state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 5, 0);
+  }
   
   return(state);
 }
