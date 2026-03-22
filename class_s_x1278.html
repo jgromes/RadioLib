@@ -130,7 +130,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6d60902ac59b653a9eb83e82a932f7ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin.  <br /></td></tr>
 <tr class="separator:a6d60902ac59b653a9eb83e82a932f7ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb4d95d3b2798cf8ea94890ae71dcc59" id="r_adb4d95d3b2798cf8ea94890ae71dcc59"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#adb4d95d3b2798cf8ea94890ae71dcc59">setFrequency</a> (float freq) override</td></tr>
-<tr class="memdesc:adb4d95d3b2798cf8ea94890ae71dcc59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 175.0 MHz and 410.0 to 525.0 MHz.  <br /></td></tr>
+<tr class="memdesc:adb4d95d3b2798cf8ea94890ae71dcc59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 175.0 MHz and 395.0 to 525.0 MHz (datasheet minimum is 410.0 MHz, hardware works lower).  <br /></td></tr>
 <tr class="separator:adb4d95d3b2798cf8ea94890ae71dcc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46c27ed1ebaae4e3ed8afe3ae6941dd6" id="r_a46c27ed1ebaae4e3ed8afe3ae6941dd6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a46c27ed1ebaae4e3ed8afe3ae6941dd6">setBandwidth</a> (float bw)</td></tr>
 <tr class="memdesc:a46c27ed1ebaae4e3ed8afe3ae6941dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in LoRa mode.  <br /></td></tr>
@@ -1372,7 +1372,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>Sets carrier frequency. Allowed values range from 137.0 MHz to 175.0 MHz and 410.0 to 525.0 MHz. </p>
+<p>Sets carrier frequency. Allowed values range from 137.0 MHz to 175.0 MHz and 395.0 to 525.0 MHz (datasheet minimum is 410.0 MHz, hardware works lower). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
