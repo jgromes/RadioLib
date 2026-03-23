@@ -857,6 +857,7 @@ class SX126x: public PhysicalLayer {
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
     int16_t calibrateImage(const uint8_t* data);
+    int16_t tryGetPacketType(uint8_t* type);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
@@ -868,7 +869,9 @@ class SX126x: public PhysicalLayer {
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     int16_t setRegulatorMode(uint8_t mode);
     uint8_t getStatus();
+    int16_t tryGetPacketStatus(uint32_t* status);
     uint32_t getPacketStatus();
+    int16_t tryGetPacketLength(size_t* length, bool update = true, uint8_t* offset = NULL);
     uint16_t getDeviceErrors();
     int16_t clearDeviceErrors();
 

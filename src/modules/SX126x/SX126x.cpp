@@ -604,7 +604,9 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   
   // get packet length and Rx buffer offset
   uint8_t offset = 0;
-  size_t length = getPacketLength(true, &offset);
+  size_t length = 0;
+  state = tryGetPacketLength(&length, true, &offset);
+  RADIOLIB_ASSERT(state);
   if((len != 0) && (len < length)) {
     // user requested less data than we got, only return what was requested
     length = len;
@@ -690,7 +692,9 @@ float SX126x::getRSSI() {
 float SX126x::getRSSI(bool packet) {
   if(packet) { 
     // get last packet RSSI from packet status
-    uint32_t packetStatus = getPacketStatus();
+    uint32_t packetStatus = 0;
+    int16_t state = tryGetPacketStatus(&packetStatus);
+    RADIOLIB_ASSERT(state);
     uint8_t rssiPkt = packetStatus & 0xFF;
     return(-1.0 * rssiPkt/2.0);
   } else {
@@ -703,12 +707,17 @@ float SX126x::getRSSI(bool packet) {
 
 float SX126x::getSNR() {
   // check active modem
-  if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
+  uint8_t packetType = 0;
+  int16_t state = tryGetPacketType(&packetType);
+  RADIOLIB_ASSERT(state);
+  if(packetType != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   // get last packet SNR from packet status
-  uint32_t packetStatus = getPacketStatus();
+  uint32_t packetStatus = 0;
+  state = tryGetPacketStatus(&packetStatus);
+  RADIOLIB_ASSERT(state);
   uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
   if(snrPkt < 128) {
     return(snrPkt/4.0);
@@ -755,20 +764,40 @@ size_t SX126x::getPacketLength(bool update) {
 }
 
 size_t SX126x::getPacketLength(bool update, uint8_t* offset) {
+  size_t length = this->maxPacketLength;
+  if(this->tryGetPacketLength(&length, update, offset) == RADIOLIB_ERR_NONE) {
+    return(length);
+  }
+
+  // PhysicalLayer::getPacketLength() has no error channel. Returning a
+  // bounded non-zero sentinel prevents callers from silently treating
+  // a failed metadata read as "no packet".
+  return(this->maxPacketLength);
+}
+
+int16_t SX126x::tryGetPacketLength(size_t* length, bool update, uint8_t* offset) {
   (void)update;
 
+  uint8_t packetType = 0;
+  int16_t state = tryGetPacketType(&packetType);
+  RADIOLIB_ASSERT(state);
+
   // in implicit mode, return the cached value if the offset was not requested
-  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (!offset)) {
-    return(this->implicitLen);
+  if((packetType == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (!offset)) {
+    if(length) {
+      *length = this->implicitLen;
+    }
+    return(RADIOLIB_ERR_NONE);
   }
 
   // if offset was requested, or in explicit mode, we always have to perform the SPI transaction
   uint8_t rxBufStatus[2] = {0, 0};
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+  state = this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+  RADIOLIB_ASSERT(state);
 
   if(offset) { *offset = rxBufStatus[1]; }
-
-  return((size_t)rxBufStatus[0]);
+  if(length) { *length = (size_t)rxBufStatus[0]; }
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX126x::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {

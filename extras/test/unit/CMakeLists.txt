@@ -13,6 +13,7 @@ file(GLOB_RECURSE TEST_SOURCES
   "tests/ModuleFixture.cpp"
   "tests/TestModule.cpp"
   "tests/TestCalculateTimeOnAir.cpp"
+  "tests/TestSX126x.cpp"
   "tests/TestPhyComplete.cpp"
   "tests/TestCrypto.cpp"
 )

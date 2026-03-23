@@ -202,10 +202,20 @@ int16_t SX126x::calibrateImage(const uint8_t* data) {
   return(state);
 }
 
-uint8_t SX126x::getPacketType() {
+int16_t SX126x::tryGetPacketType(uint8_t* type) {
   uint8_t data = 0xFF;
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_PACKET_TYPE, &data, 1);
-  return(data);
+  int16_t state = this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_PACKET_TYPE, &data, 1);
+  RADIOLIB_ASSERT(state);
+  if(type) {
+    *type = data;
+  }
+  return(RADIOLIB_ERR_NONE);
+}
+
+uint8_t SX126x::getPacketType() {
+  uint8_t type = 0xFF;
+  (void)this->tryGetPacketType(&type);
+  return(type);
 }
 
 int16_t SX126x::setTxParams(uint8_t pwr, uint8_t rampTime) {
@@ -290,10 +300,20 @@ uint8_t SX126x::getStatus() {
   return(data);
 }
 
-uint32_t SX126x::getPacketStatus() {
+int16_t SX126x::tryGetPacketStatus(uint32_t* status) {
   uint8_t data[3] = {0, 0, 0};
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_PACKET_STATUS, data, 3);
-  return((((uint32_t)data[0]) << 16) | (((uint32_t)data[1]) << 8) | (uint32_t)data[2]);
+  int16_t state = this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_PACKET_STATUS, data, 3);
+  RADIOLIB_ASSERT(state);
+  if(status) {
+    *status = (((uint32_t)data[0]) << 16) | (((uint32_t)data[1]) << 8) | (uint32_t)data[2];
+  }
+  return(RADIOLIB_ERR_NONE);
+}
+
+uint32_t SX126x::getPacketStatus() {
+  uint32_t status = 0;
+  (void)this->tryGetPacketStatus(&status);
+  return(status);
 }
 
 uint16_t SX126x::getDeviceErrors() {
