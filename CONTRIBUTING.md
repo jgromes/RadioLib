@@ -16,6 +16,17 @@ Issues with generic titles (e.g. "not working", "lora", etc.) will be **CLOSED**
 4. **Issues deserve some attention too.**  
 Issues that are left for 2 weeks without response by the original author when asked for further information will be closed due to inactivity. This is to keep track of important issues, the author is encouraged to reopen the issue at a later date.
 
+## AI Use
+
+**RadioLib was written by humans, for humans**. Its authors, contributors, maintainers and community members were not asked for permission or approval when billion-dollar companies decided to scrape our hard work for training data, to be sold back to the world at a profit. While we consider this approach to be bordering on violating our license, this seems to be the world we live in. Therefore, if you decide to contribute to RadioLib while using an AI-based tool, please follow these rules:
+
+1. **Mark the slop**  
+The issue or pull request must be clearly marked as fully or partially AI-generated. If you don't do it, we'll do it for you by the means of a dedicated label - and then consider whether to process your input at all. Since people like that have not even bothered to read this statement, it would be unreasonable to expect they will read the code the machine generated and that is not code we want.
+2. **Less is more**  
+If your AI has produced a novel-length wall of text to describe a miniscule change, we consider it somewhat rude to copy-paste that output into the issue/PR description. Not only are you ignoring the templates which are asking for generally useful info; this approach also has the added bonus of explaining our own codebase back to us, while trying to sound as simple as possible. In reality though, it sounds like a junior developer giving us a lecture on a project that is older then they are. So please, try to get the actual point across in your own, human-generated words.
+3. **Discuss first**  
+It is usually not a great idea to hit us with a large, unsolicited pull request. Especially if it changes APIs or tries to work around something. It's a lot easier to discuss these things in advance and agree on an approach in an issue. Your AI can write the PR quickly; but then we need to spend our free time on reviewing something that we did not ask for. 
+
 ## Code style guidelines
 
 I like pretty code! Or at least, I like *consistent* code style. When creating pull requests, please follow these style guidelines, they're in place to keep high code readability.
