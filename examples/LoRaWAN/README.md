@@ -6,6 +6,7 @@ RadioLib LoRaWAN examples.
 * [LoRaWAN_ABP](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_ABP): if you wish to use ABP instead of OTAA, this example shows how you can do this using RadioLib. However, to comply with the specification, the full session must persist through resets and power loss - you would need proper NVM for this. Really, we recommend using OTAA.
 * [LoRaWAN_Class_C](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_Class_C): this shows how to use Class C on top of Class A. This is useful for continuously-powered devices (no batteries) such as lights. If you deploy multiple similar devices, please use Multicast instead.
 * [LoRaWAN_Multicast](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_Multicast): a showcase of Multicast over Class C. This is particularly useful for groups of devices such as a series of street lights.
+* [LoRaWAN_Package_Manager](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_Package_Manager): this shows how to use Technical Specification packages such as the Certification Protocol. Contact the developers about FUOTA.
 
 > [!CAUTION]
 > These examples are quick wins during development. However, for production devices, you will need to add persistence to your device. See the wiki for more details, or head straight to some [persistence examples](https://github.com/radiolib-org/radiolib-persistence).
