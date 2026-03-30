@@ -57,7 +57,7 @@ LoRaWANPackageManager::LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t s
   this->getSecondsCb = secondsCb;
 }
 
-int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio) {
+int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, RebootCb_t rebootCb) {
   // Check if node is not activated
   if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
@@ -72,6 +72,7 @@ int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio) {
   // Set parameters on TS009 package
   LoRaWANPackageTS009* ts009 = (LoRaWANPackageTS009*)this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009];
   ts009->setPhysicalLayer(radio);
+  ts009->setRebootCallback(rebootCb);
 
   // Enable the package
   this->enabledPackages[RADIOLIB_LORAWAN_PACKAGE_TS009] = true;

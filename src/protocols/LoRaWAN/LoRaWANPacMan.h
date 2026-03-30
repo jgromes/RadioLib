@@ -113,13 +113,14 @@ class LoRaWANPackage {
 class LoRaWANPackageManager {
   public:
 
+    typedef RadioLibTime_t (*GetSecondsCb_t)();
+    typedef void (*RebootCb_t)();
+
     /*!
       \brief Create a package manager
       \param node Pointer to the LoRaWAN node
       \param getSeconds Pointer to getSeconds() function for time handling
     */
-    typedef RadioLibTime_t (*GetSecondsCb_t)();
-    typedef void (*SetSecondsCb_t)(RadioLibTime_t);
     
     LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t secondsCb);
 
@@ -128,7 +129,7 @@ class LoRaWANPackageManager {
       \brief Enable TS009 Certification Protocol package
       \returns Status code
     */
-    int16_t enableTS009(PhysicalLayer* radio);
+    int16_t enableTS009(PhysicalLayer* radio, RebootCb_t rebootCb);
 
     // TS009
     bool getConfirmed();

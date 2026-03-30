@@ -16,3 +16,11 @@
 RadioLibTime_t getSeconds() {
   return((RadioLibTime_t)millis() / 1000);
 }
+
+// This function is called by a package when it receives a reset command.
+void performReboot() {
+  Serial.printf("Rebooting now...\r\n");
+  
+  // ESP example:
+  // ESP.restart();
+}

@@ -21,6 +21,10 @@ void LoRaWANPackageTS009::setPhysicalLayer(PhysicalLayer* radio) {
   this->radioModule = radio;
 }
 
+void LoRaWANPackageTS009::setRebootCallback(RebootCb_t rebootCb) {
+  this->rebootCallback = rebootCb;
+}
+
 size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown) {
   if(lenDown == 0 || dataDown == NULL) {
     return 0;
@@ -41,8 +45,9 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
 
     case(RADIOLIB_LORAWAN_TS009_DUT_RESET): {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Device reset requested");
-      // Note: Actual reset would be: ESP.restart() or similar
-      ESP.restart();
+      if(this->rebootCallback) {
+        this->rebootCallback();
+      }
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_DUT_JOIN): {

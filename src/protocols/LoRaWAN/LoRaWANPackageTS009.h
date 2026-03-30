@@ -30,12 +30,19 @@ class LoRaWANNode;
 class LoRaWANPackageTS009 : public LoRaWANPackage {
   public:
 
+    typedef void (*RebootCb_t)();
+
     LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb);
 
     /*!
       \brief Set radio module reference (for TX_CW command)
     */
     void setPhysicalLayer(PhysicalLayer* radio);
+
+    /*!
+      \brief Set reboot callback (for DUT_RESET command)
+    */
+    void setRebootCallback(RebootCb_t rebootCb);
 
     bool getConfirmed() {
       return(this->confirmed);
@@ -55,6 +62,7 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
 
     PhysicalLayer* radioModule;
     bool confirmed = false;
+    RebootCb_t rebootCallback;
 };
 
 #endif
