@@ -184,7 +184,7 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
         this->radioModule->setFrequency(freq);
         this->radioModule->setOutputPower(txPower);
         this->radioModule->transmitDirect();
-        delay(timeout * 1000);
+        this->delaySecondsCallback(timeout);
         this->radioModule->standby();
       }
     } break;
