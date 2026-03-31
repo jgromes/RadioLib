@@ -2,6 +2,7 @@
 
 #include "LoRaWAN.h"
 #include "LoRaWANPackageTS009.h"
+#include <string>
 
 LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb)
   : LoRaWANPackage(RADIOLIB_LORAWAN_PACKAGE_TS009, node, secondsCb),

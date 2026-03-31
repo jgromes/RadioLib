@@ -2,6 +2,7 @@
 
 #include "LoRaWANPacMan.h"
 #include "LoRaWANPackageTS009.h"
+#include <string>
 
 // LoRaWANPackage implementation
 LoRaWANPackage::LoRaWANPackage(uint8_t ts, LoRaWANNode* node, GetSecondsCb_t secondsCb)
