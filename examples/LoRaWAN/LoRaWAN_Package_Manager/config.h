@@ -26,7 +26,7 @@ Radio radio = new RadioModule();
 
 // How often to send an uplink (in seconds)
 // Consider legal & FUP constraints - see notes
-const uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // 5 minutes
+uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // 5 minutes
 
 // JoinEUI - previous versions of LoRaWAN called this AppEUI
 // For development purposes you can use all zeros - see wiki for details

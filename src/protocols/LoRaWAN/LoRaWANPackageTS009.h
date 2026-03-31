@@ -30,6 +30,8 @@ class LoRaWANNode;
 class LoRaWANPackageTS009 : public LoRaWANPackage {
   public:
 
+    typedef void (*DelaySecondsCb_t)(uint32_t seconds);
+    typedef void (*UplinkIntervalCb_t)(uint32_t intervalSeconds);
     typedef void (*RebootCb_t)();
 
     LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb);
@@ -38,6 +40,16 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
       \brief Set radio module reference (for TX_CW command)
     */
     void setPhysicalLayer(PhysicalLayer* radio);
+
+    /*!
+      \brief Set delay seconds callback (for delays in various commands)
+    */
+    void setDelaySecondsCallback(DelaySecondsCb_t delayCb);
+
+    /*!
+      \brief Set uplink interval callback (for TX_PERIODICITY_CHANGE command)
+    */
+    void setUplinkIntervalCallback(UplinkIntervalCb_t intervalCb);
 
     /*!
       \brief Set reboot callback (for DUT_RESET command)
@@ -54,7 +66,7 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
       \param lenDown Length of downlink data
       \returns Number of bytes consumed
     */
-    size_t processData(const uint8_t* dataDown, size_t lenDown);
+    size_t processData(const uint8_t* dataDown, size_t lenDown) override;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -62,6 +74,8 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
 
     PhysicalLayer* radioModule;
     bool confirmed = false;
+    DelaySecondsCb_t delaySecondsCallback;
+    UplinkIntervalCb_t uplinkIntervalCallback;
     RebootCb_t rebootCallback;
 };
 

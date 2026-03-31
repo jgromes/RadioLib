@@ -1,12 +1,16 @@
 #if !RADIOLIB_EXCLUDE_LORAWAN
 
-#include "LoRaWANPackageTS009.h"
 #include "LoRaWAN.h"
+#include "LoRaWANPackageTS009.h"
+#include <cstring>
 
 LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb)
   : LoRaWANPackage(RADIOLIB_LORAWAN_PACKAGE_TS009, node, secondsCb),
     radioModule(NULL) {
   this->packageVersion = 1;
+  this->delaySecondsCallback = NULL;
+  this->uplinkIntervalCallback = NULL;
+  this->rebootCallback = NULL;
 
   // default configuration for certification testing
   this->lorawanNode->setDatarate(5);
@@ -19,6 +23,14 @@ LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secon
 
 void LoRaWANPackageTS009::setPhysicalLayer(PhysicalLayer* radio) {
   this->radioModule = radio;
+}
+
+void LoRaWANPackageTS009::setDelaySecondsCallback(DelaySecondsCb_t delayCb) {
+  this->delaySecondsCallback = delayCb;
+}
+
+void LoRaWANPackageTS009::setUplinkIntervalCallback(UplinkIntervalCb_t intervalCb) {
+  this->uplinkIntervalCallback = intervalCb;
 }
 
 void LoRaWANPackageTS009::setRebootCallback(RebootCb_t rebootCb) {
@@ -62,8 +74,7 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
         uint8_t classType = dataDown[1];
         if(this->lorawanNode) {
           this->lorawanNode->setClass(classType);
-          const char* className = (classType == 0) ? "A" : (classType == 1 ? "B" : "C");
-          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Switching to class: %s", className);
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Switching to class: %s", (classType == 0) ? "A" : (classType == 1 ? "B" : "C"));
         }
       }
     } break;
@@ -95,6 +106,9 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
         uint32_t defaultIntervalSecs = 30;
         uint32_t intervals[11] = {defaultIntervalSecs, 5, 10, 20, 30, 40, 50, 60, 120, 240, 480};
         uint32_t newPeriod = (dataDown[1] < 11) ? intervals[dataDown[1]] : defaultIntervalSecs;
+        if(this->uplinkIntervalCallback) {
+          this->uplinkIntervalCallback(newPeriod);
+        }
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX Periodicity: %d seconds", newPeriod);
       }
     } break;
@@ -111,7 +125,6 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
             RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX Frames: Confirmed");
             break;
           default:
-            this->confirmed = this->confirmed;
             RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX Frames: No change");
         }
       }
@@ -164,7 +177,7 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
         uint16_t timeout = ((uint16_t)dataDown[2] << 8) | (uint16_t)dataDown[1];
         uint32_t freqRaw = ((uint32_t)dataDown[5] << 16) | ((uint32_t)dataDown[4] << 8) | 
                            ((uint32_t)dataDown[3]);
-        float freq = (float)freqRaw / 10000.0;
+        float freq = (float)freqRaw / 10000.0f;
         uint8_t txPower = dataDown[6];
 
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %7.3f MHz, %d dBm, %d s", freq, txPower, timeout);

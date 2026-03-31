@@ -44,8 +44,8 @@ void setup() {
   radio.begin();
   node.beginOTAA(joinEUI, devEUI, NULL, appKey);  // LoRaWAN v1.0.4 - no NwkKey
 
-  // Enable TS009 (Certification Protocol) with a reset callback
-  pacMan.enableTS009(&radio, performReboot);
+  // Enable TS009 (Certification Protocol) with delay, interval, and reboot callbacks
+  pacMan.enableTS009(&radio, delaySeconds, setUplinkInterval, performReboot);
 
   // Activate a.k.a. join the network
   node.activateOTAA();

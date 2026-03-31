@@ -98,7 +98,6 @@ class LoRaWANPackage {
     
     uint8_t packageIdentifier;
     uint8_t packageVersion;
-    uint8_t packageType;
     uint8_t dataUp[255];
     size_t lenUp = 0;
 
@@ -114,6 +113,8 @@ class LoRaWANPackageManager {
   public:
 
     typedef RadioLibTime_t (*GetSecondsCb_t)();
+    typedef void (*DelaySecondsCb_t)(uint32_t seconds);
+    typedef void (*UplinkIntervalCb_t)(uint32_t intervalSeconds);
     typedef void (*RebootCb_t)();
 
     /*!
@@ -129,7 +130,7 @@ class LoRaWANPackageManager {
       \brief Enable TS009 Certification Protocol package
       \returns Status code
     */
-    int16_t enableTS009(PhysicalLayer* radio, RebootCb_t rebootCb);
+    int16_t enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb);
 
     // TS009
     bool getConfirmed();

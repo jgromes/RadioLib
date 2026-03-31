@@ -2,11 +2,13 @@
 
 #include "LoRaWANPacMan.h"
 #include "LoRaWANPackageTS009.h"
+#include <cstring>
 
 // LoRaWANPackage implementation
 LoRaWANPackage::LoRaWANPackage(uint8_t ts, LoRaWANNode* node, GetSecondsCb_t secondsCb)
-  : packageIdentifier(ts), packageType(ts), lenUp(0), lorawanNode(node), getSeconds_cb(secondsCb) {
+  : packageIdentifier(ts), lenUp(0), lorawanNode(node), getSeconds_cb(secondsCb) {
   this->packageVersion = 0;
+  memset(this->dataUp, 0, sizeof(this->dataUp));
 }
 
 size_t LoRaWANPackage::processData(const uint8_t* dataIn, size_t lenIn) {
@@ -57,7 +59,7 @@ LoRaWANPackageManager::LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t s
   this->getSecondsCb = secondsCb;
 }
 
-int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, RebootCb_t rebootCb) {
+int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb) {
   // Check if node is not activated
   if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
@@ -70,8 +72,10 @@ int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, RebootCb_t rebo
   }
 
   // Set parameters on TS009 package
-  LoRaWANPackageTS009* ts009 = (LoRaWANPackageTS009*)this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009];
+  LoRaWANPackageTS009* ts009 = static_cast<LoRaWANPackageTS009*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009]);
   ts009->setPhysicalLayer(radio);
+  ts009->setDelaySecondsCallback(delayCb);
+  ts009->setUplinkIntervalCallback(intervalCb);
   ts009->setRebootCallback(rebootCb);
 
   // Enable the package
@@ -201,7 +205,7 @@ bool LoRaWANPackageManager::doAction() {
 }
 
 bool LoRaWANPackageManager::getConfirmed() {
-  LoRaWANPackageTS009* ts009 = (LoRaWANPackageTS009*)this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009];
+  LoRaWANPackageTS009* ts009 = static_cast<LoRaWANPackageTS009*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009]);
   if(ts009 == NULL) {
     return(false);
   }
