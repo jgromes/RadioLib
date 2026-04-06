@@ -2033,7 +2033,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   bool isConfirmedDown = false;
 
   // do some housekeeping for normal Class A downlinks (not allowed for Class B/C)
-  if(window < RADIOLIB_LORAWAN_RX_BC) {
+  if(this->lwClass == RADIOLIB_LORAWAN_CLASS_A || window < RADIOLIB_LORAWAN_RX_BC) {
     // if this is a confirmed frame, save the downlink number (only app frames can be confirmed)
     if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xFE) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
       this->confFCntDown = this->aFCntDown;
