@@ -25,18 +25,6 @@
 #define RADIOLIB_LORAWAN_FPORT_TS011                            (226)
 
 
-struct LoRaWANFragmentInfo_t {
-  uint8_t fragIndex = 0;
-  bool active = false;
-  bool completed = false;
-  bool micOk = false;
-  uint16_t nbFrag = 0;
-  uint16_t nbFragMissing = 0;
-  size_t totalSize = 0;
-  uint8_t padding = 0;
-  uint32_t descriptor = 0;
-};
-
 // Forward-declare the manager so it can be friended by LoRaWANPackage
 class LoRaWANPackageManager;
 

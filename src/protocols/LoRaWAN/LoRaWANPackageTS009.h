@@ -24,9 +24,6 @@
 #define RADIOLIB_LORAWAN_TS009_DUT_FPORT224_DISABLE   (0x7E)
 #define RADIOLIB_LORAWAN_TS009_DUT_VERSIONS           (0x7F)
 
-// Forward declarations
-class LoRaWANNode;
-
 class LoRaWANPackageTS009 : public LoRaWANPackage {
   public:
 

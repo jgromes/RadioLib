@@ -884,7 +884,7 @@ class LoRaWANNode {
       \brief Returns the maximum allowed uplink payload size given the current MAC state.
       Most importantly, this includes dwell time limitations and ADR.
     */
-    uint8_t getMaxPayloadLen();
+    virtual uint8_t getMaxPayloadLen();
 
     /*! \brief Callback to a user-provided sleep function. */
     typedef void (*SleepCb_t)(RadioLibTime_t ms);

@@ -66,6 +66,9 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Reverting to Join state");
       if(this->lorawanNode) {
         this->lorawanNode->clearSession();
+        this->lorawanNode->setDatarate(5);
+        this->lorawanNode->setADR(false);
+        this->lorawanNode->setDutyCycle(true, 3600000);
       }
     } break;
 
@@ -132,11 +135,12 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown)
 
     case(RADIOLIB_LORAWAN_TS009_ECHO_PAYLOAD): {
       if(lenDown > 1) {
-        this->lenUp = lenDown;
         for(size_t i = 1; i < lenDown; i++) {
           this->dataUp[i] = dataDown[i] + 1;
         }
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Echoing %d bytes with increment", lenDown - 1);
+        // clip to maximum payload size
+        this->lenUp = RADIOLIB_MIN(lenDown, this->lorawanNode->getMaxPayloadLen());
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Echoing %d bytes with increment", this->lenUp - 1);
       }
     } break;
 

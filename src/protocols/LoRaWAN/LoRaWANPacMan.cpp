@@ -97,7 +97,9 @@ int16_t LoRaWANPackageManager::processPackageDownlink(const uint8_t* dataIn, siz
   if(fPort != RADIOLIB_LORAWAN_FPORT_TS007) {
     // Find package registered on this FPort
     for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
-      if(!this->enabledPackages[i]) continue;
+      if(!this->enabledPackages[i]) { 
+        continue;
+      }
       if(this->packagePorts[i] == fPort) {
         LoRaWANPackage* pkg = this->packages[i];
         if(pkg == NULL) {
@@ -115,9 +117,9 @@ int16_t LoRaWANPackageManager::processPackageDownlink(const uint8_t* dataIn, siz
         return(RADIOLIB_ERR_NONE);
       }
     }
+    
     // No package matched this FPort; nothing to do.
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No package matched FPort %d, ignoring payload", fPort);
-    return(RADIOLIB_ERR_NONE);
   }
 
   return(RADIOLIB_ERR_NONE);

@@ -101,7 +101,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   }
 
   // check if the requested payload + fPort are allowed, also given dutycycle
-  state = this->isValidUplink(lenUp + this->fOptsUpLen, fPort);
+  state = this->isValidUplink(lenUp, fPort);
   RADIOLIB_ASSERT(state);
 
   // clear the MAC downlink buffer as we are going to transmit a new uplink
@@ -1230,16 +1230,9 @@ int16_t LoRaWANNode::isValidUplink(size_t len, uint8_t fPort) {
     return(RADIOLIB_ERR_INVALID_PORT);
   }
 
-  // check maximum payload len as defined in band
-  uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
-  
-  if(this->packages[2].enabled) { // FPort 226 = Relay
-    maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
-  }
-
   // throw an error if the packet is too long
-  if(len > maxPayLen) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("%d bytes payload exceeding limit of %d bytes", len, maxPayLen);
+  if(len > this->getMaxPayloadLen()) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("%d bytes payload exceeding limit of %d bytes", len, this->getMaxPayloadLen());
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
@@ -1533,11 +1526,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   RadioLibTime_t toaMinUs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 0);
 
   // get the maximum allowed Time-on-Air of a packet given the current datarate
-  uint8_t maxPayLen = this->band->payloadLenMax[dlChannel->dr];
+  uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
   
-  if(this->packages[2].enabled) { // FPort 226 = Relay
-    maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
-  }
   RadioLibTime_t toaMaxMs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, maxPayLen + 13) / 1000;
 
   // set the physical layer configuration for downlink
@@ -1749,9 +1739,6 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
     // SHALL be silently discarded.
     uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_RX_BC].dr];
 
-    if(this->packages[2].enabled) { // FPort 226 = Relay
-      maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
-    }
     if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
       return(0);  // act as if no downlink was received
     }
@@ -3661,9 +3648,6 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
   uint8_t minLen = 0;
   uint8_t maxLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
 
-  if(this->packages[2].enabled) { // FPort 226 = Relay
-    maxLen = RADIOLIB_MIN(maxLen, 222); // payload length is limited to N=222 if under repeater
-  }
   maxLen += 13;                         // mandatory FHDR is 12/13 bytes
 
   // if not limited by dwell-time, just return maximum
