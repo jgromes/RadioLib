@@ -64,6 +64,9 @@ int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_
   if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
+  if(this->getSecondsCb == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
 
   // Create package if not already created
   if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009] == NULL) {
@@ -117,7 +120,7 @@ int16_t LoRaWANPackageManager::processPackageDownlink(const uint8_t* dataIn, siz
         return(RADIOLIB_ERR_NONE);
       }
     }
-    
+
     // No package matched this FPort; nothing to do.
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No package matched FPort %d, ignoring payload", fPort);
   }
@@ -158,7 +161,7 @@ LoRaWANTaskInfo LoRaWANPackageManager::hasTask() {
 }
 
 bool LoRaWANPackageManager::getUplinkData(uint8_t* dataOut, size_t* lenOut, uint8_t* fPort) {
-  if(dataOut == NULL || lenOut == NULL || fPort == NULL) {
+  if(dataOut == NULL || lenOut == NULL || fPort == NULL || this->getSecondsCb == NULL) {
     return(false);
   }
 
@@ -186,6 +189,9 @@ bool LoRaWANPackageManager::getUplinkData(uint8_t* dataOut, size_t* lenOut, uint
 }
 
 bool LoRaWANPackageManager::doAction() {
+  if(this->getSecondsCb == NULL) {
+    return(false);
+  }
   RadioLibTime_t now = this->getSecondsCb();
 
   for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
