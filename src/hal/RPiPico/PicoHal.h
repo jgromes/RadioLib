@@ -15,7 +15,7 @@
 #include "hardware/gpio.h"
 #include "pico/multicore.h"
 
-#define PI_PICO_MAX_USER_GPIO  (48)
+#define PI_PICO_MAX_USER_GPIO  (NUM_BANK0_GPIOS)
 
 // because the Pico SDK does not allow to pass user data into interrupt handlers,
 // we keep it as a global here. This is hacky and means that multiple PicoHal
@@ -27,9 +27,10 @@ static uint64_t picoHalIrqMask = 0;
 
 static void picoInterruptHandler(void) {
   for(int gpio = 0; gpio < PI_PICO_MAX_USER_GPIO; gpio++) {
-    if(gpio_get_irq_event_mask(gpio) == picoHalIrqEventMasks[gpio]) {
-      gpio_acknowledge_irq(gpio, picoHalIrqEventMasks[gpio]);
-      if(picoHalUserCallbacks[gpio]) {
+    uint32_t activeEvents = gpio_get_irq_event_mask(gpio);
+    if(activeEvents) {
+      gpio_acknowledge_irq(gpio, activeEvents);
+      if((activeEvents & picoHalIrqEventMasks[gpio]) && picoHalUserCallbacks[gpio]) {
         picoHalUserCallbacks[gpio]();
       }
     }
