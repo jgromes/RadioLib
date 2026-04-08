@@ -31,7 +31,8 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
     typedef void (*UplinkIntervalCb_t)(uint32_t intervalSeconds);
     typedef void (*RebootCb_t)();
 
-    LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    // copy constructor is removed to prevent users from creating copies of this class
+    LoRaWANPackageTS009(const LoRaWANPackageTS009& obj) = delete;
 
     /*!
       \brief Set radio module reference (for TX_CW command)
@@ -74,6 +75,15 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
     DelaySecondsCb_t delaySecondsCallback;
     UplinkIntervalCb_t uplinkIntervalCallback;
     RebootCb_t rebootCallback;
+
+#if !RADIOLIB_GODMODE
+  private:
+#endif
+    // private constructor, to not allow the user to create additional instances of this package
+    LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    
+    // allow LoRaWANPackageManager to access the private constructor
+    friend LoRaWANPackageManager;
 };
 
 #endif
