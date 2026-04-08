@@ -26,7 +26,11 @@ static uint32_t picoHalIrqEventMasks[PI_PICO_MAX_USER_GPIO] = { 0 };
 static uint64_t picoHalIrqMask = 0;
 
 static void picoInterruptHandler(void) {
-  for(int gpio = 0; gpio < PI_PICO_MAX_USER_GPIO; gpio++) {
+  for(unsigned int gpio = 0; gpio < PI_PICO_MAX_USER_GPIO; gpio++) {
+    // Skip pins that are not managed by us.
+    if(picoHalIrqEventMasks[gpio] == 0) {
+      continue;
+    }
     uint32_t activeEvents = gpio_get_irq_event_mask(gpio);
     if(activeEvents) {
       gpio_acknowledge_irq(gpio, activeEvents);
@@ -166,6 +170,7 @@ public:
   void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) override;
 
   void noTone(uint32_t pin) override {
+    (void)pin; // avoid unused parameter warning
     multicore_reset_core1();
   }
 
