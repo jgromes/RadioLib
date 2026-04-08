@@ -28,27 +28,48 @@
 // Forward-declare the manager so it can be friended by LoRaWANPackage
 class LoRaWANPackageManager;
 
-// Task types for PacMan queries
-typedef enum {
+/*!
+  \enum LoRaWANTaskType_t
+  \brief Possible LoRaWAN task types.
+*/
+enum LoRaWANTaskType_t {
   RADIOLIB_LORAWAN_TASK_NONE = 0,
   RADIOLIB_LORAWAN_TASK_ACTION,
   RADIOLIB_LORAWAN_TASK_UPLINK
-} LoRaWANTaskType_t;
+};
 
-// Struct to hold next task query results
-typedef struct {
+/*!
+  \struct LoRaWANTaskInfo
+  \brief Structure displaying pending LoRaWAN task information.
+*/
+struct LoRaWANTaskInfo {
   LoRaWANTaskType_t type;   // NONE / ACTION / UPLINK
   RadioLibTime_t time;      // Time of the task (0 = immediate / no deadline)
-} LoRaWANTaskInfo;
+};
 
+/*!
+  \class LoRaWANPackage
+  \brief Common interface for all application packages.
+*/
 class LoRaWANPackage {
   public:
 
     typedef RadioLibTime_t (*GetSecondsCb_t)();
 
-    LoRaWANPackage(uint8_t ts, LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    /*!
+      \brief Default constructor.
+      \param ts Package identifier (e.g. RADIOLIB_LORAWAN_PACKAGE_TS003)
+      \param node Pointer to the LoRaWAN node
+      \param secondsCb Pointer to getSeconds() function for time handling
+    */
+    LoRaWANPackage(uint8_t ts, DUT* node, GetSecondsCb_t secondsCb);
 
-    // Process a sequence of package commands and return how many bytes were consumed
+    /*!
+      \brief Process a sequence of package commands and return how many bytes were consumed
+      \param dataIn Pointer to incoming data
+      \param lenIn Length of incoming data
+      \returns Number of bytes consumed
+    */
     virtual size_t processData(const uint8_t* dataIn, size_t lenIn);
 
     /*!
@@ -92,11 +113,14 @@ class LoRaWANPackage {
     LoRaWANNode* lorawanNode;
     GetSecondsCb_t getSeconds_cb;
 
-    // allow LoRaWANPackageManager to access protected members
+    // allow LoRaWANPackageManager to access the protected members
     friend LoRaWANPackageManager;
 };
 
-
+/*!
+  \class LoRaWANPackageManager
+  \brief Interface to manage multiple LoRaWAN application packages.
+*/
 class LoRaWANPackageManager {
   public:
 
@@ -116,11 +140,15 @@ class LoRaWANPackageManager {
     // Package enablement methods
     /*!
       \brief Enable TS009 Certification Protocol package
-      \returns Status code
+      \returns \ref status_codes
     */
     int16_t enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb);
 
     // TS009
+    /*!
+      \brief Check whether subsequent uplinks should be confirmed
+      \returns true if uplinks should be confirmed, false otherwise
+    */
     bool getConfirmed();
 
     /*!
@@ -129,7 +157,7 @@ class LoRaWANPackageManager {
       \param lenIn Length of incoming payload
       \param ansOut Pointer to buffer to collect answers
       \param ansLen Pointer to store answer length
-      \returns Status code
+      \returns \ref status_codes
     */
     int16_t processPackageDownlink(const uint8_t* dataIn, size_t lenIn, uint8_t fPort = 0xFF);
 

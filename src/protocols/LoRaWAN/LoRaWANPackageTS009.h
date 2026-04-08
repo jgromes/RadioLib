@@ -24,6 +24,10 @@
 #define RADIOLIB_LORAWAN_TS009_DUT_FPORT224_DISABLE   (0x7E)
 #define RADIOLIB_LORAWAN_TS009_DUT_VERSIONS           (0x7F)
 
+/*!
+  \class LoRaWANPackageTS009
+  \brief LoRaWAN Application package for TS009 Certification testing.
+*/
 class LoRaWANPackageTS009 : public LoRaWANPackage {
   public:
 
@@ -54,9 +58,11 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
     */
     void setRebootCallback(RebootCb_t rebootCb);
 
-    bool getConfirmed() {
-      return(this->confirmed);
-    }
+    /*!
+      \brief Check whether subsequent uplinks should be confirmed
+      \returns true if uplinks should be confirmed, false otherwise
+    */
+    bool getConfirmed();
 
     /*!
       \brief Process downlink data for TS009 LCTT package

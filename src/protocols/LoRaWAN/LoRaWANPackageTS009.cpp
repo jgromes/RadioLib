@@ -37,6 +37,10 @@ void LoRaWANPackageTS009::setRebootCallback(RebootCb_t rebootCb) {
   this->rebootCallback = rebootCb;
 }
 
+bool LoRaWANPackageTS009::getConfirmed() {
+  return(this->confirmed);
+}
+
 size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown) {
   if(lenDown == 0 || dataDown == NULL) {
     return 0;

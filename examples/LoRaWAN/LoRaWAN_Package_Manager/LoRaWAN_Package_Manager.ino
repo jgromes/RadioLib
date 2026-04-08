@@ -44,6 +44,8 @@ void setup() {
   radio.begin();
   node.beginOTAA(joinEUI, devEUI, NULL, appKey);  // LoRaWAN v1.0.4 - no NwkKey
 
+  // Warning: radio.begin() must be called before enabling packages!
+
   // Enable TS009 (Certification Protocol) with delay, interval, and reboot callbacks
   pacMan.enableTS009(&radio, delaySeconds, setUplinkInterval, performReboot);
 
