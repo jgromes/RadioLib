@@ -240,6 +240,9 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>getAFCntDown</b> 
 <tr class="memitem:a683b02b63867bb7de5df45c94d190305" id="r_a683b02b63867bb7de5df45c94d190305"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">getLastToA</a> ()</td></tr>
 <tr class="memdesc:a683b02b63867bb7de5df45c94d190305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Time-on-air of the last uplink message (in milliseconds).  <br /></td></tr>
 <tr class="separator:a683b02b63867bb7de5df45c94d190305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af190722868637eb09838c806b29aa7df" id="r_af190722868637eb09838c806b29aa7df"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af190722868637eb09838c806b29aa7df">getMacUplinkLen</a> ()</td></tr>
+<tr class="memdesc:af190722868637eb09838c806b29aa7df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the length of the pending MAC uplink payload.  <br /></td></tr>
+<tr class="separator:af190722868637eb09838c806b29aa7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bb50904544f331806fd744ab5b99efa" id="r_a5bb50904544f331806fd744ab5b99efa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5bb50904544f331806fd744ab5b99efa">dutyCycleInterval</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerHour, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> airtime)</td></tr>
 <tr class="memdesc:a5bb50904544f331806fd744ab5b99efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the minimum interval to adhere to a certain dutyCycle. This interval is based on the ToA of one uplink and does not actually keep track of total airtime.  <br /></td></tr>
 <tr class="separator:a5bb50904544f331806fd744ab5b99efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -824,6 +827,26 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="af190722868637eb09838c806b29aa7df" name="af190722868637eb09838c806b29aa7df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af190722868637eb09838c806b29aa7df">&#9670;&#160;</a></span>getMacUplinkLen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t LoRaWANNode::getMacUplinkLen </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the length of the pending MAC uplink payload. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of bytes of MAC uplink payload </dd></dl>
 
 </div>
 </div>
