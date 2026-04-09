@@ -966,11 +966,9 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   this->devNonce += 1;
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_DEV_NONCE], this->devNonce);
 
-  // generate the signature of the Nonces buffer, and store it in the last two bytes of the Nonces buffer
-  // also store this signature in the Session buffer to make sure these buffers match
-  uint16_t signature = LoRaWANNode::checkSum16(this->bufferNonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE - 2);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
-  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
+  // update the Nonces buffer and generate its signature - also store it in the Session buffer
+  (void)this->getBufferNonces();
+  memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], &this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], 2);
 
   // configure Rx1 and Rx2 delay for JoinAccept message - these are re-configured once a valid JoinAccept is received
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
@@ -988,10 +986,9 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   state = this->processJoinAccept(joinEvent);
   RADIOLIB_ASSERT(state);
 
-  // regenerate the Nonces signature as we received new Nonces in the JoinAccept
-  signature = LoRaWANNode::checkSum16(this->bufferNonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE - 2);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
-  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
+  // regenerate the Nonces buffer as we received a new JoinNonce in the JoinAccept
+  (void)this->getBufferNonces();
+  memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], &this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], 2);
 
   this->sessionStatus = RADIOLIB_LORAWAN_SESSION_ACTIVE;
 
@@ -1025,11 +1022,10 @@ int16_t LoRaWANNode::activateABP() {
     this->createSession();
   }
 
-  // generate the signature of the Nonces buffer, and store it in the last two bytes of the Nonces buffer
-  // also store this signature in the Session buffer to make sure these buffers match
-  uint16_t signature = LoRaWANNode::checkSum16(this->bufferNonces, RADIOLIB_LORAWAN_NONCES_BUF_SIZE - 2);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], signature);
-  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], signature);
+  // update the Nonces buffer and generate its signature - also store it in the Session buffer
+  (void)this->getBufferNonces();
+  memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE], &this->bufferNonces[RADIOLIB_LORAWAN_NONCES_SIGNATURE], 2);
+
 
   // store DevAddr and all keys
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_DEV_ADDR], this->devAddr);
