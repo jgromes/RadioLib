@@ -11,8 +11,8 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   this->band = band;
   this->subBand = subBand;
   memset(this->dynamicChannels, 0, sizeof(this->dynamicChannels));
-  for(int i = 0; i < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; i++) {
-    this->packages[i] = RADIOLIB_LORAWAN_PACKAGE_NONE;
+  for(int i = 0; i < RADIOLIB_LORAWAN_NUM_RESERVED_PACKAGES; i++) {
+    this->packages[i].enabled = false;
   }
 }
 
@@ -101,7 +101,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   }
 
   // check if the requested payload + fPort are allowed, also given dutycycle
-  state = this->isValidUplink(lenUp + this->fOptsUpLen, fPort);
+  state = this->isValidUplink(lenUp, fPort);
   RADIOLIB_ASSERT(state);
 
   // clear the MAC downlink buffer as we are going to transmit a new uplink
@@ -1221,13 +1221,8 @@ int16_t LoRaWANNode::isValidUplink(size_t len, uint8_t fPort) {
   if(fPort >= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN && fPort <= RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX) {
     ok = true;
   }
-  if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED) {
-    for(int id = 0; id < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; id++) {
-      if(this->packages[id].enabled && fPort == this->packages[id].packFPort) {
-        ok = true;
-        break;
-      }
-    }
+  if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED && this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled) {
+    ok = true;
   }
 
   if(!ok) {
@@ -1235,15 +1230,9 @@ int16_t LoRaWANNode::isValidUplink(size_t len, uint8_t fPort) {
     return(RADIOLIB_ERR_INVALID_PORT);
   }
 
-  // check maximum payload len as defined in band
-  uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
-  if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS011].enabled) {
-    maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
-  }
-
   // throw an error if the packet is too long
-  if(len > maxPayLen) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("%d bytes payload exceeding limit of %d bytes", len, maxPayLen);
+  if(len > this->getMaxPayloadLen()) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("%d bytes payload exceeding limit of %d bytes", len, this->getMaxPayloadLen());
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
@@ -1385,12 +1374,8 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
   if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
     encKey = this->nwkSEncKey;
   }
-  // check if any of the packages uses this FPort
-  for(int id = 0; id < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; id++) {
-    if(this->packages[id].enabled && fPort == this->packages[id].packFPort) {
-      encKey = this->packages[id].isAppPack ? this->appSKey : this->nwkSEncKey;
-      break;
-    }
+  if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED) {
+    encKey = this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].isAppPack ? this->appSKey : this->nwkSEncKey;
   }
 
   // encrypt the frame payload
@@ -1541,10 +1526,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   RadioLibTime_t toaMinUs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 0);
 
   // get the maximum allowed Time-on-Air of a packet given the current datarate
-  uint8_t maxPayLen = this->band->payloadLenMax[dlChannel->dr];
-  if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS011].enabled) {
-    maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
-  }
+  uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
+  
   RadioLibTime_t toaMaxMs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, maxPayLen + 13) / 1000;
 
   // set the physical layer configuration for downlink
@@ -1755,9 +1738,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
     // the specified maximum length M over the data rate used to receive the frame 
     // SHALL be silently discarded.
     uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_RX_BC].dr];
-    if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS011].enabled) {
-      maxPayLen = RADIOLIB_MIN(maxPayLen, 222); // payload length is limited to 222 if under repeater
-    }
+
     if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
       return(0);  // act as if no downlink was received
     }
@@ -1901,14 +1882,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       isAppDownlink = true;
     }
     // check if any of the packages uses this FPort
-    if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED) {
-      for(int id = 0; id < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; id++) {
-        if(this->packages[id].enabled && fPort == this->packages[id].packFPort) {
-          ok = true;
-          isAppDownlink = this->packages[id].isAppPack;
-          break;
-        }
-      }
+    if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED && this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled) {
+      ok = true;
+      isAppDownlink = this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].isAppPack;
     }
 
     if(!ok) {
@@ -2071,11 +2047,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   if(this->multicast && window == RADIOLIB_LORAWAN_RX_BC) {
     encKey = this->mcAppSKey;
   }
-  for(int id = 0; id < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; id++) {
-    if(this->packages[id].enabled && fPort == this->packages[id].packFPort) {
-      encKey = this->packages[id].isAppPack ? this->appSKey : this->nwkSEncKey;
-      break;
-    }
+  if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED && this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled) {
+    encKey = this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].isAppPack ? this->appSKey : this->nwkSEncKey;
   }
 
   // decrypt the frame payload (in-place to allow a fully decrypted hex-dump next)
@@ -2228,19 +2201,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     }
   }
 
-  // by default, the data and length are user-accessible
+  // apparently this downlink contains user-data
   *len = payLen;
-
-  // however, if this frame belongs to an application package, 
-  // redirect instead and 'hide' contents from the user
-  // just to be sure that it doesn't get re-interpreted...
-  for(int id = 0; id < RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES; id++) {
-    if(this->packages[id].enabled && this->packages[id].isAppPack && fPort == this->packages[id].packFPort) {
-      this->packages[id].callback(data, *len);
-      memset(data, 0, *len);
-      *len = 0;
-    }
-  }
 
   // pass the event info if requested
   if(event) {
@@ -3669,7 +3631,7 @@ RadioLibTime_t LoRaWANNode::dutyCycleInterval(RadioLibTime_t msPerHour, RadioLib
   }
   RadioLibTime_t oneHourInMs = (RadioLibTime_t)60 * (RadioLibTime_t)60 * (RadioLibTime_t)1000;
   float numPackets = msPerHour / airtime;
-  RadioLibTime_t delayMs = oneHourInMs / numPackets + 1;  // + 1 to prevent rounding problems
+  RadioLibTime_t delayMs = 2 + oneHourInMs / numPackets - airtime;  // + 2 to prevent rounding problems
   return(delayMs);
 }
 
@@ -3685,9 +3647,7 @@ RadioLibTime_t LoRaWANNode::timeUntilUplink() {
 uint8_t LoRaWANNode::getMaxPayloadLen() {
   uint8_t minLen = 0;
   uint8_t maxLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
-  if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS011].enabled) {
-    maxLen = RADIOLIB_MIN(maxLen, 222); // payload length is limited to N=222 if under repeater
-  }
+
   maxLen += 13;                         // mandatory FHDR is 12/13 bytes
 
   // if not limited by dwell-time, just return maximum
@@ -3725,52 +3685,26 @@ void LoRaWANNode::setSleepFunction(SleepCb_t cb) {
   this->sleepCb = cb;
 }
 
-int16_t LoRaWANNode::addAppPackage(uint8_t packageId, PackageCb_t callback) {
-  if(packageId >= RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES) {
-    return(RADIOLIB_ERR_INVALID_MODE);
-  }
-  return(this->addAppPackage(packageId, callback, PackageTable[packageId].packFPort));
+int16_t LoRaWANNode::addAppPackage(uint8_t fPort) {
+  return(this->addPackage(fPort, true));
 }
 
-int16_t LoRaWANNode::addAppPackage(uint8_t packageId, PackageCb_t callback, uint8_t fPort) {
-  if(packageId >= RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES) {
-    return(RADIOLIB_ERR_INVALID_MODE);
-  }
-  if(PackageTable[packageId].isAppPack == false) {
-    return(RADIOLIB_ERR_INVALID_MODE);
-  }
-  if(PackageTable[packageId].fixedFPort && fPort != PackageTable[packageId].packFPort) {
+int16_t LoRaWANNode::addNwkPackage(uint8_t fPort) {
+  return(this->addPackage(fPort, false));
+}
+
+int16_t LoRaWANNode::addPackage(uint8_t fPort, bool isApp) {
+  if(fPort < RADIOLIB_LORAWAN_FPORT_RESERVED) {
     return(RADIOLIB_ERR_INVALID_PORT);
   }
-  if(callback == NULL) {
-    return(RADIOLIB_ERR_NULL_POINTER);
-  }
-  this->packages[packageId] = PackageTable[packageId];
-  this->packages[packageId].packFPort = fPort;
-  this->packages[packageId].callback = callback;
-  this->packages[packageId].enabled = true;
+
+  this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled = true;
+  this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].isAppPack = isApp;
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::addNwkPackage(uint8_t packageId) {
-  if(packageId >= RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES) {
-    return(RADIOLIB_ERR_INVALID_MODE);
-  }
-  if(PackageTable[packageId].isAppPack == true) {
-    return(RADIOLIB_ERR_INVALID_MODE);
-  }
-  this->packages[packageId] = PackageTable[packageId];
-  this->packages[packageId].enabled = true;
-  return(RADIOLIB_ERR_NONE);
-}
-
-void LoRaWANNode::removePackage(uint8_t packageId) {
-  // silently ignore, assume that the user supplies decent index
-  if(packageId >= RADIOLIB_LORAWAN_NUM_SUPPORTED_PACKAGES) {
-    return;
-  }
-  this->packages[packageId].enabled = false;
-  return;
+void LoRaWANNode::removePackage(uint8_t fPort) {
+  this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled = false;
 }
 
 void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t addr, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
