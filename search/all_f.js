@@ -147,7 +147,7 @@ var searchData=
   ['receivedirectasync_144',['receiveDirectAsync',['../class_c_c1101.html#a9ec1ff1312d2caaae7e3e0389268fca2',1,'CC1101']]],
   ['refin_145',['refIn',['../class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04',1,'RadioLibCRC']]],
   ['refout_146',['refOut',['../class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087',1,'RadioLibCRC']]],
-  ['removepackage_147',['removePackage',['../class_lo_ra_w_a_n_node.html#afdbea8fc354e23d78e2044064ed8058d',1,'LoRaWANNode']]],
+  ['removepackage_147',['removePackage',['../class_lo_ra_w_a_n_node.html#a5e2b9bccc2f19690aa2ccc0ee77e7868',1,'LoRaWANNode']]],
   ['repeatercallsigns_148',['repeaterCallsigns',['../class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94',1,'AX25Frame']]],
   ['repeaterssids_149',['repeaterSSIDs',['../class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830',1,'AX25Frame']]],
   ['reply_150',['reply',['../class_bell_client.html#a9233e10bc794af85e3e86b4ec2a8746d',1,'BellClient']]],

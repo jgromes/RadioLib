@@ -32,6 +32,8 @@ var NAVTREEINDEX0 =
 "_l_r2021__types_8h_source.html":[4,0,0,1,3,3],
 "_l_r__common_8h_source.html":[4,0,0,1,2,9],
 "_lo_ra_w_a_n_8h_source.html":[4,0,0,2,8,0],
+"_lo_ra_w_a_n_pac_man_8h_source.html":[4,0,0,2,8,2],
+"_lo_ra_w_a_n_package_t_s009_8h_source.html":[4,0,0,2,8,1],
 "_module_8h_source.html":[4,0,0,7],
 "_morse_8h_source.html":[4,0,0,2,9,0],
 "_pager_8h_source.html":[4,0,0,2,10,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5":[3,0,17,0],
 "class_i_t_a2_string.html#afde24c931997581878953660192e09a2":[3,0,17,3],
 "class_l_l_c_c68.html":[3,0,18],
-"class_l_l_c_c68.html#a41b0de782f3407473050874a8ef7604a":[3,0,18,3],
-"class_l_l_c_c68.html#a466d96a5ad8fe87bee5c1737c6a78066":[3,0,18,6],
-"class_l_l_c_c68.html#a6b51b394398ea47a630d9e14afe7c69e":[3,0,18,4]
+"class_l_l_c_c68.html#a41b0de782f3407473050874a8ef7604a":[3,0,18,3]
 };
