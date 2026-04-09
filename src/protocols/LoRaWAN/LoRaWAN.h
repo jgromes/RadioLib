@@ -869,6 +869,12 @@ class LoRaWANNode {
     RadioLibTime_t getLastToA();
 
     /*!
+      \brief Get the length of the pending MAC uplink payload
+      \returns Number of bytes of MAC uplink payload
+    */
+    uint8_t getMacUplinkLen();
+
+    /*!
       \brief Calculate the minimum interval to adhere to a certain dutyCycle.
       This interval is based on the ToA of one uplink and does not actually keep track of total airtime.
       \param msPerHour The maximum allowed duty cycle (in milliseconds per hour).

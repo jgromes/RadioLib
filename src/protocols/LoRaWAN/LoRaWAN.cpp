@@ -3262,6 +3262,10 @@ RadioLibTime_t LoRaWANNode::getLastToA() {
   return(this->lastToA);
 }
 
+uint8_t LoRaWANNode::getMacUplinkLen() {
+  return(this->fOptsUpLen);
+}
+
 int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir, int8_t pwr, size_t pre) {
   int16_t state = RADIOLIB_ERR_NONE;
 

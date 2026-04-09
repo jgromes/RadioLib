@@ -395,6 +395,7 @@ getNFCntDown	KEYWORD2
 getAFCntDown	KEYWORD2
 getDevAddr	KEYWORD2
 getLastToA	KEYWORD2
+getMacUplinkLen	KEYWORD2
 dutyCycleInterval	KEYWORD2
 timeUntilUplink	KEYWORD2
 getMaxPayloadLen	KEYWORD2
