@@ -63,6 +63,10 @@
   #pragma message(RADIOLIB_INFO)
 #endif
 
+#if CFG_TUD_CDC == 1 || ARDUINO_USB_CDC_ON_BOOT == 1 || defined(USBD_USE_CDC)
+  #warning "Use of USB CDC for debug output is not recommended (might stop on first sleep). Use hardware UART instead."
+#endif
+
 // check unknown/unsupported platform
 #if defined(RADIOLIB_UNKNOWN_PLATFORM)
   #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
