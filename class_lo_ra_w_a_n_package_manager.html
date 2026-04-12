@@ -108,12 +108,12 @@ Public Types</h2></td></tr>
 <tr class="memitem:acabecc49111246dad38144e43ac0c1cf" id="r_acabecc49111246dad38144e43ac0c1cf"><td class="memItemLeft" align="right" valign="top"><a id="acabecc49111246dad38144e43ac0c1cf" name="acabecc49111246dad38144e43ac0c1cf"></a>
 typedef <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><b>GetSecondsCb_t</b>) ()</td></tr>
 <tr class="separator:acabecc49111246dad38144e43ac0c1cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe3559d17c198a81276947c446ec1ce7" id="r_afe3559d17c198a81276947c446ec1ce7"><td class="memItemLeft" align="right" valign="top"><a id="afe3559d17c198a81276947c446ec1ce7" name="afe3559d17c198a81276947c446ec1ce7"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>DelaySecondsCb_t</b>) (uint32_t seconds)</td></tr>
-<tr class="separator:afe3559d17c198a81276947c446ec1ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16857cbc54bc88ae51533f37a49acf1b" id="r_a16857cbc54bc88ae51533f37a49acf1b"><td class="memItemLeft" align="right" valign="top"><a id="a16857cbc54bc88ae51533f37a49acf1b" name="a16857cbc54bc88ae51533f37a49acf1b"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>UplinkIntervalCb_t</b>) (uint32_t intervalSeconds)</td></tr>
-<tr class="separator:a16857cbc54bc88ae51533f37a49acf1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51efda23e5b88763d85c625e64588cd8" id="r_a51efda23e5b88763d85c625e64588cd8"><td class="memItemLeft" align="right" valign="top"><a id="a51efda23e5b88763d85c625e64588cd8" name="a51efda23e5b88763d85c625e64588cd8"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>DelaySecondsCb_t</b>) (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> seconds)</td></tr>
+<tr class="separator:a51efda23e5b88763d85c625e64588cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5fe5e6273424f9d6f868369c1aef412" id="r_ab5fe5e6273424f9d6f868369c1aef412"><td class="memItemLeft" align="right" valign="top"><a id="ab5fe5e6273424f9d6f868369c1aef412" name="ab5fe5e6273424f9d6f868369c1aef412"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>UplinkIntervalCb_t</b>) (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> intervalSeconds)</td></tr>
+<tr class="separator:ab5fe5e6273424f9d6f868369c1aef412"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2cb064d1e021d3dffdcebdfe2ba91c7" id="r_ab2cb064d1e021d3dffdcebdfe2ba91c7"><td class="memItemLeft" align="right" valign="top"><a id="ab2cb064d1e021d3dffdcebdfe2ba91c7" name="ab2cb064d1e021d3dffdcebdfe2ba91c7"></a>
 typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>RebootCb_t</b>) ()</td></tr>
 <tr class="separator:ab2cb064d1e021d3dffdcebdfe2ba91c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,9 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acc1d0521aa9fa9719f9809fb0e470dc6" id="r_acc1d0521aa9fa9719f9809fb0e470dc6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#acc1d0521aa9fa9719f9809fb0e470dc6">getConfirmed</a> ()</td></tr>
 <tr class="memdesc:acc1d0521aa9fa9719f9809fb0e470dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether subsequent uplinks should be confirmed.  <br /></td></tr>
 <tr class="separator:acc1d0521aa9fa9719f9809fb0e470dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc51362c2864815fdeedbbe3cc1735d8" id="r_acc51362c2864815fdeedbbe3cc1735d8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#acc51362c2864815fdeedbbe3cc1735d8">processPackageDownlink</a> (const uint8_t *dataIn, size_t lenIn, uint8_t fPort=0xFF)</td></tr>
-<tr class="memdesc:acc51362c2864815fdeedbbe3cc1735d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a multi-package downlink payload (TS007 section 3.1).  <br /></td></tr>
-<tr class="separator:acc51362c2864815fdeedbbe3cc1735d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9d81f8bafa831852485dfcc356f4a59" id="r_ac9d81f8bafa831852485dfcc356f4a59"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#ac9d81f8bafa831852485dfcc356f4a59">processDownlink</a> (const uint8_t *data, size_t len, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown)</td></tr>
+<tr class="memdesc:ac9d81f8bafa831852485dfcc356f4a59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a multi-package downlink payload (TS007 section 3.1).  <br /></td></tr>
+<tr class="separator:ac9d81f8bafa831852485dfcc356f4a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab05c01f44f2058b784a3b3b396d803b1" id="r_ab05c01f44f2058b784a3b3b396d803b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_lo_ra_w_a_n_task_info.html">LoRaWANTaskInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#ab05c01f44f2058b784a3b3b396d803b1">hasTask</a> ()</td></tr>
 <tr class="memdesc:ab05c01f44f2058b784a3b3b396d803b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the next scheduled task across all packages and return the first.  <br /></td></tr>
 <tr class="separator:ab05c01f44f2058b784a3b3b396d803b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,6 +248,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnabledFPort</b> (u
 </div><div class="memdoc">
 
 <p>Enable TS009 Certification Protocol package. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">radio</td><td>Pointer to the <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> radio instance for RF testing </td></tr>
+    <tr><td class="paramname">delayCb</td><td>Callback to delay for a number of seconds during RF testing </td></tr>
+    <tr><td class="paramname">intervalCb</td><td>Callback to set the uplink interval for the device </td></tr>
+    <tr><td class="paramname">rebootCb</td><td>Callback to perform a device reboot </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
@@ -337,29 +346,29 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnabledFPort</b> (u
 
 </div>
 </div>
-<a id="acc51362c2864815fdeedbbe3cc1735d8" name="acc51362c2864815fdeedbbe3cc1735d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc51362c2864815fdeedbbe3cc1735d8">&#9670;&#160;</a></span>processPackageDownlink()</h2>
+<a id="ac9d81f8bafa831852485dfcc356f4a59" name="ac9d81f8bafa831852485dfcc356f4a59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9d81f8bafa831852485dfcc356f4a59">&#9670;&#160;</a></span>processDownlink()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LoRaWANPackageManager::processPackageDownlink </td>
+          <td class="memname">int16_t LoRaWANPackageManager::processDownlink </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>dataIn</em>, </td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>lenIn</em>, </td>
+          <td class="paramname"><em>len</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>fPort</em> = <code>0xFF</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *&#160;</td>
+          <td class="paramname"><em>eventDown</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -372,10 +381,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnabledFPort</b> (u
 <p>Process a multi-package downlink payload (TS007 section 3.1). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dataIn</td><td>Pointer to incoming payload </td></tr>
-    <tr><td class="paramname">lenIn</td><td>Length of incoming payload </td></tr>
-    <tr><td class="paramname">ansOut</td><td>Pointer to buffer to collect answers </td></tr>
-    <tr><td class="paramname">ansLen</td><td>Pointer to store answer length </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to incoming payload </td></tr>
+    <tr><td class="paramname">len</td><td>Length of incoming payload </td></tr>
+    <tr><td class="paramname">eventDown</td><td>Pointer to <a class="el" href="struct_lo_ra_w_a_n_event__t.html" title="Structure to save extra information about uplink/downlink event.">LoRaWANEvent_t</a> downlink event struct </td></tr>
   </table>
   </dd>
 </dl>

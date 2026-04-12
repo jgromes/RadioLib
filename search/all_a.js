@@ -24,7 +24,7 @@ var searchData=
   ['lorawanjoinevent_5ft_21',['LoRaWANJoinEvent_t',['../struct_lo_ra_w_a_n_join_event__t.html',1,'']]],
   ['lorawanmaccommand_5ft_22',['LoRaWANMacCommand_t',['../struct_lo_ra_w_a_n_mac_command__t.html',1,'']]],
   ['lorawannode_23',['lorawannode',['../class_lo_ra_w_a_n_node.html',1,'LoRaWANNode'],['../class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76',1,'LoRaWANNode::LoRaWANNode()']]],
-  ['lorawanpackage_24',['lorawanpackage',['../class_lo_ra_w_a_n_package.html#a6f1c4bd255ffaa2fe58cdfeda42074ea',1,'LoRaWANPackage::LoRaWANPackage()'],['../class_lo_ra_w_a_n_package.html',1,'LoRaWANPackage']]],
+  ['lorawanpackage_24',['LoRaWANPackage',['../class_lo_ra_w_a_n_package.html',1,'']]],
   ['lorawanpackage_5ft_25',['LoRaWANPackage_t',['../struct_lo_ra_w_a_n_package__t.html',1,'']]],
   ['lorawanpackagemanager_26',['lorawanpackagemanager',['../class_lo_ra_w_a_n_package_manager.html#aa45fe180ebb1f49f08359a2cfbedfc64',1,'LoRaWANPackageManager::LoRaWANPackageManager()'],['../class_lo_ra_w_a_n_package_manager.html',1,'LoRaWANPackageManager']]],
   ['lorawanpackagets009_27',['LoRaWANPackageTS009',['../class_lo_ra_w_a_n_package_t_s009.html',1,'']]],

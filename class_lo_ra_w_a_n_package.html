@@ -120,12 +120,12 @@ typedef <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6f1c4bd255ffaa2fe58cdfeda42074ea" id="r_a6f1c4bd255ffaa2fe58cdfeda42074ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#a6f1c4bd255ffaa2fe58cdfeda42074ea">LoRaWANPackage</a> (uint8_t ts, <a class="el" href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a> *node, GetSecondsCb_t secondsCb)</td></tr>
-<tr class="memdesc:a6f1c4bd255ffaa2fe58cdfeda42074ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:a6f1c4bd255ffaa2fe58cdfeda42074ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12d699d1645c47b24ecfeafa166b4353" id="r_a12d699d1645c47b24ecfeafa166b4353"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#a12d699d1645c47b24ecfeafa166b4353">processData</a> (const uint8_t *dataIn, size_t lenIn)</td></tr>
-<tr class="memdesc:a12d699d1645c47b24ecfeafa166b4353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a sequence of package commands and return how many bytes were consumed.  <br /></td></tr>
-<tr class="separator:a12d699d1645c47b24ecfeafa166b4353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dfb3be7440176051eb64a86300892a8" id="r_a1dfb3be7440176051eb64a86300892a8"><td class="memItemLeft" align="right" valign="top"><a id="a1dfb3be7440176051eb64a86300892a8" name="a1dfb3be7440176051eb64a86300892a8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANPackage</b> (const <a class="el" href="class_lo_ra_w_a_n_package.html">LoRaWANPackage</a> &amp;obj)=delete</td></tr>
+<tr class="separator:a1dfb3be7440176051eb64a86300892a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad297696485bae8cdd0da957a840c01bd" id="r_ad297696485bae8cdd0da957a840c01bd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#ad297696485bae8cdd0da957a840c01bd">processData</a> (const uint8_t *data, size_t len, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event)</td></tr>
+<tr class="memdesc:ad297696485bae8cdd0da957a840c01bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a sequence of package commands and return how many bytes were consumed.  <br /></td></tr>
+<tr class="separator:ad297696485bae8cdd0da957a840c01bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5d4ca004a29f0266b8c3a3c7b977c5e" id="r_ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_lo_ra_w_a_n_task_info.html">LoRaWANTaskInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#ae5d4ca004a29f0266b8c3a3c7b977c5e">hasTask</a> ()</td></tr>
 <tr class="memdesc:ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the next scheduled task for this package.  <br /></td></tr>
 <tr class="separator:ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,52 +142,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common interface for all application packages. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6f1c4bd255ffaa2fe58cdfeda42074ea" name="a6f1c4bd255ffaa2fe58cdfeda42074ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f1c4bd255ffaa2fe58cdfeda42074ea">&#9670;&#160;</a></span>LoRaWANPackage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">LoRaWANPackage::LoRaWANPackage </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ts</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">GetSecondsCb_t&#160;</td>
-          <td class="paramname"><em>secondsCb</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ts</td><td>Package identifier (e.g. RADIOLIB_LORAWAN_PACKAGE_TS003) </td></tr>
-    <tr><td class="paramname">node</td><td>Pointer to the LoRaWAN node </td></tr>
-    <tr><td class="paramname">secondsCb</td><td>Pointer to <a class="el" href="class_lo_ra_w_a_n_package.html#af07a4abbab1c95879703e5b137763528" title="Get current time via the stored callback.">getSeconds()</a> function for time handling </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af07a4abbab1c95879703e5b137763528" name="af07a4abbab1c95879703e5b137763528"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af07a4abbab1c95879703e5b137763528">&#9670;&#160;</a></span>getSeconds()</h2>
 
@@ -281,8 +236,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 
 </div>
 </div>
-<a id="a12d699d1645c47b24ecfeafa166b4353" name="a12d699d1645c47b24ecfeafa166b4353"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12d699d1645c47b24ecfeafa166b4353">&#9670;&#160;</a></span>processData()</h2>
+<a id="ad297696485bae8cdd0da957a840c01bd" name="ad297696485bae8cdd0da957a840c01bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad297696485bae8cdd0da957a840c01bd">&#9670;&#160;</a></span>processData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,13 +249,19 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
           <td class="memname">size_t LoRaWANPackage::processData </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>dataIn</em>, </td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>lenIn</em>&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -318,14 +279,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 <p>Process a sequence of package commands and return how many bytes were consumed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dataIn</td><td>Pointer to incoming data </td></tr>
-    <tr><td class="paramname">lenIn</td><td>Length of incoming data </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to incoming data </td></tr>
+    <tr><td class="paramname">len</td><td>Length of incoming data </td></tr>
+    <tr><td class="paramname">event</td><td>Downlink event details </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of bytes consumed </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a360218627bdb8da271a199d6b08608d0">LoRaWANPackageTS009</a>.</p>
+<p>Reimplemented in <a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a93c62ce89f5d1a84e9c49a57b282e47b">LoRaWANPackageTS009</a>.</p>
 
 </div>
 </div>

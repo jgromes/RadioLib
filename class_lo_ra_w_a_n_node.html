@@ -152,6 +152,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActivated</b> ()</t
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>setClass</b> (uint8_t cls)</td></tr>
 <tr class="memdesc:aada364a60591163b87379e434b0149c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure class (RADIOLIB_LORAWAN_CLASS_A or RADIOLIB_LORAWAN_CLASS_C) <br /></td></tr>
 <tr class="separator:aada364a60591163b87379e434b0149c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1310697387785bdf6ff34091f271616f" id="r_a1310697387785bdf6ff34091f271616f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a1310697387785bdf6ff34091f271616f">startMulticastSession</a> (uint8_t cls, uint32_t mcAddr, const uint8_t *mcAppSKey, const uint8_t *mcNwkSKey, uint32_t mcFCntMin=0, uint32_t mcFCntMax=0xFFFFFFFF, uint32_t mcFreq=0, uint8_t mcDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
+<tr class="memdesc:a1310697387785bdf6ff34091f271616f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a Multicast session.  <br /></td></tr>
+<tr class="separator:a1310697387785bdf6ff34091f271616f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe2dd9df77a232d80dfc0a74d9e2e398" id="r_afe2dd9df77a232d80dfc0a74d9e2e398"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#afe2dd9df77a232d80dfc0a74d9e2e398">startMulticastSession</a> (uint8_t id, <a class="el" href="struct_multicast_group__t.html">MulticastGroup_t</a> *mcGroup)</td></tr>
 <tr class="memdesc:afe2dd9df77a232d80dfc0a74d9e2e398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a Multicast session.  <br /></td></tr>
 <tr class="separator:afe2dd9df77a232d80dfc0a74d9e2e398"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1627,8 +1630,88 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a1310697387785bdf6ff34091f271616f" name="a1310697387785bdf6ff34091f271616f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1310697387785bdf6ff34091f271616f">&#9670;&#160;</a></span>startMulticastSession() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::startMulticastSession </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>cls</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcAddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>mcAppSKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>mcNwkSKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcFCntMin</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcFCntMax</em> = <code>0xFFFFFFFF</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mcFreq</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mcDr</em> = <code>RADIOLIB_LORAWAN_DATA_RATE_UNUSED</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start a Multicast session. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cls</td><td>The LoRaWAN Class used for this session (only C is supported). </td></tr>
+    <tr><td class="paramname">mcAddr</td><td>The Multicast address. </td></tr>
+    <tr><td class="paramname">mcAppSKey</td><td>The Multicast payload encryption key. </td></tr>
+    <tr><td class="paramname">mcNwkSKey</td><td>The Multicast payload integrity key. </td></tr>
+    <tr><td class="paramname">mcFCntMin</td><td>The minimum expected Multicast frame counter. </td></tr>
+    <tr><td class="paramname">mcFCntMin</td><td>The maximum allowed Multicast frame counter. </td></tr>
+    <tr><td class="paramname">mcFreq</td><td>The frequency used for the Multicast downlinks (in Hz). Default = 0 uses Rx2 frequency. </td></tr>
+    <tr><td class="paramname">mcDr</td><td>The datarate used for the Multicast downlinks. Default = 0 uses Rx2 datarate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="afe2dd9df77a232d80dfc0a74d9e2e398" name="afe2dd9df77a232d80dfc0a74d9e2e398"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe2dd9df77a232d80dfc0a74d9e2e398">&#9670;&#160;</a></span>startMulticastSession()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe2dd9df77a232d80dfc0a74d9e2e398">&#9670;&#160;</a></span>startMulticastSession() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

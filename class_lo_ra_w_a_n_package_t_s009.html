@@ -152,13 +152,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setRebootCallback</b>
 <tr class="memitem:a2d2c7ee40827752c296568bbad5ee8e4" id="r_a2d2c7ee40827752c296568bbad5ee8e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a2d2c7ee40827752c296568bbad5ee8e4">getConfirmed</a> ()</td></tr>
 <tr class="memdesc:a2d2c7ee40827752c296568bbad5ee8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether subsequent uplinks should be confirmed.  <br /></td></tr>
 <tr class="separator:a2d2c7ee40827752c296568bbad5ee8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a360218627bdb8da271a199d6b08608d0" id="r_a360218627bdb8da271a199d6b08608d0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a360218627bdb8da271a199d6b08608d0">processData</a> (const uint8_t *dataDown, size_t lenDown) override</td></tr>
-<tr class="memdesc:a360218627bdb8da271a199d6b08608d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process downlink data for TS009 LCTT package.  <br /></td></tr>
-<tr class="separator:a360218627bdb8da271a199d6b08608d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c62ce89f5d1a84e9c49a57b282e47b" id="r_a93c62ce89f5d1a84e9c49a57b282e47b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a93c62ce89f5d1a84e9c49a57b282e47b">processData</a> (const uint8_t *dataDown, size_t lenDown, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event) override</td></tr>
+<tr class="memdesc:a93c62ce89f5d1a84e9c49a57b282e47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process downlink data for TS009 LCTT package.  <br /></td></tr>
+<tr class="separator:a93c62ce89f5d1a84e9c49a57b282e47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_lo_ra_w_a_n_package"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_lo_ra_w_a_n_package')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_lo_ra_w_a_n_package.html">LoRaWANPackage</a></td></tr>
-<tr class="memitem:a6f1c4bd255ffaa2fe58cdfeda42074ea inherit pub_methods_class_lo_ra_w_a_n_package" id="r_a6f1c4bd255ffaa2fe58cdfeda42074ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#a6f1c4bd255ffaa2fe58cdfeda42074ea">LoRaWANPackage</a> (uint8_t ts, <a class="el" href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a> *node, GetSecondsCb_t secondsCb)</td></tr>
-<tr class="memdesc:a6f1c4bd255ffaa2fe58cdfeda42074ea inherit pub_methods_class_lo_ra_w_a_n_package"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:a6f1c4bd255ffaa2fe58cdfeda42074ea inherit pub_methods_class_lo_ra_w_a_n_package"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dfb3be7440176051eb64a86300892a8 inherit pub_methods_class_lo_ra_w_a_n_package" id="r_a1dfb3be7440176051eb64a86300892a8"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANPackage</b> (const <a class="el" href="class_lo_ra_w_a_n_package.html">LoRaWANPackage</a> &amp;obj)=delete</td></tr>
+<tr class="separator:a1dfb3be7440176051eb64a86300892a8 inherit pub_methods_class_lo_ra_w_a_n_package"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5d4ca004a29f0266b8c3a3c7b977c5e inherit pub_methods_class_lo_ra_w_a_n_package" id="r_ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_lo_ra_w_a_n_task_info.html">LoRaWANTaskInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#ae5d4ca004a29f0266b8c3a3c7b977c5e">hasTask</a> ()</td></tr>
 <tr class="memdesc:ae5d4ca004a29f0266b8c3a3c7b977c5e inherit pub_methods_class_lo_ra_w_a_n_package"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the next scheduled task for this package.  <br /></td></tr>
 <tr class="separator:ae5d4ca004a29f0266b8c3a3c7b977c5e inherit pub_methods_class_lo_ra_w_a_n_package"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,8 +196,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 
 </div>
 </div>
-<a id="a360218627bdb8da271a199d6b08608d0" name="a360218627bdb8da271a199d6b08608d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a360218627bdb8da271a199d6b08608d0">&#9670;&#160;</a></span>processData()</h2>
+<a id="a93c62ce89f5d1a84e9c49a57b282e47b" name="a93c62ce89f5d1a84e9c49a57b282e47b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c62ce89f5d1a84e9c49a57b282e47b">&#9670;&#160;</a></span>processData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,7 +215,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>lenDown</em>&#160;</td>
+          <td class="paramname"><em>lenDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -240,7 +246,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of bytes consumed </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#a12d699d1645c47b24ecfeafa166b4353">LoRaWANPackage</a>.</p>
+<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#ad297696485bae8cdd0da957a840c01bd">LoRaWANPackage</a>.</p>
 
 </div>
 </div>

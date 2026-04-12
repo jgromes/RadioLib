@@ -49,6 +49,7 @@ var class_lo_ra_w_a_n_node =
     [ "setRx2Dr", "class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025", null ],
     [ "setSleepFunction", "class_lo_ra_w_a_n_node.html#a11c5f0867a9a8d731e980f865caebd99", null ],
     [ "setTxPower", "class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b", null ],
+    [ "startMulticastSession", "class_lo_ra_w_a_n_node.html#a1310697387785bdf6ff34091f271616f", null ],
     [ "startMulticastSession", "class_lo_ra_w_a_n_node.html#afe2dd9df77a232d80dfc0a74d9e2e398", null ],
     [ "stopMulticastSession", "class_lo_ra_w_a_n_node.html#ac714660eedc855def5969563cf37432d", null ],
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
