@@ -134,7 +134,7 @@ void processDownlink(int16_t state) {
   // Forward package downlinks to package manager
   if(downLen > 0 && pacMan.isEnabledFPort(evtDown.fPort)) {
     Serial.println(F("It is a package downlink"));
-    pacMan.processDownlink(downlink, downLen, evtDown);
+    pacMan.processDownlink(downlink, downLen, &evtDown);
 
   // Process normal downlinks for ourselves
   } else if(downLen > 0) {
