@@ -240,6 +240,42 @@ constexpr LoRaWANMacCommand_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS] = {
   { RADIOLIB_LORAWAN_MAC_PROPRIETARY,         5, 0, false, true  },
 };
 
+// maximum number of simultaneously available multicast groups
+#define RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS (4)
+
+struct MulticastGroup_t {
+  /*! \brief The LoRaWAN Class used for this session (only C is supported) */
+  uint8_t cls = 0;
+  
+  /*! \brief The Multicast address */
+  uint32_t mcAddr = 0;
+  
+  /*! \brief The Multicast payload session key */
+  uint8_t mcAppSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+  
+  /*! \brief The Multicast network session key */
+  uint8_t mcNwkSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+  
+  /*! \brief The minimum (next) expected Multicast frame counter */
+  uint32_t mcFCnt = 0;
+  
+  /*! \brief The maximum allowed Multicast frame counter */
+  uint32_t mcFCntMax = 0xFFFFFFFF;
+
+  /*! \brief The number of received Multicast frames in this group */
+  uint32_t rxFCnt = 0;
+
+  /*! \brief The frequency used for the Multicast downlinks (in Hz). */
+  uint32_t mcFreq = 0;
+  
+  /*! \brief The datarate used for the Multicast downlinks. */
+  uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
+};
+
+#define RADIOLIB_MULTICAST_GROUP_NONE \
+  { .cls = RADIOLIB_LORAWAN_CLASS_A, .mcAddr = 0, .mcAppSKey = { 0 }, .mcNwkSKey = { 0 }, \
+  .mcFCnt = 0, .mcFCntMax = 0xFFFFFFFF, .rxFCnt = 0, .mcFreq = 0, .mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED }
+
 // currently known packages with reserved FPorts:
 // TS007 (MultiPackage), TS009 (Certification), TS011 (Relay)
 #define RADIOLIB_LORAWAN_NUM_RESERVED_PACKAGES (3)
@@ -287,8 +323,8 @@ enum LoRaWANSchemeSession_t {
   RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN     = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP + sizeof(uint32_t),   // 4 bytes
   RADIOLIB_LORAWAN_SESSION_RJ_COUNT0          = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN + sizeof(uint32_t), // 2 bytes
   RADIOLIB_LORAWAN_SESSION_RJ_COUNT1          = RADIOLIB_LORAWAN_SESSION_RJ_COUNT0 + sizeof(uint16_t), 	    // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_HOMENET_ID         = RADIOLIB_LORAWAN_SESSION_RJ_COUNT1 + sizeof(uint16_t), 	    // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_VERSION            = RADIOLIB_LORAWAN_SESSION_HOMENET_ID + sizeof(uint32_t), 	  // 1 byte
+  RADIOLIB_LORAWAN_SESSION_RX_A_FCNT          = RADIOLIB_LORAWAN_SESSION_RJ_COUNT1 + sizeof(uint16_t), 	    // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_VERSION            = RADIOLIB_LORAWAN_SESSION_RX_A_FCNT + sizeof(uint32_t), 	    // 1 byte
   RADIOLIB_LORAWAN_SESSION_CLASS              = RADIOLIB_LORAWAN_SESSION_VERSION + 1,                       // 1 byte
   RADIOLIB_LORAWAN_SESSION_LINK_ADR           = RADIOLIB_LORAWAN_SESSION_CLASS + sizeof(uint8_t),           // 14 bytes
   RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE         = RADIOLIB_LORAWAN_SESSION_LINK_ADR + 14, 	                  // 1 byte
@@ -524,6 +560,9 @@ struct LoRaWANEvent_t {
 
   /*! \brief Multicast or unicast */
   bool multicast;
+
+  /*! \brief Multicast Group ID if this was a multicast downlink */
+  uint8_t mcGroupId;
 };
 
 /*!
@@ -616,20 +655,20 @@ class LoRaWANNode {
 
     /*!
       \brief Start a Multicast session.
-      \param cls The LoRaWAN Class used for this session (only C is supported).
-      \param mcAddr The Multicast address.
-      \param mcAppSKey The Multicast payload encryption key.
-      \param mcNwkSKey The Multicast payload integrity key.
-      \param mcFCntMin The minimum expected Multicast frame counter.
-      \param mcFCntMin The maximum allowed Multicast frame counter.
-      \param mcFreq The frequency used for the Multicast downlinks (in Hz). Default = 0 uses Rx2 frequency.
-      \param mcDr The datarate used for the Multicast downlinks. Default = 0 uses Rx2 datarate.
+      \param id Multicast group ID.
+      \param mcGroup Multicast group specification structure. 
+      The user is expected to fill in all fields of this structure.
       \returns \ref status_codes
     */
-    int16_t startMulticastSession(uint8_t cls, uint32_t mcAddr, const uint8_t* mcAppSKey, const uint8_t* mcNwkSKey, uint32_t mcFCntMin = 0, uint32_t mcFCntMax = 0xFFFFFFFF, uint32_t mcFreq = 0, uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
+    int16_t startMulticastSession(uint8_t id, MulticastGroup_t* mcGroup);
 
-    /*! \brief Stop an ongoing multicast session */
-    void stopMulticastSession();
+    /*! 
+      \brief Stop an ongoing multicast session 
+      \param id Multicast group ID to stop. Must match the ID used to start the session.
+      \param addRxFCnt Whether to add the multicast Rx frame counter to the session Rx frame counter.
+      \returns true if the session was stopped successfully, false otherwise
+    */
+    bool stopMulticastSession(uint8_t id, bool addRxFCnt = false);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -856,6 +895,16 @@ class LoRaWANNode {
     */
     uint32_t getAFCntDown();
 
+    /*! 
+        \brief Returns the number of received application downlinks.
+    */
+    uint32_t getRxFCnt();
+
+    /*! 
+        \brief Returns the number of received downlinks for a certain multicast group.
+    */
+    uint32_t getRxFCntMulticast(uint8_t mcGroupId);
+
     /*!
       \brief Returns the DevAddr of the device, regardless of OTAA or ABP mode
       \returns 4-byte DevAddr
@@ -891,6 +940,12 @@ class LoRaWANNode {
       Most importantly, this includes dwell time limitations and ADR.
     */
     virtual uint8_t getMaxPayloadLen();
+
+    /*!
+      \brief Request the currently configured class for Multicast.
+      \returns Class C if configured, otherwise Class A (B is not supported)
+    */
+    uint8_t getMulticastClass();
 
     /*! \brief Callback to a user-provided sleep function. */
     typedef void (*SleepCb_t)(RadioLibTime_t ms);
@@ -980,7 +1035,6 @@ class LoRaWANNode {
     uint32_t joinNonce = 0;
 
     // session-specific parameters
-    uint32_t homeNetId = 0;
     uint8_t adrLimitExp = RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;
     uint8_t adrDelayExp = RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;
     uint8_t nbTrans = 1;            // Number of allowed frame retransmissions
@@ -992,6 +1046,7 @@ class LoRaWANNode {
     uint32_t confFCntUp = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t adrFCnt = 0;
+    uint32_t rxAFCnt = 0;           // Number of received downlinks
 
     // ADR is enabled by default
     bool adrEnabled = true;
@@ -1007,13 +1062,8 @@ class LoRaWANNode {
     RadioLibTime_t tUplink = 0;   // scheduled uplink transmission time (internal clock)
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
 
-    // multicast parameters
-    uint8_t multicast = false;
-    uint32_t mcAddr = 0;
-    uint8_t mcAppSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
-    uint8_t mcNwkSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
-    uint32_t mcAFCnt = 0;
-    uint32_t mcAFCntMax = 0;
+    // multicast groups
+    MulticastGroup_t mcGroups[RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS];
 
     // enabled app/nwk packages in the Reserved FPort range
     LoRaWANPackage_t packages[RADIOLIB_LORAWAN_NUM_RESERVED_PACKAGES];
@@ -1180,6 +1230,11 @@ class LoRaWANNode {
 
     // select a set of random TX/RX channels for up- and downlink
     int16_t selectChannels();
+
+    // get the properties of the first active multicast session, if any
+    uint32_t getMulticastFrequency();
+    uint8_t getMulticastDatarate();
+    bool isMulticastDevAddr(uint32_t devAddr, uint8_t* mcGroupId);
 
     // method to generate message integrity code
     uint32_t generateMIC(const uint8_t* msg, size_t len, uint8_t* key);

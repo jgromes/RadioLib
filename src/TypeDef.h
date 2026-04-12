@@ -608,6 +608,11 @@
 */
 #define RADIOLIB_ERR_INVALID_MODE                               (-1121)
 
+/*!
+  \brief The requested multicast group is invalid (higher than maximum).
+*/
+#define RADIOLIB_ERR_INVALID_MULTICAST_GROUP                    (-1122)
+
 // LR11x0-specific status codes
 
 /*!

@@ -393,6 +393,8 @@ getVersionMajor	KEYWORD2
 getFCntUp	KEYWORD2
 getNFCntDown	KEYWORD2
 getAFCntDown	KEYWORD2
+getRxFCnt	KEYWORD2
+getRxFCntMulticast	KEYWORD2
 getDevAddr	KEYWORD2
 getLastToA	KEYWORD2
 getMacUplinkLen	KEYWORD2
