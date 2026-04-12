@@ -762,6 +762,11 @@ size_t SX126x::getPacketLength(bool update, uint8_t* offset) {
     return(this->implicitLen);
   }
 
+  // in fixed-length FSK mode, Rx buffer status seems to be always returning 0xFF
+  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_GFSK) && (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED)) {
+    return(this->implicitLen);
+  }
+
   // if offset was requested, or in explicit mode, we always have to perform the SPI transaction
   uint8_t rxBufStatus[2] = {0, 0};
   this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
