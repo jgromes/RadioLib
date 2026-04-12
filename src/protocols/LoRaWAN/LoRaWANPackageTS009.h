@@ -32,8 +32,8 @@
 class LoRaWANPackageTS009 : public LoRaWANPackage {
   public:
 
-    typedef void (*DelaySecondsCb_t)(uint32_t seconds);
-    typedef void (*UplinkIntervalCb_t)(uint32_t intervalSeconds);
+    typedef void (*DelaySecondsCb_t)(RadioLibTime_t seconds);
+    typedef void (*UplinkIntervalCb_t)(RadioLibTime_t intervalSeconds);
     typedef void (*RebootCb_t)();
 
     // copy constructor is removed to prevent users from creating copies of this class

@@ -40,6 +40,7 @@ bool LoRaWANPackageTS009::getConfirmed() {
 }
 
 size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown, LoRaWANEvent_t* event) {
+  (void)event;
   if(lenDown == 0 || dataDown == NULL) {
     return(0);
   }

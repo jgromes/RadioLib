@@ -6,7 +6,7 @@
 
 // LoRaWANPackage implementation
 LoRaWANPackage::LoRaWANPackage(uint8_t ts, LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb)
-  : packageIdentifier(ts), lenUp(0), lorawanNode(node), getSeconds_cb(secondsCb), pacMan(pacMan) {
+  : packageIdentifier(ts), lenUp(0), pacMan(pacMan), lorawanNode(node), getSeconds_cb(secondsCb) {
   this->packageVersion = 0;
   memset(this->dataUp, 0, sizeof(this->dataUp));
 }

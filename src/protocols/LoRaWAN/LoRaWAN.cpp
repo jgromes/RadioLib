@@ -1147,7 +1147,7 @@ int16_t LoRaWANNode::startMulticastSession(uint8_t cls, uint32_t mcAddr, const u
   };
   memcpy(mcGroup.mcAppSKey, mcAppSKey, 16);
   memcpy(mcGroup.mcNwkSKey, mcNwkSKey, 16);
-  
+
   return(this->startMulticastSession(0, &mcGroup));
 }
 
@@ -1156,7 +1156,7 @@ int16_t LoRaWANNode::startMulticastSession(uint8_t id, MulticastGroup_t* mcGroup
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
   
-  if(mcGroup == NULL || mcGroup->mcAppSKey == NULL || mcGroup->mcNwkSKey == NULL) {
+  if(mcGroup == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
   
