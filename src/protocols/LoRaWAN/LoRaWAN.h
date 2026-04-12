@@ -245,31 +245,31 @@ constexpr LoRaWANMacCommand_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS] = {
 
 struct MulticastGroup_t {
   /*! \brief The LoRaWAN Class used for this session (only C is supported) */
-  uint8_t cls = 0;
+  uint8_t cls;
   
   /*! \brief The Multicast address */
-  uint32_t mcAddr = 0;
+  uint32_t mcAddr;
   
   /*! \brief The Multicast payload session key */
-  uint8_t mcAppSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+  uint8_t mcAppSKey[RADIOLIB_AES128_KEY_SIZE];
   
   /*! \brief The Multicast network session key */
-  uint8_t mcNwkSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+  uint8_t mcNwkSKey[RADIOLIB_AES128_KEY_SIZE];
   
   /*! \brief The minimum (next) expected Multicast frame counter */
-  uint32_t mcFCnt = 0;
+  uint32_t mcFCnt;
   
   /*! \brief The maximum allowed Multicast frame counter */
-  uint32_t mcFCntMax = 0xFFFFFFFF;
+  uint32_t mcFCntMax;
 
   /*! \brief The number of received Multicast frames in this group */
-  uint32_t rxFCnt = 0;
+  uint32_t rxFCnt;
 
   /*! \brief The frequency used for the Multicast downlinks (in Hz). */
-  uint32_t mcFreq = 0;
+  uint32_t mcFreq;
   
   /*! \brief The datarate used for the Multicast downlinks. */
-  uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
+  uint8_t mcDr;
 };
 
 #define RADIOLIB_MULTICAST_GROUP_NONE \
