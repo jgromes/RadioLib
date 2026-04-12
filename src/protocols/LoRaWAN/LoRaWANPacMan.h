@@ -107,7 +107,7 @@ class LoRaWANPackage {
       \param node Pointer to the LoRaWAN node
       \param secondsCb Pointer to getSeconds() function for time handling
     */
-    LoRaWANPackage(uint8_t ts, LoRaWANPackageManager* pacMan, DUT* node, GetSecondsCb_t secondsCb);
+    LoRaWANPackage(uint8_t ts, LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb);
 
     uint8_t packageIdentifier;
     uint8_t packageVersion;
