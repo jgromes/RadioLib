@@ -23,7 +23,10 @@ var class_lo_ra_w_a_n_node =
     [ "getMacLinkCheckAns", "class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0", null ],
     [ "getMacUplinkLen", "class_lo_ra_w_a_n_node.html#af190722868637eb09838c806b29aa7df", null ],
     [ "getMaxPayloadLen", "class_lo_ra_w_a_n_node.html#ab723160aa317cd84550d0da3a0f52811", null ],
+    [ "getMulticastClass", "class_lo_ra_w_a_n_node.html#a3ec090c3d16232f7c4485c2857b10b07", null ],
     [ "getNFCntDown", "class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1", null ],
+    [ "getRxFCnt", "class_lo_ra_w_a_n_node.html#a30a98822d5d699472765e2366015d7bd", null ],
+    [ "getRxFCntMulticast", "class_lo_ra_w_a_n_node.html#aac66ffa34cc416c5d3903f5788b389db", null ],
     [ "getVersionMajor", "class_lo_ra_w_a_n_node.html#a5bd7301e0f65dc791e89b117ba7bd234", null ],
     [ "isActivated", "class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d", null ],
     [ "removePackage", "class_lo_ra_w_a_n_node.html#a5e2b9bccc2f19690aa2ccc0ee77e7868", null ],
@@ -46,8 +49,8 @@ var class_lo_ra_w_a_n_node =
     [ "setRx2Dr", "class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025", null ],
     [ "setSleepFunction", "class_lo_ra_w_a_n_node.html#a11c5f0867a9a8d731e980f865caebd99", null ],
     [ "setTxPower", "class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b", null ],
-    [ "startMulticastSession", "class_lo_ra_w_a_n_node.html#a1310697387785bdf6ff34091f271616f", null ],
-    [ "stopMulticastSession", "class_lo_ra_w_a_n_node.html#a4bb842987637727f5e191799f0343171", null ],
+    [ "startMulticastSession", "class_lo_ra_w_a_n_node.html#afe2dd9df77a232d80dfc0a74d9e2e398", null ],
+    [ "stopMulticastSession", "class_lo_ra_w_a_n_node.html#ac714660eedc855def5969563cf37432d", null ],
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
     [ "scanGuard", "class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403", null ]
 ];

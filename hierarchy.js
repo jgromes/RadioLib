@@ -54,6 +54,7 @@ var hierarchy =
     [ "Module", "class_module.html", [
       [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", null ]
     ] ],
+    [ "MulticastGroup_t", "struct_multicast_group__t.html", null ],
     [ "PacketConfig_t", "union_packet_config__t.html", null ],
     [ "PagerClient", "class_pager_client.html", null ],
     [ "paTableEntry_t", "structpa_table_entry__t.html", null ],

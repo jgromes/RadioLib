@@ -13,5 +13,6 @@ var searchData=
   ['rfswitch_5fmax_5fpins_10',['RFSWITCH_MAX_PINS',['../class_module.html#a0c11551e12579bbabf57b19e12555b3c',1,'Module']]],
   ['rssi_11',['rssi',['../struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f',1,'LR11x0WifiResult_t::rssi'],['../union_channel_scan_config__t.html#ad728b1bd8f0410660f51df0b27f2797e',1,'ChannelScanConfig_t::rssi']]],
   ['rx1span_12',['rx1Span',['../struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529',1,'LoRaWANBand_t']]],
-  ['rx2_13',['rx2',['../struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f',1,'LoRaWANBand_t']]]
+  ['rx2_13',['rx2',['../struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f',1,'LoRaWANBand_t']]],
+  ['rxfcnt_14',['rxFCnt',['../struct_multicast_group__t.html#a9f76eeb0e6e95777ff2f5f87c23a7e01',1,'MulticastGroup_t']]]
 ];

@@ -43,6 +43,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_MODE", "group__status__codes.html#ga4871133fa9b6d7cdbee82daf2226d373", null ],
     [ "RADIOLIB_ERR_INVALID_MODULATION", "group__status__codes.html#gab0f9cb8ee829a8504fc110de18c4ff67", null ],
     [ "RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS", "group__status__codes.html#ga7f57f6eddc68b9a59cceab4fdf6556ba", null ],
+    [ "RADIOLIB_ERR_INVALID_MULTICAST_GROUP", "group__status__codes.html#gad806c72e8eb8d1333c82d8268f928155", null ],
     [ "RADIOLIB_ERR_INVALID_NUM_BROAD_ADDRS", "group__status__codes.html#gae0e8ebbd71661b8a107b01befc997e5e", null ],
     [ "RADIOLIB_ERR_INVALID_NUM_REPEATERS", "group__status__codes.html#ga47f1cc22b76c6b8685bd7e265ab78a1a", null ],
     [ "RADIOLIB_ERR_INVALID_NUM_SAMPLES", "group__status__codes.html#gaa5d0e76a10099c6e1cfd8f24e48995a2", null ],

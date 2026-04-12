@@ -56,6 +56,7 @@ var annotated_dup =
     [ "LRxxxx", "class_l_rxxxx.html", "class_l_rxxxx" ],
     [ "Module", "class_module.html", "class_module" ],
     [ "MorseClient", "class_morse_client.html", "class_morse_client" ],
+    [ "MulticastGroup_t", "struct_multicast_group__t.html", "struct_multicast_group__t" ],
     [ "nRF24", "classn_r_f24.html", "classn_r_f24" ],
     [ "PacketConfig_t", "union_packet_config__t.html", null ],
     [ "PagerClient", "class_pager_client.html", "class_pager_client" ],
