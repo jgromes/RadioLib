@@ -6,7 +6,7 @@
   - Query `hasTask()` for next package task (UPLINK or ACTION)
   - If task is UPLINK: call `getUplinkData()` and send
   - If task is ACTION: call `doAction()`
-  - Forward package downlinks to `processPackageDownlink()`
+  - Forward package downlinks to `processDownlink()`
 
   Do NOT run this example before trying out the Starter and Reference examples.
   Do NOT run this example without reading through it and understanding how it works. 
@@ -134,7 +134,7 @@ void processDownlink(int16_t state) {
   // Forward package downlinks to package manager
   if(downLen > 0 && pacMan.isEnabledFPort(evtDown.fPort)) {
     Serial.println(F("It is a package downlink"));
-    pacMan.processPackageDownlink(downlink, downLen, evtDown.fPort);
+    pacMan.processDownlink(downlink, downLen, evtDown);
 
   // Process normal downlinks for ourselves
   } else if(downLen > 0) {

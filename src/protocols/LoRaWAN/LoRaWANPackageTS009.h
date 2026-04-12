@@ -1,6 +1,7 @@
 #if !defined(_RADIOLIB_LORAWAN_PACKAGE_TS009_H) && !RADIOLIB_EXCLUDE_LORAWAN
 #define _RADIOLIB_LORAWAN_PACKAGE_TS009_H
 
+#include "LoRaWAN.h"
 #include "LoRaWANPacMan.h"
 
 // TS009 - LCTT (LoRaWAN Conformance Test Tool) Testing Package
@@ -70,7 +71,7 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
       \param lenDown Length of downlink data
       \returns Number of bytes consumed
     */
-    size_t processData(const uint8_t* dataDown, size_t lenDown) override;
+    size_t processData(const uint8_t* dataDown, size_t lenDown, LoRaWANEvent_t* event) override;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -82,11 +83,26 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
     UplinkIntervalCb_t uplinkIntervalCallback;
     RebootCb_t rebootCallback;
 
+    void reboot() {
+      if(this->rebootCallback != NULL) {
+        this->rebootCallback();
+      }
+    }
+
 #if !RADIOLIB_GODMODE
   private:
 #endif
     // private constructor, to not allow the user to create additional instances of this package
-    LoRaWANPackageTS009(LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    
+    /*!
+      \brief Constructor
+      \param pacMan Pointer to the package manager
+      \param node Pointer to the LoRaWAN node
+      \param secondsCb Pointer to getSeconds() function
+    */
+    LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb);
+
+    uint8_t enabled = false;
     
     // allow LoRaWANPackageManager to access the private constructor
     friend LoRaWANPackageManager;

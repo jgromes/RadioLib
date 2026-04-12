@@ -5,17 +5,17 @@
 #include <string.h>
 
 // LoRaWANPackage implementation
-LoRaWANPackage::LoRaWANPackage(uint8_t ts, LoRaWANNode* node, GetSecondsCb_t secondsCb)
-  : packageIdentifier(ts), lenUp(0), lorawanNode(node), getSeconds_cb(secondsCb) {
+LoRaWANPackage::LoRaWANPackage(uint8_t ts, LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb)
+  : packageIdentifier(ts), lenUp(0), lorawanNode(node), getSeconds_cb(secondsCb), pacMan(pacMan) {
   this->packageVersion = 0;
   memset(this->dataUp, 0, sizeof(this->dataUp));
 }
 
-size_t LoRaWANPackage::processData(const uint8_t* dataIn, size_t lenIn) {
+size_t LoRaWANPackage::processData(const uint8_t* data, size_t len, LoRaWANEvent_t* event) {
   // Default implementation: assume the provided buffer is entirely consumed.
   // Derived classes should override and return actual bytes consumed.
-  (void)dataIn;
-  return(lenIn);
+  (void)data;
+  return(len);
 }
 
 void LoRaWANPackage::getUplinkData(uint8_t* dataOut, size_t* lenOut) {
@@ -47,20 +47,20 @@ void LoRaWANPackage::doAction() {
 
 // LoRaWANPackageManager implementation
 LoRaWANPackageManager::LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t secondsCb) {
-  // Initialize all packages to NULL and disabled
+  // initialize all packages to NULL and disabled
   for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
     this->packages[i] = NULL;
     this->packagePorts[i] = 0;
     this->enabledPackages[i] = false;
   }
 
-  // Store node and callback reference
+  // store node and callback reference
   this->lorawanNode = node;
   this->getSecondsCb = secondsCb;
 }
 
 int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb) {
-  // Check if node is not activated
+  // check if node is not activated
   if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
@@ -68,52 +68,62 @@ int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
-  // Create package if not already created
+  // create package if not already created
   if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009] == NULL) {
-    this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009] = new LoRaWANPackageTS009(this->lorawanNode, this->getSecondsCb);
+    this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009] = new LoRaWANPackageTS009(this, this->lorawanNode, this->getSecondsCb);
     this->packagePorts[RADIOLIB_LORAWAN_PACKAGE_TS009] = RADIOLIB_LORAWAN_FPORT_TS009;
   }
 
-  // Set parameters on TS009 package
+  // set parameters on TS009 package
   LoRaWANPackageTS009* ts009 = static_cast<LoRaWANPackageTS009*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009]);
   ts009->setPhysicalLayer(radio);
   ts009->setDelaySecondsCallback(delayCb);
   ts009->setUplinkIntervalCallback(intervalCb);
   ts009->setRebootCallback(rebootCb);
 
-  // Enable the package
+  // enable the package
   this->enabledPackages[RADIOLIB_LORAWAN_PACKAGE_TS009] = true;
+  ts009->enabled = true;
 
-  // Register the package's FPort so that downlinks on that FPort are not blocked
+  // register the package's FPort so that downlinks on that FPort are not blocked
   this->lorawanNode->addAppPackage(RADIOLIB_LORAWAN_FPORT_TS009);
 
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANPackageManager::processPackageDownlink(const uint8_t* dataIn, size_t lenIn, uint8_t fPort) {
-  if(dataIn == NULL) {
+
+bool LoRaWANPackageManager::getConfirmed() {
+  LoRaWANPackageTS009* ts009 = static_cast<LoRaWANPackageTS009*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009]);
+  if(ts009 == NULL) {
+    return(false);
+  }
+  return(ts009->getConfirmed());
+}
+
+int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, LoRaWANEvent_t* eventDown) {
+  if(data == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
   // If the downlink arrived on a package-specific FPort (not the package
   // manager's TS007 FPort), forward the entire payload to that package.
-  if(fPort != RADIOLIB_LORAWAN_FPORT_TS007) {
+  if(eventDown->fPort != RADIOLIB_LORAWAN_FPORT_TS007) {
     // Find package registered on this FPort
     for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
       if(!this->enabledPackages[i]) { 
         continue;
       }
-      if(this->packagePorts[i] == fPort) {
+      if(this->packagePorts[i] == eventDown->fPort) {
         LoRaWANPackage* pkg = this->packages[i];
         if(pkg == NULL) {
-          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No package registered for FPort %d, skipping", fPort);
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No package registered for FPort %d, skipping", eventDown->fPort);
           return(RADIOLIB_ERR_NONE);
         }
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Routing %d bytes on FPort %d to package %d", lenIn, fPort, i);
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Routing %d bytes on FPort %d to package %d", len, eventDown->fPort, i);
         // Forward entire payload to package; package returns bytes consumed
-        size_t consumed = pkg->processData(dataIn, lenIn);
+        size_t consumed = pkg->processData(data, len, eventDown);
         if(consumed == 0) {
-          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Package on FPort %d consumed 0 bytes", fPort);
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Package on FPort %d consumed 0 bytes", eventDown->fPort);
         }
         // Package-specific answers remain in package buffer and will be
         // exposed via hasTask()/getUplinkData(). Nothing more to do here.
@@ -122,7 +132,7 @@ int16_t LoRaWANPackageManager::processPackageDownlink(const uint8_t* dataIn, siz
     }
 
     // No package matched this FPort; nothing to do.
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No package matched FPort %d, ignoring payload", fPort);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No package matched FPort %d, ignoring payload", eventDown->fPort);
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -210,14 +220,6 @@ bool LoRaWANPackageManager::doAction() {
   }
 
   return(false);
-}
-
-bool LoRaWANPackageManager::getConfirmed() {
-  LoRaWANPackageTS009* ts009 = static_cast<LoRaWANPackageTS009*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009]);
-  if(ts009 == NULL) {
-    return(false);
-  }
-  return(ts009->getConfirmed());
 }
 
 #endif
