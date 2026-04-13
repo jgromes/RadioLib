@@ -574,6 +574,8 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Query modem for the packet length of received payload.
+      In LoRa implicit header mode or FSK fixed length mode,
+      this method always returns the user-configured packet length.
       \param update Not used for SX126x modules.
       \returns Length of last received packet in bytes.
     */
@@ -581,6 +583,8 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Query modem for the packet length of received payload and Rx buffer offset.
+      In LoRa implicit header mode or FSK fixed length mode,
+      this method always returns the user-configured packet length.
       \param update Not used for SX126x modules.
       \param offset Pointer to variable to store the Rx buffer offset.
       \returns Length of last received packet in bytes.

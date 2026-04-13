@@ -749,6 +749,7 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
 
   // update cached value
   this->packetType = mode;
+  this->implicitLen = len;
   return(state);
 }
 
