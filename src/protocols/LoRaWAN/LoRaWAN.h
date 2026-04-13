@@ -655,6 +655,22 @@ class LoRaWANNode {
 
     /*!
       \brief Start a Multicast session.
+      \param cls The LoRaWAN Class used for this session (only C is supported).
+      \param mcAddr The Multicast address.
+      \param mcAppSKey The Multicast payload encryption key.
+      \param mcNwkSKey The Multicast payload integrity key.
+      \param mcFCntMin The minimum expected Multicast frame counter.
+      \param mcFCntMin The maximum allowed Multicast frame counter.
+      \param mcFreq The frequency used for the Multicast downlinks (in Hz). Default = 0 uses Rx2 frequency.
+      \param mcDr The datarate used for the Multicast downlinks. Default = 0 uses Rx2 datarate.
+      \returns \ref status_codes
+    */
+    int16_t startMulticastSession(uint8_t cls, uint32_t mcAddr, const uint8_t* mcAppSKey, const uint8_t* mcNwkSKey, 
+                                  uint32_t mcFCntMin = 0, uint32_t mcFCntMax = 0xFFFFFFFF, uint32_t mcFreq = 0, 
+                                  uint8_t mcDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
+
+    /*!
+      \brief Start a Multicast session.
       \param id Multicast group ID.
       \param mcGroup Multicast group specification structure. 
       The user is expected to fill in all fields of this structure.

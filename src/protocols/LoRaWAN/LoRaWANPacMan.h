@@ -56,21 +56,17 @@ class LoRaWANPackage {
 
     typedef RadioLibTime_t (*GetSecondsCb_t)();
 
-    /*!
-      \brief Default constructor.
-      \param ts Package identifier (e.g. RADIOLIB_LORAWAN_PACKAGE_TS003)
-      \param node Pointer to the LoRaWAN node
-      \param secondsCb Pointer to getSeconds() function for time handling
-    */
-    LoRaWANPackage(uint8_t ts, LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    // copy constructor is removed to prevent users from creating copies of this class
+    LoRaWANPackage(const LoRaWANPackage& obj) = delete;
 
     /*!
       \brief Process a sequence of package commands and return how many bytes were consumed
-      \param dataIn Pointer to incoming data
-      \param lenIn Length of incoming data
+      \param data Pointer to incoming data
+      \param len Length of incoming data
+      \param event Downlink event details
       \returns Number of bytes consumed
     */
-    virtual size_t processData(const uint8_t* dataIn, size_t lenIn);
+    virtual size_t processData(const uint8_t* data, size_t len, LoRaWANEvent_t* event);
 
     /*!
       \brief Query the next scheduled task for this package
@@ -96,20 +92,29 @@ class LoRaWANPackage {
     */
     RadioLibTime_t getSeconds() {
       if(this->getSeconds_cb != NULL) {
-        return this->getSeconds_cb();
+        return(this->getSeconds_cb());
       }
-      return 0;
+      return(0);
     }
     
 #if !RADIOLIB_GODMODE
   protected:
 #endif
     
+    /*!
+      \brief Default constructor.
+      \param pacMan Pointer to the package manager for persistence handling
+      \param node Pointer to the LoRaWAN node
+      \param secondsCb Pointer to getSeconds() function for time handling
+    */
+    LoRaWANPackage(uint8_t ts, LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb);
+
     uint8_t packageIdentifier;
     uint8_t packageVersion;
     uint8_t dataUp[255];
     size_t lenUp = 0;
 
+    LoRaWANPackageManager* pacMan;
     LoRaWANNode* lorawanNode;
     GetSecondsCb_t getSeconds_cb;
 
@@ -125,8 +130,8 @@ class LoRaWANPackageManager {
   public:
 
     typedef RadioLibTime_t (*GetSecondsCb_t)();
-    typedef void (*DelaySecondsCb_t)(uint32_t seconds);
-    typedef void (*UplinkIntervalCb_t)(uint32_t intervalSeconds);
+    typedef void (*DelaySecondsCb_t)(RadioLibTime_t seconds);
+    typedef void (*UplinkIntervalCb_t)(RadioLibTime_t intervalSeconds);
     typedef void (*RebootCb_t)();
 
     /*!
@@ -140,6 +145,10 @@ class LoRaWANPackageManager {
     // Package enablement methods
     /*!
       \brief Enable TS009 Certification Protocol package
+      \param radio Pointer to the PhysicalLayer radio instance for RF testing
+      \param delayCb Callback to delay for a number of seconds during RF testing
+      \param intervalCb Callback to set the uplink interval for the device
+      \param rebootCb Callback to perform a device reboot
       \returns \ref status_codes
     */
     int16_t enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb);
@@ -153,13 +162,12 @@ class LoRaWANPackageManager {
 
     /*!
       \brief Process a multi-package downlink payload (TS007 section 3.1).
-      \param dataIn Pointer to incoming payload
-      \param lenIn Length of incoming payload
-      \param ansOut Pointer to buffer to collect answers
-      \param ansLen Pointer to store answer length
+      \param data Pointer to incoming payload
+      \param len Length of incoming payload
+      \param eventDown Pointer to LoRaWANEvent_t downlink event struct
       \returns \ref status_codes
     */
-    int16_t processPackageDownlink(const uint8_t* dataIn, size_t lenIn, uint8_t fPort = 0xFF);
+    int16_t processDownlink(const uint8_t* data, size_t len, LoRaWANEvent_t* eventDown);
 
     /*!
       \brief Query the next scheduled task across all packages and return the first
@@ -195,10 +203,10 @@ class LoRaWANPackageManager {
     bool isEnabledFPort(uint8_t fPort) {
       for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
         if(this->enabledPackages[i] && this->packagePorts[i] == fPort) {
-          return true;
+          return(true);
         }
       }
-      return false;
+      return(false);
     }
     
 #if !RADIOLIB_GODMODE
