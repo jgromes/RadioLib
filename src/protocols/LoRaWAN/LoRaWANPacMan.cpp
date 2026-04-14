@@ -67,7 +67,7 @@ int16_t LoRaWANPackageManager::enableTS003(uint8_t fPort, SetSecondsCb_t setSeco
   }
 
   // verify callback is provided
-  if(setSecondsFunc == NULL) {
+  if(this->getSecondsCb == NULL || setSecondsFunc == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
