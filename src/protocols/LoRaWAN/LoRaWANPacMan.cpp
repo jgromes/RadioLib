@@ -1,6 +1,7 @@
 #if !RADIOLIB_EXCLUDE_LORAWAN
 
 #include "LoRaWANPacMan.h"
+#include "LoRaWANPackageTS003.h"
 #include "LoRaWANPackageTS009.h"
 #include <string.h>
 
@@ -59,6 +60,34 @@ LoRaWANPackageManager::LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t s
   this->getSecondsCb = secondsCb;
 }
 
+int16_t LoRaWANPackageManager::enableTS003(uint8_t fPort, SetSecondsCb_t setSecondsFunc) {
+  // check if node is not activated
+  if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
+  }
+
+  // verify callback is provided
+  if(setSecondsFunc == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+
+  // create package if not already created
+  if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003] == NULL) {
+    this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003] = new LoRaWANPackageTS003(this, this->lorawanNode, this->getSecondsCb);
+    this->packagePorts[RADIOLIB_LORAWAN_PACKAGE_TS003] = fPort;
+  }
+
+  // set time handler callback on TS003 package
+  LoRaWANPackageTS003* ts003 = static_cast<LoRaWANPackageTS003*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003]);
+  ts003->setSecondsCb(setSecondsFunc);
+
+  // enable the package
+  this->enabledPackages[RADIOLIB_LORAWAN_PACKAGE_TS003] = true;
+
+  return(RADIOLIB_ERR_NONE);
+}
+
+
 int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb) {
   // check if node is not activated
   if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
@@ -91,6 +120,14 @@ int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_
   return(RADIOLIB_ERR_NONE);
 }
 
+void LoRaWANPackageManager::requestAppTime() {
+  // if TS003 is enabled, trigger an immediate uplink with the AppTimeReq CID
+  LoRaWANPackageTS003* ts003 = static_cast<LoRaWANPackageTS003*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003]);
+  if(ts003 == NULL) {
+    return;
+  }
+  ts003->requestAppTime();
+}
 
 bool LoRaWANPackageManager::getConfirmed() {
   LoRaWANPackageTS009* ts009 = static_cast<LoRaWANPackageTS009*>(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS009]);
