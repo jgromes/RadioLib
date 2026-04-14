@@ -4,7 +4,7 @@
 
 LoRaWANPackageTS003::LoRaWANPackageTS003(LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb)
   : LoRaWANPackage(RADIOLIB_LORAWAN_PACKAGE_TS003, pacMan, node, secondsCb),
-    setSeconds(NULL), tokenReq(0), periodicity(0), nextAppReqTime(0) {
+    setSeconds(NULL), tokenReq(0), transmissions(0), periodicity(0), nextAppReqTime(0) {
   this->packageVersion = 2;
 }
 
