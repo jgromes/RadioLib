@@ -45,11 +45,11 @@ LoRaWANTaskInfo LoRaWANPackageTS003::hasTask() {
   // if there are forced retransmissions, ignore periodicity
   if(this->transmissions > 0) {
     this->transmissions -= 1;
-    this->nextAppReqTime = nowSec + random(60);
+    this->nextAppReqTime = nowSec + (rand() % 60);
 
   // otherwise schedule based on periodicity
   } else if(this->periodicity > 0) {
-    this->nextAppReqTime += this->periodicity - 30 + random(60);
+    this->nextAppReqTime += this->periodicity - 30 + (rand() % 60);
   }
 
   // if there are no forced retransmissions and no periodicity, do not schedule
@@ -117,7 +117,7 @@ size_t LoRaWANPackageTS003::processData(const uint8_t* dataDown, size_t lenDown,
 
         // otherwise, schedule next AppTimeReq based on periodicity (if set)
         } else if(this->periodicity) {
-          this->nextAppReqTime = this->getSeconds() + this->periodicity - 30 + random(60);
+          this->nextAppReqTime = this->getSeconds() + this->periodicity - 30 + (rand() % 60);
         } else {
           this->nextAppReqTime = 0;
         }
@@ -138,7 +138,7 @@ size_t LoRaWANPackageTS003::processData(const uint8_t* dataDown, size_t lenDown,
 
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Period: %lu, Time: %lu", period, now);
         this->periodicity = 128 << period;
-        this->nextAppReqTime = this->getSeconds() + this->periodicity - 30 + random(60);
+        this->nextAppReqTime = this->getSeconds() + this->periodicity - 30 + (rand() % 60);
         
       } break;
       case(RADIOLIB_LORAWAN_TS003_FORCE_DEVICE_RESYNC): {
