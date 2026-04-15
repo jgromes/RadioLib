@@ -65,6 +65,8 @@ void LoRaWANPackageTS003::doAction() {
 }
 
 size_t LoRaWANPackageTS003::processData(const uint8_t* dataDown, size_t lenDown, LoRaWANEvent_t* event) {
+  (void)event;
+
   size_t procLen = 0;
   this->lenUp = 0;
 
@@ -110,7 +112,7 @@ size_t LoRaWANPackageTS003::processData(const uint8_t* dataDown, size_t lenDown,
         this->transmissions = 0;
 
         // if correction is min/max value, trigger another AppTimeReq
-        if(correction == 0x7FFFFFFF || correction == 0x80000000) {
+        if(uCorrection == (uint32_t)0x7FFFFFFF || uCorrection == (uint32_t)0x80000000) {
           this->nextAppReqTime = this->getSeconds();
 
         // otherwise, schedule next AppTimeReq based on periodicity (if set)
