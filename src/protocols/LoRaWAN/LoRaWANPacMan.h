@@ -140,7 +140,7 @@ class LoRaWANPackageManager {
       \param node Pointer to the LoRaWAN node
       \param getSeconds Pointer to getSeconds() function for time handling
     */    
-    
+    LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t secondsCb);
 
     // Package enable methods
     /*!

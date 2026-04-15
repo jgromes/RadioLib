@@ -16,6 +16,7 @@ size_t LoRaWANPackage::processData(const uint8_t* data, size_t len, LoRaWANEvent
   // Default implementation: assume the provided buffer is entirely consumed.
   // Derived classes should override and return actual bytes consumed.
   (void)data;
+  (void)event;
   return(len);
 }
 
