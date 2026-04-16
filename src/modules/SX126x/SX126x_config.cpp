@@ -184,7 +184,8 @@ int16_t SX126x::setPreambleLength(size_t preambleLength) {
                               maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
                               maxDetLen >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
                               RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
-    return(setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType));
+    return(setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
+      this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH));
   }
 
   return(RADIOLIB_ERR_UNKNOWN);
@@ -467,8 +468,8 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, size_t len) {
                               maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
                               maxDetLen >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
                               RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType);
-
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
+      this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH);
     return(state);
   
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
@@ -518,7 +519,8 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
         return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
     }
 
-    int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType);
+    int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
+      this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH);
     RADIOLIB_ASSERT(state);
 
     // write initial CRC value
@@ -560,7 +562,8 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
     // disable whitening
     this->whitening = RADIOLIB_SX126X_GFSK_WHITENING_OFF;
 
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
+      this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH);
     RADIOLIB_ASSERT(state);
 
   } else {
@@ -580,7 +583,8 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
     state = writeRegister(RADIOLIB_SX126X_REG_WHITENING_INITIAL_MSB, data, 2);
     RADIOLIB_ASSERT(state);
 
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
+      this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH);
     RADIOLIB_ASSERT(state);
   }
   return(state);
