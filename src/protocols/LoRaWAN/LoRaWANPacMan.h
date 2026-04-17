@@ -130,6 +130,7 @@ class LoRaWANPackageManager {
   public:
 
     typedef RadioLibTime_t (*GetSecondsCb_t)();
+    typedef void (*SetSecondsCb_t)(RadioLibTime_t seconds);
     typedef void (*DelaySecondsCb_t)(RadioLibTime_t seconds);
     typedef void (*UplinkIntervalCb_t)(RadioLibTime_t intervalSeconds);
     typedef void (*RebootCb_t)();
@@ -138,9 +139,17 @@ class LoRaWANPackageManager {
       \brief Create a package manager
       \param node Pointer to the LoRaWAN node
       \param getSeconds Pointer to getSeconds() function for time handling
-    */
-    
+    */    
     LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t secondsCb);
+
+    // Package enable methods
+    /*!
+      \brief Enable TS003 Application Time Synchronization package
+      \param fPort The FPort to which this package will listen
+      \param setSecondsFunc Pointer to setSeconds() function
+      \returns \ref status_codes
+    */
+    int16_t enableTS003(uint8_t fPort, SetSecondsCb_t setSecondsFunc);
 
     // Package enablement methods
     /*!
@@ -153,6 +162,13 @@ class LoRaWANPackageManager {
     */
     int16_t enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb);
 
+    // TS003
+    /*!
+      \brief Send an application time request
+      \returns \ref status_codes
+    */
+    void requestAppTime();
+    
     // TS009
     /*!
       \brief Check whether subsequent uplinks should be confirmed

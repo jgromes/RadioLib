@@ -6,6 +6,9 @@
   
   This file provides example implementations of the callbacks that the 
   Package Manager uses to interact with the device and/or application.
+
+  Note: the functions used MUST be configured for your device to function
+  correctly with the enabled packages.
 */
 
 #include <Arduino.h>
@@ -13,10 +16,23 @@
 #include "config.h"
 
 // Most packages need a true time reference in seconds (not time since boot).
-// However, TS009 is an exception that does not require a real time reference,
-// so we can just return millis()/1000.
+// This is the current time in seconds (GPS time since epoch - not Unix!).
+// Commented below is a reference implementation for the ESP32.
 RadioLibTime_t getSeconds() {
-  return((RadioLibTime_t)millis() / 1000);
+  return(0);
+
+  // return((RadioLibTime_t)time(NULL));
+}
+
+// Configure the current true time in seconds (GPS time since epoch - not Unix!).
+// Commented below is a reference implementation for the ESP32.
+inline void setSeconds(RadioLibTime_t seconds) {
+  (void)seconds;
+
+  // struct timeval tv;
+  // tv.tv_sec = seconds;
+  // tv.tv_usec = 0;
+  // settimeofday(&tv, NULL);
 }
 
 // This function is called by a package when it receives a reset command.
