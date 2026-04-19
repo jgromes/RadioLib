@@ -33,28 +33,52 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
 
   // set module properties and perform initial setup
   int16_t state = this->modSetup(RADIOLIB_SX128X_PACKET_TYPE_LORA);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at modSetup [%d]", state);
+  }
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setFrequency(freq);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setFrequency(%.3f MHz) [%d]", freq, state);
+  }
   RADIOLIB_ASSERT(state);
 
   state = setBandwidth(bw);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setBandwidth(%.3f kHz) [%d]", bw, state);
+  }
   RADIOLIB_ASSERT(state);
 
   state = setSpreadingFactor(sf);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setSpreadingFactor(%d) [%d]", sf, state);
+  }
   RADIOLIB_ASSERT(state);
 
   state = setCodingRate(cr);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setCodingRate(%d) [%d]", cr, state);
+  }
   RADIOLIB_ASSERT(state);
 
   state = setSyncWord(syncWord);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setSyncWord(0x%02X) [%d]", syncWord, state);
+  }
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setPreambleLength(%d) [%d]", preambleLength, state);
+  }
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(pwr);
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SX128x LoRa begin() failed at setOutputPower(%d dBm) [%d]", pwr, state);
+  }
   RADIOLIB_ASSERT(state);
 
   return(state);
