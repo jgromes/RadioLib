@@ -201,11 +201,12 @@ int16_t SX128x::reset(bool verify) {
     return(RADIOLIB_ERR_NONE);
   }
 
-  // set mode to standby
+  // set mode to standby - send NOP first to wake the chip if it is in sleep
+  // (in sleep BUSY is HIGH; without the NOP the standby command never gets through)
   RadioLibTime_t start = this->mod->hal->millis();
   while(true) {
     // try to set mode to standby
-    int16_t state = standby();
+    int16_t state = standby(RADIOLIB_SX128X_STANDBY_RC, true);
     if(state == RADIOLIB_ERR_NONE) {
       // standby command successful
       return(RADIOLIB_ERR_NONE);
