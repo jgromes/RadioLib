@@ -1680,10 +1680,10 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   // check if Multicast using Class C is active
   if(this->getMulticastClass() == RADIOLIB_LORAWAN_CLASS_C) {
-
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Multicast RxC window");
   // check if the device is configured as standard Class C
   } else if(this->lwClass == RADIOLIB_LORAWAN_CLASS_C) {
-
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Unicast RxC window");
   // otherwise, ignore this call without error
   } else {
     return(RADIOLIB_ERR_NONE);
@@ -2273,6 +2273,9 @@ int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaW
 
   if(downlinkAction) {
     state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RX_BC, eventDown);
+
+    // re-latch the IRQ interrupt just to be sure
+    this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
     downlinkAction = false;
 
     // if downlink parsed successfully, set state to RxC window
@@ -3305,7 +3308,8 @@ uint8_t LoRaWANNode::getMacUplinkLen() {
 }
 
 int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir, int8_t pwr, size_t pre) {
-  int16_t state = RADIOLIB_ERR_NONE;
+  int16_t state = this->phyLayer->standby();
+  RADIOLIB_ASSERT(state);
 
   // set datarate (and modem implicitly)
   const DataRate_t* dr = &this->band->dataRates[chnl->dr].dr;
