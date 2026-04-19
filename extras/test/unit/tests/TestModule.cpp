@@ -4,7 +4,85 @@
 // mock HAL
 #include "ModuleFixture.hpp"
 
+static int16_t srcParseStatusCb(uint8_t in) { (void)in; return(RADIOLIB_ERR_UNKNOWN); }
+static int16_t dstParseStatusCb(uint8_t in) { (void)in; return(RADIOLIB_ERR_UNKNOWN); }
+static int16_t srcCheckStatusCb(Module* mod) { (void)mod; return(RADIOLIB_ERR_UNKNOWN); }
+static int16_t dstCheckStatusCb(Module* mod) { (void)mod; return(RADIOLIB_ERR_UNKNOWN); }
+
 BOOST_FIXTURE_TEST_SUITE(suite_Module, ModuleFixture)
+
+  BOOST_FIXTURE_TEST_CASE(Module_CopyConstructor, ModuleFixture)
+  {
+    BOOST_TEST_MESSAGE("--- Test Module::CopyConstructor ---");
+
+    // intentionally not using the Module fixture, since we will be modifying members arbitrarily
+    Module src(hal, EMULATED_RADIO_NSS_PIN, EMULATED_RADIO_IRQ_PIN, EMULATED_RADIO_RST_PIN, EMULATED_RADIO_GPIO_PIN);
+    Module dst(hal, -1*EMULATED_RADIO_NSS_PIN, -1*EMULATED_RADIO_IRQ_PIN, -1*EMULATED_RADIO_RST_PIN, -1*EMULATED_RADIO_GPIO_PIN);
+
+    // set the source
+    src.spiConfig.stream = true;
+    src.spiConfig.err = 0xAA;
+    for(unsigned int i = 0; i < sizeof(src.spiConfig.cmds)/sizeof(src.spiConfig.cmds[0]); i++) { src.spiConfig.cmds[i] = (2*i) + 1; }
+    for(unsigned int i = 0; i < sizeof(src.spiConfig.widths)/sizeof(src.spiConfig.widths[0]); i++) { src.spiConfig.widths[i] = Module::BITS_8; }
+    for(unsigned int i = 0; i < sizeof(src.rfSwitchPins)/sizeof(src.rfSwitchPins[0]); i++) { src.rfSwitchPins[i] = (2*i) + 1; }
+    src.spiConfig.statusPos = 0x55;
+    src.spiConfig.parseStatusCb = srcParseStatusCb;
+    src.spiConfig.checkStatusCb = srcCheckStatusCb;
+    src.spiConfig.timeout = 3000;
+    const Module::RfSwitchMode_t srcRfMode[] = { { Module::MODE_IDLE, { 0, 0 } } };
+    src.rfSwitchTable = srcRfMode;
+    
+    // set up the "modules" so that they are unequal
+    dst.spiConfig.stream = !src.spiConfig.stream;
+    dst.spiConfig.err = ~src.spiConfig.err;
+    for(unsigned int i = 0; i < sizeof(dst.spiConfig.cmds)/sizeof(dst.spiConfig.cmds[0]); i++) { dst.spiConfig.cmds[i] = -1*src.spiConfig.cmds[i]; }
+    for(unsigned int i = 0; i < sizeof(dst.spiConfig.widths)/sizeof(dst.spiConfig.widths[0]); i++) { dst.spiConfig.widths[i] = Module::BITS_24; }
+    for(unsigned int i = 0; i < sizeof(dst.rfSwitchPins)/sizeof(dst.rfSwitchPins[0]); i++) { dst.rfSwitchPins[i] = -1*src.rfSwitchPins[i]; }
+    dst.spiConfig.statusPos = ~src.spiConfig.statusPos;
+    dst.spiConfig.parseStatusCb = dstParseStatusCb;
+    dst.spiConfig.checkStatusCb = dstCheckStatusCb;
+    dst.spiConfig.timeout = -1*src.spiConfig.timeout;
+    const Module::RfSwitchMode_t dstRfMode[] = { { Module::MODE_RX, { 1, 1 } } };
+    dst.rfSwitchTable = dstRfMode;
+
+    // check unequality before copy
+    BOOST_TEST(src.csPin != dst.csPin);
+    BOOST_TEST(src.irqPin != dst.irqPin);
+    BOOST_TEST(src.rstPin != dst.rstPin);
+    BOOST_TEST(src.gpioPin != dst.gpioPin);
+    BOOST_TEST(src.spiConfig.stream != dst.spiConfig.stream);
+    BOOST_TEST(src.spiConfig.err != dst.spiConfig.err);
+    for(unsigned int i = 0; i < sizeof(src.spiConfig.cmds)/sizeof(src.spiConfig.cmds[0]); i++) { BOOST_TEST(dst.spiConfig.cmds[i] != src.spiConfig.cmds[i]); }
+    for(unsigned int i = 0; i < sizeof(src.spiConfig.widths)/sizeof(src.spiConfig.widths[0]); i++) { BOOST_TEST(dst.spiConfig.widths[i] != src.spiConfig.widths[i]); }
+    BOOST_TEST(src.spiConfig.statusPos != dst.spiConfig.statusPos);
+    BOOST_TEST(src.spiConfig.parseStatusCb != dst.spiConfig.parseStatusCb);
+    BOOST_TEST(src.spiConfig.checkStatusCb != dst.spiConfig.checkStatusCb);
+    BOOST_TEST(src.spiConfig.timeout != dst.spiConfig.timeout);
+    for(unsigned int i = 0; i < sizeof(src.rfSwitchPins)/sizeof(src.rfSwitchPins[0]); i++) { BOOST_TEST(dst.rfSwitchPins[i] != src.rfSwitchPins[i]); }
+    BOOST_TEST(src.rfSwitchTable != dst.rfSwitchTable);
+
+    // make the copy
+    dst = src;
+
+    // check that source remained unchanged
+    BOOST_TEST(src.spiConfig.parseStatusCb == srcParseStatusCb);
+
+    // check equality after copy
+    BOOST_TEST(src.csPin == dst.csPin);
+    BOOST_TEST(src.irqPin == dst.irqPin);
+    BOOST_TEST(src.rstPin == dst.rstPin);
+    BOOST_TEST(src.gpioPin == dst.gpioPin);
+    BOOST_TEST(src.spiConfig.stream == dst.spiConfig.stream);
+    BOOST_TEST(src.spiConfig.err == dst.spiConfig.err);
+    for(unsigned int i = 0; i < sizeof(src.spiConfig.cmds)/sizeof(src.spiConfig.cmds[0]); i++) { BOOST_TEST(dst.spiConfig.cmds[i] == src.spiConfig.cmds[i]); }
+    for(unsigned int i = 0; i < sizeof(src.spiConfig.widths)/sizeof(src.spiConfig.widths[0]); i++) { BOOST_TEST(dst.spiConfig.widths[i] == src.spiConfig.widths[i]); }
+    BOOST_TEST(src.spiConfig.statusPos == dst.spiConfig.statusPos);
+    BOOST_TEST(src.spiConfig.parseStatusCb == dst.spiConfig.parseStatusCb);
+    BOOST_TEST(src.spiConfig.checkStatusCb == dst.spiConfig.checkStatusCb);
+    BOOST_TEST(src.spiConfig.timeout == dst.spiConfig.timeout);
+    for(unsigned int i = 0; i < sizeof(src.rfSwitchPins)/sizeof(src.rfSwitchPins[0]); i++) { BOOST_TEST(dst.rfSwitchPins[i] == src.rfSwitchPins[i]); }
+    BOOST_TEST(src.rfSwitchTable == dst.rfSwitchTable);
+  }
 
   BOOST_FIXTURE_TEST_CASE(Module_SPIgetRegValue_reg, ModuleFixture)
   {
