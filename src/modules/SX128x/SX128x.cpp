@@ -581,30 +581,48 @@ int16_t SX128x::setFrequency(float freq) {
 int16_t SX128x::setBandwidth(float bw) {
   // check active modem
   uint8_t modem = getPacketType();
+
+  // Snap to the nearest valid bandwidth using midpoint thresholds.
+  // SX128x only supports four discrete LoRa BW values; users commonly pass
+  // approximate values (e.g. 203.0 instead of 203.125). Snapping avoids a
+  // hard failure for inputs that are unambiguously close to a valid value.
+  // A coarse sanity check still rejects values that are clearly out of range.
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
-    // check range for LoRa
-    RADIOLIB_CHECK_RANGE(bw, 203.125f, 1625.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(bw, 100.0f, 2000.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    if(bw < 304.6875f) {
+      // nearest to 203.125
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_203_125;
+      this->bandwidthKhz = 203.125f;
+    } else if(bw < 609.375f) {
+      // nearest to 406.25
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_406_25;
+      this->bandwidthKhz = 406.25f;
+    } else if(bw < 1218.75f) {
+      // nearest to 812.5
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_812_50;
+      this->bandwidthKhz = 812.5f;
+    } else {
+      // nearest to 1625.0
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_1625_00;
+      this->bandwidthKhz = 1625.0f;
+    }
   } else if(modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING) {
-    // check range for ranging
-    RADIOLIB_CHECK_RANGE(bw, 406.25f, 1625.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    // Ranging supports 406.25, 812.5, 1625.0 kHz only
+    RADIOLIB_CHECK_RANGE(bw, 300.0f, 2000.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    if(bw < 609.375f) {
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_406_25;
+      this->bandwidthKhz = 406.25f;
+    } else if(bw < 1218.75f) {
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_812_50;
+      this->bandwidthKhz = 812.5f;
+    } else {
+      this->bandwidth = RADIOLIB_SX128X_LORA_BW_1625_00;
+      this->bandwidthKhz = 1625.0f;
+    }
   } else {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  if(fabsf(bw - 203.125f) <= 0.001f) {
-    this->bandwidth = RADIOLIB_SX128X_LORA_BW_203_125;
-  } else if(fabsf(bw - 406.25f) <= 0.001f) {
-    this->bandwidth = RADIOLIB_SX128X_LORA_BW_406_25;
-  } else if(fabsf(bw - 812.5f) <= 0.001f) {
-    this->bandwidth = RADIOLIB_SX128X_LORA_BW_812_50;
-  } else if(fabsf(bw - 1625.0f) <= 0.001f) {
-    this->bandwidth = RADIOLIB_SX128X_LORA_BW_1625_00;
-  } else {
-    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
-  }
-
-  // update modulation parameters
-  this->bandwidthKhz = bw;
   return(setModulationParams(this->spreadingFactor, this->bandwidth, this->codingRateLoRa));
 }
 
