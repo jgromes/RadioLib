@@ -31,6 +31,7 @@ var hierarchy =
     [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", null ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", null ],
     [ "LoRaWANPackage", "class_lo_ra_w_a_n_package.html", [
+      [ "LoRaWANPackageTS003", "class_lo_ra_w_a_n_package_t_s003.html", null ],
       [ "LoRaWANPackageTS009", "class_lo_ra_w_a_n_package_t_s009.html", null ]
     ] ],
     [ "LoRaWANPackage_t", "struct_lo_ra_w_a_n_package__t.html", null ],

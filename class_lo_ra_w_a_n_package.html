@@ -108,7 +108,8 @@ Inheritance diagram for LoRaWANPackage:</div>
  <div class="center">
   <img src="class_lo_ra_w_a_n_package.png" usemap="#LoRaWANPackage_map" alt=""/>
   <map id="LoRaWANPackage_map" name="LoRaWANPackage_map">
-<area href="class_lo_ra_w_a_n_package_t_s009.html" title="LoRaWAN Application package for TS009 Certification testing." alt="LoRaWANPackageTS009" shape="rect" coords="0,56,155,80"/>
+<area href="class_lo_ra_w_a_n_package_t_s003.html" title="LoRaWAN Application package for TS003 Application Time." alt="LoRaWANPackageTS003" shape="rect" coords="0,56,155,80"/>
+<area href="class_lo_ra_w_a_n_package_t_s009.html" title="LoRaWAN Application package for TS009 Certification testing." alt="LoRaWANPackageTS009" shape="rect" coords="165,56,320,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -129,9 +130,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae5d4ca004a29f0266b8c3a3c7b977c5e" id="r_ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_lo_ra_w_a_n_task_info.html">LoRaWANTaskInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#ae5d4ca004a29f0266b8c3a3c7b977c5e">hasTask</a> ()</td></tr>
 <tr class="memdesc:ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the next scheduled task for this package.  <br /></td></tr>
 <tr class="separator:ae5d4ca004a29f0266b8c3a3c7b977c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a194ba6a5c1d60d47d9020a184660fae2" id="r_a194ba6a5c1d60d47d9020a184660fae2"><td class="memItemLeft" align="right" valign="top"><a id="a194ba6a5c1d60d47d9020a184660fae2" name="a194ba6a5c1d60d47d9020a184660fae2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> ()</td></tr>
-<tr class="memdesc:a194ba6a5c1d60d47d9020a184660fae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform an ACTION task (if any). Default no-op. <br /></td></tr>
+<tr class="memitem:a194ba6a5c1d60d47d9020a184660fae2" id="r_a194ba6a5c1d60d47d9020a184660fae2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#a194ba6a5c1d60d47d9020a184660fae2">doAction</a> ()</td></tr>
+<tr class="memdesc:a194ba6a5c1d60d47d9020a184660fae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform an ACTION task (if any). Default no-op.  <br /></td></tr>
 <tr class="separator:a194ba6a5c1d60d47d9020a184660fae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80054133311044376f4c0baf3f2ce60b" id="r_a80054133311044376f4c0baf3f2ce60b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#a80054133311044376f4c0baf3f2ce60b">getUplinkData</a> (uint8_t *dataOut, size_t *lenOut)</td></tr>
 <tr class="memdesc:a80054133311044376f4c0baf3f2ce60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get uplink data for UPLINK tasks. Returns internal buffer.  <br /></td></tr>
@@ -143,6 +143,35 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common interface for all application packages. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a194ba6a5c1d60d47d9020a184660fae2" name="a194ba6a5c1d60d47d9020a184660fae2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a194ba6a5c1d60d47d9020a184660fae2">&#9670;&#160;</a></span>doAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANPackage::doAction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Perform an ACTION task (if any). Default no-op. </p>
+
+<p>Reimplemented in <a class="el" href="class_lo_ra_w_a_n_package_t_s003.html#a3d042c4be811a6238bc849bb25cf4708">LoRaWANPackageTS003</a>.</p>
+
+</div>
+</div>
 <a id="af07a4abbab1c95879703e5b137763528" name="af07a4abbab1c95879703e5b137763528"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af07a4abbab1c95879703e5b137763528">&#9670;&#160;</a></span>getSeconds()</h2>
 
@@ -234,6 +263,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 <p>Query the next scheduled task for this package. </p>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="struct_lo_ra_w_a_n_task_info.html" title="Structure displaying pending LoRaWAN task information.">LoRaWANTaskInfo</a></code> containing task type and time </dd></dl>
 
+<p>Reimplemented in <a class="el" href="class_lo_ra_w_a_n_package_t_s003.html#afc925bf0156862200a51ce3a703cd146">LoRaWANPackageTS003</a>.</p>
+
 </div>
 </div>
 <a id="ad297696485bae8cdd0da957a840c01bd" name="ad297696485bae8cdd0da957a840c01bd"></a>
@@ -287,7 +318,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>doAction</b> 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of bytes consumed </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a93c62ce89f5d1a84e9c49a57b282e47b">LoRaWANPackageTS009</a>.</p>
+<p>Reimplemented in <a class="el" href="class_lo_ra_w_a_n_package_t_s003.html#aaafa4c16b2583cf8e957460367babbad">LoRaWANPackageTS003</a>, and <a class="el" href="class_lo_ra_w_a_n_package_t_s009.html#a93c62ce89f5d1a84e9c49a57b282e47b">LoRaWANPackageTS009</a>.</p>
 
 </div>
 </div>

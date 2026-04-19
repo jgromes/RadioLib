@@ -108,6 +108,9 @@ Public Types</h2></td></tr>
 <tr class="memitem:acabecc49111246dad38144e43ac0c1cf" id="r_acabecc49111246dad38144e43ac0c1cf"><td class="memItemLeft" align="right" valign="top"><a id="acabecc49111246dad38144e43ac0c1cf" name="acabecc49111246dad38144e43ac0c1cf"></a>
 typedef <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><b>GetSecondsCb_t</b>) ()</td></tr>
 <tr class="separator:acabecc49111246dad38144e43ac0c1cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e62bb57b53127a0f502aa6b5cc7597" id="r_a84e62bb57b53127a0f502aa6b5cc7597"><td class="memItemLeft" align="right" valign="top"><a id="a84e62bb57b53127a0f502aa6b5cc7597" name="a84e62bb57b53127a0f502aa6b5cc7597"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>SetSecondsCb_t</b>) (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> seconds)</td></tr>
+<tr class="separator:a84e62bb57b53127a0f502aa6b5cc7597"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51efda23e5b88763d85c625e64588cd8" id="r_a51efda23e5b88763d85c625e64588cd8"><td class="memItemLeft" align="right" valign="top"><a id="a51efda23e5b88763d85c625e64588cd8" name="a51efda23e5b88763d85c625e64588cd8"></a>
 typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>DelaySecondsCb_t</b>) (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> seconds)</td></tr>
 <tr class="separator:a51efda23e5b88763d85c625e64588cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,9 +126,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa45fe180ebb1f49f08359a2cfbedfc64" id="r_aa45fe180ebb1f49f08359a2cfbedfc64"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#aa45fe180ebb1f49f08359a2cfbedfc64">LoRaWANPackageManager</a> (<a class="el" href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a> *node, GetSecondsCb_t secondsCb)</td></tr>
 <tr class="memdesc:aa45fe180ebb1f49f08359a2cfbedfc64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a package manager.  <br /></td></tr>
 <tr class="separator:aa45fe180ebb1f49f08359a2cfbedfc64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c05a22d131e0e638e88718ff084b89a" id="r_a5c05a22d131e0e638e88718ff084b89a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#a5c05a22d131e0e638e88718ff084b89a">enableTS003</a> (uint8_t fPort, SetSecondsCb_t setSecondsFunc)</td></tr>
+<tr class="memdesc:a5c05a22d131e0e638e88718ff084b89a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable TS003 Application Time Synchronization package.  <br /></td></tr>
+<tr class="separator:a5c05a22d131e0e638e88718ff084b89a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d7dac9dda9f73d6e31264e99f7444b4" id="r_a5d7dac9dda9f73d6e31264e99f7444b4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#a5d7dac9dda9f73d6e31264e99f7444b4">enableTS009</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, RebootCb_t rebootCb)</td></tr>
 <tr class="memdesc:a5d7dac9dda9f73d6e31264e99f7444b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable TS009 Certification Protocol package.  <br /></td></tr>
 <tr class="separator:a5d7dac9dda9f73d6e31264e99f7444b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f484debf7619a583beecdc47771216" id="r_a79f484debf7619a583beecdc47771216"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#a79f484debf7619a583beecdc47771216">requestAppTime</a> ()</td></tr>
+<tr class="memdesc:a79f484debf7619a583beecdc47771216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send an application time request.  <br /></td></tr>
+<tr class="separator:a79f484debf7619a583beecdc47771216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc1d0521aa9fa9719f9809fb0e470dc6" id="r_acc1d0521aa9fa9719f9809fb0e470dc6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package_manager.html#acc1d0521aa9fa9719f9809fb0e470dc6">getConfirmed</a> ()</td></tr>
 <tr class="memdesc:acc1d0521aa9fa9719f9809fb0e470dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether subsequent uplinks should be confirmed.  <br /></td></tr>
 <tr class="separator:acc1d0521aa9fa9719f9809fb0e470dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,6 +215,44 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnabledFPort</b> (u
 
 <p>Execute the first applicable ACTION task (calls package-&gt;<a class="el" href="class_lo_ra_w_a_n_package_manager.html#a3f8e3c6c785ab4b96d35b2a4197691e7" title="Execute the first applicable ACTION task (calls package-&gt;doAction()).">doAction()</a>). </p>
 <dl class="section return"><dt>Returns</dt><dd>true if an action was performed, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a5c05a22d131e0e638e88718ff084b89a" name="a5c05a22d131e0e638e88718ff084b89a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c05a22d131e0e638e88718ff084b89a">&#9670;&#160;</a></span>enableTS003()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANPackageManager::enableTS003 </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>fPort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SetSecondsCb_t&#160;</td>
+          <td class="paramname"><em>setSecondsFunc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable TS003 Application Time Synchronization package. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fPort</td><td>The FPort to which this package will listen </td></tr>
+    <tr><td class="paramname">setSecondsFunc</td><td>Pointer to setSeconds() function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -440,6 +487,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnabledFPort</b> (u
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of bytes consumed from dataDown </dd></dl>
+
+</div>
+</div>
+<a id="a79f484debf7619a583beecdc47771216" name="a79f484debf7619a583beecdc47771216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79f484debf7619a583beecdc47771216">&#9670;&#160;</a></span>requestAppTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANPackageManager::requestAppTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send an application time request. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

@@ -33,6 +33,7 @@ var annotated_dup =
     [ "LoRaWANPackage", "class_lo_ra_w_a_n_package.html", "class_lo_ra_w_a_n_package" ],
     [ "LoRaWANPackage_t", "struct_lo_ra_w_a_n_package__t.html", "struct_lo_ra_w_a_n_package__t" ],
     [ "LoRaWANPackageManager", "class_lo_ra_w_a_n_package_manager.html", "class_lo_ra_w_a_n_package_manager" ],
+    [ "LoRaWANPackageTS003", "class_lo_ra_w_a_n_package_t_s003.html", "class_lo_ra_w_a_n_package_t_s003" ],
     [ "LoRaWANPackageTS009", "class_lo_ra_w_a_n_package_t_s009.html", "class_lo_ra_w_a_n_package_t_s009" ],
     [ "LoRaWANTaskInfo", "struct_lo_ra_w_a_n_task_info.html", null ],
     [ "LR1110", "class_l_r1110.html", "class_l_r1110" ],
