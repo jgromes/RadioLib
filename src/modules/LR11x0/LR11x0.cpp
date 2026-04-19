@@ -8,6 +8,7 @@
 LR11x0::LR11x0(Module* mod) : LRxxxx(mod) {
   this->freqStep = RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_LR11X0_MAX_PACKET_LENGTH;
+  this->implicitLen = RADIOLIB_LR11X0_MAX_PACKET_LENGTH;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR11X0_IRQ_TX_DONE;
   this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_LR11X0_IRQ_RX_DONE;
   this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED;
@@ -728,7 +729,8 @@ int16_t LR11x0::setSyncWord(uint8_t* syncWord, size_t len) {
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     // update sync word length
     this->syncWordLength = len*8;
-    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     // sync word is passed most-significant byte first
@@ -768,7 +770,8 @@ int16_t LR11x0::setNodeAddress(uint8_t nodeAddr) {
 
   // enable address filtering (node only)
   this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_NODE;
-  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
   RADIOLIB_ASSERT(state);
   
   // set node address
@@ -787,7 +790,8 @@ int16_t LR11x0::setBroadcastAddress(uint8_t broadAddr) {
 
   // enable address filtering (node and broadcast)
   this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_NODE_BROADCAST;
-  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
   RADIOLIB_ASSERT(state);
   
   // set node and broadcast address
@@ -805,7 +809,8 @@ int16_t LR11x0::disableAddressFiltering() {
 
   // disable address filtering
   this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_DISABLED;
-  return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+  return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }
 
 int16_t LR11x0::setDataShaping(uint8_t sh) {
@@ -876,7 +881,8 @@ int16_t LR11x0::setWhitening(bool enabled, uint16_t initial) {
     RADIOLIB_ASSERT(state);
   }
 
-  return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+  return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }
 
 int16_t LR11x0::setDataRate(DataRate_t dr, ModemType_t modem) {
@@ -973,7 +979,8 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
                               preambleLength >= 16 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_16_BITS :
                               preambleLength >   0 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_8_BITS :
                               RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_DISABLED;
-    return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+    return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   }
 
   return(RADIOLIB_ERR_WRONG_MODEM);
@@ -1069,7 +1076,8 @@ int16_t LR11x0::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     }
 
     this->crcLenGFSK = len;
-    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     state = setGfskCrcParams(initial, polynomial);

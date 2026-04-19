@@ -285,24 +285,28 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     this->preambleLengthLoRa = preambleLength;
-    return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+    return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
+      (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     this->preambleLengthGFSK = preambleLength;
     this->preambleDetLength = (preambleLength / 8) << 3;
-    return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+    return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     this->preambleLengthGFSK = preambleLength;
     this->preambleDetLength = (preambleLength / 8) << 3;
-    return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+    return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
     
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
     if((preambleLength % 4) != 0) {
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
     }
     this->preambleLengthGFSK = (preambleLength / 4) - 1;
-    return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, this->implicitLen));
+    return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, 
+      (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH));
 
   }
 
@@ -372,7 +376,8 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
     this->crcTypeLoRa = len > 0;
-    return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+    return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
+      (this->packetType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     if(len > 4) {
@@ -384,7 +389,8 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
       this->crcTypeGFSK += 0x08;
     }
 
-    state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening);
+    state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     return(setGfskCrcParams(polynomial, initial));
@@ -399,7 +405,8 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
       this->crcTypeGFSK += 0x08;
     }
 
-    state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening);
+    state = setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
+      (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
 
     return(setOokCrcParams(polynomial, initial));
@@ -410,7 +417,8 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
     }
     
     this->crcLenGFSK = len ? len - 1 : 0;
-    return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, this->implicitLen));
+    return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, 
+      (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH));
       
   }
 
@@ -427,7 +435,8 @@ int16_t LR2021::invertIQ(bool enable) {
   }
 
   this->invertIQEnabled = enable;
-  return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+  return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
+    (this->packetType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
 }
 
 int16_t LR2021::setBitRate(float br) {
@@ -599,7 +608,8 @@ int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
 
       // update sync word length
       this->syncWordLength = len;
-      state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, this->implicitLen);
+      state = setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, 
+        (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH);
       RADIOLIB_ASSERT(state);
 
       sync |= (uint32_t)syncWord[0] << 24;
@@ -670,13 +680,15 @@ int16_t LR2021::setEncoding(uint8_t encoding) {
           state = setWhitening(false);
           RADIOLIB_ASSERT(state);
           this->whitening = RADIOLIB_LR2021_OOK_MANCHESTER_ON;
-          return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+          return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
+            (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
         
         case(RADIOLIB_ENCODING_MANCHESTER_INV):
           state = setWhitening(false);
           RADIOLIB_ASSERT(state);
           this->whitening = RADIOLIB_LR2021_OOK_MANCHESTER_ON_INV;
-          return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+          return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
+            (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
         
         default:
           return(RADIOLIB_ERR_INVALID_ENCODING);
@@ -711,7 +723,8 @@ int16_t LR2021::setWhitening(bool enabled, uint16_t initial) {
         RADIOLIB_ASSERT(state);
       }
       this->whitening = enabled;
-      return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+      return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
+        (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
     
     case(RADIOLIB_LR2021_PACKET_TYPE_OOK):
       this->whitening = enabled;
@@ -722,7 +735,8 @@ int16_t LR2021::setWhitening(bool enabled, uint16_t initial) {
         state = setOokWhiteningParams(0, 0, 0);
       }
       RADIOLIB_ASSERT(state);
-      return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+      return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
+        (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   }
 
   return(RADIOLIB_ERR_WRONG_MODEM);
@@ -912,7 +926,8 @@ int16_t LR2021::setNodeAddress(uint8_t nodeAddr) {
 
   // enable address filtering (node only)
   this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE;
-  state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening);
+  state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
   RADIOLIB_ASSERT(state);
 
   // set node address
@@ -931,7 +946,8 @@ int16_t LR2021::setBroadcastAddress(uint8_t broadAddr) {
 
   // enable address filtering (node and broadcast)
   this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_NODE_BROADCAST;
-  state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening);
+  state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
   RADIOLIB_ASSERT(state);
 
   // set node and broadcast address
@@ -949,7 +965,8 @@ int16_t LR2021::disableAddressFiltering() {
 
   // disable address filtering
   this->addrComp = RADIOLIB_LR2021_GFSK_OOK_ADDR_FILT_DISABLED;
-  return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, this->implicitLen, this->crcTypeGFSK, this->whitening));
+  return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
+    (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
 }
 
 int16_t LR2021::ookDetector(uint16_t pattern, uint8_t len, uint8_t repeats, bool syncRaw, bool rising, uint8_t sofLen) {
