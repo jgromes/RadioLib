@@ -74,6 +74,21 @@ int16_t SX1278::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 }
 
 void SX1278::reset() {
+  // When NRESET is RADIOLIB_NC the GPIO calls below are no-ops (ArduinoHal
+  // skips NC pins) but the delays still execute. This occurs on designs where
+  // NRESET is tied to the board power-enable line (e.g. ESP32 CHIP_PU) rather
+  // than a dedicated GPIO. In that case no actual chip reset occurs and the
+  // crystal oscillator state is unchanged.
+  //
+  // Consequence for begin(): the SX127x powers on in FSK sleep mode with the
+  // crystal stopped. RadioLib's begin() transitions sleep -> standby in ~20 µs
+  // (a register write), which is too fast for a cold crystal start (~2-5 ms).
+  // Intermittent CHIP_NOT_FOUND or corrupted register reads can result.
+  //
+  // Workaround when NRESET=RADIOLIB_NC: before calling begin(), manually step
+  // the chip through FSK sleep -> LoRa sleep (5 ms) -> LoRa standby via raw
+  // SPI register writes. This pre-warms the crystal so begin() sees a stable
+  // oscillator. See SX1278 datasheet §5.4.8 and application note AN1200.24.
   Module* mod = this->getMod();
   mod->hal->pinMode(mod->getRst(), mod->hal->GpioModeOutput);
   mod->hal->digitalWrite(mod->getRst(), mod->hal->GpioLevelLow);
