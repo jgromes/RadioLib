@@ -46,6 +46,8 @@ void setup() {
 
   // Warning: radio.begin() must be called before enabling packages!
 
+  // Enable TS003 (Application Time) on default FPort
+  pacMan.enableTS003(RADIOLIB_LORAWAN_FPORT_TS003, setSeconds);
   // Enable TS009 (Certification Protocol) with delay, interval, and reboot callbacks
   pacMan.enableTS009(&radio, delaySeconds, setUplinkInterval, performReboot);
 
