@@ -374,102 +374,105 @@ $(document).ready(function(){initNavTree('_l_r2021_8h_source.html',''); initResi
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>    int16_t configClkOutputs(uint8_t scaling);</div>
 <div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>    int16_t setTcxoMode(uint8_t tune, uint32_t startTime);</div>
 <div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>    int16_t setXoscCpTrim(uint8_t xta, uint8_t xtb, uint8_t startTime);</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span> </div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>    <span class="comment">// radio frequency front end commands</span></div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>    int16_t setRfFrequency(uint32_t rfFreq);</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>    int16_t setRxPath(uint8_t rxPath, uint8_t rxBoost);</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>    int16_t getRssiInst(<span class="keywordtype">float</span>* rssi);</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>    int16_t setRssiCalibration(uint8_t rxPath, <span class="keyword">const</span> uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], <span class="keyword">const</span> uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]);</div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>    int16_t setTimestampSource(uint8_t index, uint8_t source);</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    int16_t getTimestampValue(uint8_t index, uint32_t* timestamp);</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>    int16_t setCca(uint32_t duration, uint8_t gain);</div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>    int16_t getCcaResult(<span class="keywordtype">float</span>* rssiMin, <span class="keywordtype">float</span>* rssiMax, <span class="keywordtype">float</span>* rssiAvg);</div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>    int16_t setCadParams(uint32_t cadTimeout, uint8_t threshold, uint8_t exitMode, uint32_t trxTimeout);</div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    int16_t setCad(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    int16_t selPa(uint8_t pa);</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>    int16_t setPaConfig(uint8_t pa, uint8_t paLfMode, uint8_t paLfDutyCycle, uint8_t paLfSlices, uint8_t paHfDutyCycle);</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>    int16_t setTxParams(int8_t txPower, uint8_t rampTime);</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span> </div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>    <span class="comment">// modem configuration commands</span></div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>    int16_t setPacketType(uint8_t packetType);</div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>    int16_t getPacketType(uint8_t* packetType);</div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span> </div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    <span class="comment">// LoRa commands</span></div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);</div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t <a class="code hl_function" href="class_l_r2021.html#a6f382f3585b68e5329e7392a3026acb5">invertIQ</a>);</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    int16_t setLoRaSynchTimeout(uint8_t numSymbols, <span class="keywordtype">bool</span> format);</div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>    int16_t setLoRaSyncword(uint8_t syncword);</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    int16_t setLoRaSideDetConfig(uint8_t* configs, <span class="keywordtype">size_t</span> numSideDets);</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    int16_t setLoRaSideDetSyncword(uint8_t* syncwords, <span class="keywordtype">size_t</span> numSideDets);</div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>    int16_t setLoRaCadParams(uint8_t numSymbols, <span class="keywordtype">bool</span> preambleOnly, uint8_t pnrDelta, uint8_t cadExitMode, uint32_t timeout, uint8_t detPeak);</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    int16_t setLoRaCad(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>    int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);</div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>    int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, <span class="keyword">const</span> uint8_t* addr);</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, <span class="keyword">const</span> uint32_t* freqHops, <span class="keywordtype">size_t</span> numFreqHops);</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>    int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);</div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    int16_t setLoRaSideDetCad(<span class="keyword">const</span> uint8_t* pnrDelta, <span class="keyword">const</span> uint8_t* detPeak, <span class="keywordtype">size_t</span> numSideDets);</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    int16_t setLoRaHeaderType(uint8_t hdrType, <span class="keywordtype">size_t</span> len = RADIOLIB_LR2021_MAX_PACKET_LENGTH);</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span> </div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>    <span class="comment">// ranging commands</span></div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>    int16_t setRangingReqAddr(uint32_t addr);</div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    int16_t getRangingResult(uint8_t type, uint32_t* rng1, uint8_t* rssi1, uint32_t* rng2);</div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    int16_t getRangingStats(uint16_t* exchangeValid, uint16_t* requestValid, uint16_t* responseDone, uint16_t* timeout, uint16_t* requestDiscarded);</div>
-<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>    int16_t setRangingTxRxDelay(uint32_t delay);</div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>    int16_t setRangingParams(<span class="keywordtype">bool</span> spyMode, uint8_t nbSymbols);</div>
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span> </div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>    <span class="comment">// GFSK commands</span></div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>    int16_t setGfskModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);</div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>    int16_t setGfskPacketParams(uint16_t preambleLen, uint8_t preambleDetect, <span class="keywordtype">bool</span> longPreamble, <span class="keywordtype">bool</span> pldLenBits, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t dcFree);</div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>    int16_t setGfskWhiteningParams(uint8_t whitenType, uint16_t init);</div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>    int16_t setGfskCrcParams(uint32_t poly, uint32_t init);</div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>    int16_t setGfskSyncword(<span class="keyword">const</span> uint8_t* syncWord, <span class="keywordtype">size_t</span> syncWordLen, <span class="keywordtype">bool</span> msbFirst);</div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>    int16_t setGfskAddress(uint8_t addrNode, uint8_t addrBroadcast);</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    int16_t getGfskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);</div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>    int16_t getGfskPacketStatus(uint16_t* packetLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiSync, <span class="keywordtype">bool</span>* addrMatchNode, <span class="keywordtype">bool</span>* addrMatchBroadcast, <span class="keywordtype">float</span>* lqi);</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span> </div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>    <span class="comment">// OQPSK commands</span></div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    int16_t setOqpskParams(uint8_t mode, uint8_t rxBw, uint8_t payloadLen, uint16_t preambleLen, <span class="keywordtype">bool</span> addrFilt, <span class="keywordtype">bool</span> fcsManual);</div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>    int16_t getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    int16_t getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiSync, <span class="keywordtype">float</span>* lqi);</div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    int16_t setOqpskPacketLen(uint8_t len);</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>    int16_t setOqpskAddress(<span class="keyword">const</span> uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId);</div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span> </div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    <span class="comment">// BPSK commands</span></div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>    int16_t setBpskModulationParams(uint32_t bitRate, uint8_t pulseShape, <span class="keywordtype">bool</span> diff, uint8_t diffInit);</div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>    int16_t setBpskPacketParams(uint8_t payloadLen, uint8_t mode, <span class="keywordtype">bool</span> sigFoxControlMsg, uint8_t sigFoxRank);</div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span> </div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>    <span class="comment">// FLRC commands</span></div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>    int16_t setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape);</div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>    int16_t setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, <span class="keywordtype">bool</span> fixedLength, uint8_t crc, uint16_t payloadLen);</div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    int16_t getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError);</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    int16_t getFlrcPacketStatus(uint16_t* packetLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiSync, uint8_t* syncWordNum);</div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);</div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span> </div>
-<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    <span class="comment">// LR-FHSS commands</span></div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>    int16_t lrFhssSetSyncword(uint32_t syncWord);</div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    <span class="comment">//int16_t readLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t* hopTableLen);</span></div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>    <span class="comment">//int16_t writeLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t hopTableLen);</span></div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span> </div>
-<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>    <span class="comment">// OOK commands</span></div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    int16_t setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint8_t depth);</div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    int16_t setOokPacketParams(uint16_t preambleLen, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t manchester);</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    int16_t setOokCrcParams(uint32_t poly, uint32_t init);</div>
-<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>    int16_t setOokSyncword(<span class="keyword">const</span> uint8_t* syncWord, <span class="keywordtype">size_t</span> syncWordLen, <span class="keywordtype">bool</span> msbFirst);</div>
-<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);</div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    int16_t getOokPacketStatus(uint16_t* packetLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiHigh, <span class="keywordtype">bool</span>* addrMatchNode, <span class="keywordtype">bool</span>* addrMatchBroadcast, <span class="keywordtype">float</span>* lqi);</div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, <span class="keywordtype">bool</span> syncWordRaw, <span class="keywordtype">bool</span> sofDelimiterRising, uint8_t sofDelimiterLen);</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    int16_t setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init);</div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    <span class="comment">// test commands</span></div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>    int16_t setTxTestMode(uint8_t mode);</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>};</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>    int16_t activatePram(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>    int16_t checkPramLoaded(<span class="keywordtype">bool</span>* loaded);</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>    int16_t getPramVersion(uint16_t* version);</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span> </div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>    <span class="comment">// radio frequency front end commands</span></div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>    int16_t setRfFrequency(uint32_t rfFreq);</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>    int16_t setRxPath(uint8_t rxPath, uint8_t rxBoost);</div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    int16_t getRssiInst(<span class="keywordtype">float</span>* rssi);</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>    int16_t setRssiCalibration(uint8_t rxPath, <span class="keyword">const</span> uint16_t gain[RADIOLIB_LR2021_GAIN_TABLE_LENGTH], <span class="keyword">const</span> uint8_t noiseFloor[RADIOLIB_LR2021_GAIN_TABLE_LENGTH]);</div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>    int16_t setTimestampSource(uint8_t index, uint8_t source);</div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>    int16_t getTimestampValue(uint8_t index, uint32_t* timestamp);</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    int16_t setCca(uint32_t duration, uint8_t gain);</div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    int16_t getCcaResult(<span class="keywordtype">float</span>* rssiMin, <span class="keywordtype">float</span>* rssiMax, <span class="keywordtype">float</span>* rssiAvg);</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>    int16_t setCadParams(uint32_t cadTimeout, uint8_t threshold, uint8_t exitMode, uint32_t trxTimeout);</div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>    int16_t setCad(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>    int16_t selPa(uint8_t pa);</div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>    int16_t setPaConfig(uint8_t pa, uint8_t paLfMode, uint8_t paLfDutyCycle, uint8_t paLfSlices, uint8_t paHfDutyCycle);</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>    int16_t setTxParams(int8_t txPower, uint8_t rampTime);</div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span> </div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>    <span class="comment">// modem configuration commands</span></div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    int16_t setPacketType(uint8_t packetType);</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    int16_t getPacketType(uint8_t* packetType);</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span> </div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    <span class="comment">// LoRa commands</span></div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>    int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);</div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t <a class="code hl_function" href="class_l_r2021.html#a6f382f3585b68e5329e7392a3026acb5">invertIQ</a>);</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    int16_t setLoRaSynchTimeout(uint8_t numSymbols, <span class="keywordtype">bool</span> format);</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>    int16_t setLoRaSyncword(uint8_t syncword);</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    int16_t setLoRaSideDetConfig(uint8_t* configs, <span class="keywordtype">size_t</span> numSideDets);</div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>    int16_t setLoRaSideDetSyncword(uint8_t* syncwords, <span class="keywordtype">size_t</span> numSideDets);</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>    int16_t setLoRaCadParams(uint8_t numSymbols, <span class="keywordtype">bool</span> preambleOnly, uint8_t pnrDelta, uint8_t cadExitMode, uint32_t timeout, uint8_t detPeak);</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    int16_t setLoRaCad(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>    int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, <span class="keyword">const</span> uint8_t* addr);</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, <span class="keyword">const</span> uint32_t* freqHops, <span class="keywordtype">size_t</span> numFreqHops);</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>    int16_t setLoRaSideDetCad(<span class="keyword">const</span> uint8_t* pnrDelta, <span class="keyword">const</span> uint8_t* detPeak, <span class="keywordtype">size_t</span> numSideDets);</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    int16_t setLoRaHeaderType(uint8_t hdrType, <span class="keywordtype">size_t</span> len = RADIOLIB_LR2021_MAX_PACKET_LENGTH);</div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span> </div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    <span class="comment">// ranging commands</span></div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);</div>
+<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>    int16_t setRangingReqAddr(uint32_t addr);</div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>    int16_t getRangingResult(uint8_t type, uint32_t* rng1, uint8_t* rssi1, uint32_t* rng2);</div>
+<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>    int16_t getRangingStats(uint16_t* exchangeValid, uint16_t* requestValid, uint16_t* responseDone, uint16_t* timeout, uint16_t* requestDiscarded);</div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>    int16_t setRangingTxRxDelay(uint32_t delay);</div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>    int16_t setRangingParams(<span class="keywordtype">bool</span> spyMode, uint8_t nbSymbols);</div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span> </div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>    <span class="comment">// GFSK commands</span></div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>    int16_t setGfskModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);</div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>    int16_t setGfskPacketParams(uint16_t preambleLen, uint8_t preambleDetect, <span class="keywordtype">bool</span> longPreamble, <span class="keywordtype">bool</span> pldLenBits, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t dcFree);</div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>    int16_t setGfskWhiteningParams(uint8_t whitenType, uint16_t init);</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    int16_t setGfskCrcParams(uint32_t poly, uint32_t init);</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>    int16_t setGfskSyncword(<span class="keyword">const</span> uint8_t* syncWord, <span class="keywordtype">size_t</span> syncWordLen, <span class="keywordtype">bool</span> msbFirst);</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    int16_t setGfskAddress(uint8_t addrNode, uint8_t addrBroadcast);</div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>    int16_t getGfskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    int16_t getGfskPacketStatus(uint16_t* packetLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiSync, <span class="keywordtype">bool</span>* addrMatchNode, <span class="keywordtype">bool</span>* addrMatchBroadcast, <span class="keywordtype">float</span>* lqi);</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span> </div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    <span class="comment">// OQPSK commands</span></div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    int16_t setOqpskParams(uint8_t mode, uint8_t rxBw, uint8_t payloadLen, uint16_t preambleLen, <span class="keywordtype">bool</span> addrFilt, <span class="keywordtype">bool</span> fcsManual);</div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>    int16_t getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);</div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>    int16_t getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiSync, <span class="keywordtype">float</span>* lqi);</div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    int16_t setOqpskPacketLen(uint8_t len);</div>
+<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>    int16_t setOqpskAddress(<span class="keyword">const</span> uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId);</div>
+<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span> </div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>    <span class="comment">// BPSK commands</span></div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>    int16_t setBpskModulationParams(uint32_t bitRate, uint8_t pulseShape, <span class="keywordtype">bool</span> diff, uint8_t diffInit);</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>    int16_t setBpskPacketParams(uint8_t payloadLen, uint8_t mode, <span class="keywordtype">bool</span> sigFoxControlMsg, uint8_t sigFoxRank);</div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span> </div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    <span class="comment">// FLRC commands</span></div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    int16_t setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape);</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    int16_t setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, <span class="keywordtype">bool</span> fixedLength, uint8_t crc, uint16_t payloadLen);</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    int16_t getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError);</div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    int16_t getFlrcPacketStatus(uint16_t* packetLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiSync, uint8_t* syncWordNum);</div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>    int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span> </div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    <span class="comment">// LR-FHSS commands</span></div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>    int16_t lrFhssSetSyncword(uint32_t syncWord);</div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>    <span class="comment">//int16_t readLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t* hopTableLen);</span></div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    <span class="comment">//int16_t writeLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t hopTableLen);</span></div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span> </div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    <span class="comment">// OOK commands</span></div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>    int16_t setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint8_t depth);</div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    int16_t setOokPacketParams(uint16_t preambleLen, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t manchester);</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    int16_t setOokCrcParams(uint32_t poly, uint32_t init);</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    int16_t setOokSyncword(<span class="keyword">const</span> uint8_t* syncWord, <span class="keywordtype">size_t</span> syncWordLen, <span class="keywordtype">bool</span> msbFirst);</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);</div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>    int16_t getOokPacketStatus(uint16_t* packetLen, <span class="keywordtype">float</span>* rssiAvg, <span class="keywordtype">float</span>* rssiHigh, <span class="keywordtype">bool</span>* addrMatchNode, <span class="keywordtype">bool</span>* addrMatchBroadcast, <span class="keywordtype">float</span>* lqi);</div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, <span class="keywordtype">bool</span> syncWordRaw, <span class="keywordtype">bool</span> sofDelimiterRising, uint8_t sofDelimiterLen);</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>    int16_t setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init);</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span> </div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>    <span class="comment">// test commands</span></div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>    int16_t setTxTestMode(uint8_t mode);</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>};</div>
 </div>
-<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span> </div>
-<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span> </div>
-<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span> </div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span> </div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_l_r2021_html"><div class="ttname"><a href="class_l_r2021.html">LR2021</a></div><div class="ttdef"><b>Definition</b> LR2021.h:25</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a07413158d09efd4e4d91046a1d1245a6"><div class="ttname"><a href="class_l_r2021.html#a07413158d09efd4e4d91046a1d1245a6">LR2021::setBitRate</a></div><div class="ttdeci">int16_t setBitRate(float br) override</div><div class="ttdoc">Sets GFSK bit rate. Allowed values range from 0.5 to 2000.0 kbps.</div><div class="ttdef"><b>Definition</b> LR2021_config.cpp:442</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a0792e44750e268eb38c3c2f28b13455a"><div class="ttname"><a href="class_l_r2021.html#a0792e44750e268eb38c3c2f28b13455a">LR2021::setSyncWord</a></div><div class="ttdeci">int16_t setSyncWord(uint8_t syncWord)</div><div class="ttdoc">Sets LoRa sync word.</div><div class="ttdef"><b>Definition</b> LR2021_config.cpp:269</div></div>
@@ -518,7 +521,7 @@ $(document).ready(function(){initNavTree('_l_r2021_8h_source.html',''); initResi
 <div class="ttc" id="aclass_l_r2021_html_a80bfd550e471626da5e8c6bab1e3f415"><div class="ttname"><a href="class_l_r2021.html#a80bfd550e471626da5e8c6bab1e3f415">LR2021::finishTransmit</a></div><div class="ttdeci">int16_t finishTransmit() override</div><div class="ttdoc">Clean up after transmission is done.</div><div class="ttdef"><b>Definition</b> LR2021.cpp:439</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a8126dd09cf4c51eabcf7f72dc03b068d"><div class="ttname"><a href="class_l_r2021.html#a8126dd09cf4c51eabcf7f72dc03b068d">LR2021::transmit</a></div><div class="ttdeci">int16_t transmit(const uint8_t *data, size_t len, uint8_t addr=0) override</div><div class="ttdoc">Blocking binary transmit method. Overloads for string-based transmissions are implemented in Physical...</div><div class="ttdef"><b>Definition</b> LR2021.cpp:201</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a84cc2e14f141502bb3e3e2d082916cd0"><div class="ttname"><a href="class_l_r2021.html#a84cc2e14f141502bb3e3e2d082916cd0">LR2021::getTimeOnAir</a></div><div class="ttdeci">RadioLibTime_t getTimeOnAir(size_t len) override</div><div class="ttdoc">Get expected time-on-air for a given size of payload.</div><div class="ttdef"><b>Definition</b> LR2021.cpp:767</div></div>
-<div class="ttc" id="aclass_l_r2021_html_a874b2522d4b296505278d943df308a99"><div class="ttname"><a href="class_l_r2021.html#a874b2522d4b296505278d943df308a99">LR2021::setGain</a></div><div class="ttdeci">int16_t setGain(uint8_t gain)</div><div class="ttdoc">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13,...</div><div class="ttdef"><b>Definition</b> LR2021_config.cpp:1060</div></div>
+<div class="ttc" id="aclass_l_r2021_html_a874b2522d4b296505278d943df308a99"><div class="ttname"><a href="class_l_r2021.html#a874b2522d4b296505278d943df308a99">LR2021::setGain</a></div><div class="ttdeci">int16_t setGain(uint8_t gain)</div><div class="ttdoc">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13,...</div><div class="ttdef"><b>Definition</b> LR2021_config.cpp:1067</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a8d7069e59abecae1e4b48de5920da4b3"><div class="ttname"><a href="class_l_r2021.html#a8d7069e59abecae1e4b48de5920da4b3">LR2021::getModem</a></div><div class="ttdeci">int16_t getModem(ModemType_t *modem) override</div><div class="ttdoc">Get modem currently in use by the radio.</div><div class="ttdef"><b>Definition</b> LR2021.cpp:816</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a934a871e6f92b290541fe975f6f32bae"><div class="ttname"><a href="class_l_r2021.html#a934a871e6f92b290541fe975f6f32bae">LR2021::fixedPacketLengthMode</a></div><div class="ttdeci">int16_t fixedPacketLengthMode(uint8_t len=RADIOLIB_LR2021_MAX_PACKET_LENGTH)</div><div class="ttdoc">Set modem in fixed packet length mode. Available in GFSK mode only.</div><div class="ttdef"><b>Definition</b> LR2021_config.cpp:704</div></div>
 <div class="ttc" id="aclass_l_r2021_html_a99bda2205aacb19befd05f5bdd021a65"><div class="ttname"><a href="class_l_r2021.html#a99bda2205aacb19befd05f5bdd021a65">LR2021::setDataShaping</a></div><div class="ttdeci">int16_t setDataShaping(uint8_t sh) override</div><div class="ttdoc">Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are RADIOLIB_SHAPI...</div><div class="ttdef"><b>Definition</b> LR2021_config.cpp:625</div></div>
