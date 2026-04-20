@@ -778,6 +778,9 @@ class LR2021: public LRxxxx {
     int16_t configClkOutputs(uint8_t scaling);
     int16_t setTcxoMode(uint8_t tune, uint32_t startTime);
     int16_t setXoscCpTrim(uint8_t xta, uint8_t xtb, uint8_t startTime);
+    int16_t activatePram(void);
+    int16_t checkPramLoaded(bool* loaded);
+    int16_t getPramVersion(uint16_t* version);
 
     // radio frequency front end commands
     int16_t setRfFrequency(uint32_t rfFreq);

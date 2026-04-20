@@ -52,6 +52,7 @@
 #define RADIOLIB_LR2021_CMD_CONFIG_LF_CLOCK                     (0x0118)
 #define RADIOLIB_LR2021_CMD_CONFIG_CLK_OUTPUTS                  (0x0119)
 #define RADIOLIB_LR2021_CMD_SET_TCXO_MODE                       (0x0120)
+#define RADIOLIB_LR2021_CMD_ACTIVATE_PRAM                       (0x012D)
 #define RADIOLIB_LR2021_CMD_SET_XOSC_CP_TRIM                    (0x0131)
 #define RADIOLIB_LR2021_CMD_SET_RF_FREQUENCY                    (0x0200)
 #define RADIOLIB_LR2021_CMD_SET_RX_PATH                         (0x0201)

@@ -1012,6 +1012,7 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
   uint8_t detectors[3] = { 0 };
   uint8_t syncWords[3] = { 0 };
   uint8_t minSf = this->spreadingFactor;
+  uint32_t sumDetFactors = 0;
   for(size_t i = 0; i < numDetectors; i++) {
     // all side-detector spreading factors must be higher than the primary one
     //! \todo [LR2021] implement multi-SF for CAD (main SF must be smallest!)
@@ -1028,6 +1029,12 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
 
     detectors[i] = cfg[i].sf << 4 | cfg[i].ldro << 2 | cfg[i].invertIQ;
     syncWords[i] = cfg[i].syncWord;
+    sumDetFactors += 10 + (((cfg[i].sf - 5) >> 1) << 1);
+  }
+
+  // sum of detection factors multiplied by BW must be smaller than 32E6
+  if(sumDetFactors*(uint32_t)this->bandwidthKhz >= 32000UL) {
+    return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
   }
 
   // all spreading factors must be different

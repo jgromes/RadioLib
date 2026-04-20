@@ -1,6 +1,7 @@
 #include "LR2021.h"
 
 #include "../LR11x0/LR_common.h"
+#include "LR2021_registers.h"
 
 #include <string.h>
 #include <math.h>
@@ -306,6 +307,25 @@ int16_t LR2021::setTcxoMode(uint8_t tune, uint32_t startTime) {
 int16_t LR2021::setXoscCpTrim(uint8_t xta, uint8_t xtb, uint8_t startTime) {
   uint8_t buff[] = { (uint8_t)(xta & 0x3F), (uint8_t)(xtb & 0x3F), startTime };
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_XOSC_CP_TRIM, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::activatePram(void) {
+  uint8_t buff[] = { RADIOLIB_LR2021_CMD_NOP };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_ACTIVATE_PRAM, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::checkPramLoaded(bool* loaded) {
+  uint32_t val = 0;
+  int16_t state = this->readRegMem32(RADIOLIB_LR2021_PRAM_ADDR_LOADED, &val, 1);
+  if(loaded) { *loaded = (val == RADIOLIB_LR2021_PRAM_LOADED_MAGIC);  }
+  return(state);
+}
+
+int16_t LR2021::getPramVersion(uint16_t* version) {
+  uint32_t val = 0;
+  int16_t state = this->readRegMem32(RADIOLIB_LR2021_PRAM_ADDR_VERSION, &val, 1);
+  if(version) { *version = ((val >>8) & 0xFFFF);  }
+  return(state);
 }
 
 #endif

@@ -24,6 +24,12 @@
 #define RADIOLIB_LR2021_REG_OCP_THRESHOLDS                      (0xF40300)
 #define RADIOLIB_LR2021_REG_DCDC_RX_PATH                        (0xF40430)
 
+// PRAM addresses and magic values
+#define RADIOLIB_LR2021_PRAM_BASE                               (0x801000)
+#define RADIOLIB_LR2021_PRAM_ADDR_LOADED                        (0x800FF8)
+#define RADIOLIB_LR2021_PRAM_LOADED_MAGIC                       (0x600DB002)
+#define RADIOLIB_LR2021_PRAM_ADDR_VERSION                       (0x800FFC)
+
 #endif
 
 #endif
