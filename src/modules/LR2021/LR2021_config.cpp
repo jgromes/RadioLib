@@ -12,38 +12,38 @@
 #define RADIOLIB_LR2021_MAX_CAL_ATTEMPTS    (10)
 
 static const LR2021::paTableEntry_t paOptTableLf[32] = {
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -18 }, // -9
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -16 }, // -8
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -14 }, // -7
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -12 }, // -6
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -10 }, // -5
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -8 }, // -4
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -6 }, // -3
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -4 }, // -2
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = -2 }, // -1
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 0 }, // 0
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 2 }, // +1
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 4 }, // +2
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 6 }, // +3
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 8 }, // +4
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 10 }, // +5
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 12 }, // +6
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 14 }, // +7
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 16 }, // +8
-  { .paDutyCycle = 6, .paSlices = 2, .paVal = 18 }, // +9
-  { .paDutyCycle = 2, .paSlices = 1, .paVal = 32 }, // +10
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 32 }, // +11
-  { .paDutyCycle = 5, .paSlices = 1, .paVal = 30 }, // +12
-  { .paDutyCycle = 4, .paSlices = 3, .paVal = 31 }, // +13
-  { .paDutyCycle = 4, .paSlices = 2, .paVal = 34 }, // +14
-  { .paDutyCycle = 5, .paSlices = 4, .paVal = 33 }, // +15
-  { .paDutyCycle = 4, .paSlices = 4, .paVal = 36 }, // +16
-  { .paDutyCycle = 5, .paSlices = 6, .paVal = 36 }, // +17
-  { .paDutyCycle = 5, .paSlices = 6, .paVal = 38 }, // +18
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 38 }, // +19
-  { .paDutyCycle = 6, .paSlices = 6, .paVal = 41 }, // +20
-  { .paDutyCycle = 7, .paSlices = 7, .paVal = 42 }, // +21
-  { .paDutyCycle = 7, .paSlices = 6, .paVal = 44 }, // +22
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 8 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 1 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 3 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 5 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 13 },
+  { .paDutyCycle = 2, .paSlices = 1, .paVal = 13 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 11 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 13 },
+  { .paDutyCycle = 3, .paSlices = 1, .paVal = 12 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 18 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 20 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 23 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 27 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 33 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 26 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 31 },
+  { .paDutyCycle = 1, .paSlices = 3, .paVal = 27 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 37 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 40 },
+  { .paDutyCycle = 2, .paSlices = 1, .paVal = 38 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 39 },
+  { .paDutyCycle = 2, .paSlices = 4, .paVal = 40 },
+  { .paDutyCycle = 2, .paSlices = 7, .paVal = 41 },
+  { .paDutyCycle = 3, .paSlices = 2, .paVal = 39 },
+  { .paDutyCycle = 3, .paSlices = 3, .paVal = 39 },
+  { .paDutyCycle = 3, .paSlices = 6, .paVal = 38 },
+  { .paDutyCycle = 4, .paSlices = 3, .paVal = 37 },
+  { .paDutyCycle = 4, .paSlices = 5, .paVal = 37 },
+  { .paDutyCycle = 4, .paSlices = 7, .paVal = 38 },
+  { .paDutyCycle = 5, .paSlices = 3, .paVal = 37 },
+  { .paDutyCycle = 5, .paSlices = 6, .paVal = 37 },
+  { .paDutyCycle = 6, .paSlices = 7, .paVal = 35 },
 };
 
 static const LR2021::paTableEntry_t paOptTableHf[32] = {
