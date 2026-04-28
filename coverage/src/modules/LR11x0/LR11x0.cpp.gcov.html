@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-04-20 19:58:46</td>
+            <td class="headerValue">2026-04-28 16:00:40</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">42</td>
@@ -334,7 +334,7 @@
 <a name="272"><span class="lineNum">     272 </span>            : </a>
 <a name="273"><span class="lineNum">     273 </span><span class="lineCov">          3 : int16_t LR11x0::transmitDirect(uint32_t frf) {</span></a>
 <a name="274"><span class="lineNum">     274 </span>            :   // set RF switch (if present)</a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          3 :   this-&gt;mod-&gt;setRfSwitchState(Module::MODE_TX);</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          3 :   this-&gt;mod-&gt;setRfSwitchState(this-&gt;txMode);</span></a>
 <a name="276"><span class="lineNum">     276 </span>            : </a>
 <a name="277"><span class="lineNum">     277 </span>            :   // user requested to start transmitting immediately (required for RTTY)</a>
 <a name="278"><span class="lineNum">     278 </span><span class="lineCov">          3 :   int16_t state = RADIOLIB_ERR_NONE;</span></a>
@@ -1582,7 +1582,7 @@
 <a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">          3 :     } break;</span></a>
 <a name="1521"><span class="lineNum">    1521 </span>            :   </a>
 <a name="1522"><span class="lineNum">    1522 </span><span class="lineNoCov">          0 :     case(RADIOLIB_RADIO_MODE_TX): {</span></a>
-<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :       this-&gt;mod-&gt;setRfSwitchState(Module::MODE_TX);</span></a>
+<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :       this-&gt;mod-&gt;setRfSwitchState(this-&gt;txMode);</span></a>
 <a name="1524"><span class="lineNum">    1524 </span><span class="lineNoCov">          0 :       state = setTx(RADIOLIB_LR11X0_TX_TIMEOUT_NONE);</span></a>
 <a name="1525"><span class="lineNum">    1525 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
 <a name="1526"><span class="lineNum">    1526 </span>            : </a>

@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntry">79</td>
-            <td class="headerCovTableEntryLo">41.8 %</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">82</td>
+            <td class="headerCovTableEntryLo">41.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-04-20 19:58:46</td>
+            <td class="headerValue">2026-04-28 16:00:40</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -150,68 +150,71 @@
 <a name="88"><span class="lineNum">      88 </span>            :   // determine whether to use HP or LP PA and check range accordingly</a>
 <a name="89"><span class="lineNum">      89 </span><span class="lineCov">          2 :   uint8_t paSel = 0;</span></a>
 <a name="90"><span class="lineNum">      90 </span><span class="lineCov">          2 :   uint8_t paSupply = 0;</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          2 :   if(this-&gt;highFreq) {</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :     paSel = 2;</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          2 :   } else if(forceHighPower || (power &gt; 14)) {</span></a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :     paSel = 1;</span></a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :     paSupply = 1;</span></a>
-<a name="96"><span class="lineNum">      96 </span>            :   }</a>
-<a name="97"><span class="lineNum">      97 </span>            :   </a>
-<a name="98"><span class="lineNum">      98 </span>            :   // TODO how and when to configure OCP?</a>
-<a name="99"><span class="lineNum">      99 </span>            : </a>
-<a name="100"><span class="lineNum">     100 </span>            :   // update PA config and set output power - always use VBAT for high-power PA</a>
-<a name="101"><span class="lineNum">     101 </span>            :   // the value returned by LRxxxx class is offset by 3 for LR11x0</a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          2 :   state = LR11x0::setOutputPower(power, paSel, paSupply, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          2 :   return(state);</span></a>
-<a name="104"><span class="lineNum">     104 </span>            : }</a>
-<a name="105"><span class="lineNum">     105 </span>            : </a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          2 : int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped) {</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          2 :   return(checkOutputPower(power, clipped, false));</span></a>
-<a name="108"><span class="lineNum">     108 </span>            : }</a>
-<a name="109"><span class="lineNum">     109 </span>            : </a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          4 : int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) {</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          4 :   if(this-&gt;highFreq) {</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :     if(clipped) {</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :       *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));</span></a>
-<a name="114"><span class="lineNum">     114 </span>            :     }</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_NONE);</span></a>
-<a name="117"><span class="lineNum">     117 </span>            :   }</a>
-<a name="118"><span class="lineNum">     118 </span>            : </a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          4 :   if(forceHighPower || (power &gt; 14)) {</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :     if(clipped) {</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :       *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));</span></a>
-<a name="122"><span class="lineNum">     122 </span>            :     }</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);</span></a>
-<a name="124"><span class="lineNum">     124 </span>            :   </a>
-<a name="125"><span class="lineNum">     125 </span>            :   } else {</a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">          4 :     if(clipped) {</span></a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :       *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));</span></a>
-<a name="128"><span class="lineNum">     128 </span>            :     }</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          4 :     RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);</span></a>
-<a name="130"><span class="lineNum">     130 </span>            :   </a>
-<a name="131"><span class="lineNum">     131 </span>            :   }</a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">          4 :   return(RADIOLIB_ERR_NONE);</span></a>
-<a name="133"><span class="lineNum">     133 </span>            : }</a>
-<a name="134"><span class="lineNum">     134 </span>            : </a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          2 : int16_t LR1120::setModem(ModemType_t modem) {</span></a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          2 :   switch(modem) {</span></a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :     case(ModemType_t::RADIOLIB_MODEM_LORA): {</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :       return(this-&gt;begin());</span></a>
-<a name="139"><span class="lineNum">     139 </span>            :     } break;</a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :     case(ModemType_t::RADIOLIB_MODEM_FSK): {</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :       return(this-&gt;beginGFSK());</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          2 :   this-&gt;txMode = LR11x0::MODE_TX;</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          2 :   if(this-&gt;highFreq) {</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :     paSel = 2;</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :     this-&gt;txMode = LR11x0::MODE_TX_HF;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          2 :   } else if(forceHighPower || (power &gt; 14)) {</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :     paSel = 1;</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :     paSupply = 1;</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :     this-&gt;txMode = LR11x0::MODE_TX_HP;</span></a>
+<a name="99"><span class="lineNum">      99 </span>            :   }</a>
+<a name="100"><span class="lineNum">     100 </span>            :   </a>
+<a name="101"><span class="lineNum">     101 </span>            :   // TODO how and when to configure OCP?</a>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<a name="103"><span class="lineNum">     103 </span>            :   // update PA config and set output power - always use VBAT for high-power PA</a>
+<a name="104"><span class="lineNum">     104 </span>            :   // the value returned by LRxxxx class is offset by 3 for LR11x0</a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          2 :   state = LR11x0::setOutputPower(power, paSel, paSupply, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          2 :   return(state);</span></a>
+<a name="107"><span class="lineNum">     107 </span>            : }</a>
+<a name="108"><span class="lineNum">     108 </span>            : </a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          2 : int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped) {</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          2 :   return(checkOutputPower(power, clipped, false));</span></a>
+<a name="111"><span class="lineNum">     111 </span>            : }</a>
+<a name="112"><span class="lineNum">     112 </span>            : </a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          4 : int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) {</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          4 :   if(this-&gt;highFreq) {</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :     if(clipped) {</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :       *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));</span></a>
+<a name="117"><span class="lineNum">     117 </span>            :     }</a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_NONE);</span></a>
+<a name="120"><span class="lineNum">     120 </span>            :   }</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          4 :   if(forceHighPower || (power &gt; 14)) {</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :     if(clipped) {</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :       *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));</span></a>
+<a name="125"><span class="lineNum">     125 </span>            :     }</a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :     RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);</span></a>
+<a name="127"><span class="lineNum">     127 </span>            :   </a>
+<a name="128"><span class="lineNum">     128 </span>            :   } else {</a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          4 :     if(clipped) {</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :       *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));</span></a>
+<a name="131"><span class="lineNum">     131 </span>            :     }</a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">          4 :     RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);</span></a>
+<a name="133"><span class="lineNum">     133 </span>            :   </a>
+<a name="134"><span class="lineNum">     134 </span>            :   }</a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          4 :   return(RADIOLIB_ERR_NONE);</span></a>
+<a name="136"><span class="lineNum">     136 </span>            : }</a>
+<a name="137"><span class="lineNum">     137 </span>            : </a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          2 : int16_t LR1120::setModem(ModemType_t modem) {</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          2 :   switch(modem) {</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :     case(ModemType_t::RADIOLIB_MODEM_LORA): {</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :       return(this-&gt;begin());</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :     } break;</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {</span></a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :       return(this-&gt;beginLRFHSS());</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :     case(ModemType_t::RADIOLIB_MODEM_FSK): {</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :       return(this-&gt;beginGFSK());</span></a>
 <a name="145"><span class="lineNum">     145 </span>            :     } break;</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          2 :     default:</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          2 :       return(RADIOLIB_ERR_WRONG_MODEM);</span></a>
-<a name="148"><span class="lineNum">     148 </span>            :   }</a>
-<a name="149"><span class="lineNum">     149 </span>            :   return(RADIOLIB_ERR_WRONG_MODEM);</a>
-<a name="150"><span class="lineNum">     150 </span>            : }</a>
-<a name="151"><span class="lineNum">     151 </span>            : </a>
-<a name="152"><span class="lineNum">     152 </span>            : #endif</a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :       return(this-&gt;beginLRFHSS());</span></a>
+<a name="148"><span class="lineNum">     148 </span>            :     } break;</a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">          2 :     default:</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          2 :       return(RADIOLIB_ERR_WRONG_MODEM);</span></a>
+<a name="151"><span class="lineNum">     151 </span>            :   }</a>
+<a name="152"><span class="lineNum">     152 </span>            :   return(RADIOLIB_ERR_WRONG_MODEM);</a>
+<a name="153"><span class="lineNum">     153 </span>            : }</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span>            : #endif</a>
 </pre>
       </td>
     </tr>
