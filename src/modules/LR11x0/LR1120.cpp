@@ -88,11 +88,14 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   // determine whether to use HP or LP PA and check range accordingly
   uint8_t paSel = 0;
   uint8_t paSupply = 0;
+  this->txMode = LR11x0::MODE_TX;
   if(this->highFreq) {
     paSel = 2;
+    this->txMode = LR11x0::MODE_TX_HF;
   } else if(forceHighPower || (power > 14)) {
     paSel = 1;
     paSupply = 1;
+    this->txMode = LR11x0::MODE_TX_HP;
   }
   
   // TODO how and when to configure OCP?

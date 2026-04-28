@@ -272,7 +272,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
 int16_t LR11x0::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
-  this->mod->setRfSwitchState(Module::MODE_TX);
+  this->mod->setRfSwitchState(this->txMode);
 
   // user requested to start transmitting immediately (required for RTTY)
   int16_t state = RADIOLIB_ERR_NONE;
@@ -1520,7 +1520,7 @@ int16_t LR11x0::launchMode() {
     } break;
   
     case(RADIOLIB_RADIO_MODE_TX): {
-      this->mod->setRfSwitchState(Module::MODE_TX);
+      this->mod->setRfSwitchState(this->txMode);
       state = setTx(RADIOLIB_LR11X0_TX_TIMEOUT_NONE);
       RADIOLIB_ASSERT(state);
 

@@ -925,6 +925,7 @@ class LR11x0: public LRxxxx {
   protected:
 #endif
     uint8_t chipType = 0;
+    OpMode_t txMode = LR11x0::MODE_TX;
 
 #if !RADIOLIB_GODMODE
   private:
