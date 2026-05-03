@@ -164,6 +164,7 @@ class LRxxxx: public PhysicalLayer {
     
     float freqMHz = 0;
     uint32_t rxTimeout = 0;
+    uint32_t tcxoDelay = 0;
 
     // cached LoRa parameters
     uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;

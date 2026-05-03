@@ -209,6 +209,20 @@ class LR11x0: public LRxxxx {
     int16_t startReceive() override;
 
     /*!
+      \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
+      Note that this function assumes the unit will take 500us + TCXO_delay to change state.
+      See datasheet section 13.1.7, version 1.2.
+
+      \param rxPeriod The duration the receiver will be in Rx mode, in microseconds.
+      \param sleepPeriod The duration the receiver will not be in Rx mode, in microseconds.
+
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
+      \returns \ref status_codes
+    */
+    int16_t startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
+
+    /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
       getPacketLength method must be called BEFORE calling readData!
       \param data Pointer to array to save the received binary data.

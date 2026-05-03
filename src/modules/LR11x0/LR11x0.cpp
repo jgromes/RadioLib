@@ -382,6 +382,40 @@ int16_t LR11x0::startReceive() {
   return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
 
+int16_t LR11x0::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
+  // datasheet claims time to go to sleep is ~500us, same to wake up, compensate for that with 1 ms + TCXO delay
+  uint32_t transitionTime = this->tcxoDelay + 1000;
+  sleepPeriod -= transitionTime;
+
+  // divide by 30.517 microseconds (RTC period, 1/32.768 kHz)
+  uint32_t rxPeriodRaw = (rxPeriod * 32768UL) / 1000000UL;
+  uint32_t sleepPeriodRaw = (sleepPeriod * 32768UL) / 1000000UL;
+
+  // check 24 bit limit and zero value (likely not intended)
+  if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
+    return(RADIOLIB_ERR_INVALID_RX_PERIOD);
+  }
+
+  // this check of the high byte also catches underflow when we subtracted transitionTime
+  if((sleepPeriodRaw & 0xFF000000) || (sleepPeriodRaw == 0)) {
+    return(RADIOLIB_ERR_INVALID_SLEEP_PERIOD);
+  }
+
+  // set up Rx mode
+  RadioModeConfig_t cfg = {
+    .receive = {
+      .timeout = RADIOLIB_LR11X0_RX_TIMEOUT_INF,
+      .irqFlags = irqFlags,
+      .irqMask = irqMask,
+      .len = 0,
+    }
+  };
+  int16_t state = this->stageMode(RADIOLIB_RADIO_MODE_RX, &cfg);
+  RADIOLIB_ASSERT(state);
+
+  return(this->setRxDutyCycle(rxPeriodRaw, sleepPeriodRaw, RADIOLIB_LR11X0_RX_DUTY_CYCLE_MODE_RX));
+}
+
 int16_t LR11x0::readData(uint8_t* data, size_t len) {
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
@@ -1032,6 +1066,7 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   }
 
   // calculate delay value
+  this->tcxoDelay = delay;
   uint32_t delayValue = (uint32_t)((float)delay / 30.52f);
   if(delayValue == 0) {
     delayValue = 1;
