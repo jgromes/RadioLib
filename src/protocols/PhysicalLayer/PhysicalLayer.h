@@ -825,6 +825,25 @@ class PhysicalLayer {
 
     #endif
 
+    /*!
+      \brief Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages.
+      Useful only for LoRa modems. 
+      \param txPreLen Expected preamble length of the messages to receive.
+      If set to zero, the receiver preamble length will be used.
+      This value cannot exceed the configured preamble length. If the sender preamble length is variable, set the
+      maximum expected length by calling setPreambleLength(maximumExpectedLength) prior to this method, and use the
+      minimum expected length here.
+      \param rxPreLen Currently configured preamble length of the receiver (this radio).
+      \param minSymbols Ensure that the unit will catch at least this many symbols of any preamble of the specified senderPreambleLength.
+      To reliably latch a preamble, the receiver requires 8 symbols for SF7-12 and 12 symbols for SF5-6.
+      If set to zero, the minimum required symbols will be used.
+      \param dr Pointer to structure holding LoRa data rate information (only spreading factor and bandwidth are used).
+      \param wakePeriod Pointer to variable where the calculated wake period in microseconds will be stored.
+      \param sleePeriod Pointer to variable where the calculated sleep period in microseconds will be stored.
+      \returns \ref status_codes
+    */
+    int16_t calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, DataRate_t* dr, uint32_t* wakePeriod, uint32_t* sleepPeriod);
+
 #if !RADIOLIB_GODMODE
   protected:
 #endif
