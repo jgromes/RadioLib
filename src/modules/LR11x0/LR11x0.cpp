@@ -416,6 +416,28 @@ int16_t LR11x0::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   return(this->setRxDutyCycle(rxPeriodRaw, sleepPeriodRaw, RADIOLIB_LR11X0_RX_DUTY_CYCLE_MODE_RX));
 }
 
+int16_t LR11x0::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
+  // calculate the sleep and wake periods
+  uint32_t wakePeriod = 0;
+  uint32_t sleepPeriod = 0;
+  DataRate_t dr = {
+    .lora = {
+      .spreadingFactor = this->spreadingFactor,
+      .bandwidth = this->bandwidthKhz,
+      .codingRate = this->codingRate,
+    }
+  };
+  int16_t state = calculateRxDutyCycle(senderPreambleLength, this->preambleLengthLoRa, minSymbols, &dr, &wakePeriod, &sleepPeriod);
+  RADIOLIB_ASSERT(state);
+
+  // If our sleep period is shorter than our transition time, just use the standard startReceive
+  if(sleepPeriod < this->tcxoDelay + 1016) {
+    return(startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, irqFlags, irqMask));
+  }
+
+  return(startReceiveDutyCycle(wakePeriod, sleepPeriod, irqFlags, irqMask));
+}
+
 int16_t LR11x0::readData(uint8_t* data, size_t len) {
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
