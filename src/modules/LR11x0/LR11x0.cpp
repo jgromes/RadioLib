@@ -1733,6 +1733,13 @@ int16_t LR11x0::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
   #endif
 
+  // enable driving DIOs in sleep mode
+  // this prevents IRQ going high when the device goes to sleep
+  // especially when using Rx duty cycle, this woukld make it look like received packets
+  // there seems to be no measurable impact on power consumption in sleep mode
+  state = this->driveDiosInSleepMode(true);
+  RADIOLIB_ASSERT(state);
+
   // set modem
   state = this->setPacketType(modem);
   return(state);
