@@ -44,7 +44,7 @@ class LR2021: public LRxxxx {
 
     /*! 
       \brief Determines the type of Lora CAD to perform, either "standard" CAD
-      (same as is implem,ented LR11x0, SX126x and others), or a "fast" CAD if set to true.
+      (same as is implemented LR11x0, SX126x and others), or a "fast" CAD if set to true.
       If there is no signal to be detected, fast CAD should return faster than standard CAD.
     */
     bool fastCad = false;
