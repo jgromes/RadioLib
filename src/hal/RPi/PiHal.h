@@ -7,6 +7,10 @@
 // include the library for Raspberry GPIO pins
 #include <lgpio.h>
 
+#if LGPIO_VERSION < 0x00020200
+  #warning "lgpio version is lower than 0.2.2 - some functionality (e.g. pull-up control) may be unavailable!"
+#endif
+
 #define PI_RISING         (LG_RISING_EDGE)
 #define PI_FALLING        (LG_FALLING_EDGE)
 #define PI_INPUT          (0)
