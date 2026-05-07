@@ -225,6 +225,7 @@ class PiHal : public RadioLibHal {
       lgTxPwm(_gpioHandle, pin, 0, 0, 0, 0);
     }
 
+#if LGPIO_VERSION > 0x00010000
     void pullUpDown(uint32_t pin, bool enable, bool up) {
       if((pin == RADIOLIB_NC) || (pin > PI_MAX_USER_GPIO)) {
         return;
@@ -232,6 +233,7 @@ class PiHal : public RadioLibHal {
 
       pinFlags[pin] = enable ? (up ? LG_SET_PULL_UP : LG_SET_PULL_DOWN) : LG_SET_PULL_NONE;
     }
+#endif /* LGPIO_VERSION */
 
     // interrupt emulation
     bool interruptEnabled[PI_MAX_USER_GPIO + 1];
