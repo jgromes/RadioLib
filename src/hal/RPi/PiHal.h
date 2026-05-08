@@ -7,6 +7,10 @@
 // include the library for Raspberry GPIO pins
 #include <lgpio.h>
 
+#if LGPIO_VERSION < 0x00020200
+  #warning "lgpio version is lower than 0.2.2 - some functionality (e.g. pull-up control) may be unavailable!"
+#endif
+
 #define PI_RISING         (LG_RISING_EDGE)
 #define PI_FALLING        (LG_FALLING_EDGE)
 #define PI_INPUT          (0)
@@ -225,6 +229,7 @@ class PiHal : public RadioLibHal {
       lgTxPwm(_gpioHandle, pin, 0, 0, 0, 0);
     }
 
+#if LGPIO_VERSION > 0x00010000
     void pullUpDown(uint32_t pin, bool enable, bool up) {
       if((pin == RADIOLIB_NC) || (pin > PI_MAX_USER_GPIO)) {
         return;
@@ -232,6 +237,7 @@ class PiHal : public RadioLibHal {
 
       pinFlags[pin] = enable ? (up ? LG_SET_PULL_UP : LG_SET_PULL_DOWN) : LG_SET_PULL_NONE;
     }
+#endif /* LGPIO_VERSION */
 
     // interrupt emulation
     bool interruptEnabled[PI_MAX_USER_GPIO + 1];
