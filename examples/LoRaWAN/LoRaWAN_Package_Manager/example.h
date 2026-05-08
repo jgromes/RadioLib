@@ -44,7 +44,7 @@ void performReboot() {
 }
 
 // This function is called by a package when it needs to delay for a duration.
-void delaySeconds(uint32_t seconds) {
+void delaySeconds(RadioLibTime_t seconds) {
   Serial.print(F("Delay requested for "));
   Serial.print(seconds);
   Serial.println(F(" seconds"));
@@ -54,7 +54,7 @@ void delaySeconds(uint32_t seconds) {
 }
 
 // This function is called by a package when it receives a TX periodicity change command.
-void setUplinkInterval(uint32_t intervalSeconds) {
+void setUplinkInterval(RadioLibTime_t intervalSeconds) {
   Serial.print(F("Setting uplink interval to "));
   Serial.print(intervalSeconds);
   Serial.println(F(" seconds"));
