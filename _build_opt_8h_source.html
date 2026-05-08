@@ -681,49 +681,50 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span><span class="comment">// debug info strings</span></div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span><span class="preprocessor">#define RADIOLIB_VALUE_TO_STRING(x) #x</span></div>
 <div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span><span class="preprocessor">#define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)</span></div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span> </div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span><span class="preprocessor">#define RADIOLIB_INFO &quot;\r\nRadioLib Info\nVersion:  \&quot;&quot; \</span></div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_MAJOR) &quot;.&quot; \</span></div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_MINOR) &quot;.&quot; \</span></div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_PATCH) &quot;.&quot; \</span></div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) &quot;\&quot;\r\n&quot; \</span></div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span><span class="preprocessor">  &quot;Platform: &quot; RADIOLIB_VALUE(RADIOLIB_PLATFORM) &quot;\r\n&quot; \</span></div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span><span class="preprocessor">  RADIOLIB_VALUE(__DATE__) &quot; &quot; RADIOLIB_VALUE(__TIME__)</span></div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span><span class="preprocessor">#if RADIOLIB_VERBOSE_ASSERT</span></div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;%d at %s:%d&quot;, STATEVAR, __FILE__, __LINE__); return(STATEVAR); } }</span></div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="preprocessor">#define RADIOLIB_ASSERT_PTR(PTR) { if((PTR) == NULL) { RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;NULL at %s:%d&quot;, __FILE__, __LINE__); return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED); } }</span></div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span><span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { return(STATEVAR); } }</span></div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span><span class="preprocessor">#define RADIOLIB_ASSERT_PTR(PTR) { if((PTR) == NULL) { return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED); } }</span></div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span> </div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span><span class="preprocessor">#if RADIOLIB_CHECK_PARAMS</span></div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) &gt;= (MIN)) &amp;&amp; ((VAR) &lt;= (MAX)))) { return(ERR); } }</span></div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span><span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}</span></div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span> </div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span><span class="preprocessor">#if RADIOLIB_FIX_ERRATA_SX127X</span></div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) { errataFix(__VA_ARGS__); }</span></div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) {}</span></div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="comment">// these macros are usually defined by Arduino, but some platforms undef them, so its safer to use our own</span></div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="preprocessor">#define RADIOLIB_MIN(a,b)               ((a)&lt;(b)?(a):(b))</span></div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="preprocessor">#define RADIOLIB_MAX(a,b)               ((a)&gt;(b)?(a):(b))</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="preprocessor">#define RADIOLIB_ABS(x)         ((x)&gt;0?(x):-(x))</span></div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span> </div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="comment">// version definitions</span></div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="preprocessor">#define RADIOLIB_VERSION_MAJOR  7</span></div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="preprocessor">#define RADIOLIB_VERSION_MINOR  6</span></div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="preprocessor">#define RADIOLIB_VERSION_PATCH  0</span></div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="preprocessor">#define RADIOLIB_VERSION_EXTRA  0</span></div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span> </div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span><span class="preprocessor">#define RADIOLIB_VERSION (((RADIOLIB_VERSION_MAJOR) &lt;&lt; 24) | ((RADIOLIB_VERSION_MINOR) &lt;&lt; 16) | ((RADIOLIB_VERSION_PATCH) &lt;&lt; 8) | (RADIOLIB_VERSION_EXTRA))</span></div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span> </div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span><span class="preprocessor">#define RADIOLIB_VALUE_USED(x) __asm__ __volatile__(&quot;&quot; :: &quot;m&quot; (x))</span></div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span> </div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span><span class="preprocessor">#define RADIOLIB_INFO &quot;\r\nRadioLib Info\nVersion:  \&quot;&quot; \</span></div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_MAJOR) &quot;.&quot; \</span></div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_MINOR) &quot;.&quot; \</span></div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_PATCH) &quot;.&quot; \</span></div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span><span class="preprocessor">  RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) &quot;\&quot;\r\n&quot; \</span></div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span><span class="preprocessor">  &quot;Platform: &quot; RADIOLIB_VALUE(RADIOLIB_PLATFORM) &quot;\r\n&quot; \</span></div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="preprocessor">  RADIOLIB_VALUE(__DATE__) &quot; &quot; RADIOLIB_VALUE(__TIME__)</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="preprocessor">#if RADIOLIB_VERBOSE_ASSERT</span></div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;%d at %s:%d&quot;, STATEVAR, __FILE__, __LINE__); return(STATEVAR); } }</span></div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="preprocessor">#define RADIOLIB_ASSERT_PTR(PTR) { if((PTR) == NULL) { RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;NULL at %s:%d&quot;, __FILE__, __LINE__); return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED); } }</span></div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span><span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { return(STATEVAR); } }</span></div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span><span class="preprocessor">#define RADIOLIB_ASSERT_PTR(PTR) { if((PTR) == NULL) { return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED); } }</span></div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span> </div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="preprocessor">#if RADIOLIB_CHECK_PARAMS</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span><span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) &gt;= (MIN)) &amp;&amp; ((VAR) &lt;= (MAX)))) { return(ERR); } }</span></div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}</span></div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span> </div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="preprocessor">#if RADIOLIB_FIX_ERRATA_SX127X</span></div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) { errataFix(__VA_ARGS__); }</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) {}</span></div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span> </div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="comment">// these macros are usually defined by Arduino, but some platforms undef them, so its safer to use our own</span></div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="preprocessor">#define RADIOLIB_MIN(a,b)               ((a)&lt;(b)?(a):(b))</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="preprocessor">#define RADIOLIB_MAX(a,b)               ((a)&gt;(b)?(a):(b))</span></div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="preprocessor">#define RADIOLIB_ABS(x)         ((x)&gt;0?(x):-(x))</span></div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span> </div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="comment">// version definitions</span></div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="preprocessor">#define RADIOLIB_VERSION_MAJOR  7</span></div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="preprocessor">#define RADIOLIB_VERSION_MINOR  6</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="preprocessor">#define RADIOLIB_VERSION_PATCH  0</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="preprocessor">#define RADIOLIB_VERSION_EXTRA  0</span></div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span> </div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span><span class="preprocessor">#define RADIOLIB_VERSION (((RADIOLIB_VERSION_MAJOR) &lt;&lt; 24) | ((RADIOLIB_VERSION_MINOR) &lt;&lt; 16) | ((RADIOLIB_VERSION_PATCH) &lt;&lt; 8) | (RADIOLIB_VERSION_EXTRA))</span></div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span> </div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="agroup__typedefs_html_ga210f31dd2bff7fb80563275648a5bbbd"><div class="ttname"><a href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a></div><div class="ttdeci">unsigned long RadioLibTime_t</div><div class="ttdoc">Type used for durations in RadioLib.</div><div class="ttdef"><b>Definition</b> TypeDef.h:679</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
