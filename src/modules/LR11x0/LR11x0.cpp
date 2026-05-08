@@ -1158,16 +1158,16 @@ size_t LR11x0::getPacketLength(bool update) {
 size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   (void)update;
 
-  // in implicit mode, return the cached value
+  // in implicit mode, return the cached value if the offset was not requested
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   (void)getPacketType(&type);
-  if((type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT)) {
+  if((type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && (!offset)) {
     return(this->implicitLen);
   }
 
+  // if offset was requested, or in explicit mode, we always have to perform the SPI transaction
   uint8_t len = 0;
   int state = getRxBufferStatus(&len, offset);
-  RADIOLIB_DEBUG_BASIC_PRINT("getRxBufferStatus state = %d\n", state);
   (void)state;
   return((size_t)len);
 }
