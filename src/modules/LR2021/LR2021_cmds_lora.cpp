@@ -119,7 +119,7 @@ int16_t LR2021::setLoRaTxSync(uint8_t function, uint8_t dioNum) {
 
 int16_t LR2021::setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets) {
   uint8_t buff[6] = { 0 };
-  for(uint8_t i = 0; i < numSideDets; i++) {
+  for(size_t i = 0; i < numSideDets; i++) {
     if(i >= 3) { return(RADIOLIB_ERR_UNKNOWN); }
     buff[2*i] = pnrDelta[i] & 0x0F;
     buff[2*i + 1] = detPeak[i] & 0x7F;
