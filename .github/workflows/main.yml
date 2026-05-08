@@ -272,6 +272,7 @@ jobs:
           cd $PWD/examples/NonArduino/ESP-IDF
           . ~/esp/esp-idf/export.sh
           idf.py build
+          ../../../extras/test/ci/version.sh build/esp-sx1261.bin
 
   tock-build:
     runs-on: ubuntu-latest

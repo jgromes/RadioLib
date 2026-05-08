@@ -44,12 +44,13 @@ Module& Module::operator=(const Module& mod) {
   return(*this);
 }
 
-static volatile const char info[] = RADIOLIB_INFO;
+static volatile const char rlb_info[] = RADIOLIB_INFO;
 void Module::init() {
   this->hal->init();
   this->hal->pinMode(csPin, this->hal->GpioModeOutput);
   this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
   RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO);
+  RADIOLIB_VALUE_USED(rlb_info);
 }
 
 void Module::term() {

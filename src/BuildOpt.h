@@ -581,6 +581,7 @@
 // debug info strings
 #define RADIOLIB_VALUE_TO_STRING(x) #x
 #define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)
+#define RADIOLIB_VALUE_USED(x) __asm__ __volatile__("" :: "m" (x))
 
 #define RADIOLIB_INFO "\r\nRadioLib Info\nVersion:  \"" \
   RADIOLIB_VALUE(RADIOLIB_VERSION_MAJOR) "." \

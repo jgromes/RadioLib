@@ -41,6 +41,7 @@ for example in $(find $path -name '*.ino' | sort); do
       file="$(basename -- "$example")"
       size="$(size $dir/build/*/$file.elf)"
       echo $size >> $size_file
+      ./version.sh $dir/build/*/*.bin
     fi
   fi
 done
