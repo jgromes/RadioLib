@@ -135,7 +135,7 @@ class SX1262: public SX126x {
     virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
     
     /*!
-      \brief Configuration for beginFSK() method.
+      \brief Configuration for beginBPSK() method.
     */
     struct ConfigBPSK_t {
       /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
@@ -163,7 +163,7 @@ class SX1262: public SX126x {
 
     /*!
       \brief Initialization method for BPSK modem.
-      NOTE: Proceed with caution! BPSK support in SX126x is epxerimental and poorly documented!
+      NOTE: Proceed with caution! BPSK support in SX126x is experimental and poorly documented!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 600 bps, only 100 and 600 bps is supported
       \param power Output power in dBm. Defaults to 10 dBm.
@@ -175,6 +175,9 @@ class SX1262: public SX126x {
     */
     virtual int16_t beginBPSK(float freq = 434.0, float br = 0.6, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
     
+    /*!
+      \brief Configuration for beginLRFHSS() method.
+    */
     struct ConfigLRFHSS_t {
       /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
       float frequency = 434.0;
