@@ -62,7 +62,7 @@ class SX1268: public SX126x {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    virtual int16_t begin(const ConfigLoRa_t& config);
+    int16_t begin(const ConfigLoRa_t& config);
 
     /*!
       \brief Initialization method for LoRa modem.

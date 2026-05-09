@@ -63,7 +63,7 @@ class SX1262: public SX126x {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    virtual int16_t begin(const ConfigLoRa_t& config);
+    int16_t begin(const ConfigLoRa_t& config);
 
     /*!
       \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
@@ -115,7 +115,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginFSK(const ConfigFSK_t& config);
+    int16_t beginFSK(const ConfigFSK_t& config);
 
     /*!
       \deprecated Use \ref beginFSK(const ConfigFSK_t& config) instead.
@@ -159,7 +159,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginBPSK(const ConfigBPSK_t& config);
+    int16_t beginBPSK(const ConfigBPSK_t& config);
 
     /*!
       \brief Initialization method for BPSK modem.
@@ -201,7 +201,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
+    int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
 
     /*!
       \deprecated Use \ref beginLRFHSS(const ConfigLRFHSS_t& config) instead.
