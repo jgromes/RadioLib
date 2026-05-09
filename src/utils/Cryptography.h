@@ -114,7 +114,7 @@ class RadioLibAES128 {
       \brief Initialize the AES.
       \param key AES key to use.
     */
-    void init(uint8_t* key);
+    virtual void init(uint8_t* key);
 
     /*!
       \brief Perform ECB-type AES encryption.
@@ -124,7 +124,7 @@ class RadioLibAES128 {
       to ensure the buffer is sufficiently large to save the data!
       \returns The number of bytes saved into the output buffer.
     */
-    size_t encryptECB(const uint8_t* in, size_t len, uint8_t* out);
+    virtual size_t encryptECB(const uint8_t* in, size_t len, uint8_t* out);
     
     /*!
       \brief Perform ECB-type AES decryption.
@@ -134,7 +134,7 @@ class RadioLibAES128 {
       to ensure the buffer is sufficiently large to save the data!
       \returns The number of bytes saved into the output buffer.
     */
-    size_t decryptECB(const uint8_t* in, size_t len, uint8_t* out);
+    virtual size_t decryptECB(const uint8_t* in, size_t len, uint8_t* out);
 
     /*!
       \brief Calculate message authentication code according to RFC4493.
