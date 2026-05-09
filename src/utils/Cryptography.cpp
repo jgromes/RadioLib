@@ -349,5 +349,3 @@ uint8_t RadioLibAES128::mul(uint8_t a, uint8_t b) {
   }
   return(out);
 }
-
-RadioLibAES128 RadioLibAES128Instance;

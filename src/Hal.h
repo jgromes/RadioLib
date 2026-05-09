@@ -6,6 +6,8 @@
 
 #include "BuildOpt.h"
 
+#include "utils/Cryptography.h"
+
 /*! \brief Global-scope function that returns timestamp since start (in microseconds). */
 RadioLibTime_t rlb_time_us();
 
@@ -48,6 +50,18 @@ class RadioLibHal {
       \brief Value to be used as the "falling" GPIO level change direction.
     */
     const uint32_t GpioInterruptFalling;
+
+    /*!
+      \brief AES-128 engine instance to be used. When using platform with AES hardware acceleration,
+      it is usually highly advantageous to use it instead of the default software implementation.
+      With custom AES-128, set this pointer to an instance of that class.
+      See the macro RADIOLIB_CUSTOM_AES128 in BuildOpt.h for details.
+    */
+    #if !RADIOLIB_CUSTOM_AES128
+    RadioLibAES128* aes128 = &RadioLibAES128Instance;
+    #else
+    RadioLibAES128* aes128 = nullptr;
+    #endif
 
     /*!
       \brief Default constructor.
@@ -223,6 +237,12 @@ class RadioLibHal {
       \param up Pull direction, true for pull up, false for pull down.
     */
     virtual void pullUpDown(uint32_t pin, bool enable, bool up);
+  
+  private:
+    // AES128 isntance is only needed if the user does not provide their own
+    #if !RADIOLIB_CUSTOM_AES128
+    RadioLibAES128 RadioLibAES128Instance;
+    #endif
 };
 
 #endif

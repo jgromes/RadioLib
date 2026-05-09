@@ -2,7 +2,6 @@
 #define _RADIOLIB_CRYPTOGRAPHY_H
 
 #include "../TypeDef.h"
-#include "../Module.h"
 
 // AES-128 constants
 #define RADIOLIB_AES128_BLOCK_SIZE                              (16)
@@ -197,8 +196,5 @@ class RadioLibAES128 {
     uint8_t mul(uint8_t a, uint8_t b); // cppcheck-suppress unusedPrivateFunction
     void addRoundKey(uint8_t round, state_t* state, const uint8_t* roundKey); // cppcheck-suppress unusedPrivateFunction
 };
-
-// the global singleton
-extern RadioLibAES128 RadioLibAES128Instance;
 
 #endif
