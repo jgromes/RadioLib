@@ -46,28 +46,43 @@ SX1262::SX1262(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1262_CHIP_TYPE;
 }
 
-int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  // execute common part
-  int16_t state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
+int16_t SX1262::begin(const ConfigLoRa_t& config) {
+  int16_t state = SX126x::begin(
+    config.codingRate, config.syncWord, config.preambleLength,
+    config.tcxoVoltage, config.useRegulatorLDO);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setSpreadingFactor(sf);
+  state = setSpreadingFactor(config.spreadingFactor);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
+  state = setBandwidth(config.bandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
   return(state);
+}
+
+int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+  ConfigLoRa_t config;
+  config.frequency = freq;
+  config.bandwidth = bw;
+  config.spreadingFactor = sf;
+  config.codingRate = cr;
+  config.syncWord = syncWord;
+  config.power = power;
+  config.preambleLength = preambleLength;
+  config.tcxoVoltage = tcxoVoltage;
+  config.useRegulatorLDO = useRegulatorLDO;
+  return(begin(config));
 }
 
 int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
