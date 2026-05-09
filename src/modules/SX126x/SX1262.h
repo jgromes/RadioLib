@@ -85,6 +85,40 @@ class SX1262: public SX126x {
     virtual int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
 
     /*!
+      \brief Configuration for beginFSK() method.
+    */
+    struct ConfigFSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+      float bitRate = 4.8;
+      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
+      float frequencyDeviation = 5.0;
+      /*! \brief FSK receiver bandwidth in kHz. Defaults to 156.2 kHz. */
+      float receiverBandwidth = 156.2;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+      uint16_t preambleLength = 16;
+      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
+      float tcxoVoltage = 1.6;
+      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
+      bool useRegulatorLDO = false;
+    };
+
+    /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    virtual int16_t beginFSK(const ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref beginFSK(const ConfigFSK_t& config) instead.
       \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
@@ -101,6 +135,33 @@ class SX1262: public SX126x {
     virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
     
     /*!
+      \brief Configuration for beginFSK() method.
+    */
+    struct ConfigBPSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+      float bitRate = 4.8;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
+      float tcxoVoltage = 1.6;
+      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
+      bool useRegulatorLDO = false;
+    };
+
+    /*!
+      \brief Initialization method for BPSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the BPSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    virtual int16_t beginBPSK(const ConfigBPSK_t& config);
+
+    /*!
       \brief Initialization method for BPSK modem.
       NOTE: Proceed with caution! BPSK support in SX126x is epxerimental and poorly documented!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -114,7 +175,36 @@ class SX1262: public SX126x {
     */
     virtual int16_t beginBPSK(float freq = 434.0, float br = 0.6, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
     
+    struct ConfigLRFHSS_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz. */
+      uint8_t bandwidth = RADIOLIB_SX126X_LR_FHSS_BW_722_66;
+      /*! \brief LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values. Defaults to 2/3 coding rate. */
+      uint8_t codingRate = RADIOLIB_SX126X_LR_FHSS_CR_2_3;
+      /*! \brief Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid. */
+      bool narrowGrid = true;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
+      float tcxoVoltage = 1.6;
+      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
+      bool useRegulatorLDO = false;
+    };
+
     /*!
+      \brief Initialization method for LR-FHSS modem.
+      \param config Initialization configuration.
+      \details This method initializes the LR-FHSS modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    virtual int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
+
+    /*!
+      \deprecated Use \ref beginLRFHSS(const ConfigLRFHSS_t& config) instead.
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz.

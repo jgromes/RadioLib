@@ -75,7 +75,15 @@ void setup() {
   // sync word:                   0x34 (public network/LoRaWAN)
   // output power:                2 dBm
   // preamble length:             20 symbols
-  state = radio2.begin(915.0, 500.0, 6, 5, 0x34, 2, 20);
+  state = radio2.begin({
+    .frequency = 915.0,
+    .bandwidth = 500.0,
+    .spreadingFactor = 6,
+    .codingRate = 5,
+    .syncWord = 0x34,
+    .power = 2,
+    .preambleLength = 20,
+  });
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
