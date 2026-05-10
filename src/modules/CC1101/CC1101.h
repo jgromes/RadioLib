@@ -544,11 +544,39 @@ class CC1101: public PhysicalLayer {
     // basic methods
 
     /*!
+      \brief Configuration for begin() and beginFSK4() methods.
+    */
+    struct ConfigFSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = RADIOLIB_CC1101_DEFAULT_FREQ;
+      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+      float bitRate = RADIOLIB_CC1101_DEFAULT_BR;
+      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
+      float frequencyDeviation = RADIOLIB_CC1101_DEFAULT_FREQDEV;
+      /*! \brief FSK receiver bandwidth in kHz. Defaults to 58.0 kHz. */
+      float receiverBandwidth = RADIOLIB_CC1101_DEFAULT_RXBW;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = RADIOLIB_CC1101_DEFAULT_POWER;
+      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+      uint16_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN;
+    };
+
+    /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t begin(const ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
       \brief Initialization method.
       \param freq Carrier frequency in MHz. Defaults to 434 MHz.
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 135.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 58.0 kHz.
       \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength Preamble Length in bits. Defaults to 16 bits.
       \returns \ref status_codes
@@ -560,13 +588,22 @@ class CC1101: public PhysicalLayer {
       float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
       int8_t pwr = RADIOLIB_CC1101_DEFAULT_POWER,
       uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
+        
+    /*!
+      \brief Initialization method for 4-FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t beginFSK4(const ConfigFSK_t& config);
     
     /*!
       \brief Initialization method for 4-FSK modulation.
       \param freq Carrier frequency in MHz. Defaults to 434 MHz.
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 135.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 58.0 kHz.
       \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength Preamble Length in bits. Defaults to 16 bits.
       \returns \ref status_codes
@@ -1063,7 +1100,7 @@ class CC1101: public PhysicalLayer {
 
     int8_t power = RADIOLIB_CC1101_DEFAULT_POWER;
 
-    int16_t beginCommon(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength);
+    int16_t beginCommon(const ConfigFSK_t& config);
     int16_t config();
     int16_t transmitDirect(bool sync, uint32_t frf);
     int16_t receiveDirect(bool sync);
