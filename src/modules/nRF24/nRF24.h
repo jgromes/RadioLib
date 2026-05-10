@@ -200,6 +200,30 @@ class nRF24: public PhysicalLayer {
     // basic methods
 
     /*!
+      \brief Configuration for begin() method.
+    */
+    struct ConfigFSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 2400 MHz. */
+      int16_t frequency = RADIOLIB_NRF24_DEFAULT_FREQ;
+      /*! \brief FSK bit rate in kbps. Defaults to 1000 kbps. */
+      int16_t bitRate = RADIOLIB_NRF24_DEFAULT_DR;
+      /*! \brief Output power in dBm. Defaults to -9 dBm. */
+      int8_t power = RADIOLIB_NRF24_DEFAULT_POWER;
+      /*! \brief Address width in bytes. Defaults to 5 bytes. */
+      uint8_t addressWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH;
+    };
+
+    /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t begin(const ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
       \brief Initialization method.
       \param freq Carrier frequency in MHz. Defaults to 2400 MHz.
       \param dr Data rate to be used in kbps. Defaults to 1000 kbps.
