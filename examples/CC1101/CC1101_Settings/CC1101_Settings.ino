@@ -65,7 +65,6 @@ void setup() {
   // Rx bandwidth:                        250.0 kHz
   // output power:                        7 dBm
   // preamble length:                     32 bits
-  state = radio2.begin(434.0, 32.0, 60.0, 250.0, 7, 32);
   #if (__cplusplus >= 201402L)
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
