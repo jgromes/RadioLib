@@ -36,7 +36,7 @@ void setup() {
 
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
