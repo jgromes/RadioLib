@@ -599,6 +599,7 @@ class CC1101: public PhysicalLayer {
     int16_t beginFSK4(const ConfigFSK_t& config);
     
     /*!
+      \deprecated Use \ref beginFSK4(const ConfigFSK_t& config) instead.
       \brief Initialization method for 4-FSK modulation.
       \param freq Carrier frequency in MHz. Defaults to 434 MHz.
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
