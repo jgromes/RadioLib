@@ -39,6 +39,10 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
+// create a static instance of the convolutional encoder
+// this way it will only get built when Pager is built
+static RadioLibConvCode RadioLibConvCodeInstance;
+
 // header interleaver
 static const uint8_t LrFhssHeaderInterleaver[80] = {
   0,  18, 36, 54, 72, 4,  22, 40,

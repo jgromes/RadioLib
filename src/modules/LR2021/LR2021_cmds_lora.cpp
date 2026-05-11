@@ -27,7 +27,7 @@ int16_t LR2021::setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint
 int16_t LR2021::setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ) {
   uint8_t buff[] = { 
     (uint8_t)((preambleLen >> 8) & 0xFF), (uint8_t)(preambleLen & 0xFF), payloadLen,
-    (uint8_t)(((hdrType & 0x01) << 2) | ((crcType & 0x01) << 1) | (invertIQ & 0x01)),
+    (uint8_t)((hdrType & 0x04) | (crcType & 0x02) | (invertIQ & 0x01)),
   };
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_PACKET_PARAMS, true, buff, sizeof(buff)));
 }

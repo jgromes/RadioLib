@@ -9,7 +9,6 @@
 #include "../AFSK/AFSK.h"
 #include "../BellModem/BellModem.h"
 #include "../../utils/CRC.h"
-#include "../../utils/FEC.h"
 
 // maximum callsign length in bytes
 #define RADIOLIB_AX25_MAX_CALLSIGN_LEN                          6

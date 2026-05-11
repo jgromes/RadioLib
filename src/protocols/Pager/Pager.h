@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
-#include "../../utils/FEC.h"
+#include "../../utils/BCH.h"
 
 // frequency shift in Hz
 #define RADIOLIB_PAGER_FREQ_SHIFT_HZ                            (4500)

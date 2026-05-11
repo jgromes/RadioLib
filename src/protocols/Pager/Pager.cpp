@@ -25,6 +25,10 @@ static void PagerClientReadBit(void) {
 }
 #endif
 
+// create a static instance of the BCH encoder
+// this way it will only get built when Pager is built
+static RadioLibBCH RadioLibBCHInstance;
+
 PagerClient::PagerClient(PhysicalLayer* phy) {
   phyLayer = phy;
   #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE

@@ -667,7 +667,7 @@ bool LR2021::findChip(void) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)fwMajor, (int)fwMinor);
       flagFound = true;
     } else {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("LR2021 not found! (%d of 10 tries) FW version: = %d.%d", (int)fwMajor, (int)fwMinor);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("LR2021 not found! (%d of 10 tries) FW version: = %d.%d", (int)i, (int)fwMajor, (int)fwMinor);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Expected: %d.%d", (int)expMajor, (int)expMinor);
       this->mod->hal->delay(10);
       i++;
@@ -869,7 +869,7 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       // set implicit mode and expected len if applicable
       if((this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR2021_PACKET_TYPE_LORA)) {
         state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-          (this->packetType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, this->invertIQEnabled);
+          (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, this->invertIQEnabled);
         RADIOLIB_ASSERT(state);
       }
 
