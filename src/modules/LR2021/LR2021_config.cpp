@@ -210,10 +210,14 @@ int16_t LR2021::setSpreadingFactor(uint8_t sf, bool legacy) {
 
   RADIOLIB_CHECK_RANGE(sf, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
 
-  //! \TODO: [LR2021] enable SF6 legacy mode
   if(legacy && (sf == 6)) {
-    //this->mod->SPIsetRegValue(RADIOLIB_LR11X0_REG_SF6_SX127X_COMPAT, RADIOLIB_LR11X0_SF6_SX127X, 18, 18);
+    // enable SF6 legacy mode if requested
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_LORA_MODEM_TXRX_CFG0, (3UL << 18), (1UL << 19));
+  } else {
+    // disable it in all other cases
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_LORA_MODEM_TXRX_CFG0, (3UL << 18), 0);
   }
+  RADIOLIB_ASSERT(state);
 
   // update modulation parameters
   this->spreadingFactor = sf;
