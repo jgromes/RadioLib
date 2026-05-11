@@ -306,8 +306,6 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
 	return(res);
 }
 
-RadioLibBCH RadioLibBCHInstance;
-
 RadioLibConvCode::RadioLibConvCode() {
 
 }
@@ -361,5 +359,3 @@ int16_t RadioLibConvCode::encode(const uint8_t* in, size_t in_bits, uint8_t* out
 
   return(RADIOLIB_ERR_NONE);
 }
-
-RadioLibConvCode RadioLibConvCodeInstance;

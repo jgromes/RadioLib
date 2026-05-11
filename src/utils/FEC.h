@@ -65,9 +65,6 @@ class RadioLibBCH {
     #endif
 };
 
-// the global singleton
-extern RadioLibBCH RadioLibBCHInstance;
-
 /*!
   \class RadioLibConvCode
   \brief Class to perform convolutional coding with variable rates.
@@ -148,7 +145,5 @@ static const uint32_t ConvCodeTable1_3[16] = {
 static const uint32_t ConvCodeTable1_2[4] = { 
   0x03122130, 0x21300312, 0x30211203, 0x12033021,
 };
-
-extern RadioLibConvCode RadioLibConvCodeInstance;
 
 #endif
