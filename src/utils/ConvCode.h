@@ -1,69 +1,8 @@
-#if !defined(_RADIOLIB_FEC_H)
-#define _RADIOLIB_FEC_H
+#if !defined(_RADIOLIB_CONV_CODE_H)
+#define _RADIOLIB_CONV_CODE_H
 
 #include "../TypeDef.h"
 #include "../Module.h"
-
-// BCH(31, 21) code constants
-#define RADIOLIB_PAGER_BCH_N                                    (31)
-#define RADIOLIB_PAGER_BCH_K                                    (21)
-#define RADIOLIB_PAGER_BCH_PRIMITIVE_POLY                       (0x25)
-
-#if RADIOLIB_STATIC_ONLY
-#define RADIOLIB_BCH_MAX_N                                      (63)
-#define RADIOLIB_BCH_MAX_K                                      (31)
-#endif
-
-/*!
-  \class RadioLibBCH
-  \brief Class to calculate Bose–Chaudhuri–Hocquenghem (BCH) class of forward error correction codes.
-  In theory, this should be able to calculate an arbitrary BCH(N, K) code,
-  but so far it was only tested for BCH(31, 21).
-*/
-class RadioLibBCH {
-  public:
-    /*!
-      \brief Default constructor.
-    */
-    RadioLibBCH();
-
-    /*!
-      \brief Default destructor.
-    */
-    ~RadioLibBCH();
-
-    /*!
-      \brief Initialization method.
-      \param n Code word length in bits, up to 32.
-      \param k Data portion length in bits, up to "n".
-      \param poly Powers of the irreducible polynomial.
-    */
-    void begin(uint8_t n, uint8_t k, uint32_t poly);
-
-    /*!
-      \brief Encoding method - encodes one data word (without check bits) into a code word (with check bits).
-      \param dataword Data word without check bits. The caller is responsible to make sure the data is
-      on the correct bit positions!
-      \returns Code word with error check bits.
-    */
-    uint32_t encode(uint32_t dataword);
-
-  private:
-    uint8_t n = 0;
-    uint8_t k = 0;
-    uint32_t poly = 0;
-    uint8_t m = 0;
-    
-    #if RADIOLIB_STATIC_ONLY
-      int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1] = { 0 };
-      int32_t indexOf[RADIOLIB_BCH_MAX_N + 1] = { 0 };
-      int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
-    #else
-      int32_t* alphaTo = nullptr;
-      int32_t* indexOf = nullptr;
-      int32_t* generator = nullptr;
-    #endif
-};
 
 /*!
   \class RadioLibConvCode
@@ -132,18 +71,6 @@ class RadioLibConvCode {
   private:
     uint8_t enc_state = 0;
     uint8_t rate = 0;
-};
-
-// each 32-bit word stores 8 values, one per each nibble
-static const uint32_t ConvCodeTable1_3[16] = {
-  0x07347043, 0x61521625, 0x16256152, 0x70430734,
-  0x43703407, 0x25165261, 0x52612516, 0x34074370,
-  0x70430734, 0x16256152, 0x61521625, 0x07347043,
-  0x34074370, 0x52612516, 0x25165261, 0x43703407,
-};
-
-static const uint32_t ConvCodeTable1_2[4] = { 
-  0x03122130, 0x21300312, 0x30211203, 0x12033021,
 };
 
 #endif
