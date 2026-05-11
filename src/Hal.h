@@ -239,9 +239,9 @@ class RadioLibHal {
     virtual void pullUpDown(uint32_t pin, bool enable, bool up);
   
   private:
-    // AES128 isntance is only needed if the user does not provide their own
+    // AES128 instance is only needed if the user does not provide their own
     #if !RADIOLIB_CUSTOM_AES128
-    RadioLibAES128 RadioLibAES128Instance;
+    RadioLibSoftwareAES128 RadioLibAES128Instance;
     #endif
 };
 
