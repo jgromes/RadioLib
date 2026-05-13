@@ -210,10 +210,14 @@ int16_t LR2021::setSpreadingFactor(uint8_t sf, bool legacy) {
 
   RADIOLIB_CHECK_RANGE(sf, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
 
-  //! \TODO: [LR2021] enable SF6 legacy mode
   if(legacy && (sf == 6)) {
-    //this->mod->SPIsetRegValue(RADIOLIB_LR11X0_REG_SF6_SX127X_COMPAT, RADIOLIB_LR11X0_SF6_SX127X, 18, 18);
+    // enable SF6 legacy mode if requested
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_LORA_MODEM_TXRX_CFG0, (3UL << 18), (1UL << 19));
+  } else {
+    // disable it in all other cases
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_LORA_MODEM_TXRX_CFG0, (3UL << 18), 0);
   }
+  RADIOLIB_ASSERT(state);
 
   // update modulation parameters
   this->spreadingFactor = sf;
@@ -375,9 +379,9 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
-    this->crcTypeLoRa = len > 0;
+    this->crcTypeLoRa = len > 0 ? RADIOLIB_LR2021_LORA_CRC_ENABLED : RADIOLIB_LR2021_LORA_CRC_DISABLED;
     return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-      (this->packetType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+      (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     if(len > 4) {
@@ -436,7 +440,7 @@ int16_t LR2021::invertIQ(bool enable) {
 
   this->invertIQEnabled = enable;
   return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-    (this->packetType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+    (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
 }
 
 int16_t LR2021::setBitRate(float br) {

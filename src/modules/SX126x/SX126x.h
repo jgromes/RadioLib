@@ -8,7 +8,7 @@
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
-#include "../../utils/FEC.h"
+#include "../../utils/ConvCode.h"
 #include "../../utils/CRC.h"
 
 #include "SX126x_commands.h"
