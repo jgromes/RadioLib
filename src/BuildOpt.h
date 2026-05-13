@@ -124,6 +124,17 @@
   //#define RADIOLIB_CLOCK_DRIFT_MS                         (0)
 #endif
 
+/*
+ * Enable custom implementation of AES-128
+ * This is useful when using platforms which provides hardware acceleration for AES.
+ * The default RadioLib implementation has a softwre AES-128, which takes a lot of time to calculate.
+ * When set, you will have to create a new AES-128 class which overrides the default implementations 
+ * in RadioLibAES128 class, create an instance of that class and provide it to RadioLibHal::aes128.
+ */
+#if !defined(RADIOLIB_CUSTOM_AES128)
+  #define RADIOLIB_CUSTOM_AES128  (0)
+#endif
+
 #if !defined(RADIOLIB_LINE_FEED)
   #define RADIOLIB_LINE_FEED    "\r\n"
 #endif

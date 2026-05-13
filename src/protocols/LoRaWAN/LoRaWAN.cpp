@@ -747,14 +747,15 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   // decrypt the join accept message
   // this is done by encrypting again in ECB mode
   // the first byte is the MAC header which is not encrypted
+  Module* mod = this->phyLayer->getMod();
   uint8_t joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN];
   joinAcceptMsg[0] = joinAcceptMsgEnc[0];
   if(this->rev == 1) {
-    RadioLibAES128Instance.init(this->nwkKey);
+    mod->hal->aes128->init(this->nwkKey);
   } else {
-    RadioLibAES128Instance.init(this->appKey);
+    mod->hal->aes128->init(this->appKey);
   }
-  RadioLibAES128Instance.encryptECB(&joinAcceptMsgEnc[1], RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - 1, &joinAcceptMsg[1]);
+  mod->hal->aes128->encryptECB(&joinAcceptMsgEnc[1], RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - 1, &joinAcceptMsg[1]);
 
   // get current joinNonce from downlink
   uint32_t joinNonceNew = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
@@ -789,8 +790,8 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
     uint8_t keyDerivationBuff[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_JS_INT_KEY;
     LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[1], this->devEUI);
-    RadioLibAES128Instance.init(this->nwkKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->jSIntKey);
+    mod->hal->aes128->init(this->nwkKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->jSIntKey);
 
     // prepare the buffer for MIC calculation
     uint8_t micBuff[3*RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
@@ -840,32 +841,32 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_AES_DEV_NONCE_POS], this->devNonce - 1);
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
 
-    RadioLibAES128Instance.init(this->appKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
+    mod->hal->aes128->init(this->appKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
 
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_F_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(this->nwkKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
+    mod->hal->aes128->init(this->nwkKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
 
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_S_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(this->nwkKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->sNwkSIntKey);
+    mod->hal->aes128->init(this->nwkKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->sNwkSIntKey);
 
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_NWK_S_ENC_KEY;
-    RadioLibAES128Instance.init(this->nwkKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->nwkSEncKey);
+    mod->hal->aes128->init(this->nwkKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->nwkSEncKey);
 
   } else {
     // 1.0 version, just derive the keys
     LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], homeNetId, 3);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS], this->devNonce - 1);
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
-    RadioLibAES128Instance.init(this->appKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
+    mod->hal->aes128->init(this->appKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
 
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_F_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(this->appKey);
-    RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
+    mod->hal->aes128->init(this->appKey);
+    mod->hal->aes128->encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
 
     memcpy(this->sNwkSIntKey, this->fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
     memcpy(this->nwkSEncKey, this->fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
@@ -3687,9 +3688,10 @@ uint32_t LoRaWANNode::generateMIC(const uint8_t* msg, size_t len, uint8_t* key) 
     return(0);
   }
 
-  RadioLibAES128Instance.init(key);
+  Module* mod = this->phyLayer->getMod();
+  mod->hal->aes128->init(key);
   uint8_t cmac[RADIOLIB_AES128_BLOCK_SIZE];
-  RadioLibAES128Instance.generateCMAC(msg, len, cmac);
+  mod->hal->aes128->generateCMAC(msg, len, cmac);
   return(((uint32_t)cmac[0]) | ((uint32_t)cmac[1] << 8) | ((uint32_t)cmac[2] << 16) | ((uint32_t)cmac[3]) << 24);
 }
 
@@ -3826,8 +3828,9 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
     }
 
     // encrypt the buffer
-    RadioLibAES128Instance.init(key);
-    RadioLibAES128Instance.encryptECB(encBlock, RADIOLIB_AES128_BLOCK_SIZE, encBuffer);
+    Module* mod = this->phyLayer->getMod();
+    mod->hal->aes128->init(key);
+    mod->hal->aes128->encryptECB(encBlock, RADIOLIB_AES128_BLOCK_SIZE, encBuffer);
 
     // now xor the buffer with the input
     size_t xorLen = remLen;
