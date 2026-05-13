@@ -189,6 +189,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6ce285cc1b76ce028db6442a421ed8d" id="r_aa6ce285cc1b76ce028db6442a421ed8d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d">startReceive</a> () override</td></tr>
 <tr class="memdesc:aa6ce285cc1b76ce028db6442a421ed8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
 <tr class="separator:aa6ce285cc1b76ce028db6442a421ed8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c93ca6a2e2b430aae60192c79873e2" id="r_a00c93ca6a2e2b430aae60192c79873e2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a00c93ca6a2e2b430aae60192c79873e2">startReceiveDutyCycle</a> (uint32_t rxPeriod, uint32_t sleepPeriod, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK)</td></tr>
+<tr class="memdesc:a00c93ca6a2e2b430aae60192c79873e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.  <br /></td></tr>
+<tr class="separator:a00c93ca6a2e2b430aae60192c79873e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d4aa2bb64999b40cdc9930db11b4add" id="r_a7d4aa2bb64999b40cdc9930db11b4add"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a7d4aa2bb64999b40cdc9930db11b4add">startReceiveDutyCycleAuto</a> (uint16_t senderPreambleLength=0, uint16_t minSymbols=0, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK)</td></tr>
+<tr class="memdesc:a7d4aa2bb64999b40cdc9930db11b4add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_l_r11x0.html#a00c93ca6a2e2b430aae60192c79873e2">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.  <br /></td></tr>
+<tr class="separator:a7d4aa2bb64999b40cdc9930db11b4add"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20279f1b267e936991f47fd703924833" id="r_a20279f1b267e936991f47fd703924833"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a20279f1b267e936991f47fd703924833">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a20279f1b267e936991f47fd703924833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <br /></td></tr>
 <tr class="separator:a20279f1b267e936991f47fd703924833"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -526,6 +532,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memitem:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer" id="r_a77415bf4ed34be18c92c0cf4b2de7149"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">setModem</a> (ModemType_t modem)</td></tr>
 <tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <br /></td></tr>
 <tr class="separator:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer" id="r_a0d83458a1ead113b4c224ce8265ce8e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a0d83458a1ead113b4c224ce8265ce8e4">calculateRxDutyCycle</a> (size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, <a class="el" href="union_data_rate__t.html">DataRate_t</a> *dr, uint32_t *wakePeriod, uint32_t *sleepPeriod)</td></tr>
+<tr class="memdesc:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems.  <br /></td></tr>
+<tr class="separator:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -3566,6 +3575,116 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ae93500dfbcfd39837e04c0f3eaa40d97">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a00c93ca6a2e2b430aae60192c79873e2" name="a00c93ca6a2e2b430aae60192c79873e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00c93ca6a2e2b430aae60192c79873e2">&#9670;&#160;</a></span>startReceiveDutyCycle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::startReceiveDutyCycle </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rxPeriod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>sleepPeriod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_FLAGS</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_MASK</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rxPeriod</td><td>The duration the receiver will be in Rx mode, in microseconds. </td></tr>
+    <tr><td class="paramname">sleepPeriod</td><td>The duration the receiver will not be in Rx mode, in microseconds.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7d4aa2bb64999b40cdc9930db11b4add" name="a7d4aa2bb64999b40cdc9930db11b4add"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d4aa2bb64999b40cdc9930db11b4add">&#9670;&#160;</a></span>startReceiveDutyCycleAuto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::startReceiveDutyCycleAuto </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>senderPreambleLength</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>minSymbols</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_FLAGS</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_MASK</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calls <a class="el" href="class_l_r11x0.html#a00c93ca6a2e2b430aae60192c79873e2">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">senderPreambleLength</td><td>Expected preamble length of the messages to receive. If set to zero, the currently configured preamble length will be used. Defaults to zero. This value cannot exceed the configured preamble length. If the sender preamble length is variable, set the maximum expected length by calling setPreambleLength(maximumExpectedLength) prior to this method, and use the minimum expected length here.</td></tr>
+    <tr><td class="paramname">minSymbols</td><td>Ensure that the unit will catch at least this many symbols of any preamble of the specified senderPreambleLength. To reliably latch a preamble, the receiver requires 8 symbols for SF7-12 and 12 symbols for SF5-6 (see datasheet section 6.1.1.1, version 1.2). If set to zero, the minimum required symbols will be used. Defaults to 0.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If senderPreambleLength is less than 2*minSymbols + 1, this method is equivalent to <a class="el" href="class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d" title="Interrupt-driven receive method with default parameters. Implemented for compatibility with PhysicalL...">startReceive()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

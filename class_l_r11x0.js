@@ -93,6 +93,8 @@ var class_l_r11x0 =
     [ "startReceive", "class_l_r11x0.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d", null ],
     [ "startReceive", "class_l_r11x0.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
+    [ "startReceiveDutyCycle", "class_l_r11x0.html#a00c93ca6a2e2b430aae60192c79873e2", null ],
+    [ "startReceiveDutyCycleAuto", "class_l_r11x0.html#a7d4aa2bb64999b40cdc9930db11b4add", null ],
     [ "startTransmit", "class_l_r11x0.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_l_r11x0.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "startWifiScan", "class_l_r11x0.html#a3498e0e621f341e415145879989e0948", null ],

@@ -327,6 +327,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memitem:a5c5977bc9f54f21665b022a99e6c87cc" id="r_a5c5977bc9f54f21665b022a99e6c87cc"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5c5977bc9f54f21665b022a99e6c87cc">launchMode</a> ()</td></tr>
 <tr class="memdesc:a5c5977bc9f54f21665b022a99e6c87cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.  <br /></td></tr>
 <tr class="separator:a5c5977bc9f54f21665b022a99e6c87cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d83458a1ead113b4c224ce8265ce8e4" id="r_a0d83458a1ead113b4c224ce8265ce8e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a0d83458a1ead113b4c224ce8265ce8e4">calculateRxDutyCycle</a> (size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, <a class="el" href="union_data_rate__t.html">DataRate_t</a> *dr, uint32_t *wakePeriod, uint32_t *sleepPeriod)</td></tr>
+<tr class="memdesc:a0d83458a1ead113b4c224ce8265ce8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems.  <br /></td></tr>
+<tr class="separator:a0d83458a1ead113b4c224ce8265ce8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -398,6 +401,72 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 <p>Get the number of direct mode bytes currently available in buffer. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of available bytes. </dd></dl>
+
+</div>
+</div>
+<a id="a0d83458a1ead113b4c224ce8265ce8e4" name="a0d83458a1ead113b4c224ce8265ce8e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d83458a1ead113b4c224ce8265ce8e4">&#9670;&#160;</a></span>calculateRxDutyCycle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::calculateRxDutyCycle </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>txPreLen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rxPreLen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>minSymbols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a> *&#160;</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>wakePeriod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>sleepPeriod</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">txPreLen</td><td>Expected preamble length of the messages to receive. If set to zero, the receiver preamble length will be used. This value cannot exceed the configured preamble length. If the sender preamble length is variable, set the maximum expected length by calling setPreambleLength(maximumExpectedLength) prior to this method, and use the minimum expected length here. </td></tr>
+    <tr><td class="paramname">rxPreLen</td><td>Currently configured preamble length of the receiver (this radio). </td></tr>
+    <tr><td class="paramname">minSymbols</td><td>Ensure that the unit will catch at least this many symbols of any preamble of the specified senderPreambleLength. To reliably latch a preamble, the receiver requires 8 symbols for SF7-12 and 12 symbols for SF5-6. If set to zero, the minimum required symbols will be used. </td></tr>
+    <tr><td class="paramname">dr</td><td>Pointer to structure holding LoRa data rate information (only spreading factor and bandwidth are used). </td></tr>
+    <tr><td class="paramname">wakePeriod</td><td>Pointer to variable where the calculated wake period in microseconds will be stored. </td></tr>
+    <tr><td class="paramname">sleePeriod</td><td>Pointer to variable where the calculated sleep period in microseconds will be stored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

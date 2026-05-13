@@ -86,6 +86,8 @@ var class_l_r2021 =
     [ "startReceive", "class_l_r2021.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_l_r2021.html#ad0cb9a1ec4f8ffb323f32a48a477b150", null ],
     [ "startReceive", "class_l_r2021.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
+    [ "startReceiveDutyCycle", "class_l_r2021.html#adba94b4b3c2e14310c8318cfea290986", null ],
+    [ "startReceiveDutyCycleAuto", "class_l_r2021.html#ab5ec2008c3a6ee8afa173156a023a999", null ],
     [ "startTransmit", "class_l_r2021.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_l_r2021.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "transmit", "class_l_r2021.html#a492b2d057dd803c3884fa1adc8e22534", null ],

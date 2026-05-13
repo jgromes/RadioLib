@@ -3,6 +3,7 @@ var class_physical_layer =
     [ "PhysicalLayer", "class_physical_layer.html#afc972a84153977d6ccd9e116b6181ad4", null ],
     [ "~PhysicalLayer", "class_physical_layer.html#a7af88f9f75c9778c29002c2b8238a239", null ],
     [ "available", "class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26", null ],
+    [ "calculateRxDutyCycle", "class_physical_layer.html#a0d83458a1ead113b4c224ce8265ce8e4", null ],
     [ "calculateRxTimeout", "class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9", null ],
     [ "calculateTimeOnAir", "class_physical_layer.html#ac1974cb6218782c557a673aeb4a99928", null ],
     [ "checkDataRate", "class_physical_layer.html#a9c5c902d9f8ffe9866b7f178b14d34f6", null ],
