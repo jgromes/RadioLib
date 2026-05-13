@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">21</td>
-            <td class="headerCovTableEntry">192</td>
+            <td class="headerCovTableEntry">193</td>
             <td class="headerCovTableEntryLo">10.9 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-05-13 17:07:40</td>
+            <td class="headerValue">2026-05-13 17:09:07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -166,11 +166,11 @@
 <a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_TX_FALLBACK_MODE, true, &amp;mode, sizeof(mode)));</span></a>
 <a name="105"><span class="lineNum">     105 </span>            : }</a>
 <a name="106"><span class="lineNum">     106 </span>            : </a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : int16_t LR2021::setRxDutyCycle(uint32_t rxMaxTime, uint32_t cycleTime, uint8_t cfg) {</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : int16_t LR2021::setRxDutyCycle(uint32_t rxMaxTime, uint32_t cycleTime, uint8_t mode) {</span></a>
 <a name="108"><span class="lineNum">     108 </span>            :   uint8_t buff[] = {</a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :     (uint8_t)((rxMaxTime &gt;&gt; 16) &amp; 0xFF), (uint8_t)((rxMaxTime &gt;&gt; 8) &amp; 0xFF), (uint8_t)(rxMaxTime &amp; 0xFF),</span></a>
 <a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :     (uint8_t)((cycleTime &gt;&gt; 16) &amp; 0xFF), (uint8_t)((cycleTime &gt;&gt; 8) &amp; 0xFF), (uint8_t)(cycleTime &amp; 0xFF),</span></a>
-<a name="111"><span class="lineNum">     111 </span>            :     cfg</a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :     (uint8_t)(mode &lt;&lt; 4),</span></a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :   };</span></a>
 <a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_DUTY_CYCLE, true, buff, sizeof(buff)));</span></a>
 <a name="114"><span class="lineNum">     114 </span>            : }</a>

@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntry">193</td>
-            <td class="headerCovTableEntryLo">10.4 %</td>
+            <td class="headerCovTableEntry">214</td>
+            <td class="headerCovTableEntryLo">9.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-05-13 17:07:40</td>
+            <td class="headerValue">2026-05-13 17:09:07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">67</td>
-            <td class="headerCovTableEntryLo">6.0 %</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntryLo">5.9 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -639,6 +639,56 @@
 <a name="577"><span class="lineNum">     577 </span>            :   mod-&gt;TimerFlag = true;</a>
 <a name="578"><span class="lineNum">     578 </span>            : }</a>
 <a name="579"><span class="lineNum">     579 </span>            : #endif</a>
+<a name="580"><span class="lineNum">     580 </span>            : </a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineNoCov">          0 : int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, DataRate_t* dr, uint32_t* wakePeriod, uint32_t* sleepPeriod) {</span></a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT_PTR(dr);</span></a>
+<a name="583"><span class="lineNum">     583 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT_PTR(wakePeriod);</span></a>
+<a name="584"><span class="lineNum">     584 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT_PTR(sleepPeriod);</span></a>
+<a name="585"><span class="lineNum">     585 </span>            :   </a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineNoCov">          0 :   uint16_t senderPreambleLength = txPreLen;</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineNoCov">          0 :   if(senderPreambleLength == 0) {</span></a>
+<a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 :     senderPreambleLength = rxPreLen;</span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :   } else if(senderPreambleLength &gt; rxPreLen) {</span></a>
+<a name="590"><span class="lineNum">     590 </span>            :     // the unit must be configured to expect a preamble length at least as long as the sender is using</a>
+<a name="591"><span class="lineNum">     591 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);</span></a>
+<a name="592"><span class="lineNum">     592 </span>            :   }</a>
+<a name="593"><span class="lineNum">     593 </span><span class="lineNoCov">          0 :   if(minSymbols == 0) {</span></a>
+<a name="594"><span class="lineNum">     594 </span><span class="lineNoCov">          0 :     if(dr-&gt;lora.spreadingFactor &lt;= 6) {</span></a>
+<a name="595"><span class="lineNum">     595 </span><span class="lineNoCov">          0 :       minSymbols = 12;</span></a>
+<a name="596"><span class="lineNum">     596 </span>            :     } else {</a>
+<a name="597"><span class="lineNum">     597 </span><span class="lineNoCov">          0 :       minSymbols = 8;</span></a>
+<a name="598"><span class="lineNum">     598 </span>            :     }</a>
+<a name="599"><span class="lineNum">     599 </span>            :   }</a>
+<a name="600"><span class="lineNum">     600 </span>            : </a>
+<a name="601"><span class="lineNum">     601 </span>            :   // if we're not to sleep at all, just use the standard startReceive</a>
+<a name="602"><span class="lineNum">     602 </span><span class="lineNoCov">          0 :   if(2 * minSymbols &gt; senderPreambleLength) {</span></a>
+<a name="603"><span class="lineNum">     603 </span><span class="lineNoCov">          0 :     *sleepPeriod = 0;</span></a>
+<a name="604"><span class="lineNum">     604 </span>            :     RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;Auto sleep period too short&quot;);</a>
+<a name="605"><span class="lineNum">     605 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_NONE);</span></a>
+<a name="606"><span class="lineNum">     606 </span>            :   }</a>
+<a name="607"><span class="lineNum">     607 </span>            : </a>
+<a name="608"><span class="lineNum">     608 </span>            :   // worst case is that the sender starts transmitting when we're just less than minSymbols from going back to sleep.</a>
+<a name="609"><span class="lineNum">     609 </span>            :   // in this case, we don't catch minSymbols before going to sleep,</a>
+<a name="610"><span class="lineNum">     610 </span>            :   // so we must be awake for at least that long before the sender stops transmitting.</a>
+<a name="611"><span class="lineNum">     611 </span><span class="lineNoCov">          0 :   uint16_t sleepSymbols = senderPreambleLength - 2 * minSymbols;</span></a>
+<a name="612"><span class="lineNum">     612 </span>            : </a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineNoCov">          0 :   uint32_t symbolLength = ((uint32_t)(10 * 1000) &lt;&lt; dr-&gt;lora.spreadingFactor) / (10 * dr-&gt;lora.bandwidth);</span></a>
+<a name="614"><span class="lineNum">     614 </span><span class="lineNoCov">          0 :   *sleepPeriod = symbolLength * sleepSymbols;</span></a>
+<a name="615"><span class="lineNum">     615 </span>            :   RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;Auto sleep period: %lu&quot;, (long unsigned int)*sleepPeriod);</a>
+<a name="616"><span class="lineNum">     616 </span>            : </a>
+<a name="617"><span class="lineNum">     617 </span>            :   // when the unit detects a preamble, it starts a timer that will timeout if it doesn't receive a header in time.</a>
+<a name="618"><span class="lineNum">     618 </span>            :   // the duration is sleepPeriod + 2 * wakePeriod.</a>
+<a name="619"><span class="lineNum">     619 </span>            :   // The sleepPeriod doesn't take into account shutdown and startup time for the unit (~1ms)</a>
+<a name="620"><span class="lineNum">     620 </span>            :   // We need to ensure that the timeout is longer than senderPreambleLength.</a>
+<a name="621"><span class="lineNum">     621 </span>            :   // So we must satisfy: wakePeriod &gt; (preamblePeriod - (sleepPeriod - 1000)) / 2. (A)</a>
+<a name="622"><span class="lineNum">     622 </span>            :   // we also need to ensure the unit is awake to see at least minSymbols. (B)</a>
+<a name="623"><span class="lineNum">     623 </span><span class="lineNoCov">          0 :   *wakePeriod = RADIOLIB_MAX(</span></a>
+<a name="624"><span class="lineNum">     624 </span>            :     (symbolLength * (senderPreambleLength + 1) - (*sleepPeriod - 1000)) / 2, // (A)</a>
+<a name="625"><span class="lineNum">     625 </span>            :     symbolLength * (minSymbols + 1)); //(B)</a>
+<a name="626"><span class="lineNum">     626 </span>            :   RADIOLIB_DEBUG_BASIC_PRINTLN(&quot;Auto wake period: %lu&quot;, (long unsigned int)*wakePeriod);</a>
+<a name="627"><span class="lineNum">     627 </span>            : </a>
+<a name="628"><span class="lineNum">     628 </span><span class="lineNoCov">          0 :   return(RADIOLIB_ERR_NONE);</span></a>
+<a name="629"><span class="lineNum">     629 </span>            : }</a>
 </pre>
       </td>
     </tr>

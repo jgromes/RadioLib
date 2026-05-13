@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-05-13 17:07:40</td>
+            <td class="headerValue">2026-05-13 17:09:07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -887,50 +887,69 @@
 <a name="825"><span class="lineNum">     825 </span>            : </a>
 <a name="826"><span class="lineNum">     826 </span>            :     #endif</a>
 <a name="827"><span class="lineNum">     827 </span>            : </a>
-<a name="828"><span class="lineNum">     828 </span>            : #if !RADIOLIB_GODMODE</a>
-<a name="829"><span class="lineNum">     829 </span>            :   protected:</a>
-<a name="830"><span class="lineNum">     830 </span>            : #endif</a>
-<a name="831"><span class="lineNum">     831 </span>            :     uint32_t irqMap[10] = { 0 };</a>
-<a name="832"><span class="lineNum">     832 </span>            :     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;</a>
-<a name="833"><span class="lineNum">     833 </span>            : </a>
-<a name="834"><span class="lineNum">     834 </span>            : #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</a>
-<a name="835"><span class="lineNum">     835 </span>            :     void updateDirectBuffer(uint8_t bit);</a>
-<a name="836"><span class="lineNum">     836 </span>            : #endif</a>
-<a name="837"><span class="lineNum">     837 </span>            : </a>
-<a name="838"><span class="lineNum">     838 </span>            : #if !RADIOLIB_GODMODE</a>
-<a name="839"><span class="lineNum">     839 </span>            :   private:</a>
-<a name="840"><span class="lineNum">     840 </span>            : #endif</a>
-<a name="841"><span class="lineNum">     841 </span>            : </a>
-<a name="842"><span class="lineNum">     842 </span>            :     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</a>
-<a name="843"><span class="lineNum">     843 </span>            :     uint8_t bufferBitPos = 0;</a>
-<a name="844"><span class="lineNum">     844 </span>            :     uint8_t bufferWritePos = 0;</a>
-<a name="845"><span class="lineNum">     845 </span>            :     uint8_t bufferReadPos = 0;</a>
-<a name="846"><span class="lineNum">     846 </span>            :     uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE] = { 0 };</a>
-<a name="847"><span class="lineNum">     847 </span>            :     uint32_t syncBuffer = 0;</a>
-<a name="848"><span class="lineNum">     848 </span>            :     uint32_t directSyncWord = 0;</a>
-<a name="849"><span class="lineNum">     849 </span>            :     uint8_t directSyncWordLen = 0;</a>
-<a name="850"><span class="lineNum">     850 </span>            :     uint32_t directSyncWordMask = 0;</a>
-<a name="851"><span class="lineNum">     851 </span>            :     bool gotSync = false;</a>
-<a name="852"><span class="lineNum">     852 </span>            :     #endif</a>
-<a name="853"><span class="lineNum">     853 </span>            : </a>
-<a name="854"><span class="lineNum">     854 </span>            :     virtual Module* getMod() = 0;</a>
-<a name="855"><span class="lineNum">     855 </span>            : </a>
-<a name="856"><span class="lineNum">     856 </span>            :     // allow specific classes access the private getMod method</a>
-<a name="857"><span class="lineNum">     857 </span>            :     friend class AFSKClient;</a>
-<a name="858"><span class="lineNum">     858 </span>            :     friend class RTTYClient;</a>
-<a name="859"><span class="lineNum">     859 </span>            :     friend class MorseClient;</a>
-<a name="860"><span class="lineNum">     860 </span>            :     friend class HellClient;</a>
-<a name="861"><span class="lineNum">     861 </span>            :     friend class SSTVClient;</a>
-<a name="862"><span class="lineNum">     862 </span>            :     friend class AX25Client;</a>
-<a name="863"><span class="lineNum">     863 </span>            :     friend class FSK4Client;</a>
-<a name="864"><span class="lineNum">     864 </span>            :     friend class PagerClient;</a>
-<a name="865"><span class="lineNum">     865 </span>            :     friend class BellClient;</a>
-<a name="866"><span class="lineNum">     866 </span>            :     friend class FT8Client;</a>
-<a name="867"><span class="lineNum">     867 </span>            :     friend class LoRaWANNode;</a>
-<a name="868"><span class="lineNum">     868 </span>            :     friend class M17Client;</a>
-<a name="869"><span class="lineNum">     869 </span>            : };</a>
-<a name="870"><span class="lineNum">     870 </span>            : </a>
-<a name="871"><span class="lineNum">     871 </span>            : #endif</a>
+<a name="828"><span class="lineNum">     828 </span>            :     /*!</a>
+<a name="829"><span class="lineNum">     829 </span>            :       \brief Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages.</a>
+<a name="830"><span class="lineNum">     830 </span>            :       Useful only for LoRa modems. </a>
+<a name="831"><span class="lineNum">     831 </span>            :       \param txPreLen Expected preamble length of the messages to receive.</a>
+<a name="832"><span class="lineNum">     832 </span>            :       If set to zero, the receiver preamble length will be used.</a>
+<a name="833"><span class="lineNum">     833 </span>            :       This value cannot exceed the configured preamble length. If the sender preamble length is variable, set the</a>
+<a name="834"><span class="lineNum">     834 </span>            :       maximum expected length by calling setPreambleLength(maximumExpectedLength) prior to this method, and use the</a>
+<a name="835"><span class="lineNum">     835 </span>            :       minimum expected length here.</a>
+<a name="836"><span class="lineNum">     836 </span>            :       \param rxPreLen Currently configured preamble length of the receiver (this radio).</a>
+<a name="837"><span class="lineNum">     837 </span>            :       \param minSymbols Ensure that the unit will catch at least this many symbols of any preamble of the specified senderPreambleLength.</a>
+<a name="838"><span class="lineNum">     838 </span>            :       To reliably latch a preamble, the receiver requires 8 symbols for SF7-12 and 12 symbols for SF5-6.</a>
+<a name="839"><span class="lineNum">     839 </span>            :       If set to zero, the minimum required symbols will be used.</a>
+<a name="840"><span class="lineNum">     840 </span>            :       \param dr Pointer to structure holding LoRa data rate information (only spreading factor and bandwidth are used).</a>
+<a name="841"><span class="lineNum">     841 </span>            :       \param wakePeriod Pointer to variable where the calculated wake period in microseconds will be stored.</a>
+<a name="842"><span class="lineNum">     842 </span>            :       \param sleePeriod Pointer to variable where the calculated sleep period in microseconds will be stored.</a>
+<a name="843"><span class="lineNum">     843 </span>            :       \returns \ref status_codes</a>
+<a name="844"><span class="lineNum">     844 </span>            :     */</a>
+<a name="845"><span class="lineNum">     845 </span>            :     int16_t calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, DataRate_t* dr, uint32_t* wakePeriod, uint32_t* sleepPeriod);</a>
+<a name="846"><span class="lineNum">     846 </span>            : </a>
+<a name="847"><span class="lineNum">     847 </span>            : #if !RADIOLIB_GODMODE</a>
+<a name="848"><span class="lineNum">     848 </span>            :   protected:</a>
+<a name="849"><span class="lineNum">     849 </span>            : #endif</a>
+<a name="850"><span class="lineNum">     850 </span>            :     uint32_t irqMap[10] = { 0 };</a>
+<a name="851"><span class="lineNum">     851 </span>            :     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;</a>
+<a name="852"><span class="lineNum">     852 </span>            : </a>
+<a name="853"><span class="lineNum">     853 </span>            : #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</a>
+<a name="854"><span class="lineNum">     854 </span>            :     void updateDirectBuffer(uint8_t bit);</a>
+<a name="855"><span class="lineNum">     855 </span>            : #endif</a>
+<a name="856"><span class="lineNum">     856 </span>            : </a>
+<a name="857"><span class="lineNum">     857 </span>            : #if !RADIOLIB_GODMODE</a>
+<a name="858"><span class="lineNum">     858 </span>            :   private:</a>
+<a name="859"><span class="lineNum">     859 </span>            : #endif</a>
+<a name="860"><span class="lineNum">     860 </span>            : </a>
+<a name="861"><span class="lineNum">     861 </span>            :     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</a>
+<a name="862"><span class="lineNum">     862 </span>            :     uint8_t bufferBitPos = 0;</a>
+<a name="863"><span class="lineNum">     863 </span>            :     uint8_t bufferWritePos = 0;</a>
+<a name="864"><span class="lineNum">     864 </span>            :     uint8_t bufferReadPos = 0;</a>
+<a name="865"><span class="lineNum">     865 </span>            :     uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE] = { 0 };</a>
+<a name="866"><span class="lineNum">     866 </span>            :     uint32_t syncBuffer = 0;</a>
+<a name="867"><span class="lineNum">     867 </span>            :     uint32_t directSyncWord = 0;</a>
+<a name="868"><span class="lineNum">     868 </span>            :     uint8_t directSyncWordLen = 0;</a>
+<a name="869"><span class="lineNum">     869 </span>            :     uint32_t directSyncWordMask = 0;</a>
+<a name="870"><span class="lineNum">     870 </span>            :     bool gotSync = false;</a>
+<a name="871"><span class="lineNum">     871 </span>            :     #endif</a>
+<a name="872"><span class="lineNum">     872 </span>            : </a>
+<a name="873"><span class="lineNum">     873 </span>            :     virtual Module* getMod() = 0;</a>
+<a name="874"><span class="lineNum">     874 </span>            : </a>
+<a name="875"><span class="lineNum">     875 </span>            :     // allow specific classes access the private getMod method</a>
+<a name="876"><span class="lineNum">     876 </span>            :     friend class AFSKClient;</a>
+<a name="877"><span class="lineNum">     877 </span>            :     friend class RTTYClient;</a>
+<a name="878"><span class="lineNum">     878 </span>            :     friend class MorseClient;</a>
+<a name="879"><span class="lineNum">     879 </span>            :     friend class HellClient;</a>
+<a name="880"><span class="lineNum">     880 </span>            :     friend class SSTVClient;</a>
+<a name="881"><span class="lineNum">     881 </span>            :     friend class AX25Client;</a>
+<a name="882"><span class="lineNum">     882 </span>            :     friend class FSK4Client;</a>
+<a name="883"><span class="lineNum">     883 </span>            :     friend class PagerClient;</a>
+<a name="884"><span class="lineNum">     884 </span>            :     friend class BellClient;</a>
+<a name="885"><span class="lineNum">     885 </span>            :     friend class FT8Client;</a>
+<a name="886"><span class="lineNum">     886 </span>            :     friend class LoRaWANNode;</a>
+<a name="887"><span class="lineNum">     887 </span>            :     friend class M17Client;</a>
+<a name="888"><span class="lineNum">     888 </span>            : };</a>
+<a name="889"><span class="lineNum">     889 </span>            : </a>
+<a name="890"><span class="lineNum">     890 </span>            : #endif</a>
 </pre>
       </td>
     </tr>
