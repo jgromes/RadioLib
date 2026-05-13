@@ -25,15 +25,16 @@ static void PagerClientReadBit(void) {
 }
 #endif
 
-// create a static instance of the BCH encoder
-// this way it will only get built when Pager is built
-static RadioLibBCH RadioLibBCHInstance;
-
 PagerClient::PagerClient(PhysicalLayer* phy) {
   phyLayer = phy;
   #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   readBitInstance = phyLayer;
   #endif
+
+  // create a static instance of the BCH encoder
+  // this way it will only get built when Pager is built
+  static RadioLibBCH RadioLibBCHInstance;
+  this->bchCoder = &RadioLibBCHInstance;
 }
 
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
@@ -54,7 +55,7 @@ int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shi
   inv = invert;
 
   // initialize BCH encoder
-  RadioLibBCHInstance.begin(RADIOLIB_PAGER_BCH_N, RADIOLIB_PAGER_BCH_K, RADIOLIB_PAGER_BCH_PRIMITIVE_POLY);
+  this->bchCoder->begin(RADIOLIB_PAGER_BCH_N, RADIOLIB_PAGER_BCH_K, RADIOLIB_PAGER_BCH_PRIMITIVE_POLY);
 
   // configure for direct mode
   return(phyLayer->startDirect());
@@ -157,7 +158,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
   }
 
   // write address code word
-  msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos] = RadioLibBCHInstance.encode(frameAddr);
+  msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos] = this->bchCoder->encode(frameAddr);
 
   // write the data as 20-bit code blocks
   if(len > 0) {
@@ -224,7 +225,7 @@ int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, ui
       remBits = RADIOLIB_PAGER_FUNC_BITS_POS - symbolPos - symbolLength;
 
       // do the FEC
-      msg[blockPos] = RadioLibBCHInstance.encode(msg[blockPos]);
+      msg[blockPos] = this->bchCoder->encode(msg[blockPos]);
     }
   }
 

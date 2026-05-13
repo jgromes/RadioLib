@@ -176,6 +176,7 @@ class PagerClient {
   private:
 #endif
     PhysicalLayer* phyLayer;
+    RadioLibBCH* bchCoder;
 
     float baseFreq = 0;
     float dataRate = 0;
