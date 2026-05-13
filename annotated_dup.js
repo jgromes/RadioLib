@@ -71,6 +71,7 @@ var annotated_dup =
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", "class_radio_lib_c_r_c" ],
     [ "RadioLibHal", "class_radio_lib_hal.html", "class_radio_lib_hal" ],
     [ "RadioLibPrint", "class_radio_lib_print.html", null ],
+    [ "RadioLibSoftwareAES128", "class_radio_lib_software_a_e_s128.html", "class_radio_lib_software_a_e_s128" ],
     [ "RadioModeConfig_t", "union_radio_mode_config__t.html", "union_radio_mode_config__t" ],
     [ "ReceiveConfig_t", "struct_receive_config__t.html", "struct_receive_config__t" ],
     [ "RF69", "class_r_f69.html", "class_r_f69" ],

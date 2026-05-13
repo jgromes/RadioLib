@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('class_radio_lib_a_e_s128.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('class_radio_lib_software_a_e_s128.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -90,21 +90,22 @@ $(document).ready(function(){initNavTree('class_radio_lib_a_e_s128.html',''); in
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">RadioLibAES128 Member List</div></div>
+  <div class="headertitle"><div class="title">RadioLibSoftwareAES128 Member List</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="class_radio_lib_software_a_e_s128.html">RadioLibSoftwareAES128</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a74eaafdd0b9cd6dcc7df050c09c6293e">decryptECB</a>(const uint8_t *in, size_t len, uint8_t *out)=0</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a8d73c16cd8d4c950dcacd273b7ff73ba">encryptECB</a>(const uint8_t *in, size_t len, uint8_t *out)=0</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html#aece504d653cc754c9c3676e5ace4bd0f">decryptECB</a>(const uint8_t *in, size_t len, uint8_t *out) override</td><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html">RadioLibSoftwareAES128</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html#ac1cbf0286cfbb515f46872205975ed0a">encryptECB</a>(const uint8_t *in, size_t len, uint8_t *out) override</td><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html">RadioLibSoftwareAES128</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a8a9c14e2d112af23ff2cb0f2c42fec2e">finishCMAC</a>(RadioLibCmacState *st, uint8_t *out)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a1330c5668c22e5f0b65681cf875f5fe3">generateCMAC</a>(const uint8_t *in, size_t len, uint8_t *cmac)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#ad07fbba6e9c21cd2c604626e68bffa0e">init</a>(uint8_t *key)=0</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html#a4ba9609c98952bde2f2be37d2ec6e71d">init</a>(uint8_t *key) override</td><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html">RadioLibSoftwareAES128</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a690472340695512f2471d06829d0b4df">initCMAC</a>(RadioLibCmacState *st)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a11f816221d1c06432ff80f2678ef46fe">RadioLibAES128</a>()</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#aeec27beaeabfd82807db2f09e7c8dd4e">updateCMAC</a>(RadioLibCmacState *st, const uint8_t *data, size_t len)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455">verifyCMAC</a>(const uint8_t *in, size_t len, const uint8_t *cmac)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html#aaa3daee3c62f6da2ebca179120546608">RadioLibSoftwareAES128</a>()</td><td class="entry"><a class="el" href="class_radio_lib_software_a_e_s128.html">RadioLibSoftwareAES128</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#aeec27beaeabfd82807db2f09e7c8dd4e">updateCMAC</a>(RadioLibCmacState *st, const uint8_t *data, size_t len)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455">verifyCMAC</a>(const uint8_t *in, size_t len, const uint8_t *cmac)</td><td class="entry"><a class="el" href="class_radio_lib_a_e_s128.html">RadioLibAES128</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

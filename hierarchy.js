@@ -109,7 +109,9 @@ var hierarchy =
       ] ],
       [ "nRF24", "classn_r_f24.html", null ]
     ] ],
-    [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", null ],
+    [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", [
+      [ "RadioLibSoftwareAES128", "class_radio_lib_software_a_e_s128.html", null ]
+    ] ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", null ],
     [ "RadioLibCmacState", "struct_radio_lib_cmac_state.html", null ],
     [ "RadioLibConvCode", "class_radio_lib_conv_code.html", null ],

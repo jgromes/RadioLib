@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('class_radio_lib_a_e_s128.html',''); in
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_radio_lib_a_e_s128-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">RadioLibAES128 Class Reference</div></div>
+  <div class="headertitle"><div class="title">RadioLibAES128 Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -101,6 +101,15 @@ $(document).ready(function(){initNavTree('class_radio_lib_a_e_s128.html',''); in
  <a href="class_radio_lib_a_e_s128.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_cryptography_8h_source.html">Cryptography.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for RadioLibAES128:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_radio_lib_a_e_s128.png" usemap="#RadioLibAES128_map" alt=""/>
+  <map id="RadioLibAES128_map" name="RadioLibAES128_map">
+<area href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt..." alt="RadioLibSoftwareAES128" shape="rect" coords="0,56,157,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -108,15 +117,15 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>RadioLibAES128</b> ()</td></tr>
 <tr class="memdesc:a11f816221d1c06432ff80f2678ef46fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a11f816221d1c06432ff80f2678ef46fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f688dbdf2b0506c077ca4501e40e22e" id="r_a2f688dbdf2b0506c077ca4501e40e22e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a2f688dbdf2b0506c077ca4501e40e22e">init</a> (uint8_t *key)</td></tr>
-<tr class="memdesc:a2f688dbdf2b0506c077ca4501e40e22e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the AES.  <br /></td></tr>
-<tr class="separator:a2f688dbdf2b0506c077ca4501e40e22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d05efec834b1ae7c5e46f9ef80f1464" id="r_a6d05efec834b1ae7c5e46f9ef80f1464"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a6d05efec834b1ae7c5e46f9ef80f1464">encryptECB</a> (const uint8_t *in, size_t len, uint8_t *out)</td></tr>
-<tr class="memdesc:a6d05efec834b1ae7c5e46f9ef80f1464"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform ECB-type AES encryption.  <br /></td></tr>
-<tr class="separator:a6d05efec834b1ae7c5e46f9ef80f1464"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace646a86f293a791008212ac8bcbc01c" id="r_ace646a86f293a791008212ac8bcbc01c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#ace646a86f293a791008212ac8bcbc01c">decryptECB</a> (const uint8_t *in, size_t len, uint8_t *out)</td></tr>
-<tr class="memdesc:ace646a86f293a791008212ac8bcbc01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform ECB-type AES decryption.  <br /></td></tr>
-<tr class="separator:ace646a86f293a791008212ac8bcbc01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad07fbba6e9c21cd2c604626e68bffa0e" id="r_ad07fbba6e9c21cd2c604626e68bffa0e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#ad07fbba6e9c21cd2c604626e68bffa0e">init</a> (uint8_t *key)=0</td></tr>
+<tr class="memdesc:ad07fbba6e9c21cd2c604626e68bffa0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the AES. If the user has a hardware with AES acceleration, this method is the interface to implement. By default a software-only implementation is provided in <a class="el" href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt...">RadioLibSoftwareAES128</a>.  <br /></td></tr>
+<tr class="separator:ad07fbba6e9c21cd2c604626e68bffa0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d73c16cd8d4c950dcacd273b7ff73ba" id="r_a8d73c16cd8d4c950dcacd273b7ff73ba"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a8d73c16cd8d4c950dcacd273b7ff73ba">encryptECB</a> (const uint8_t *in, size_t len, uint8_t *out)=0</td></tr>
+<tr class="memdesc:a8d73c16cd8d4c950dcacd273b7ff73ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform ECB-type AES encryption. If the user has a hardware with AES acceleration, this method is the interface to implement. By default a software-only implementation is provided in <a class="el" href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt...">RadioLibSoftwareAES128</a>.  <br /></td></tr>
+<tr class="separator:a8d73c16cd8d4c950dcacd273b7ff73ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74eaafdd0b9cd6dcc7df050c09c6293e" id="r_a74eaafdd0b9cd6dcc7df050c09c6293e"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a74eaafdd0b9cd6dcc7df050c09c6293e">decryptECB</a> (const uint8_t *in, size_t len, uint8_t *out)=0</td></tr>
+<tr class="memdesc:a74eaafdd0b9cd6dcc7df050c09c6293e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform ECB-type AES decryption. If the user has a hardware with AES acceleration, this method is the interface to implement. By default a software-only implementation is provided in <a class="el" href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt...">RadioLibSoftwareAES128</a>.  <br /></td></tr>
+<tr class="separator:a74eaafdd0b9cd6dcc7df050c09c6293e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1330c5668c22e5f0b65681cf875f5fe3" id="r_a1330c5668c22e5f0b65681cf875f5fe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a1330c5668c22e5f0b65681cf875f5fe3">generateCMAC</a> (const uint8_t *in, size_t len, uint8_t *cmac)</td></tr>
 <tr class="memdesc:a1330c5668c22e5f0b65681cf875f5fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate message authentication code according to RFC4493.  <br /></td></tr>
 <tr class="separator:a1330c5668c22e5f0b65681cf875f5fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,14 +146,17 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Class to perform AES encryption, decryption and CMAC. </p>
 <p>Most of the implementation here is adapted from <a href="https://github.com/kokke/tiny-AES-c">https://github.com/kokke/tiny-AES-c</a> Additional code and CMAC calculation is from <a href="https://github.com/megrxu/AES-CMAC">https://github.com/megrxu/AES-CMAC</a> </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ace646a86f293a791008212ac8bcbc01c" name="ace646a86f293a791008212ac8bcbc01c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace646a86f293a791008212ac8bcbc01c">&#9670;&#160;</a></span>decryptECB()</h2>
+<a id="a74eaafdd0b9cd6dcc7df050c09c6293e" name="a74eaafdd0b9cd6dcc7df050c09c6293e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74eaafdd0b9cd6dcc7df050c09c6293e">&#9670;&#160;</a></span>decryptECB()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t RadioLibAES128::decryptECB </td>
+          <td class="memname">virtual size_t RadioLibAES128::decryptECB </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
@@ -167,9 +179,14 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Perform ECB-type AES decryption. </p>
+<p>Perform ECB-type AES decryption. If the user has a hardware with AES acceleration, this method is the interface to implement. By default a software-only implementation is provided in <a class="el" href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt...">RadioLibSoftwareAES128</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">in</td><td>Input ciphertext data. </td></tr>
@@ -180,16 +197,21 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of bytes saved into the output buffer. </dd></dl>
 
+<p>Implemented in <a class="el" href="class_radio_lib_software_a_e_s128.html#aece504d653cc754c9c3676e5ace4bd0f">RadioLibSoftwareAES128</a>.</p>
+
 </div>
 </div>
-<a id="a6d05efec834b1ae7c5e46f9ef80f1464" name="a6d05efec834b1ae7c5e46f9ef80f1464"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d05efec834b1ae7c5e46f9ef80f1464">&#9670;&#160;</a></span>encryptECB()</h2>
+<a id="a8d73c16cd8d4c950dcacd273b7ff73ba" name="a8d73c16cd8d4c950dcacd273b7ff73ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d73c16cd8d4c950dcacd273b7ff73ba">&#9670;&#160;</a></span>encryptECB()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t RadioLibAES128::encryptECB </td>
+          <td class="memname">virtual size_t RadioLibAES128::encryptECB </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
@@ -212,9 +234,14 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Perform ECB-type AES encryption. </p>
+<p>Perform ECB-type AES encryption. If the user has a hardware with AES acceleration, this method is the interface to implement. By default a software-only implementation is provided in <a class="el" href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt...">RadioLibSoftwareAES128</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">in</td><td>Input plaintext data (unpadded). </td></tr>
@@ -224,6 +251,8 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of bytes saved into the output buffer. </dd></dl>
+
+<p>Implemented in <a class="el" href="class_radio_lib_software_a_e_s128.html#ac1cbf0286cfbb515f46872205975ed0a">RadioLibSoftwareAES128</a>.</p>
 
 </div>
 </div>
@@ -308,29 +337,39 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f688dbdf2b0506c077ca4501e40e22e" name="a2f688dbdf2b0506c077ca4501e40e22e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f688dbdf2b0506c077ca4501e40e22e">&#9670;&#160;</a></span>init()</h2>
+<a id="ad07fbba6e9c21cd2c604626e68bffa0e" name="ad07fbba6e9c21cd2c604626e68bffa0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad07fbba6e9c21cd2c604626e68bffa0e">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void RadioLibAES128::init </td>
+          <td class="memname">virtual void RadioLibAES128::init </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Initialize the AES. </p>
+<p>Initialize the AES. If the user has a hardware with AES acceleration, this method is the interface to implement. By default a software-only implementation is provided in <a class="el" href="class_radio_lib_software_a_e_s128.html" title="Class to perform AES encryption and decryption in software only. Contains implementation of pure virt...">RadioLibSoftwareAES128</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>AES key to use. </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Implemented in <a class="el" href="class_radio_lib_software_a_e_s128.html#a4ba9609c98952bde2f2be37d2ec6e71d">RadioLibSoftwareAES128</a>.</p>
 
 </div>
 </div>

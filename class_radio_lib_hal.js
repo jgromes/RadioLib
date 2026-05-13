@@ -24,6 +24,7 @@ var class_radio_lib_hal =
     [ "term", "class_radio_lib_hal.html#aa4f2bd49aea5a19aa9f85c720b4a883e", null ],
     [ "tone", "class_radio_lib_hal.html#a62c9032e834ba420d81dc3e69df64e17", null ],
     [ "yield", "class_radio_lib_hal.html#a1bd9d614f66b374ec820ce31b167fdb2", null ],
+    [ "aes128", "class_radio_lib_hal.html#a382629cb2d29d45a9f4de89dc95d28f8", null ],
     [ "GpioInterruptFalling", "class_radio_lib_hal.html#a01f73b66a632fc9dba41a23f592e0936", null ],
     [ "GpioInterruptRising", "class_radio_lib_hal.html#a7ff9f3c608d68575dfc8962ba3669851", null ],
     [ "GpioLevelHigh", "class_radio_lib_hal.html#a409c719ef8a11e8765c90e98ba42316d", null ],
