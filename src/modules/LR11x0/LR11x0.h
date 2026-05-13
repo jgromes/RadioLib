@@ -209,6 +209,40 @@ class LR11x0: public LRxxxx {
     int16_t startReceive() override;
 
     /*!
+      \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
+      Note that this function assumes the unit will take 500us + TCXO_delay to change state.
+      See datasheet section 13.1.7, version 1.2.
+
+      \param rxPeriod The duration the receiver will be in Rx mode, in microseconds.
+      \param sleepPeriod The duration the receiver will not be in Rx mode, in microseconds.
+
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
+      \returns \ref status_codes
+    */
+    int16_t startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
+
+    /*!
+      \brief Calls \ref startReceiveDutyCycle with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.
+      \param senderPreambleLength Expected preamble length of the messages to receive.
+      If set to zero, the currently configured preamble length will be used. Defaults to zero.
+      This value cannot exceed the configured preamble length. If the sender preamble length is variable, set the
+      maximum expected length by calling setPreambleLength(maximumExpectedLength) prior to this method, and use the
+      minimum expected length here.
+
+      \param minSymbols Ensure that the unit will catch at least this many symbols of any preamble of the specified senderPreambleLength.
+      To reliably latch a preamble, the receiver requires 8 symbols for SF7-12 and 12 symbols for SF5-6 (see datasheet section 6.1.1.1, version 1.2).
+      If set to zero, the minimum required symbols will be used. Defaults to 0.
+
+      If senderPreambleLength is less than 2*minSymbols + 1, this method is equivalent to startReceive().
+
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error.
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
+      \returns \ref status_codes
+    */
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 0, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
+
+    /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
       getPacketLength method must be called BEFORE calling readData!
       \param data Pointer to array to save the received binary data.

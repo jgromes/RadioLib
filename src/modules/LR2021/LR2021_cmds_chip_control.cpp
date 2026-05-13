@@ -104,11 +104,11 @@ int16_t LR2021::setRxTxFallbackMode(uint8_t mode) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_TX_FALLBACK_MODE, true, &mode, sizeof(mode)));
 }
 
-int16_t LR2021::setRxDutyCycle(uint32_t rxMaxTime, uint32_t cycleTime, uint8_t cfg) {
+int16_t LR2021::setRxDutyCycle(uint32_t rxMaxTime, uint32_t cycleTime, uint8_t mode) {
   uint8_t buff[] = {
     (uint8_t)((rxMaxTime >> 16) & 0xFF), (uint8_t)((rxMaxTime >> 8) & 0xFF), (uint8_t)(rxMaxTime & 0xFF),
     (uint8_t)((cycleTime >> 16) & 0xFF), (uint8_t)((cycleTime >> 8) & 0xFF), (uint8_t)(cycleTime & 0xFF),
-    cfg
+    (uint8_t)(mode << 4),
   };
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_DUTY_CYCLE, true, buff, sizeof(buff)));
 }
