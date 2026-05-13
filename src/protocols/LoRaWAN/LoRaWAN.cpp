@@ -17,6 +17,13 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   for(int i = 0; i < RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS; i++) {
     this->mcGroups[i] = RADIOLIB_MULTICAST_GROUP_NONE;
   }
+
+  // if the user does not provide their own AES-128, use the software one
+  #if !RADIOLIB_CUSTOM_AES128
+  static RadioLibSoftwareAES128 RadioLibAES128Instance;
+  Module *mod = this->phyLayer->getMod();
+  mod->hal->aes128 = &RadioLibAES128Instance;
+  #endif
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
