@@ -123,7 +123,6 @@ class SX126x: public PhysicalLayer {
       bool useRegulatorLDO = false;
     };
 
-        
     /*!
       \brief Configuration for beginBPSK() method.
     */

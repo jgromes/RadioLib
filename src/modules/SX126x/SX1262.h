@@ -57,8 +57,6 @@ class SX1262: public SX126x {
     */
     virtual int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
 
-    
-
     /*!
       \brief Initialization method for FSK modem.
       \param config Initialization configuration.
