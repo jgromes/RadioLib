@@ -42,6 +42,7 @@ class SX126x: public PhysicalLayer {
     using PhysicalLayer::startTransmit;
     using PhysicalLayer::startReceive;
     using PhysicalLayer::readData;
+    using PhysicalLayer::setOutputPower;
 
     /*!
       \struct paTableEntry_t
