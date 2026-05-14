@@ -68,6 +68,17 @@ class LR2021: public LRxxxx {
         MODE_TX_HF,
     };
 
+    /*!
+      \struct paTableEntry_t
+      \brief This structure is used as entry in the PA lookup table, 
+      to optimize PA configuration for minimum power consumption.
+    */
+    struct __attribute__((packed)) paTableEntry_t {
+      uint8_t paDutyCycle: 4;
+      uint8_t paSlices: 4;
+      int8_t paVal;
+    };
+
     // basic methods
 
     /*!

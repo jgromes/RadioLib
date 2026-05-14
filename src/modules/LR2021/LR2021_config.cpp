@@ -11,6 +11,76 @@
 // maximum number of allowed frontend calibration attempts
 #define RADIOLIB_LR2021_MAX_CAL_ATTEMPTS    (10)
 
+static const LR2021::paTableEntry_t paOptTableLf[32] = {
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 8 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 1 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 3 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 5 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 13 },
+  { .paDutyCycle = 2, .paSlices = 1, .paVal = 13 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 11 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 13 },
+  { .paDutyCycle = 3, .paSlices = 1, .paVal = 12 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 18 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 20 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 23 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 27 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 33 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 26 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 31 },
+  { .paDutyCycle = 1, .paSlices = 3, .paVal = 27 },
+  { .paDutyCycle = 1, .paSlices = 1, .paVal = 37 },
+  { .paDutyCycle = 1, .paSlices = 2, .paVal = 40 },
+  { .paDutyCycle = 2, .paSlices = 1, .paVal = 38 },
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 39 },
+  { .paDutyCycle = 2, .paSlices = 4, .paVal = 40 },
+  { .paDutyCycle = 2, .paSlices = 7, .paVal = 41 },
+  { .paDutyCycle = 3, .paSlices = 2, .paVal = 39 },
+  { .paDutyCycle = 3, .paSlices = 3, .paVal = 39 },
+  { .paDutyCycle = 3, .paSlices = 6, .paVal = 38 },
+  { .paDutyCycle = 4, .paSlices = 3, .paVal = 37 },
+  { .paDutyCycle = 4, .paSlices = 5, .paVal = 37 },
+  { .paDutyCycle = 4, .paSlices = 7, .paVal = 38 },
+  { .paDutyCycle = 5, .paSlices = 3, .paVal = 37 },
+  { .paDutyCycle = 5, .paSlices = 6, .paVal = 37 },
+  { .paDutyCycle = 6, .paSlices = 7, .paVal = 35 },
+};
+
+static const LR2021::paTableEntry_t paOptTableHf[32] = {
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -38 }, // -19
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -36 }, // -18
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -34 }, // -17
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -32 }, // -16
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -30 }, // -15
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -28 }, // -14
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -26 }, // -13
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -24 }, // -12
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -22 }, // -11
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -20 }, // -10
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -18 }, // -9
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -16 }, // -8
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -14 }, // -7
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -12 }, // -6
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -10 }, // -5
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -8 },  // -4
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -6 },  // -3
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -4 },  // -2
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -2 },  // -1
+  { .paDutyCycle = 14, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 4 },  // 0
+  { .paDutyCycle = 14, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 6 },  // 1
+  { .paDutyCycle = 12, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 7 },  // 2
+  { .paDutyCycle = 9, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 8 },  // 3
+  { .paDutyCycle = 9, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 10 },  // 4
+  { .paDutyCycle = 15, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 15 },  // 5
+  { .paDutyCycle = 14, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 16 },  // 6
+  { .paDutyCycle = 14, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 18 },  // 7
+  { .paDutyCycle = 15, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 21 },  // 8
+  { .paDutyCycle = 14, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 22 },  // 9
+  { .paDutyCycle = 14, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 24 },  // 10
+  { .paDutyCycle = 10, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 24 },  // 11
+  { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = 24 },  // 12
+};
+
 int16_t LR2021::setFrequency(float freq) {
   return(this->setFrequency(freq, false));
 }
@@ -81,17 +151,17 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   RADIOLIB_ASSERT(state);
   
   //! \TODO: [LR2021] how and when to configure OCP?
-  //! \TODO: [LR2021] Determine the optimal PA configuration
   // update PA config
+  const LR2021::paTableEntry_t* paCfg = this->highFreq ? &paOptTableHf[power + 19] : &paOptTableLf[power + 9];
   state = setPaConfig(this->highFreq, 
     RADIOLIB_LR2021_PA_LF_MODE_FSM, 
-    RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED, 
-    RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, 
-    RADIOLIB_LR2021_PA_HF_DUTY_CYCLE_UNUSED);
+    this->highFreq ? RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED : paCfg->paDutyCycle, 
+    paCfg->paSlices, 
+    this->highFreq ? (paCfg->paDutyCycle + RADIOLIB_LR2021_PA_HF_DUTY_CYCLE_UNUSED) : RADIOLIB_LR2021_PA_HF_DUTY_CYCLE_UNUSED);
   RADIOLIB_ASSERT(state);
 
   // set output power
-  state = setTxParams(power, roundRampTime(rampTimeUs));
+  state = setTxParams(paCfg->paVal, roundRampTime(rampTimeUs));
   return(state);
 }
 

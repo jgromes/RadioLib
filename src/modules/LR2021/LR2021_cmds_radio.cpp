@@ -103,7 +103,7 @@ int16_t LR2021::setPaConfig(uint8_t pa, uint8_t paLfMode, uint8_t paLfDutyCycle,
 }
 
 int16_t LR2021::setTxParams(int8_t txPower, uint8_t rampTime) {
-  uint8_t buff[] = { (uint8_t)(txPower * 2), rampTime };
+  uint8_t buff[] = { (uint8_t)txPower, rampTime };
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TX_PARAMS, true, buff, sizeof(buff)));
 }
 
