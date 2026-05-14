@@ -69,6 +69,7 @@ var class_l_r11x0 =
     [ "setIrqFlags", "class_l_r11x0.html#a62c715ab18ea8a2e08a2791d3e764ee9", null ],
     [ "setLrFhssConfig", "class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35", null ],
     [ "setNodeAddress", "class_l_r11x0.html#a605f5c74ce523abad256866abe133d2e", null ],
+    [ "setOutputPower", "class_l_r11x0.html#ad2286dc78dbf8e3084f38e9159b99ae5", null ],
     [ "setOutputPower", "class_l_r11x0.html#a21649535f3ca50f7ebf9f37db961232c", null ],
     [ "setPreambleLength", "class_l_r11x0.html#aa5d7ae65666f8f9abcb7e9b169884a4a", null ],
     [ "setRegulatorDCDC", "class_l_r11x0.html#a1ad485f14a333f06b642f2d60aacf76c", null ],

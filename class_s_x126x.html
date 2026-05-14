@@ -441,6 +441,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>spectralScanAbort</b>
 <tr class="memitem:a3563453988a83d22dd07d4691543a300" id="r_a3563453988a83d22dd07d4691543a300"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a3563453988a83d22dd07d4691543a300">readData</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <br /></td></tr>
 <tr class="separator:a3563453988a83d22dd07d4691543a300"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2286dc78dbf8e3084f38e9159b99ae5" id="r_ad2286dc78dbf8e3084f38e9159b99ae5"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ad2286dc78dbf8e3084f38e9159b99ae5">setOutputPower</a> (int8_t power)</td></tr>
+<tr class="memdesc:ad2286dc78dbf8e3084f38e9159b99ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output power. Must be implemented in module class if the module supports it.  <br /></td></tr>
+<tr class="separator:ad2286dc78dbf8e3084f38e9159b99ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:afc972a84153977d6ccd9e116b6181ad4 inherit pub_methods_class_physical_layer" id="r_afc972a84153977d6ccd9e116b6181ad4"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>PhysicalLayer</b> ()</td></tr>
@@ -459,9 +462,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer" id="r_a8a194b0fbb66b1a953288bf3b9478d6e"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8a194b0fbb66b1a953288bf3b9478d6e">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <br /></td></tr>
 <tr class="separator:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer" id="r_ad2286dc78dbf8e3084f38e9159b99ae5"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">setOutputPower</a> (int8_t power)</td></tr>
-<tr class="memdesc:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output power. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="separator:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1784cb227d04b3f2846625fda6797536 inherit pub_methods_class_physical_layer" id="r_a1784cb227d04b3f2846625fda6797536"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">checkOutputPower</a> (int8_t power, int8_t *clipped)</td></tr>
 <tr class="memdesc:a1784cb227d04b3f2846625fda6797536 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="separator:a1784cb227d04b3f2846625fda6797536 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2811,8 +2811,45 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="ad2286dc78dbf8e3084f38e9159b99ae5" name="ad2286dc78dbf8e3084f38e9159b99ae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2286dc78dbf8e3084f38e9159b99ae5">&#9670;&#160;</a></span>setOutputPower() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::setOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set output power. Must be implemented in module class if the module supports it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power in dBm. The allowed range depends on the module used. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a3836e4459046aef28fb6337fb58be3a9" name="a3836e4459046aef28fb6337fb58be3a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3836e4459046aef28fb6337fb58be3a9">&#9670;&#160;</a></span>setOutputPower()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3836e4459046aef28fb6337fb58be3a9">&#9670;&#160;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
