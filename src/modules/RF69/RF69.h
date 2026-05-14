@@ -483,6 +483,7 @@ class RF69: public PhysicalLayer {
     using PhysicalLayer::receive;
     using PhysicalLayer::startTransmit;
     using PhysicalLayer::readData;
+    using PhysicalLayer::setSyncWord;
 
     /*!
       \brief Default constructor.
@@ -784,12 +785,22 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Sets output power. Allowed values range from -18 to 13 dBm for
       low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
+      Doest not force high power mode; for modules using high power port,
+      use RF69::setOutputPower(pwr, true)
       \param pwr Output power to be set in dBm.
-      \param highPower Set to true when using modules high power port (RF69H/HC/HCW).
-      Defaults to false (models without high power port - RF69C/CW).
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr, bool highPower = false);
+    int16_t setOutputPower(int8_t pwr) override;
+
+    /*!
+      \brief Sets output power. Allowed values range from -18 to 13 dBm for
+      low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
+      \param pwr Output power to be set in dBm.
+      \param highPower Set to true when using modules high power port (RF69H/HC/HCW),
+      or to false for models without high power port - RF69C/CW.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t pwr, bool highPower);
 
     /*!
       \brief Sets sync word. Up to 8 bytes can be set as sync word.
