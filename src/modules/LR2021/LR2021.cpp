@@ -831,11 +831,11 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
   switch(type) {
     // basic modems are supported by the LRxxxx base class
     case(RADIOLIB_LR2021_PACKET_TYPE_LORA):
-      return(LRxxxx::getTimeOnAir(len, ModemType_t::RADIOLIB_MODEM_LORA));
+      return(LRxxxx::getToA(len, ModemType_t::RADIOLIB_MODEM_LORA));
     case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
-      return(LRxxxx::getTimeOnAir(len, ModemType_t::RADIOLIB_MODEM_FSK));
+      return(LRxxxx::getToA(len, ModemType_t::RADIOLIB_MODEM_FSK));
     case(RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS):
-      return(LRxxxx::getTimeOnAir(len, ModemType_t::RADIOLIB_MODEM_LRFHSS));
+      return(LRxxxx::getToA(len, ModemType_t::RADIOLIB_MODEM_LRFHSS));
     case(RADIOLIB_LR2021_PACKET_TYPE_FLRC): {
       //! \todo [LR2021] Add FLRC to the modems supported in ModemType_t
 

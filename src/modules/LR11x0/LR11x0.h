@@ -32,6 +32,7 @@ class LR11x0: public LRxxxx {
     using PhysicalLayer::startTransmit;
     using PhysicalLayer::startReceive;
     using PhysicalLayer::readData;
+    using PhysicalLayer::setOutputPower;
 
     /*!
       \brief Default constructor.
