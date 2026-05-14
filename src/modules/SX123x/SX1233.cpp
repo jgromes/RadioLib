@@ -97,7 +97,7 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   config.bitRate = br;
   config.frequencyDeviation = freqDev;
   config.receiverBandwidth = rxBw;
-  config.power = pwr;
+  config.power = power;
   config.preambleLength = preambleLen;
   return(this->begin(config));
 }
