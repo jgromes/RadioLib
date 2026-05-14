@@ -88,7 +88,7 @@ void setup() {
     });
   #else
     // with C++11 or older, named argument lists are unsupported
-    SX1268::ConfigLoRa_t config;
+    SX126x::ConfigLoRa_t config;
     config.frequency = 915.0;
     config.bandwidth = 500.0;
     config.spreadingFactor = 6;

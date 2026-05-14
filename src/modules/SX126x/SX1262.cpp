@@ -46,7 +46,7 @@ SX1262::SX1262(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1262_CHIP_TYPE;
 }
 
-int16_t SX1262::begin(const ConfigLoRa_t& config) {
+int16_t SX1262::begin(const SX126x::ConfigLoRa_t& config) {
   int16_t state = SX126x::begin(
     config.codingRate, config.syncWord, config.preambleLength,
     config.tcxoVoltage, config.useRegulatorLDO);
@@ -72,7 +72,7 @@ int16_t SX1262::begin(const ConfigLoRa_t& config) {
 }
 
 int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLoRa_t config;
+  SX126x::ConfigLoRa_t config;
   config.frequency = freq;
   config.bandwidth = bw;
   config.spreadingFactor = sf;
@@ -85,7 +85,7 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(begin(config));
 }
 
-int16_t SX1262::beginFSK(const ConfigFSK_t& config) {
+int16_t SX1262::beginFSK(const SX126x::ConfigFSK_t& config) {
   // execute common part
   int16_t state = SX126x::beginFSK(
     config.bitRate, config.frequencyDeviation, config.receiverBandwidth, 
@@ -106,7 +106,7 @@ int16_t SX1262::beginFSK(const ConfigFSK_t& config) {
 }
 
 int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigFSK_t config;
+  SX126x::ConfigFSK_t config;
   config.frequency = freq;
   config.bitRate = br;
   config.frequencyDeviation = freqDev;
@@ -118,7 +118,7 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   return(beginFSK(config));
 }
 
-int16_t SX1262::beginBPSK(const ConfigBPSK_t& config) {
+int16_t SX1262::beginBPSK(const SX126x::ConfigBPSK_t& config) {
   // execute common part
   int16_t state = SX126x::beginBPSK(config.bitRate, config.tcxoVoltage, config.useRegulatorLDO);
   RADIOLIB_ASSERT(state);
@@ -137,7 +137,7 @@ int16_t SX1262::beginBPSK(const ConfigBPSK_t& config) {
 }
 
 int16_t SX1262::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigBPSK_t config;
+  SX126x::ConfigBPSK_t config;
   config.frequency = freq;
   config.bitRate = br;
   config.power = power;
@@ -146,7 +146,7 @@ int16_t SX1262::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage,
   return(beginBPSK(config));
 }
 
-int16_t SX1262::beginLRFHSS(const ConfigLRFHSS_t& config) {
+int16_t SX1262::beginLRFHSS(const SX126x::ConfigLRFHSS_t& config) {
   // execute common part
   int16_t state = SX126x::beginLRFHSS(config.bandwidth, config.codingRate, 
     config.narrowGrid, config.tcxoVoltage, config.useRegulatorLDO);
@@ -166,7 +166,7 @@ int16_t SX1262::beginLRFHSS(const ConfigLRFHSS_t& config) {
 }
 
 int16_t SX1262::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLRFHSS_t config;
+  SX126x::ConfigLRFHSS_t config;
   config.frequency = freq;
   config.bandwidth = bw;
   config.codingRate = cr;
