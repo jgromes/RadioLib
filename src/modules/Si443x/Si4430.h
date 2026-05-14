@@ -26,6 +26,16 @@ class Si4430: public Si4432 {
     // basic methods
 
     /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t begin(const Si443x::ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const Si443x::ConfigFSK_t& config) instead.
       \brief Initialization method. Must be called at least once from Arduino sketch to initialize the module.
       \param freq Carrier frequency in MHz. Allowed values range from 900.0 MHz to 960.0 MHz.
       \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 0.123 to 256.0 kbps.
