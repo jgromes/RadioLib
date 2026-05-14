@@ -511,7 +511,7 @@ float SX1278::getRSSI(bool packet, bool skipReceive) {
   if(frequency < 868.0f) {
     offset = -164;
   }
-  return(SX127x::getRSSI(packet, skipReceive, offset));
+  return(SX127x::getRSSICommon(packet, skipReceive, offset));
 }
 
 int16_t SX1278::setCRC(bool enable, bool mode) {
