@@ -41,7 +41,7 @@ void setup() {
 
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
-  int state = radio.beginBLE();
+  int state = radio.beginBLE({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

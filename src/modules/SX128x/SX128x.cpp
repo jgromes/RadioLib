@@ -19,14 +19,14 @@ SX128x::SX128x(Module* mod) : PhysicalLayer() {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
 }
 
-int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength) {
+int16_t SX128x::begin(const SX128x::ConfigLoRa_t& config) {
   // initialize LoRa modulation variables
-  this->bandwidthKhz = bw;
+  this->bandwidthKhz = config.bandwidth;
   this->spreadingFactor = RADIOLIB_SX128X_LORA_SF_9;
   this->codingRateLoRa = RADIOLIB_SX128X_LORA_CR_4_7;
 
   // initialize LoRa packet variables
-  this->preambleLengthLoRa = preambleLength;
+  this->preambleLengthLoRa = config.preambleLength;
   this->headerType = RADIOLIB_SX128X_LORA_HEADER_EXPLICIT;
   this->payloadLen = 0xFF;
   this->crcLoRa = RADIOLIB_SX128X_LORA_CRC_ON;
@@ -36,40 +36,50 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
+  state = setBandwidth(config.bandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setSpreadingFactor(sf);
+  state = setSpreadingFactor(config.spreadingFactor);
   RADIOLIB_ASSERT(state);
 
-  state = setCodingRate(cr);
+  state = setCodingRate(config.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setSyncWord(syncWord);
+  state = setSyncWord(config.syncWord);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(pwr);
-  RADIOLIB_ASSERT(state);
-
+  state = setOutputPower(config.power);
   return(state);
 }
 
-int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, uint16_t preambleLength) {
+int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength) {
+  SX128x::ConfigLoRa_t config;
+  config.frequency = freq;
+  config.bandwidth = bw;
+  config.spreadingFactor = sf;
+  config.codingRate = cr;
+  config.syncWord = syncWord;
+  config.power = pwr;
+  config.preambleLength = preambleLength;
+  return(begin(config));
+}
+
+int16_t SX128x::beginGFSK(const SX128x::ConfigGFSK_t& config) {
   // initialize GFSK modulation variables
-  this->bitRateKbps = br;
+  this->bitRateKbps = config.bitRate;
   this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
   this->modIndexReal = 1.0;
   this->modIndex = RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_00;
   this->shaping = RADIOLIB_SX128X_BLE_GFSK_BT_0_5;
 
   // initialize GFSK packet variables
-  this->preambleLengthGFSK = preambleLength;
+  this->preambleLengthGFSK = config.preambleLength;
   this->syncWordLen = 2;
   this->syncWordMatch = RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1;
   this->crcGFSK = RADIOLIB_SX128X_GFSK_FLRC_CRC_2_BYTE;
@@ -80,19 +90,19 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, ui
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setBitRate(br);
+  state = setBitRate(config.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setFrequencyDeviation(freqDev);
+  state = setFrequencyDeviation(config.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(pwr);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
   state = setDataShaping(RADIOLIB_SHAPING_0_5);
@@ -104,14 +114,22 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, ui
   RADIOLIB_ASSERT(state);
 
   state = setEncoding(RADIOLIB_ENCODING_NRZ);
-  RADIOLIB_ASSERT(state);
-
   return(state);
 }
 
-int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uint8_t dataShaping) {
+int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, uint16_t preambleLength) {
+  SX128x::ConfigGFSK_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.frequencyDeviation = freqDev;
+  config.power = pwr;
+  config.preambleLength = preambleLength;
+  return(beginGFSK(config));
+}
+
+int16_t SX128x::beginBLE(const SX128x::ConfigBLE_t& config) {
   // initialize BLE modulation variables
-  this->bitRateKbps = br;
+  this->bitRateKbps = config.bitRate;
   this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
   this->modIndexReal = 1.0;
   this->modIndex = RADIOLIB_SX128X_BLE_GFSK_MOD_IND_1_00;
@@ -126,33 +144,41 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uin
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setBitRate(br);
+  state = setBitRate(config.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setFrequencyDeviation(freqDev);
+  state = setFrequencyDeviation(config.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(pwr);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setDataShaping(dataShaping);
-  RADIOLIB_ASSERT(state);
-
+  state = setDataShaping(config.dataShaping);
   return(state);
 }
 
-int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping) {
+int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uint8_t dataShaping) {
+  SX128x::ConfigBLE_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.frequencyDeviation = freqDev;
+  config.power = pwr;
+  config.dataShaping = dataShaping;
+  return(beginBLE(config));
+}
+
+int16_t SX128x::beginFLRC(const SX128x::ConfigFLRC_t& config) {
   // initialize FLRC modulation variables
-  this->bitRateKbps = br;
+  this->bitRateKbps = config.bitRate;
   this->bitRate = RADIOLIB_SX128X_FLRC_BR_0_650_BW_0_6;
   this->codingRateFLRC = RADIOLIB_SX128X_FLRC_CR_3_4;
   this->shaping = RADIOLIB_SX128X_FLRC_BT_0_5;
 
   // initialize FLRC packet variables
-  this->preambleLengthGFSK = preambleLength;
+  this->preambleLengthGFSK = config.preambleLength;
   this->syncWordLen = 2;
   this->syncWordMatch = RADIOLIB_SX128X_GFSK_FLRC_SYNC_WORD_1;
   this->crcGFSK = RADIOLIB_SX128X_GFSK_FLRC_CRC_2_BYTE;
@@ -163,30 +189,40 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint1
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(config.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setBitRate(br);
+  state = setBitRate(config.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setCodingRate(cr);
+  state = setCodingRate(config.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(pwr);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
-  state = setDataShaping(dataShaping);
+  state = setDataShaping(config.dataShaping);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
-  uint8_t sync[] = { 0x2D, 0x01, 0x4B, 0x1D};
+  uint8_t sync[] = { 0x2D, 0x01, 0x4B, 0x1D };
   state = setSyncWord(sync, 4);
-  RADIOLIB_ASSERT(state);
-
   return(state);
+}
+
+int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping) {
+  SX128x::ConfigFLRC_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.codingRate = cr;
+  config.dataShaping = dataShaping;
+  config.power = pwr;
+  config.preambleLength = preambleLength;
+  config.dataShaping = dataShaping;
+  return(beginFLRC(config));
 }
 
 int16_t SX128x::reset(bool verify) {

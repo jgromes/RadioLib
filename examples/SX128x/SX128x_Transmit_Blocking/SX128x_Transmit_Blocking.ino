@@ -50,7 +50,7 @@ void setup() {
   // output power:                10 dBm
   // preamble length:             12 symbols
   // CRC:                         enabled
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
