@@ -6,7 +6,7 @@ SX1233::SX1233(Module* mod) : SX1231(mod) {
 
 }
 
-int16_t SX1233::begin(const RF69::ConfigFSK_t& config) {
+int16_t SX1233::begin(const RF69::ConfigFSK_t& cfg) {
   // set module properties
   Module* mod = this->getMod();
   mod->init();
@@ -44,28 +44,28 @@ int16_t SX1233::begin(const RF69::ConfigFSK_t& config) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tRF69");
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
   this->rxBandwidth = 125.0;
-  state = setBitRate(config.bitRate);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
-  state = setRxBandwidth(config.receiverBandwidth);
+  state = setRxBandwidth(cfg.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
-  state = setFrequencyDeviation(config.frequencyDeviation);
+  state = setFrequencyDeviation(cfg.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // configure default preamble length
-  state = setPreambleLength(config.preambleLength);
+  state = setPreambleLength(cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
@@ -92,14 +92,14 @@ int16_t SX1233::begin(const RF69::ConfigFSK_t& config) {
 }
 
 int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  RF69::ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = power;
-  config.preambleLength = preambleLen;
-  return(this->begin(config));
+  RF69::ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLen;
+  return(this->begin(cfg));
 }
 
 int16_t SX1233::setBitRate(float br) {
