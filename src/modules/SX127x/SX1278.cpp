@@ -6,29 +6,29 @@ SX1278::SX1278(Module* mod) : SX127x(mod) {
 
 }
 
-int16_t SX1278::begin(const SX127x::ConfigLoRa_t& config) {
+int16_t SX1278::begin(const SX127x::ConfigLoRa_t& cfg) {
   // execute common part
   const uint8_t versions[] = { RADIOLIB_SX1278_CHIP_VERSION, RADIOLIB_SX1278_CHIP_VERSION_ALT, RADIOLIB_SX1278_CHIP_VERSION_RFM9X };
-  int16_t state = SX127x::begin(versions, 3, config.syncWord, config.preambleLength);
+  int16_t state = SX127x::begin(versions, 3, cfg.syncWord, cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setBandwidth(config.bandwidth);
+  state = setBandwidth(cfg.bandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setSpreadingFactor(config.spreadingFactor);
+  state = setSpreadingFactor(cfg.spreadingFactor);
   RADIOLIB_ASSERT(state);
 
-  state = setCodingRate(config.codingRate);
+  state = setCodingRate(cfg.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
-  state = setGain(config.gain);
+  state = setGain(cfg.gain);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -37,23 +37,23 @@ int16_t SX1278::begin(const SX127x::ConfigLoRa_t& config) {
 }
 
 int16_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
-  SX127x::ConfigLoRa_t config;
-  config.frequency = freq;
-  config.bandwidth = bw;
-  config.spreadingFactor = sf;
-  config.codingRate = cr;
-  config.syncWord = syncWord;
-  config.power = power;
-  config.preambleLength = preambleLength;
-  config.gain = gain;
-  return(begin(config));
+  SX127x::ConfigLoRa_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.spreadingFactor = sf;
+  cfg.codingRate = cr;
+  cfg.syncWord = syncWord;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.gain = gain;
+  return(begin(cfg));
 }
 
-int16_t SX1278::beginFSK(const SX127x::ConfigFSK_t& config) {
+int16_t SX1278::beginFSK(const SX127x::ConfigFSK_t& cfg) {
   // execute common part
   const uint8_t versions[] = { RADIOLIB_SX1278_CHIP_VERSION, RADIOLIB_SX1278_CHIP_VERSION_ALT, RADIOLIB_SX1278_CHIP_VERSION_RFM9X };
-  int16_t state = SX127x::beginFSK(versions, 3, config.frequencyDeviation, 
-    config.receiverBandwidth, config.preambleLength, config.enableOOK);
+  int16_t state = SX127x::beginFSK(versions, 3, cfg.frequencyDeviation, 
+    cfg.receiverBandwidth, cfg.preambleLength, cfg.enableOOK);
   RADIOLIB_ASSERT(state);
 
   // configure settings not accessible by API
@@ -61,16 +61,16 @@ int16_t SX1278::beginFSK(const SX127x::ConfigFSK_t& config) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setBitRate(config.bitRate);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
-  if(config.enableOOK) {
+  if(cfg.enableOOK) {
     state = setDataShapingOOK(RADIOLIB_SHAPING_NONE);
     RADIOLIB_ASSERT(state);
   } else {
@@ -84,15 +84,15 @@ int16_t SX1278::beginFSK(const SX127x::ConfigFSK_t& config) {
 }
 
 int16_t SX1278::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
-  SX127x::ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = power;
-  config.preambleLength = preambleLength;
-  config.enableOOK = enableOOK;
-  return(beginFSK(config));
+  SX127x::ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.enableOOK = enableOOK;
+  return(beginFSK(cfg));
 }
 
 void SX1278::reset() {
