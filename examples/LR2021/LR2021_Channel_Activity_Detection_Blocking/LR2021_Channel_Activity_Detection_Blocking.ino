@@ -46,7 +46,7 @@ void setup() {
 
   // initialize LR2021 with default settings
   Serial.print(F("[LR2021] Initializing ... "));
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

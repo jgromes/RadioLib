@@ -21,28 +21,28 @@ LR2021::LR2021(Module* mod) : LRxxxx(mod) {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR2021_IRQ_TIMEOUT;
 }
 
-int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR2021::begin(const LR2021::ConfigLoRa_t& config) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(config.frequency, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setBandwidth(bw);
+  state = setBandwidth(config.bandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setSpreadingFactor(sf);
+  state = setSpreadingFactor(config.spreadingFactor);
   RADIOLIB_ASSERT(state);
 
-  state = setCodingRate(cr);
+  state = setCodingRate(config.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setSyncWord(syncWord);
+  state = setSyncWord(config.syncWord);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -53,28 +53,41 @@ int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  LR2021::ConfigLoRa_t config;
+  config.frequency = freq;
+  config.bandwidth = bw;
+  config.spreadingFactor = sf;
+  config.codingRate = cr;
+  config.syncWord = syncWord;
+  config.power = power;
+  config.preambleLength = preambleLength;
+  config.tcxoVoltage = tcxoVoltage;
+  return(begin(config));
+}
+
+int16_t LR2021::beginGFSK(const LR2021::ConfigGFSK_t& config) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
-  this->frequencyDev = freqDev * 1000.0f;
+  this->frequencyDev = config.frequencyDeviation * 1000.0f;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
+  int16_t state = this->modSetup(config.frequency, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setBitRate(br);
+  state = setBitRate(config.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setFrequencyDeviation(freqDev);
+  state = setFrequencyDeviation(config.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
-  state = setRxBandwidth(rxBw);
+  state = setRxBandwidth(config.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -95,24 +108,36 @@ int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_
   return(state);
 }
 
-int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  LR2021::ConfigGFSK_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.frequencyDeviation = freqDev;
+  config.receiverBandwidth = rxBw;
+  config.power = power;
+  config.preambleLength = preambleLength;
+  config.tcxoVoltage = tcxoVoltage;
+  return(beginGFSK(config));
+}
+
+int16_t LR2021::beginOOK(const LR2021::ConfigOOK_t& config) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_OOK);
+  int16_t state = this->modSetup(config.frequency, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_OOK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setBitRate(br);
+  state = setBitRate(config.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setRxBandwidth(rxBw);
+  state = setRxBandwidth(config.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -133,57 +158,76 @@ int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_
   return(state);
 }
     
-int16_t LR2021::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-// set module properties and perform initial setup
-  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
+int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  LR2021::ConfigOOK_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.receiverBandwidth = rxBw;
+  config.power = power;
+  config.preambleLength = preambleLength;
+  config.tcxoVoltage = tcxoVoltage;
+  return(beginGFSK(config));
+}
+
+int16_t LR2021::beginLRFHSS(const LR2021::ConfigLRFHSS_t& config) {
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(config.freq, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // set grid spacing
-  this->lrFhssGrid = narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
+  this->lrFhssGrid = config.narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
 
   // configure publicly accessible settings
-  state = setLrFhssConfig(bw, cr);
+  state = setLrFhssConfig(config.bandwidth, config.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
   uint8_t syncWord[] = { 0x12, 0xAD, 0x10, 0x1B };
   state = setSyncWord(syncWord, 4);
   return(state);
 }
+    
+int16_t LR2021::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
+  LR2021::ConfigLRFHSS_t config;
+  config.frequency = freq;
+  config.bandwidth = bw;
+  config.codingRate = cr;
+  config.narrowGrid = narrowGrid;
+  config.power = power;
+  config.tcxoVoltage = tcxoVoltage;
+  return(beginLRFHSS(config));
+}
 
-int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage) {
+int16_t LR2021::beginFLRC(const LR2021::ConfigFLRC_t& config) {
   // initialize FLRC modulation variables
-  this->bitRateFlrc = br;
+  this->bitRateFlrc = config.bitRate;
   this->codingRateFlrc = RADIOLIB_LR2021_FLRC_CR_3_4;
   this->pulseShape = RADIOLIB_LR2021_GFSK_BPSK_FLRC_OOK_SHAPING_GAUSS_BT_0_5;
 
   // initialize FLRC packet variables
-  this->preambleLengthGFSK = preambleLength;
+  this->preambleLengthGFSK = config.preambleLength;
   this->crcLenGFSK = 1;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(freq, tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
+  int16_t state = this->modSetup(config.frequency, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setBitRate(config.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setBitRate(br);
+  state = setCodingRate(config.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setCodingRate(cr);
+  state = setOutputPower(config.power);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(pwr);
+  state = setPreambleLength(config.preambleLength);
   RADIOLIB_ASSERT(state);
 
-  state = setPreambleLength(preambleLength);
-  RADIOLIB_ASSERT(state);
-
-  state = setDataShaping(dataShaping);
+  state = setDataShaping(config.dataShaping);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -196,6 +240,19 @@ int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint1
 
   state = setCRC(2);
   return(state);
+}
+
+int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage) {
+  LR2021::ConfigFLRC_t config;
+  config.frequency = freq;
+  config.bitRate = br;
+  config.codingRate = cr;
+  config.dataShaping = dataShaping;
+  config.power = pwr;
+  config.preambleLength = preambleLength;
+  config.dataShaping = dataShaping;
+  config.tcxoVoltage = tcxoVoltage;
+  return(beginGFSK(config));
 }
 
 int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
