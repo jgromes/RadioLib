@@ -8,7 +8,7 @@ RF69::RF69(Module* module) : PhysicalLayer() {
   this->mod = module;
 }
 
-int16_t RF69::begin(const ConfigFSK_t& config) {
+int16_t RF69::begin(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -44,28 +44,28 @@ int16_t RF69::begin(const ConfigFSK_t& config) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
-  this->rxBandwidth = config.receiverBandwidth;
-  state = setBitRate(config.bitRate);
+  this->rxBandwidth = cfg.receiverBandwidth;
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
-  state = setRxBandwidth(config.receiverBandwidth);
+  state = setRxBandwidth(cfg.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
-  state = setFrequencyDeviation(config.frequencyDeviation);
+  state = setFrequencyDeviation(cfg.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // configure default preamble length
-  state = setPreambleLength(config.preambleLength);
+  state = setPreambleLength(cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // set default packet length mode
@@ -93,14 +93,14 @@ int16_t RF69::begin(const ConfigFSK_t& config) {
 }
 
 int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLen) {
-  ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = pwr;
-  config.preambleLength = preambleLen;
-  return(this->begin(config));
+  ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = pwr;
+  cfg.preambleLength = preambleLen;
+  return(this->begin(cfg));
 }
 
 void RF69::reset() {
