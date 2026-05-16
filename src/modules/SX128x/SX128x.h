@@ -721,10 +721,10 @@ class SX128x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param config CAD configuration structure.
+      \param cfg CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &cfg) override;
 
     /*!
       \brief Read the channel scan result
