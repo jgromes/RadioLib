@@ -6,29 +6,29 @@ Si4431::Si4431(Module* mod) : Si4432(mod) {
 
 }
 
-int16_t Si4431::begin(const Si443x::ConfigFSK_t& config) {
+int16_t Si4431::begin(const Si443x::ConfigFSK_t& cfg) {
   // execute common part
-  int16_t state = Si443x::begin(config.bitRate, config.frequencyDeviation, config.receiverBandwidth, config.preambleLength);
+  int16_t state = Si443x::begin(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSi4432");
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   return(state);
 }
 
 int16_t Si4431::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  Si443x::ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = power;
-  config.preambleLength = preambleLen;
-  return(this->begin(config));
+  Si443x::ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLen;
+  return(this->begin(cfg));
 }
 
 int16_t Si4431::setOutputPower(int8_t power) {
