@@ -10,9 +10,9 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) { }
 
-int16_t STM32WLx::begin(const SX126x::ConfigLoRa_t& config) {
+int16_t STM32WLx::begin(const SX126x::ConfigLoRa_t& cfg) {
   // Execute common part
-  int16_t state = SX1262::begin(config);
+  int16_t state = SX1262::begin(cfg);
   RADIOLIB_ASSERT(state);
 
   // This overrides the value in SX126x::begin()
@@ -38,9 +38,9 @@ int16_t STM32WLx::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sy
   return(state);
 }
 
-int16_t STM32WLx::beginFSK(const SX126x::ConfigFSK_t& config) {
+int16_t STM32WLx::beginFSK(const SX126x::ConfigFSK_t& cfg) {
   // Execute common part
-  int16_t state = SX1262::beginFSK(config);
+  int16_t state = SX1262::beginFSK(cfg);
   RADIOLIB_ASSERT(state);
 
   // This overrides the value in SX126x::begin()

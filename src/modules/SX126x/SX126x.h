@@ -457,10 +457,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param config CAD configuration structure.
+      \param cfg CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &cfg) override;
 
     /*!
       \brief Read the channel scan result
@@ -709,7 +709,7 @@ class SX126x: public PhysicalLayer {
       \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
       \param modem Modem type.
       \param dr Data rate.
-      \param pc Packet config.
+      \param pc Packet cfg.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
