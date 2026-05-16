@@ -36,7 +36,7 @@ class SX1262: public SX126x {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    int16_t begin(const SX126x::ConfigLoRa_t& config);
+    virtual int16_t begin(const SX126x::ConfigLoRa_t& config);
 
     /*!
       \deprecated Use \ref begin(const SX126x::ConfigLoRa_t& config) instead.
@@ -64,7 +64,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginFSK(const SX126x::ConfigFSK_t& config);
+    virtual int16_t beginFSK(const SX126x::ConfigFSK_t& config);
 
     /*!
       \deprecated Use \ref beginFSK(const SX126x::ConfigFSK_t& config) instead.
