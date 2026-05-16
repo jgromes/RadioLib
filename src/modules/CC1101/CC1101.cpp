@@ -8,38 +8,38 @@ CC1101::CC1101(Module* module) : PhysicalLayer() {
   this->mod = module;
 }
 
-int16_t CC1101::begin(const ConfigFSK_t& config) {
+int16_t CC1101::begin(const ConfigFSK_t& cfg) {
   // set the modulation and execute the common part
   this->modulation = RADIOLIB_CC1101_MOD_FORMAT_2_FSK;
-  return(this->beginCommon(config));
+  return(this->beginCommon(cfg));
 }
 
 int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength) {
-  ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = pwr;
-  config.preambleLength = preambleLength;
-  return(this->begin(config));
+  ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = pwr;
+  cfg.preambleLength = preambleLength;
+  return(this->begin(cfg));
 }
 
-int16_t CC1101::beginFSK4(const ConfigFSK_t& config) {
+int16_t CC1101::beginFSK4(const ConfigFSK_t& cfg) {
   // set the modulation and execute the common part
   this->modulation = RADIOLIB_CC1101_MOD_FORMAT_4_FSK;
-  return(this->beginCommon(config));
+  return(this->beginCommon(cfg));
 }
 
 int16_t CC1101::beginFSK4(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength) {
-  ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = pwr;
-  config.preambleLength = preambleLength;
-  return(this->beginFSK4(config));
+  ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = pwr;
+  cfg.preambleLength = preambleLength;
+  return(this->beginFSK4(cfg));
 }
 
 void CC1101::reset() {
@@ -1055,7 +1055,7 @@ int16_t CC1101::setDIOMapping(uint32_t pin, uint32_t value) {
   return(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0 - pin, value));
 }
 
-int16_t CC1101::beginCommon(const ConfigFSK_t& config) {
+int16_t CC1101::beginCommon(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_CC1101_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_CC1101_CMD_WRITE;
@@ -1089,23 +1089,23 @@ int16_t CC1101::beginCommon(const ConfigFSK_t& config) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
-  state = setBitRate(config.bitRate);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
-  state = setRxBandwidth(config.receiverBandwidth);
+  state = setRxBandwidth(cfg.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
-  state = setFrequencyDeviation(config.frequencyDeviation);
+  state = setFrequencyDeviation(cfg.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // set default packet length mode
@@ -1113,7 +1113,7 @@ int16_t CC1101::beginCommon(const ConfigFSK_t& config) {
   RADIOLIB_ASSERT(state);
 
   // configure default preamble length
-  state = setPreambleLength(config.preambleLength, config.preambleLength - 4);
+  state = setPreambleLength(cfg.preambleLength, cfg.preambleLength - 4);
   RADIOLIB_ASSERT(state);
 
   // set default data shaping
