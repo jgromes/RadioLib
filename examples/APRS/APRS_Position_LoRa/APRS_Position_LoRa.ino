@@ -55,7 +55,7 @@ void setup() {
     .codingRate = 5,
   });
   #else
-  SX127x::ConfigOOK_t config;
+  SX127x::ConfigLoRa_t config;
   config.frequency = 433.775;
   config.bandwidth = 125;
   config.spreadingFactor = 12;
