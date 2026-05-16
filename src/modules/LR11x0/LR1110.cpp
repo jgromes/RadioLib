@@ -7,82 +7,82 @@ LR1110::LR1110(Module* mod) : LR11x0(mod) {
   chipType = RADIOLIB_LR11X0_DEVICE_LR1110;
 }
 
-int16_t LR1110::begin(const LR11x0::ConfigLoRa_t& config) {
+int16_t LR1110::begin(const LR11x0::ConfigLoRa_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::begin(config.bandwidth, config.spreadingFactor, 
-    config.codingRate, config.syncWord, config.preambleLength, config.tcxoVoltage);
+  int16_t state = LR11x0::begin(cfg.bandwidth, cfg.spreadingFactor, 
+    cfg.codingRate, cfg.syncWord, cfg.preambleLength, cfg.tcxoVoltage);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   return(state);
 }
 
 int16_t LR1110::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  LR11x0::ConfigLoRa_t config;
-  config.frequency = freq;
-  config.bandwidth = bw;
-  config.spreadingFactor = sf;
-  config.codingRate = cr;
-  config.syncWord = syncWord;
-  config.power = power;
-  config.preambleLength = preambleLength;
-  config.tcxoVoltage = tcxoVoltage;
-  return(begin(config));
+  LR11x0::ConfigLoRa_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.spreadingFactor = sf;
+  cfg.codingRate = cr;
+  cfg.syncWord = syncWord;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.tcxoVoltage = tcxoVoltage;
+  return(begin(cfg));
 }
 
-int16_t LR1110::beginGFSK(const LR11x0::ConfigGFSK_t& config) {
+int16_t LR1110::beginGFSK(const LR11x0::ConfigGFSK_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::beginGFSK(config.bitRate, config.frequencyDeviation, 
-    config.receiverBandwidth, config.preambleLength, config.tcxoVoltage);
+  int16_t state = LR11x0::beginGFSK(cfg.bitRate, cfg.frequencyDeviation, 
+    cfg.receiverBandwidth, cfg.preambleLength, cfg.tcxoVoltage);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   return(state);
 }
 
 int16_t LR1110::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  LR11x0::ConfigGFSK_t config;
-  config.frequency = freq;
-  config.bitRate = br;
-  config.frequencyDeviation = freqDev;
-  config.receiverBandwidth = rxBw;
-  config.power = power;
-  config.preambleLength = preambleLength;
-  config.tcxoVoltage = tcxoVoltage;
-  return(beginGFSK(config));
+  LR11x0::ConfigGFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.tcxoVoltage = tcxoVoltage;
+  return(beginGFSK(cfg));
 }
 
-int16_t LR1110::beginLRFHSS(const LR11x0::ConfigLRFHSS_t& config) {
+int16_t LR1110::beginLRFHSS(const LR11x0::ConfigLRFHSS_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::beginLRFHSS(config.bandwidth, config.bandwidth, 
-    config.narrowGrid, config.tcxoVoltage);
+  int16_t state = LR11x0::beginLRFHSS(cfg.bandwidth, cfg.bandwidth, 
+    cfg.narrowGrid, cfg.tcxoVoltage);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   return(state);
 }
 
 int16_t LR1110::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-  LR11x0::ConfigLRFHSS_t config;
-  config.frequency = freq;
-  config.bandwidth = bw;
-  config.codingRate = cr;
-  config.narrowGrid = narrowGrid;
-  config.power = power;
-  config.tcxoVoltage = tcxoVoltage;
-  return(beginLRFHSS(config));
+  LR11x0::ConfigLRFHSS_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.codingRate = cr;
+  cfg.narrowGrid = narrowGrid;
+  cfg.power = power;
+  cfg.tcxoVoltage = tcxoVoltage;
+  return(beginLRFHSS(cfg));
 }
 
 int16_t LR1110::setFrequency(float freq) {
