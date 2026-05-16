@@ -8,7 +8,7 @@ nRF24::nRF24(Module* mod) : PhysicalLayer() {
   this->mod = mod;
 }
 
-int16_t nRF24::begin(const ConfigFSK_t& config) {
+int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_NRF24_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_NRF24_CMD_WRITE;
@@ -40,19 +40,19 @@ int16_t nRF24::begin(const ConfigFSK_t& config) {
   RADIOLIB_ASSERT(state);
 
   // set frequency
-  state = setFrequency(config.frequency);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // set data rate
-  state = setBitRate(config.bitRate);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // set output power
-  state = setOutputPower(config.power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // set address width
-  state = setAddressWidth(config.addressWidth);
+  state = setAddressWidth(cfg.addressWidth);
   RADIOLIB_ASSERT(state);
 
   // set CRC
@@ -67,12 +67,12 @@ int16_t nRF24::begin(const ConfigFSK_t& config) {
 }
 
 int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
-  ConfigFSK_t config;
-  config.frequency = freq;
-  config.bitRate = dr;
-  config.power = pwr;
-  config.addressWidth = addrWidth;
-  return(this->begin(config));
+  ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = dr;
+  cfg.power = pwr;
+  cfg.addressWidth = addrWidth;
+  return(this->begin(cfg));
 }
 
 int16_t nRF24::sleep() {
