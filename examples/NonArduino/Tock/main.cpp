@@ -49,7 +49,7 @@ int main(void) {
   // Setup the radio
   // The settings here work for the SparkFun LoRa Thing Plus - expLoRaBLE
   radio->XTAL = true;
-  int state = radio->begin(915.0);
+  int state = radio->begin({.frequency = 915.0});
 
   if (state != RADIOLIB_ERR_NONE) {
     printf("failed, code %d\r\n", state);

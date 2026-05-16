@@ -41,7 +41,7 @@ void setup() {
   while(!Serial);
 
   // Initialize radio and LoRaWAN node (omitted error handling)
-  radio.begin();
+  radio.begin({});
   node.beginOTAA(joinEUI, devEUI, NULL, appKey);  // LoRaWAN v1.0.4 - no NwkKey
 
   // Warning: radio.begin() must be called before enabling packages!

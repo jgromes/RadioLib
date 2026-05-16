@@ -33,7 +33,7 @@ void setup() {
   Serial.println(F("\nSetup ... "));
 
   Serial.println(F("Initialise the radio"));
-  int16_t state = radio.begin();
+  int16_t state = radio.begin({});
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
 
   // Setup the OTAA session information

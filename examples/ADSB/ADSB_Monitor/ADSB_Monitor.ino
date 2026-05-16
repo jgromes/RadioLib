@@ -64,7 +64,19 @@ void setup() {
   // initialize LR2021 OOK modem at 1090 MHz,
   // 2 Mbps bit rate and receiver bandwidth 3076 kHz
   Serial.print(F("[LR2021] Initializing ... "));
-  int state = radio.beginOOK(1090, 2000, 3076);
+  #if (__cplusplus >= 201402L)
+  int state = radio.beginOOK({
+    .frequency = 1090.0, 
+    .bitRate = 2000.0, 
+    .receiverBandwidth = 3076.0
+  });
+  #else
+  LR2021::ConfigOOK_t config;
+  config.frequency = 1090.0;
+  config.bitRate = 2000.0;
+  config.receiverBandwidth = 3076.0;
+  int state = radio.beginOOK(config);
+  #endif
 
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

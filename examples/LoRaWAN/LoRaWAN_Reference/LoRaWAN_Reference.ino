@@ -42,7 +42,7 @@ void setup() {
   int16_t state = 0;  // return value for calls to RadioLib
 
   Serial.println(F("Initialise the radio"));
-  state = radio.begin();
+  state = radio.begin({});
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
   
   // Optionally provide a custom sleep function - see config.h

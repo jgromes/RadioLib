@@ -36,7 +36,7 @@ static const char *TAG = "main";
 extern "C" void app_main(void) {
   // initialize just like with Arduino
   ESP_LOGI(TAG, "[SX1276] Initializing ... ");
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state != RADIOLIB_ERR_NONE) {
     ESP_LOGI(TAG, "failed, code %d\n", state);
     while(true) {

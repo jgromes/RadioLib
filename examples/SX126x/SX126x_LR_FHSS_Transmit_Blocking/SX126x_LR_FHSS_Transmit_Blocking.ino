@@ -46,7 +46,7 @@ void setup() {
 
   // initialize SX1262 with default settings
   Serial.print(F("[SX1262] Initializing ... "));
-  int state = radio.beginLRFHSS();
+  int state = radio.beginLRFHSS({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
