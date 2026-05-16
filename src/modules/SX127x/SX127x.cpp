@@ -1921,7 +1921,7 @@ int16_t SX127x::setDIOPreambleDetect(bool usePreambleDetect) {
   return this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_2, (usePreambleDetect) ? RADIOLIB_SX127X_DIO_MAP_PREAMBLE_DETECT : RADIOLIB_SX127X_DIO_MAP_RSSI, 0, 0);
 }
 
-float SX127x::getRSSI(bool packet, bool skipReceive, int16_t offset) {
+float SX127x::getRSSICommon(bool packet, bool skipReceive, int16_t offset) {
   if(getActiveModem() == RADIOLIB_SX127X_LORA) {
     if(packet) {
       // LoRa packet mode, get RSSI of the last packet

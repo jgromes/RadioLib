@@ -48,6 +48,8 @@ static const unsigned char testVectEx4[] = {
   0xfc, 0x49, 0x74, 0x17, 0x79, 0x36, 0x3c, 0xfe
 };
 
+static RadioLibSoftwareAES128 RadioLibAES128Instance;
+
 BOOST_FIXTURE_TEST_SUITE(suite_Crypto, ModuleFixture)
 
 BOOST_FIXTURE_TEST_CASE(Crypto_CMAC, ModuleFixture) {
@@ -57,6 +59,7 @@ BOOST_FIXTURE_TEST_CASE(Crypto_CMAC, ModuleFixture) {
 
   BOOST_TEST_MESSAGE("--- Test Crypto::CMAC RFC 4493 chapter 4 Example 1: len = 0 ---");
   testLen = 0;
+  hal->aes128 = &RadioLibAES128Instance;
   hal->aes128->init(key);
   hal->aes128->generateCMAC(msg, testLen, cmac);
   BOOST_TEST(memcmp(cmac, testVectEx1, RADIOLIB_AES128_BLOCK_SIZE) == 0);

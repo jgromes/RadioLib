@@ -1234,7 +1234,7 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
 RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
   ModemType_t modem;
   getModem(&modem);
-  return(LRxxxx::getTimeOnAir(len, modem));
+  return(LRxxxx::getToA(len, modem));
 }
 
 uint32_t LR11x0::getIrqFlags() {

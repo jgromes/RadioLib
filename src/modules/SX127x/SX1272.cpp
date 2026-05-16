@@ -488,7 +488,7 @@ float SX1272::getRSSI() {
 }
 
 float SX1272::getRSSI(bool packet, bool skipReceive) {
-  return(SX127x::getRSSI(packet, skipReceive, -139));
+  return(SX127x::getRSSICommon(packet, skipReceive, -139));
 }
 
 int16_t SX1272::setCRC(bool enable, bool mode) {

@@ -57,11 +57,7 @@ class RadioLibHal {
       With custom AES-128, set this pointer to an instance of that class.
       See the macro RADIOLIB_CUSTOM_AES128 in BuildOpt.h for details.
     */
-    #if !RADIOLIB_CUSTOM_AES128
-    RadioLibAES128* aes128 = &RadioLibAES128Instance;
-    #else
     RadioLibAES128* aes128 = nullptr;
-    #endif
 
     /*!
       \brief Default constructor.
@@ -237,12 +233,6 @@ class RadioLibHal {
       \param up Pull direction, true for pull up, false for pull down.
     */
     virtual void pullUpDown(uint32_t pin, bool enable, bool up);
-  
-  private:
-    // AES128 instance is only needed if the user does not provide their own
-    #if !RADIOLIB_CUSTOM_AES128
-    RadioLibSoftwareAES128 RadioLibAES128Instance;
-    #endif
 };
 
 #endif

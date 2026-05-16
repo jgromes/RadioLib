@@ -1323,7 +1323,7 @@ class SX127x: public PhysicalLayer {
     int16_t getActiveModem();
     int16_t setFrequencyRaw(float newFreq);
     int16_t setBitRateCommon(float br, uint8_t fracRegAddr);
-    float getRSSI(bool packet, bool skipReceive, int16_t offset);
+    float getRSSICommon(bool packet, bool skipReceive, int16_t offset);
     int16_t setHeaderType(uint8_t headerType, uint8_t bitIndex, size_t len = 0xFF);
 
 #if !RADIOLIB_GODMODE

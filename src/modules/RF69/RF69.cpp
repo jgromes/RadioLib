@@ -671,6 +671,10 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t RF69::setOutputPower(int8_t pwr) {
+  return(setOutputPower(pwr, false));
+}
+
 int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
   if(highPower) {
     RADIOLIB_CHECK_RANGE(pwr, -2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
