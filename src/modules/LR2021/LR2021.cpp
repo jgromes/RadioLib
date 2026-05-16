@@ -166,12 +166,12 @@ int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_
   config.power = power;
   config.preambleLength = preambleLength;
   config.tcxoVoltage = tcxoVoltage;
-  return(beginGFSK(config));
+  return(beginOOK(config));
 }
 
 int16_t LR2021::beginLRFHSS(const LR2021::ConfigLRFHSS_t& config) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(config.freq, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
+  int16_t state = this->modSetup(config.frequency, config.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // set grid spacing
@@ -252,7 +252,7 @@ int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint1
   config.preambleLength = preambleLength;
   config.dataShaping = dataShaping;
   config.tcxoVoltage = tcxoVoltage;
-  return(beginGFSK(config));
+  return(beginFLRC(config));
 }
 
 int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
