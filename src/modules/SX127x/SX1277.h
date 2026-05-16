@@ -25,7 +25,17 @@ class SX1277: public SX1278 {
     // basic methods
 
     /*!
-      \brief %LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
+      \brief Initialization method for LoRa modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t begin(const SX127x::ConfigLoRa_t& config) override;
+
+    /*!
+      \deprecated Use \ref begin(const SX127x::ConfigLoRa_t& config) instead.
+      \brief LoRa modem initialization method.
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 1020.0 MHz.
       \param bw %LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 9.
@@ -42,7 +52,17 @@ class SX1277: public SX1278 {
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0) override;
 
     /*!
-      \brief FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t beginFSK(const SX127x::ConfigFSK_t& config) override;
+
+    /*!
+      \deprecated Use \ref beginFSK(const SX127x::ConfigFSK_t& config) instead.
+      \brief FSK modem initialization method.
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
       \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
       \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz.
