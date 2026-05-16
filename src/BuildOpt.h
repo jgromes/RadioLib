@@ -465,6 +465,26 @@
     #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST
   #endif
 
+#elif defined(STM32WLE5xx)  // Cube does not expose a more explicit macro
+  #define RADIOLIB_PLATFORM                           "STM32WLE5xx using STM32Cube"
+  #define STM32WLE5xx_CUBE                            // define a more explicit macro
+
+  #define RADIOLIB_NC                                 (0xFF)
+  #define RADIOLIB_NONVOLATILE
+  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        (*((uint8_t *)(void *)(addr)))
+  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       (*((uint32_t *)(void *)(addr)))
+  #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
+
+  #undef RADIOLIB_DEBUG_PORT
+  #define RADIOLIB_DEBUG_PORT                         stdout
+
+  #define DEC 10
+  #define HEX 16
+  #define OCT 8
+  #define BIN 2
+
+  #include <stdint.h>
+
 #else
   // generic non-Arduino platform
   #define RADIOLIB_PLATFORM                           "Generic"
@@ -486,7 +506,7 @@
 
 // This only compiles on STM32 boards with SUBGHZ module, but also
 // include when generating docs
-#if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN)
+#if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN) && !defined(STM32WLE5xx)
   #define RADIOLIB_EXCLUDE_STM32WLX (1)
 #endif
 

@@ -9,6 +9,8 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #if !RADIOLIB_EXCLUDE_STM32WLX
 
+#if defined(ARDUINO_ARCH_STM32)
+
 #include "hal/Arduino/ArduinoHal.h"
 
 // This defines some dummy pin numbers (starting at NUM_DIGITAL_PINS to
@@ -121,5 +123,7 @@ STM32WLx_Module::STM32WLx_Module():
     RADIOLIB_STM32WLx_VIRTUAL_PIN_RESET,
     RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY
   ) {}
+
+#endif  // ARDUINO_ARCH_STM32
 
 #endif

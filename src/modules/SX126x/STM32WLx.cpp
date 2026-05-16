@@ -8,7 +8,15 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 #include "STM32WLx.h"
 #if !RADIOLIB_EXCLUDE_STM32WLX
 
-STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) { }
+#if defined(STM32WLxx)
+  #include <SubGhz.h>
+#endif
+
+#if defined(STM32WLE5xx_CUBE)
+  #include "stm32wlxx_hal.h"
+#endif
+
+STM32WLx::STM32WLx(Module* mod) : SX1262(mod) { }
 
 int16_t STM32WLx::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // Execute common part
@@ -107,12 +115,18 @@ int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
   // flag that is only set because the radio IRQ status was not cleared
   // in the interrupt (to prevent each IRQ triggering twice and allow
   // reading the irq status through the pending flag).
+#if defined(ARDUINO_ARCH_STM32)
   SubGhz.clearPendingInterrupt();
   if(SubGhz.hasInterrupt())
     SubGhz.enableInterrupt();
+#elif defined(STM32WLE5xx_CUBE)
+  HAL_NVIC_ClearPendingIRQ(SUBGHZ_Radio_IRQn);
+  HAL_NVIC_EnableIRQ(SUBGHZ_Radio_IRQn);
+#endif
   return(res);
 }
 
+#if defined(ARDUINO_ARCH_STM32)
 void STM32WLx::setDio1Action(void (*func)(void)) {
   SubGhz.attachInterrupt([func]() {
     // Because the interrupt is level-triggered, we disable it in the
@@ -126,6 +140,7 @@ void STM32WLx::setDio1Action(void (*func)(void)) {
 void STM32WLx::clearDio1Action() {
   SubGhz.detachInterrupt();
 }
+#endif  // ARDUINO_ARCH_STM32
 
 void STM32WLx::setPacketReceivedAction(void (*func)(void)) {
   this->setDio1Action(func);

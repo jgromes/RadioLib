@@ -39,7 +39,7 @@ class STM32WLx : public SX1262 {
       \brief Default constructor.
       \param mod Instance of STM32WLx_Module that will be used to communicate with the radio.
     */
-    STM32WLx(STM32WLx_Module* mod); // cppcheck-suppress noExplicitConstructor
+    STM32WLx(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     /*!
       \brief Custom operation modes for STMWLx.
@@ -109,6 +109,7 @@ class STM32WLx : public SX1262 {
     // Note: This explicitly inherits this method only to override docs
     using SX126x::setRfSwitchTable;
 
+  #if defined(ARDUINO_ARCH_STM32)
     /*!
       \brief Sets interrupt service routine to call when DIO1/2/3 activates.
       \param func ISR to call.
@@ -119,6 +120,7 @@ class STM32WLx : public SX1262 {
       \brief Clears interrupt service routine to call when DIO1/2/3 activates.
     */
     void clearDio1Action() override;
+  #endif  // ARDUINO_ARCH_STM32
 
     /*!
       \brief Sets interrupt service routine to call when a packet is received.
