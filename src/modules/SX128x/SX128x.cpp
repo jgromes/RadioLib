@@ -218,7 +218,6 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint1
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.codingRate = cr;
-  cfg.dataShaping = dataShaping;
   cfg.power = pwr;
   cfg.preambleLength = preambleLength;
   cfg.dataShaping = dataShaping;
