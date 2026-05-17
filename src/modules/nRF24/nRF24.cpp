@@ -8,7 +8,7 @@ nRF24::nRF24(Module* mod) : PhysicalLayer() {
   this->mod = mod;
 }
 
-int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
+int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_NRF24_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_NRF24_CMD_WRITE;
@@ -32,7 +32,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tnRF24");
 
   // configure settings inaccessible by public API
-  int16_t state = config();
+  int16_t state = this->config();
   RADIOLIB_ASSERT(state);
 
   // set mode to standby
@@ -40,19 +40,19 @@ int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
   RADIOLIB_ASSERT(state);
 
   // set frequency
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // set data rate
-  state = setBitRate(dr);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // set output power
-  state = setOutputPower(pwr);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // set address width
-  state = setAddressWidth(addrWidth);
+  state = setAddressWidth(cfg.addressWidth);
   RADIOLIB_ASSERT(state);
 
   // set CRC
@@ -64,6 +64,15 @@ int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
   RADIOLIB_ASSERT(state);
 
   return(state);
+}
+
+int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
+  ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = dr;
+  cfg.power = pwr;
+  cfg.addressWidth = addrWidth;
+  return(this->begin(cfg));
 }
 
 int16_t nRF24::sleep() {

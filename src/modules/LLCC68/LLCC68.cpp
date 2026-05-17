@@ -6,85 +6,168 @@ LLCC68::LLCC68(Module* mod) : SX1262(mod) {
   this->XTAL = true;
 }
 
-int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  // execute common part
-  int16_t state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
+int16_t LLCC68::begin(const SX126x::ConfigLoRa_t& cfg) {
+  int16_t state = SX126x::begin(
+    cfg.codingRate, cfg.syncWord, cfg.preambleLength,
+    cfg.tcxoVoltage, cfg.useRegulatorLDO);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // bit of a hack, but some LLCC68 chips report as "SX1261", try that
     // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
     chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
+    state = SX126x::begin(
+      cfg.codingRate, cfg.syncWord, cfg.preambleLength,
+      cfg.tcxoVoltage, cfg.useRegulatorLDO);
     RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
   }
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setSpreadingFactor(cfg.spreadingFactor);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
+  state = setBandwidth(cfg.bandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setSpreadingFactor(sf);
-  RADIOLIB_ASSERT(state);
-
-  state = setOutputPower(pwr);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(cfg.power);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
+int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+  SX126x::ConfigLoRa_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.spreadingFactor = sf;
+  cfg.codingRate = cr;
+  cfg.syncWord = syncWord;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.tcxoVoltage = tcxoVoltage;
+  cfg.useRegulatorLDO = useRegulatorLDO;
+  return(begin(cfg));
+}
+
+int16_t LLCC68::beginFSK(const SX126x::ConfigFSK_t& cfg) {
+  // execute common part
+  int16_t state = SX126x::beginFSK(
+    cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, 
+    cfg.preambleLength, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
+    // bit of a hack, but some LLCC68 chips report as "SX1261", try that
+    // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
+    chipType = RADIOLIB_SX1261_CHIP_TYPE;
+    state = SX126x::beginFSK(
+      cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, 
+      cfg.preambleLength, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+    RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
+  }
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(cfg.frequency);
+  RADIOLIB_ASSERT(state);
+
+  state = SX126x::fixPaClamping();
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   return(state);
 }
 
 int16_t LLCC68::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+  SX126x::ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.tcxoVoltage = tcxoVoltage;
+  cfg.useRegulatorLDO = useRegulatorLDO;
+  return(beginFSK(cfg));
+}
+
+int16_t LLCC68::beginBPSK(const SX126x::ConfigBPSK_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, tcxoVoltage, useRegulatorLDO);
+  int16_t state = SX126x::beginBPSK(cfg.bitRate, cfg.tcxoVoltage, cfg.useRegulatorLDO);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // bit of a hack, but some LLCC68 chips report as "SX1261", try that
     // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
     chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, tcxoVoltage, useRegulatorLDO);
+    state = SX126x::beginBPSK(cfg.bitRate, cfg.tcxoVoltage, cfg.useRegulatorLDO);
     RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
   }
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(cfg.power);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
+int16_t LLCC68::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
+  SX126x::ConfigBPSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.power = power;
+  cfg.tcxoVoltage = tcxoVoltage;
+  cfg.useRegulatorLDO = useRegulatorLDO;
+  return(beginBPSK(cfg));
+}
+
+int16_t LLCC68::beginLRFHSS(const SX126x::ConfigLRFHSS_t& cfg) {
+  // execute common part
+  int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, 
+    cfg.narrowGrid, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
+    // bit of a hack, but some LLCC68 chips report as "SX1261", try that
+    // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
+    chipType = RADIOLIB_SX1261_CHIP_TYPE;
+    state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, 
+      cfg.narrowGrid, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+    RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
+  }
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(cfg.frequency);
+  RADIOLIB_ASSERT(state);
+
+  state = SX126x::fixPaClamping();
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   return(state);
 }
 
 int16_t LLCC68::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  // execute common part
-  int16_t state = SX126x::beginLRFHSS(bw, cr, narrowGrid, tcxoVoltage, useRegulatorLDO);
-  if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
-    // bit of a hack, but some LLCC68 chips report as "SX1261", try that
-    // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
-    chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::beginLRFHSS(bw, cr, narrowGrid, tcxoVoltage, useRegulatorLDO);
-    RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
-  }
-  RADIOLIB_ASSERT(state);
-
-  // configure publicly accessible settings
-  state = setFrequency(freq);
-  RADIOLIB_ASSERT(state);
-
-  state = SX126x::fixPaClamping();
-  RADIOLIB_ASSERT(state);
-
-  state = setOutputPower(power);
-  RADIOLIB_ASSERT(state);
-
-  return(state);
+  SX126x::ConfigLRFHSS_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.codingRate = cr;
+  cfg.narrowGrid = narrowGrid;
+  cfg.power = power;
+  cfg.tcxoVoltage = tcxoVoltage;
+  cfg.useRegulatorLDO = useRegulatorLDO;
+  return(beginLRFHSS(cfg));
 }
 
 int16_t LLCC68::setBandwidth(float bw) {

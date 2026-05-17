@@ -62,11 +62,21 @@ class STM32WLx : public SX1262 {
     };
 
     // basic methods
+    
+    /*!
+      \copydoc SX1262::begin
+    */
+    int16_t begin(const SX126x::ConfigLoRa_t& config) override;
 
     /*!
       \copydoc SX1262::begin
     */
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false) override;
+    
+    /*!
+      \copydoc SX1262::beginFSK
+    */
+    int16_t beginFSK(const SX126x::ConfigFSK_t& config) override;
 
     /*!
       \copydoc SX1262::beginFSK

@@ -79,7 +79,13 @@ void setup() {
 
   // begin radio on home channel
   Serial.print(F("[SX1278] Initializing ... "));
-  int state = radio.begin(channels[0]);
+  #if (__cplusplus >= 201402L)
+  int state = radio.begin({.frequency = channels[0]});
+  #else
+  SX127x::ConfigLoRa_t config;
+  config.frequency = channels[0];
+  int state = radio.begin(config);
+  #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

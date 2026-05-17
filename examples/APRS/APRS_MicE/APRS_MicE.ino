@@ -67,11 +67,11 @@ void setup() {
   // NOTE: moved to ISM band on purpose
   //       DO NOT transmit in APRS bands without ham radio license!
   Serial.print(F("[SX1278] Initializing ... "));
-  int state = radio.beginFSK();
+  int state = radio.beginFSK({});
 
   // when using one of the non-LoRa modules for AX.25
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
-  // int state = radio.begin();
+  // int state = radio.begin({});
 
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

@@ -31,6 +31,16 @@ class SX1262: public SX126x {
 
     /*!
       \brief Initialization method for LoRa modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    virtual int16_t begin(const SX126x::ConfigLoRa_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const SX126x::ConfigLoRa_t& config) instead.
+      \brief Initialization method for LoRa modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
       \param sf LoRa spreading factor. Defaults to 9.
@@ -49,6 +59,16 @@ class SX1262: public SX126x {
 
     /*!
       \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    virtual int16_t beginFSK(const SX126x::ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref beginFSK(const SX126x::ConfigFSK_t& config) instead.
+      \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 5.0 kHz.
@@ -62,10 +82,19 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
     /*!
       \brief Initialization method for BPSK modem.
-      NOTE: Proceed with caution! BPSK support in SX126x is epxerimental and poorly documented!
+      \param config Initialization configuration.
+      \details This method initializes the BPSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    virtual int16_t beginBPSK(const SX126x::ConfigBPSK_t& config);
+
+    /*!
+      \brief Initialization method for BPSK modem.
+      NOTE: Proceed with caution! BPSK support in SX126x is experimental and poorly documented!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 600 bps, only 100 and 600 bps is supported
       \param power Output power in dBm. Defaults to 10 dBm.
@@ -76,8 +105,18 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     virtual int16_t beginBPSK(float freq = 434.0, float br = 0.6, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
-    
+
     /*!
+      \brief Initialization method for LR-FHSS modem.
+      \param config Initialization configuration.
+      \details This method initializes the LR-FHSS modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    virtual int16_t beginLRFHSS(const SX126x::ConfigLRFHSS_t& config);
+
+    /*!
+      \deprecated Use \ref beginLRFHSS(const SX126x::ConfigLRFHSS_t& config) instead.
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz.

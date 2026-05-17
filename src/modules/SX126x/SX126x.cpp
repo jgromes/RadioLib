@@ -424,9 +424,9 @@ int16_t SX126x::scanChannel() {
   return(this->scanChannel(cfg));
 }
 
-int16_t SX126x::scanChannel(const ChannelScanConfig_t &config) {
+int16_t SX126x::scanChannel(const ChannelScanConfig_t &cfg) {
   // set mode to CAD
-  int state = startChannelScan(config);
+  int state = startChannelScan(cfg);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -588,7 +588,7 @@ int16_t SX126x::startChannelScan() {
   return(this->startChannelScan(cfg));
 }
 
-int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
+int16_t SX126x::startChannelScan(const ChannelScanConfig_t &cfg) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -602,7 +602,7 @@ int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(getIrqMapped(config.cad.irqFlags), getIrqMapped(config.cad.irqMask));
+  state = setDioIrqParams(getIrqMapped(cfg.cad.irqFlags), getIrqMapped(cfg.cad.irqMask));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -610,7 +610,7 @@ int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  state = setCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout);
+  state = setCad(cfg.cad.symNum, cfg.cad.detPeak, cfg.cad.detMin, cfg.cad.exitMode, cfg.cad.timeout);
   return(state);
 }
 

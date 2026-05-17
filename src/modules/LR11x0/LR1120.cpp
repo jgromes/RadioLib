@@ -7,43 +7,82 @@ LR1120::LR1120(Module* mod) : LR11x0(mod) {
   chipType = RADIOLIB_LR11X0_DEVICE_LR1120;
 }
 
-int16_t LR1120::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR1120::begin(const LR11x0::ConfigLoRa_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::begin(bw, sf, cr, syncWord, preambleLength, tcxoVoltage, freq > 1000.0f);
+  int16_t state = LR11x0::begin(cfg.bandwidth, cfg.spreadingFactor, 
+    cfg.codingRate, cfg.syncWord, cfg.preambleLength, cfg.tcxoVoltage);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(cfg.power);
+  return(state);
+}
+
+int16_t LR1120::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  LR11x0::ConfigLoRa_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.spreadingFactor = sf;
+  cfg.codingRate = cr;
+  cfg.syncWord = syncWord;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.tcxoVoltage = tcxoVoltage;
+  return(begin(cfg));
+}
+
+int16_t LR1120::beginGFSK(const LR11x0::ConfigGFSK_t& cfg) {
+  // execute common part
+  int16_t state = LR11x0::beginGFSK(cfg.bitRate, cfg.frequencyDeviation, 
+    cfg.receiverBandwidth, cfg.preambleLength, cfg.tcxoVoltage);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(cfg.frequency);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(cfg.power);
   return(state);
 }
 
 int16_t LR1120::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
+  LR11x0::ConfigGFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.tcxoVoltage = tcxoVoltage;
+  return(beginGFSK(cfg));
+}
+
+int16_t LR1120::beginLRFHSS(const LR11x0::ConfigLRFHSS_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::beginGFSK(br, freqDev, rxBw, preambleLength, tcxoVoltage);
+  int16_t state = LR11x0::beginLRFHSS(cfg.bandwidth, cfg.bandwidth, 
+    cfg.narrowGrid, cfg.tcxoVoltage);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(cfg.power);
   return(state);
 }
 
 int16_t LR1120::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-  // execute common part
-  int16_t state = LR11x0::beginLRFHSS(bw, cr, narrowGrid, tcxoVoltage);
-  RADIOLIB_ASSERT(state);
-
-  // configure publicly accessible settings
-  state = setFrequency(freq);
-  RADIOLIB_ASSERT(state);
-
-  state = setOutputPower(power);
-  return(state);
+  LR11x0::ConfigLRFHSS_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.codingRate = cr;
+  cfg.narrowGrid = narrowGrid;
+  cfg.power = power;
+  cfg.tcxoVoltage = tcxoVoltage;
+  return(beginLRFHSS(cfg));
 }
 
 int16_t LR1120::setFrequency(float freq) {

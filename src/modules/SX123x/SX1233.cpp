@@ -6,7 +6,7 @@ SX1233::SX1233(Module* mod) : SX1231(mod) {
 
 }
 
-int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
+int16_t SX1233::begin(const RF69::ConfigFSK_t& cfg) {
   // set module properties
   Module* mod = this->getMod();
   mod->init();
@@ -39,33 +39,33 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX1233");
 
   // configure settings not accessible by API
-  int16_t state = config();
+  int16_t state = this->config();
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tRF69");
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
   this->rxBandwidth = 125.0;
-  state = setBitRate(br);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
-  state = setRxBandwidth(rxBw);
+  state = setRxBandwidth(cfg.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
-  state = setFrequencyDeviation(freqDev);
+  state = setFrequencyDeviation(cfg.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // configure default preamble length
-  state = setPreambleLength(preambleLen);
+  state = setPreambleLength(cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
@@ -75,9 +75,7 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 
   // set default packet length mode
   state = variablePacketLengthMode();
-  if (state != RADIOLIB_ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // SX123x V2a only
   if(this->chipRevision == RADIOLIB_SX123X_CHIP_REVISION_2_A) {
@@ -91,6 +89,17 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   }
 
   return(RADIOLIB_ERR_NONE);
+}
+
+int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
+  RF69::ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLen;
+  return(this->begin(cfg));
 }
 
 int16_t SX1233::setBitRate(float br) {

@@ -38,7 +38,7 @@ void setup() {
 
   // initialize nRF24 with default settings
   Serial.print(F("[nRF24] Initializing ... "));
-  int state = radio.begin();
+  int state = radio.begin({});
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

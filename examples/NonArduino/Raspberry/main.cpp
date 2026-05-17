@@ -37,7 +37,7 @@ SX1261 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
 int main(int argc, char** argv) {
   // initialize just like with Arduino
   printf("[SX1261] Initializing ... ");
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state != RADIOLIB_ERR_NONE) {
     printf("failed, code %d\n", state);
     return(1);

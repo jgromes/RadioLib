@@ -494,6 +494,34 @@ class RF69: public PhysicalLayer {
     // basic methods
 
     /*!
+      \brief Configuration for begin() method.
+    */
+    struct ConfigFSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = RADIOLIB_RF69_DEFAULT_FREQ;
+      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+      float bitRate = RADIOLIB_RF69_DEFAULT_BR;
+      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
+      float frequencyDeviation = RADIOLIB_RF69_DEFAULT_FREQDEV;
+      /*! \brief FSK receiver bandwidth in kHz. Defaults to 125.0 kHz. */
+      float receiverBandwidth = RADIOLIB_RF69_DEFAULT_RXBW;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = RADIOLIB_RF69_DEFAULT_POWER;
+      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+      uint16_t preambleLength = RADIOLIB_RF69_DEFAULT_PREAMBLELEN;
+    };
+
+    /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t begin(const ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
       \brief Initialization method.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.

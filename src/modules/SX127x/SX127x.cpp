@@ -261,8 +261,8 @@ int16_t SX127x::scanChannel() {
   return(scanChannel(cfg));
 }
 
-int16_t SX127x::scanChannel(const ChannelScanConfig_t &config) {
-  (void)config;
+int16_t SX127x::scanChannel(const ChannelScanConfig_t &cfg) {
+  (void)cfg;
 
   // start CAD
   int16_t state = startChannelScan();
@@ -591,8 +591,8 @@ int16_t SX127x::startChannelScan() {
   return(startChannelScan(cfg));
 }
 
-int16_t SX127x::startChannelScan(const ChannelScanConfig_t &config) {
-  (void)config;
+int16_t SX127x::startChannelScan(const ChannelScanConfig_t &cfg) {
+  (void)cfg;
 
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {

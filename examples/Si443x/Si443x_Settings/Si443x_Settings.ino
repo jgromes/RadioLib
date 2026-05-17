@@ -46,7 +46,7 @@ void setup() {
 
   // initialize Si4432 with default settings
   Serial.print(F("[Si4432] Initializing ... "));
-  int state = radio1.begin();
+  int state = radio1.begin({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -63,7 +63,27 @@ void setup() {
   // Rx bandwidth:                335.5 kHz
   // output power:                17 dBm
   // preamble length:             32 bits
-  state = radio2.begin(868.0, 200.0, 60.0, 335.5, 17, 32);
+  #if (__cplusplus >= 201402L)
+    // with C++14 or newer, you can use named argument lists
+    state = radio2.begin({
+      .frequency = 868.0,
+      .bitRate = 200.0,
+      .frequencyDeviation = 60.0,
+      .receiverBandwidth = 335.5,
+      .power = 17,
+      .preambleLength = 32
+    });
+  #else
+    // with C++11 or older, named argument lists are unsupported
+    Si443x::ConfigFSK_t config;
+    config.frequency = 868.0;
+    config.bitRate = 200.0;
+    config.frequencyDeviation = 60.0;
+    config.receiverBandwidth = 335.5;
+    config.power = 17;
+    config.preambleLength = 32;
+    state = radio2.begin(config);
+  #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

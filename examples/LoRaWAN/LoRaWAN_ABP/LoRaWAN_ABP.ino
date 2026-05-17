@@ -38,7 +38,7 @@ void setup() {
   Serial.println(F("\nSetup ... "));
 
   Serial.println(F("Initialise the radio"));
-  int state = radio.begin();
+  int state = radio.begin({});
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
   
   Serial.println(F("Initialise LoRaWAN Network credentials"));

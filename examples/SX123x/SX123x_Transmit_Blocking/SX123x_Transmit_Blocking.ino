@@ -41,7 +41,7 @@ void setup() {
 
   // initialize SX1231 with default settings
   Serial.print(F("[SX1231] Initializing ... "));
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

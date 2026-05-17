@@ -8,7 +8,7 @@ RF69::RF69(Module* module) : PhysicalLayer() {
   this->mod = module;
 }
 
-int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLen) {
+int16_t RF69::begin(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -40,32 +40,32 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr,
   }
 
   // configure settings not accessible by API
-  int16_t state = config();
+  int16_t state = this->config();
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
-  this->rxBandwidth = rxBw;
-  state = setBitRate(br);
+  this->rxBandwidth = cfg.receiverBandwidth;
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
-  state = setRxBandwidth(rxBw);
+  state = setRxBandwidth(cfg.receiverBandwidth);
   RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
-  state = setFrequencyDeviation(freqDev);
+  state = setFrequencyDeviation(cfg.frequencyDeviation);
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(pwr);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
   // configure default preamble length
-  state = setPreambleLength(preambleLen);
+  state = setPreambleLength(cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // set default packet length mode
@@ -90,6 +90,17 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr,
   RADIOLIB_ASSERT(state);
 
   return(state);
+}
+
+int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLen) {
+  ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = pwr;
+  cfg.preambleLength = preambleLen;
+  return(this->begin(cfg));
 }
 
 void RF69::reset() {

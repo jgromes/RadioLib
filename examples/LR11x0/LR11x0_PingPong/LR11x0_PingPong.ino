@@ -76,7 +76,7 @@ void setup() {
 
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));
-  int state = radio.begin();
+  int state = radio.begin({});
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

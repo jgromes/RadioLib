@@ -6,42 +6,54 @@ SX1272::SX1272(Module* mod) : SX127x(mod) {
 
 }
 
-int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
+int16_t SX1272::begin(const SX127x::ConfigLoRa_t& cfg) {
   // execute common part
   uint8_t version = RADIOLIB_SX1272_CHIP_VERSION;
-  int16_t state = SX127x::begin(&version, 1, syncWord, preambleLength);
+  int16_t state = SX127x::begin(&version, 1, cfg.syncWord, cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setBandwidth(bw);
+  state = setBandwidth(cfg.bandwidth);
   RADIOLIB_ASSERT(state);
 
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setSpreadingFactor(sf);
+  state = setSpreadingFactor(cfg.spreadingFactor);
   RADIOLIB_ASSERT(state);
 
-  state = setCodingRate(cr);
+  state = setCodingRate(cfg.codingRate);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
-  state = setGain(gain);
+  state = setGain(cfg.gain);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
   state = setCRC(true);
-  RADIOLIB_ASSERT(state);
-
   return(state);
 }
 
-int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
+int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
+  SX127x::ConfigLoRa_t cfg;
+  cfg.frequency = freq;
+  cfg.bandwidth = bw;
+  cfg.spreadingFactor = sf;
+  cfg.codingRate = cr;
+  cfg.syncWord = syncWord;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.gain = gain;
+  return(begin(cfg));
+}
+
+int16_t SX1272::beginFSK(const SX127x::ConfigFSK_t& cfg) {
   // execute common part
   uint8_t version = RADIOLIB_SX1272_CHIP_VERSION;
-  int16_t state = SX127x::beginFSK(&version, 1, freqDev, rxBw, preambleLength, enableOOK);
+  int16_t state = SX127x::beginFSK(&version, 1, cfg.frequencyDeviation, 
+    cfg.receiverBandwidth, cfg.preambleLength, cfg.enableOOK);
   RADIOLIB_ASSERT(state);
 
   // configure settings not accessible by API
@@ -49,16 +61,16 @@ int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
-  state = setBitRate(br);
+  state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(cfg.power);
   RADIOLIB_ASSERT(state);
 
-  if(enableOOK) {
+  if(cfg.enableOOK) {
     state = setDataShapingOOK(RADIOLIB_SHAPING_NONE);
     RADIOLIB_ASSERT(state);
   } else {
@@ -68,9 +80,19 @@ int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 
   // set publicly accessible settings that are not a part of begin method
   state = setCRC(true);
-  RADIOLIB_ASSERT(state);
-
   return(state);
+}
+
+int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
+  SX127x::ConfigFSK_t cfg;
+  cfg.frequency = freq;
+  cfg.bitRate = br;
+  cfg.frequencyDeviation = freqDev;
+  cfg.receiverBandwidth = rxBw;
+  cfg.power = power;
+  cfg.preambleLength = preambleLength;
+  cfg.enableOOK = enableOOK;
+  return(beginFSK(cfg));
 }
 
 void SX1272::reset() {

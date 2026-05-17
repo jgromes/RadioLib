@@ -44,7 +44,7 @@ void setup() {
   // now we can use "radio" to access the features
   // specific to that radio type, such as the begin() method
   Serial.print(F("[Radio] Initializing ... "));
-  int state = radio.begin();
+  int state = radio.begin({});
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

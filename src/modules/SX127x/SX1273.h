@@ -25,6 +25,16 @@ class SX1273: public SX1272 {
     // basic methods
 
     /*!
+      \brief Initialization method for LoRa modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t begin(const SX127x::ConfigLoRa_t& config) override;
+
+    /*!
+      \deprecated Use \ref begin(const SX127x::ConfigLoRa_t& config) instead.
       \brief %LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
       \param freq Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.
       \param bw %LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz.

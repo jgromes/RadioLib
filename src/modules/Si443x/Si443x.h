@@ -569,6 +569,24 @@ class Si443x: public PhysicalLayer {
     // basic methods
 
     /*!
+      \brief Configuration for begin() method.
+    */
+    struct ConfigFSK_t {
+      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+      float frequency = 434.0;
+      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+      float bitRate = 4.8;
+      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
+      float frequencyDeviation = 5.0;
+      /*! \brief FSK receiver bandwidth in kHz. Defaults to 181.1 kHz. */
+      float receiverBandwidth = 181.1;
+      /*! \brief Output power in dBm. Defaults to 10 dBm. */
+      int8_t power = 10;
+      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+      uint16_t preambleLength = 16;
+    };
+
+    /*!
       \brief Initialization method.
       \param br Bit rate of the FSK transmission in kbps (kilobits per second).
       \param freqDev Frequency deviation of the FSK transmission in kHz.
