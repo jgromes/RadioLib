@@ -32,7 +32,7 @@ class Si4430: public Si4432 {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t begin(const Si443x::ConfigFSK_t& config);
+    int16_t begin(const Si443x::ConfigFSK_t& config) override;
 
     /*!
       \deprecated Use \ref begin(const Si443x::ConfigFSK_t& config) instead.
