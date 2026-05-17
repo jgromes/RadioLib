@@ -31,7 +31,7 @@ class LLCC68: public SX1262 {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    int16_t begin(const SX126x::ConfigLoRa_t& config);
+    int16_t begin(const SX126x::ConfigLoRa_t& config) override;
 
     /*!
       \brief Initialization method for LoRa modem.
@@ -58,7 +58,7 @@ class LLCC68: public SX1262 {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginFSK(const SX126x::ConfigFSK_t& config);
+    int16_t beginFSK(const SX126x::ConfigFSK_t& config) override;
     
     /*!
       \brief Initialization method for FSK modem.
@@ -83,7 +83,7 @@ class LLCC68: public SX1262 {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginBPSK(const SX126x::ConfigBPSK_t& config);
+    int16_t beginBPSK(const SX126x::ConfigBPSK_t& config) override;
 
     /*!
       \brief Initialization method for BPSK modem.
@@ -106,7 +106,7 @@ class LLCC68: public SX1262 {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(const SX126x::ConfigLRFHSS_t& config);
+    int16_t beginLRFHSS(const SX126x::ConfigLRFHSS_t& config) override;
 
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!

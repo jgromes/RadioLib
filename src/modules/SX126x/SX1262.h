@@ -90,7 +90,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginBPSK(const SX126x::ConfigBPSK_t& config);
+    virtual int16_t beginBPSK(const SX126x::ConfigBPSK_t& config);
 
     /*!
       \brief Initialization method for BPSK modem.
@@ -113,7 +113,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(const SX126x::ConfigLRFHSS_t& config);
+    virtual int16_t beginLRFHSS(const SX126x::ConfigLRFHSS_t& config);
 
     /*!
       \deprecated Use \ref beginLRFHSS(const SX126x::ConfigLRFHSS_t& config) instead.
