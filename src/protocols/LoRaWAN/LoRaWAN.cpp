@@ -1896,7 +1896,12 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // MHDR(1) - DevAddr(4) - FCtrl(1) - FCnt(2) - FOpts - Payload - MIC(4)
   // potentially also an FPort, will find out next
-  uint8_t payLen = downlinkMsgLen - 1 - 4 - 1 - 2 - fOptsLen - 4;
+  // guard against integer underflow when downlinkMsgLen is too short
+  uint8_t minLen = 1 + 4 + 1 + 2 + fOptsLen + 4;
+  if(downlinkMsgLen < minLen) {
+    return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
+  }
+  uint8_t payLen = downlinkMsgLen - minLen;
 
   // in LoRaWAN v1.1, a frame is a Network frame if there is no Application payload
   // i.e.: either no payload at all (empty frame or FOpts only), or MAC only payload
