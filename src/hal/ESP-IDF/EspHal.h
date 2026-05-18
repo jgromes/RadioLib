@@ -3,49 +3,33 @@
 
 #if defined(ESP_PLATFORM)
 
-// include RadioLib
 #include <RadioLib.h>
 
-// include all the dependencies
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp32/rom/gpio.h"
-#include "soc/rtc.h"
-#include "soc/dport_reg.h"
-#include "soc/spi_reg.h"
-#include "soc/spi_struct.h"
 #include "driver/gpio.h"
-#include "hal/gpio_hal.h"
-#include "esp_timer.h"
-#include "esp_log.h"
-
-// this example only works on ESP32 and is unlikely to work on ESP32S2/S3 etc.
-// if you need high portability, you should probably use Arduino anyway ...
-#if CONFIG_IDF_TARGET_ESP32 == 0
-  #error This HAL only supports ESP32 targets. Support for ESP32S2/S3 etc. can be added by adjusting this file to user needs.
-#endif
-
-// define Arduino-style macros
-#define LOW                         (0x0)
-#define HIGH                        (0x1)
-#define INPUT                       (0x01)
-#define OUTPUT                      (0x03)
-#define RISING                      (0x01)
-#define FALLING                     (0x02)
-#define NOP()                       asm volatile ("nop")
-
-#define MATRIX_DETACH_OUT_SIG       (0x100)
-#define MATRIX_DETACH_IN_LOW_PIN    (0x30)
+#include "driver/spi_master.h"
 
 /*!
   \class EspHal
   \brief ESP-IDF hardware abstraction layer implementation for RadioLib.
-  This implementation drives SPI by poking the ESP32 peripheral registers
-  directly. ESP32 only.
+
+  Uses public ESP-IDF driver APIs (esp_driver_gpio, esp_driver_spi) and is
+  therefore portable across all ESP32 variants supported by ESP-IDF
+  (ESP32, ESP32-S2, ESP32-S3, ESP32-C3, ESP32-C6, ESP32-H2, ESP32-P4, ...).
 */
 class EspHal : public RadioLibHal {
   public:
-    EspHal(int8_t sck, int8_t miso, int8_t mosi);
+    /*!
+      \brief Constructor.
+      \param sck SPI clock pin.
+      \param miso SPI MISO pin.
+      \param mosi SPI MOSI pin.
+      \param host SPI host to use. Defaults to SPI2_HOST.
+      \param clockHz SPI clock frequency in Hz. Defaults to 2 MHz to match
+                     the prior register-poking HAL implementation.
+    */
+    EspHal(int8_t sck, int8_t miso, int8_t mosi,
+           spi_host_device_t host = SPI2_HOST,
+           int clockHz = 2 * 1000 * 1000);
 
     void init() override;
     void term() override;
@@ -69,13 +53,18 @@ class EspHal : public RadioLibHal {
     void spiEndTransaction() override;
     void spiEnd() override;
 
-    uint8_t spiTransferByte(uint8_t b);
+    void yield() override;
+    void pullUpDown(uint32_t pin, bool enable, bool up) override;
 
   private:
     int8_t spiSCK;
     int8_t spiMISO;
     int8_t spiMOSI;
-    spi_dev_t* spi = (volatile spi_dev_t *)(DR_REG_SPI2_BASE);
+    spi_host_device_t spiHost;
+    int spiClockHz;
+
+    spi_device_handle_t spiDevice = nullptr;
+    spi_transaction_t spiTrans = {};
 };
 
 #endif // ESP_PLATFORM

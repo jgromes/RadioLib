@@ -20,7 +20,7 @@ if(ESP_PLATFORM)
   idf_component_register(
     SRCS ${RADIOLIB_SOURCES}
     INCLUDE_DIRS . src
-    REQUIRES esp_driver_gpio esp_timer
+    REQUIRES esp_driver_gpio esp_driver_spi esp_timer
   )
 
   return()
