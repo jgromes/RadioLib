@@ -17,7 +17,7 @@
 #include <RadioLib.h>
 
 // include the hardware abstraction layer
-#include "EspHal.h"
+#include "hal/ESP-IDF/EspHal.h"
 
 // create a new instance of the HAL class
 EspHal* hal = new EspHal(5, 19, 27);

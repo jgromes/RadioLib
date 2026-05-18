@@ -10,6 +10,7 @@ RadioLib	KEYWORD1
 Module	KEYWORD1
 RadioLibHal	KEYWORD1
 ArduinoHal	KEYWORD1
+EspHal	KEYWORD1
 
 # modules
 CC1101	KEYWORD1
