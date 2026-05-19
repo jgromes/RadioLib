@@ -162,7 +162,7 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   LR2021PaTableEntry_t* table = this->paOptTable[this->highFreq] ? this->paOptTable[this->highFreq] : defaultTables[this->highFreq];
   
   // update PA config
-  LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[power + 19] : &table[power + 9];
+  const LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[power + 19] : &table[power + 9];
   state = setPaConfig(this->highFreq, 
     RADIOLIB_LR2021_PA_LF_MODE_FSM, 
     this->highFreq ? RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED : paCfg->paDutyCycle, 
