@@ -11,7 +11,7 @@
 // maximum number of allowed frontend calibration attempts
 #define RADIOLIB_LR2021_MAX_CAL_ATTEMPTS    (10)
 
-static const LR2021::paTableEntry_t paOptTableLf[32] = {
+static const LR2021PaTableEntry_t paOptTableLf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
   { .paDutyCycle = 1, .paSlices = 1, .paVal = 8 },
   { .paDutyCycle = 2, .paSlices = 2, .paVal = 1 },
   { .paDutyCycle = 2, .paSlices = 2, .paVal = 3 },
@@ -46,7 +46,7 @@ static const LR2021::paTableEntry_t paOptTableLf[32] = {
   { .paDutyCycle = 6, .paSlices = 7, .paVal = 35 },
 };
 
-static const LR2021::paTableEntry_t paOptTableHf[32] = {
+static const LR2021PaTableEntry_t paOptTableHf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
   { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -38 }, // -19
   { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -36 }, // -18
   { .paDutyCycle = 0, .paSlices = RADIOLIB_LR2021_PA_LF_SLICES_UNUSED, .paVal = -34 }, // -17
@@ -151,8 +151,18 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   RADIOLIB_ASSERT(state);
   
   //! \TODO: [LR2021] how and when to configure OCP?
+
+  // poitners to default tables
+  LR2021PaTableEntry_t* defaultTables[] = { 
+    const_cast<LR2021PaTableEntry_t*>(paOptTableLf),
+    const_cast<LR2021PaTableEntry_t*>(paOptTableHf),
+  };
+
+  // if the user pointers are not set, use the appropriate (LF/HF) default table
+  LR2021PaTableEntry_t* table = this->paOptTable[this->highFreq] ? this->paOptTable[this->highFreq] : defaultTables[this->highFreq];
+  
   // update PA config
-  const LR2021::paTableEntry_t* paCfg = this->highFreq ? &paOptTableHf[power + 19] : &paOptTableLf[power + 9];
+  LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[power + 19] : &table[power + 9];
   state = setPaConfig(this->highFreq, 
     RADIOLIB_LR2021_PA_LF_MODE_FSM, 
     this->highFreq ? RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED : paCfg->paDutyCycle, 
@@ -163,6 +173,10 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   // set output power
   state = setTxParams(paCfg->paVal, roundRampTime(rampTimeUs));
   return(state);
+}
+
+void LR2021::setPaTable(LR2021PaTableEntry_t* table, bool highFreq) {
+  this->paOptTable[highFreq] = table;
 }
 
 int16_t LR2021::checkOutputPower(int8_t power, int8_t* clipped) {
