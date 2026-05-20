@@ -1,7 +1,7 @@
 /*
   RadioLib SX127x Ping-Pong Example
 
-  This example is intended to run on two SX126x radios,
+  This example is intended to run on two SX127x radios,
   and send packets between the two.
 
   For default module settings, see the wiki page

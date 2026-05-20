@@ -1,7 +1,7 @@
 /*
   RadioLib SX128x Blocking Receive Example
 
-  This example listens for LoRa transmissions using SX126x Lora modules.
+  This example listens for LoRa transmissions using SX128x Lora modules.
   To successfully receive data, the following settings have to be the same
   on both transmitter and receiver:
   - carrier frequency
