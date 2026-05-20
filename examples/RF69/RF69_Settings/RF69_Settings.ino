@@ -44,9 +44,11 @@ Radio radio3 = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize RF69 with default settings
+  // initialize RF69 at 434 MHz
   Serial.print(F("[RF69] Initializing ... "));
-  int state = radio1.begin({});
+  RF69::ConfigFSK_t config;
+  config.frequency = 434;
+  int state = radio1.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -63,7 +65,16 @@ void setup() {
   // Rx bandwidth:                        250.0 kHz
   // output power:                        17 dBm
   // preamble length:                     32 bits
-  #if (__cplusplus >= 201402L)
+  #if (__cplusplus < 201402L)
+    RF69::ConfigFSK_t config;
+    config.frequency = 868.0;
+    config.bitRate = 300.0;
+    config.frequencyDeviation = 60.0;
+    config.receiverBandwidth = 250.0;
+    config.power = 17;
+    config.preambleLength = 32;
+    state = radio2.begin(config);
+  #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
       .frequency = 868.0,
@@ -73,16 +84,6 @@ void setup() {
       .power = 17,
       .preambleLength = 32
     });
-  #else
-    // with C++11 or older, named argument lists are unsupported
-    RF69::ConfigFSK_t config;
-    config.frequency = 868.0;
-    config.bitRate = 300.0;
-    config.frequencyDeviation = 60.0;
-    config.receiverBandwidth = 250.0;
-    config.power = 17;
-    config.preambleLength = 32;
-    state = radio2.begin(config);
   #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

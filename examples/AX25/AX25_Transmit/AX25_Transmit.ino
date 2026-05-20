@@ -50,19 +50,19 @@ void setup() {
   // carrier frequency:           434.0 MHz
   // bit rate:                    1.2 kbps (1200 baud 2-FSK AX.25)
   // frequency deviation:         0.5 kHz  (1200 baud 2-FSK AX.25)
-  #if (__cplusplus >= 201402L)
-  int state = radio.beginFSK({
-    .frequency = 434.0, 
-    .bitRate = 1.2, 
-    .frequencyDeviation = 0.5
-  });
-  #else
   SX127x::ConfigFSK_t config;
   config.frequency = 434.0;
   config.bitRate = 1.2;
   config.receiverBandwidth = 0.5;
   int state = radio.beginFSK(config);
-  #endif
+  // for C++14 and newer, you can use initializer lists
+  /*
+  int state = radio.beginFSK({
+    .frequency = 434.0, 
+    .bitRate = 1.2, 
+    .frequencyDeviation = 0.5
+  });
+  */
 
   // when using one of the non-LoRa modules for AX.25
   // (RF69, CC1101,, Si4432 etc.), use the basic begin() method

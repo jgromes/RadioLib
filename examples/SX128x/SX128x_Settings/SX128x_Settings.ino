@@ -49,9 +49,11 @@ Radio radio3 = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1280 with default settings
+  // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
-  int state = radio1.begin({});
+  SX128x::ConfigLoRa_t config;
+  config.frequency = 2400;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -73,7 +75,17 @@ void setup() {
   // output power:                2 dBm
   // preamble length:             20 symbols
   state = radio2.begin(2450.0, 1625.0, 7, 5, 0x12, 2, 20);
-  #if (__cplusplus >= 201402L)
+  #if (__cplusplus < 201402L)
+    SX128x::ConfigLoRa_t config;
+    config.frequency = 2450.0;
+    config.bandwidth = 1625.0;
+    config.spreadingFactor = 7;
+    config.codingRate = 5;
+    config.syncWord = 0x12;
+    config.power = 2;
+    config.preambleLength = 20;
+    state = radio2.begin(config);
+  #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
       .frequency = 2450.0,
@@ -84,17 +96,6 @@ void setup() {
       .power = 2,
       .preambleLength = 20
     });
-  #else
-    // with C++11 or older, named argument lists are unsupported
-    SX128x::ConfigLoRa_t config;
-    config.frequency = 2450.0;
-    config.bandwidth = 1625.0;
-    config.spreadingFactor = 7;
-    config.codingRate = 5;
-    config.syncWord = 0x12;
-    config.power = 2;
-    config.preambleLength = 20;
-    state = radio2.begin(config);
   #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
