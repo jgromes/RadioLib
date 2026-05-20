@@ -53,7 +53,7 @@ void setup() {
   Serial.print(F("[SX1280] Initializing ... "));
   SX128x::ConfigLoRa_t config1;
   config1.frequency = 2400;
-  int state = radio.begin(config1);
+  int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
