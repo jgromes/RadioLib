@@ -66,7 +66,7 @@ void setup() {
 
   // when using one of the non-LoRa modules for AX.25
   // (RF69, CC1101,, Si4432 etc.), use the basic begin() method
-  // int state = radio.begin({});
+  // int state = radio.begin(config);
 
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

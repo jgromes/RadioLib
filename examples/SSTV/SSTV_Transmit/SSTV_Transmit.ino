@@ -107,7 +107,7 @@ void setup() {
 
   // when using one of the non-LoRa modules for SSTV
   // (RF69, SX1231 etc.), use the basic begin() method
-  // int state = radio.begin({});
+  // int state = radio.begin(config);
 
   // initialize SSTV client
   Serial.print(F("[SSTV] Initializing ... "));
