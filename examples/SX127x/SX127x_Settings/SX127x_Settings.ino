@@ -50,9 +50,9 @@ void setup() {
 
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
-  SX127x::ConfigLoRa_t config;
-  config.frequency = 434;
-  int state = radio.begin(config);
+  SX127x::ConfigLoRa_t config1;
+  config1.frequency = 434;
+  int state = radio.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -79,16 +79,16 @@ void setup() {
   // preamble length:             20 symbols
   // amplifier gain:              1 (maximum gain)
   #if (__cplusplus < 201402L)
-    SX127x::ConfigLoRa_t config;
-    config.frequency = 915.0;
-    config.bandwidth = 500.0;
-    config.spreadingFactor = 6;
-    config.codingRate = 5;
-    config.syncWord = 0x34;
-    config.power = 2;
-    config.preambleLength = 20;
-    config.gain = 1;
-    state = radio2.begin(config);
+    SX127x::ConfigLoRa_t config2;
+    config2.frequency = 915.0;
+    config2.bandwidth = 500.0;
+    config2.spreadingFactor = 6;
+    config2.codingRate = 5;
+    config2.syncWord = 0x34;
+    config2.power = 2;
+    config2.preambleLength = 20;
+    config2.gain = 1;
+    state = radio2.begin(config2);
   #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({

@@ -48,9 +48,9 @@ void setup() {
 
   // initialize CC1101 at 434 MHz
   Serial.print(F("[CC1101] Initializing ... "));
-  CC1101::ConfigFSK_t config;
-  config.frequency = 434;
-  int state = radio1.begin(config);
+  CC1101::ConfigFSK_t config1;
+  config1.frequency = 434;
+  int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -68,14 +68,14 @@ void setup() {
   // output power:                        7 dBm
   // preamble length:                     32 bits
   #if (__cplusplus < 201402L)
-    CC1101::ConfigFSK_t config;
-    config.frequency = 434.0;
-    config.bitRate = 32.0;
-    config.frequencyDeviation = 60.0;
-    config.receiverBandwidth = 250.0;
-    config.power = 7;
-    config.preambleLength = 32;
-    state = radio2.begin(config);
+    CC1101::ConfigFSK_t config2;
+    config2.frequency = 434.0;
+    config2.bitRate = 32.0;
+    config2.frequencyDeviation = 60.0;
+    config2.receiverBandwidth = 250.0;
+    config2.power = 7;
+    config2.preambleLength = 32;
+    state = radio2.begin(config2);
   #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
