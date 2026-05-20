@@ -59,7 +59,7 @@ void setup() {
 
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
-  SX126x::ConfigFSK_t config;
+  SX127x::ConfigFSK_t config;
   config.frequency = 434;
   int state = radio.beginFSK(config);
 
