@@ -246,6 +246,120 @@ enum RadioModeType_t {
   RADIOLIB_RADIO_MODE_SLEEP,
 };
 
+#define RADIOLIB_LORA_SYNC_WORD_PRIVATE                         (0x12UL << 0)   //  7     0     LoRa sync word: private network
+#define RADIOLIB_LORA_SYNC_WORD_PUBLIC                          (0x34UL << 0)   //  7     0                     public network (LoRaWAN)
+
+#define RADIOLIB_LR_FHSS_CR_5_6                                 (0x00UL << 0)   //  7     0     LR-FHSS coding rate: 5/6
+#define RADIOLIB_LR_FHSS_CR_2_3                                 (0x01UL << 0)   //  7     0                          2/3
+#define RADIOLIB_LR_FHSS_CR_1_2                                 (0x02UL << 0)   //  7     0                          1/2
+#define RADIOLIB_LR_FHSS_CR_1_3                                 (0x03UL << 0)   //  7     0                          1/3
+#define RADIOLIB_LR_FHSS_BW_39_06                               (0x00UL << 0)   //  7     0     LR-FHSS bandwidth: 39.06 kHz
+#define RADIOLIB_LR_FHSS_BW_85_94                               (0x01UL << 0)   //  7     0                        85.94 kHz
+#define RADIOLIB_LR_FHSS_BW_136_72                              (0x02UL << 0)   //  7     0                        136.72 kHz
+#define RADIOLIB_LR_FHSS_BW_183_59                              (0x03UL << 0)   //  7     0                        183.59 kHz
+#define RADIOLIB_LR_FHSS_BW_335_94                              (0x04UL << 0)   //  7     0                        335.94 kHz
+#define RADIOLIB_LR_FHSS_BW_386_72                              (0x05UL << 0)   //  7     0                        386.72 kHz
+#define RADIOLIB_LR_FHSS_BW_722_66                              (0x06UL << 0)   //  7     0                        722.66 kHz
+#define RADIOLIB_LR_FHSS_BW_773_44                              (0x07UL << 0)   //  7     0                        773.44 kHz
+#define RADIOLIB_LR_FHSS_BW_1523_4                              (0x08UL << 0)   //  7     0                        1523.4 kHz
+#define RADIOLIB_LR_FHSS_BW_1574_2                              (0x09UL << 0)   //  7     0                        1574.2 kHz
+
+#define RADIOLIB_FLRC_BR_2600                                   (0x00UL << 0)   //  7     0     bitrate/bandwidth: 2600 kbps, 2666 kHz
+#define RADIOLIB_FLRC_BR_2080                                   (0x01UL << 0)   //  7     0                        2080 kbps, 2222 kHz
+#define RADIOLIB_FLRC_BR_1300                                   (0x02UL << 0)   //  7     0                        1300 kbps, 1333 kHz
+#define RADIOLIB_FLRC_BR_1040                                   (0x03UL << 0)   //  7     0                        1040 kbps, 1333 kHz
+#define RADIOLIB_FLRC_BR_650                                    (0x04UL << 0)   //  7     0                        650 kbps, 888 kHz
+#define RADIOLIB_FLRC_BR_520                                    (0x05UL << 0)   //  7     0                        520 kbps, 769 kHz
+#define RADIOLIB_FLRC_BR_325                                    (0x06UL << 0)   //  7     0                        325 kbps, 444 kHz
+#define RADIOLIB_FLRC_BR_260                                    (0x07UL << 0)   //  7     0                        260 kbps, 444 kHz
+#define RADIOLIB_FLRC_CR_1_2                                    (0x00UL << 0)   //  7     0     coding rate: 1/2
+#define RADIOLIB_FLRC_CR_3_4                                    (0x01UL << 0)   //  7     0                  3/4
+#define RADIOLIB_FLRC_CR_1_0                                    (0x02UL << 0)   //  7     0                  1 (un-coded)
+#define RADIOLIB_FLRC_CR_2_3                                    (0x03UL << 0)   //  7     0                  2/3
+
+struct ConfigLoRa_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+  float frequency = 434.0;
+  /*! \brief LoRa bandwidth in kHz. Defaults to 125.0 kHz. */
+  float bandwidth = 125.0;
+  /*! \brief LoRa spreading factor. Defaults to 9. */
+  uint8_t spreadingFactor = 9;
+  /*! \brief LoRa coding rate. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
+  is undocumented and not recommended without your own FEC. */
+  uint8_t codingRate = 7;
+  /*! \brief 1-byte LoRa sync word. Defaults to RADIOLIB_LORA_SYNC_WORD_PRIVATE (0x12). */
+  uint8_t syncWord = RADIOLIB_LORA_SYNC_WORD_PRIVATE;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+  /*! \brief LoRa preamble length in symbols. Defaults to 8 symbols. */
+  uint16_t preambleLength = 8;
+};
+
+struct ConfigFSK_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+  float frequency = 434.0;
+  /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+  float bitRate = 4.8;
+  /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
+  float frequencyDeviation = 5.0;
+  /*! \brief FSK receiver bandwidth in kHz. Defaults to 125.0 kHz. */
+  float receiverBandwidth = 125.0;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+  /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+  uint16_t preambleLength = 16;
+};
+
+struct ConfigBPSK_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+  float frequency = 434.0;
+  /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+  float bitRate = 4.8;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+};
+
+struct ConfigOOK_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+  float frequency = 434.0;
+  /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
+  float bitRate = 4.8;
+  /*! \brief FSK receiver bandwidth in kHz. Defaults to 125.0 kHz. */
+  float receiverBandwidth = 125.0;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+  /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
+  uint16_t preambleLength = 16;
+};
+
+struct ConfigLRFHSS_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+  float frequency = 434.0;
+  /*! \brief LR-FHSS bandwidth, one of RADIOLIB_LR_FHSS_BW_* values. Defaults to 722.66 kHz. */
+  uint8_t bandwidth = RADIOLIB_LR_FHSS_BW_722_66;
+  /*! \brief LR-FHSS coding rate, one of RADIOLIB_LR_FHSS_CR_* values. Defaults to 2/3 coding rate. */
+  uint8_t codingRate = RADIOLIB_LR_FHSS_CR_2_3;
+  /*! \brief Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid. */
+  bool narrowGrid = true;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+};
+
+struct ConfigFLRC_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
+  float frequency = 434.0;
+  /*! \brief FLRC bit rate in kbps. Defaults to 650 kbps. */
+  float bitRate = 650.0;
+  /*! \brief FLRC coding rate. Defaults to RADIOLIB_FLRC_CR_2_3 (coding rate 2/3). */
+  uint8_t codingRate = RADIOLIB_FLRC_CR_2_3;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+  /*! \brief FLRC preamble length in bits. Defaults to 16 bits. */
+  uint16_t preambleLength = 16;
+  /*! \brief Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5. */
+  uint8_t dataShaping = RADIOLIB_SHAPING_0_5;
+};
+
 /*!
   \class PhysicalLayer
 
