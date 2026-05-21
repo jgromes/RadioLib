@@ -661,11 +661,6 @@ int16_t SX126x::invertIQ(bool enable) {
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
-  // check if TCXO is enabled at all
-  if(this->XTAL) {
-    return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
-  }
-
   // set mode to standby
   standby();
 
@@ -679,7 +674,7 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
     return(reset(true));
   }
 
-  // check alowed voltage values
+  // check allowed voltage values
   uint8_t data[4];
   if(fabsf(voltage - 1.6f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_6;

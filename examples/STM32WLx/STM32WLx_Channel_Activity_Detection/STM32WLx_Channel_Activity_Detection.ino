@@ -43,9 +43,9 @@ void setup() {
   // initialize STM32WL with default settings
   // except frequency and TCXO voltage suitable for Nucleo WL55JC1
   Serial.print(F("[STM32WL] Initializing ... "));
-  SX126x::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = 868.0;
-  config.tcxoVoltage = 1.7;
+  radio.tcxoVoltage = 1.7;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

@@ -36,10 +36,10 @@ class SX1262: public SX126x {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    virtual int16_t begin(const SX126x::ConfigLoRa_t& config);
+    virtual int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const SX126x::ConfigLoRa_t& config) instead.
+      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
       \brief Initialization method for LoRa modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
@@ -64,10 +64,10 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginFSK(const SX126x::ConfigFSK_t& config);
+    virtual int16_t beginFSK(const ConfigFSK_t& config);
 
     /*!
-      \deprecated Use \ref beginFSK(const SX126x::ConfigFSK_t& config) instead.
+      \deprecated Use \ref beginFSK(const ConfigFSK_t& config) instead.
       \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
@@ -90,7 +90,7 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginBPSK(const SX126x::ConfigBPSK_t& config);
+    virtual int16_t beginBPSK(const ConfigBPSK_t& config);
 
     /*!
       \brief Initialization method for BPSK modem.
@@ -113,10 +113,10 @@ class SX1262: public SX126x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginLRFHSS(const SX126x::ConfigLRFHSS_t& config);
+    virtual int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
 
     /*!
-      \deprecated Use \ref beginLRFHSS(const SX126x::ConfigLRFHSS_t& config) instead.
+      \deprecated Use \ref beginLRFHSS(const ConfigLRFHSS_t& config) instead.
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz.

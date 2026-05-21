@@ -3,20 +3,15 @@
 
 LLCC68::LLCC68(Module* mod) : SX1262(mod) {
   chipType = RADIOLIB_LLCC68_CHIP_TYPE;
-  this->XTAL = true;
 }
 
-int16_t LLCC68::begin(const SX126x::ConfigLoRa_t& cfg) {
-  int16_t state = SX126x::begin(
-    cfg.codingRate, cfg.syncWord, cfg.preambleLength,
-    cfg.tcxoVoltage, cfg.useRegulatorLDO);
+int16_t LLCC68::begin(const ConfigLoRa_t& cfg) {
+  int16_t state = SX126x::begin(cfg.codingRate, cfg.syncWord, cfg.preambleLength);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // bit of a hack, but some LLCC68 chips report as "SX1261", try that
     // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
     chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::begin(
-      cfg.codingRate, cfg.syncWord, cfg.preambleLength,
-      cfg.tcxoVoltage, cfg.useRegulatorLDO);
+    state = SX126x::begin(cfg.codingRate, cfg.syncWord, cfg.preambleLength);
     RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
   }
   RADIOLIB_ASSERT(state);
@@ -41,7 +36,7 @@ int16_t LLCC68::begin(const SX126x::ConfigLoRa_t& cfg) {
 }
 
 int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigLoRa_t cfg;
+  ConfigLoRa_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.spreadingFactor = sf;
@@ -49,23 +44,19 @@ int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   cfg.syncWord = syncWord;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(begin(cfg));
 }
 
-int16_t LLCC68::beginFSK(const SX126x::ConfigFSK_t& cfg) {
+int16_t LLCC68::beginFSK(const ConfigFSK_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginFSK(
-    cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, 
-    cfg.preambleLength, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  int16_t state = SX126x::beginFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // bit of a hack, but some LLCC68 chips report as "SX1261", try that
     // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
     chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::beginFSK(
-      cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, 
-      cfg.preambleLength, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+    state = SX126x::beginFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
     RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
   }
   RADIOLIB_ASSERT(state);
@@ -84,26 +75,26 @@ int16_t LLCC68::beginFSK(const SX126x::ConfigFSK_t& cfg) {
 }
 
 int16_t LLCC68::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigFSK_t cfg;
+  ConfigFSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;
   cfg.receiverBandwidth = rxBw;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(beginFSK(cfg));
 }
 
-int16_t LLCC68::beginBPSK(const SX126x::ConfigBPSK_t& cfg) {
+int16_t LLCC68::beginBPSK(const ConfigBPSK_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginBPSK(cfg.bitRate, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  int16_t state = SX126x::beginBPSK(cfg.bitRate);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // bit of a hack, but some LLCC68 chips report as "SX1261", try that
     // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
     chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::beginBPSK(cfg.bitRate, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+    state = SX126x::beginBPSK(cfg.bitRate);
     RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
   }
   RADIOLIB_ASSERT(state);
@@ -122,25 +113,23 @@ int16_t LLCC68::beginBPSK(const SX126x::ConfigBPSK_t& cfg) {
 }
 
 int16_t LLCC68::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigBPSK_t cfg;
+  ConfigBPSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.power = power;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(beginBPSK(cfg));
 }
 
-int16_t LLCC68::beginLRFHSS(const SX126x::ConfigLRFHSS_t& cfg) {
+int16_t LLCC68::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, 
-    cfg.narrowGrid, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // bit of a hack, but some LLCC68 chips report as "SX1261", try that
     // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
     chipType = RADIOLIB_SX1261_CHIP_TYPE;
-    state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, 
-      cfg.narrowGrid, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+    state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
     RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
   }
   RADIOLIB_ASSERT(state);
@@ -159,14 +148,14 @@ int16_t LLCC68::beginLRFHSS(const SX126x::ConfigLRFHSS_t& cfg) {
 }
 
 int16_t LLCC68::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigLRFHSS_t cfg;
+  ConfigLRFHSS_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.codingRate = cr;
   cfg.narrowGrid = narrowGrid;
   cfg.power = power;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(beginLRFHSS(cfg));
 }
 

@@ -61,7 +61,7 @@ void setup() {
 
   // initialize SX1262 at 434 MHz
   Serial.print(F("[SX1262] Initializing ... "));
-  SX126x::ConfigLRFHSS_t config;
+  ConfigLRFHSS_t config;
   config.frequency = 434;
   int state = radio.beginLRFHSS(config);
   if (state == RADIOLIB_ERR_NONE) {

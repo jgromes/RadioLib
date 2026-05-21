@@ -62,107 +62,23 @@ class SX126x: public PhysicalLayer {
     explicit SX126x(Module* mod);
 
     /*!
-      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
-    */
-    bool XTAL;
-
-    /*!
       \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
     */
-    bool standbyXOSC;
+    bool standbyXOSC = false;
+
+    /*!
+      \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0.
+    */
+    float tcxoVoltage = 1.6;
+
+    /*! 
+      \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+    */
+    bool useRegulatorLDO = false;
 
     // basic methods
-
-    /*!
-      \brief Configuration for begin() method.
-    */
-    struct ConfigLoRa_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = 434.0;
-      /*! \brief LoRa bandwidth in kHz. Defaults to 125.0 kHz. */
-      float bandwidth = 125.0;
-      /*! \brief LoRa spreading factor. Defaults to 9. */
-      uint8_t spreadingFactor = 9;
-      /*! \brief LoRa coding rate. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
-      is undocumented and not recommended without your own FEC. */
-      uint8_t codingRate = 7;
-      /*! \brief 1-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12). */
-      uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = 10;
-      /*! \brief LoRa preamble length in symbols. Defaults to 8 symbols. */
-      uint16_t preambleLength = 8;
-      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
-      float tcxoVoltage = 1.6;
-      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
-      bool useRegulatorLDO = false;
-    };
-
-    /*!
-      \brief Configuration for beginFSK() method.
-    */
-    struct ConfigFSK_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = 434.0;
-      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-      float bitRate = 4.8;
-      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
-      float frequencyDeviation = 5.0;
-      /*! \brief FSK receiver bandwidth in kHz. Defaults to 156.2 kHz. */
-      float receiverBandwidth = 156.2;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = 10;
-      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
-      uint16_t preambleLength = 16;
-      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
-      float tcxoVoltage = 1.6;
-      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
-      bool useRegulatorLDO = false;
-    };
-
-    /*!
-      \brief Configuration for beginBPSK() method.
-    */
-    struct ConfigBPSK_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = 434.0;
-      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-      float bitRate = 4.8;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = 10;
-      /*! \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
-      float tcxoVoltage = 1.6;
-      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
-      bool useRegulatorLDO = false;
-    };
-
-    /*!
-      \brief Configuration for beginLRFHSS() method.
-    */
-    struct ConfigLRFHSS_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = 434.0;
-      /*! \brief LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values. Defaults to 722.66 kHz. */
-      uint8_t bandwidth = RADIOLIB_SX126X_LR_FHSS_BW_722_66;
-      /*! \brief LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values. Defaults to 2/3 coding rate. */
-      uint8_t codingRate = RADIOLIB_SX126X_LR_FHSS_CR_2_3;
-      /*! \brief Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid. */
-      bool narrowGrid = true;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = 10;
-      /*! \brief TCXO reference voltage to be set. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set SX126x::XTAL to true. */
-      float tcxoVoltage = 1.6;
-      /*! \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. */
-      bool useRegulatorLDO = false;
-    };
 
     /*!
       \brief Initialization method for LoRa modem.
@@ -170,11 +86,9 @@ class SX126x: public PhysicalLayer {
       is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -183,31 +97,25 @@ class SX126x: public PhysicalLayer {
       \param rxBw Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0,
       46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
       \param preambleLength FSK preamble length in bits. Allowed values range from 0 to 65535.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for BPSK modem.
       \param br FSK bit rate in kbps. Only 100 and 600 bps is supported.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginBPSK(float br, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginBPSK(float br);
 
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values.
       \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid);
 
     /*!
       \brief Sets LR-FHSS configuration.
@@ -1023,7 +931,7 @@ class SX126x: public PhysicalLayer {
     size_t lrFhssFrameHopsRem = 0;
     size_t lrFhssHopNum = 0;
 
-    int16_t modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem);
+    int16_t modSetup(uint8_t modem);
     int16_t config(uint8_t modem);
     bool findChip(const char* verStr);
     int16_t setPacketMode(uint8_t mode, uint8_t len);

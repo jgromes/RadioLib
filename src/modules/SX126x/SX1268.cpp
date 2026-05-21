@@ -45,10 +45,8 @@ SX1268::SX1268(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1268_CHIP_TYPE;
 }
 
-int16_t SX1268::begin(const SX126x::ConfigLoRa_t& cfg) {
-  int16_t state = SX126x::begin(
-    cfg.codingRate, cfg.syncWord, cfg.preambleLength,
-    cfg.tcxoVoltage, cfg.useRegulatorLDO);
+int16_t SX1268::begin(const ConfigLoRa_t& cfg) {
+  int16_t state = SX126x::begin(cfg.codingRate, cfg.syncWord, cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -71,7 +69,7 @@ int16_t SX1268::begin(const SX126x::ConfigLoRa_t& cfg) {
 }
 
 int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigLoRa_t cfg;
+  ConfigLoRa_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.spreadingFactor = sf;
@@ -79,16 +77,14 @@ int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   cfg.syncWord = syncWord;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(begin(cfg));
 }
 
-int16_t SX1268::beginFSK(const SX126x::ConfigFSK_t& cfg) {
+int16_t SX1268::beginFSK(const ConfigFSK_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginFSK(
-    cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, 
-    cfg.preambleLength, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  int16_t state = SX126x::beginFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -105,21 +101,21 @@ int16_t SX1268::beginFSK(const SX126x::ConfigFSK_t& cfg) {
 }
 
 int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigFSK_t cfg;
+  ConfigFSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;
   cfg.receiverBandwidth = rxBw;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(beginFSK(cfg));
 }
 
-int16_t SX1268::beginBPSK(const SX126x::ConfigBPSK_t& cfg) {
+int16_t SX1268::beginBPSK(const ConfigBPSK_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginBPSK(cfg.bitRate, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  int16_t state = SX126x::beginBPSK(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -136,19 +132,18 @@ int16_t SX1268::beginBPSK(const SX126x::ConfigBPSK_t& cfg) {
 }
 
 int16_t SX1268::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigBPSK_t cfg;
+  ConfigBPSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.power = power;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(beginBPSK(cfg));
 }
 
-int16_t SX1268::beginLRFHSS(const SX126x::ConfigLRFHSS_t& cfg) {
+int16_t SX1268::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // execute common part
-  int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, 
-    cfg.narrowGrid, cfg.tcxoVoltage, cfg.useRegulatorLDO);
+  int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -165,14 +160,14 @@ int16_t SX1268::beginLRFHSS(const SX126x::ConfigLRFHSS_t& cfg) {
 }
 
 int16_t SX1268::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  SX126x::ConfigLRFHSS_t cfg;
+  ConfigLRFHSS_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.codingRate = cr;
   cfg.narrowGrid = narrowGrid;
   cfg.power = power;
-  cfg.tcxoVoltage = tcxoVoltage;
-  cfg.useRegulatorLDO = useRegulatorLDO;
+  this->tcxoVoltage = tcxoVoltage;
+  this->useRegulatorLDO = useRegulatorLDO;
   return(beginLRFHSS(cfg));
 }
 

@@ -66,7 +66,7 @@ class STM32WLx : public SX1262 {
     /*!
       \copydoc SX1262::begin
     */
-    int16_t begin(const SX126x::ConfigLoRa_t& config) override;
+    int16_t begin(const ConfigLoRa_t& config) override;
 
     /*!
       \copydoc SX1262::begin
@@ -76,7 +76,7 @@ class STM32WLx : public SX1262 {
     /*!
       \copydoc SX1262::beginFSK
     */
-    int16_t beginFSK(const SX126x::ConfigFSK_t& config) override;
+    int16_t beginFSK(const ConfigFSK_t& config) override;
 
     /*!
       \copydoc SX1262::beginFSK

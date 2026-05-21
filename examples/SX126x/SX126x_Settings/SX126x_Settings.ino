@@ -54,7 +54,7 @@ void setup() {
 
   // initialize SX1262 at 434 MHz
   Serial.print(F("[SX1262] Initializing ... "));
-  SX126x::ConfigLoRa_t config1;
+  ConfigLoRa_t config1;
   config1.frequency = 434;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
@@ -78,7 +78,7 @@ void setup() {
   // output power:                2 dBm
   // preamble length:             20 symbols
   #if (__cplusplus < 201402L)
-    SX126x::ConfigLoRa_t config2;
+    ConfigLoRa_t config2;
     config2.frequency = 915.0;
     config2.bandwidth = 500.0;
     config2.spreadingFactor = 6;
