@@ -688,7 +688,7 @@ class LR11x0: public LRxxxx {
       \param info Pointer to LR11x0VersionInfo_t structure to populate.
       \returns \ref status_codes
     */
-    int16_t getVersionInfo(LR11x0VersionInfo_t* info);
+    virtual int16_t getVersionInfo(LR11x0VersionInfo_t* info);
     
     /*!
       \brief Method to upload new firmware image to the device.
