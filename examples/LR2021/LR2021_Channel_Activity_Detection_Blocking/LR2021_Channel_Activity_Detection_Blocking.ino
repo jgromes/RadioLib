@@ -46,7 +46,7 @@ void setup() {
 
   // initialize LR2021 at 434 MHz
   Serial.print(F("[LR2021] Initializing ... "));
-  LR2021::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = 434;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
