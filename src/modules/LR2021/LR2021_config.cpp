@@ -318,11 +318,6 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
 }
 
 int16_t LR2021::setTCXO(float voltage, uint32_t delay) {
-  // check if TCXO is enabled at all
-  if(this->XTAL) {
-    return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
-  }
-
   // set mode to standby
   standby();
 

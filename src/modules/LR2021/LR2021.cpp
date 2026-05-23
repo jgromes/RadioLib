@@ -21,9 +21,9 @@ LR2021::LR2021(Module* mod) : LRxxxx(mod) {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR2021_IRQ_TIMEOUT;
 }
 
-int16_t LR2021::begin(const LR2021::ConfigLoRa_t& cfg) {
+int16_t LR2021::begin(const ConfigLoRa_t& cfg) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency, cfg.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -54,7 +54,7 @@ int16_t LR2021::begin(const LR2021::ConfigLoRa_t& cfg) {
 }
 
 int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  LR2021::ConfigLoRa_t cfg;
+  ConfigLoRa_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.spreadingFactor = sf;
@@ -62,16 +62,16 @@ int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   cfg.syncWord = syncWord;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
+  this->tcxoVoltage = tcxoVoltage;
   return(begin(cfg));
 }
 
-int16_t LR2021::beginGFSK(const LR2021::ConfigGFSK_t& cfg) {
+int16_t LR2021::beginGFSK(const ConfigFSK_t& cfg) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
   this->frequencyDev = cfg.frequencyDeviation * 1000.0f;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency, cfg.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -109,22 +109,22 @@ int16_t LR2021::beginGFSK(const LR2021::ConfigGFSK_t& cfg) {
 }
 
 int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  LR2021::ConfigGFSK_t cfg;
+  ConfigFSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;
   cfg.receiverBandwidth = rxBw;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
+  this->tcxoVoltage = tcxoVoltage;
   return(beginGFSK(cfg));
 }
 
-int16_t LR2021::beginOOK(const LR2021::ConfigOOK_t& cfg) {
+int16_t LR2021::beginOOK(const ConfigOOK_t& cfg) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency, cfg.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_OOK);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_OOK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -159,19 +159,19 @@ int16_t LR2021::beginOOK(const LR2021::ConfigOOK_t& cfg) {
 }
     
 int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  LR2021::ConfigOOK_t cfg;
+  ConfigOOK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.receiverBandwidth = rxBw;
   cfg.power = power;
   cfg.preambleLength = preambleLength;
-  cfg.tcxoVoltage = tcxoVoltage;
+  this->tcxoVoltage = tcxoVoltage;
   return(beginOOK(cfg));
 }
 
-int16_t LR2021::beginLRFHSS(const LR2021::ConfigLRFHSS_t& cfg) {
+int16_t LR2021::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency, cfg.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // set grid spacing
@@ -190,17 +190,17 @@ int16_t LR2021::beginLRFHSS(const LR2021::ConfigLRFHSS_t& cfg) {
 }
     
 int16_t LR2021::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-  LR2021::ConfigLRFHSS_t cfg;
+  ConfigLRFHSS_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.codingRate = cr;
   cfg.narrowGrid = narrowGrid;
   cfg.power = power;
-  cfg.tcxoVoltage = tcxoVoltage;
+  this->tcxoVoltage = tcxoVoltage;
   return(beginLRFHSS(cfg));
 }
 
-int16_t LR2021::beginFLRC(const LR2021::ConfigFLRC_t& cfg) {
+int16_t LR2021::beginFLRC(const ConfigFLRC_t& cfg) {
   // initialize FLRC modulation variables
   this->bitRateFlrc = cfg.bitRate;
   this->codingRateFlrc = RADIOLIB_LR2021_FLRC_CR_3_4;
@@ -211,7 +211,7 @@ int16_t LR2021::beginFLRC(const LR2021::ConfigFLRC_t& cfg) {
   this->crcLenGFSK = 1;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency, cfg.tcxoVoltage, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -243,14 +243,14 @@ int16_t LR2021::beginFLRC(const LR2021::ConfigFLRC_t& cfg) {
 }
 
 int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage) {
-  LR2021::ConfigFLRC_t cfg;
+  ConfigFLRC_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.codingRate = cr;
   cfg.power = pwr;
   cfg.preambleLength = preambleLength;
   cfg.dataShaping = dataShaping;
-  cfg.tcxoVoltage = tcxoVoltage;
+  this->tcxoVoltage = tcxoVoltage;
   return(beginFLRC(cfg));
 }
 
@@ -724,7 +724,7 @@ Module* LR2021::getMod() {
   return(this->mod);
 }
 
-int16_t LR2021::modSetup(float freq, float tcxoVoltage, uint8_t modem) {
+int16_t LR2021::modSetup(float freq, uint8_t modem) {
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
@@ -748,8 +748,8 @@ int16_t LR2021::modSetup(float freq, float tcxoVoltage, uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0f) {
-    state = setTCXO(tcxoVoltage);
+  if(this->tcxoVoltage > 0.0f) {
+    state = setTCXO(this->tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
 
