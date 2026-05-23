@@ -837,9 +837,6 @@ class LR2021: public LRxxxx {
     // pointers to PA lookup tables - may be overridden by the user
     LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
 
-    // pointers to PA lookup tables - may be overridden by the user
-    LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
-
     int16_t modSetup(float freq, uint8_t modem);
     bool findChip(void);
     int16_t config(uint8_t modem);
