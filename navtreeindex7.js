@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"lr1120__transceiver__0101_8h.html#abc3d6c6ac5598d4ced54b6429770b305":[4,0,0,1,2,0,7,1],
 "lr1120__transceiver__0101_8h_source.html":[4,0,0,1,2,0,7],
 "lr1120__transceiver__0102_8h.html":[4,0,0,1,2,0,8],
 "lr1120__transceiver__0102_8h.html#a3e84b323eea7cc20fb619e3d48818e64":[4,0,0,1,2,0,8,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "union_data_rate__t.html#aa11056b982f023a4572dee8d6ac5f9ef":[3,0,11,2],
 "union_data_rate__t.html#ab25c3fcaf1934cd9d6d5e9820749137d":[3,0,11,1],
 "union_data_rate__t.html#abfa0cbc4b33c49435e67662b6e6027cf":[3,0,11,0],
-"union_packet_config__t.html":[3,0,59],
-"union_radio_mode_config__t.html":[3,0,72]
+"union_packet_config__t.html":[3,0,59]
 };

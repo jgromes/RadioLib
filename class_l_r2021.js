@@ -65,6 +65,7 @@ var class_l_r2021 =
     [ "setOokDetectionThreshold", "class_l_r2021.html#a4e88077f2e75c598e0ca820196d7ed9d", null ],
     [ "setOutputPower", "class_l_r2021.html#aca2599a31c088a5e8c59317ae132d4d0", null ],
     [ "setOutputPower", "class_l_r2021.html#a2d38e9fa1f3250d78482c8fb755f22a2", null ],
+    [ "setPaTable", "class_l_r2021.html#a12f0e8db918e6eb860265bfeb6518ac4", null ],
     [ "setPreambleLength", "class_l_r2021.html#abfe825d8bf2bf526058914bf99b71a92", null ],
     [ "setRfSwitchTable", "class_l_r2021.html#ab2cb23b1f2dbdcd53a140b8a53d7e776", null ],
     [ "setRxBandwidth", "class_l_r2021.html#a0af2e7efeb46334e528f691e6e03b564", null ],

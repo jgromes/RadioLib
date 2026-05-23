@@ -231,6 +231,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2d38e9fa1f3250d78482c8fb755f22a2" id="r_a2d38e9fa1f3250d78482c8fb755f22a2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a2d38e9fa1f3250d78482c8fb755f22a2">setOutputPower</a> (int8_t power, uint32_t rampTimeUs)</td></tr>
 <tr class="memdesc:a2d38e9fa1f3250d78482c8fb755f22a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (sub-GHz PA) or -19 to 12 dBm (high-frequency PA).  <br /></td></tr>
 <tr class="separator:a2d38e9fa1f3250d78482c8fb755f22a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f0e8db918e6eb860265bfeb6518ac4" id="r_a12f0e8db918e6eb860265bfeb6518ac4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a12f0e8db918e6eb860265bfeb6518ac4">setPaTable</a> (LR2021PaTableEntry_t *table, bool highFreq)</td></tr>
+<tr class="memdesc:a12f0e8db918e6eb860265bfeb6518ac4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets custom PA configuration table.  <br /></td></tr>
+<tr class="separator:a12f0e8db918e6eb860265bfeb6518ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39c82cdc7a22f252dfd36b2516ee7c49" id="r_a39c82cdc7a22f252dfd36b2516ee7c49"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a39c82cdc7a22f252dfd36b2516ee7c49">checkOutputPower</a> (int8_t power, int8_t *clipped) override</td></tr>
 <tr class="memdesc:a39c82cdc7a22f252dfd36b2516ee7c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. This method is needed for compatibility with <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536" title="Check if output power is configurable. Must be implemented in module class if the module supports it.">PhysicalLayer::checkOutputPower</a>.  <br /></td></tr>
 <tr class="separator:a39c82cdc7a22f252dfd36b2516ee7c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2818,7 +2821,44 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<p>\TODO: [<a class="el" href="class_l_r2021.html">LR2021</a>] how and when to configure OCP? \TODO: [<a class="el" href="class_l_r2021.html">LR2021</a>] Determine the optimal PA configuration</p>
+<p>\TODO: [<a class="el" href="class_l_r2021.html">LR2021</a>] how and when to configure OCP?</p>
+
+</div>
+</div>
+<a id="a12f0e8db918e6eb860265bfeb6518ac4" name="a12f0e8db918e6eb860265bfeb6518ac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12f0e8db918e6eb860265bfeb6518ac4">&#9670;&#160;</a></span>setPaTable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LR2021::setPaTable </td>
+          <td>(</td>
+          <td class="paramtype">LR2021PaTableEntry_t *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>highFreq</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets custom PA configuration table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>Pointer to user-provided PA configuration table. The table MUST containt exactly RADIOLIB_LR2021_PA_TABLE_LEN entries, one per each half-dBm step. The table is not copied, only reference to it is stored. Set to NULL to return back to the default tables. </td></tr>
+    <tr><td class="paramname">highFreq</td><td>Whether this PA configuration is for the low-frequency sub-GHz PA (false), or the high-frequency 2.4 GHz PA (true). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
