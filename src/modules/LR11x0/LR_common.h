@@ -93,11 +93,6 @@ class LRxxxx: public PhysicalLayer {
     explicit LRxxxx(Module* mod);
 
     /*!
-      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
-    */
-    bool XTAL;
-
-    /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
       \returns \ref status_codes
     */

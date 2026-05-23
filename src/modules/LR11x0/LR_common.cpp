@@ -4,7 +4,6 @@
 
 LRxxxx::LRxxxx(Module* mod) : PhysicalLayer() {
   this->mod = mod;
-  this->XTAL = false;
   this->mod->spiConfig.stream = true;
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
   this->mod->spiConfig.statusPos = 0;
