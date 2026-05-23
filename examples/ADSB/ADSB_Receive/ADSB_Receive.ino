@@ -58,7 +58,7 @@ void setup() {
   // initialize LR2021 OOK modem at 1090 MHz,
   // 2 Mbps bit rate and receiver bandwidth 3076 kHz
   Serial.print(F("[LR2021] Initializing ... "));
-  LR2021::ConfigOOK_t config;
+  ConfigOOK_t config;
   config.frequency = 1090.0;
   config.bitRate = 2000.0;
   config.receiverBandwidth = 3076.0;
