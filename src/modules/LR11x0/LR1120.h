@@ -29,10 +29,10 @@ class LR1120: public LR11x0 {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    int16_t begin(const LR11x0::ConfigLoRa_t& config);
+    int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const LR11x0::ConfigLoRa_t& config) instead.
+      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
       \brief Initialization method for LoRa modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
@@ -44,7 +44,6 @@ class LR1120: public LR11x0 {
       \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
       \returns \ref status_codes
     */
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
@@ -56,10 +55,10 @@ class LR1120: public LR11x0 {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginGFSK(const LR11x0::ConfigGFSK_t& config);
+    int16_t beginGFSK(const ConfigFSK_t& config);
 
     /*!
-      \deprecated Use \ref beginGFSK(const LR11x0::ConfigGFSK_t& config) instead.
+      \deprecated Use \ref beginGFSK(const ConfigFSK_t& config) instead.
       \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
@@ -69,7 +68,6 @@ class LR1120: public LR11x0 {
       \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
       \returns \ref status_codes
     */
     int16_t beginGFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
@@ -81,10 +79,10 @@ class LR1120: public LR11x0 {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(const LR11x0::ConfigLRFHSS_t& config);
+    int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
 
     /*!
-      \deprecated Use \ref beginLRFHSS(const LR11x0::ConfigLRFHSS_t& config) instead.
+      \deprecated Use \ref beginLRFHSS(const ConfigLRFHSS_t& config) instead.
       \brief Initialization method for LR-FHSS modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
@@ -93,7 +91,6 @@ class LR1120: public LR11x0 {
       \param power Output power in dBm. Defaults to 10 dBm.
       \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR11x0::XTAL to true.
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LRXXXX_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LRXXXX_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);

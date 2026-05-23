@@ -39,7 +39,7 @@ void setup() {
 
   // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
-  LR11x0::ConfigGFSK_t config;
+  ConfigFSK_t config;
   config.frequency = 434;
   int state = radio.beginGFSK(config);
   if (state == RADIOLIB_ERR_NONE) {

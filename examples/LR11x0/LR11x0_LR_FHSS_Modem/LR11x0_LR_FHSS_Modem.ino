@@ -40,7 +40,7 @@ void setup() {
 
   // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
-  LR11x0::ConfigLRFHSS_t config;
+  ConfigLRFHSS_t config;
   config.frequency = 434;
   int state = radio.beginLRFHSS(config);
   if (state == RADIOLIB_ERR_NONE) {
