@@ -455,6 +455,17 @@ class LR2021: public LRxxxx {
     int16_t setOutputPower(int8_t power, uint32_t rampTimeUs);
 
     /*!
+      \brief Sets custom PA configuration table.
+      \param table Pointer to user-provided PA configuration table.
+      The table MUST containt exactly RADIOLIB_LR2021_PA_TABLE_LEN entries,
+      one per each half-dBm step. The table is not copied, only reference to it is stored.
+      Set to NULL to return back to the default tables.
+      \param highFreq Whether this PA configuration is for the low-frequency sub-GHz PA (false),
+      or the high-frequency 2.4 GHz PA (true).
+    */
+    void setPaTable(LR2021PaTableEntry_t* table, bool highFreq);
+
+    /*!
       \brief Check if output power is configurable.
       This method is needed for compatibility with PhysicalLayer::checkOutputPower.
       \param power Output power in dBm, PA will be determined automatically.
@@ -822,6 +833,12 @@ class LR2021: public LRxxxx {
     // cached FLRC parameters
     uint16_t bitRateFlrc = 0;
     uint8_t codingRateFlrc = 0;
+
+    // pointers to PA lookup tables - may be overridden by the user
+    LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
+
+    // pointers to PA lookup tables - may be overridden by the user
+    LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
 
     int16_t modSetup(float freq, uint8_t modem);
     bool findChip(void);
