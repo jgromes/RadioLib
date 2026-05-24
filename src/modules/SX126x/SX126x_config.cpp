@@ -331,64 +331,66 @@ int16_t SX126x::checkDataRate(DataRate_t dr, ModemType_t modem) {
   return(state);
 }
 
+int16_t SX126x::findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val) {
+  // lookup tables to avoid comparing a whole bunch of floats
+  const uint16_t rxBwAvg[] = {
+    53, 66, 85, 107, 132, 171, 215, 264,
+    342, 430, 528, 684, 860, 1056, 1368,
+    1717, 2108, 2732, 3428, 4203,
+  };
+
+  // iterate through the table and find whether the user-provided value
+  // is lower than the pre-computed average of the adjacent bandwidth values
+  // if it is, we consider that to be a match even though the actual value is not precise
+  uint16_t rxBwInt = rxBw*10.0f;
+  for(size_t i = 0; i < (lutSize - 1); i++) {
+    if(rxBwInt < rxBwAvg[i]) {
+      *val = lut[i];
+      return(RADIOLIB_ERR_NONE);
+    }
+  }
+
+  // if nothing matched up to here, match with the last value
+  if(rxBwInt <= rxBwMax*10) {
+    *val = lut[lutSize - 1];
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+}
+
 int16_t SX126x::setRxBandwidth(float rxBw) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  // check modulation parameters
-  /*if(2 * this->frequencyDev + this->bitRate > rxBw * 1000.0) {
-    return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
-  }*/
-  this->rxBandwidthKhz = rxBw;
+  const uint8_t rxBwLut[] = {
+    RADIOLIB_SX126X_GFSK_RX_BW_4_8,
+    RADIOLIB_SX126X_GFSK_RX_BW_5_8,
+    RADIOLIB_SX126X_GFSK_RX_BW_7_3,
+    RADIOLIB_SX126X_GFSK_RX_BW_9_7,
+    RADIOLIB_SX126X_GFSK_RX_BW_11_7,
+    RADIOLIB_SX126X_GFSK_RX_BW_14_6,
+    RADIOLIB_SX126X_GFSK_RX_BW_19_5,
+    RADIOLIB_SX126X_GFSK_RX_BW_23_4,
+    RADIOLIB_SX126X_GFSK_RX_BW_29_3,
+    RADIOLIB_SX126X_GFSK_RX_BW_39_0,
+    RADIOLIB_SX126X_GFSK_RX_BW_46_9,
+    RADIOLIB_SX126X_GFSK_RX_BW_58_6,
+    RADIOLIB_SX126X_GFSK_RX_BW_78_2,
+    RADIOLIB_SX126X_GFSK_RX_BW_93_8,
+    RADIOLIB_SX126X_GFSK_RX_BW_117_3,
+    RADIOLIB_SX126X_GFSK_RX_BW_156_2,
+    RADIOLIB_SX126X_GFSK_RX_BW_187_2,
+    RADIOLIB_SX126X_GFSK_RX_BW_234_3,
+    RADIOLIB_SX126X_GFSK_RX_BW_312_0,
+    RADIOLIB_SX126X_GFSK_RX_BW_373_6,
+    RADIOLIB_SX126X_GFSK_RX_BW_467_0,
+  };
 
-  // check allowed receiver bandwidth values
-  if(fabsf(rxBw - 4.8f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_4_8;
-  } else if(fabsf(rxBw - 5.8f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_5_8;
-  } else if(fabsf(rxBw - 7.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_7_3;
-  } else if(fabsf(rxBw - 9.7f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_9_7;
-  } else if(fabsf(rxBw - 11.7f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_11_7;
-  } else if(fabsf(rxBw - 14.6f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_14_6;
-  } else if(fabsf(rxBw - 19.5f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_19_5;
-  } else if(fabsf(rxBw - 23.4f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_23_4;
-  } else if(fabsf(rxBw - 29.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_29_3;
-  } else if(fabsf(rxBw - 39.0f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_39_0;
-  } else if(fabsf(rxBw - 46.9f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_46_9;
-  } else if(fabsf(rxBw - 58.6f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_58_6;
-  } else if(fabsf(rxBw - 78.2f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_78_2;
-  } else if(fabsf(rxBw - 93.8f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_93_8;
-  } else if(fabsf(rxBw - 117.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_117_3;
-  } else if(fabsf(rxBw - 156.2f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_156_2;
-  } else if(fabsf(rxBw - 187.2f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_187_2;
-  } else if(fabsf(rxBw - 234.3f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_234_3;
-  } else if(fabsf(rxBw - 312.0f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_312_0;
-  } else if(fabsf(rxBw - 373.6f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_373_6;
-  } else if(fabsf(rxBw - 467.0f) <= 0.001f) {
-    this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_467_0;
-  } else {
-    return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-  }
+  int16_t state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 467.0f, &this->rxBandwidth);
+  RADIOLIB_ASSERT(state);
 
   // update modulation parameters
   return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
