@@ -469,10 +469,10 @@
   #define RADIOLIB_PLATFORM                           "STM32WL using STM32Cube"
   #define STM32CubeWL                                 // define a more explicit macro
 
-  #define RADIOLIB_NC                                 (0xFF)
+  #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_NONVOLATILE
-  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        (*((uint8_t *)(void *)(addr)))
-  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       (*((uint32_t *)(void *)(addr)))
+  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        (*(reinterpret_cast<uint8_t *>(reinterpret_cast<void *>(addr))))
+  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       (*(reinterpret_cast<uint32_t *>(reinterpret_cast<void *>(addr))))
   #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
 
   #undef RADIOLIB_DEBUG_PORT
