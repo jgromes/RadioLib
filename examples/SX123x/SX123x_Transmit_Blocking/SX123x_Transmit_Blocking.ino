@@ -41,7 +41,7 @@ void setup() {
 
   // initialize SX1231 at 434 MHz
   Serial.print(F("[SX1231] Initializing ... "));
-  RF69::ConfigFSK_t config;
+  ConfigFSK_t config;
   config.frequency = 434;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {

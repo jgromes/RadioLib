@@ -106,7 +106,7 @@ class SX1231: public RF69  {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t begin(const RF69::ConfigFSK_t& config);
+    virtual int16_t begin(const ConfigFSK_t& config);
 
     /*!
       \deprecated Use \ref begin(const ConfigFSK_t& config) instead.

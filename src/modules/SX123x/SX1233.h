@@ -35,7 +35,7 @@ class SX1233: public SX1231  {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    int16_t begin(const RF69::ConfigFSK_t& config) override;
+    int16_t begin(const ConfigFSK_t& config) override;
 
     /*!
       \deprecated Use \ref begin(const ConfigFSK_t& config) instead.

@@ -5,7 +5,7 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 }
 
-int16_t SX1231::begin(const RF69::ConfigFSK_t& cfg) {
+int16_t SX1231::begin(const ConfigFSK_t& cfg) {
   // set module properties
   Module* mod = this->getMod();
   mod->init();
@@ -91,7 +91,7 @@ int16_t SX1231::begin(const RF69::ConfigFSK_t& cfg) {
 }
 
 int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  RF69::ConfigFSK_t cfg;
+  ConfigFSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;

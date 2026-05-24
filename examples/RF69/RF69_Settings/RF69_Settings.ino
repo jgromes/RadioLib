@@ -46,7 +46,7 @@ void setup() {
 
   // initialize RF69 at 434 MHz
   Serial.print(F("[RF69] Initializing ... "));
-  RF69::ConfigFSK_t config1;
+  ConfigFSK_t config1;
   config1.frequency = 434;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
@@ -66,7 +66,7 @@ void setup() {
   // output power:                        17 dBm
   // preamble length:                     32 bits
   #if (__cplusplus < 201402L)
-    RF69::ConfigFSK_t config2;
+    ConfigFSK_t config2;
     config2.frequency = 868.0;
     config2.bitRate = 300.0;
     config2.frequencyDeviation = 60.0;
