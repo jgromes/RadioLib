@@ -8,7 +8,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 #include "STM32WLx.h"
 #if !RADIOLIB_EXCLUDE_STM32WLX
 
-#if defined(STM32WLxx)
+#if defined(ARDUINO_ARCH_STM32) && defined(STM32WLxx)
   #include <SubGhz.h>
 #endif
 

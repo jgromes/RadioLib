@@ -12,7 +12,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #if !RADIOLIB_EXCLUDE_STM32WLX
 
-#if defined(ARDUINO_ARCH_STM32)
+#if defined(ARDUINO_ARCH_STM32) && defined(STM32WLxx)
 
 #include "../../Module.h"
 
@@ -35,7 +35,7 @@ class STM32WLx_Module : public Module {
     STM32WLx_Module();
 };
 
-#endif  // ARDUINO_ARCH_STM32
+#endif  // ARDUINO_ARCH_STM32 && STM32WLxx
 
 #endif
 

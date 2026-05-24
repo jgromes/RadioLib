@@ -14,7 +14,10 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #include "../../Module.h"
 #include "SX1262.h"
-#include "STM32WLx_Module.h"
+
+#if defined(ARDUINO_ARCH_STM32) && defined(STM32WLxx)
+#include "hal/Arduino/Stm32wlHal.h"
+#endif
 
 /*!
   \class STM32WLx
