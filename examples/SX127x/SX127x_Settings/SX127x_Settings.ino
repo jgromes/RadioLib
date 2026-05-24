@@ -87,10 +87,11 @@ void setup() {
     config2.syncWord = 0x34;
     config2.power = 2;
     config2.preambleLength = 20;
-    config2.gain = 1;
+    radio2.gain = 1;
     state = radio2.begin(config2);
   #else
     // with C++14 or newer, you can use named argument lists
+    radio2.gain = 1;
     state = radio2.begin({
       .frequency = 915.0,
       .bandwidth = 500.0,
