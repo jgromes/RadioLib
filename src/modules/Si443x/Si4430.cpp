@@ -6,7 +6,7 @@ Si4430::Si4430(Module* mod) : Si4432(mod) {
 
 }
 
-int16_t Si4430::begin(const Si443x::ConfigFSK_t& cfg) {
+int16_t Si4430::begin(const ConfigFSK_t& cfg) {
   // execute common part
   int16_t state = Si443x::begin(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
   RADIOLIB_ASSERT(state);
@@ -21,7 +21,7 @@ int16_t Si4430::begin(const Si443x::ConfigFSK_t& cfg) {
 }
 
 int16_t Si4430::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  Si443x::ConfigFSK_t cfg;
+  ConfigFSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;

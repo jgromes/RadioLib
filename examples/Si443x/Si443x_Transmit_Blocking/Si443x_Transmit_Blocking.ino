@@ -42,7 +42,7 @@ void setup() {
 
   // initialize Si4432 at 434 MHz
   Serial.print(F("[Si4432] Initializing ... "));
-  Si443x::ConfigFSK_t config;
+  ConfigFSK_t config;
   config.frequency = 434;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
