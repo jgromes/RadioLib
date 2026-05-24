@@ -67,6 +67,7 @@ class LR11x0: public LRxxxx {
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, set this value to 0.
+      \ingroup module_config_vars
     */
     float tcxoVoltage = 1.6;
     

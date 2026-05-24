@@ -374,6 +374,12 @@ struct ConfigBLE_t {
 };
 
 /*!
+  \defgroup module_config_vars Module Hardware Configuration Variables
+  \brief A centralized list of all module configurations which are not part of the various Config_t structures.
+  When changing these values it has to be done prior to radio initialization using the begin() method!
+*/
+
+/*!
   \class PhysicalLayer
 
   \brief Provides common interface for protocols that run on %LoRa/FSK modules, such as RTTY or LoRaWAN.

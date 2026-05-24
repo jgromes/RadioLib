@@ -39,6 +39,7 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Which DIO pin is to be used as the interrupt pin.
+      \ingroup module_config_vars
     */
     uint32_t irqDioNum = 5;
 
@@ -46,6 +47,7 @@ class LR2021: public LRxxxx {
       \brief Determines the type of Lora CAD to perform, either "standard" CAD
       (same as is implemented LR11x0, SX126x and others), or a "fast" CAD if set to true.
       If there is no signal to be detected, fast CAD should return faster than standard CAD.
+      \ingroup module_config_vars
     */
     bool fastCad = false;
 
@@ -72,6 +74,7 @@ class LR2021: public LRxxxx {
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, set this value to 0.
+      \ingroup module_config_vars
     */
     float tcxoVoltage = 1.6;
 

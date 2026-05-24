@@ -199,6 +199,7 @@ class nRF24: public PhysicalLayer {
 
     /*! 
       \brief Address width in bytes. Defaults to 5 bytes.
+      \ingroup module_config_vars
     */
     uint8_t addressWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH;
 
