@@ -544,24 +544,6 @@ class CC1101: public PhysicalLayer {
     // basic methods
 
     /*!
-      \brief Configuration for begin() and beginFSK4() methods.
-    */
-    struct ConfigFSK_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = RADIOLIB_CC1101_DEFAULT_FREQ;
-      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-      float bitRate = RADIOLIB_CC1101_DEFAULT_BR;
-      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
-      float frequencyDeviation = RADIOLIB_CC1101_DEFAULT_FREQDEV;
-      /*! \brief FSK receiver bandwidth in kHz. Defaults to 58.0 kHz. */
-      float receiverBandwidth = RADIOLIB_CC1101_DEFAULT_RXBW;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = RADIOLIB_CC1101_DEFAULT_POWER;
-      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
-      uint16_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN;
-    };
-
-    /*!
       \brief Initialization method for FSK modem.
       \param config Initialization configuration.
       \details This method initializes the FSK modem with the specified configuration.

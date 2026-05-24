@@ -48,7 +48,7 @@ void setup() {
 
   // initialize CC1101 at 434 MHz
   Serial.print(F("[CC1101] Initializing ... "));
-  CC1101::ConfigFSK_t config1;
+  ConfigFSK_t config1;
   config1.frequency = 434;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
@@ -68,7 +68,7 @@ void setup() {
   // output power:                        7 dBm
   // preamble length:                     32 bits
   #if (__cplusplus < 201402L)
-    CC1101::ConfigFSK_t config2;
+    ConfigFSK_t config2;
     config2.frequency = 434.0;
     config2.bitRate = 32.0;
     config2.frequencyDeviation = 60.0;
