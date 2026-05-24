@@ -10,5 +10,5 @@ var searchData=
   ['txparamsupported_7',['txParamSupported',['../struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6',1,'LoRaWANBand_t']]],
   ['txspans_8',['txSpans',['../struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3',1,'LoRaWANBand_t']]],
   ['txwor_9',['txWoR',['../struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e',1,'LoRaWANBand_t']]],
-  ['type_10',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type'],['../structtone__t.html#af92472bf087b9a7ec0c350bd503bdd74',1,'tone_t::type']]]
+  ['type_10',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type'],['../structtone__t.html#ac8717b06ffa53eebe2aaf16f19747d40',1,'tone_t::type']]]
 ];

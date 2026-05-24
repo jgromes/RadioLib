@@ -188,8 +188,9 @@ struct&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> (
 <tr class="memitem:a0da667fe702d7b4aafaa4bf7e69ea40d" id="r_a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">setDio1Action</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <br /></td></tr>
 <tr class="separator:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6848afe4c16a47edb3e0b342a86ecdfd" id="r_a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd">clearDio1Action</a> ()</td></tr>
-<tr class="memdesc:a6848afe4c16a47edb3e0b342a86ecdfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates.  <br /></td></tr>
+<tr class="memitem:a6848afe4c16a47edb3e0b342a86ecdfd" id="r_a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memItemLeft" align="right" valign="top"><a id="a6848afe4c16a47edb3e0b342a86ecdfd" name="a6848afe4c16a47edb3e0b342a86ecdfd"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> ()</td></tr>
+<tr class="memdesc:a6848afe4c16a47edb3e0b342a86ecdfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
 <tr class="separator:a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7603aa60ae8d975eb262a4b7e2aed1d0" id="r_a7603aa60ae8d975eb262a4b7e2aed1d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7603aa60ae8d975eb262a4b7e2aed1d0">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:a7603aa60ae8d975eb262a4b7e2aed1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
@@ -1078,35 +1079,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <p>Clears interrupt service routine to call when a channel scan is finished. </p>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a6848afe4c16a47edb3e0b342a86ecdfd" name="a6848afe4c16a47edb3e0b342a86ecdfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6848afe4c16a47edb3e0b342a86ecdfd">&#9670;&#160;</a></span>clearDio1Action()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX126x::clearDio1Action </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clears interrupt service routine to call when DIO1 activates. </p>
-
-<p>Reimplemented in <a class="el" href="class_s_t_m32_w_lx.html#a4b6cb18e61fb1de49d989748216d3512">STM32WLx</a>.</p>
 
 </div>
 </div>
@@ -2587,8 +2559,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_s_t_m32_w_lx.html#ad96d18fea2a7fffa959b64c8c5d993a8">STM32WLx</a>.</p>
-
 </div>
 </div>
 <a id="ae46e08d579f4acbad029b4cd4f4fffaf" name="ae46e08d579f4acbad029b4cd4f4fffaf"></a>
@@ -3218,10 +3188,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdoc">Transmission mode.</div><div class="ttdef"><b>Definition</b> Module.h:119</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdoc">Idle mode.</div><div class="ttdef"><b>Definition</b> Module.h:113</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdoc">Receive mode.</div><div class="ttdef"><b>Definition</b> Module.h:116</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdoc">Description of RF switch pin states for a single mode. See setRfSwitchTable for details.</div><div class="ttdef"><b>Definition</b> Module.h:89</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdoc">Transmission mode.</div><div class="ttdef"><b>Definition</b> Module.h:115</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdoc">Idle mode.</div><div class="ttdef"><b>Definition</b> Module.h:109</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdoc">Receive mode.</div><div class="ttdef"><b>Definition</b> Module.h:112</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdoc">Description of RF switch pin states for a single mode. See setRfSwitchTable for details.</div><div class="ttdef"><b>Definition</b> Module.h:85</div></div>
 </div><!-- fragment -->   
 </div>
 </div>

@@ -14,7 +14,7 @@ var searchData=
   ['phioffset_11',['phiOffset',['../struct_l_r11x0_wifi_result_full__t.html#a37d3203c39ca6d6f0ab42662a09bab13',1,'LR11x0WifiResultFull_t']]],
   ['physicallayer_12',['physicallayer',['../class_physical_layer.html',1,'PhysicalLayer'],['../class_physical_layer.html#afc972a84153977d6ccd9e116b6181ad4',1,'PhysicalLayer::PhysicalLayer()']]],
   ['pihal_13',['PiHal',['../class_pi_hal.html',1,'']]],
-  ['pinmode_14',['pinmode',['../class_stm32wlx_hal.html#a70dd9f6fb6c0307e2d9d363ce6d7f2a2',1,'Stm32wlxHal::pinMode()'],['../class_pi_hal.html#ad2986ed862d4c429d6527bd54e472530',1,'PiHal::pinMode()'],['../class_radio_lib_hal.html#af01b4e5e01352b99ce4329c9f9f8433b',1,'RadioLibHal::pinMode(uint32_t pin, uint32_t mode)=0']]],
+  ['pinmode_14',['pinmode',['../class_pi_hal.html#ad2986ed862d4c429d6527bd54e472530',1,'PiHal::pinMode()'],['../class_radio_lib_hal.html#af01b4e5e01352b99ce4329c9f9f8433b',1,'RadioLibHal::pinMode(uint32_t pin, uint32_t mode)=0']]],
   ['pintointerrupt_15',['pinToInterrupt',['../class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00',1,'RadioLibHal']]],
   ['poly_16',['poly',['../class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d',1,'RadioLibCRC']]],
   ['position_20of_20bit_20field_20widths_20in_20module_3a_3aspiconfig_20width_20array_17',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]],

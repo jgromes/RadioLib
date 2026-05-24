@@ -92,8 +92,6 @@ var annotated_dup =
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", "struct_s_s_t_v_mode__t" ],
     [ "StandbyConfig_t", "struct_standby_config__t.html", "struct_standby_config__t" ],
     [ "STM32WLx", "class_s_t_m32_w_lx.html", "class_s_t_m32_w_lx" ],
-    [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", null ],
-    [ "Stm32wlxHal", "class_stm32wlx_hal.html", "class_stm32wlx_hal" ],
     [ "SX1231", "class_s_x1231.html", "class_s_x1231" ],
     [ "SX1233", "class_s_x1233.html", "class_s_x1233" ],
     [ "SX1261", "class_s_x1261.html", "class_s_x1261" ],

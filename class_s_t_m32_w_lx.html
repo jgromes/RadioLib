@@ -130,9 +130,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac0e8787dbb8e8aaa172b089ace6eaa09" id="r_ac0e8787dbb8e8aaa172b089ace6eaa09"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ac0e8787dbb8e8aaa172b089ace6eaa09">STM32WLx</a> (<a class="el" href="class_s_t_m32_w_lx___module.html">STM32WLx_Module</a> *mod)</td></tr>
-<tr class="memdesc:ac0e8787dbb8e8aaa172b089ace6eaa09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:ac0e8787dbb8e8aaa172b089ace6eaa09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace55504c02a5b4d8ccf879f015f36daf" id="r_ace55504c02a5b4d8ccf879f015f36daf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ace55504c02a5b4d8ccf879f015f36daf">STM32WLx</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
+<tr class="memdesc:ace55504c02a5b4d8ccf879f015f36daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="separator:ace55504c02a5b4d8ccf879f015f36daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a326d469313286aa165730cf41d4994" id="r_a8a326d469313286aa165730cf41d4994"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a8a326d469313286aa165730cf41d4994">begin</a> (float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false) override</td></tr>
 <tr class="memdesc:a8a326d469313286aa165730cf41d4994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.    <br /></td></tr>
 <tr class="separator:a8a326d469313286aa165730cf41d4994"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,12 +142,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9afbde1c466907598974cc3923784c5b" id="r_a9afbde1c466907598974cc3923784c5b"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b">setOutputPower</a> (int8_t power) override</td></tr>
 <tr class="memdesc:a9afbde1c466907598974cc3923784c5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -17 to 22 dBm.  <br /></td></tr>
 <tr class="separator:a9afbde1c466907598974cc3923784c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad96d18fea2a7fffa959b64c8c5d993a8" id="r_ad96d18fea2a7fffa959b64c8c5d993a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ad96d18fea2a7fffa959b64c8c5d993a8">setDio1Action</a> (void(*func)(void)) override</td></tr>
-<tr class="memdesc:ad96d18fea2a7fffa959b64c8c5d993a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1/2/3 activates.  <br /></td></tr>
-<tr class="separator:ad96d18fea2a7fffa959b64c8c5d993a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b6cb18e61fb1de49d989748216d3512" id="r_a4b6cb18e61fb1de49d989748216d3512"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a4b6cb18e61fb1de49d989748216d3512">clearDio1Action</a> () override</td></tr>
-<tr class="memdesc:a4b6cb18e61fb1de49d989748216d3512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1/2/3 activates.  <br /></td></tr>
-<tr class="separator:a4b6cb18e61fb1de49d989748216d3512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad23dafdeb21b97165be74ef8f093866c" id="r_ad23dafdeb21b97165be74ef8f093866c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ad23dafdeb21b97165be74ef8f093866c">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:ad23dafdeb21b97165be74ef8f093866c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
 <tr class="separator:ad23dafdeb21b97165be74ef8f093866c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,6 +255,13 @@ struct&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> (
 <tr class="memitem:a44cd61126a92193d8dde86bcb836f269 inherit pub_methods_class_s_x126x" id="r_a44cd61126a92193d8dde86bcb836f269"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a44cd61126a92193d8dde86bcb836f269">hopLRFHSS</a> ()</td></tr>
 <tr class="memdesc:a44cd61126a92193d8dde86bcb836f269 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle LR-FHSS hop. When using LR-FHSS in interrupt-driven mode, this method MUST be called each time an interrupt is triggered!  <br /></td></tr>
 <tr class="separator:a44cd61126a92193d8dde86bcb836f269 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da667fe702d7b4aafaa4bf7e69ea40d inherit pub_methods_class_s_x126x" id="r_a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">setDio1Action</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a0da667fe702d7b4aafaa4bf7e69ea40d inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <br /></td></tr>
+<tr class="separator:a0da667fe702d7b4aafaa4bf7e69ea40d inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6848afe4c16a47edb3e0b342a86ecdfd inherit pub_methods_class_s_x126x" id="r_a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memItemLeft" align="right" valign="top">
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> ()</td></tr>
+<tr class="memdesc:a6848afe4c16a47edb3e0b342a86ecdfd inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
+<tr class="separator:a6848afe4c16a47edb3e0b342a86ecdfd inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7603aa60ae8d975eb262a4b7e2aed1d0 inherit pub_methods_class_s_x126x" id="r_a7603aa60ae8d975eb262a4b7e2aed1d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7603aa60ae8d975eb262a4b7e2aed1d0">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:a7603aa60ae8d975eb262a4b7e2aed1d0 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
 <tr class="separator:a7603aa60ae8d975eb262a4b7e2aed1d0 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -623,8 +624,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac0e8787dbb8e8aaa172b089ace6eaa09" name="ac0e8787dbb8e8aaa172b089ace6eaa09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0e8787dbb8e8aaa172b089ace6eaa09">&#9670;&#160;</a></span>STM32WLx()</h2>
+<a id="ace55504c02a5b4d8ccf879f015f36daf" name="ace55504c02a5b4d8ccf879f015f36daf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace55504c02a5b4d8ccf879f015f36daf">&#9670;&#160;</a></span>STM32WLx()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -632,7 +633,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
         <tr>
           <td class="memname">STM32WLx::STM32WLx </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_s_t_m32_w_lx___module.html">STM32WLx_Module</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_module.html">Module</a> *&#160;</td>
           <td class="paramname"><em>mod</em></td><td>)</td>
           <td></td>
         </tr>
@@ -642,7 +643,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_s_t_m32_w_lx___module.html">STM32WLx_Module</a> that will be used to communicate with the radio. </td></tr>
+    <tr><td class="paramname">mod</td><td>Instance of STM32WLx_Module that will be used to communicate with the radio. </td></tr>
   </table>
   </dd>
 </dl>
@@ -866,35 +867,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
-<a id="a4b6cb18e61fb1de49d989748216d3512" name="a4b6cb18e61fb1de49d989748216d3512"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b6cb18e61fb1de49d989748216d3512">&#9670;&#160;</a></span>clearDio1Action()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void STM32WLx::clearDio1Action </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clears interrupt service routine to call when DIO1/2/3 activates. </p>
-
-<p>Reimplemented from <a class="el" href="class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd">SX126x</a>.</p>
-
-</div>
-</div>
 <a id="aad377b018cf65ceb6b23cac523ba96b4" name="aad377b018cf65ceb6b23cac523ba96b4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad377b018cf65ceb6b23cac523ba96b4">&#9670;&#160;</a></span>clearPacketReceivedAction()</h2>
 
@@ -986,42 +958,6 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="ad96d18fea2a7fffa959b64c8c5d993a8" name="ad96d18fea2a7fffa959b64c8c5d993a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad96d18fea2a7fffa959b64c8c5d993a8">&#9670;&#160;</a></span>setDio1Action()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void STM32WLx::setDio1Action </td>
-          <td>(</td>
-          <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>func</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when DIO1/2/3 activates. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">SX126x</a>.</p>
 
 </div>
 </div>
