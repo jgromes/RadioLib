@@ -39,7 +39,7 @@ void setup() {
 
   // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
-  SX128x::ConfigFLRC_t config;
+  ConfigFLRC_t config;
   config.frequency = 2400;
   int state = radio.beginFLRC(config);
   if (state == RADIOLIB_ERR_NONE) {

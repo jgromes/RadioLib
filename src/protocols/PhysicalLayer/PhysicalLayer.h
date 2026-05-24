@@ -360,6 +360,19 @@ struct ConfigFLRC_t {
   uint8_t dataShaping = RADIOLIB_SHAPING_0_5;
 };
 
+struct ConfigBLE_t {
+  /*! \brief Carrier frequency in MHz. Defaults to 2400.0 MHz. */
+  float frequency = 2400.0;
+  /*! \brief BLE bit rate in kbps. Defaults to 800 kbps. */
+  uint16_t bitRate = 800;
+  /*! \brief BLE frequency deviation in kHz. Defaults to 400.0 kHz. */
+  float frequencyDeviation = 400.0;
+  /*! \brief Output power in dBm. Defaults to 10 dBm. */
+  int8_t power = 10;
+  /*! \brief Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5. */
+  uint8_t dataShaping = RADIOLIB_SHAPING_0_5;
+};
+
 /*!
   \class PhysicalLayer
 

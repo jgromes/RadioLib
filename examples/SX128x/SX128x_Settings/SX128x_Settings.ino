@@ -51,7 +51,7 @@ void setup() {
 
   // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
-  SX128x::ConfigLoRa_t config1;
+  ConfigLoRa_t config1;
   config1.frequency = 2400;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
@@ -76,7 +76,7 @@ void setup() {
   // preamble length:             20 symbols
   state = radio2.begin(2450.0, 1625.0, 7, 5, 0x12, 2, 20);
   #if (__cplusplus < 201402L)
-    SX128x::ConfigLoRa_t config2;
+    ConfigLoRa_t config2;
     config2.frequency = 2450.0;
     config2.bandwidth = 1625.0;
     config2.spreadingFactor = 7;

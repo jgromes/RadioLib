@@ -19,7 +19,7 @@ SX128x::SX128x(Module* mod) : PhysicalLayer() {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
 }
 
-int16_t SX128x::begin(const SX128x::ConfigLoRa_t& cfg) {
+int16_t SX128x::begin(const ConfigLoRa_t& cfg) {
   // initialize LoRa modulation variables
   this->bandwidthKhz = cfg.bandwidth;
   this->spreadingFactor = RADIOLIB_SX128X_LORA_SF_9;
@@ -59,7 +59,7 @@ int16_t SX128x::begin(const SX128x::ConfigLoRa_t& cfg) {
 }
 
 int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength) {
-  SX128x::ConfigLoRa_t cfg;
+  ConfigLoRa_t cfg;
   cfg.frequency = freq;
   cfg.bandwidth = bw;
   cfg.spreadingFactor = sf;
@@ -70,7 +70,7 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(begin(cfg));
 }
 
-int16_t SX128x::beginGFSK(const SX128x::ConfigGFSK_t& cfg) {
+int16_t SX128x::beginGFSK(const ConfigFSK_t& cfg) {
   // initialize GFSK modulation variables
   this->bitRateKbps = cfg.bitRate;
   this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
@@ -118,7 +118,7 @@ int16_t SX128x::beginGFSK(const SX128x::ConfigGFSK_t& cfg) {
 }
 
 int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, uint16_t preambleLength) {
-  SX128x::ConfigGFSK_t cfg;
+  ConfigFSK_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;
@@ -127,7 +127,7 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t pwr, ui
   return(beginGFSK(cfg));
 }
 
-int16_t SX128x::beginBLE(const SX128x::ConfigBLE_t& cfg) {
+int16_t SX128x::beginBLE(const ConfigBLE_t& cfg) {
   // initialize BLE modulation variables
   this->bitRateKbps = cfg.bitRate;
   this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
@@ -161,7 +161,7 @@ int16_t SX128x::beginBLE(const SX128x::ConfigBLE_t& cfg) {
 }
 
 int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uint8_t dataShaping) {
-  SX128x::ConfigBLE_t cfg;
+  ConfigBLE_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.frequencyDeviation = freqDev;
@@ -170,7 +170,7 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t pwr, uin
   return(beginBLE(cfg));
 }
 
-int16_t SX128x::beginFLRC(const SX128x::ConfigFLRC_t& cfg) {
+int16_t SX128x::beginFLRC(const ConfigFLRC_t& cfg) {
   // initialize FLRC modulation variables
   this->bitRateKbps = cfg.bitRate;
   this->bitRate = RADIOLIB_SX128X_FLRC_BR_0_650_BW_0_6;
@@ -214,7 +214,7 @@ int16_t SX128x::beginFLRC(const SX128x::ConfigFLRC_t& cfg) {
 }
 
 int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping) {
-  SX128x::ConfigFLRC_t cfg;
+  ConfigFLRC_t cfg;
   cfg.frequency = freq;
   cfg.bitRate = br;
   cfg.codingRate = cr;
