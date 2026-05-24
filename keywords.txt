@@ -64,6 +64,15 @@ LoRaWANNode	KEYWORD1
 LoRaWANBand_t	KEYWORD1
 LoRaWANEvent_t	KEYWORD1
 
+# configuration structures
+ConfigLoRa_t	KEYWORD1
+ConfigFSK_t	KEYWORD1
+ConfigBPSK_t	KEYWORD1
+ConfigOOK_t	KEYWORD1
+ConfigLRFHSS_t	KEYWORD1
+ConfigFLRC_t	KEYWORD1
+ConfigBLE_t	KEYWORD1
+
 # SSTV modes
 Scottie1	KEYWORD1
 Scottie2	KEYWORD1
