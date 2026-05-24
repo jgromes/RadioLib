@@ -939,6 +939,7 @@ class SX126x: public PhysicalLayer {
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
     int16_t directMode();
     int16_t packetMode();
+    int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
 
     // fixes to errata
     int16_t fixSensitivity();
@@ -951,11 +952,6 @@ class SX126x: public PhysicalLayer {
     int16_t resetLRFHSS();
     uint16_t stepLRFHSS();
     int16_t setLRFHSSHop(uint8_t index);
-
-    void regdump();
-    void effectEvalPre(uint8_t* buff, uint32_t start);
-    void effectEvalPost(uint8_t* buff, uint32_t start);
-    void effectEval();
 };
 
 #endif
