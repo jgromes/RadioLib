@@ -506,7 +506,7 @@
 
 // This only compiles on STM32 boards with SUBGHZ module, but also
 // include when generating docs
-#if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN) && !defined(STM32WLE5xx)
+#if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN) && !defined(STM32CubeWL)
   #define RADIOLIB_EXCLUDE_STM32WLX (1)
 #endif
 
