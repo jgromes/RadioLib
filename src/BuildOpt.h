@@ -465,9 +465,9 @@
     #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST
   #endif
 
-#elif defined(STM32WLE5xx)  // Cube does not expose a more explicit macro
-  #define RADIOLIB_PLATFORM                           "STM32WLE5xx using STM32Cube"
-  #define STM32WLE5xx_CUBE                            // define a more explicit macro
+#elif defined(STM32WLE5xx) || defined(STM32WL55xx)    // Cube does not expose a more explicit macro
+  #define RADIOLIB_PLATFORM                           "STM32WL using STM32Cube"
+  #define STM32CubeWL                                 // define a more explicit macro
 
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_NONVOLATILE

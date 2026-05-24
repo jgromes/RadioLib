@@ -12,7 +12,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
   #include <SubGhz.h>
 #endif
 
-#if defined(STM32WLE5xx_CUBE)
+#if defined(STM32CubeWL)
   #include "stm32wlxx_hal.h"
 #endif
 
@@ -119,7 +119,7 @@ int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
   SubGhz.clearPendingInterrupt();
   if(SubGhz.hasInterrupt())
     SubGhz.enableInterrupt();
-#elif defined(STM32WLE5xx_CUBE)
+#elif defined(STM32CubeWL)
   HAL_NVIC_ClearPendingIRQ(SUBGHZ_Radio_IRQn);
   HAL_NVIC_EnableIRQ(SUBGHZ_Radio_IRQn);
 #endif
