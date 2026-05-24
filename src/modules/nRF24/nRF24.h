@@ -197,21 +197,12 @@ class nRF24: public PhysicalLayer {
     */
     nRF24(Module* mod); // cppcheck-suppress noExplicitConstructor
 
-    // basic methods
-
-    /*!
-      \brief Configuration for begin() method.
+    /*! 
+      \brief Address width in bytes. Defaults to 5 bytes.
     */
-    struct ConfigFSK_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 2400 MHz. */
-      int16_t frequency = RADIOLIB_NRF24_DEFAULT_FREQ;
-      /*! \brief FSK bit rate in kbps. Defaults to 1000 kbps. */
-      int16_t bitRate = RADIOLIB_NRF24_DEFAULT_DR;
-      /*! \brief Output power in dBm. Defaults to -9 dBm. */
-      int8_t power = RADIOLIB_NRF24_DEFAULT_POWER;
-      /*! \brief Address width in bytes. Defaults to 5 bytes. */
-      uint8_t addressWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH;
-    };
+    uint8_t addressWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH;
+
+    // basic methods
 
     /*!
       \brief Initialization method for FSK modem.
@@ -524,7 +515,6 @@ class nRF24: public PhysicalLayer {
     int16_t frequency = RADIOLIB_NRF24_DEFAULT_FREQ;
     int16_t dataRate = RADIOLIB_NRF24_DEFAULT_DR;
     int8_t power = RADIOLIB_NRF24_DEFAULT_POWER;
-    uint8_t addressWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH;
 
     int16_t config();
     void clearIRQ();

@@ -52,7 +52,7 @@ int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // set address width
-  state = setAddressWidth(cfg.addressWidth);
+  state = setAddressWidth(this->addressWidth);
   RADIOLIB_ASSERT(state);
 
   // set CRC
@@ -71,7 +71,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
   cfg.frequency = freq;
   cfg.bitRate = dr;
   cfg.power = pwr;
-  cfg.addressWidth = addrWidth;
+  this->addressWidth = addrWidth;
   return(this->begin(cfg));
 }
 

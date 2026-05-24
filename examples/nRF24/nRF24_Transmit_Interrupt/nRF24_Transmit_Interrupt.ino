@@ -56,7 +56,7 @@ void setup() {
 
   // initialize nRF24 at 2400 MHz
   Serial.print(F("[nRF24] Initializing ... "));
-  nRF24::ConfigFSK_t config;
+  ConfigFSK_t config;
   config.frequency = 2400;
   int state = radio.begin(config);
   if(state == RADIOLIB_ERR_NONE) {
