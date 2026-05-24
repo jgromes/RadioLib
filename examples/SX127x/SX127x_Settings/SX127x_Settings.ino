@@ -100,7 +100,6 @@ void setup() {
       .syncWord = 0x34,
       .power = 2,
       .preambleLength = 20,
-      .gain = 1,
     });
   #endif
   if (state == RADIOLIB_ERR_NONE) {
