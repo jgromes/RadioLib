@@ -67,7 +67,7 @@ void setup() {
   // NOTE: moved to ISM band on purpose
   //       DO NOT transmit in APRS bands without ham radio license!
   Serial.print(F("[SX1278] Initializing ... "));
-  SX127x::ConfigFSK_t config;
+  ConfigFSK_t config;
   config.frequency = 434.0;
   int state = radio.beginFSK(config);
 

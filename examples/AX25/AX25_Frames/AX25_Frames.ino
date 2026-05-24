@@ -57,7 +57,7 @@ void setup() {
   // carrier frequency:           434.0 MHz
   // bit rate:                    1.2 kbps (1200 baud 2-FSK AX.25)
   // frequency deviation:         0.5 kHz  (1200 baud 2-FSK AX.25)
-  SX127x::ConfigFSK_t config;
+  ConfigFSK_t config;
   config.frequency = 434.0;
   config.bitRate = 1.2;
   config.receiverBandwidth = 0.5;

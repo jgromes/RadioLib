@@ -44,7 +44,7 @@ void setup() {
   // now we can use "radio" to access the features
   // specific to that radio type, such as the begin() method
   Serial.print(F("[Radio] Initializing ... "));
-  SX127x::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = 434;
   int state = radio.begin(config);
   if(state == RADIOLIB_ERR_NONE) {

@@ -41,7 +41,7 @@ void setup() {
   while(!Serial);
 
   // Initialize radio and LoRaWAN node (omitted error handling)
-  SX127x::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = 868; // The frequency here does not matter, as it will get changed by LoRaWAN anyway
   radio.begin(config);
   node.beginOTAA(joinEUI, devEUI, NULL, appKey);  // LoRaWAN v1.0.4 - no NwkKey

@@ -597,51 +597,18 @@ class SX127x: public PhysicalLayer {
     */
     explicit SX127x(Module* mod);
 
+    /*!
+      \brief Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
+      Set to 0 to enable automatic gain control (recommended).
+    */
+    uint8_t gain = 0;
+
+    /*!
+      \brief Use OOK modulation instead of FSK.
+    */
+    bool enableOOK = false;
+
     // basic methods
-
-    /*!
-      \brief Configuration for begin() method.
-    */
-    struct ConfigLoRa_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = 434.0;
-      /*! \brief LoRa bandwidth in kHz. Defaults to 125.0 kHz. */
-      float bandwidth = 125.0;
-      /*! \brief LoRa spreading factor. Defaults to 9. */
-      uint8_t spreadingFactor = 9;
-      /*! \brief LoRa coding rate. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
-      is undocumented and not recommended without your own FEC. */
-      uint8_t codingRate = 7;
-      /*! \brief 1-byte LoRa sync word. Defaults to RADIOLIB_SX127X_SYNC_WORD (0x12). */
-      uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = 10;
-      /*! \brief LoRa preamble length in symbols. Defaults to 8 symbols. */
-      uint16_t preambleLength = 8;
-      /*! \brief Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
-      Set to 0 to enable automatic gain control (recommended).*/
-      uint8_t gain = 0;
-    };
-
-    /*!
-      \brief Configuration for beginFSK() method.
-    */
-    struct ConfigFSK_t {
-      /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-      float frequency = 434.0;
-      /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-      float bitRate = 4.8;
-      /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
-      float frequencyDeviation = 5.0;
-      /*! \brief FSK receiver bandwidth in kHz. Defaults to 125.0 kHz. */
-      float receiverBandwidth = 125.0;
-      /*! \brief Output power in dBm. Defaults to 10 dBm. */
-      int8_t power = 10;
-      /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
-      uint16_t preambleLength = 16;
-      /*! \brief Use OOK modulation instead of FSK. */
-      bool enableOOK = false;
-    };
 
     /*!
       \brief Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.
@@ -665,10 +632,9 @@ class SX127x: public PhysicalLayer {
       \param freqDev Frequency deviation of the FSK transmission in kHz.
       \param rxBw Receiver bandwidth in kHz.
       \param preambleLength Length of FSK preamble in bits.
-      \param enableOOK Flag to specify OOK mode. This modulation is similar to FSK.
       \returns \ref status_codes
     */
-    int16_t beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK);
+    int16_t beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength);
 
     /*!
       \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
@@ -1016,10 +982,10 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Enables/disables OOK modulation instead of FSK.
-      \param enableOOK Enable (true) or disable (false) OOK.
+      \param enable Enable (true) or disable (false) OOK.
       \returns \ref status_codes
     */
-    int16_t setOOK(bool enableOOK);
+    int16_t setOOK(bool enable);
 
     /*!
       \brief Selects the type of threshold in the OOK data slicer.

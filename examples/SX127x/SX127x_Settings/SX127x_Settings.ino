@@ -50,7 +50,7 @@ void setup() {
 
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
-  SX127x::ConfigLoRa_t config1;
+  ConfigLoRa_t config1;
   config1.frequency = 434;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
@@ -79,7 +79,7 @@ void setup() {
   // preamble length:             20 symbols
   // amplifier gain:              1 (maximum gain)
   #if (__cplusplus < 201402L)
-    SX127x::ConfigLoRa_t config2;
+    ConfigLoRa_t config2;
     config2.frequency = 915.0;
     config2.bandwidth = 500.0;
     config2.spreadingFactor = 6;

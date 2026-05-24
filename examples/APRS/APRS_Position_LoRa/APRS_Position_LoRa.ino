@@ -43,7 +43,7 @@ void setup() {
 
   // initialize SX1278 with the settings necessary for LoRa iGates
   Serial.print(F("[SX1278] Initializing ... "));
-  SX127x::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = 433.775;
   config.bandwidth = 125;
   config.spreadingFactor = 12;

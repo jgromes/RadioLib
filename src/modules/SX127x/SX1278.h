@@ -123,10 +123,10 @@ class SX1278: public SX127x {
       \param config Initialization configuration.
       \returns \ref status_codes
     */
-    virtual int16_t begin(const SX127x::ConfigLoRa_t& config);
+    virtual int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const SX127x::ConfigLoRa_t& config) instead.
+      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
       \brief LoRa modem initialization method.
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
       \param bw %LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
@@ -150,10 +150,10 @@ class SX1278: public SX127x {
       Supports designated initializers when using C++14 or above.
       \returns \ref status_codes
     */
-    virtual int16_t beginFSK(const SX127x::ConfigFSK_t& config);
+    virtual int16_t beginFSK(const ConfigFSK_t& config);
 
     /*!
-      \deprecated Use \ref beginFSK(const SX127x::ConfigFSK_t& config) instead.
+      \deprecated Use \ref beginFSK(const ConfigFSK_t& config) instead.
       \brief FSK modem initialization method.
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
       \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.

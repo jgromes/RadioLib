@@ -79,7 +79,7 @@ void setup() {
 
   // begin radio on home channel
   Serial.print(F("[SX1278] Initializing ... "));
-  SX127x::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = channels[0];
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {

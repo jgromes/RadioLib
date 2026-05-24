@@ -33,7 +33,7 @@ void setup() {
   Serial.println(F("\nSetup ... "));
 
   Serial.println(F("Initialise the radio"));
-  SX127x::ConfigLoRa_t config;
+  ConfigLoRa_t config;
   config.frequency = 868; // The frequency here does not matter, as it will get changed by LoRaWAN anyway
   int state = radio.begin(config);
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
