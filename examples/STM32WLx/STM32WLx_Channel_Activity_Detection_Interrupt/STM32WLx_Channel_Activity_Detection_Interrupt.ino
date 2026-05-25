@@ -52,9 +52,13 @@ void setup() {
   // this has to be done prior to calling begin()
   radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
 
-  // initialize STM32WLx with default settings, except frequency
-  Serial.print(F("[STM32WLx] Initializing ... "));
-  int state = radio.begin(868.0);
+  // initialize STM32WL with default settings
+  // except frequency and TCXO voltage suitable for Nucleo WL55JC1
+  Serial.print(F("[STM32WL] Initializing ... "));
+  ConfigLoRa_t config;
+  config.frequency = 868.0;
+  radio.tcxoVoltage = 1.7;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

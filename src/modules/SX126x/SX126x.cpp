@@ -7,7 +7,6 @@ SX126x::SX126x(Module* mod) : PhysicalLayer() {
   this->freqStep = RADIOLIB_SX126X_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_SX126X_MAX_PACKET_LENGTH;
   this->mod = mod;
-  this->XTAL = false;
   this->standbyXOSC = false;
   this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_SX126X_IRQ_TX_DONE;
   this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_SX126X_IRQ_RX_DONE;
@@ -21,7 +20,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer() {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX126X_IRQ_TIMEOUT;
 }
 
-int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength) {
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   // set the defaults, this will get overwritten later anyway
   this->bandwidthKhz = 500.0;
@@ -38,7 +37,7 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   this->implicitLen = 0xFF;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(RADIOLIB_SX126X_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -67,7 +66,7 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   return(state);
 }
 
-int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength) {
   // initialize configuration variables (will be overwritten during public settings configuration)
   this->bitRate = 21333;                                  // 48.0 kbps
   this->frequencyDev = 52428;                             // 50.0 kHz
@@ -78,7 +77,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   this->preambleLengthFSK = preambleLength;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_GFSK);
+  int16_t state = this->modSetup(RADIOLIB_SX126X_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -120,9 +119,9 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   return(state);
 }
 
-int16_t SX126x::beginBPSK(float br, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::beginBPSK(float br) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_BPSK);
+  int16_t state = this->modSetup(RADIOLIB_SX126X_PACKET_TYPE_BPSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -136,11 +135,11 @@ int16_t SX126x::beginBPSK(float br, float tcxoVoltage, bool useRegulatorLDO) {
   return(state);
 }
 
-int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid) {
   this->lrFhssGridNonFcc = narrowGrid;
   
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS);
+  int16_t state = this->modSetup(RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -424,9 +423,9 @@ int16_t SX126x::scanChannel() {
   return(this->scanChannel(cfg));
 }
 
-int16_t SX126x::scanChannel(const ChannelScanConfig_t &config) {
+int16_t SX126x::scanChannel(const ChannelScanConfig_t &cfg) {
   // set mode to CAD
-  int state = startChannelScan(config);
+  int state = startChannelScan(cfg);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -588,7 +587,7 @@ int16_t SX126x::startChannelScan() {
   return(this->startChannelScan(cfg));
 }
 
-int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
+int16_t SX126x::startChannelScan(const ChannelScanConfig_t &cfg) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -602,7 +601,7 @@ int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(getIrqMapped(config.cad.irqFlags), getIrqMapped(config.cad.irqMask));
+  state = setDioIrqParams(getIrqMapped(cfg.cad.irqFlags), getIrqMapped(cfg.cad.irqMask));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -610,7 +609,7 @@ int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  state = setCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout);
+  state = setCad(cfg.cad.symNum, cfg.cad.detPeak, cfg.cad.detMin, cfg.cad.exitMode, cfg.cad.timeout);
   return(state);
 }
 
@@ -1400,7 +1399,7 @@ Module* SX126x::getMod() {
   return(this->mod);
 }
 
-int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem) {
+int16_t SX126x::modSetup(uint8_t modem) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -1426,8 +1425,8 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   int16_t state = RADIOLIB_ERR_NONE;
 
   // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0f) {
-    state = setTCXO(tcxoVoltage);
+  if(this->tcxoVoltage > 0.0f) {
+    state = setTCXO(this->tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
 
@@ -1445,7 +1444,7 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
     if((state == RADIOLIB_ERR_SPI_CMD_FAILED) && (errors & RADIOLIB_SX126X_XOSC_START_ERR)) {
       // typically users with XTAL devices will try to call the default begin method
       // disable TCXO and try to run config again
-      this->XTAL = false;
+      this->tcxoVoltage = 0;
       RADIOLIB_DEBUG_BASIC_PRINTLN("Bad oscillator selected, trying XTAL");
 
       state = setTCXO(0);
@@ -1456,7 +1455,7 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   }
   RADIOLIB_ASSERT(state);
 
-  if (useRegulatorLDO) {
+  if(this->useRegulatorLDO) {
     state = setRegulatorLDO();
   } else {
     state = setRegulatorDCDC();

@@ -63,15 +63,15 @@ APRSClient aprs(&ax25);
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278
-  // NOTE: moved to ISM band on purpose
-  //       DO NOT transmit in APRS bands without ham radio license!
+  // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
-  int state = radio.beginFSK();
+  ConfigFSK_t config;
+  config.frequency = 434;
+  int state = radio.beginFSK(config);
 
-  // when using one of the non-LoRa modules for AX.25
+  // when using one of the non-LoRa modules for RTTY
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
-  // int state = radio.begin();
+  // int state = radio.begin(config);
 
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

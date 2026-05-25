@@ -35,9 +35,11 @@ Radio radio = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize CC1101 with default settings
+  // initialize CC1101 at 434 MHz
   Serial.print(F("[CC1101] Initializing ... "));
-  int state = radio.begin();
+  ConfigFSK_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

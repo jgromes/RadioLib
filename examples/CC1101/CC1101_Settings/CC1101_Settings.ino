@@ -46,9 +46,11 @@ Radio radio3 = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize CC1101 with default settings
+  // initialize CC1101 at 434 MHz
   Serial.print(F("[CC1101] Initializing ... "));
-  int state = radio1.begin();
+  ConfigFSK_t config1;
+  config1.frequency = 434;
+  int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -65,7 +67,26 @@ void setup() {
   // Rx bandwidth:                        250.0 kHz
   // output power:                        7 dBm
   // preamble length:                     32 bits
-  state = radio2.begin(434.0, 32.0, 60.0, 250.0, 7, 32);
+  #if (__cplusplus < 201402L)
+    ConfigFSK_t config2;
+    config2.frequency = 434.0;
+    config2.bitRate = 32.0;
+    config2.frequencyDeviation = 60.0;
+    config2.receiverBandwidth = 250.0;
+    config2.power = 7;
+    config2.preambleLength = 32;
+    state = radio2.begin(config2);
+  #else
+    // with C++14 or newer, you can use named argument lists
+    state = radio2.begin({
+      .frequency = 434.0,
+      .bitRate = 32.0,
+      .frequencyDeviation = 60.0,
+      .receiverBandwidth = 250.0,
+      .power = 7,
+      .preambleLength = 32
+    });
+  #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

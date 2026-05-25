@@ -62,14 +62,24 @@ class SX126x: public PhysicalLayer {
     explicit SX126x(Module* mod);
 
     /*!
-      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
+      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
+      \ingroup module_config_vars
     */
-    bool XTAL;
+    bool standbyXOSC = false;
 
     /*!
-      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
+      \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0.
+      \ingroup module_config_vars
     */
-    bool standbyXOSC;
+    float tcxoVoltage = 1.6;
+
+    /*! 
+      \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+      \ingroup module_config_vars
+    */
+    bool useRegulatorLDO = false;
 
     // basic methods
 
@@ -79,11 +89,9 @@ class SX126x: public PhysicalLayer {
       is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -92,31 +100,25 @@ class SX126x: public PhysicalLayer {
       \param rxBw Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0,
       46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
       \param preambleLength FSK preamble length in bits. Allowed values range from 0 to 65535.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for BPSK modem.
       \param br FSK bit rate in kbps. Only 100 and 600 bps is supported.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginBPSK(float br, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginBPSK(float br);
 
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values.
       \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid);
 
     /*!
       \brief Sets LR-FHSS configuration.
@@ -366,10 +368,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param config CAD configuration structure.
+      \param cfg CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &cfg) override;
 
     /*!
       \brief Read the channel scan result
@@ -618,7 +620,7 @@ class SX126x: public PhysicalLayer {
       \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
       \param modem Modem type.
       \param dr Data rate.
-      \param pc Packet config.
+      \param pc Packet cfg.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
@@ -932,7 +934,7 @@ class SX126x: public PhysicalLayer {
     size_t lrFhssFrameHopsRem = 0;
     size_t lrFhssHopNum = 0;
 
-    int16_t modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem);
+    int16_t modSetup(uint8_t modem);
     int16_t config(uint8_t modem);
     bool findChip(const char* verStr);
     int16_t setPacketMode(uint8_t mode, uint8_t len);

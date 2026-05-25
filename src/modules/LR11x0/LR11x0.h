@@ -62,6 +62,14 @@ class LR11x0: public LRxxxx {
         /*! WiFi scanning mode */
         MODE_WIFI,
     };
+
+    /*!
+      \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, set this value to 0.
+      \ingroup module_config_vars
+    */
+    float tcxoVoltage = 1.6;
     
     /*!
       \brief Initialization method for LoRa modem.
@@ -71,11 +79,10 @@ class LR11x0: public LRxxxx {
       is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
-      \param tcxoVoltage TCXO reference voltage to be set.
       \param high defaults to false for Sub-GHz band, true for frequencies above 1GHz
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool high = false);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high = false);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -83,28 +90,25 @@ class LR11x0: public LRxxxx {
       \param freqDev Frequency deviation from carrier frequency in kHz.
       \param rxBw Receiver bandwidth in kHz.
       \param preambleLength FSK preamble length in bits.
-      \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage);
+    int16_t beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for LR-FHSS modem.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
       \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing.
-      \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage);
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid);
 
     /*!
       \brief Initialization method for GNSS scanning.
       \param constellations GNSS constellations to use (GPS, BeiDou or both). Defaults to both.
-      \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t beginGNSS(uint8_t constellations = RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS | RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU, float tcxoVoltage = 1.6);
+    int16_t beginGNSS(uint8_t constellations = RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS | RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU);
 
     /*!
       \brief Blocking binary transmit method.
@@ -135,7 +139,7 @@ class LR11x0: public LRxxxx {
     int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
-      \brief Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as %SX126x series does not support direct mode reception.
+      \brief Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as %LR11x0 series does not support direct mode reception.
       Will always return RADIOLIB_ERR_UNKNOWN.
       \returns \ref status_codes
     */
@@ -269,10 +273,10 @@ class LR11x0: public LRxxxx {
     /*!
       \brief Interrupt-driven channel activity detection method. IRQ pin will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param config CAD configuration structure.
+      \param cfg CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &cfg) override;
 
     /*!
       \brief Read the channel scan result
@@ -967,7 +971,7 @@ class LR11x0: public LRxxxx {
 #endif
     uint8_t wifiScanMode = 0;
     bool gnss = false;
-    int16_t modSetup(float tcxoVoltage, uint8_t modem);
+    int16_t modSetup(uint8_t modem);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);

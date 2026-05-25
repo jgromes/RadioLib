@@ -68,7 +68,7 @@ int16_t SX127x::begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t 
   return(state);
 }
 
-int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK) {
+int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -106,7 +106,7 @@ int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float
   }
 
   // enable/disable OOK
-  state = setOOK(enableOOK);
+  state = setOOK(this->enableOOK);
   RADIOLIB_ASSERT(state);
 
   // set frequency deviation
@@ -261,8 +261,8 @@ int16_t SX127x::scanChannel() {
   return(scanChannel(cfg));
 }
 
-int16_t SX127x::scanChannel(const ChannelScanConfig_t &config) {
-  (void)config;
+int16_t SX127x::scanChannel(const ChannelScanConfig_t &cfg) {
+  (void)cfg;
 
   // start CAD
   int16_t state = startChannelScan();
@@ -591,8 +591,8 @@ int16_t SX127x::startChannelScan() {
   return(startChannelScan(cfg));
 }
 
-int16_t SX127x::startChannelScan(const ChannelScanConfig_t &config) {
-  (void)config;
+int16_t SX127x::startChannelScan(const ChannelScanConfig_t &cfg) {
+  (void)cfg;
 
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
@@ -1048,7 +1048,7 @@ int16_t SX127x::disableBitSync() {
   return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OOK_PEAK, RADIOLIB_SX127X_BIT_SYNC_OFF, 5, 5, 5));
 }
 
-int16_t SX127x::setOOK(bool enableOOK) {
+int16_t SX127x::setOOK(bool enable) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -1056,7 +1056,7 @@ int16_t SX127x::setOOK(bool enableOOK) {
 
   // set OOK and if successful, save the new setting
   int16_t state = RADIOLIB_ERR_NONE;
-  if(enableOOK) {
+  if(enable) {
     state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, RADIOLIB_SX127X_MODULATION_OOK, 6, 5, 5);
     state |= SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
   } else {
@@ -1064,7 +1064,7 @@ int16_t SX127x::setOOK(bool enableOOK) {
     state |= SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_BOTH);
   }
   if(state == RADIOLIB_ERR_NONE) {
-    ookEnabled = enableOOK;
+    this->ookEnabled = enable;
   }
 
   return(state);

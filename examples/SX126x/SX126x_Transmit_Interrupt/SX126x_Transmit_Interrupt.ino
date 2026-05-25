@@ -56,9 +56,11 @@ void setFlag(void) {
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1262 with default settings
+  // initialize SX1262 at 434 MHz
   Serial.print(F("[SX1262] Initializing ... "));
-  int state = radio.begin();
+  ConfigLoRa_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

@@ -80,9 +80,11 @@ void setFlag(void) {
 void setup() {
   Serial.begin(9600);
 
-  // initialize LR1110 with default settings
+  // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
-  int state = radio.begin();
+  ConfigLoRa_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

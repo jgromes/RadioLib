@@ -51,7 +51,9 @@ void setup() {
 
   // initialize SX1262 FSK modem at the initial frequency
   Serial.print(F("[SX1262] Initializing ... "));
-  int state = radio.beginFSK(freqStart);
+  ConfigFSK_t config;
+  config.frequency = freqStart;
+  int state = radio.beginFSK(config);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

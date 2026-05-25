@@ -41,16 +41,11 @@ Radio radio = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1280 with default settings
+  // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
-  // carrier frequency:           2400.0 MHz
-  // bandwidth:                   812.5 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // output power:                10 dBm
-  // preamble length:             12 symbols
-  // CRC:                         enabled
-  int state = radio.begin();
+  ConfigLoRa_t config;
+  config.frequency = 2400;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

@@ -21,9 +21,9 @@ LR11x0::LR11x0(Module* mod) : LRxxxx(mod) {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR11X0_IRQ_TIMEOUT;
 }
 
-int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool high) {
+int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -55,9 +55,9 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
+  int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -96,9 +96,9 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage) {
+int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS);
+  int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // set grid spacing
@@ -119,9 +119,9 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoV
   return(setModulationParamsLrFhss(RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE_RAW, RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0));
 }
 
-int16_t LR11x0::beginGNSS(uint8_t constellations, float tcxoVoltage) {
+int16_t LR11x0::beginGNSS(uint8_t constellations) {
   // set module properties and perform initial setup - packet type does not matter
-  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   state = this->clearErrors();
@@ -507,7 +507,7 @@ int16_t LR11x0::startChannelScan() {
   return(this->startChannelScan(cfg));
 }
 
-int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
+int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &cfg) {
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -525,7 +525,7 @@ int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE : config.cad.irqFlags;
+  uint16_t irqFlags = (cfg.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE : cfg.cad.irqFlags;
   state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqFlags));
   RADIOLIB_ASSERT(state);
 
@@ -534,7 +534,7 @@ int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout));
+  return(startCad(cfg.cad.symNum, cfg.cad.detPeak, cfg.cad.detMin, cfg.cad.exitMode, cfg.cad.timeout));
 }
 
 int16_t LR11x0::getChannelScanResult() {
@@ -1045,11 +1045,6 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
 }
 
 int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
-  // check if TCXO is enabled at all
-  if(this->XTAL) {
-    return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
-  }
-
   // set mode to standby
   standby();
 
@@ -1632,7 +1627,7 @@ int16_t LR11x0::workaroundGFSK() {
   return(this->writeRegMemMask32(RADIOLIB_LR11X0_REG_GFSK_FIX3, 0x01FF03, valFix3));
 }
 
-int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
+int16_t LR11x0::modSetup(uint8_t modem) {
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
@@ -1657,8 +1652,8 @@ int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0f) {
-    state = setTCXO(tcxoVoltage);
+  if(this->tcxoVoltage > 0.0f) {
+    state = setTCXO(this->tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
 

@@ -43,9 +43,11 @@ Radio radio = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize Si4432 with default settings
+  // initialize Si4432 at 434 MHz
   Serial.print(F("[Si4432] Initializing ... "));
-  int state = radio.begin();
+  ConfigFSK_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

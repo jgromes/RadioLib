@@ -1,7 +1,7 @@
 /*
   RadioLib SX127x Ping-Pong Example
 
-  This example is intended to run on two SX126x radios,
+  This example is intended to run on two SX127x radios,
   and send packets between the two.
 
   For default module settings, see the wiki page
@@ -57,9 +57,11 @@ void setFlag(void) {
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278 with default settings
+  // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
-  int state = radio.begin();
+  ConfigLoRa_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

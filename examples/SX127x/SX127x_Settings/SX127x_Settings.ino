@@ -48,9 +48,11 @@ Radio radio3 = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278 with default settings
+  // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
-  int state = radio1.begin();
+  ConfigLoRa_t config1;
+  config1.frequency = 434;
+  int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -76,7 +78,30 @@ void setup() {
   // output power:                2 dBm
   // preamble length:             20 symbols
   // amplifier gain:              1 (maximum gain)
-  state = radio2.begin(915.0, 500.0, 6, 5, 0x34, 2, 20, 1);
+  #if (__cplusplus < 201402L)
+    ConfigLoRa_t config2;
+    config2.frequency = 915.0;
+    config2.bandwidth = 500.0;
+    config2.spreadingFactor = 6;
+    config2.codingRate = 5;
+    config2.syncWord = 0x34;
+    config2.power = 2;
+    config2.preambleLength = 20;
+    radio2.gain = 1;
+    state = radio2.begin(config2);
+  #else
+    // with C++14 or newer, you can use named argument lists
+    radio2.gain = 1;
+    state = radio2.begin({
+      .frequency = 915.0,
+      .bandwidth = 500.0,
+      .spreadingFactor = 6,
+      .codingRate = 5,
+      .syncWord = 0x34,
+      .power = 2,
+      .preambleLength = 20,
+    });
+  #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

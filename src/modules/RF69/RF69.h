@@ -494,6 +494,16 @@ class RF69: public PhysicalLayer {
     // basic methods
 
     /*!
+      \brief Initialization method for FSK modem.
+      \param config Initialization configuration.
+      \details This method initializes the FSK modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \returns \ref status_codes
+    */
+    int16_t begin(const ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
       \brief Initialization method.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.

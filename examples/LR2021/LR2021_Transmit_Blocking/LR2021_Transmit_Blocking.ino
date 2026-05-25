@@ -40,9 +40,11 @@ void setup() {
   // this has to be done prior to calling begin()!
   radio.irqDioNum = 10;
 
-  // initialize LR2021 with default settings
+  // initialize LR2021 at 434 MHz
   Serial.print(F("[LR2021] Initializing ... "));
-  int state = radio.begin();
+  ConfigLoRa_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

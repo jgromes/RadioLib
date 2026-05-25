@@ -43,15 +43,21 @@ void setup() {
 
   // initialize SX1278 with the settings necessary for LoRa iGates
   Serial.print(F("[SX1278] Initializing ... "));
-  // frequency:                   433.775 MHz
-  // bandwidth:                   125 kHz
-  // spreading factor:            12
-  // coding rate:                 4/5
-  int state = radio.begin(433.775, 125, 12, 5);
-
-  // when using one of the non-LoRa modules for AX.25
-  // (RF69, CC1101, Si4432 etc.), use the basic begin() method
-  // int state = radio.begin();
+  ConfigLoRa_t config;
+  config.frequency = 433.775;
+  config.bandwidth = 125;
+  config.spreadingFactor = 12;
+  config.codingRate = 5;
+  int state = radio.begin(config);
+  // for C++14 and newer, you can use initializer lists
+  /*
+  int state = radio.begin({
+    .frequency = 433.775, 
+    .bandwidth = 125, 
+    .spreadingFactor = 12,
+    .codingRate = 5,
+  });
+  */
 
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

@@ -1,5 +1,6 @@
 #include "Si443x.h"
 #include <math.h>
+
 #if !RADIOLIB_EXCLUDE_SI443X
 
 Si443x::Si443x(Module* mod) : PhysicalLayer() {

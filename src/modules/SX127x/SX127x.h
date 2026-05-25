@@ -597,6 +597,19 @@ class SX127x: public PhysicalLayer {
     */
     explicit SX127x(Module* mod);
 
+    /*!
+      \brief Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
+      Set to 0 to enable automatic gain control (recommended).
+      \ingroup module_config_vars
+    */
+    uint8_t gain = 0;
+
+    /*!
+      \brief Use OOK modulation instead of FSK.
+      \ingroup module_config_vars
+    */
+    bool enableOOK = false;
+
     // basic methods
 
     /*!
@@ -621,10 +634,9 @@ class SX127x: public PhysicalLayer {
       \param freqDev Frequency deviation of the FSK transmission in kHz.
       \param rxBw Receiver bandwidth in kHz.
       \param preambleLength Length of FSK preamble in bits.
-      \param enableOOK Flag to specify OOK mode. This modulation is similar to FSK.
       \returns \ref status_codes
     */
-    int16_t beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK);
+    int16_t beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength);
 
     /*!
       \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
@@ -847,10 +859,10 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param config Ignored. Implemented only for PhysicalLayer compatibility.
+      \param cfg Ignored. Implemented only for PhysicalLayer compatibility.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &cfg) override;
 
     /*!
       \brief Read the channel scan result.
@@ -972,10 +984,10 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Enables/disables OOK modulation instead of FSK.
-      \param enableOOK Enable (true) or disable (false) OOK.
+      \param enable Enable (true) or disable (false) OOK.
       \returns \ref status_codes
     */
-    int16_t setOOK(bool enableOOK);
+    int16_t setOOK(bool enable);
 
     /*!
       \brief Selects the type of threshold in the OOK data slicer.
@@ -1066,7 +1078,7 @@ class SX127x: public PhysicalLayer {
       \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
       \param modem Modem type.
       \param dr Data rate.
-      \param pc Packet config.
+      \param pc Packet cfg.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */

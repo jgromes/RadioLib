@@ -40,9 +40,11 @@ Radio radio = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize nRF24 with default settings
+  // initialize nRF24 at 2400 MHz
   Serial.print(F("[nRF24] Initializing ... "));
-  int state = radio.begin();
+  ConfigFSK_t config;
+  config.frequency = 2400;
+  int state = radio.begin(config);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

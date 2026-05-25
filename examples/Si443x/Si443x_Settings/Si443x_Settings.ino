@@ -44,9 +44,11 @@ Radio radio3 = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize Si4432 with default settings
+  // initialize Si4432 at 434 MHz
   Serial.print(F("[Si4432] Initializing ... "));
-  int state = radio1.begin();
+  ConfigFSK_t config1;
+  config1.frequency = 434;
+  int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -63,7 +65,26 @@ void setup() {
   // Rx bandwidth:                335.5 kHz
   // output power:                17 dBm
   // preamble length:             32 bits
-  state = radio2.begin(868.0, 200.0, 60.0, 335.5, 17, 32);
+  #if (__cplusplus < 201402L)
+    ConfigFSK_t config2;
+    config2.frequency = 868.0;
+    config2.bitRate = 200.0;
+    config2.frequencyDeviation = 60.0;
+    config2.receiverBandwidth = 335.5;
+    config2.power = 17;
+    config2.preambleLength = 32;
+    state = radio2.begin(config2);
+  #else
+    // with C++14 or newer, you can use named argument lists
+    state = radio2.begin({
+      .frequency = 868.0,
+      .bitRate = 200.0,
+      .frequencyDeviation = 60.0,
+      .receiverBandwidth = 335.5,
+      .power = 17,
+      .preambleLength = 32
+    });
+  #endif
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

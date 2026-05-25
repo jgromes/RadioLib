@@ -39,6 +39,7 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Which DIO pin is to be used as the interrupt pin.
+      \ingroup module_config_vars
     */
     uint32_t irqDioNum = 5;
 
@@ -46,6 +47,7 @@ class LR2021: public LRxxxx {
       \brief Determines the type of Lora CAD to perform, either "standard" CAD
       (same as is implemented LR11x0, SX126x and others), or a "fast" CAD if set to true.
       If there is no signal to be detected, fast CAD should return faster than standard CAD.
+      \ingroup module_config_vars
     */
     bool fastCad = false;
 
@@ -68,9 +70,27 @@ class LR2021: public LRxxxx {
         MODE_TX_HF,
     };
 
+    /*!
+      \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, set this value to 0.
+      \ingroup module_config_vars
+    */
+    float tcxoVoltage = 1.6;
+
     // basic methods
 
     /*!
+      \brief Initialization method for LoRa modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t begin(const ConfigLoRa_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
       \brief Initialization method for LoRa modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
@@ -89,6 +109,16 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Initialization method for FSK modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t beginGFSK(const ConfigFSK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
+      \brief Initialization method for FSK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 5.0 kHz.
@@ -104,6 +134,16 @@ class LR2021: public LRxxxx {
     
     /*!
       \brief Initialization method for OOK modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t beginOOK(const ConfigOOK_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigOOK_t& config) instead.
+      \brief Initialization method for OOK modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br OOK bit rate in kbps. Defaults to 4.8 kbps.
       \param rxBw Receiver bandwidth in kHz. Defaults to 153.8 kHz.
@@ -115,8 +155,18 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t beginOOK(float freq = 434.0, float br = 4.8, float rxBw = 153.8, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
-    
+ 
     /*!
+      \brief Initialization method for LR-FHSS modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
+
+    /*!
+      \deprecated Use \ref begin(const ConfigLRFHSS_t& config) instead.
       \brief Initialization method for LR-FHSS modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
@@ -129,8 +179,18 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LRXXXX_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LRXXXX_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);
+ 
+    /*!
+      \brief Initialization method for FLRC modem.
+      \details This method initializes the LoRa modem with the specified configuration.
+      Supports designated initializers when using C++14 or above.
+      \param config Initialization configuration.
+      \returns \ref status_codes
+    */
+    int16_t beginFLRC(const ConfigFLRC_t& config);
 
     /*!
+      \deprecated Use \ref begin(const ConfigFLRC_t& config) instead.
       \brief Initialization method for FLRC modem.
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
       \param br FLRC bit rate in kbps. Defaults to 650 kbps.
@@ -138,6 +198,9 @@ class LR2021: public LRxxxx {
       \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength FLRC preamble length in bits. Defaults to 16 bits.
       \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
+      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
       \returns \ref status_codes
     */
     int16_t beginFLRC(float freq = 434.0, uint16_t br = 650, uint8_t cr = RADIOLIB_LR2021_FLRC_CR_2_3, int8_t pwr = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5, float tcxoVoltage = 1.6);
@@ -312,10 +375,10 @@ class LR2021: public LRxxxx {
     /*!
       \brief Interrupt-driven channel activity detection method. IRQ pin will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param config CAD configuration structure.
+      \param cfg CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &cfg) override;
 
     /*!
       \brief Read the channel scan result
@@ -777,7 +840,7 @@ class LR2021: public LRxxxx {
     // pointers to PA lookup tables - may be overridden by the user
     LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
 
-    int16_t modSetup(float freq, float tcxoVoltage, uint8_t modem);
+    int16_t modSetup(float freq, uint8_t modem);
     bool findChip(void);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);

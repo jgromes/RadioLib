@@ -39,9 +39,11 @@ Radio radio = new RadioModule();
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1231 with default settings
+  // initialize SX1231 at 434 MHz
   Serial.print(F("[SX1231] Initializing ... "));
-  int state = radio.begin();
+  ConfigFSK_t config;
+  config.frequency = 434;
+  int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
