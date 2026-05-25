@@ -396,6 +396,13 @@ class PhysicalLayer {
     /*! \brief  Maximum length of packet that can be received by the module. */
     size_t maxPacketLength;
 
+    /*!
+      \brief Whether to reset the module on startup. Setting to false allows to restore radio operation
+      by calling begin after deep sleep mode on some platforms (like ESP32).
+      \ingroup module_config_vars
+    */
+    bool resetOnStartup = true;
+
     // constructor
 
     /*!
