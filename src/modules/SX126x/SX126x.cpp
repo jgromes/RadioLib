@@ -1481,7 +1481,9 @@ bool SX126x::findChip(const char* verStr) {
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     // reset the module
-    reset(true);
+    if(this->resetOnStartup) {
+      reset(true);
+    }
 
     // read the version string
     char version[16] = { 0 };
