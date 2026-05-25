@@ -11,7 +11,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #if defined(ARDUINO_ARCH_STM32) && defined(STM32WLxx)
 
-#include "ArduinoHal.h"
+#include "../Arduino/ArduinoHal.h"
 #include <SubGhz.h>
 
 // This defines some dummy pin numbers (starting at NUM_DIGITAL_PINS to
