@@ -57,7 +57,7 @@ void setup() {
   Serial.print(F("[STM32WL] Initializing ... "));
   ConfigLoRa_t config;
   config.frequency = 868.0;
-  config.tcxoVoltage = 1.7;
+  radio.tcxoVoltage = 1.7;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
