@@ -16,7 +16,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 #include "SX1262.h"
 
 #if defined(ARDUINO_ARCH_STM32) && defined(STM32WLxx)
-#include "hal/Arduino/Stm32wlHal.h"
+#include "hal/Stm32duino/Stm32wlHal.h"
 #endif
 
 /*!
