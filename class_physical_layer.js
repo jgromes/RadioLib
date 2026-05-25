@@ -69,5 +69,6 @@ var class_physical_layer =
     [ "transmit", "class_physical_layer.html#ada508497ee2e70170da3afe078e2fe0e", null ],
     [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ],
     [ "freqStep", "class_physical_layer.html#aa949616080a463a82bb6ad5075a9e16e", null ],
-    [ "maxPacketLength", "class_physical_layer.html#a1c04f8fba5eef96e59972004e8abc623", null ]
+    [ "maxPacketLength", "class_physical_layer.html#a1c04f8fba5eef96e59972004e8abc623", null ],
+    [ "resetOnStartup", "group__module__config__vars.html#ga63e5835884b277627e888244503f625c", null ]
 ];

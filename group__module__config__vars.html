@@ -141,6 +141,10 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>SX127x::gain</b> =
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SX127x::enableOOK</b> = false</td></tr>
 <tr class="memdesc:ga3b6ea928ada147faea755c7abccf2e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use OOK modulation instead of FSK. <br /></td></tr>
 <tr class="separator:ga3b6ea928ada147faea755c7abccf2e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63e5835884b277627e888244503f625c" id="r_ga63e5835884b277627e888244503f625c"><td class="memItemLeft" align="right" valign="top"><a id="ga63e5835884b277627e888244503f625c" name="ga63e5835884b277627e888244503f625c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>PhysicalLayer::resetOnStartup</b> = true</td></tr>
+<tr class="memdesc:ga63e5835884b277627e888244503f625c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to reset the module on startup. Setting to false allows to restore radio operation by calling begin after deep sleep mode on some platforms (like ESP32). <br /></td></tr>
+<tr class="separator:ga63e5835884b277627e888244503f625c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>A centralized list of all module configurations which are not part of the various Config_t structures. When changing these values it has to be done prior to radio initialization using the begin() method! </p>
