@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classn_r_f24.html',''); initResizable(
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classn_r_f24-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">nRF24 Class Reference</div></div>
 </div><!--header-->
@@ -116,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab12de8d953c2384c5fff09b4abf65d1e" id="r_ab12de8d953c2384c5fff09b4abf65d1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ab12de8d953c2384c5fff09b4abf65d1e">nRF24</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:ab12de8d953c2384c5fff09b4abf65d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:ab12de8d953c2384c5fff09b4abf65d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a448cf012167ae2b81d50a0f2d544a74b" id="r_a448cf012167ae2b81d50a0f2d544a74b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a448cf012167ae2b81d50a0f2d544a74b">begin</a> (const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;config)</td></tr>
+<tr class="memdesc:a448cf012167ae2b81d50a0f2d544a74b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
+<tr class="separator:a448cf012167ae2b81d50a0f2d544a74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ef68849f812367432f5a3798f94b8ce" id="r_a0ef68849f812367432f5a3798f94b8ce"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a0ef68849f812367432f5a3798f94b8ce">begin</a> (int16_t freq=RADIOLIB_NRF24_DEFAULT_FREQ, int16_t dr=RADIOLIB_NRF24_DEFAULT_DR, int8_t pwr=RADIOLIB_NRF24_DEFAULT_POWER, uint8_t addrWidth=RADIOLIB_NRF24_DEFAULT_ADDRWIDTH)</td></tr>
 <tr class="memdesc:a0ef68849f812367432f5a3798f94b8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="separator:a0ef68849f812367432f5a3798f94b8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -386,8 +390,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memdesc:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems.  <br /></td></tr>
 <tr class="separator:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:gaec5ac5df29c12231ee4266bebafdd604" id="r_gaec5ac5df29c12231ee4266bebafdd604"><td class="memItemLeft" align="right" valign="top">
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>addressWidth</b> = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH</td></tr>
+<tr class="memdesc:gaec5ac5df29c12231ee4266bebafdd604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address width in bytes. Defaults to 5 bytes. <br /></td></tr>
+<tr class="separator:gaec5ac5df29c12231ee4266bebafdd604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:aa949616080a463a82bb6ad5075a9e16e inherit pub_attribs_class_physical_layer" id="r_aa949616080a463a82bb6ad5075a9e16e"><td class="memItemLeft" align="right" valign="top">
 float&#160;</td><td class="memItemRight" valign="bottom"><b>freqStep</b></td></tr>
@@ -428,8 +436,35 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a448cf012167ae2b81d50a0f2d544a74b" name="a448cf012167ae2b81d50a0f2d544a74b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a448cf012167ae2b81d50a0f2d544a74b">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t nRF24::begin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialization method for FSK modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Initialization configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method initializes the FSK modem with the specified configuration. Supports designated initializers when using C++14 or above. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a0ef68849f812367432f5a3798f94b8ce" name="a0ef68849f812367432f5a3798f94b8ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ef68849f812367432f5a3798f94b8ce">&#9670;&#160;</a></span>begin()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ef68849f812367432f5a3798f94b8ce">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -467,6 +502,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div><div class="memdoc">
 
 <p>Initialization method. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated:</a></b></dt><dd>Use <a class="el" href="classn_r_f24.html#a448cf012167ae2b81d50a0f2d544a74b">begin(const ConfigFSK_t&amp; config)</a> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 2400 MHz. </td></tr>

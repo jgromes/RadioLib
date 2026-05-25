@@ -1,9 +1,13 @@
 var class_s_x1268 =
 [
     [ "SX1268", "class_s_x1268.html#a6bc50597d50fd9a2387628e452eac42f", null ],
+    [ "begin", "class_s_x1268.html#aaa90583ded8a1e2946a32f9a3e3b490e", null ],
     [ "begin", "class_s_x1268.html#ad9e92b39ae0fdfa47131ddf7adb92b71", null ],
+    [ "beginBPSK", "class_s_x1268.html#a808e89945c66ec2e7f2438f4a20d98c0", null ],
     [ "beginBPSK", "class_s_x1268.html#a48c05dec0320536d47e2483967781a3f", null ],
+    [ "beginFSK", "class_s_x1268.html#ae9746d7d639c2e49b44eb4ce8fe88274", null ],
     [ "beginFSK", "class_s_x1268.html#af6b041392136b599eec57085e2067a6f", null ],
+    [ "beginLRFHSS", "class_s_x1268.html#a33cf19e13983b70aea26ea9493ba16ce", null ],
     [ "beginLRFHSS", "class_s_x1268.html#a4f990f9e58d35cefa560c4fc767198fd", null ],
     [ "checkOutputPower", "class_s_x1268.html#ae1b1f56336fcef9ce31d9408fbbbfe3c", null ],
     [ "setFrequency", "class_s_x1268.html#af412a9361fe413b2d0c426100056d8c2", null ],

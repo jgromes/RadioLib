@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f39cd41fa0c934fe871b6cbfa7ce269" id="r_a9f39cd41fa0c934fe871b6cbfa7ce269"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1231.html#a9f39cd41fa0c934fe871b6cbfa7ce269">SX1231</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a9f39cd41fa0c934fe871b6cbfa7ce269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a9f39cd41fa0c934fe871b6cbfa7ce269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f5304b791a862bdf8f7f3e3ec34f487" id="r_a5f5304b791a862bdf8f7f3e3ec34f487"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1231.html#a5f5304b791a862bdf8f7f3e3ec34f487">begin</a> (const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;config)</td></tr>
+<tr class="memdesc:a5f5304b791a862bdf8f7f3e3ec34f487"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
+<tr class="separator:a5f5304b791a862bdf8f7f3e3ec34f487"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aa81f8cbe61c4941ac7e3c97a6f5244" id="r_a8aa81f8cbe61c4941ac7e3c97a6f5244"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1231.html#a8aa81f8cbe61c4941ac7e3c97a6f5244">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint8_t preambleLen=16)</td></tr>
 <tr class="memdesc:a8aa81f8cbe61c4941ac7e3c97a6f5244"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="separator:a8aa81f8cbe61c4941ac7e3c97a6f5244"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbc84d4f91502bcbe12ddda2fde51448 inherit pub_methods_class_r_f69" id="r_afbc84d4f91502bcbe12ddda2fde51448"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#afbc84d4f91502bcbe12ddda2fde51448">RF69</a> (<a class="el" href="class_module.html">Module</a> *module)</td></tr>
 <tr class="memdesc:afbc84d4f91502bcbe12ddda2fde51448 inherit pub_methods_class_r_f69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:afbc84d4f91502bcbe12ddda2fde51448 inherit pub_methods_class_r_f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d9accf0c1cd83f7c54e4e03a70e4c3 inherit pub_methods_class_r_f69" id="r_a31d9accf0c1cd83f7c54e4e03a70e4c3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a31d9accf0c1cd83f7c54e4e03a70e4c3">begin</a> (const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;config)</td></tr>
+<tr class="memdesc:a31d9accf0c1cd83f7c54e4e03a70e4c3 inherit pub_methods_class_r_f69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
+<tr class="separator:a31d9accf0c1cd83f7c54e4e03a70e4c3 inherit pub_methods_class_r_f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a637ea5386066f5608bcbb4266e5c1bd6 inherit pub_methods_class_r_f69" id="r_a637ea5386066f5608bcbb4266e5c1bd6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a637ea5386066f5608bcbb4266e5c1bd6">begin</a> (float freq=RADIOLIB_RF69_DEFAULT_FREQ, float br=RADIOLIB_RF69_DEFAULT_BR, float freqDev=RADIOLIB_RF69_DEFAULT_FREQDEV, float rxBw=RADIOLIB_RF69_DEFAULT_RXBW, int8_t pwr=RADIOLIB_RF69_DEFAULT_POWER, uint8_t preambleLen=RADIOLIB_RF69_DEFAULT_PREAMBLELEN)</td></tr>
 <tr class="memdesc:a637ea5386066f5608bcbb4266e5c1bd6 inherit pub_methods_class_r_f69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="separator:a637ea5386066f5608bcbb4266e5c1bd6 inherit pub_methods_class_r_f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -535,8 +541,45 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5f5304b791a862bdf8f7f3e3ec34f487" name="a5f5304b791a862bdf8f7f3e3ec34f487"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f5304b791a862bdf8f7f3e3ec34f487">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1231::begin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialization method for FSK modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Initialization configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method initializes the FSK modem with the specified configuration. Supports designated initializers when using C++14 or above. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x1233.html#ad70c40d546f40267d12c7fca10454d10">SX1233</a>.</p>
+
+</div>
+</div>
 <a id="a8aa81f8cbe61c4941ac7e3c97a6f5244" name="a8aa81f8cbe61c4941ac7e3c97a6f5244"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aa81f8cbe61c4941ac7e3c97a6f5244">&#9670;&#160;</a></span>begin()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aa81f8cbe61c4941ac7e3c97a6f5244">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -594,6 +637,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div><div class="memdoc">
 
 <p>Initialization method. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000019">Deprecated:</a></b></dt><dd>Use <a class="el" href="class_s_x1231.html#a5f5304b791a862bdf8f7f3e3ec34f487">begin(const ConfigFSK_t&amp; config)</a> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz. </td></tr>

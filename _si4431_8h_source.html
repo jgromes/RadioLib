@@ -118,30 +118,33 @@ $(document).ready(function(){initNavTree('_si4431_8h_source.html',''); initResiz
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// basic methods</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    int16_t <a class="code hl_function" href="class_si4431.html#a42dad1ef76ecab9353d5a03c984d5d1e">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 181.1, int8_t power = 10, uint8_t preambleLen = 16) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// configuration methods</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    int16_t <a class="code hl_function" href="class_si4431.html#ad1538dbe67ed5d3682591d1d780ab0e9">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    int16_t <a class="code hl_function" href="class_si4431.html#aa06d0a87e143c76f4d7f59739ad08cec">begin</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_config_f_s_k__t.html">ConfigFSK_t</a>&amp; config) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    int16_t <a class="code hl_function" href="class_si4431.html#aa06d0a87e143c76f4d7f59739ad08cec">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 181.1, int8_t power = 10, uint8_t preambleLen = 16) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">// configuration methods</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    int16_t <a class="code hl_function" href="class_si4431.html#ad1538dbe67ed5d3682591d1d780ab0e9">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>};</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:69</div></div>
 <div class="ttc" id="aclass_si4431_html"><div class="ttname"><a href="class_si4431.html">Si4431</a></div><div class="ttdoc">Derived class for Si4431 modules.</div><div class="ttdef"><b>Definition</b> Si4431.h:15</div></div>
-<div class="ttc" id="aclass_si4431_html_a42dad1ef76ecab9353d5a03c984d5d1e"><div class="ttname"><a href="class_si4431.html#a42dad1ef76ecab9353d5a03c984d5d1e">Si4431::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=181.1, int8_t power=10, uint8_t preambleLen=16) override</div><div class="ttdoc">Initialization method. Must be called at least once from Arduino sketch to initialize the module.</div><div class="ttdef"><b>Definition</b> Si4431.cpp:8</div></div>
-<div class="ttc" id="aclass_si4431_html_ad1538dbe67ed5d3682591d1d780ab0e9"><div class="ttname"><a href="class_si4431.html#ad1538dbe67ed5d3682591d1d780ab0e9">Si4431::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power) override</div><div class="ttdoc">Sets output power. Allowed values range from -8 to 13 dBm in 3 dBm steps.</div><div class="ttdef"><b>Definition</b> Si4431.cpp:24</div></div>
+<div class="ttc" id="aclass_si4431_html_aa06d0a87e143c76f4d7f59739ad08cec"><div class="ttname"><a href="class_si4431.html#aa06d0a87e143c76f4d7f59739ad08cec">Si4431::begin</a></div><div class="ttdeci">int16_t begin(const ConfigFSK_t &amp;config) override</div><div class="ttdoc">Initialization method for FSK modem.</div><div class="ttdef"><b>Definition</b> Si4431.cpp:9</div></div>
+<div class="ttc" id="aclass_si4431_html_ad1538dbe67ed5d3682591d1d780ab0e9"><div class="ttname"><a href="class_si4431.html#ad1538dbe67ed5d3682591d1d780ab0e9">Si4431::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power) override</div><div class="ttdoc">Sets output power. Allowed values range from -8 to 13 dBm in 3 dBm steps.</div><div class="ttdef"><b>Definition</b> Si4431.cpp:34</div></div>
 <div class="ttc" id="aclass_si4432_html"><div class="ttname"><a href="class_si4432.html">Si4432</a></div><div class="ttdoc">Derived class for Si4432 modules.</div><div class="ttdef"><b>Definition</b> Si4432.h:15</div></div>
+<div class="ttc" id="astruct_config_f_s_k__t_html"><div class="ttname"><a href="struct_config_f_s_k__t.html">ConfigFSK_t</a></div><div class="ttdef"><b>Definition</b> PhysicalLayer.h:298</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

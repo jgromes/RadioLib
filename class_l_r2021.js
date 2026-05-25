@@ -9,10 +9,15 @@ var class_l_r2021 =
       [ "MODE_TX_HF", "class_l_r2021.html#a7cc93cb3b185f23008a5c4c250110c2eab7ce6e88852aea8f8401bc109744b2bf", null ]
     ] ],
     [ "LR2021", "class_l_r2021.html#a0e61b0b25a43fb572e1bcd34fc02dda2", null ],
+    [ "begin", "class_l_r2021.html#a164170ead873b7ed43b23b3a739d5ce9", null ],
     [ "begin", "class_l_r2021.html#a1b13119ff624af7a283ea9a0a9386b6b", null ],
+    [ "beginFLRC", "class_l_r2021.html#a24ca16a9a60bdbd2c1053b5ab1ff1f88", null ],
     [ "beginFLRC", "class_l_r2021.html#a62b49d22917a9fe66398d544e0d91088", null ],
+    [ "beginGFSK", "class_l_r2021.html#a89ff208d2d097c903ab25fd77f30c1b9", null ],
     [ "beginGFSK", "class_l_r2021.html#abc703d439acc814a69b14cbd16468e80", null ],
+    [ "beginLRFHSS", "class_l_r2021.html#ad3273330e2a15e042bd6402f05b07cbf", null ],
     [ "beginLRFHSS", "class_l_r2021.html#aa6d914ed14ec9d82faf65c7fba7a02b1", null ],
+    [ "beginOOK", "class_l_r2021.html#a3ef121307b46544035673c98fe403e0e", null ],
     [ "beginOOK", "class_l_r2021.html#ab824e75ac4a6fcec1c9fbed298c1eeda", null ],
     [ "checkDataRate", "class_l_r2021.html#a2271630945521d4a1eaa3a29dcffac1b", null ],
     [ "checkOutputPower", "class_l_r2021.html#a39c82cdc7a22f252dfd36b2516ee7c49", null ],
@@ -83,7 +88,7 @@ var class_l_r2021 =
     [ "standby", "class_l_r2021.html#a1c1f96d15e812fe61f5be741d3a47c38", null ],
     [ "standby", "class_l_r2021.html#a5016d7784e0204cf0cac1794c05e9f55", null ],
     [ "startChannelScan", "class_l_r2021.html#a669f66069b12d1363789b39af363c68c", null ],
-    [ "startChannelScan", "class_l_r2021.html#abcf00a7bf608444bc290913ed149ce7c", null ],
+    [ "startChannelScan", "class_l_r2021.html#aa8bc42e2ada54764ccd72d473ba1d08d", null ],
     [ "startReceive", "class_l_r2021.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_l_r2021.html#ad0cb9a1ec4f8ffb323f32a48a477b150", null ],
     [ "startReceive", "class_l_r2021.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
@@ -96,6 +101,7 @@ var class_l_r2021 =
     [ "transmit", "class_l_r2021.html#a8126dd09cf4c51eabcf7f72dc03b068d", null ],
     [ "transmitDirect", "class_l_r2021.html#a670691f6a40a82f2e6b25e90c4200f57", null ],
     [ "variablePacketLengthMode", "class_l_r2021.html#a68728e2b6347b49bae942a9360f40988", null ],
-    [ "fastCad", "class_l_r2021.html#a24b3a41d84fc6a0ebc214479f163eb71", null ],
-    [ "irqDioNum", "class_l_r2021.html#a66b9703e39e95dc14e72328aee9becd0", null ]
+    [ "fastCad", "group__module__config__vars.html#ga24b3a41d84fc6a0ebc214479f163eb71", null ],
+    [ "irqDioNum", "group__module__config__vars.html#ga66b9703e39e95dc14e72328aee9becd0", null ],
+    [ "tcxoVoltage", "group__module__config__vars.html#gafa0ddfa02dd6b2c107e46dcbb8ed13e1", null ]
 ];

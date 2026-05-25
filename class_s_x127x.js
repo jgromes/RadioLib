@@ -2,7 +2,7 @@ var class_s_x127x =
 [
     [ "SX127x", "class_s_x127x.html#ac74c5914ca429a3892c66b9d98e3ea6c", null ],
     [ "begin", "class_s_x127x.html#a7ddbde7fd8eb06d38abfb658eee29bc1", null ],
-    [ "beginFSK", "class_s_x127x.html#a66fe001474583d490df1d0b38260bf8e", null ],
+    [ "beginFSK", "class_s_x127x.html#aaaf5973754b63454a598ff7cb02ad14a", null ],
     [ "calculateRxTimeout", "class_s_x127x.html#adbc4021380dc557114625dc51262cf90", null ],
     [ "calculateTimeOnAir", "class_s_x127x.html#a99cb7d326f6d7effb6301d730a24def1", null ],
     [ "clearChannelScanAction", "class_s_x127x.html#a0ce9beca21406e3556b3518370947ee2", null ],
@@ -73,7 +73,7 @@ var class_s_x127x =
     [ "setIrqFlags", "class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666", null ],
     [ "setLowBatteryThreshold", "class_s_x127x.html#a9ca9aa18e13e8390ec437e249e1d2472", null ],
     [ "setNodeAddress", "class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95", null ],
-    [ "setOOK", "class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee", null ],
+    [ "setOOK", "class_s_x127x.html#ae41eb412ab6758c83f0c12772beb5b46", null ],
     [ "setOokFixedOrFloorThreshold", "class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538", null ],
     [ "setOokPeakThresholdDecrement", "class_s_x127x.html#aac2f43d70b5f94e49e09b4c9f082f46d", null ],
     [ "setOokPeakThresholdStep", "class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54", null ],
@@ -93,7 +93,7 @@ var class_s_x127x =
     [ "standby", "class_s_x127x.html#a760b8c5103128f122fbe489c6529ce41", null ],
     [ "standby", "class_s_x127x.html#aa565bbff460e487672953dc05d335cb0", null ],
     [ "startChannelScan", "class_s_x127x.html#a6fa5723724393576ed597509200e17d1", null ],
-    [ "startChannelScan", "class_s_x127x.html#a13018717b7f00778e89322bf1feda051", null ],
+    [ "startChannelScan", "class_s_x127x.html#abe93ed8f6220f8247c9d642ba7cdb255", null ],
     [ "startReceive", "class_s_x127x.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_s_x127x.html#abbe1076252a366c3c4aa323fdff7d40c", null ],
     [ "startReceive", "class_s_x127x.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
@@ -103,5 +103,7 @@ var class_s_x127x =
     [ "transmit", "class_s_x127x.html#ada508497ee2e70170da3afe078e2fe0e", null ],
     [ "transmit", "class_s_x127x.html#a75cb0d8810a5ce025d3bf5b51ca263d6", null ],
     [ "transmitDirect", "class_s_x127x.html#aefeeb9f7192e11a75b5dfb1ab8488e84", null ],
-    [ "variablePacketLengthMode", "class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c", null ]
+    [ "variablePacketLengthMode", "class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c", null ],
+    [ "enableOOK", "group__module__config__vars.html#ga3b6ea928ada147faea755c7abccf2e09", null ],
+    [ "gain", "group__module__config__vars.html#ga81c73b919cec59a27ef6b2d8a987e273", null ]
 ];

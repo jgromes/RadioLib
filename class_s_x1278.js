@@ -2,7 +2,9 @@ var class_s_x1278 =
 [
     [ "SX1278", "class_s_x1278.html#a00ebd3e60a66056940b241b13da0c68e", null ],
     [ "autoLDRO", "class_s_x1278.html#ae02adcde8c2978c0d1b157729dd5df1e", null ],
+    [ "begin", "class_s_x1278.html#a970f43e8fcaa382a5b1e117461e4dde4", null ],
     [ "begin", "class_s_x1278.html#a867a336ae900f4a221d42b4c807122cf", null ],
+    [ "beginFSK", "class_s_x1278.html#a9b5a4b71a2ab47b8b74194944f11b6a7", null ],
     [ "beginFSK", "class_s_x1278.html#a86464af008b71d12948690b780280e7d", null ],
     [ "checkDataRate", "class_s_x1278.html#a6f9d9f371a3a53a0be25cc05284ade47", null ],
     [ "checkOutputPower", "class_s_x1278.html#aac7b585c4a616a1cd6f89a8b46a7d9f8", null ],

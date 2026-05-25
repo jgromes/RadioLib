@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['type_20aliases_0',['type aliases',['../group__config__encoding.html',1,'Encoding type aliases.'],['../group__config__standby.html',1,'Standby mode type aliases.']]],
-  ['type_20aliases_20used_20by_20radiolib_1',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
-  ['types_2',['Mic-E message types.',['../group__mic__e__message__types.html',1,'']]]
+  ['shaping_20filter_20values_20aliases_0',['Data shaping filter values aliases.',['../group__config__shaping.html',1,'']]],
+  ['standby_20mode_20type_20aliases_1',['Standby mode type aliases.',['../group__config__standby.html',1,'']]],
+  ['status_20codes_2',['Status Codes',['../group__status__codes.html',1,'']]]
 ];

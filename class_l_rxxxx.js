@@ -9,6 +9,5 @@ var class_l_rxxxx =
     [ "reset", "class_l_rxxxx.html#ad653a5cb836ffde04ef55973d153484f", null ],
     [ "setIrqAction", "class_l_rxxxx.html#aa52838eb97f91110fb381cddc8e7d03a", null ],
     [ "setPacketReceivedAction", "class_l_rxxxx.html#a51974c95b458ec80c73d2c4a62d83684", null ],
-    [ "setPacketSentAction", "class_l_rxxxx.html#a8fb00035fcc5f1dddac0ba5159abe5cc", null ],
-    [ "XTAL", "class_l_rxxxx.html#aedc6b7f69451ab79e05f5d9ff757fb20", null ]
+    [ "setPacketSentAction", "class_l_rxxxx.html#a8fb00035fcc5f1dddac0ba5159abe5cc", null ]
 ];

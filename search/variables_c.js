@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['narrowgrid_0',['narrowGrid',['../struct_lr_fhss_rate__t.html#a29dec307a472c34e9fafb10af3c4fb9c',1,'LrFhssRate_t']]],
+  ['narrowgrid_0',['narrowgrid',['../struct_lr_fhss_rate__t.html#a29dec307a472c34e9fafb10af3c4fb9c',1,'LrFhssRate_t::narrowGrid'],['../struct_config_l_r_f_h_s_s__t.html#a22a31b006c1cac5b82357e291bdb0e4d',1,'ConfigLRFHSS_t::narrowGrid']]],
   ['nbtrans_1',['nbTrans',['../struct_lo_ra_w_a_n_event__t.html#a6e46d7cf9c75ff511ad4d063692c16e7',1,'LoRaWANEvent_t']]],
   ['newsession_2',['newSession',['../struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee',1,'LoRaWANJoinEvent_t']]],
   ['nextalmanacid_3',['nextAlmanacId',['../struct_l_r11x0_gnss_almanac_status__t.html#aace4c0ad339bda11ee3c9c409f6492fb',1,'LR11x0GnssAlmanacStatus_t']]],

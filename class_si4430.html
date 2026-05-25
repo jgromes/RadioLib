@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5ac1122e863a92b374a71e8880e16d9" id="r_ac5ac1122e863a92b374a71e8880e16d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4430.html#ac5ac1122e863a92b374a71e8880e16d9">Si4430</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:ac5ac1122e863a92b374a71e8880e16d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:ac5ac1122e863a92b374a71e8880e16d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8234126186810813c689c239e9eacf73" id="r_a8234126186810813c689c239e9eacf73"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4430.html#a8234126186810813c689c239e9eacf73">begin</a> (const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;config) override</td></tr>
+<tr class="memdesc:a8234126186810813c689c239e9eacf73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
+<tr class="separator:a8234126186810813c689c239e9eacf73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e45de584e2624c1132eb0d327d12433" id="r_a9e45de584e2624c1132eb0d327d12433"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4430.html#a9e45de584e2624c1132eb0d327d12433">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=181.1, int8_t power=10, uint8_t preambleLen=16) override</td></tr>
 <tr class="memdesc:a9e45de584e2624c1132eb0d327d12433"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Must be called at least once from Arduino sketch to initialize the module.  <br /></td></tr>
 <tr class="separator:a9e45de584e2624c1132eb0d327d12433"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -442,8 +445,45 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8234126186810813c689c239e9eacf73" name="a8234126186810813c689c239e9eacf73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8234126186810813c689c239e9eacf73">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Si4430::begin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialization method for FSK modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Initialization configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method initializes the FSK modem with the specified configuration. Supports designated initializers when using C++14 or above. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_si4432.html#ad1a54ac2feb5bd45493a12071913e4cc">Si4432</a>.</p>
+
+</div>
+</div>
 <a id="a9e45de584e2624c1132eb0d327d12433" name="a9e45de584e2624c1132eb0d327d12433"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e45de584e2624c1132eb0d327d12433">&#9670;&#160;</a></span>begin()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e45de584e2624c1132eb0d327d12433">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -501,6 +541,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </div><div class="memdoc">
 
 <p>Initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated:</a></b></dt><dd>Use <a class="el" href="class_si4430.html#a8234126186810813c689c239e9eacf73">begin(const ConfigFSK_t&amp; config)</a> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 900.0 MHz to 960.0 MHz. </td></tr>

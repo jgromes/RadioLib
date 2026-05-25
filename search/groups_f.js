@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['width_20array_0',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]],
-  ['widths_20in_20module_3a_3aspiconfig_20width_20array_1',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]]
+  ['values_20aliases_0',['Data shaping filter values aliases.',['../group__config__shaping.html',1,'']]],
+  ['variables_1',['Module Hardware Configuration Variables',['../group__module__config__vars.html',1,'']]]
 ];

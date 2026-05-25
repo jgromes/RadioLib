@@ -118,11 +118,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ffe467a6baaeaa079e02c3f1f43f626" id="r_a9ffe467a6baaeaa079e02c3f1f43f626"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a9ffe467a6baaeaa079e02c3f1f43f626">SX1272</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a9ffe467a6baaeaa079e02c3f1f43f626"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Called from Arduino sketch when creating new LoRa instance.  <br /></td></tr>
 <tr class="separator:a9ffe467a6baaeaa079e02c3f1f43f626"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7562fe74e7d97bf9cc52b5d63f608f9" id="r_ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9">begin</a> (float freq=915.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0)</td></tr>
-<tr class="memdesc:ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <br /></td></tr>
+<tr class="memitem:a7d0da9d567ad9fc1b52efc1ebbb18725" id="r_a7d0da9d567ad9fc1b52efc1ebbb18725"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a7d0da9d567ad9fc1b52efc1ebbb18725">begin</a> (const <a class="el" href="struct_config_lo_ra__t.html">ConfigLoRa_t</a> &amp;config)</td></tr>
+<tr class="memdesc:a7d0da9d567ad9fc1b52efc1ebbb18725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <br /></td></tr>
+<tr class="separator:a7d0da9d567ad9fc1b52efc1ebbb18725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7562fe74e7d97bf9cc52b5d63f608f9" id="r_ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9">begin</a> (float freq=915.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t <a class="el" href="group__module__config__vars.html#ga81c73b919cec59a27ef6b2d8a987e273">gain</a>=0)</td></tr>
+<tr class="memdesc:ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRa modem initialization method.  <br /></td></tr>
 <tr class="separator:ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83b80377ec3b7a4a4dd663409f2f6260" id="r_a83b80377ec3b7a4a4dd663409f2f6260"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260">beginFSK</a> (float freq=915.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint16_t preambleLength=16, bool enableOOK=false)</td></tr>
-<tr class="memdesc:a83b80377ec3b7a4a4dd663409f2f6260"><td class="mdescLeft">&#160;</td><td class="mdescRight">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <br /></td></tr>
+<tr class="memitem:ae711458ffa2ba82f7741f0e966f70995" id="r_ae711458ffa2ba82f7741f0e966f70995"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae711458ffa2ba82f7741f0e966f70995">beginFSK</a> (const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;config)</td></tr>
+<tr class="memdesc:ae711458ffa2ba82f7741f0e966f70995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <br /></td></tr>
+<tr class="separator:ae711458ffa2ba82f7741f0e966f70995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83b80377ec3b7a4a4dd663409f2f6260" id="r_a83b80377ec3b7a4a4dd663409f2f6260"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260">beginFSK</a> (float freq=915.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint16_t preambleLength=16, bool <a class="el" href="group__module__config__vars.html#ga3b6ea928ada147faea755c7abccf2e09">enableOOK</a>=false)</td></tr>
+<tr class="memdesc:a83b80377ec3b7a4a4dd663409f2f6260"><td class="mdescLeft">&#160;</td><td class="mdescRight">FSK modem initialization method.  <br /></td></tr>
 <tr class="separator:a83b80377ec3b7a4a4dd663409f2f6260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0978cc9ecbb7b9d3a017c133506e57ac" id="r_a0978cc9ecbb7b9d3a017c133506e57ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac">reset</a> () override</td></tr>
 <tr class="memdesc:a0978cc9ecbb7b9d3a017c133506e57ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin.  <br /></td></tr>
@@ -160,7 +166,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1e39e8e3b228ca9a805f41a9bbf86c64" id="r_a1e39e8e3b228ca9a805f41a9bbf86c64"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a1e39e8e3b228ca9a805f41a9bbf86c64">checkOutputPower</a> (int8_t power, int8_t *clipped, bool useRfo)</td></tr>
 <tr class="memdesc:a1e39e8e3b228ca9a805f41a9bbf86c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable.  <br /></td></tr>
 <tr class="separator:a1e39e8e3b228ca9a805f41a9bbf86c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1c57ad5e8496dc28cd3ba9852809852" id="r_ae1c57ad5e8496dc28cd3ba9852809852"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">setGain</a> (uint8_t gain)</td></tr>
+<tr class="memitem:ae1c57ad5e8496dc28cd3ba9852809852" id="r_ae1c57ad5e8496dc28cd3ba9852809852"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">setGain</a> (uint8_t <a class="el" href="group__module__config__vars.html#ga81c73b919cec59a27ef6b2d8a987e273">gain</a>)</td></tr>
 <tr class="memdesc:ae1c57ad5e8496dc28cd3ba9852809852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended).  <br /></td></tr>
 <tr class="separator:ae1c57ad5e8496dc28cd3ba9852809852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91aca64124321c07a67f26b3c6934aea" id="r_a91aca64124321c07a67f26b3c6934aea"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a91aca64124321c07a67f26b3c6934aea">setDataShaping</a> (uint8_t sh) override</td></tr>
@@ -200,9 +206,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ddbde7fd8eb06d38abfb658eee29bc1 inherit pub_methods_class_s_x127x" id="r_a7ddbde7fd8eb06d38abfb658eee29bc1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7ddbde7fd8eb06d38abfb658eee29bc1">begin</a> (const uint8_t *chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength)</td></tr>
 <tr class="memdesc:a7ddbde7fd8eb06d38abfb658eee29bc1 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.  <br /></td></tr>
 <tr class="separator:a7ddbde7fd8eb06d38abfb658eee29bc1 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66fe001474583d490df1d0b38260bf8e inherit pub_methods_class_s_x127x" id="r_a66fe001474583d490df1d0b38260bf8e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a66fe001474583d490df1d0b38260bf8e">beginFSK</a> (const uint8_t *chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</td></tr>
-<tr class="memdesc:a66fe001474583d490df1d0b38260bf8e inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <br /></td></tr>
-<tr class="separator:a66fe001474583d490df1d0b38260bf8e inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf5973754b63454a598ff7cb02ad14a inherit pub_methods_class_s_x127x" id="r_aaaf5973754b63454a598ff7cb02ad14a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aaaf5973754b63454a598ff7cb02ad14a">beginFSK</a> (const uint8_t *chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength)</td></tr>
+<tr class="memdesc:aaaf5973754b63454a598ff7cb02ad14a inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <br /></td></tr>
+<tr class="separator:aaaf5973754b63454a598ff7cb02ad14a inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75cb0d8810a5ce025d3bf5b51ca263d6 inherit pub_methods_class_s_x127x" id="r_a75cb0d8810a5ce025d3bf5b51ca263d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a75cb0d8810a5ce025d3bf5b51ca263d6">transmit</a> (const uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a75cb0d8810a5ce025d3bf5b51ca263d6 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. For overloads to transmit Arduino String or C-string, see <a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534" title="C-string transmit method.">PhysicalLayer::transmit</a>.  <br /></td></tr>
 <tr class="separator:a75cb0d8810a5ce025d3bf5b51ca263d6 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -303,9 +309,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:a6fa5723724393576ed597509200e17d1 inherit pub_methods_class_s_x127x" id="r_a6fa5723724393576ed597509200e17d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a6fa5723724393576ed597509200e17d1">startChannelScan</a> () override</td></tr>
 <tr class="memdesc:a6fa5723724393576ed597509200e17d1 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected. DIO0 will be activated if there's no preamble detected before timeout.  <br /></td></tr>
 <tr class="separator:a6fa5723724393576ed597509200e17d1 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13018717b7f00778e89322bf1feda051 inherit pub_methods_class_s_x127x" id="r_a13018717b7f00778e89322bf1feda051"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a13018717b7f00778e89322bf1feda051">startChannelScan</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config) override</td></tr>
-<tr class="memdesc:a13018717b7f00778e89322bf1feda051 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout.  <br /></td></tr>
-<tr class="separator:a13018717b7f00778e89322bf1feda051 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe93ed8f6220f8247c9d642ba7cdb255 inherit pub_methods_class_s_x127x" id="r_abe93ed8f6220f8247c9d642ba7cdb255"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#abe93ed8f6220f8247c9d642ba7cdb255">startChannelScan</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;cfg) override</td></tr>
+<tr class="memdesc:abe93ed8f6220f8247c9d642ba7cdb255 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout.  <br /></td></tr>
+<tr class="separator:abe93ed8f6220f8247c9d642ba7cdb255 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81189ce77541d78fc8feb99c2a3f35b2 inherit pub_methods_class_s_x127x" id="r_a81189ce77541d78fc8feb99c2a3f35b2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a81189ce77541d78fc8feb99c2a3f35b2">getChannelScanResult</a> () override</td></tr>
 <tr class="memdesc:a81189ce77541d78fc8feb99c2a3f35b2 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <br /></td></tr>
 <tr class="separator:a81189ce77541d78fc8feb99c2a3f35b2 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,9 +363,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:afe6e9bbfd75f9cad26f9f72c34c4ada5 inherit pub_methods_class_s_x127x" id="r_afe6e9bbfd75f9cad26f9f72c34c4ada5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5">disableAddressFiltering</a> ()</td></tr>
 <tr class="memdesc:afe6e9bbfd75f9cad26f9f72c34c4ada5 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables FSK address filtering.  <br /></td></tr>
 <tr class="separator:afe6e9bbfd75f9cad26f9f72c34c4ada5 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24ef0af19a6b8954f956a3c3ad4286ee inherit pub_methods_class_s_x127x" id="r_a24ef0af19a6b8954f956a3c3ad4286ee"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee">setOOK</a> (bool enableOOK)</td></tr>
-<tr class="memdesc:a24ef0af19a6b8954f956a3c3ad4286ee inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK.  <br /></td></tr>
-<tr class="separator:a24ef0af19a6b8954f956a3c3ad4286ee inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae41eb412ab6758c83f0c12772beb5b46 inherit pub_methods_class_s_x127x" id="r_ae41eb412ab6758c83f0c12772beb5b46"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae41eb412ab6758c83f0c12772beb5b46">setOOK</a> (bool enable)</td></tr>
+<tr class="memdesc:ae41eb412ab6758c83f0c12772beb5b46 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK.  <br /></td></tr>
+<tr class="separator:ae41eb412ab6758c83f0c12772beb5b46 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b93142202167270db109d18b743c744 inherit pub_methods_class_s_x127x" id="r_a8b93142202167270db109d18b743c744"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a8b93142202167270db109d18b743c744">setOokThresholdType</a> (uint8_t type)</td></tr>
 <tr class="memdesc:a8b93142202167270db109d18b743c744 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the type of threshold in the OOK data slicer.  <br /></td></tr>
 <tr class="separator:a8b93142202167270db109d18b743c744 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -563,6 +569,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_class_s_x127x"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_s_x127x')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_s_x127x.html">SX127x</a></td></tr>
+<tr class="memitem:ga81c73b919cec59a27ef6b2d8a987e273 inherit pub_attribs_class_s_x127x" id="r_ga81c73b919cec59a27ef6b2d8a987e273"><td class="memItemLeft" align="right" valign="top">
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>gain</b> = 0</td></tr>
+<tr class="memdesc:ga81c73b919cec59a27ef6b2d8a987e273 inherit pub_attribs_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). <br /></td></tr>
+<tr class="separator:ga81c73b919cec59a27ef6b2d8a987e273 inherit pub_attribs_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b6ea928ada147faea755c7abccf2e09 inherit pub_attribs_class_s_x127x" id="r_ga3b6ea928ada147faea755c7abccf2e09"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>enableOOK</b> = false</td></tr>
+<tr class="memdesc:ga3b6ea928ada147faea755c7abccf2e09 inherit pub_attribs_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use OOK modulation instead of FSK. <br /></td></tr>
+<tr class="separator:ga3b6ea928ada147faea755c7abccf2e09 inherit pub_attribs_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:aa949616080a463a82bb6ad5075a9e16e inherit pub_attribs_class_physical_layer" id="r_aa949616080a463a82bb6ad5075a9e16e"><td class="memItemLeft" align="right" valign="top">
 float&#160;</td><td class="memItemRight" valign="bottom"><b>freqStep</b></td></tr>
@@ -623,8 +638,45 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="a7d0da9d567ad9fc1b52efc1ebbb18725" name="a7d0da9d567ad9fc1b52efc1ebbb18725"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d0da9d567ad9fc1b52efc1ebbb18725">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1272::begin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_config_lo_ra__t.html">ConfigLoRa_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialization method for LoRa modem. </p>
+<p>This method initializes the LoRa modem with the specified configuration. Supports designated initializers when using C++14 or above. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Initialization configuration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x1273.html#a648cb9e28d4c37fb4b2928ad8a282229">SX1273</a>.</p>
+
+</div>
+</div>
 <a id="ae7562fe74e7d97bf9cc52b5d63f608f9" name="ae7562fe74e7d97bf9cc52b5d63f608f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7562fe74e7d97bf9cc52b5d63f608f9">&#9670;&#160;</a></span>begin()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7562fe74e7d97bf9cc52b5d63f608f9">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -693,7 +745,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 </table>
 </div><div class="memdoc">
 
-<p>LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
+<p>LoRa modem initialization method. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000026">Deprecated:</a></b></dt><dd>Use <a class="el" href="class_s_x1272.html#a7d0da9d567ad9fc1b52efc1ebbb18725">begin(const ConfigLoRa_t&amp; config)</a> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz. </td></tr>
@@ -713,8 +766,35 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 
 </div>
 </div>
+<a id="ae711458ffa2ba82f7741f0e966f70995" name="ae711458ffa2ba82f7741f0e966f70995"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae711458ffa2ba82f7741f0e966f70995">&#9670;&#160;</a></span>beginFSK() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1272::beginFSK </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_config_f_s_k__t.html">ConfigFSK_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialization method for FSK modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>Initialization configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method initializes the FSK modem with the specified configuration. Supports designated initializers when using C++14 or above. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a83b80377ec3b7a4a4dd663409f2f6260" name="a83b80377ec3b7a4a4dd663409f2f6260"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83b80377ec3b7a4a4dd663409f2f6260">&#9670;&#160;</a></span>beginFSK()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a83b80377ec3b7a4a4dd663409f2f6260">&#9670;&#160;</a></span>beginFSK() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -769,7 +849,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
       </table>
 </div><div class="memdoc">
 
-<p>FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
+<p>FSK modem initialization method. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated:</a></b></dt><dd>Use <a class="el" href="class_s_x1272.html#ae711458ffa2ba82f7741f0e966f70995">beginFSK(const ConfigFSK_t&amp; config)</a> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz. </td></tr>

@@ -12,10 +12,10 @@ var class_l_r11x0 =
     ] ],
     [ "LR11x0", "class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421", null ],
     [ "autoLDRO", "class_l_r11x0.html#aa9a8db401189ba0ce5117512b5db6a58", null ],
-    [ "begin", "class_l_r11x0.html#aa2b69f68ff6171b11a1141c8615240fd", null ],
-    [ "beginGFSK", "class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d", null ],
-    [ "beginGNSS", "class_l_r11x0.html#ad7f31060cbab41ad53ee6fa7126cd17b", null ],
-    [ "beginLRFHSS", "class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8", null ],
+    [ "begin", "class_l_r11x0.html#a54153eaa9a09c9ded9404b36c363ce71", null ],
+    [ "beginGFSK", "class_l_r11x0.html#a10c8d747456af48a2b07a2dba1e6d247", null ],
+    [ "beginGNSS", "class_l_r11x0.html#a3099edb21d630f219de0d4082c929c96", null ],
+    [ "beginLRFHSS", "class_l_r11x0.html#a46cdf1c9e3be47fbca4d4f46dba52ed0", null ],
     [ "calibrateImageRejection", "class_l_r11x0.html#adc8fbcfff7cd3b801dcee22e87bc2598", null ],
     [ "checkDataRate", "class_l_r11x0.html#a902b407443ee3aa11d3c265cccef7366", null ],
     [ "clearIrqFlags", "class_l_r11x0.html#aa524b0be7b8d125c24319072d6178e74", null ],
@@ -90,7 +90,7 @@ var class_l_r11x0 =
     [ "standby", "class_l_r11x0.html#a9505e4def8c3b06579102ff6ead9139f", null ],
     [ "standby", "class_l_r11x0.html#a783496642b56e877e2437bdd2752ee1f", null ],
     [ "startChannelScan", "class_l_r11x0.html#a4f3bc362530b85dd643669705f03998d", null ],
-    [ "startChannelScan", "class_l_r11x0.html#ab073ade3f6b9bbb383e388904812f575", null ],
+    [ "startChannelScan", "class_l_r11x0.html#af10eb1bba73d0e59181518d4cb237992", null ],
     [ "startReceive", "class_l_r11x0.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d", null ],
     [ "startReceive", "class_l_r11x0.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
@@ -106,5 +106,6 @@ var class_l_r11x0 =
     [ "updateFirmware", "class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85", null ],
     [ "updateGnssAlmanac", "class_l_r11x0.html#a96aa9566399e46fc03f2b73b44058e3f", null ],
     [ "variablePacketLengthMode", "class_l_r11x0.html#adcd56cf63e91449b6cd03782a69c3451", null ],
-    [ "wifiScan", "class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab", null ]
+    [ "wifiScan", "class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab", null ],
+    [ "tcxoVoltage", "group__module__config__vars.html#ga8eff22b47287190493da17e534ce6771", null ]
 ];

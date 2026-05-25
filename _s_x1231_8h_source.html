@@ -192,22 +192,25 @@ $(document).ready(function(){initNavTree('_s_x1231_8h_source.html',''); initResi
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <a class="code hl_class" href="class_s_x1231.html">SX1231</a>(<a class="code hl_class" href="class_module.html">Module</a>* mod); <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">virtual</span> int16_t <a class="code hl_function" href="class_s_x1231.html#a8aa81f8cbe61c4941ac7e3c97a6f5244">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    uint8_t chipRevision = 0;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>};</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keyword">virtual</span> int16_t <a class="code hl_function" href="class_s_x1231.html#a5f5304b791a862bdf8f7f3e3ec34f487">begin</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_config_f_s_k__t.html">ConfigFSK_t</a>&amp; config);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keyword">virtual</span> int16_t <a class="code hl_function" href="class_s_x1231.html#a5f5304b791a862bdf8f7f3e3ec34f487">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    uint8_t chipRevision = 0;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>};</div>
 </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:69</div></div>
 <div class="ttc" id="aclass_r_f69_html"><div class="ttname"><a href="class_r_f69.html">RF69</a></div><div class="ttdoc">Control class for RF69 module. Also serves as base class for SX1231.</div><div class="ttdef"><b>Definition</b> RF69.h:479</div></div>
 <div class="ttc" id="aclass_s_x1231_html"><div class="ttname"><a href="class_s_x1231.html">SX1231</a></div><div class="ttdoc">Control class for SX1231 module. Overrides some methods from RF69 due to different register values.</div><div class="ttdef"><b>Definition</b> SX1231.h:94</div></div>
-<div class="ttc" id="aclass_s_x1231_html_a8aa81f8cbe61c4941ac7e3c97a6f5244"><div class="ttname"><a href="class_s_x1231.html#a8aa81f8cbe61c4941ac7e3c97a6f5244">SX1231::begin</a></div><div class="ttdeci">virtual int16_t begin(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint8_t preambleLen=16)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition</b> SX1231.cpp:8</div></div>
+<div class="ttc" id="aclass_s_x1231_html_a5f5304b791a862bdf8f7f3e3ec34f487"><div class="ttname"><a href="class_s_x1231.html#a5f5304b791a862bdf8f7f3e3ec34f487">SX1231::begin</a></div><div class="ttdeci">virtual int16_t begin(const ConfigFSK_t &amp;config)</div><div class="ttdoc">Initialization method for FSK modem.</div><div class="ttdef"><b>Definition</b> SX1231.cpp:8</div></div>
+<div class="ttc" id="astruct_config_f_s_k__t_html"><div class="ttname"><a href="struct_config_f_s_k__t.html">ConfigFSK_t</a></div><div class="ttdef"><b>Definition</b> PhysicalLayer.h:298</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

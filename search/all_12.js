@@ -6,5 +6,6 @@ var searchData=
   ['uploadpatch_3',['uploadPatch',['../class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1',1,'SX126x']]],
   ['used_20by_20radiolib_4',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
   ['user_5',['user',['../struct_lo_ra_w_a_n_mac_command__t.html#a269530a63c3e2a66393fb10286a3b5b6',1,'LoRaWANMacCommand_t']]],
-  ['userepeaters_6',['useRepeaters',['../class_a_p_r_s_client.html#a454fb0a3423f75e909b16640b27b176a',1,'APRSClient']]]
+  ['useregulatorldo_6',['useRegulatorLDO',['../group__module__config__vars.html#ga383002c662713c23a00b32deaeb524d1',1,'SX126x']]],
+  ['userepeaters_7',['useRepeaters',['../class_a_p_r_s_client.html#a454fb0a3423f75e909b16640b27b176a',1,'APRSClient']]]
 ];

@@ -8,7 +8,7 @@ var searchData=
   ['cid_5',['cid',['../struct_lo_ra_w_a_n_mac_command__t.html#a79d26324cafccbae8b95927935e0d0dc',1,'LoRaWANMacCommand_t']]],
   ['cls_6',['cls',['../struct_multicast_group__t.html#a5ca056ea4106e4223eb6a0137d6e5192',1,'MulticastGroup_t']]],
   ['cmds_7',['cmds',['../struct_module_1_1_s_p_i_config__t.html#a57ecca17835380862426d3cf38561185',1,'Module::SPIConfig_t']]],
-  ['codingrate_8',['codingRate',['../struct_lo_ra_rate__t.html#ae382629257949329b2fcb01d565183df',1,'LoRaRate_t']]],
+  ['codingrate_8',['codingrate',['../struct_config_l_r_f_h_s_s__t.html#a6f0a46ea2cf6bfee6ba4fe46a7e31ba6',1,'ConfigLRFHSS_t::codingRate'],['../struct_config_f_l_r_c__t.html#a0479e4259c687b1d51510e779e3fc9c3',1,'ConfigFLRC_t::codingRate'],['../struct_config_lo_ra__t.html#a1a16415bc92f5cabe53b516de9c3e81b',1,'ConfigLoRa_t::codingRate'],['../struct_lo_ra_rate__t.html#ae382629257949329b2fcb01d565183df',1,'LoRaRate_t::codingRate']]],
   ['confirmed_9',['confirmed',['../struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794',1,'LoRaWANEvent_t']]],
   ['confirming_10',['confirming',['../struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8',1,'LoRaWANEvent_t']]],
   ['control_11',['control',['../class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f',1,'AX25Frame']]],

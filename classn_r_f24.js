@@ -1,6 +1,7 @@
 var classn_r_f24 =
 [
     [ "nRF24", "classn_r_f24.html#ab12de8d953c2384c5fff09b4abf65d1e", null ],
+    [ "begin", "classn_r_f24.html#a448cf012167ae2b81d50a0f2d544a74b", null ],
     [ "begin", "classn_r_f24.html#a0ef68849f812367432f5a3798f94b8ce", null ],
     [ "clearIrqAction", "classn_r_f24.html#aaf5887fe58c4d542cbed80482de1d42d", null ],
     [ "clearPacketReceivedAction", "classn_r_f24.html#a52c097dc0078fc4e8707c095378aff3d", null ],
@@ -44,5 +45,6 @@ var classn_r_f24 =
     [ "transmit", "classn_r_f24.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "classn_r_f24.html#af7c4cf05b992d8a97331b9888e95fc2f", null ],
     [ "transmit", "classn_r_f24.html#ada508497ee2e70170da3afe078e2fe0e", null ],
-    [ "transmitDirect", "classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303", null ]
+    [ "transmitDirect", "classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303", null ],
+    [ "addressWidth", "group__module__config__vars.html#gaec5ac5df29c12231ee4266bebafdd604", null ]
 ];

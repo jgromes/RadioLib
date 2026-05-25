@@ -8,7 +8,9 @@ var class_s_t_m32_w_lx =
       [ "MODE_TX_HP", "class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a50df4b8580f1bded3cb61e79f954789e", null ]
     ] ],
     [ "STM32WLx", "class_s_t_m32_w_lx.html#ace55504c02a5b4d8ccf879f015f36daf", null ],
+    [ "begin", "class_s_t_m32_w_lx.html#abb970198959a03b3e66f2e8398a8b5ca", null ],
     [ "begin", "class_s_t_m32_w_lx.html#a8a326d469313286aa165730cf41d4994", null ],
+    [ "beginFSK", "class_s_t_m32_w_lx.html#ab15b7a3bb0f9c7498395806c0f86cd6a", null ],
     [ "beginFSK", "class_s_t_m32_w_lx.html#ae7f54bfff828901c4effbcc38ca8edc8", null ],
     [ "clearChannelScanAction", "class_s_t_m32_w_lx.html#a366a83d5f5ed02859717a83c21768378", null ],
     [ "clearPacketReceivedAction", "class_s_t_m32_w_lx.html#aad377b018cf65ceb6b23cac523ba96b4", null ],

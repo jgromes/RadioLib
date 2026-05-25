@@ -2,10 +2,10 @@ var class_s_x126x =
 [
     [ "SX126x", "class_s_x126x.html#aaca5a8fa8a3e634dd1b5b4c2bb5058d8", null ],
     [ "autoLDRO", "class_s_x126x.html#ab9ce38cfeaa36ddcc2d82b2974d7088c", null ],
-    [ "begin", "class_s_x126x.html#a936a40038e05740a528f2b53f8e17010", null ],
-    [ "beginBPSK", "class_s_x126x.html#a8ebfbbddca8d3bde4501925a0e25cd43", null ],
-    [ "beginFSK", "class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c", null ],
-    [ "beginLRFHSS", "class_s_x126x.html#af404471ef9d379c58b5b08757593fe6d", null ],
+    [ "begin", "class_s_x126x.html#a423c69b84a17ee7ff5bbc0effc03733b", null ],
+    [ "beginBPSK", "class_s_x126x.html#a5a2bd1eba417486ac89494eec03fad86", null ],
+    [ "beginFSK", "class_s_x126x.html#aec3ac3e5395d7c64b6698782e9f4592d", null ],
+    [ "beginLRFHSS", "class_s_x126x.html#ad97dbbfa1b98ffcab2619aaabed75b93", null ],
     [ "calculateRxTimeout", "class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4", null ],
     [ "calculateTimeOnAir", "class_s_x126x.html#a23497c11cbd028de8c93b0f448afb198", null ],
     [ "calibrate", "class_s_x126x.html#ab3febfd55b2759f98987afe681e82be1", null ],
@@ -93,7 +93,7 @@ var class_s_x126x =
     [ "standby", "class_s_x126x.html#ad282d5105b1ab4cd05a70541c260e039", null ],
     [ "standby", "class_s_x126x.html#a9c05ef2849e6ad63d3845421032afe9f", null ],
     [ "startChannelScan", "class_s_x126x.html#a001c4637f01ed6f0216cd6c4d7e10da3", null ],
-    [ "startChannelScan", "class_s_x126x.html#a09a8fe05c23c652c7ace2e2f1bf51d93", null ],
+    [ "startChannelScan", "class_s_x126x.html#a30f7e93c968af31756326ba49f91d5fc", null ],
     [ "startReceive", "class_s_x126x.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_s_x126x.html#a66ad433561b02fe61b09afd735ce56cc", null ],
     [ "startReceive", "class_s_x126x.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
@@ -107,6 +107,7 @@ var class_s_x126x =
     [ "transmitDirect", "class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b", null ],
     [ "uploadPatch", "class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1", null ],
     [ "variablePacketLengthMode", "class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d", null ],
-    [ "standbyXOSC", "class_s_x126x.html#ae731568798d03d9722a440fd6a23faf2", null ],
-    [ "XTAL", "class_s_x126x.html#ada0fe6c3d31885952b439135cf0c18f1", null ]
+    [ "standbyXOSC", "group__module__config__vars.html#gae731568798d03d9722a440fd6a23faf2", null ],
+    [ "tcxoVoltage", "group__module__config__vars.html#ga8f778ea6a60a20470dd9a4c7be25817c", null ],
+    [ "useRegulatorLDO", "group__module__config__vars.html#ga383002c662713c23a00b32deaeb524d1", null ]
 ];

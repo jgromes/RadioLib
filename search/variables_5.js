@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['fastcad_0',['fastCad',['../class_l_r2021.html#a24b3a41d84fc6a0ebc214479f163eb71',1,'LR2021']]],
+  ['fastcad_0',['fastCad',['../group__module__config__vars.html#ga24b3a41d84fc6a0ebc214479f163eb71',1,'LR2021']]],
   ['fcnt_1',['fCnt',['../struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846',1,'LoRaWANEvent_t']]],
   ['fcscheckok_2',['fcsCheckOk',['../struct_l_r11x0_wifi_result_extended__t.html#a45bbafdcc16a5ae8ee52d0ea40b40326',1,'LR11x0WifiResultExtended_t']]],
   ['fport_3',['fPort',['../struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513',1,'LoRaWANEvent_t']]],
@@ -15,13 +15,15 @@ var searchData=
   ['freqspace_12',['freqSpace',['../struct_bell_modem__t.html#a27c1a411df3d887ca0ce246c3b5521f7',1,'BellModem_t']]],
   ['freqspacereply_13',['freqSpaceReply',['../struct_bell_modem__t.html#a40fe8a17a9b4fae3f313fea34077eacc',1,'BellModem_t']]],
   ['freqstart_14',['freqStart',['../struct_lo_ra_w_a_n_channel_span__t.html#a1bfba15154185b75693542cd0547cb96',1,'LoRaWANChannelSpan_t']]],
-  ['freqstep_15',['freqstep',['../struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e',1,'LoRaWANChannelSpan_t::freqStep'],['../class_physical_layer.html#aa949616080a463a82bb6ad5075a9e16e',1,'PhysicalLayer::freqStep']]],
-  ['frmpending_16',['frmPending',['../struct_lo_ra_w_a_n_event__t.html#afe256fb2ed02e2ffdf0ae85f92951778',1,'LoRaWANEvent_t']]],
-  ['fromdistributionsystem_17',['fromDistributionSystem',['../struct_l_r11x0_wifi_result_full__t.html#a47cb77c1ccf8da32d3a4102518c0d72c',1,'LR11x0WifiResultFull_t']]],
-  ['fsk_18',['fsk',['../union_data_rate__t.html#abfa0cbc4b33c49435e67662b6e6027cf',1,'DataRate_t']]],
-  ['fwgnss_19',['fwGNSS',['../struct_l_r11x0_version_info__t.html#aba5ac25e1acff5678991483d3a56084a',1,'LR11x0VersionInfo_t']]],
-  ['fwmajor_20',['fwMajor',['../struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc',1,'LR11x0VersionInfo_t']]],
-  ['fwmajorwifi_21',['fwMajorWiFi',['../struct_l_r11x0_version_info__t.html#add0c362641afcfff4a2ef3563e5f1c36',1,'LR11x0VersionInfo_t']]],
-  ['fwminor_22',['fwMinor',['../struct_l_r11x0_version_info__t.html#a93ffc624cb2545411a409e7879a6d597',1,'LR11x0VersionInfo_t']]],
-  ['fwminorwifi_23',['fwMinorWiFi',['../struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f',1,'LR11x0VersionInfo_t']]]
+  ['freqstep_15',['freqstep',['../class_physical_layer.html#aa949616080a463a82bb6ad5075a9e16e',1,'PhysicalLayer::freqStep'],['../struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e',1,'LoRaWANChannelSpan_t::freqStep']]],
+  ['frequency_16',['frequency',['../struct_config_lo_ra__t.html#af6f9bee3a6f797e226be03d86a03dca8',1,'ConfigLoRa_t::frequency'],['../struct_config_f_s_k__t.html#a98ed68200c6a41d16639868c1f260a18',1,'ConfigFSK_t::frequency'],['../struct_config_b_p_s_k__t.html#a53f6b0158e0a328c6ae57be836727681',1,'ConfigBPSK_t::frequency'],['../struct_config_o_o_k__t.html#ad40e05a1bf6589c5f23348f7cb6cf7bc',1,'ConfigOOK_t::frequency'],['../struct_config_l_r_f_h_s_s__t.html#afda01a29dce2ae7392c75355855070ce',1,'ConfigLRFHSS_t::frequency'],['../struct_config_f_l_r_c__t.html#a100300b9ceb77b4e36e127383d4f3141',1,'ConfigFLRC_t::frequency'],['../struct_config_b_l_e__t.html#a1d1877521dba9ae1948c1d16547556eb',1,'ConfigBLE_t::frequency']]],
+  ['frequencydeviation_17',['frequencydeviation',['../struct_config_b_l_e__t.html#a31f122d64215aa9d8f2c6eaa6cbd38c6',1,'ConfigBLE_t::frequencyDeviation'],['../struct_config_f_s_k__t.html#aa3fe774e50262ae43ff6937abf9e686b',1,'ConfigFSK_t::frequencyDeviation']]],
+  ['frmpending_18',['frmPending',['../struct_lo_ra_w_a_n_event__t.html#afe256fb2ed02e2ffdf0ae85f92951778',1,'LoRaWANEvent_t']]],
+  ['fromdistributionsystem_19',['fromDistributionSystem',['../struct_l_r11x0_wifi_result_full__t.html#a47cb77c1ccf8da32d3a4102518c0d72c',1,'LR11x0WifiResultFull_t']]],
+  ['fsk_20',['fsk',['../union_data_rate__t.html#abfa0cbc4b33c49435e67662b6e6027cf',1,'DataRate_t']]],
+  ['fwgnss_21',['fwGNSS',['../struct_l_r11x0_version_info__t.html#aba5ac25e1acff5678991483d3a56084a',1,'LR11x0VersionInfo_t']]],
+  ['fwmajor_22',['fwMajor',['../struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc',1,'LR11x0VersionInfo_t']]],
+  ['fwmajorwifi_23',['fwMajorWiFi',['../struct_l_r11x0_version_info__t.html#add0c362641afcfff4a2ef3563e5f1c36',1,'LR11x0VersionInfo_t']]],
+  ['fwminor_24',['fwMinor',['../struct_l_r11x0_version_info__t.html#a93ffc624cb2545411a409e7879a6d597',1,'LR11x0VersionInfo_t']]],
+  ['fwminorwifi_25',['fwMinorWiFi',['../struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f',1,'LR11x0VersionInfo_t']]]
 ];

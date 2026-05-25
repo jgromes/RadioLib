@@ -1,9 +1,13 @@
 var class_s_x128x =
 [
     [ "SX128x", "class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7", null ],
+    [ "begin", "class_s_x128x.html#a0514d1785164d23455d63f15b61742bd", null ],
     [ "begin", "class_s_x128x.html#a275a9a86934124eab4982ad52bf91aea", null ],
+    [ "beginBLE", "class_s_x128x.html#a130a3f6fb1e76456b7c56d30215065de", null ],
     [ "beginBLE", "class_s_x128x.html#ace5ede905bf85aada0c61b9cfaaea127", null ],
+    [ "beginFLRC", "class_s_x128x.html#ab6a9934ebc9d28e3ae26b1c87a103b72", null ],
     [ "beginFLRC", "class_s_x128x.html#a2c4a24623c5fd27b3cc937e55783d709", null ],
+    [ "beginGFSK", "class_s_x128x.html#aeb936913cf73a989472e0d334941b7a4", null ],
     [ "beginGFSK", "class_s_x128x.html#a6ed60dfbd142315bb4e1abd2555a470a", null ],
     [ "calculateRxTimeout", "class_s_x128x.html#a0f073c411928ed6a059ceb4a0dcc5632", null ],
     [ "calculateTimeOnAir", "class_s_x128x.html#a4b458bf709ee126106b53e9478ad4c96", null ],
@@ -75,7 +79,7 @@ var class_s_x128x =
     [ "standby", "class_s_x128x.html#a46ff4db28d0c1617d160104e8f1e5dd8", null ],
     [ "standby", "class_s_x128x.html#a202449d07b0bec9798493d51c659cd1c", null ],
     [ "startChannelScan", "class_s_x128x.html#a948156af6e886bc46a6c6c5fb10a087a", null ],
-    [ "startChannelScan", "class_s_x128x.html#acdee68d9be73509f464226722551c4d9", null ],
+    [ "startChannelScan", "class_s_x128x.html#ace4324e9e1be85b3195aebaa7dad0aac", null ],
     [ "startReceive", "class_s_x128x.html#a18664ad615c5507ff1690baaca90b094", null ],
     [ "startReceive", "class_s_x128x.html#a803eaca8bb7fdfa3570cf4aa95f8e729", null ],
     [ "startReceive", "class_s_x128x.html#ae93500dfbcfd39837e04c0f3eaa40d97", null ],
