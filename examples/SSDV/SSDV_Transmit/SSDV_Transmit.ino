@@ -16,6 +16,7 @@
 */
 
 #include <RadioLib.h>
+#include "image.h"
 
 // SX1278 has the following connections:
 // NSS pin:   10

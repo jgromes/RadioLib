@@ -24,7 +24,7 @@
 extern "C" {
 #endif
 
-#define SSDV_ERROR       (0xFF)
+#define SSDV_ERROR       (0x7F)
 #define SSDV_OK          (0x00)
 #define SSDV_FEED_ME     (0x01)
 #define SSDV_HAVE_PACKET (0x02)

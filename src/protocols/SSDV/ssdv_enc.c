@@ -1252,7 +1252,8 @@ char ssdv_dec_set_buffer(ssdv_t *s, uint8_t *buffer, size_t length)
 
 char ssdv_dec_feed(ssdv_t *s, uint8_t *packet)
 {
-	int i = 0, r;
+	int r;
+	uint16_t i = 0;
 	uint8_t b;
 	uint16_t packet_id;
 	
@@ -1275,7 +1276,7 @@ char ssdv_dec_feed(ssdv_t *s, uint8_t *packet)
 		
 		/* Read the fixed headers from the packet */
 		s->type      = packet[1] - 0x66;
-		s->callsign  = (packet[2] << 24) | (packet[3] << 16) | (packet[4] << 8) | packet[5];
+		s->callsign  = ((uint32_t)packet[2] << 24) | ((uint32_t)packet[3] << 16) | ((uint32_t)packet[4] << 8) | (uint32_t)packet[5];
 		s->image_id  = packet[6];
 		s->width     = packet[9] << 4;
 		s->height    = packet[10] << 4;
@@ -1439,7 +1440,7 @@ char ssdv_dec_is_packet(uint8_t *packet, int *errors)
 		x = crc32(&pkt[1], pkt_size_crcdata);
 		
 		i = 1 + pkt_size_crcdata;
-		if(x == (pkt[i + 3] | (pkt[i + 2] << 8) | (pkt[i + 1] << 16) | (pkt[i] << 24)))
+		if(x == ((uint32_t)pkt[i + 3] | ((uint32_t)pkt[i + 2] << 8) | ((uint32_t)pkt[i + 1] << 16) | ((uint32_t)pkt[i] << 24)))
 		{
 			/* Valid, set the type and continue */
 			type = SSDV_TYPE_NOFEC;
@@ -1458,7 +1459,7 @@ char ssdv_dec_is_packet(uint8_t *packet, int *errors)
 		x = crc32(&pkt[1], pkt_size_crcdata);
 		
 		i = 1 + pkt_size_crcdata;
-		if(x == (pkt[i + 3] | (pkt[i + 2] << 8) | (pkt[i + 1] << 16) | (pkt[i] << 24)))
+		if(x == ((uint32_t)pkt[i + 3] | ((uint32_t)pkt[i + 2] << 8) | ((uint32_t)pkt[i + 1] << 16) | ((uint32_t)pkt[i] << 24)))
 		{
 			/* Valid, set the type and continue */
 			type = SSDV_TYPE_NORMAL;
@@ -1482,7 +1483,7 @@ char ssdv_dec_is_packet(uint8_t *packet, int *errors)
 		x = crc32(&pkt[1], pkt_size_crcdata);
 		
 		i = 1 + pkt_size_crcdata;
-		if(x == (pkt[i + 3] | (pkt[i + 2] << 8) | (pkt[i + 1] << 16) | (pkt[i] << 24)))
+		if(x == ((uint32_t)pkt[i + 3] | ((uint32_t)pkt[i + 2] << 8) | ((uint32_t)pkt[i + 1] << 16) | ((uint32_t)pkt[i] << 24)))
 		{
 			/* Valid, set the type and continue */
 			type = SSDV_TYPE_NORMAL;
@@ -1515,7 +1516,7 @@ char ssdv_dec_is_packet(uint8_t *packet, int *errors)
 void ssdv_dec_header(ssdv_packet_info_t *info, uint8_t *packet)
 {
 	info->type       = packet[1] - 0x66;
-	info->callsign   = (packet[2] << 24) | (packet[3] << 16) | (packet[4] << 8) | packet[5];
+	info->callsign   = ((uint32_t)packet[2] << 24) | ((uint32_t)packet[3] << 16) | ((uint32_t)packet[4] << 8) | (uint32_t)packet[5];
 	decode_callsign(info->callsign_s, info->callsign);
 	info->image_id   = packet[6];
 	info->packet_id  = (packet[7] << 8) | packet[8];
