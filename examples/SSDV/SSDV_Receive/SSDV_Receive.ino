@@ -65,10 +65,10 @@ void setFlag(void) {
   receivedFlag = true;
 }
 
-// ── Optional JPEG reconstruction
+// optional JPEG reconstruction
 // uncomment the next line to enable in-RAM JPEG reconstruction.
 // see the header comment for RAM requirements.
-#define ENABLE_JPEG_RECONSTRUCT
+// #define ENABLE_JPEG_RECONSTRUCT
 
 #ifdef ENABLE_JPEG_RECONSTRUCT
 // uutput buffer for the reconstructed JPEG.
