@@ -38,10 +38,6 @@ Radio radio = new RadioModule();
 // set the second argument to 'true' for RTTY / FSK links that need RS-FEC.
 SSDVClient ssdv(&radio, false);
 
-// example JPEG: RadioLib logo at 256x256 pixels
-extern const uint8_t testJpeg[];
-extern const uint32_t testJpegLen;
-
 void setup() {
   Serial.begin(115200);
 
