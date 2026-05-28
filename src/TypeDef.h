@@ -724,7 +724,8 @@
 #define RADIOLIB_ERR_SSDV_INTERNAL_MISMATCH     (-1511)
 
 /*!
-  \brief The received SSDV packet failed CRC and/or RS-FEC validation.
+  \brief The received SSDV packet was too short, 
+  failed CRC and/or RS-FEC validation.
 */
 #define RADIOLIB_ERR_SSDV_INVALID_PACKET          (-1512)
 

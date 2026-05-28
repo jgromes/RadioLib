@@ -11,9 +11,9 @@
   
    SSDV packet layout (256 bytes, FEC / Normal mode):
      Byte   0    : 0x55  sync
-     Byte   1    : type (0x66 + type_id)
-                    0x66 = Normal (FEC on)   (type_id = SSDV_TYPE_NORMAL  = 0x00)
-                    0x67 = No-FEC            (type_id = SSDV_TYPE_NOFEC   = 0x01)
+     Byte   1    : type
+                    0x66 = Normal (FEC on)   (SSDV_TYPE_NORMAL)
+                    0x67 = No-FEC            (SSDV_TYPE_NOFEC)
      Bytes  2–5  : callsign, base-40 encoded (big-endian uint32_t)
      Byte   6    : image ID  (0–255)
      Bytes  7–8  : packet ID (big-endian uint16_t)
@@ -32,10 +32,10 @@
      Bytes 252–255 : CRC-32
      (no RS bytes)
   
-   LoRa notes:
+   Transmission notes:
      LoRa payloads are limited to 255 bytes; the 0x55 sync byte is omitted.
-     Use transmitLoRa() / receiveLoRa() when operating over LoRa.
-     Use transmit() / receive() for FSK/RTTY links that carry all 256 bytes.
+     Use transmitLoRa() when operating over LoRa.
+     Use transmit() for FSK/RTTY links that carry all 256 bytes.
   
    JPEG image requirements (enforced by the ssdv encoder):
      • Width and height must be multiples of 16 (up to 4080 × 4080)
@@ -49,20 +49,14 @@
 
 #include <RadioLib.h>
 
-// ── SSDV + Reed-Solomon C headers ─────────────────────────────────────────
+// SSDV + Reed-Solomon C headers
 extern "C" {
-#include "ssdv_coding.h"   // fsphil/ssdv — encoder/decoder API + ssdv_packet_info_t
-#include "rs8.h"           // Phil Karn KA9Q RS(255,223) codec
+#include "ssdv_coding.h"
+#include "rs8.h"
 }
 
-/*!
-    \brief Returned by feedPacket() when the last (EOI) SSDV packet of an
-          image has been successfully processed.  Call getJpeg() to
-          retrieve the reconstructed JPEG.
-  */
+// signals a decoded JPEG
 #define RADIOLIB_SSDV_EOI                         (1)
-
-// ──────────────────────────────────────────────────────────────────────────
 
 /*!
    \class SSDVClient
@@ -73,7 +67,6 @@ public:
 
   /*!
      \brief Construct an SSDVClient.
-    
      \param phy  Pointer to an initialised RadioLib PhysicalLayer object
                  (SX1278, SX1262, CC1101, …).
      \param fec  true  → Normal mode: 205-byte payload + 32-byte RS FEC.
@@ -90,12 +83,7 @@ public:
   ~SSDVClient();
 
   /*!
-     \brief Initialise the client with a station callsign.
-    
-     Must be called before setImage() / transmit() / transmitLoRa().
-     Not required for receive-only use.
-     Can be called again at any time to change the callsign.
-    
+     \brief Initialise the client with a station callsign.    
      \param callsign  Up to 6 characters: A–Z, 0–9, '-', '/', '.'.
      \returns \ref status_codes
    */
@@ -103,11 +91,9 @@ public:
 
   /*!
      \brief Load and encode a JPEG image ready for transmission.
-    
      The entire JPEG is re-encoded into SSDV packets in one call and
      stored in a heap-allocated buffer.  Any previously loaded image is
      discarded.
-    
      \param jpegData  Pointer to a complete JPEG file in memory.
      \param jpegLen   Length of the JPEG data in bytes.
      \param quality   SSDV quality level 0–7.
@@ -142,9 +128,7 @@ public:
 
   /*!
      \brief Transmit the next SSDV packet (all 256 bytes including sync).
-    
      Use for RTTY / FSK links.  For LoRa, use transmitLoRa() instead.
-    
      \param packetId  Optional: if non-NULL, the 0-based index of the
                       transmitted packet is stored here.
      \returns Number of packets transmitted so far (>0) on success,
@@ -154,10 +138,6 @@ public:
 
   /*!
      \brief Transmit the next packet omitting the leading 0x55 sync byte.
-    
-     Sends bytes [1 … 255] of the SSDV packet (255 bytes total), fitting
-     within the 255-byte LoRa payload limit.
-    
      \param packetId  Optional output pointer for the 0-based packet index.
      \returns Number of packets transmitted so far (>0) on success,
               or a negative \ref status_codes on error.
@@ -166,49 +146,25 @@ public:
 
   /*!
      \brief Discard the current image and free the packet buffer.
-    
      After this call numPackets() returns 0 and isDone() returns true.
    */
   void clearImage();
 
   /*!
-     \brief Blocking receive of a full 256-byte SSDV packet.
-    
-     Waits until the radio delivers a packet, then copies all 256 bytes
-     into \p packet.  Suitable for FSK/RTTY links that transmit the complete
-     256-byte SSDV packet including the 0x55 sync byte.
-    
+     \brief Get the SSDV packet from the radio.
      The returned buffer is NOT validated — call isValidPacket() to check.
-    
-     \param packet  Caller-allocated buffer of at least 256 bytes.
-     \returns \ref status_codes (\c RADIOLIB_ERR_NONE on success).
+     \param packet buffer of at least 256 bytes.
+     \returns \ref status_codes
    */
-  int16_t receive(uint8_t* packet);
-
-  /*!
-     \brief Blocking receive of a LoRa SSDV packet (255 bytes).
-    
-     Waits until the radio delivers a 255-byte LoRa payload, then
-     reconstructs the full 256-byte SSDV packet by prepending the 0x55
-     sync byte.  The result is written to \p packet.
-    
-     The returned buffer is NOT validated — call isValidPacket() to check.
-    
-     \param packet  Caller-allocated buffer of at least 256 bytes.
-     \returns \ref status_codes (\c RADIOLIB_ERR_NONE on success).
-   */
-  int16_t receiveLoRa(uint8_t* packet);
+  int16_t read(uint8_t* packet);
 
   /*!
      \brief Validate an SSDV packet and optionally correct bit errors.
-    
      For Normal-mode (FEC) packets, the Reed-Solomon decoder is run first
      if the CRC fails; up to 16 byte errors in the 224-byte codeword can
      be corrected.  If RS correction succeeds, the corrected bytes are
-     written back to \p packet in place.
-    
+     written back in place.
      For No-FEC packets, only the CRC-32 is checked (no correction).
-    
      \param packet  256-byte SSDV packet.
      \param errors  Optional: number of RS symbol errors corrected.
                     0 = no errors; >0 = corrected; -1 = uncorrectable
@@ -218,13 +174,6 @@ public:
 
   /*!
      \brief Parse the header fields of a validated 256-byte SSDV packet.
-    
-     Extracts callsign, image ID, packet ID, image dimensions, quality,
-     EOI flag, MCU information, and more into \p info.
-    
-     The packet must have been validated by isValidPacket() first;
-     behaviour is undefined on a corrupt packet.
-    
      \param packet  Validated 256-byte SSDV packet (read-only).
      \param info    Pointer to an \c ssdv_packet_info_t struct to fill.
     
@@ -247,17 +196,11 @@ public:
   static void parseHeader(uint8_t* packet, ssdv_packet_info_t* info);
 
   /*!
-     \brief Initialise the JPEG decoder with a caller-supplied output buffer.
-    
-     Must be called before feedPacket().  If the decoder was already
-     initialised, the previous state is discarded and the decoder is
-     re-initialised with the new buffer.
-    
+     \brief Initialise the JPEG decoder with an output buffer.
      The output buffer must be large enough to hold the reconstructed JPEG.
      The reconstructed JPEG is slightly larger than the raw SSDV payload
      because JPEG headers (~1 KB) are added.  A safe upper bound:
        jpegBufLen = numExpectedPackets × SSDV_PKT_SIZE_PAYLOAD + 2048
-    
      Where SSDV_PKT_SIZE_PAYLOAD is 205 (FEC mode) or 237 (no-FEC mode).
     
      Practical sizing examples at SSDV quality level 4:
