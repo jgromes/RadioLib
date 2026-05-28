@@ -94,7 +94,7 @@ void setup() {
 
   // radio
   ConfigLoRa_t config;
-  config.frequency      = 868.250;
+  config.frequency      = 434.250;
   config.bandwidth      = 62.5;
   int16_t state = radio.begin(config);
   if(state != RADIOLIB_ERR_NONE) {
@@ -146,7 +146,7 @@ void loop() {
 
   // read the packet
   uint8_t packet[256];
-  int16_t state = ssdv.receiveLoRa(packet);
+  int16_t state = ssdv.read(packet);
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("  [RX] Radio error: "));
     Serial.println(state);
