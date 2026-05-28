@@ -45,46 +45,51 @@
 
 // ── SSDV + Reed-Solomon C headers ─────────────────────────────────────────
 extern "C" {
-#include "ssdv_coding.h"   // fsphil/ssdv — encoder / decoder API
-#include "rs8.h"  // Phil Karn KA9Q RS(255,223) codec (TBTracker variant)
+#include "ssdv_coding.h"   // fsphil/ssdv — encoder/decoder API + ssdv_packet_info_t
+#include "rs8.h"           // Phil Karn KA9Q RS(255,223) codec
 }
 
+/*!
+    \brief Returned by feedPacket() when the last (EOI) SSDV packet of an
+          image has been successfully processed.  Call getJpeg() to
+          retrieve the reconstructed JPEG.
+  */
+#define RADIOLIB_SSDV_EOI                         (1)
+
+// ──────────────────────────────────────────────────────────────────────────
 
 /*!
- * \class SSDVClient
- * \brief SSDV image transmitter.
- * \note LoRa has a 255-byte payload limit.  SSDV packets
- *     are 256 bytes; the leading 0x55 sync byte is needed only for RTTY
- *     decoders.  If you use LoRa, configure the radio for 255-byte packets
- *     and use transmitLora() instead of transmit(), or call
- *     setSkipSyncByte(true) (see method below).
- */
+   \class SSDVClient
+   \brief SSDV image transmitter and receiver.
 class SSDVClient {
 public:
 
   /*!
      \brief Construct an SSDVClient.
+    
      \param phy  Pointer to an initialised RadioLib PhysicalLayer object
-           (SX1278, SX1262, CC1101, …).
-     \param fec true  → Normal mode: 205-byte payload + 32-byte RS FEC
-                        (use for RTTY, FSK, APRS — any mode without
-                        a built-in FEC layer).
-                 false → No-FEC mode: 237-byte payload, no RS codes
-                        (use for LoRa, which has its own FEC).
+                 (SX1278, SX1262, CC1101, …).
+     \param fec  true  → Normal mode: 205-byte payload + 32-byte RS FEC.
+                         Use for RTTY, FSK — modes without built-in FEC.
+                 false → No-FEC mode: 237-byte payload, no RS codes.
+                         Use for LoRa, which provides its own FEC.
    */
   explicit SSDVClient(PhysicalLayer* phy, bool fec = true);
 
-  /*! \brief Destructor.  Frees the internally allocated packet buffer. */
+  /*!
+     \brief Destructor.  Frees internally allocated buffers (packet buffer
+            and decoder state).
+   */
   ~SSDVClient();
 
   /*!
      \brief Initialise the client with a station callsign.
     
-     Must be called before setImage().  Can be called again at any time to
-     change the callsign; this does NOT reset a loaded image.
+     Must be called before setImage() / transmit() / transmitLoRa().
+     Not required for receive-only use.
+     Can be called again at any time to change the callsign.
     
-     \param callsign  Up to 6 characters, drawn from A–Z, 0–9, '-', '/', '.'.
-              Must not be NULL or empty.
+     \param callsign  Up to 6 characters: A–Z, 0–9, '-', '/', '.'.
      \returns \ref status_codes
    */
   int16_t begin(const char* callsign);
@@ -92,22 +97,19 @@ public:
   /*!
      \brief Load and encode a JPEG image ready for transmission.
     
-     The entire JPEG is encoded into SSDV packets in one call and stored in
-     a heap-allocated buffer (256 × numPackets bytes).  Any previously loaded
-     image is discarded.
-    
-     The ssdv encoder internally re-quantises and re-huffman-codes the image
-     using its own fixed tables, so the exact byte layout of the original
-     JPEG is irrelevant; only the pixel data matters.
+     The entire JPEG is re-encoded into SSDV packets in one call and
+     stored in a heap-allocated buffer.  Any previously loaded image is
+     discarded.
     
      \param jpegData  Pointer to a complete JPEG file in memory.
      \param jpegLen   Length of the JPEG data in bytes.
-     \param quality   SSDV quality level 0–7 (JPEG quality is mapped as
-              0→13, 1→18, 2→29, 3→43, 4→50, 5→71, 6→86, 7→100).
-              Level 4 (quality 50) is a good default.
+     \param quality   SSDV quality level 0–7.
+                      Quality mapping: 0→13, 1→18, 2→29, 3→43, 4→50,
+                      5→71, 6→86, 7→100 (approx. JPEG quality).
+                      Level 4 (quality 50) is a good default.
      \param imageId   Image identifier embedded in every packet header
-              (0–255).  Pass –1 (default) to auto-increment on each
-              call to setImage(), wrapping around after 255.
+                      (0–255).  Pass -1 (default) to auto-increment on each
+                      call, wrapping around after 255.
      \returns \ref status_codes
    */
   int16_t setImage(const uint8_t* jpegData, size_t jpegLen,
@@ -121,7 +123,7 @@ public:
 
   /*!
      \brief Return whether all packets for the current image have been sent.
-     \returns true if isDone or no image is loaded; false if packets remain.
+     \returns true if done or no image is loaded; false if packets remain.
    */
   bool isDone();
 
@@ -132,33 +134,26 @@ public:
   uint16_t currentPacketIndex();
 
   /*!
-     \brief Transmit the next SSDV packet over the radio.
+     \brief Transmit the next SSDV packet (all 256 bytes including sync).
     
-     Each successive call sends the next packet in sequence.
-     Call isDone() to check whether all packets have been transmitted.
+     Use for RTTY / FSK links.  For LoRa, use transmitLoRa() instead.
     
-     \param packetId  Optional output pointer; if non-NULL the 0-based
-              index of the packet just transmitted is stored here.
-    
-     \returns Number of packets transmitted so far (including this one),
-          i.e. a value in [1, numPackets()], on success.
-          Returns a negative \ref status_codes on error
+     \param packetId  Optional: if non-NULL, the 0-based index of the
+                      transmitted packet is stored here.
+     \returns Number of packets transmitted so far (>0) on success,
+              or a negative \ref status_codes on error.
    */
   int16_t transmit(uint16_t* packetId = NULL);
 
   /*!
      \brief Transmit the next packet omitting the leading 0x55 sync byte.
     
-     Sends bytes [1 … 255] of the SSDV packet (255 bytes total), which fits
-     within the 255-byte payload limit of LoRa SX127x / SX126x radios.
-     The sync byte is not needed for LoRa because the radio handles its own
-     frame synchronisation.
+     Sends bytes [1 … 255] of the SSDV packet (255 bytes total), fitting
+     within the 255-byte LoRa payload limit.
     
-     \param packetId  Optional output pointer; if non-NULL the 0-based
-              index of the packet just transmitted is stored here.
-     \returns Number of packets transmitted so far (including this one),
-          i.e. a value in [1, numPackets()], on success.
-          Returns a negative \ref status_codes on error
+     \param packetId  Optional output pointer for the 0-based packet index.
+     \returns Number of packets transmitted so far (>0) on success,
+              or a negative \ref status_codes on error.
    */
   int16_t transmitLoRa(uint16_t* packetId = NULL);
 
@@ -166,7 +161,6 @@ public:
      \brief Discard the current image and free the packet buffer.
     
      After this call numPackets() returns 0 and isDone() returns true.
-     begin() does not need to be called again before the next setImage().
    */
   void clearImage();
 
@@ -174,44 +168,49 @@ private:
   SSDVClient(const SSDVClient&);
   SSDVClient& operator=(const SSDVClient&);
 
-  PhysicalLayer* phy;
-  bool fec;
-  bool initialized;
-  char callsign[SSDV_MAX_CALLSIGN + 1];
+  PhysicalLayer* phy;      // Underlying radio object.
+  bool           fec;      // true = Normal (RS-FEC); false = No-FEC.
 
-  uint8_t* packetBuf;       // packetCount * SSDV_PKT_SIZE
-  uint16_t packetCount;     // total encoded packets for current image
-  uint16_t currentPacket;   // index of next packet to transmit
-  uint8_t imageId;          // auto-incrementing image counter
+  bool     initialized;
+  char     callsign[SSDV_MAX_CALLSIGN + 1]; // NULL-terminated callsign.
+  uint8_t* packetBuf;               // packetCount × SSDV_PKT_SIZE.
+  uint16_t packetCount;             // total encoded packets for current image.
+  uint16_t currentPacket;           // index of next packet to transmit.
+  uint8_t  imageId;                 // auto-incrementing image counter.
+
+  ssdv_t*  decoder;                 // Heap-allocated ssdv_t decoder state.
+  bool     decoderInitialized;      // beginDecoder() called successfully.
+  bool     jpegReady;               // feedPacket() returned RADIOLIB_SSDV_EOI.
+  uint8_t* userJpegBuf;             // Caller-supplied JPEG output buffer.
+  size_t   userJpegBufLen;          // Size of userJpegBuf.
 
   /*!
-     \brief Free the packet buffer and reset packet counters.
+     \brief Free the transmit packet buffer and reset counters.
    */
   void freeBuffer();
 
   /*!
      \brief Run the ssdv encoder over \p jpegData.
     
-     If \c packetBuf is non-NULL and \c numPackets is set, each completed
-     packet is memcpy'd into the buffer (store pass).
-     If \c packetBuf is NULL, packets are counted but not stored (count pass).
+     Pass 1 (count): packetBuf == nullptr → count packets without storing.
+     Pass 2 (store): packetBuf != nullptr → fill the pre-allocated buffer.
     
-     \param type    SSDV_TYPE_NORMAL or SSDV_TYPE_NOFEC.
+     \param type      SSDV_TYPE_NORMAL or SSDV_TYPE_NOFEC.
      \param jpegData  Source JPEG bytes (read-only).
-     \param jpegLen   Source length.
-     \param quality   SSDV quality 0–7.
-    
-     \returns Number of packets encoded (≥ 1) on success, or
-          a negative \ref status_codes on failure.
+     \param jpegLen   Source JPEG length in bytes.
+     \param quality   SSDV quality level 0–7.
+     \returns Number of packets encoded (≥ 1) on success, or a negative
+              \ref status_codes on failure.
    */
-  int32_t runEncoder(uint8_t type, const uint8_t* jpegData, size_t jpegLen, uint8_t quality);
+  int32_t runEncoder(uint8_t type, const uint8_t* jpegData,
+                     size_t jpegLen, uint8_t quality);
 
   /*!
      \brief Internal transmit helper.
-     \param offset  Byte offset within the packet to start sending from
-            (0 = full packet, 1 = skip sync byte for LoRa).
+     \param offset    Byte offset to start transmitting from (0 = full packet;
+                      1 = skip sync byte for LoRa).
      \param packetId  Optional output pointer for the packet index.
-   */
+  */
   int16_t transmitPacket(uint8_t offset, uint16_t* packetId);
 };
 
