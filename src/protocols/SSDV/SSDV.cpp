@@ -304,14 +304,10 @@ int16_t SSDVClient::transmit(uint16_t* packetId) {
 
 int16_t SSDVClient::transmitLoRa(uint16_t* packetId) {
   // offset = 1 → skip the 0x55 sync byte; sends 255 bytes which fits
-  // within the 255-byte payload limit of SX127x / SX126x.
+  // within the 255-byte LoRa payload limit.
   // The sync byte is only useful for RTTY stream decoders; LoRa has its
   // own frame synchronisation and does not need it.
   return(this->transmitPacket(1, packetId));
-}
-
-void SSDVClient::rewind() {
-  this->currentPacket = 0;
 }
 
 void SSDVClient::clearImage() {
