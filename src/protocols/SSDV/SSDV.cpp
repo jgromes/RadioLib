@@ -1,41 +1,41 @@
 /*
- * SSDV image client for RadioLib
- *
- * Transmission implementation notes
- * ───────────────────────────────────
- * Encoding is performed in two passes over the JPEG data:
- *
- *   Pass 1 (count)  — run the ssdv encoder to determine the exact number of
- *                     output packets without allocating storage.
- *   Allocation      — malloc(packetCount × 256) bytes.
- *   Pass 2 (store)  — run the ssdv encoder a second time, copying each
- *                     completed packet into the flat buffer.
- *
- * Two passes are necessary because the SSDV encoder re-quantises and
- * re-huffman-codes the JPEG, so the output size cannot be predicted from
- * the input length alone.
- *
- * Memory: 256 × N bytes on the heap.  For a typical 320×240 image at quality
- * level 4 this is ~30–60 packets → ~8–15 KB.  Fits comfortably in the 320 KB
- * SRAM of an ESP32.
- *
- * Reception implementation notes
- * ───────────────────────────────
- * receiveLoRa() / receive() call PhysicalLayer::receive() to collect raw
- * bytes from the radio.  The sync byte (0x55) is prepended as needed for
- * LoRa packets.
- *
- * isValidPacket() delegates directly to ssdv_dec_is_packet(), which:
- *   1. Tests the CRC-32 of the payload.
- *   2. If the CRC fails for a Normal-mode packet, runs the RS(255,223)
- *      decoder to correct up to 16 byte errors, then re-checks the CRC.
- *   3. Copies the corrected packet back to the caller's buffer if valid.
- *
- * JPEG reconstruction (decoder) notes
- * ─────────────────────────────────────
- * The ssdv decoder state (ssdv_t) is heap-allocated in beginDecoder() and
- * freed in endDecoder() / destructor.  The JPEG output buffer is
- * caller-supplied and NOT owned by this class.
+   SSDV image client for RadioLib
+   
+   Transmission implementation notes
+   ───────────────────────────────────
+   Encoding is performed in two passes over the JPEG data:
+   
+     Pass 1 (count)  — run the ssdv encoder to determine the exact number of
+                       output packets without allocating storage.
+     Allocation      — malloc(packetCount × 256) bytes.
+     Pass 2 (store)  — run the ssdv encoder a second time, copying each
+                       completed packet into the flat buffer.
+   
+   Two passes are necessary because the SSDV encoder re-quantises and
+   re-huffman-codes the JPEG, so the output size cannot be predicted from
+   the input length alone.
+   
+   Memory: 256 × N bytes on the heap.  For a typical 320×240 image at quality
+   level 4 this is ~30–60 packets → ~8–15 KB.  Fits comfortably in the 320 KB
+   SRAM of an ESP32.
+   
+   Reception implementation notes
+   ───────────────────────────────
+   receiveLoRa() / receive() call PhysicalLayer::receive() to collect raw
+   bytes from the radio.  The sync byte (0x55) is prepended as needed for
+   LoRa packets.
+   
+   isValidPacket() delegates directly to ssdv_dec_is_packet(), which:
+     1. Tests the CRC-32 of the payload.
+     2. If the CRC fails for a Normal-mode packet, runs the RS(255,223)
+        decoder to correct up to 16 byte errors, then re-checks the CRC.
+     3. Copies the corrected packet back to the caller's buffer if valid.
+   
+   JPEG reconstruction (decoder) notes
+   ─────────────────────────────────────
+   The ssdv decoder state (ssdv_t) is heap-allocated in beginDecoder() and
+   freed in endDecoder() / destructor.  The JPEG output buffer is
+   caller-supplied and NOT owned by this class.
  */
 
 #include "SSDV.h"
@@ -75,18 +75,18 @@ void SSDVClient::freeBuffer() {
 }
 
 /*
- * Core encoding coroutine, used by both the count pass (packetBuf == nullptr)
- * and the store pass (packetBuf != nullptr).
- *
- * The ssdv encoder API is a coroutine driven by ssdv_enc_get_packet():
- *
- *   SSDV_FEED_ME    — encoder needs more JPEG input; call ssdv_enc_feed().
- *   SSDV_HAVE_PACKET — one complete packet written to tempPkt; tally/store it.
- *   SSDV_EOI         — final packet written (EOI flag set); encoding complete.
- *   SSDV_ERROR       — unrecoverable error.
- *
- * We feed the entire JPEG in one shot the first time FEED_ME is returned.
- * A second FEED_ME after the data is exhausted means the JPEG is truncated.
+   Core encoding coroutine, used by both the count pass (packetBuf == nullptr)
+   and the store pass (packetBuf != nullptr).
+   
+   The ssdv encoder API is a coroutine driven by ssdv_enc_get_packet():
+   
+     SSDV_FEED_ME    — encoder needs more JPEG input; call ssdv_enc_feed().
+     SSDV_HAVE_PACKET — one complete packet written to tempPkt; tally/store it.
+     SSDV_EOI         — final packet written (EOI flag set); encoding complete.
+     SSDV_ERROR       — unrecoverable error.
+   
+   We feed the entire JPEG in one shot the first time FEED_ME is returned.
+   A second FEED_ME after the data is exhausted means the JPEG is truncated.
  */
 int32_t SSDVClient::runEncoder(uint8_t type, const uint8_t* jpegData,
                                size_t jpegLen, uint8_t quality) {
@@ -300,9 +300,8 @@ int16_t SSDVClient::receive(uint8_t* packet) {
   if(packet == nullptr) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
-  // Receive a full 256-byte packet directly from the radio.
-  // PhysicalLayer::receive() blocks until a packet arrives or times out.
-  return(phy->receive(packet, SSDV_PKT_SIZE));
+  // Read a full 256-byte packet.
+  return(this->phy->readData(packet, SSDV_PKT_SIZE));
 }
 
 int16_t SSDVClient::receiveLoRa(uint8_t* packet) {
@@ -314,7 +313,7 @@ int16_t SSDVClient::receiveLoRa(uint8_t* packet) {
   // sync byte (byte 0), so the radio payload is SSDV bytes [1 … 255].
   // We receive into packet[1] and then fill packet[0] = 0x55 ourselves so
   // that the downstream validation and decoder APIs see a full 256-byte packet.
-  int16_t state = phy->readData(packet + 1, SSDV_PKT_SIZE - 1);
+  int16_t state = this->phy->readData(packet + 1, SSDV_PKT_SIZE - 1);
   if(state != RADIOLIB_ERR_NONE) {
     return(state);
   }
@@ -346,7 +345,6 @@ int16_t SSDVClient::isValidPacket(uint8_t* packet, int* errors) {
   return(RADIOLIB_ERR_NONE);
 }
 
-/*static*/
 void SSDVClient::parseHeader(uint8_t* packet, ssdv_packet_info_t* info) {
   // Delegate directly to the ssdv C library.
   // The packet must have been validated by isValidPacket() first.
@@ -364,33 +362,33 @@ int16_t SSDVClient::beginDecoder(uint8_t* jpegBuf, size_t jpegBufLen) {
   // Heap-allocate the ssdv_t decoder state.
   // ssdv_t is a large struct (~2 KB) containing Huffman and quantisation
   // table arrays; heap allocation avoids blowing the stack.
-  decoder = reinterpret_cast<ssdv_t*>(malloc(sizeof(ssdv_t)));
-  if(decoder == nullptr) {
+  this->decoder = reinterpret_cast<ssdv_t*>(malloc(sizeof(ssdv_t)));
+  if(this->decoder == nullptr) {
     return(RADIOLIB_ERR_SSDV_ALLOC_FAILED);
   }
 
   // Initialise the decoder (sets up Huffman tables, resets all state).
-  char r = ssdv_dec_init(decoder);
+  char r = ssdv_dec_init(this->decoder);
   if(r != SSDV_OK) {
-    free(decoder);
-    decoder = nullptr;
+    free(this->decoder);
+    this->decoder = nullptr;
     return(RADIOLIB_ERR_SSDV_DECODE_FAILED);
   }
 
   // Point the decoder at the caller-supplied JPEG output buffer.
   // ssdv_dec_set_buffer() stores buffer/length and resets the write pointer.
-  ssdv_dec_set_buffer(decoder, jpegBuf, jpegBufLen);
+  ssdv_dec_set_buffer(this->decoder, jpegBuf, jpegBufLen);
 
-  userJpegBuf    = jpegBuf;
-  userJpegBufLen = jpegBufLen;
-  decoderInitialized = true;
-  jpegReady      = false;
+  this->userJpegBuf    = jpegBuf;
+  this->userJpegBufLen = jpegBufLen;
+  this->decoderInitialized = true;
+  this->jpegReady      = false;
 
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SSDVClient::feedPacket(const uint8_t* packet) {
-  if(!decoderInitialized || decoder == nullptr) {
+  if(!this->decoderInitialized || this->decoder == nullptr) {
     return(RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED);
   }
   if(packet == nullptr) {
@@ -399,13 +397,13 @@ int16_t SSDVClient::feedPacket(const uint8_t* packet) {
 
   // ssdv_dec_feed() takes a non-const pointer because the C API predates
   // const-correctness; it does not modify the packet data.
-  char r = ssdv_dec_feed(decoder, const_cast<uint8_t*>(packet));
+  char r = ssdv_dec_feed(this->decoder, const_cast<uint8_t*>(packet));
 
   switch(r) {
 
     // ── SSDV_OK (0): EOI found — image is complete ──────────────────────
     case SSDV_OK:
-      jpegReady = true;
+      this->jpegReady = true;
       return(RADIOLIB_SSDV_EOI);
 
     // ── SSDV_FEED_ME (1): packet processed, more packets needed ─────────
@@ -420,13 +418,13 @@ int16_t SSDVClient::feedPacket(const uint8_t* packet) {
 }
 
 int16_t SSDVClient::getJpeg(uint8_t** jpegPtr, size_t* jpegLen) {
-  if(!decoderInitialized || decoder == nullptr) {
+  if(!this->decoderInitialized || this->decoder == nullptr) {
     return(RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED);
   }
   if(jpegPtr == nullptr || jpegLen == nullptr) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
-  if(!jpegReady) {
+  if(!this->jpegReady) {
     // feedPacket() has not yet returned RADIOLIB_SSDV_EOI.
     return(RADIOLIB_ERR_SSDV_NO_JPEG);
   }
@@ -435,7 +433,7 @@ int16_t SSDVClient::getJpeg(uint8_t** jpegPtr, size_t* jpegLen) {
   // MCUs (filled with solid grey), synchronises the bit stream, and writes
   // the EOI marker.  It then sets *jpegPtr and *jpegLen to describe the
   // output in the user-supplied buffer.
-  char r = ssdv_dec_get_jpeg(decoder, jpegPtr, jpegLen);
+  char r = ssdv_dec_get_jpeg(this->decoder, jpegPtr, jpegLen);
   if(r != SSDV_OK) {
     return(RADIOLIB_ERR_SSDV_DECODE_FAILED);
   }
@@ -444,30 +442,30 @@ int16_t SSDVClient::getJpeg(uint8_t** jpegPtr, size_t* jpegLen) {
 }
 
 int16_t SSDVClient::resetDecoder() {
-  if(!decoderInitialized || decoder == nullptr) {
+  if(!this->decoderInitialized || this->decoder == nullptr) {
     return(RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED);
   }
 
   // Re-initialise decoder state tables without reallocating.
-  char r = ssdv_dec_init(decoder);
+  char r = ssdv_dec_init(this->decoder);
   if(r != SSDV_OK) {
     return(RADIOLIB_ERR_SSDV_DECODE_FAILED);
   }
 
   // Reset the write pointer to the start of the user-supplied buffer.
-  ssdv_dec_set_buffer(decoder, userJpegBuf, userJpegBufLen);
+  ssdv_dec_set_buffer(this->decoder, this->userJpegBuf, this->userJpegBufLen);
 
-  jpegReady = false;
+  this->jpegReady = false;
   return(RADIOLIB_ERR_NONE);
 }
 
 void SSDVClient::endDecoder() {
-  if(decoder != nullptr) {
-    free(decoder);
-    decoder = nullptr;
+  if(this->decoder != nullptr) {
+    free(this->decoder);
+    this->decoder = nullptr;
   }
-  decoderInitialized = false;
-  jpegReady          = false;
-  userJpegBuf        = nullptr;
-  userJpegBufLen     = 0;
+  this->decoderInitialized = false;
+  this->jpegReady          = false;
+  this->userJpegBuf        = nullptr;
+  this->userJpegBufLen     = 0;
 }

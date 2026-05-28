@@ -209,17 +209,10 @@ public:
     
      For No-FEC packets, only the CRC-32 is checked (no correction).
     
-     This function is static and can be called without an SSDVClient
-     instance: \c SSDVClient::isValidPacket(buf, &errors).
-    
-     \param packet  256-byte SSDV packet (may be modified by RS correction).
+     \param packet  256-byte SSDV packet.
      \param errors  Optional: number of RS symbol errors corrected.
                     0 = no errors; >0 = corrected; -1 = uncorrectable
-                    (but the function would have returned an error code in
-                    that case). Pass \c nullptr to ignore.
-     \returns \c RADIOLIB_ERR_NONE if the packet is valid (possibly after
-              RS correction), or \c RADIOLIB_ERR_SSDV_INVALID_PACKET if
-              the packet is corrupt beyond repair.
+     \returns \ref status_codes
    */
   static int16_t isValidPacket(uint8_t* packet, int* errors = nullptr);
 
@@ -231,9 +224,6 @@ public:
     
      The packet must have been validated by isValidPacket() first;
      behaviour is undefined on a corrupt packet.
-    
-     This function is static and can be called without an SSDVClient
-     instance: \c SSDVClient::parseHeader(buf, &info).
     
      \param packet  Validated 256-byte SSDV packet (read-only).
      \param info    Pointer to an \c ssdv_packet_info_t struct to fill.
@@ -263,12 +253,9 @@ public:
      initialised, the previous state is discarded and the decoder is
      re-initialised with the new buffer.
     
-     **Buffer sizing guidance**
-    
      The output buffer must be large enough to hold the reconstructed JPEG.
      The reconstructed JPEG is slightly larger than the raw SSDV payload
      because JPEG headers (~1 KB) are added.  A safe upper bound:
-    
        jpegBufLen = numExpectedPackets × SSDV_PKT_SIZE_PAYLOAD + 2048
     
      Where SSDV_PKT_SIZE_PAYLOAD is 205 (FEC mode) or 237 (no-FEC mode).
@@ -278,20 +265,7 @@ public:
        • 320 × 240 image → ~60 packets → ~16 KB buffer
        • 640 × 480 image → ~250 packets → ~55 KB buffer
     
-     Passing a buffer that is too small causes the decoder to silently
-     truncate the output; the reconstructed JPEG will be incomplete or
-     invalid.  When in doubt, allocate generously.
-    
-     \warning  The SSDVClient does NOT take ownership of \p jpegBuf.
-               The caller must ensure the buffer remains valid until
-               endDecoder() is called (or the SSDVClient is destroyed).
-    
-     \warning  Allocating the ~2 KB \c ssdv_t decoder state on the heap
-               may fail on heavily-constrained AVR Arduino boards.
-               JPEG reconstruction is only practical on platforms with
-               several tens of kilobytes of free heap (ESP32, RP2040, …).
-    
-     \param jpegBuf     Caller-allocated output buffer for the JPEG.
+     \param jpegBuf     output buffer for the JPEG.
      \param jpegBufLen  Size of \p jpegBuf in bytes.
      \returns \ref status_codes.
    */
@@ -304,57 +278,28 @@ public:
      can bridge gaps caused by missing packets by interpolating missing
      MCU blocks; however, image quality degrades with each missing packet.
     
-     Do not feed the same packet twice; doing so stalls the decoder.
-    
-     \param packet  Validated 256-byte SSDV packet (read-only).
-     \returns
-       - \c RADIOLIB_ERR_NONE        — packet accepted; image not yet complete.
-       - \c RADIOLIB_SSDV_EOI        — last packet processed; call getJpeg().
-       - \c RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED — beginDecoder() not called.
-       - \c RADIOLIB_ERR_SSDV_DECODE_FAILED           — internal decoder error.
+     \param packet validated 256-byte SSDV packet.
+     \returns \ref status_codes
    */
   int16_t feedPacket(const uint8_t* packet);
 
   /*!
      \brief Retrieve the reconstructed JPEG after image reception is complete.
-    
-     Valid only after feedPacket() returns \c RADIOLIB_SSDV_EOI.  The
-     returned pointers point into the buffer supplied to beginDecoder();
-     the data remains valid until resetDecoder(), endDecoder(), or another
-     call to beginDecoder() is made.
-    
      \param jpegPtr  Set to the start of the reconstructed JPEG data.
      \param jpegLen  Set to the length of the JPEG data in bytes.
      \returns \ref status_codes.
-              Returns \c RADIOLIB_ERR_SSDV_NO_JPEG if the image is not
-              yet complete (feedPacket() has not yet returned
-              \c RADIOLIB_SSDV_EOI for this image).
    */
   int16_t getJpeg(uint8_t** jpegPtr, size_t* jpegLen);
 
   /*!
      \brief Reset the decoder state to receive a new image.
-    
-     Reinitialises the decoder (calls ssdv_dec_init() and resets the
-     output buffer pointer to the beginning) without freeing or
-     reallocating memory.  Call this after a complete image has been
-     received (or abandoned) to prepare for the next one.
-    
      \returns \ref status_codes.
-              Returns \c RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED if
-              beginDecoder() has not been called.
    */
   int16_t resetDecoder();
 
   /*!
      \brief Release decoder resources and free the internal ssdv_t state.
-    
-     After this call feedPacket() / getJpeg() / resetDecoder() all return
-     \c RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED until beginDecoder()
-     is called again.
-    
-     The caller-supplied JPEG buffer (passed to beginDecoder()) is NOT
-     freed — that remains the caller's responsibility.
+     This does not release the user's JPEG buffer
    */
   void endDecoder();
 
@@ -362,7 +307,7 @@ private:
   SSDVClient(const SSDVClient&);
   SSDVClient& operator=(const SSDVClient&);
 
-  PhysicalLayer* phy;      // Underlying radio object.
+  PhysicalLayer* phy;      // radio
   bool           fec;      // true = Normal (RS-FEC); false = No-FEC.
 
   bool     initialized;
@@ -385,10 +330,8 @@ private:
 
   /*!
      \brief Run the ssdv encoder over \p jpegData.
-    
      Pass 1 (count): packetBuf == nullptr → count packets without storing.
      Pass 2 (store): packetBuf != nullptr → fill the pre-allocated buffer.
-    
      \param type      SSDV_TYPE_NORMAL or SSDV_TYPE_NOFEC.
      \param jpegData  Source JPEG bytes (read-only).
      \param jpegLen   Source JPEG length in bytes.
