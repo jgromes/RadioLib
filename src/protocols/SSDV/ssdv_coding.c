@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "ssdv_enc.h"
+#include "ssdv_coding.h"
 #include "rs8.h"
 
 /* Recognised JPEG markers */
@@ -144,7 +144,6 @@ static void load_standard_dqt(uint8_t *dst, const uint8_t *table, uint8_t qualit
 {
 	int i;
 	uint16_t scale_factor;
-	uint32_t temp;
 	
 	/* Copy the table ID */
 	*dst++ = *table++;
@@ -156,7 +155,7 @@ static void load_standard_dqt(uint8_t *dst, const uint8_t *table, uint8_t qualit
 	/* Copy the remaining 64 coefficients, while applying the scaling factor */
 	for(i = 0; i < 64; i++)
 	{
-		temp = *table++;
+		uint32_t temp = *table++;
 		temp = (temp * scale_factor + 50) / 100;
 		
 		/* limit the values to the valid range */
@@ -215,12 +214,12 @@ static void *dtblcpy(ssdv_t *s, const void *src, size_t n)
 
 static uint32_t crc32(void *data, size_t length)
 {
-	uint32_t crc, x;
+	uint32_t crc;
 	uint8_t i, *d;
 	
 	for(d = data, crc = 0xFFFFFFFF; length; length--)
 	{
-		x = (crc ^ *(d++)) & 0xFF;
+		uint32_t x = (crc ^ *(d++)) & 0xFF;
 		for(i = 8; i > 0; i--)
 		{
 			if(x & 1) x = (x >> 1) ^ 0xEDB88320;
@@ -255,7 +254,7 @@ static uint32_t encode_callsign(char *callsign)
 
 static char *decode_callsign(char *callsign, uint32_t code)
 {
-	char *c, s;
+	char *c;
 	
 	*callsign = '\0';
 	
@@ -264,7 +263,7 @@ static char *decode_callsign(char *callsign, uint32_t code)
 	
 	for(c = callsign; code; c++)
 	{
-		s = code % 40;
+		char s = code % 40;
 		if(s == 0) *c = '-';
 		else if(s < 11) *c = '0' + s - 1;
 		else if(s < 14) *c = '-';
@@ -364,8 +363,6 @@ static inline void jpeg_encode_int(int value, int *bits, uint8_t *width)
 
 static char ssdv_outbits(ssdv_t *s, uint16_t bits, uint8_t length)
 {
-	uint8_t b;
-	
 	if(length)
 	{
 		s->outbits <<= length;
@@ -375,7 +372,7 @@ static char ssdv_outbits(ssdv_t *s, uint16_t bits, uint8_t length)
 	
 	while(s->outlen >= 8 && s->out_len > 0)
 	{
-		b = s->outbits >> (s->outlen - 8);
+		uint8_t b = s->outbits >> (s->outlen - 8);
 		
 		/* Put the byte into the output buffer */
 		*(s->outp++) = b;
@@ -722,7 +719,6 @@ static char ssdv_have_marker_data(ssdv_t *s)
 {
 	uint8_t *d = s->marker_data;
 	size_t l = s->marker_len;
-	int i;
 	
 	switch(s->marker)
 	{
@@ -765,9 +761,9 @@ static char ssdv_have_marker_data(ssdv_t *s)
 		
 		/* TODO: Read in the quantisation table ID for each component */
 		// 01 22 00 02 11 01 03 11 01
-		for(i = 0; i < d[5]; i++)
+		for(int i = 0; i < d[5]; i++)
 		{
-			uint8_t *dq = &d[i * 3 + 6];
+			const uint8_t *dq = &d[i * 3 + 6];
 			if(dq[0] != i + 1)
 			{
 				fprintf(stderr, "Error: Components are not in order in the SOF0 header\n");
@@ -836,9 +832,9 @@ static char ssdv_have_marker_data(ssdv_t *s)
 			return(SSDV_ERROR);
 		}
 		
-		for(i = 0; i < d[0]; i++)
+		for(int i = 0; i < d[0]; i++)
 		{
-			uint8_t *dh = &d[i * 2 + 1];
+			const uint8_t *dh = &d[i * 2 + 1];
 			if(dh[0] != i + 1)
 			{
 				fprintf(stderr, "Error: Components are not in order in the SOF0 header\n");
@@ -962,7 +958,6 @@ char ssdv_enc_set_buffer(ssdv_t *s, uint8_t *buffer)
 char ssdv_enc_get_packet(ssdv_t *s)
 {
 	int r;
-	uint8_t b;
 	
 	/* Have we reached the end of the image? */
 	if(s->state == S_EOI) return(SSDV_EOI);
@@ -972,7 +967,7 @@ char ssdv_enc_get_packet(ssdv_t *s)
 	
 	while(s->in_len)
 	{
-		b = *(s->inp++);
+		uint8_t b = *(s->inp++);
 		s->in_len--;
 		
 		/* Skip bytes if necessary */
@@ -1252,9 +1247,7 @@ char ssdv_dec_set_buffer(ssdv_t *s, uint8_t *buffer, size_t length)
 
 char ssdv_dec_feed(ssdv_t *s, uint8_t *packet)
 {
-	int r;
 	uint16_t i = 0;
-	uint8_t b;
 	uint16_t packet_id;
 	
 	/* Read the packet header */
@@ -1363,13 +1356,14 @@ char ssdv_dec_feed(ssdv_t *s, uint8_t *packet)
 			}
 		}
 		
-		b = packet[SSDV_PKT_SIZE_HEADER + i];
+		uint8_t b = packet[SSDV_PKT_SIZE_HEADER + i];
 		
 		/* Add the new byte to the work area */
 		s->workbits = (s->workbits << 8) | b;
 		s->worklen += 8;
 		
 		/* Process the new data until more needed, or an error occurs */
+		int r;
 		while((r = ssdv_process(s)) == SSDV_OK);
 		
 		if(r == SSDV_BUFFER_FULL)

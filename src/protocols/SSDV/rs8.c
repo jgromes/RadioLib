@@ -74,16 +74,15 @@ static inline int mod255(int x)
 #define A0       (NN) /* Special reserved value encoding zero in index form */
 
 /* Portable C version */
-void encode_rs_8(uint8_t *data, uint8_t *parity, int pad)
+void encode_rs_8(const uint8_t *data, uint8_t *parity, int pad)
 {
 	int i, j;
-	uint8_t feedback;
 	
 	memset(parity, 0, NROOTS * sizeof(uint8_t));
 	
 	for(i = 0; i < NN - NROOTS - pad; i++)
 	{
-		feedback = INDEX_OF[data[i] ^ parity[0]];
+		uint8_t feedback = INDEX_OF[data[i] ^ parity[0]];
 		if(feedback != A0) /* feedback term is non-zero */
 		{
 			for(j = 1; j < NROOTS; j++)

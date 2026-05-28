@@ -45,7 +45,7 @@
 
 // ── SSDV + Reed-Solomon C headers ─────────────────────────────────────────
 extern "C" {
-#include "ssdv_enc.h"   // fsphil/ssdv — encoder / decoder API
+#include "ssdv_coding.h"   // fsphil/ssdv — encoder / decoder API
 #include "rs8.h"  // Phil Karn KA9Q RS(255,223) codec (TBTracker variant)
 }
 

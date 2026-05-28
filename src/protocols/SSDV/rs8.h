@@ -13,7 +13,7 @@ extern "C" {
 
 #include <stdint.h>
 
-extern void encode_rs_8(uint8_t *data, uint8_t *parity, int pad);
+extern void encode_rs_8(const uint8_t *data, uint8_t *parity, int pad);
 extern int decode_rs_8(uint8_t *data, int *eras_pos, int no_eras, int pad);
 
 #ifdef __cplusplus

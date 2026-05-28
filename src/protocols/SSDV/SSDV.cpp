@@ -260,7 +260,7 @@ int16_t SSDVClient::setImage(const uint8_t* jpegData, size_t jpegLen,
   // Total bytes = packetCount × 256.  Max possible: 65536 × 256 = 16 MB.
   // In practice HAB images are << 1000 packets.
   size_t bufSize = (size_t)this->packetCount * SSDV_PKT_SIZE;
-  this->packetBuf = (uint8_t*)malloc(bufSize);
+  this->packetBuf = reinterpret_cast<uint8_t *>(malloc(bufSize));
   if(this->packetBuf == nullptr) {
     this->packetCount = 0;
     return(RADIOLIB_ERR_SSDV_ALLOC_FAILED);
