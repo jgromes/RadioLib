@@ -1,46 +1,52 @@
 /*
- * SSDVClient.h — SSDV (Slow Scan Digital Video) transmit client
- *
- * Encodes a JPEG image into the SSDV packet format defined at
- *   https://ukhas.org.uk/doku.php?id=guides:ssdv
- * and transmits each 256-byte packet via any radio.
- *
- * Depends on:
- *   • fsphil/ssdv  — ssdv.h / ssdv.c  (packet building + JPEG re-encoding)
- *   • rs8.h / rs8.c (Phil Karn KA9Q Reed-Solomon codec)
- *
- * SSDV packet layout (256 bytes, FEC / Normal mode):
- *   Byte   0    : 0x55  sync
- *   Byte   1    : 0x00  type (Normal = FEC on)
- *   Bytes  2–5  : callsign encoded base-40 (big-endian uint32_t)
- *   Byte   6    : image ID  (0–255)
- *   Bytes  7–8  : packet ID (big-endian uint16_t)
- *   Byte   9    : width  in MCU blocks  (pixels/16 – 1, max 255 → 4080 px)
- *   Byte  10    : height in MCU blocks
- *   Byte  11    : flags  [7]=EOI [6:4]=quality(0–7) [3:2]=mcu_mode [1:0]=0
- *   Bytes 12–13   : MCU index (big-endian uint16_t)
- *   Byte  14    : MCU offset within packet
- *   Bytes 15–219  : payload (205 bytes of re-encoded JPEG scan data)
- *   Bytes 220–223 : CRC-32  (big-endian, covers bytes 1–219)
- *   Bytes 224–255 : Reed-Solomon parity (32 bytes, covers bytes 1–219 + CRC)
- *
- * No-FEC mode (type 0x01):
- *   Bytes 15–251  : payload (237 bytes)
- *   Bytes 252–255 : CRC-32
- *   (no RS bytes)
- *
- * JPEG image requirements (enforced by the ssdv encoder):
- *   • Width and height must be multiples of 16 (up to 4080 × 4080)
- *   • Baseline DCT (not progressive)
- *   • Greyscale or YCbCr colour space (not RGB / CMYK)
- *   • Total MCU count ≤ 65535
+   SSDV (Slow Scan Digital Video) transmit/receive client
+  
+   Encodes a JPEG image into the SSDV packet format defined at
+     https://ukhas.org.uk/doku.php?id=guides:ssdv
+   and transmits or receives each 256-byte packet via any radio.
+  
+   Depends on:
+     • fsphil/ssdv  — ssdv_coding.h / ssdv_coding.c  (encoder/decoder API)
+     • rs8.h / rs8.c (Phil Karn KA9Q Reed-Solomon codec)
+  
+   SSDV packet layout (256 bytes, FEC / Normal mode):
+     Byte   0    : 0x55  sync
+     Byte   1    : type (0x66 + type_id)
+                    0x66 = Normal (FEC on)   (type_id = SSDV_TYPE_NORMAL  = 0x00)
+                    0x67 = No-FEC            (type_id = SSDV_TYPE_NOFEC   = 0x01)
+     Bytes  2–5  : callsign, base-40 encoded (big-endian uint32_t)
+     Byte   6    : image ID  (0–255)
+     Bytes  7–8  : packet ID (big-endian uint16_t)
+     Byte   9    : width  in MCU blocks  (pixels/16; max 255 → 4080 px)
+     Byte  10    : height in MCU blocks
+     Byte  11    : flags  bits [6:4] = quality XOR 4; [3:2] = mcu_mode;
+                          bit  [2]   = EOI; bits [1:0] = 0
+     Byte  12    : MCU offset within first MCU of this packet
+     Bytes 13–14 : MCU index (big-endian uint16_t); 0xFFFF = no new MCU
+   Normal mode:
+     Bytes 15–219  : payload (205 bytes of re-encoded JPEG scan data)
+     Bytes 220–223 : CRC-32  (big-endian, covers bytes 1–219)
+     Bytes 224–255 : Reed-Solomon parity (32 bytes, covers bytes 1–219 + CRC)
+   No-FEC mode:
+     Bytes 15–251  : payload (237 bytes)
+     Bytes 252–255 : CRC-32
+     (no RS bytes)
+  
+   LoRa notes:
+     LoRa payloads are limited to 255 bytes; the 0x55 sync byte is omitted.
+     Use transmitLoRa() / receiveLoRa() when operating over LoRa.
+     Use transmit() / receive() for FSK/RTTY links that carry all 256 bytes.
+  
+   JPEG image requirements (enforced by the ssdv encoder):
+     • Width and height must be multiples of 16 (up to 4080 × 4080)
+     • Baseline DCT (not progressive)
+     • Greyscale or YCbCr colour space (not RGB / CMYK)
+     • Total MCU count ≤ 65535
  */
 
 #ifndef RADIOLIB_SSDV_CLIENT_H
 #define RADIOLIB_SSDV_CLIENT_H
 
-#include <stdint.h>
-#include <stddef.h>
 #include <RadioLib.h>
 
 // ── SSDV + Reed-Solomon C headers ─────────────────────────────────────────
@@ -61,6 +67,7 @@ extern "C" {
 /*!
    \class SSDVClient
    \brief SSDV image transmitter and receiver.
+*/
 class SSDVClient {
 public:
 
@@ -163,6 +170,193 @@ public:
      After this call numPackets() returns 0 and isDone() returns true.
    */
   void clearImage();
+
+  /*!
+     \brief Blocking receive of a full 256-byte SSDV packet.
+    
+     Waits until the radio delivers a packet, then copies all 256 bytes
+     into \p packet.  Suitable for FSK/RTTY links that transmit the complete
+     256-byte SSDV packet including the 0x55 sync byte.
+    
+     The returned buffer is NOT validated — call isValidPacket() to check.
+    
+     \param packet  Caller-allocated buffer of at least 256 bytes.
+     \returns \ref status_codes (\c RADIOLIB_ERR_NONE on success).
+   */
+  int16_t receive(uint8_t* packet);
+
+  /*!
+     \brief Blocking receive of a LoRa SSDV packet (255 bytes).
+    
+     Waits until the radio delivers a 255-byte LoRa payload, then
+     reconstructs the full 256-byte SSDV packet by prepending the 0x55
+     sync byte.  The result is written to \p packet.
+    
+     The returned buffer is NOT validated — call isValidPacket() to check.
+    
+     \param packet  Caller-allocated buffer of at least 256 bytes.
+     \returns \ref status_codes (\c RADIOLIB_ERR_NONE on success).
+   */
+  int16_t receiveLoRa(uint8_t* packet);
+
+  /*!
+     \brief Validate an SSDV packet and optionally correct bit errors.
+    
+     For Normal-mode (FEC) packets, the Reed-Solomon decoder is run first
+     if the CRC fails; up to 16 byte errors in the 224-byte codeword can
+     be corrected.  If RS correction succeeds, the corrected bytes are
+     written back to \p packet in place.
+    
+     For No-FEC packets, only the CRC-32 is checked (no correction).
+    
+     This function is static and can be called without an SSDVClient
+     instance: \c SSDVClient::isValidPacket(buf, &errors).
+    
+     \param packet  256-byte SSDV packet (may be modified by RS correction).
+     \param errors  Optional: number of RS symbol errors corrected.
+                    0 = no errors; >0 = corrected; -1 = uncorrectable
+                    (but the function would have returned an error code in
+                    that case). Pass \c nullptr to ignore.
+     \returns \c RADIOLIB_ERR_NONE if the packet is valid (possibly after
+              RS correction), or \c RADIOLIB_ERR_SSDV_INVALID_PACKET if
+              the packet is corrupt beyond repair.
+   */
+  static int16_t isValidPacket(uint8_t* packet, int* errors = nullptr);
+
+  /*!
+     \brief Parse the header fields of a validated 256-byte SSDV packet.
+    
+     Extracts callsign, image ID, packet ID, image dimensions, quality,
+     EOI flag, MCU information, and more into \p info.
+    
+     The packet must have been validated by isValidPacket() first;
+     behaviour is undefined on a corrupt packet.
+    
+     This function is static and can be called without an SSDVClient
+     instance: \c SSDVClient::parseHeader(buf, &info).
+    
+     \param packet  Validated 256-byte SSDV packet (read-only).
+     \param info    Pointer to an \c ssdv_packet_info_t struct to fill.
+    
+     \par Fields populated in \p info:
+       - \c type           Packet type: SSDV_TYPE_NORMAL or SSDV_TYPE_NOFEC.
+       - \c callsign       Encoded callsign (uint32_t, base-40).
+       - \c callsign_s     Decoded callsign as a NUL-terminated C string.
+       - \c image_id       Image identifier (0–255).
+       - \c packet_id      Packet sequence number (0-based).
+       - \c width          Image width in pixels (multiple of 16).
+       - \c height         Image height in pixels (multiple of 16).
+       - \c eoi            1 if this is the last packet of the image; 0 otherwise.
+       - \c quality        SSDV quality level (0–7).
+       - \c mcu_mode       Chroma subsampling mode (0=4:2:0 2x2, 1=2x1,
+                            2=1x2, 3=4:4:4 1x1).
+       - \c mcu_offset     Byte offset of the first MCU within the packet payload.
+       - \c mcu_id         MCU block index for the first MCU in this packet.
+       - \c mcu_count      Total number of MCU blocks in the image.
+   */
+  static void parseHeader(uint8_t* packet, ssdv_packet_info_t* info);
+
+  /*!
+     \brief Initialise the JPEG decoder with a caller-supplied output buffer.
+    
+     Must be called before feedPacket().  If the decoder was already
+     initialised, the previous state is discarded and the decoder is
+     re-initialised with the new buffer.
+    
+     **Buffer sizing guidance**
+    
+     The output buffer must be large enough to hold the reconstructed JPEG.
+     The reconstructed JPEG is slightly larger than the raw SSDV payload
+     because JPEG headers (~1 KB) are added.  A safe upper bound:
+    
+       jpegBufLen = numExpectedPackets × SSDV_PKT_SIZE_PAYLOAD + 2048
+    
+     Where SSDV_PKT_SIZE_PAYLOAD is 205 (FEC mode) or 237 (no-FEC mode).
+    
+     Practical sizing examples at SSDV quality level 4:
+       • 160 × 120 image → ~20 packets → ~6 KB buffer
+       • 320 × 240 image → ~60 packets → ~16 KB buffer
+       • 640 × 480 image → ~250 packets → ~55 KB buffer
+    
+     Passing a buffer that is too small causes the decoder to silently
+     truncate the output; the reconstructed JPEG will be incomplete or
+     invalid.  When in doubt, allocate generously.
+    
+     \warning  The SSDVClient does NOT take ownership of \p jpegBuf.
+               The caller must ensure the buffer remains valid until
+               endDecoder() is called (or the SSDVClient is destroyed).
+    
+     \warning  Allocating the ~2 KB \c ssdv_t decoder state on the heap
+               may fail on heavily-constrained AVR Arduino boards.
+               JPEG reconstruction is only practical on platforms with
+               several tens of kilobytes of free heap (ESP32, RP2040, …).
+    
+     \param jpegBuf     Caller-allocated output buffer for the JPEG.
+     \param jpegBufLen  Size of \p jpegBuf in bytes.
+     \returns \ref status_codes.
+   */
+  int16_t beginDecoder(uint8_t* jpegBuf, size_t jpegBufLen);
+
+  /*!
+     \brief Feed one validated SSDV packet to the JPEG decoder.
+    
+     Packets must be fed in order (ascending packet_id).  The decoder
+     can bridge gaps caused by missing packets by interpolating missing
+     MCU blocks; however, image quality degrades with each missing packet.
+    
+     Do not feed the same packet twice; doing so stalls the decoder.
+    
+     \param packet  Validated 256-byte SSDV packet (read-only).
+     \returns
+       - \c RADIOLIB_ERR_NONE        — packet accepted; image not yet complete.
+       - \c RADIOLIB_SSDV_EOI        — last packet processed; call getJpeg().
+       - \c RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED — beginDecoder() not called.
+       - \c RADIOLIB_ERR_SSDV_DECODE_FAILED           — internal decoder error.
+   */
+  int16_t feedPacket(const uint8_t* packet);
+
+  /*!
+     \brief Retrieve the reconstructed JPEG after image reception is complete.
+    
+     Valid only after feedPacket() returns \c RADIOLIB_SSDV_EOI.  The
+     returned pointers point into the buffer supplied to beginDecoder();
+     the data remains valid until resetDecoder(), endDecoder(), or another
+     call to beginDecoder() is made.
+    
+     \param jpegPtr  Set to the start of the reconstructed JPEG data.
+     \param jpegLen  Set to the length of the JPEG data in bytes.
+     \returns \ref status_codes.
+              Returns \c RADIOLIB_ERR_SSDV_NO_JPEG if the image is not
+              yet complete (feedPacket() has not yet returned
+              \c RADIOLIB_SSDV_EOI for this image).
+   */
+  int16_t getJpeg(uint8_t** jpegPtr, size_t* jpegLen);
+
+  /*!
+     \brief Reset the decoder state to receive a new image.
+    
+     Reinitialises the decoder (calls ssdv_dec_init() and resets the
+     output buffer pointer to the beginning) without freeing or
+     reallocating memory.  Call this after a complete image has been
+     received (or abandoned) to prepare for the next one.
+    
+     \returns \ref status_codes.
+              Returns \c RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED if
+              beginDecoder() has not been called.
+   */
+  int16_t resetDecoder();
+
+  /*!
+     \brief Release decoder resources and free the internal ssdv_t state.
+    
+     After this call feedPacket() / getJpeg() / resetDecoder() all return
+     \c RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED until beginDecoder()
+     is called again.
+    
+     The caller-supplied JPEG buffer (passed to beginDecoder()) is NOT
+     freed — that remains the caller's responsibility.
+   */
+  void endDecoder();
 
 private:
   SSDVClient(const SSDVClient&);

@@ -724,6 +724,26 @@
 #define RADIOLIB_ERR_SSDV_INTERNAL_MISMATCH     (-1511)
 
 /*!
+  \brief The received SSDV packet failed CRC and/or RS-FEC validation.
+*/
+#define RADIOLIB_ERR_SSDV_INVALID_PACKET          (-1512)
+
+/*!
+  \brief The JPEG decoder is not or not properly initialized.
+*/
+#define RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED (-1513)
+
+/*!
+  \brief The internal ssdv decoder ran into an error while processing a packet.
+*/
+#define RADIOLIB_ERR_SSDV_DECODE_FAILED           (-1514)
+
+/*!
+  \brief The image was not fully received yet.
+*/
+#define RADIOLIB_ERR_SSDV_NO_JPEG                 (-1515)
+
+/*!
   \}
 */
 
