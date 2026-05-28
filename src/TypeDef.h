@@ -663,6 +663,53 @@
 */
 #define RADIOLIB_ERR_ADSB_INVALID_CATEGORY                      (-1401)
 
+// ── SSDVClient-specific error codes ───────────────────────────────────────
+// Range –1200 … –1299 is reserved for protocol-layer extensions in RadioLib.
+// These do not overlap with the existing RadioLib error table.
+
+/// Callsign is empty or longer than 6 characters.
+#define RADIOLIB_ERR_SSDV_CALLSIGN_TOO_LONG     (-1201)
+
+/// Callsign contains characters outside the SSDV base-40 charset
+/// (A–Z, 0–9, '-', '/', '.').
+#define RADIOLIB_ERR_SSDV_CALLSIGN_INVALID      (-1202)
+
+/// JPEG data pointer is NULL or length is zero.
+#define RADIOLIB_ERR_SSDV_NO_IMAGE              (-1203)
+
+/// quality parameter outside the valid range 0–7.
+#define RADIOLIB_ERR_SSDV_INVALID_QUALITY       (-1204)
+
+/// ssdv_enc_init() or ssdv_enc_get_packet() returned SSDV_ERROR.
+/// This usually means the JPEG is not in a format accepted by the encoder
+/// (progressive DCT, wrong colour space, dimensions not multiples of 16, etc.)
+#define RADIOLIB_ERR_SSDV_ENCODE_FAILED         (-1205)
+
+/// malloc() returned NULL while allocating the packet buffer.
+#define RADIOLIB_ERR_SSDV_ALLOC_FAILED          (-1206)
+
+/// begin() has not been called, or returned an error.
+#define RADIOLIB_ERR_SSDV_NOT_INITIALIZED       (-1207)
+
+/// transmit() was called but no image has been loaded with setImage().
+#define RADIOLIB_ERR_SSDV_NO_PACKET_BUFFER      (-1208)
+
+/// transmit() was called after all packets for the current image were sent.
+/// Call setImage() again for a new image, or rewind() to retransmit.
+#define RADIOLIB_ERR_SSDV_ALL_SENT              (-1209)
+
+/// The underlying radio transmit() call failed.
+/// The wrapped RadioLib error code is available from getLastRadioError().
+#define RADIOLIB_ERR_SSDV_TRANSMIT_FAILED       (-1210)
+
+/// The JPEG data appears to be truncated: the encoder requested more input
+/// after all bytes had already been consumed (no JPEG EOI marker found).
+#define RADIOLIB_ERR_SSDV_JPEG_TRUNCATED        (-1211)
+
+/// The two encoding passes yielded a different packet count.
+/// This should never happen with deterministic data; indicates a bug.
+#define RADIOLIB_ERR_SSDV_INTERNAL_MISMATCH     (-1212)
+
 /*!
   \}
 */
