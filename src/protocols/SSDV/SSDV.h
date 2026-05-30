@@ -52,7 +52,6 @@
 // SSDV + Reed-Solomon C headers
 extern "C" {
 #include "ssdv_coding.h"
-#include "rs8.h"
 }
 
 // signals a decoded JPEG

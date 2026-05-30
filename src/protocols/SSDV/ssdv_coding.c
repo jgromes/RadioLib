@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "ssdv_coding.h"
-#include "rs8.h"
+#include "utils/ReedSolomon.h"
 
 /* Recognised JPEG markers */
 enum {
@@ -1082,7 +1082,7 @@ char ssdv_enc_get_packet(ssdv_t *s)
 				
 				/* Generate the RS codes */
 				if(s->type == SSDV_TYPE_NORMAL)
-					encode_rs_8(&s->out[1], &s->out[i], 0);
+					rlb_encode_rs_8(&s->out[1], &s->out[i], 0);
 				
 				s->packet_id++;
 				
@@ -1468,7 +1468,7 @@ char ssdv_dec_is_packet(uint8_t *packet, int *errors)
 		
 		/* Run the reed-solomon decoder */
 		pkt[1] = 0x66 + SSDV_TYPE_NORMAL;
-		i = decode_rs_8(&pkt[1], 0, 0, 0);
+		i = rlb_decode_rs_8(&pkt[1], 0, 0, 0);
 		
 		if(i < 0) return(-1); /* Reed-solomon decoder failed */
 		if(errors) *errors = i;
