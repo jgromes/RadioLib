@@ -1899,6 +1899,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // guard against integer underflow when downlinkMsgLen is too short
   uint8_t minLen = 1 + 4 + 1 + 2 + fOptsLen + 4;
   if(downlinkMsgLen < minLen) {
+    #if !RADIOLIB_STATIC_ONLY
+      delete[] downlinkMsg;
+    #endif
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
   uint8_t payLen = downlinkMsgLen - minLen;
@@ -1942,7 +1945,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       isAppDownlink = true;
     }
     // check if any of the packages use this FPort
-    if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED && this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled) {
+    if(fPort >= RADIOLIB_LORAWAN_FPORT_RESERVED && (fPort - RADIOLIB_LORAWAN_FPORT_RESERVED) < RADIOLIB_LORAWAN_NUM_RESERVED_PACKAGES && this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].enabled) {
       ok = true;
       isAppDownlink = this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].isAppPack;
     }
