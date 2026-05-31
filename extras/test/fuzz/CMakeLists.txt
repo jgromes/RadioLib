@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.13)
+
+project(radiolib-fuzztest)
+
+#set(CMAKE_BUILD_TYPE Debug)
+
+# add RadioLib sources
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CURRENT_BINARY_DIR}/RadioLib")
+
+# add test sources
+file(GLOB_RECURSE TEST_SOURCES
+  "tests/FuzzLoRaWAN.cpp"
+)
+
+# create the executable
+add_executable(${PROJECT_NAME} ${TEST_SOURCES})
+
+# include directories
+target_include_directories(${PROJECT_NAME} PUBLIC include)
+
+# link RadioLib
+target_link_libraries(${PROJECT_NAME} PRIVATE RadioLib)
+
+# set target properties and options
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
+set(BUILD_FLAGS -Wall -Wextra -fsanitize=fuzzer,address,undefined -O2)
+target_link_libraries(${PROJECT_NAME} PRIVATE $<$<C_COMPILER_ID:Clang>:-fsanitize=fuzzer,address,undefined>)
+target_compile_options(${PROJECT_NAME} PRIVATE ${BUILD_FLAGS})
+target_compile_options(RadioLib PRIVATE ${BUILD_FLAGS})
+
+# enable GodMode to access the private/protected members
+target_compile_definitions(RadioLib PUBLIC -DRADIOLIB_GODMODE=1)

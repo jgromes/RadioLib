@@ -1,0 +1,27 @@
+name: "Fuzzing test"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  fuzz-test:
+    name: Build and run fuzzing test
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang llvm
+
+    - name: Run fuzzing test
+      run: |
+        cd extras/test/fuzz
+        ./test.sh
