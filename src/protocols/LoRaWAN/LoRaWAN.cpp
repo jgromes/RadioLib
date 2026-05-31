@@ -6,6 +6,26 @@
 
 #if !RADIOLIB_EXCLUDE_LORAWAN
 
+constexpr LoRaWANMacCommand_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS] = {
+  { RADIOLIB_LORAWAN_MAC_RESET,               1, 1, true,  false },
+  { RADIOLIB_LORAWAN_MAC_LINK_CHECK,          2, 0, false, true  },
+  { RADIOLIB_LORAWAN_MAC_LINK_ADR,            4, 1, false, false },
+  { RADIOLIB_LORAWAN_MAC_DUTY_CYCLE,          1, 0, false, false },
+  { RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP,      4, 1, true,  false },
+  { RADIOLIB_LORAWAN_MAC_DEV_STATUS,          0, 2, false, false },
+  { RADIOLIB_LORAWAN_MAC_NEW_CHANNEL,         5, 1, false, false },
+  { RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP,     1, 0, true,  false },
+  { RADIOLIB_LORAWAN_MAC_TX_PARAM_SETUP,      1, 0, true,  false },
+  { RADIOLIB_LORAWAN_MAC_DL_CHANNEL,          4, 1, true,  false },
+  { RADIOLIB_LORAWAN_MAC_REKEY,               1, 1, true,  false },
+  { RADIOLIB_LORAWAN_MAC_ADR_PARAM_SETUP,     1, 0, false, false },
+  { RADIOLIB_LORAWAN_MAC_DEVICE_TIME,         5, 0, false, true  },
+  { RADIOLIB_LORAWAN_MAC_FORCE_REJOIN,        2, 0, false, false },
+  { RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP,  1, 1, false, false },
+  { RADIOLIB_LORAWAN_MAC_DEVICE_MODE,         1, 1, true,  false },
+  { RADIOLIB_LORAWAN_MAC_PROPRIETARY,         5, 0, false, true  },
+};
+
 LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand) {
   this->phyLayer = phy;
   this->band = band;
