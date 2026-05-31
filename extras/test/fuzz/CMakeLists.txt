@@ -9,7 +9,9 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CUR
 
 # add test sources
 file(GLOB_RECURSE TEST_SOURCES
+  "tests/FuzzMain.cpp"
   "tests/FuzzLoRaWAN.cpp"
+  "tests/FuzzPager.cpp"
 )
 
 # create the executable

@@ -16,13 +16,16 @@ class FuzzHal : public RadioLibHal {
     void delay(RadioLibTime_t ms) override { (void)ms; }
     void delayMicroseconds(RadioLibTime_t us) override { (void)us; }
     RadioLibTime_t millis() override { return(0); }
-    RadioLibTime_t micros() override { return(0); }
+    RadioLibTime_t micros() override { micros_ctr+=1000; return(micros_ctr); }
     long pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) override { (void)pin; (void)state; (void)timeout; return(0); }
     void spiBegin() override {}
     void spiBeginTransaction() override {}
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) override { (void)out; if(in) { memset(in, 0xFF, len); } }
     void spiEndTransaction() override {}
     void spiEnd() override {}
+  
+  private:
+    RadioLibTime_t micros_ctr = 0;
 };
 
 // minimalistic PHY for use in fuzzing
@@ -56,5 +59,16 @@ class FuzzPhysicalLayer : public PhysicalLayer {
         memset(data, 0, toRead);
       }
       return(RADIOLIB_ERR_NONE);
+    }
+
+    // method to full the direct receive buffer with data from the fuzzer
+    void fillDirectReceiveBuffer(const uint8_t* data, size_t len) {
+      this->gotSync = true;
+      for(size_t i = 0; i < len; i++) {
+        uint8_t b = data[i];
+        for(int j = 7; j >= 0; j--) {
+          this->updateDirectBuffer((b & (0x01 << j)) >> j);
+        }
+      }
     }
   };

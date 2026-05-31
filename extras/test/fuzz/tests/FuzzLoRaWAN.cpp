@@ -1,6 +1,6 @@
 #include "MockPhysicalLayer.hpp"
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+extern "C" int FuzzLoRaWAN(const uint8_t* data, size_t size) {
   if(size < 10) { return(0); }
 
   // initialize default software AES-128

@@ -18,4 +18,4 @@ make -j4
 
 # run it for 2^17 iterations
 cd ..
-./build/radiolib-fuzztest -runs=131072 -print_final_stats -artifact_prefix=out/
+./build/radiolib-fuzztest -runs=131072 -artifact_prefix=out/
