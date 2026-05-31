@@ -23,6 +23,9 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
   this->k = k;
   this->poly = poly;
   #if !RADIOLIB_STATIC_ONLY
+  if(this->alphaTo) { delete[] this->alphaTo; }
+  if(this->indexOf) { delete[] this->indexOf; }
+  if(this->generator) { delete[] this->generator; }
   this->alphaTo = new int32_t[n + 1];
   this->indexOf = new int32_t[n + 1];
   this->generator = new int32_t[n - k + 1];
