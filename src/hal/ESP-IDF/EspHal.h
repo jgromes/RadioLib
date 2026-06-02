@@ -42,12 +42,14 @@ public:
    * @param miso SPI MISO pin
    * @param mosi SPI MOSI pin
    * @param host SPI host to use (SPI2_HOST or SPI3_HOST)
+   * @param clockHz SPI clock frequency in Hz
    */
   EspHal(int8_t sck, int8_t miso, int8_t mosi,
-         spi_host_device_t host = SPI2_HOST)
+         spi_host_device_t host = SPI2_HOST, uint32_t clockHz = 500000)
       : RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spiSCK(sck),
-        spiMISO(miso), spiMOSI(mosi), spiHost(host), spiDevice(nullptr),
-        busInitialized(false), deviceAdded(false), halInitialized(false) {}
+        spiMISO(miso), spiMOSI(mosi), spiHost(host), spiClockHz(clockHz),
+        spiDevice(nullptr), busInitialized(false), deviceAdded(false),
+        halInitialized(false) {}
 
   virtual ~EspHal() { term(); }
 
@@ -212,7 +214,8 @@ public:
              spiHost, spiSCK, spiMISO, spiMOSI);
 
     // Try to initialize the bus - it may already be initialized by another
-    // component
+    // component (shared bus). DMA is disabled because RadioLib does not
+    // allocate DMA-capable buffers and the transfers here are small.
     spi_bus_config_t bus_config = {};
     bus_config.mosi_io_num = spiMOSI;
     bus_config.miso_io_num = spiMISO;
@@ -223,12 +226,12 @@ public:
     bus_config.data5_io_num = -1;
     bus_config.data6_io_num = -1;
     bus_config.data7_io_num = -1;
-    bus_config.max_transfer_sz = 4096;
+    bus_config.max_transfer_sz = SOC_SPI_MAXIMUM_BUFFER_SIZE;
     bus_config.flags = 0;
     bus_config.isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO;
     bus_config.intr_flags = 0;
 
-    esp_err_t ret = spi_bus_initialize(spiHost, &bus_config, SPI_DMA_CH_AUTO);
+    esp_err_t ret = spi_bus_initialize(spiHost, &bus_config, SPI_DMA_DISABLED);
     if (ret == ESP_OK) {
       busInitialized = true;
       ESP_LOGD("EspHal", "SPI bus initialized successfully");
@@ -239,7 +242,36 @@ public:
     } else {
       ESP_LOGE("EspHal", "Failed to initialize SPI bus: %s",
                esp_err_to_name(ret));
+      return;
     }
+
+    // Add the device. CS is left to RadioLib (software-driven via
+    // digitalWrite on the Module's csPin), so spics_io_num is -1.
+    spi_device_interface_config_t dev_config = {};
+    dev_config.command_bits = 0;
+    dev_config.address_bits = 0;
+    dev_config.dummy_bits = 0;
+    dev_config.mode = 0; // SPI mode 0 (CPOL=0, CPHA=0)
+    dev_config.clock_source = SPI_CLK_SRC_DEFAULT;
+    dev_config.duty_cycle_pos = 128; // 50% duty cycle
+    dev_config.cs_ena_pretrans = 0;
+    dev_config.cs_ena_posttrans = 0;
+    dev_config.clock_speed_hz = (int)spiClockHz;
+    dev_config.input_delay_ns = 0;
+    dev_config.spics_io_num = -1; // RadioLib drives CS in software
+    dev_config.flags = 0;
+    dev_config.queue_size = 1;
+    dev_config.pre_cb = nullptr;
+    dev_config.post_cb = nullptr;
+
+    ret = spi_bus_add_device(spiHost, &dev_config, &spiDevice);
+    if (ret != ESP_OK) {
+      ESP_LOGE("EspHal", "Failed to add SPI device: %s", esp_err_to_name(ret));
+      return;
+    }
+    deviceAdded = true;
+    ESP_LOGD("EspHal", "SPI device added (clock=%u Hz, software CS)",
+             spiClockHz);
   }
 
   void spiBeginTransaction() {
@@ -323,70 +355,12 @@ public:
     }
   }
 
-  /**
-   * @brief Add SPI device with CS pin
-   * Must be called after init() and before using SPI
-   * @param csPin Chip select pin
-   * @param clockHz SPI clock frequency in Hz
-   */
-  esp_err_t addSpiDevice(int8_t csPin, uint32_t clockHz = 500000) {
-    if (csPin == RADIOLIB_NC) {
-      ESP_LOGE("EspHal", "Invalid CS pin");
-      return ESP_FAIL;
-    }
-
-    spi_device_interface_config_t dev_config = {};
-    dev_config.command_bits = 0;
-    dev_config.address_bits = 0;
-    dev_config.dummy_bits = 0;
-    dev_config.mode = 0; // SPI mode 0 (CPOL=0, CPHA=0)
-    dev_config.clock_source = SPI_CLK_SRC_DEFAULT;
-    dev_config.duty_cycle_pos = 128; // 50% duty cycle
-    dev_config.cs_ena_pretrans = 0;
-    dev_config.cs_ena_posttrans = 0;
-    dev_config.clock_speed_hz = (int)clockHz;
-    dev_config.input_delay_ns = 0;
-    dev_config.spics_io_num = csPin;
-    dev_config.flags = 0;
-    dev_config.queue_size = 1;
-    dev_config.pre_cb = nullptr;
-    dev_config.post_cb = nullptr;
-
-    esp_err_t ret = spi_bus_add_device(spiHost, &dev_config, &spiDevice);
-    if (ret != ESP_OK) {
-      ESP_LOGE("EspHal", "Failed to add SPI device: %s", esp_err_to_name(ret));
-      return ret;
-    }
-
-    deviceAdded = true;
-    ESP_LOGD("EspHal", "SPI device added (CS=%d, clock=%u Hz)", csPin, clockHz);
-    return ESP_OK;
-  }
-
-  esp_err_t removeSpiDevice() {
-    if (!deviceAdded || spiDevice == nullptr) {
-      ESP_LOGW("EspHal", "No SPI device to remove");
-      return ESP_OK;
-    }
-
-    esp_err_t ret = spi_bus_remove_device(spiDevice);
-    if (ret != ESP_OK) {
-      ESP_LOGE("EspHal", "Failed to remove SPI device: %s",
-               esp_err_to_name(ret));
-      return ret;
-    }
-
-    spiDevice = nullptr;
-    deviceAdded = false;
-    ESP_LOGD("EspHal", "SPI device removed");
-    return ESP_OK;
-  }
-
 private:
   int8_t spiSCK;
   int8_t spiMISO;
   int8_t spiMOSI;
   spi_host_device_t spiHost;
+  uint32_t spiClockHz;
   spi_device_handle_t spiDevice;
   bool busInitialized;
   bool deviceAdded;
