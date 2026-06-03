@@ -738,6 +738,10 @@ int16_t SX126x::setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax,
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
 
+void SX126x::setPaTable(SX126x::paTableEntry_t* table) {
+  this->paOptTable = table;
+}
+
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {

@@ -6,7 +6,7 @@
 // this is a lookup table for optimized PA configuration
 // it was determined by testing in https://github.com/jgromes/RadioLib/issues/1628
 // see also https://github.com/radiolib-org/power-tests
-static const SX126x::paTableEntry_t paOptTable[32] = {
+static const SX126x::paTableEntry_t paOptimizedTable[RADIOLIB_SX126X_PA_TABLE_LEN] = {
   { .paDutyCycle = 2, .hpMax = 1, .paVal = -3 },
   { .paDutyCycle = 2, .hpMax = 1, .paVal = -2 },
   { .paDutyCycle = 1, .hpMax = 1, .paVal = 0 },
@@ -199,9 +199,10 @@ int16_t SX1268::setOutputPower(int8_t power, bool optimize) {
   RADIOLIB_ASSERT(state);
 
   // set PA config
-  int8_t paVal = optimize ? paOptTable[power + 9].paVal : power;
-  uint8_t paDutyCycle = optimize ? paOptTable[power + 9].paDutyCycle : 0x04;
-  uint8_t hpMax = optimize ? paOptTable[power + 9].hpMax : 0x07;
+  SX126x::paTableEntry_t* paTable = this->paOptTable ? this->paOptTable : const_cast<SX126x::paTableEntry_t*>(paOptimizedTable);
+  int8_t paVal = optimize ? paTable[power + 9].paVal : power;
+  uint8_t paDutyCycle = optimize ? paTable[power + 9].paDutyCycle : 0x04;
+  uint8_t hpMax = optimize ? paTable[power + 9].hpMax : 0x07;
   return(SX126x::setOutputPower(paVal, paDutyCycle, hpMax, RADIOLIB_SX126X_PA_CONFIG_SX1268));
 }
 

@@ -846,6 +846,16 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel);
 
+
+    /*!
+      \brief Sets custom PA configuration table.
+      \param table Pointer to user-provided PA configuration table.
+      The table MUST containt exactly RADIOLIB_LR2021_PA_TABLE_LEN entries,
+      one per each dBm step. The table is not copied, only reference to it is stored.
+      Set to NULL to return back to the default table.
+    */
+    void setPaTable(SX126x::paTableEntry_t* table);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -888,6 +898,9 @@ class SX126x: public PhysicalLayer {
     
     // Allow subclasses to define different TX modes
     uint8_t txMode = Module::MODE_TX;
+
+    // pointer to PA lookup table - may be overridden by the user
+    SX126x::paTableEntry_t* paOptTable = nullptr;
 
     int16_t setFrequencyRaw(float freq);
     int16_t fixPaClamping(bool enable = true);

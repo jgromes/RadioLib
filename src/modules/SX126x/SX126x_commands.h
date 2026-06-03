@@ -119,6 +119,7 @@
 #define RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ                   (20.0f)
 
 //RADIOLIB_SX126X_CMD_SET_PA_CONFIG
+#define RADIOLIB_SX126X_PA_TABLE_LEN                            (32)
 #define RADIOLIB_SX126X_PA_CONFIG_HP_MAX                        0x07
 #define RADIOLIB_SX126X_PA_CONFIG_PA_LUT                        0x01
 #define RADIOLIB_SX126X_PA_CONFIG_SX1262_8                      0x00
