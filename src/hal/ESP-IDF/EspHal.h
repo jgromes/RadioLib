@@ -8,6 +8,7 @@
 #if defined(ESP_PLATFORM)
 #include "RadioLib.h"
 #include "driver/gpio.h"
+#include "driver/ledc.h"
 #include "driver/spi_master.h"
 #include "esp_log.h"
 #include "esp_rom_sys.h" // For esp_rom_delay_us
@@ -27,7 +28,14 @@
 #define OUTPUT (GPIO_MODE_OUTPUT)
 #define RISING (GPIO_INTR_POSEDGE)
 #define FALLING (GPIO_INTR_NEGEDGE)
-#define NOP() asm volatile("nop")
+
+// These are left undefined by the generic build; define them for the ESP-IDF HAL
+#if !defined(RADIOLIB_ESP32)
+#define RADIOLIB_ESP32
+#endif
+#if !defined(RADIOLIB_TONE_ESP32_CHANNEL)
+#define RADIOLIB_TONE_ESP32_CHANNEL (LEDC_CHANNEL_0)
+#endif
 
 /**
  * @brief ESP-IDF HAL for RadioLib using spi_master driver
@@ -42,14 +50,16 @@ public:
    * @param miso SPI MISO pin
    * @param mosi SPI MOSI pin
    * @param host SPI host to use (SPI2_HOST or SPI3_HOST)
-   * @param clockHz SPI clock frequency in Hz
+   * @param clockHz SPI clock frequency in Hz (default 2 MHz to match the
+   *                NonArduino example; raise per-module, e.g.
+   *                SPI_MASTER_FREQ_8M for SX12xx if supported by the module)
    */
   EspHal(int8_t sck, int8_t miso, int8_t mosi,
-         spi_host_device_t host = SPI2_HOST, uint32_t clockHz = 500000)
+         spi_host_device_t host = SPI2_HOST, uint32_t clockHz = 2000000)
       : RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spiSCK(sck),
         spiMISO(miso), spiMOSI(mosi), spiHost(host), spiClockHz(clockHz),
         spiDevice(nullptr), busInitialized(false), deviceAdded(false),
-        halInitialized(false) {}
+        halInitialized(false), tonePrevFreq(-1) {}
 
   virtual ~EspHal() { term(); }
 
@@ -105,13 +115,19 @@ public:
 
     gpio_set_intr_type((gpio_num_t)interruptNum, (gpio_int_type_t)mode);
 
-    // Install ISR service only if not already installed (global service)
-    esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
-    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-      // ESP_ERR_INVALID_STATE means already installed (OK)
-      // Any other error is a real problem
-      ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
-               esp_err_to_name(ret));
+    // The GPIO ISR service is global to the whole application; install it only
+    // once to avoid the driver logging "already installed" on repeated calls.
+    static bool isrServiceInstalled = false;
+    if (!isrServiceInstalled) {
+      esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
+      if (ret == ESP_OK || ret == ESP_ERR_INVALID_STATE) {
+        // ESP_ERR_INVALID_STATE: already installed by another component (OK)
+        isrServiceInstalled = true;
+      } else {
+        ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
+                 esp_err_to_name(ret));
+        return;
+      }
     }
 
     gpio_isr_handler_add((gpio_num_t)interruptNum, (gpio_isr_t)interruptCb,
@@ -147,7 +163,7 @@ public:
     unsigned long currentMicros;
 
     // Wait for pulse to start
-    while (digitalRead(pin) != state) {
+    while (this->digitalRead(pin) != state) {
       currentMicros = micros();
       if (currentMicros - startMicros >= timeout) {
         return 0;
@@ -156,7 +172,7 @@ public:
 
     // Measure pulse duration
     unsigned long pulseStart = micros();
-    while (digitalRead(pin) == state) {
+    while (this->digitalRead(pin) == state) {
       currentMicros = micros();
       if (currentMicros - pulseStart >= timeout) {
         return 0;
@@ -180,32 +196,55 @@ public:
     }
   }
 
-  // Tone generation using LEDC peripheral
+  // Tone generation using the LEDC peripheral (lazily initialised on first use)
   void tone(uint32_t pin, unsigned int frequency,
             RadioLibTime_t duration = 0) override {
     if (pin == RADIOLIB_NC) {
       return;
     }
-
-    // ESP32 doesn't have a built-in tone() function
-    // This would require LEDC (LED PWM Controller) implementation
-    // For now, we provide a stub that does nothing
-    // Full implementation would use ledc_timer_config() and
-    // ledc_channel_config()
-    (void)frequency;
     (void)duration;
-    ESP_LOGW("EspHal",
-             "tone() not fully implemented - requires LEDC peripheral setup");
+
+    // Configure the LEDC timer + channel only once
+    if (tonePrevFreq == -1) {
+      ledc_timer_config_t timer_config = {};
+      timer_config.speed_mode = LEDC_LOW_SPEED_MODE;
+      timer_config.duty_resolution = LEDC_TIMER_10_BIT;
+      timer_config.timer_num = LEDC_TIMER_0;
+      timer_config.freq_hz = (frequency > 0) ? frequency : 1000;
+      timer_config.clk_cfg = LEDC_AUTO_CLK;
+      ledc_timer_config(&timer_config);
+
+      ledc_channel_config_t channel_config = {};
+      channel_config.gpio_num = (int)pin;
+      channel_config.speed_mode = LEDC_LOW_SPEED_MODE;
+      channel_config.channel = (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL;
+      channel_config.timer_sel = LEDC_TIMER_0;
+      channel_config.duty = 512; // 50% duty at 10-bit resolution
+      channel_config.hpoint = 0;
+      ledc_channel_config(&channel_config);
+    }
+
+    // Update the frequency only when it actually changes
+    if ((int32_t)frequency != tonePrevFreq) {
+      ledc_set_freq(LEDC_LOW_SPEED_MODE, LEDC_TIMER_0, frequency);
+      ledc_set_duty(LEDC_LOW_SPEED_MODE,
+                    (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL, 512);
+      ledc_update_duty(LEDC_LOW_SPEED_MODE,
+                       (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL);
+      tonePrevFreq = (int32_t)frequency;
+    }
   }
 
   void noTone(uint32_t pin) override {
     if (pin == RADIOLIB_NC) {
       return;
     }
-
-    // Stub implementation - would stop LEDC channel
-    ESP_LOGW("EspHal",
-             "noTone() not fully implemented - requires LEDC peripheral setup");
+    if (tonePrevFreq == -1) {
+      return; // never started
+    }
+    ledc_stop(LEDC_LOW_SPEED_MODE,
+              (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL, 0);
+    tonePrevFreq = -1;
   }
 
   // SPI operations using spi_master driver
@@ -281,35 +320,6 @@ public:
     }
   }
 
-  uint8_t spiTransferByte(uint8_t b) {
-    if (spiDevice == nullptr) {
-      ESP_LOGE("EspHal", "SPI device not initialized!");
-      return 0xFF;
-    }
-
-    spi_transaction_t trans = {};
-    trans.flags = SPI_TRANS_USE_TXDATA | SPI_TRANS_USE_RXDATA;
-    trans.length = 8; // 8 bits
-    trans.tx_data[0] = b;
-
-    esp_err_t ret = spi_device_polling_transmit(spiDevice, &trans);
-    if (ret != ESP_OK) {
-      ESP_LOGE("EspHal", "SPI transfer failed: %s", esp_err_to_name(ret));
-      return 0xFF;
-    }
-
-    uint8_t received = trans.rx_data[0];
-
-    // Debug log for first few transfers
-    static int transfer_count = 0;
-    if (transfer_count < 20) {
-      ESP_LOGD("EspHal", "SPI: TX=0x%02X RX=0x%02X", b, received);
-      transfer_count++;
-    }
-
-    return received;
-  }
-
   void spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
     if (spiDevice == nullptr) {
       ESP_LOGE("EspHal", "SPI device not initialized!");
@@ -365,6 +375,7 @@ private:
   bool busInitialized;
   bool deviceAdded;
   bool halInitialized;
+  int32_t tonePrevFreq;
 };
 #endif
 #endif // ESP_HAL_SPIMASTER_H
