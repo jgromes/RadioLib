@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">79</td>
+            <td class="headerCovTableEntry">85</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-03 18:53:41</td>
+            <td class="headerValue">2026-06-09 19:26:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -134,7 +134,7 @@
 <a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : }</a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 : int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket) {</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 : int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket, uint8_t* detector) {</span></a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :   uint8_t buff[6] = { 0 };</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_GET_LORA_PACKET_STATUS, false, buff, sizeof(buff));</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :   uint16_t raw;</a>
@@ -152,44 +152,51 @@
 <a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :     raw |= buff[5] &amp; 0x01;</span></a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :     *rssiSignalPacket = (float)raw / -2.0f;</span></a>
 <a name="92"><span class="lineNum">      92 </span>            :   }</a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :   return(state);</span></a>
-<a name="94"><span class="lineNum">      94 </span>            : }</a>
-<a name="95"><span class="lineNum">      95 </span>            : </a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaAddress(uint8_t addrLen, uint8_t addrPos, const uint8_t* addr) {</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :   if(addrLen &gt; 8) { return(RADIOLIB_ERR_UNKNOWN); }</span></a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :   uint8_t buff[9] = { (uint8_t)(((addrLen &amp; 0x0F) &lt;&lt; 4) | (addrPos &amp; 0x0F)) };</span></a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :   memcpy(&amp;buff[1], addr, addrLen);</span></a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_ADDRESS, true, buff, sizeof(buff)));</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :   if(detector) {</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :     uint8_t det = (buff[5] &gt;&gt; 2) &amp; 0x0F;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :     if(det == 0x01) { *detector = 0; }</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :     else if(det == 0x02) { *detector = 1; }</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :     else if(det == 0x04) { *detector = 2; }</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :     else if(det == 0x08) { *detector = 3; }</span></a>
+<a name="99"><span class="lineNum">      99 </span>            :   }</a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="101"><span class="lineNum">     101 </span>            : }</a>
 <a name="102"><span class="lineNum">     102 </span>            : </a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops) {</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :   if(numFreqHops &gt; 40) { return(RADIOLIB_ERR_UNKNOWN); }</span></a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :   uint8_t buff[2 + 160] = { (uint8_t)(hopCtrl | ((hopPeriod &amp; 0xF00) &gt;&gt; 8)), (uint8_t)(hopPeriod &amp; 0xFF) };</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :   for(uint8_t i = 0; i &lt; numFreqHops; i++) {</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :     buff[i + 2] = (freqHops[i] &gt;&gt; 24) &amp; 0xFF;</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :     buff[i + 3] = (freqHops[i] &gt;&gt; 16) &amp; 0xFF;</span></a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :     buff[i + 4] = (freqHops[i] &gt;&gt; 8) &amp; 0xFF;</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :     buff[i + 5] = freqHops[i] &amp; 0xFF;</span></a>
-<a name="111"><span class="lineNum">     111 </span>            :   }</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_HOPPING, true, buff, sizeof(buff)));</span></a>
-<a name="113"><span class="lineNum">     113 </span>            : }</a>
-<a name="114"><span class="lineNum">     114 </span>            : </a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaTxSync(uint8_t function, uint8_t dioNum) {</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :   uint8_t buff[] = { (uint8_t)(function | (dioNum &amp; 0x3F)) };</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_TX_SYNC, true, buff, sizeof(buff)));</span></a>
-<a name="118"><span class="lineNum">     118 </span>            : }</a>
-<a name="119"><span class="lineNum">     119 </span>            : </a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets) {</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :   uint8_t buff[6] = { 0 };</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :   for(size_t i = 0; i &lt; numSideDets; i++) {</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :     if(i &gt;= 3) { return(RADIOLIB_ERR_UNKNOWN); }</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :     buff[2*i] = pnrDelta[i] &amp; 0x0F;</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :     buff[2*i + 1] = detPeak[i] &amp; 0x7F;</span></a>
-<a name="126"><span class="lineNum">     126 </span>            :   }</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CAD, true, buff, 2*numSideDets));</span></a>
-<a name="128"><span class="lineNum">     128 </span>            : }</a>
-<a name="129"><span class="lineNum">     129 </span>            : </a>
-<a name="130"><span class="lineNum">     130 </span>            : #endif</a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaAddress(uint8_t addrLen, uint8_t addrPos, const uint8_t* addr) {</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :   if(addrLen &gt; 8) { return(RADIOLIB_ERR_UNKNOWN); }</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :   uint8_t buff[9] = { (uint8_t)(((addrLen &amp; 0x0F) &lt;&lt; 4) | (addrPos &amp; 0x0F)) };</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :   memcpy(&amp;buff[1], addr, addrLen);</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_ADDRESS, true, buff, sizeof(buff)));</span></a>
+<a name="108"><span class="lineNum">     108 </span>            : }</a>
+<a name="109"><span class="lineNum">     109 </span>            : </a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops) {</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :   if(numFreqHops &gt; 40) { return(RADIOLIB_ERR_UNKNOWN); }</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :   uint8_t buff[2 + 160] = { (uint8_t)(hopCtrl | ((hopPeriod &amp; 0xF00) &gt;&gt; 8)), (uint8_t)(hopPeriod &amp; 0xFF) };</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :   for(uint8_t i = 0; i &lt; numFreqHops; i++) {</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :     buff[i + 2] = (freqHops[i] &gt;&gt; 24) &amp; 0xFF;</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :     buff[i + 3] = (freqHops[i] &gt;&gt; 16) &amp; 0xFF;</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :     buff[i + 4] = (freqHops[i] &gt;&gt; 8) &amp; 0xFF;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :     buff[i + 5] = freqHops[i] &amp; 0xFF;</span></a>
+<a name="118"><span class="lineNum">     118 </span>            :   }</a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_HOPPING, true, buff, sizeof(buff)));</span></a>
+<a name="120"><span class="lineNum">     120 </span>            : }</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaTxSync(uint8_t function, uint8_t dioNum) {</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :   uint8_t buff[] = { (uint8_t)(function | (dioNum &amp; 0x3F)) };</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_TX_SYNC, true, buff, sizeof(buff)));</span></a>
+<a name="125"><span class="lineNum">     125 </span>            : }</a>
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets) {</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :   uint8_t buff[6] = { 0 };</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :   for(size_t i = 0; i &lt; numSideDets; i++) {</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :     if(i &gt;= 3) { return(RADIOLIB_ERR_UNKNOWN); }</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :     buff[2*i] = pnrDelta[i] &amp; 0x0F;</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :     buff[2*i + 1] = detPeak[i] &amp; 0x7F;</span></a>
+<a name="133"><span class="lineNum">     133 </span>            :   }</a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CAD, true, buff, 2*numSideDets));</span></a>
+<a name="135"><span class="lineNum">     135 </span>            : }</a>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<a name="137"><span class="lineNum">     137 </span>            : #endif</a>
 </pre>
       </td>
     </tr>
