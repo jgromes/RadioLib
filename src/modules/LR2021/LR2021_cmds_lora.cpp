@@ -72,7 +72,7 @@ int16_t LR2021::getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint
   return(state);
 }
 
-int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket) {
+int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket, uint8_t* detector) {
   uint8_t buff[6] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_LORA_PACKET_STATUS, false, buff, sizeof(buff));
   uint16_t raw;
@@ -89,6 +89,13 @@ int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, 
     raw = (uint16_t)buff[4] << 1;
     raw |= buff[5] & 0x01;
     *rssiSignalPacket = (float)raw / -2.0f;
+  }
+  if(detector) {
+    uint8_t det = (buff[5] >> 2) & 0x0F;
+    if(det == 0x01) { *detector = 0; }
+    else if(det == 0x02) { *detector = 1; }
+    else if(det == 0x04) { *detector = 2; }
+    else if(det == 0x08) { *detector = 3; }
   }
   return(state);
 }
