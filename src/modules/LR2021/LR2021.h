@@ -803,9 +803,10 @@ class LR2021: public LRxxxx {
       \param snrPacket SNR of the last received packet in dB
       \param rssiPacket RSSI of the last received packet in dBm
       \param rssiSignalPacket Estimation of the RSSI of LoRa signal after despreading in dBm
+      \param detector Index of the detector that received the packet: 0 = main, 1 = side 1, 2 = side 2, 3 = side 3
       \returns \ref status_codes
     */
-    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL);
+    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL, uint8_t* detector = NULL);
 
     /*!
       \brief Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.
