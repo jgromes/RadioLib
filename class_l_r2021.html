@@ -375,9 +375,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a874b2522d4b296505278d943df308a99" id="r_a874b2522d4b296505278d943df308a99"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a874b2522d4b296505278d943df308a99">setGain</a> (uint8_t gain)</td></tr>
 <tr class="memdesc:a874b2522d4b296505278d943df308a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13, where 13 is the highest gain. Set to 0 to enable automatic gain control (recommended).  <br /></td></tr>
 <tr class="separator:a874b2522d4b296505278d943df308a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a766ef834a27b53d2ab74b0e98c77e2c2" id="r_a766ef834a27b53d2ab74b0e98c77e2c2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a766ef834a27b53d2ab74b0e98c77e2c2">getLoRaPacketStatus</a> (uint8_t *cr, bool *crc, uint8_t *packetLen=NULL, float *snrPacket=NULL, float *rssiPacket=NULL, float *rssiSignalPacket=NULL)</td></tr>
-<tr class="memdesc:a766ef834a27b53d2ab74b0e98c77e2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read status of the last received packet. Each parameter can be set to NULL if the caller is not intending to process it.  <br /></td></tr>
-<tr class="separator:a766ef834a27b53d2ab74b0e98c77e2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127d986eb3e735849c81b80f70ab8a39" id="r_a127d986eb3e735849c81b80f70ab8a39"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a127d986eb3e735849c81b80f70ab8a39">getLoRaPacketStatus</a> (uint8_t *cr, bool *crc, uint8_t *packetLen=NULL, float *snrPacket=NULL, float *rssiPacket=NULL, float *rssiSignalPacket=NULL, uint8_t *detector=NULL)</td></tr>
+<tr class="memdesc:a127d986eb3e735849c81b80f70ab8a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read status of the last received packet. Each parameter can be set to NULL if the caller is not intending to process it.  <br /></td></tr>
+<tr class="separator:a127d986eb3e735849c81b80f70ab8a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f88f57889841379423aef67aaf8a7e0" id="r_a1f88f57889841379423aef67aaf8a7e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a1f88f57889841379423aef67aaf8a7e0">getLoRaRxHeaderInfo</a> (uint8_t *cr, bool *hasCRC)</td></tr>
 <tr class="memdesc:a1f88f57889841379423aef67aaf8a7e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.  <br /></td></tr>
 <tr class="separator:a1f88f57889841379423aef67aaf8a7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1410,8 +1410,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a766ef834a27b53d2ab74b0e98c77e2c2" name="a766ef834a27b53d2ab74b0e98c77e2c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a766ef834a27b53d2ab74b0e98c77e2c2">&#9670;&#160;</a></span>getLoRaPacketStatus()</h2>
+<a id="a127d986eb3e735849c81b80f70ab8a39" name="a127d986eb3e735849c81b80f70ab8a39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a127d986eb3e735849c81b80f70ab8a39">&#9670;&#160;</a></span>getLoRaPacketStatus()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1450,7 +1450,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>rssiSignalPacket</em> = <code>NULL</code>&#160;</td>
+          <td class="paramname"><em>rssiSignalPacket</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>detector</em> = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1469,6 +1475,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
     <tr><td class="paramname">snrPacket</td><td>SNR of the last received packet in dB </td></tr>
     <tr><td class="paramname">rssiPacket</td><td>RSSI of the last received packet in dBm </td></tr>
     <tr><td class="paramname">rssiSignalPacket</td><td>Estimation of the RSSI of LoRa signal after despreading in dBm </td></tr>
+    <tr><td class="paramname">detector</td><td>Index of the detector that received the packet: 0 = main, 1 = side 1, 2 = side 2, 3 = side 3 </td></tr>
   </table>
   </dd>
 </dl>

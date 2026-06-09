@@ -29,7 +29,7 @@ var searchData=
   ['getirqmapped_26',['getIrqMapped',['../class_physical_layer.html#ae602ebd46d60da8670c9f353cef695d9',1,'PhysicalLayer']]],
   ['getirqstatus_27',['getirqstatus',['../class_l_rxxxx.html#a4d2cfba89348f0b909758e451155bbaa',1,'LRxxxx::getIrqStatus()'],['../class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22',1,'SX128x::getIrqStatus()']]],
   ['getlasttoa_28',['getLastToA',['../class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305',1,'LoRaWANNode']]],
-  ['getlorapacketstatus_29',['getLoRaPacketStatus',['../class_l_r2021.html#a766ef834a27b53d2ab74b0e98c77e2c2',1,'LR2021']]],
+  ['getlorapacketstatus_29',['getLoRaPacketStatus',['../class_l_r2021.html#a127d986eb3e735849c81b80f70ab8a39',1,'LR2021']]],
   ['getlorarxheaderinfo_30',['getlorarxheaderinfo',['../class_s_x127x.html#a46011b39460e27227a99cc93fdd1484b',1,'SX127x::getLoRaRxHeaderInfo()'],['../class_s_x128x.html#a94261294f3d5ee501cf9580522e51087',1,'SX128x::getLoRaRxHeaderInfo()'],['../class_l_r2021.html#a1f88f57889841379423aef67aaf8a7e0',1,'LR2021::getLoRaRxHeaderInfo()'],['../class_l_r11x0.html#af8e9b885b60a9bae56bb1f59d7d01fd1',1,'LR11x0::getLoRaRxHeaderInfo()'],['../class_s_x126x.html#a1631a3b8ce88da58d0a1fb5179319daf',1,'SX126x::getLoRaRxHeaderInfo()']]],
   ['getlqi_31',['getLQI',['../class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb',1,'CC1101']]],
   ['getmacdevicetimeans_32',['getMacDeviceTimeAns',['../class_lo_ra_w_a_n_node.html#aeb9bbbb05ebe3e6962c438def15ba027',1,'LoRaWANNode']]],
