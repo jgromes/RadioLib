@@ -23,6 +23,7 @@ static std::vector<RadioConfig> allConfigs = {
 
     { "SX127x", RADIOLIB_MODEM_LORA, {.lora={6,125,6}}, {.lora={8,false,true,false}}, {7,23,98,156}, {23000,39000,115000,174000} }, // 20.61, 39.04, 115.84, 174.21 
     { "SX127x", RADIOLIB_MODEM_LORA, {.lora={8,250,8}}, {.lora={32,true,true,false}}, {10,20,80,160}, {70000,87000,210000,373000} }, // 69.89, 86.27, 209.15, 372.99
+    { "SX127x", RADIOLIB_MODEM_LORA, {.lora={12,125,7}}, {.lora={8,false,true,true}}, {1,24,64,128}, {893000,1811000,3646000,6628000} }, // 892.93, 1810.43, 3645.50, 6627.59
     { "SX127x", RADIOLIB_MODEM_FSK,  {.fsk={100,5}},    {.fsk={16,16,3}}, {1,16,32,61}, {640,1840,3120,5440} },
 
     { "SX128x", RADIOLIB_MODEM_LORA, {.lora={5,400,5}}, {.lora={8,false,true,false}}, {1,50,200}, {2580,10179,34180} }, // 2.54, 10.02, 33.65

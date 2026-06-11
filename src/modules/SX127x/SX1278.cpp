@@ -220,8 +220,10 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
       float symbolLength = (float)(uint32_t(1) << SX127x::spreadingFactor) / (float)SX127x::bandwidth;
       Module* mod = this->getMod();
       if(symbolLength >= 16.0f) {
+        this->ldroEnabled = true;
         state = mod->SPIsetRegValue(RADIOLIB_SX1278_REG_MODEM_CONFIG_3, RADIOLIB_SX1278_LOW_DATA_RATE_OPT_ON, 3, 3);
       } else {
+        this->ldroEnabled = false;
         state = mod->SPIsetRegValue(RADIOLIB_SX1278_REG_MODEM_CONFIG_3, RADIOLIB_SX1278_LOW_DATA_RATE_OPT_OFF, 3, 3);
       }
     }
