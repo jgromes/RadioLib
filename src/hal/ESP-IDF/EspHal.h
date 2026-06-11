@@ -1,9 +1,9 @@
-// EspHal_spimaster.h
+// EspHal.h
 // ESP-IDF HAL for RadioLib using spi_master driver
 // This avoids conflicts with other SPI devices on the same bus
 
-#ifndef ESP_HAL_SPIMASTER_H
-#define ESP_HAL_SPIMASTER_H
+#ifndef RADIOLIB_ESP_IDF_HAL
+#define RADIOLIB_ESP_IDF_HAL
 
 #if defined(ESP_PLATFORM)
 #include "RadioLib.h"
@@ -66,6 +66,13 @@ public:
   void init() override {
     if (!halInitialized) {
       spiBegin();
+      // Install the application-wide GPIO ISR service once.
+      // Loosely accept duplicate installations (ESP_ERR_INVALID_STATE)
+      esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
+      if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+        ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
+                 esp_err_to_name(ret));
+      }
       halInitialized = true;
     }
   }
@@ -114,22 +121,6 @@ public:
     }
 
     gpio_set_intr_type((gpio_num_t)interruptNum, (gpio_int_type_t)mode);
-
-    // The GPIO ISR service is global to the whole application; install it only
-    // once to avoid the driver logging "already installed" on repeated calls.
-    static bool isrServiceInstalled = false;
-    if (!isrServiceInstalled) {
-      esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
-      if (ret == ESP_OK || ret == ESP_ERR_INVALID_STATE) {
-        // ESP_ERR_INVALID_STATE: already installed by another component (OK)
-        isrServiceInstalled = true;
-      } else {
-        ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
-                 esp_err_to_name(ret));
-        return;
-      }
-    }
-
     gpio_isr_handler_add((gpio_num_t)interruptNum, (gpio_isr_t)interruptCb,
                          nullptr);
   }
@@ -378,4 +369,4 @@ private:
   int32_t tonePrevFreq;
 };
 #endif
-#endif // ESP_HAL_SPIMASTER_H
+#endif // RADIOLIB_ESP_IDF_HAL
