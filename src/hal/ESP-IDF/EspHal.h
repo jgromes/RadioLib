@@ -16,6 +16,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "sdkconfig.h"
+#include <cinttypes> // For PRIu32
 
 // Arduino-style macros for RadioLib compatibility
 #ifndef LOW
@@ -300,7 +301,7 @@ public:
       return;
     }
     deviceAdded = true;
-    ESP_LOGD("EspHal", "SPI device added (clock=%u Hz, software CS)",
+    ESP_LOGD("EspHal", "SPI device added (clock=%" PRIu32 " Hz, software CS)",
              spiClockHz);
   }
 
