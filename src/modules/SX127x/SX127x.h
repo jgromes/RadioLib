@@ -279,6 +279,27 @@
 #define RADIOLIB_SX127X_RX_BW_MANT_20                           0b00001000  //  4     3
 #define RADIOLIB_SX127X_RX_BW_MANT_24                           0b00010000  //  4     3   default RxBwMant parameter
 #define RADIOLIB_SX127X_RX_BW_EXP                               0b00000101  //  2     0   default RxBwExp parameter
+#define RADIOLIB_SX126X_RX_BW_2_6                               (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x07)
+#define RADIOLIB_SX126X_RX_BW_3_1                               (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x07)
+#define RADIOLIB_SX126X_RX_BW_3_9                               (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x07)
+#define RADIOLIB_SX126X_RX_BW_5_2                               (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x06)
+#define RADIOLIB_SX126X_RX_BW_6_3                               (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x06)
+#define RADIOLIB_SX126X_RX_BW_7_8                               (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x06)
+#define RADIOLIB_SX126X_RX_BW_10_4                              (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x05)
+#define RADIOLIB_SX126X_RX_BW_12_5                              (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x05)
+#define RADIOLIB_SX126X_RX_BW_15_6                              (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x05)
+#define RADIOLIB_SX126X_RX_BW_20_8                              (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x04)
+#define RADIOLIB_SX126X_RX_BW_25_0                              (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x04)
+#define RADIOLIB_SX126X_RX_BW_31_3                              (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x04)
+#define RADIOLIB_SX126X_RX_BW_41_7                              (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x03)
+#define RADIOLIB_SX126X_RX_BW_50_0                              (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x03)
+#define RADIOLIB_SX126X_RX_BW_62_5                              (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x03)
+#define RADIOLIB_SX126X_RX_BW_83_3                              (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x02)
+#define RADIOLIB_SX126X_RX_BW_100                               (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x02)
+#define RADIOLIB_SX126X_RX_BW_125                               (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x02)
+#define RADIOLIB_SX126X_RX_BW_167                               (RADIOLIB_SX127X_RX_BW_MANT_24 | 0x01)
+#define RADIOLIB_SX126X_RX_BW_200                               (RADIOLIB_SX127X_RX_BW_MANT_20 | 0x01)
+#define RADIOLIB_SX126X_RX_BW_250                               (RADIOLIB_SX127X_RX_BW_MANT_16 | 0x01)
 
 // RADIOLIB_SX127X_REG_AFC_BW
 #define RADIOLIB_SX127X_RX_BW_MANT_AFC                          0b00001000  //  4     3   default RxBwMant parameter used during AFC
@@ -1312,13 +1333,8 @@ class SX127x: public PhysicalLayer {
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
-
-    /*!
-      \brief Calculate exponent and mantissa values for receiver bandwidth and AFC
-      \param bandwidth bandwidth to be set (in kHz).
-      \returns bandwidth in mantissa and exponent format
-    */
-    static uint8_t calculateBWManExp(float bandwidth);
+    int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
+    int16_t setRxBw(float rxBw, bool afc);
 
     virtual void errataFix(bool rx); // should be implemented in derived class
 };

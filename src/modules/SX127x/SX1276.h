@@ -67,7 +67,7 @@ class SX1276: public SX1278 {
       \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
       \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz.
       Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 <= 250 kHz is always met.
-      \param rxBw Receiver bandwidth in kHz. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25, 31.3, 41.7, 50, 62.5, 83.3, 100, 125, 166.7, 200 and 250 kHz.
+      \param rxBw Receiver bandwidth in kHz. Allowed values range from 2.6 to 250.0 kHz.
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
       \param preambleLength Length of FSK preamble in bits.
       \param enableOOK Use OOK modulation instead of FSK.
