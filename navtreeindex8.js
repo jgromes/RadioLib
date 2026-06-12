@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"struct_lo_ra_w_a_n_channel_span__t.html#a914d2b6f54e9c8d2841acf1d0652fd79":[4,0,31,1],
+"struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e":[4,0,31,4],
 "struct_lo_ra_w_a_n_channel_span__t.html#ab613b4ca3a2c99ef0aa53f8132f54535":[4,0,31,2],
 "struct_lo_ra_w_a_n_data_rate__t.html":[4,0,32],
 "struct_lo_ra_w_a_n_event__t.html":[4,0,33],
