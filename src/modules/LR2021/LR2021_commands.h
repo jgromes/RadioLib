@@ -391,10 +391,6 @@
 #define RADIOLIB_LR2021_LORA_LDRO_ENABLED                       (0x01UL << 0)   //  1     0                             enabled
 
 // RADIOLIB_LR2021_CMD_SET_LORA_PACKET_PARAMS
-#define RADIOLIB_LR2021_LORA_HEADER_EXPLICIT                    (0x00UL << 2)   //  2     2     LoRa header mode: explicit
-#define RADIOLIB_LR2021_LORA_HEADER_IMPLICIT                    (0x01UL << 2)   //  2     2                       implicit
-#define RADIOLIB_LR2021_LORA_CRC_DISABLED                       (0x00UL << 1)   //  1     1     LoRa CRC: disabled
-#define RADIOLIB_LR2021_LORA_CRC_ENABLED                        (0x01UL << 1)   //  1     1               enabled
 #define RADIOLIB_LR2021_LORA_IQ_STANDARD                        (0x00UL << 0)   //  0     0     LoRa IQ: standard
 #define RADIOLIB_LR2021_LORA_IQ_INVERTED                        (0x01UL << 0)   //  0     0              inverted
 

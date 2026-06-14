@@ -267,7 +267,7 @@ int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
     }
 
     // Long Interleaver supports up to 253 bytes if CRC is enabled
-    if (this->crcTypeLoRa == RADIOLIB_LR2021_LORA_CRC_ENABLED && (len > RADIOLIB_LR2021_MAX_PACKET_LENGTH - 2)) {
+    if (this->crcTypeLoRa == RADIOLIB_LRXXXX_LORA_CRC_ENABLED && (len > RADIOLIB_LR2021_MAX_PACKET_LENGTH - 2)) {
       return(RADIOLIB_ERR_PACKET_TOO_LONG);
     }  
   } 
@@ -483,7 +483,7 @@ size_t LR2021::getPacketLength(bool update) {
   // in implicit mode, return the cached value
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   (void)getPacketType(&type);
-  if((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT)) {
+  if((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT)) {
     return(this->implicitLen);
   }
 
@@ -586,7 +586,7 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
 
   // for LoRa modem and explicit header mode, check also also header valid flag
   if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) &&
-     (this->headerType == RADIOLIB_LR2021_LORA_HEADER_EXPLICIT) && 
+     (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT) && 
      (!(irq & RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {
     crcState = RADIOLIB_ERR_LORA_HEADER_DAMAGED;
   }

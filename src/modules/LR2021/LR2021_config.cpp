@@ -374,7 +374,7 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     this->preambleLengthLoRa = preambleLength;
     return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-      (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+      (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     this->preambleLengthGFSK = preambleLength;
@@ -458,9 +458,9 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
-    this->crcTypeLoRa = len > 0 ? RADIOLIB_LR2021_LORA_CRC_ENABLED : RADIOLIB_LR2021_LORA_CRC_DISABLED;
+    this->crcTypeLoRa = len > 0;
     return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-      (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+      (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     if(len > 4) {
@@ -519,7 +519,7 @@ int16_t LR2021::invertIQ(bool enable) {
 
   this->invertIQEnabled = enable;
   return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-    (this->headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+    (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
 }
 
 int16_t LR2021::setBitRate(float br) {
@@ -991,11 +991,11 @@ int16_t LR2021::setLoRaHeaderType(uint8_t hdrType, size_t len) {
 }
 
 int16_t LR2021::implicitHeader(size_t len) {
-  return(this->setLoRaHeaderType(RADIOLIB_LR2021_LORA_HEADER_IMPLICIT, len));
+  return(this->setLoRaHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT, len));
 }
 
 int16_t LR2021::explicitHeader() {
-  return(this->setLoRaHeaderType(RADIOLIB_LR2021_LORA_HEADER_EXPLICIT));
+  return(this->setLoRaHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT));
 }
 
 int16_t LR2021::setNodeAddress(uint8_t nodeAddr) {
