@@ -925,7 +925,6 @@ int16_t SX127x::setRxBw(float rxBw, bool afc) {
 
   uint8_t rxBwRaw = 0;
   int16_t state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 250.0f, &rxBwRaw);
-  RADIOLIB_DEBUG_PRINT("rxBw=%.2f raw=%02x\n", rxBw, rxBwRaw);
   RADIOLIB_ASSERT(state);
 
   // set mode to STANDBY
