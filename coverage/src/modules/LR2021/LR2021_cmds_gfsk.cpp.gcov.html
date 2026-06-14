@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-13 05:29:26</td>
+            <td class="headerValue">2026-06-14 08:22:16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -84,7 +84,7 @@
 <a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :     (uint8_t)((preambleLen &gt;&gt; 8) &amp; 0xFF), (uint8_t)(preambleLen &amp; 0xFF), preambleDetect,</span></a>
 <a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :     (uint8_t)(((uint8_t)longPreamble &lt;&lt; 5) | ((uint8_t)pldLenBits &lt;&lt; 4) | (addrComp &lt;&lt; 2) | ((uint8_t)packetFormat &amp; 0x03)),</span></a>
 <a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 :     (uint8_t)((payloadLen &gt;&gt; 8) &amp; 0xFF), (uint8_t)(payloadLen &amp; 0xFF),</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineNoCov">          0 :     (uint8_t)((crc &lt;&lt; 4) | (dcFree &lt;&lt; 4)),</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineNoCov">          0 :     (uint8_t)((crc &lt;&lt; 4) | (dcFree &lt;&lt; 0)),</span></a>
 <a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 :   };</span></a>
 <a name="27"><span class="lineNum">      27 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_GFSK_PACKET_PARAMS, true, buff, sizeof(buff)));</span></a>
 <a name="28"><span class="lineNum">      28 </span>            : }</a>

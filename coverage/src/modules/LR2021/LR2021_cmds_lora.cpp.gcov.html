@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-13 05:29:26</td>
+            <td class="headerValue">2026-06-14 08:22:16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -89,7 +89,7 @@
 <a name="27"><span class="lineNum">      27 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ) {</span></a>
 <a name="28"><span class="lineNum">      28 </span>            :   uint8_t buff[] = { </a>
 <a name="29"><span class="lineNum">      29 </span><span class="lineNoCov">          0 :     (uint8_t)((preambleLen &gt;&gt; 8) &amp; 0xFF), (uint8_t)(preambleLen &amp; 0xFF), payloadLen,</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineNoCov">          0 :     (uint8_t)((hdrType &amp; 0x04) | (crcType &amp; 0x02) | (invertIQ &amp; 0x01)),</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineNoCov">          0 :     (uint8_t)(((hdrType &amp; 0x01) &lt;&lt; 2) | ((crcType &amp; 0x01) &lt;&lt; 1) | (invertIQ &amp; 0x01)),</span></a>
 <a name="31"><span class="lineNum">      31 </span><span class="lineNoCov">          0 :   };</span></a>
 <a name="32"><span class="lineNum">      32 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_PACKET_PARAMS, true, buff, sizeof(buff)));</span></a>
 <a name="33"><span class="lineNum">      33 </span>            : }</a>

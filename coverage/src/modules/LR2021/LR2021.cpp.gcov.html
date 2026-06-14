@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">144</td>
-            <td class="headerCovTableEntry">640</td>
-            <td class="headerCovTableEntryLo">22.5 %</td>
+            <td class="headerCovTableEntry">658</td>
+            <td class="headerCovTableEntryLo">21.9 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-13 05:29:26</td>
+            <td class="headerValue">2026-06-14 08:22:16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">32</td>
@@ -329,7 +329,7 @@
 <a name="267"><span class="lineNum">     267 </span>            :     }</a>
 <a name="268"><span class="lineNum">     268 </span>            : </a>
 <a name="269"><span class="lineNum">     269 </span>            :     // Long Interleaver supports up to 253 bytes if CRC is enabled</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :     if (this-&gt;crcTypeLoRa == RADIOLIB_LR2021_LORA_CRC_ENABLED &amp;&amp; (len &gt; RADIOLIB_LR2021_MAX_PACKET_LENGTH - 2)) {</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :     if (this-&gt;crcTypeLoRa == RADIOLIB_LRXXXX_LORA_CRC_ENABLED &amp;&amp; (len &gt; RADIOLIB_LR2021_MAX_PACKET_LENGTH - 2)) {</span></a>
 <a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_PACKET_TOO_LONG);</span></a>
 <a name="272"><span class="lineNum">     272 </span>            :     }  </a>
 <a name="273"><span class="lineNum">     273 </span>            :   } </a>
@@ -545,7 +545,7 @@
 <a name="483"><span class="lineNum">     483 </span>            :   // in implicit mode, return the cached value</a>
 <a name="484"><span class="lineNum">     484 </span><span class="lineCov">          1 :   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
 <a name="485"><span class="lineNum">     485 </span><span class="lineCov">          1 :   (void)getPacketType(&amp;type);</span></a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          1 :   if((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) &amp;&amp; (this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT)) {</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          1 :   if((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) &amp;&amp; (this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT)) {</span></a>
 <a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 :     return(this-&gt;implicitLen);</span></a>
 <a name="488"><span class="lineNum">     488 </span>            :   }</a>
 <a name="489"><span class="lineNum">     489 </span>            : </a>
@@ -648,7 +648,7 @@
 <a name="586"><span class="lineNum">     586 </span>            : </a>
 <a name="587"><span class="lineNum">     587 </span>            :   // for LoRa modem and explicit header mode, check also also header valid flag</a>
 <a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 :   if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) &amp;&amp;</span></a>
-<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :      (this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_EXPLICIT) &amp;&amp; </span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :      (this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT) &amp;&amp; </span></a>
 <a name="590"><span class="lineNum">     590 </span><span class="lineNoCov">          0 :      (!(irq &amp; RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {</span></a>
 <a name="591"><span class="lineNum">     591 </span><span class="lineNoCov">          0 :     crcState = RADIOLIB_ERR_LORA_HEADER_DAMAGED;</span></a>
 <a name="592"><span class="lineNum">     592 </span>            :   }</a>
@@ -1027,206 +1027,233 @@
 <a name="965"><span class="lineNum">     965 </span><span class="lineNoCov">          0 :         (modem != RADIOLIB_LR2021_PACKET_TYPE_OOK)) {</span></a>
 <a name="966"><span class="lineNum">     966 </span><span class="lineNoCov">          0 :         return(RADIOLIB_ERR_WRONG_MODEM);</span></a>
 <a name="967"><span class="lineNum">     967 </span>            :       }</a>
-<a name="968"><span class="lineNum">     968 </span>            :       </a>
-<a name="969"><span class="lineNum">     969 </span>            :       // set the correct Rx path</a>
-<a name="970"><span class="lineNum">     970 </span><span class="lineNoCov">          0 :       state = setRxPath(this-&gt;highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this-&gt;highFreq ? this-&gt;gainModeHf : this-&gt;gainModeLf);</span></a>
-<a name="971"><span class="lineNum">     971 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="972"><span class="lineNum">     972 </span>            : </a>
-<a name="973"><span class="lineNum">     973 </span>            :       // set DIO mapping</a>
-<a name="974"><span class="lineNum">     974 </span><span class="lineNoCov">          0 :       if(cfg-&gt;receive.timeout != RADIOLIB_LR2021_RX_TIMEOUT_INF) {</span></a>
-<a name="975"><span class="lineNum">     975 </span><span class="lineNoCov">          0 :         cfg-&gt;receive.irqMask |= (1UL &lt;&lt; RADIOLIB_IRQ_TIMEOUT);</span></a>
-<a name="976"><span class="lineNum">     976 </span>            :       }</a>
-<a name="977"><span class="lineNum">     977 </span><span class="lineNoCov">          0 :       state = setDioIrqConfig(this-&gt;irqDioNum, getIrqMapped(cfg-&gt;receive.irqFlags &amp; cfg-&gt;receive.irqMask));</span></a>
-<a name="978"><span class="lineNum">     978 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="979"><span class="lineNum">     979 </span>            : </a>
-<a name="980"><span class="lineNum">     980 </span>            :       // clear interrupt flags</a>
-<a name="981"><span class="lineNum">     981 </span><span class="lineNoCov">          0 :       state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);</span></a>
-<a name="982"><span class="lineNum">     982 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="983"><span class="lineNum">     983 </span>            : </a>
-<a name="984"><span class="lineNum">     984 </span>            :       // set implicit mode and expected len if applicable</a>
-<a name="985"><span class="lineNum">     985 </span><span class="lineNoCov">          0 :       if((this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) &amp;&amp; (modem == RADIOLIB_LR2021_PACKET_TYPE_LORA)) {</span></a>
-<a name="986"><span class="lineNum">     986 </span><span class="lineNoCov">          0 :         state = setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, </span></a>
-<a name="987"><span class="lineNum">     987 </span><span class="lineNoCov">          0 :           (this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, this-&gt;invertIQEnabled);</span></a>
-<a name="988"><span class="lineNum">     988 </span><span class="lineNoCov">          0 :         RADIOLIB_ASSERT(state);</span></a>
-<a name="989"><span class="lineNum">     989 </span>            :       }</a>
-<a name="990"><span class="lineNum">     990 </span>            : </a>
-<a name="991"><span class="lineNum">     991 </span>            :       // if max(uint32_t) is used, revert to RxContinuous</a>
-<a name="992"><span class="lineNum">     992 </span><span class="lineNoCov">          0 :       if(cfg-&gt;receive.timeout == 0xFFFFFFFF) {</span></a>
-<a name="993"><span class="lineNum">     993 </span><span class="lineNoCov">          0 :         cfg-&gt;receive.timeout = 0xFFFFFF;</span></a>
-<a name="994"><span class="lineNum">     994 </span>            :       }</a>
-<a name="995"><span class="lineNum">     995 </span><span class="lineNoCov">          0 :       this-&gt;rxTimeout = cfg-&gt;receive.timeout;</span></a>
-<a name="996"><span class="lineNum">     996 </span><span class="lineNoCov">          0 :     } break;</span></a>
-<a name="997"><span class="lineNum">     997 </span>            :   </a>
-<a name="998"><span class="lineNum">     998 </span><span class="lineCov">          1 :     case(RADIOLIB_RADIO_MODE_TX): {</span></a>
-<a name="999"><span class="lineNum">     999 </span>            :       // check packet length</a>
-<a name="1000"><span class="lineNum">    1000 </span><span class="lineCov">          1 :       if(cfg-&gt;transmit.len &gt; RADIOLIB_LR2021_MAX_PACKET_LENGTH) {</span></a>
-<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">          1 :         return(RADIOLIB_ERR_PACKET_TOO_LONG);</span></a>
-<a name="1002"><span class="lineNum">    1002 </span>            :       }</a>
-<a name="1003"><span class="lineNum">    1003 </span>            : </a>
-<a name="1004"><span class="lineNum">    1004 </span>            :       // maximum packet length is decreased by 1 when address filtering is active</a>
-<a name="1005"><span class="lineNum">    1005 </span>            :       //! \todo [LR2021] implement GFSK address filtering</a>
-<a name="1006"><span class="lineNum">    1006 </span>            : </a>
-<a name="1007"><span class="lineNum">    1007 </span>            :       // set packet Length</a>
-<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">          1 :       uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
-<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">          1 :       state = getPacketType(&amp;modem);</span></a>
-<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">          1 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 :       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
-<a name="1012"><span class="lineNum">    1012 </span><span class="lineNoCov">          0 :         state = setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, cfg-&gt;transmit.len, this-&gt;crcTypeLoRa, this-&gt;invertIQEnabled);</span></a>
-<a name="1013"><span class="lineNum">    1013 </span>            :       </a>
-<a name="1014"><span class="lineNum">    1014 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
-<a name="1015"><span class="lineNum">    1015 </span><span class="lineNoCov">          0 :         state = setGfskPacketParams(this-&gt;preambleLengthGFSK, this-&gt;preambleDetLength, false, false, this-&gt;addrComp, this-&gt;packetType, cfg-&gt;transmit.len, this-&gt;crcTypeGFSK, this-&gt;whitening);</span></a>
-<a name="1016"><span class="lineNum">    1016 </span>            : </a>
-<a name="1017"><span class="lineNum">    1017 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {</span></a>
-<a name="1018"><span class="lineNum">    1018 </span><span class="lineNoCov">          0 :         state = setOokPacketParams(this-&gt;preambleLengthGFSK, this-&gt;addrComp, this-&gt;packetType, cfg-&gt;transmit.len, this-&gt;crcTypeGFSK, this-&gt;whitening);</span></a>
-<a name="1019"><span class="lineNum">    1019 </span>            : </a>
-<a name="1020"><span class="lineNum">    1020 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {</span></a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineNoCov">          0 :         state = setFlrcPacketParams(this-&gt;preambleLengthGFSK, this-&gt;syncWordLength, 1, 0x01, this-&gt;packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this-&gt;crcLenGFSK, cfg-&gt;transmit.len);</span></a>
-<a name="1022"><span class="lineNum">    1022 </span>            :       </a>
-<a name="1023"><span class="lineNum">    1023 </span>            :       } else {</a>
-<a name="1024"><span class="lineNum">    1024 </span><span class="lineNoCov">          0 :         return(RADIOLIB_ERR_WRONG_MODEM);</span></a>
-<a name="1025"><span class="lineNum">    1025 </span>            :       }</a>
-<a name="1026"><span class="lineNum">    1026 </span>            : </a>
-<a name="1027"><span class="lineNum">    1027 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="1028"><span class="lineNum">    1028 </span>            : </a>
-<a name="1029"><span class="lineNum">    1029 </span>            :       // set DIO mapping</a>
-<a name="1030"><span class="lineNum">    1030 </span><span class="lineNoCov">          0 :       state = setDioIrqConfig(this-&gt;irqDioNum, RADIOLIB_LR2021_IRQ_TX_DONE | RADIOLIB_LR2021_IRQ_TIMEOUT);</span></a>
-<a name="1031"><span class="lineNum">    1031 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="1032"><span class="lineNum">    1032 </span>            : </a>
-<a name="1033"><span class="lineNum">    1033 </span><span class="lineNoCov">          0 :       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {</span></a>
-<a name="1034"><span class="lineNum">    1034 </span>            :         // in LR-FHSS mode, the packet is built by the device</a>
-<a name="1035"><span class="lineNum">    1035 </span>            :         //! \todo [LR2021] add configurable LR-FHSS device offset</a>
-<a name="1036"><span class="lineNum">    1036 </span><span class="lineNoCov">          0 :         state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME, this-&gt;lrFhssHdrCount, this-&gt;lrFhssCr, this-&gt;lrFhssGrid, true, this-&gt;lrFhssBw, this-&gt;lrFhssHopSeq, 0, cfg-&gt;transmit.data, cfg-&gt;transmit.len);</span></a>
-<a name="1037"><span class="lineNum">    1037 </span><span class="lineNoCov">          0 :         RADIOLIB_ASSERT(state);</span></a>
-<a name="1038"><span class="lineNum">    1038 </span>            : </a>
-<a name="1039"><span class="lineNum">    1039 </span>            :       } else {</a>
-<a name="1040"><span class="lineNum">    1040 </span>            :         // write packet to buffer</a>
-<a name="1041"><span class="lineNum">    1041 </span><span class="lineNoCov">          0 :         state = writeRadioTxFifo(cfg-&gt;transmit.data, cfg-&gt;transmit.len);</span></a>
-<a name="1042"><span class="lineNum">    1042 </span><span class="lineNoCov">          0 :         RADIOLIB_ASSERT(state);</span></a>
+<a name="968"><span class="lineNum">     968 </span>            : </a>
+<a name="969"><span class="lineNum">     969 </span>            :       // in implicit LoRa header mode, use the provided length if it is nonzero</a>
+<a name="970"><span class="lineNum">     970 </span>            :       // otherwise we trust the user has previously set the payload length manually</a>
+<a name="971"><span class="lineNum">     971 </span><span class="lineNoCov">          0 :       if((this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) &amp;&amp; </span></a>
+<a name="972"><span class="lineNum">     972 </span><span class="lineNoCov">          0 :         (modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) &amp;&amp; </span></a>
+<a name="973"><span class="lineNum">     973 </span><span class="lineNoCov">          0 :         (cfg-&gt;receive.len != 0)) {</span></a>
+<a name="974"><span class="lineNum">     974 </span><span class="lineNoCov">          0 :         this-&gt;implicitLen = cfg-&gt;receive.len;</span></a>
+<a name="975"><span class="lineNum">     975 </span>            :       }</a>
+<a name="976"><span class="lineNum">     976 </span>            :       </a>
+<a name="977"><span class="lineNum">     977 </span>            :       // set the correct Rx path</a>
+<a name="978"><span class="lineNum">     978 </span><span class="lineNoCov">          0 :       state = setRxPath(this-&gt;highFreq ? RADIOLIB_LR2021_RX_PATH_HF : RADIOLIB_LR2021_RX_PATH_LF, this-&gt;highFreq ? this-&gt;gainModeHf : this-&gt;gainModeLf);</span></a>
+<a name="979"><span class="lineNum">     979 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="980"><span class="lineNum">     980 </span>            : </a>
+<a name="981"><span class="lineNum">     981 </span>            :       // set DIO mapping</a>
+<a name="982"><span class="lineNum">     982 </span><span class="lineNoCov">          0 :       if(cfg-&gt;receive.timeout != RADIOLIB_LR2021_RX_TIMEOUT_INF) {</span></a>
+<a name="983"><span class="lineNum">     983 </span><span class="lineNoCov">          0 :         cfg-&gt;receive.irqMask |= (1UL &lt;&lt; RADIOLIB_IRQ_TIMEOUT);</span></a>
+<a name="984"><span class="lineNum">     984 </span>            :       }</a>
+<a name="985"><span class="lineNum">     985 </span><span class="lineNoCov">          0 :       state = setDioIrqConfig(this-&gt;irqDioNum, getIrqMapped(cfg-&gt;receive.irqFlags &amp; cfg-&gt;receive.irqMask));</span></a>
+<a name="986"><span class="lineNum">     986 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="987"><span class="lineNum">     987 </span>            : </a>
+<a name="988"><span class="lineNum">     988 </span>            :       // clear interrupt flags</a>
+<a name="989"><span class="lineNum">     989 </span><span class="lineNoCov">          0 :       state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);</span></a>
+<a name="990"><span class="lineNum">     990 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="991"><span class="lineNum">     991 </span>            : </a>
+<a name="992"><span class="lineNum">     992 </span>            :       // restore maximum allowed received packet length (may have been changed by previous Tx)</a>
+<a name="993"><span class="lineNum">     993 </span><span class="lineNoCov">          0 :       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
+<a name="994"><span class="lineNum">     994 </span><span class="lineNoCov">          0 :         state = setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, </span></a>
+<a name="995"><span class="lineNum">     995 </span><span class="lineNoCov">          0 :           (this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, </span></a>
+<a name="996"><span class="lineNum">     996 </span><span class="lineNoCov">          0 :           this-&gt;crcTypeLoRa, this-&gt;invertIQEnabled);</span></a>
+<a name="997"><span class="lineNum">     997 </span>            : </a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
+<a name="999"><span class="lineNum">     999 </span><span class="lineNoCov">          0 :         state = setGfskPacketParams(this-&gt;preambleLengthGFSK, this-&gt;preambleDetLength, false, false, this-&gt;addrComp, this-&gt;packetType,</span></a>
+<a name="1000"><span class="lineNum">    1000 </span><span class="lineNoCov">          0 :           (this-&gt;packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, </span></a>
+<a name="1001"><span class="lineNum">    1001 </span><span class="lineNoCov">          0 :           this-&gt;crcTypeGFSK, this-&gt;whitening);</span></a>
+<a name="1002"><span class="lineNum">    1002 </span>            : </a>
+<a name="1003"><span class="lineNum">    1003 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {</span></a>
+<a name="1004"><span class="lineNum">    1004 </span><span class="lineNoCov">          0 :         state = setOokPacketParams(this-&gt;preambleLengthGFSK, this-&gt;addrComp, this-&gt;packetType,</span></a>
+<a name="1005"><span class="lineNum">    1005 </span><span class="lineNoCov">          0 :           (this-&gt;packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH,</span></a>
+<a name="1006"><span class="lineNum">    1006 </span><span class="lineNoCov">          0 :           this-&gt;crcTypeGFSK, this-&gt;whitening);</span></a>
+<a name="1007"><span class="lineNum">    1007 </span>            : </a>
+<a name="1008"><span class="lineNum">    1008 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {</span></a>
+<a name="1009"><span class="lineNum">    1009 </span><span class="lineNoCov">          0 :         state = setFlrcPacketParams(this-&gt;preambleLengthGFSK, this-&gt;syncWordLength, 1, 0x01, this-&gt;packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this-&gt;crcLenGFSK,</span></a>
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineNoCov">          0 :           (this-&gt;packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH);</span></a>
+<a name="1011"><span class="lineNum">    1011 </span>            :       </a>
+<a name="1012"><span class="lineNum">    1012 </span>            :       } else {</a>
+<a name="1013"><span class="lineNum">    1013 </span><span class="lineNoCov">          0 :         return(RADIOLIB_ERR_WRONG_MODEM);</span></a>
+<a name="1014"><span class="lineNum">    1014 </span>            :       }</a>
+<a name="1015"><span class="lineNum">    1015 </span>            :       </a>
+<a name="1016"><span class="lineNum">    1016 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="1017"><span class="lineNum">    1017 </span>            : </a>
+<a name="1018"><span class="lineNum">    1018 </span>            :       // if max(uint32_t) is used, revert to RxContinuous</a>
+<a name="1019"><span class="lineNum">    1019 </span><span class="lineNoCov">          0 :       if(cfg-&gt;receive.timeout == 0xFFFFFFFF) {</span></a>
+<a name="1020"><span class="lineNum">    1020 </span><span class="lineNoCov">          0 :         cfg-&gt;receive.timeout = 0xFFFFFF;</span></a>
+<a name="1021"><span class="lineNum">    1021 </span>            :       }</a>
+<a name="1022"><span class="lineNum">    1022 </span><span class="lineNoCov">          0 :       this-&gt;rxTimeout = cfg-&gt;receive.timeout;</span></a>
+<a name="1023"><span class="lineNum">    1023 </span><span class="lineNoCov">          0 :     } break;</span></a>
+<a name="1024"><span class="lineNum">    1024 </span>            :   </a>
+<a name="1025"><span class="lineNum">    1025 </span><span class="lineCov">          1 :     case(RADIOLIB_RADIO_MODE_TX): {</span></a>
+<a name="1026"><span class="lineNum">    1026 </span>            :       // check packet length</a>
+<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">          1 :       if(cfg-&gt;transmit.len &gt; RADIOLIB_LR2021_MAX_PACKET_LENGTH) {</span></a>
+<a name="1028"><span class="lineNum">    1028 </span><span class="lineCov">          1 :         return(RADIOLIB_ERR_PACKET_TOO_LONG);</span></a>
+<a name="1029"><span class="lineNum">    1029 </span>            :       }</a>
+<a name="1030"><span class="lineNum">    1030 </span>            : </a>
+<a name="1031"><span class="lineNum">    1031 </span>            :       // maximum packet length is decreased by 1 when address filtering is active</a>
+<a name="1032"><span class="lineNum">    1032 </span>            :       //! \todo [LR2021] implement GFSK address filtering</a>
+<a name="1033"><span class="lineNum">    1033 </span>            : </a>
+<a name="1034"><span class="lineNum">    1034 </span>            :       // set packet Length</a>
+<a name="1035"><span class="lineNum">    1035 </span><span class="lineCov">          1 :       uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
+<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">          1 :       state = getPacketType(&amp;modem);</span></a>
+<a name="1037"><span class="lineNum">    1037 </span><span class="lineCov">          1 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="1038"><span class="lineNum">    1038 </span><span class="lineNoCov">          0 :       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
+<a name="1039"><span class="lineNum">    1039 </span><span class="lineNoCov">          0 :         state = setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, cfg-&gt;transmit.len, this-&gt;crcTypeLoRa, this-&gt;invertIQEnabled);</span></a>
+<a name="1040"><span class="lineNum">    1040 </span>            :       </a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
+<a name="1042"><span class="lineNum">    1042 </span><span class="lineNoCov">          0 :         state = setGfskPacketParams(this-&gt;preambleLengthGFSK, this-&gt;preambleDetLength, false, false, this-&gt;addrComp, this-&gt;packetType, cfg-&gt;transmit.len, this-&gt;crcTypeGFSK, this-&gt;whitening);</span></a>
 <a name="1043"><span class="lineNum">    1043 </span>            : </a>
-<a name="1044"><span class="lineNum">    1044 </span>            :       }</a>
-<a name="1045"><span class="lineNum">    1045 </span>            : </a>
-<a name="1046"><span class="lineNum">    1046 </span>            :       // clear interrupt flags</a>
-<a name="1047"><span class="lineNum">    1047 </span><span class="lineNoCov">          0 :       state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);</span></a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="1049"><span class="lineNum">    1049 </span><span class="lineNoCov">          0 :     } break;</span></a>
-<a name="1050"><span class="lineNum">    1050 </span>            :     </a>
-<a name="1051"><span class="lineNum">    1051 </span><span class="lineNoCov">          0 :     default:</span></a>
-<a name="1052"><span class="lineNum">    1052 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_UNSUPPORTED);</span></a>
-<a name="1053"><span class="lineNum">    1053 </span>            :   }</a>
-<a name="1054"><span class="lineNum">    1054 </span>            : </a>
-<a name="1055"><span class="lineNum">    1055 </span><span class="lineNoCov">          0 :   this-&gt;stagedMode = mode;</span></a>
-<a name="1056"><span class="lineNum">    1056 </span><span class="lineNoCov">          0 :   return(state);</span></a>
-<a name="1057"><span class="lineNum">    1057 </span>            : }</a>
-<a name="1058"><span class="lineNum">    1058 </span>            : </a>
-<a name="1059"><span class="lineNum">    1059 </span><span class="lineCov">          1 : int16_t LR2021::launchMode() {</span></a>
-<a name="1060"><span class="lineNum">    1060 </span>            :   int16_t state;</a>
-<a name="1061"><span class="lineNum">    1061 </span><span class="lineCov">          1 :   switch(this-&gt;stagedMode) {</span></a>
-<a name="1062"><span class="lineNum">    1062 </span><span class="lineCov">          1 :     case(RADIOLIB_RADIO_MODE_RX): {</span></a>
-<a name="1063"><span class="lineNum">    1063 </span><span class="lineCov">          1 :       this-&gt;mod-&gt;setRfSwitchState(Module::MODE_RX);</span></a>
-<a name="1064"><span class="lineNum">    1064 </span><span class="lineCov">          1 :       state = setRx(this-&gt;rxTimeout);</span></a>
-<a name="1065"><span class="lineNum">    1065 </span><span class="lineCov">          1 :     } break;</span></a>
-<a name="1066"><span class="lineNum">    1066 </span>            :   </a>
-<a name="1067"><span class="lineNum">    1067 </span><span class="lineNoCov">          0 :     case(RADIOLIB_RADIO_MODE_TX): {</span></a>
-<a name="1068"><span class="lineNum">    1068 </span><span class="lineNoCov">          0 :       this-&gt;mod-&gt;setRfSwitchState(Module::MODE_TX);</span></a>
-<a name="1069"><span class="lineNum">    1069 </span><span class="lineNoCov">          0 :       state = setTx(RADIOLIB_LR2021_TX_TIMEOUT_NONE);</span></a>
-<a name="1070"><span class="lineNum">    1070 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
-<a name="1071"><span class="lineNum">    1071 </span>            : </a>
-<a name="1072"><span class="lineNum">    1072 </span>            :       // wait for BUSY to go low (= PA ramp up done)</a>
-<a name="1073"><span class="lineNum">    1073 </span><span class="lineNoCov">          0 :       while(this-&gt;mod-&gt;hal-&gt;digitalRead(this-&gt;mod-&gt;getGpio())) {</span></a>
-<a name="1074"><span class="lineNum">    1074 </span><span class="lineNoCov">          0 :         this-&gt;mod-&gt;hal-&gt;yield();</span></a>
-<a name="1075"><span class="lineNum">    1075 </span>            :       }</a>
+<a name="1044"><span class="lineNum">    1044 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {</span></a>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineNoCov">          0 :         state = setOokPacketParams(this-&gt;preambleLengthGFSK, this-&gt;addrComp, this-&gt;packetType, cfg-&gt;transmit.len, this-&gt;crcTypeGFSK, this-&gt;whitening);</span></a>
+<a name="1046"><span class="lineNum">    1046 </span>            : </a>
+<a name="1047"><span class="lineNum">    1047 </span><span class="lineNoCov">          0 :       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {</span></a>
+<a name="1048"><span class="lineNum">    1048 </span><span class="lineNoCov">          0 :         state = setFlrcPacketParams(this-&gt;preambleLengthGFSK, this-&gt;syncWordLength, 1, 0x01, this-&gt;packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this-&gt;crcLenGFSK, cfg-&gt;transmit.len);</span></a>
+<a name="1049"><span class="lineNum">    1049 </span>            :       </a>
+<a name="1050"><span class="lineNum">    1050 </span><span class="lineNoCov">          0 :       } else if(modem != RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {</span></a>
+<a name="1051"><span class="lineNum">    1051 </span><span class="lineNoCov">          0 :         return(RADIOLIB_ERR_WRONG_MODEM);</span></a>
+<a name="1052"><span class="lineNum">    1052 </span>            :       }</a>
+<a name="1053"><span class="lineNum">    1053 </span>            : </a>
+<a name="1054"><span class="lineNum">    1054 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="1055"><span class="lineNum">    1055 </span>            : </a>
+<a name="1056"><span class="lineNum">    1056 </span>            :       // set DIO mapping</a>
+<a name="1057"><span class="lineNum">    1057 </span><span class="lineNoCov">          0 :       state = setDioIrqConfig(this-&gt;irqDioNum, RADIOLIB_LR2021_IRQ_TX_DONE | RADIOLIB_LR2021_IRQ_TIMEOUT);</span></a>
+<a name="1058"><span class="lineNum">    1058 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
+<a name="1059"><span class="lineNum">    1059 </span>            : </a>
+<a name="1060"><span class="lineNum">    1060 </span><span class="lineNoCov">          0 :       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {</span></a>
+<a name="1061"><span class="lineNum">    1061 </span>            :         // in LR-FHSS mode, the packet is built by the device</a>
+<a name="1062"><span class="lineNum">    1062 </span>            :         //! \todo [LR2021] add configurable LR-FHSS device offset</a>
+<a name="1063"><span class="lineNum">    1063 </span><span class="lineNoCov">          0 :         state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME, this-&gt;lrFhssHdrCount, this-&gt;lrFhssCr, this-&gt;lrFhssGrid, true, this-&gt;lrFhssBw, this-&gt;lrFhssHopSeq, 0, cfg-&gt;transmit.data, cfg-&gt;transmit.len);</span></a>
+<a name="1064"><span class="lineNum">    1064 </span><span class="lineNoCov">          0 :         RADIOLIB_ASSERT(state);</span></a>
+<a name="1065"><span class="lineNum">    1065 </span>            : </a>
+<a name="1066"><span class="lineNum">    1066 </span>            :       } else {</a>
+<a name="1067"><span class="lineNum">    1067 </span>            :         // write packet to buffer</a>
+<a name="1068"><span class="lineNum">    1068 </span><span class="lineNoCov">          0 :         state = writeRadioTxFifo(cfg-&gt;transmit.data, cfg-&gt;transmit.len);</span></a>
+<a name="1069"><span class="lineNum">    1069 </span><span class="lineNoCov">          0 :         RADIOLIB_ASSERT(state);</span></a>
+<a name="1070"><span class="lineNum">    1070 </span>            : </a>
+<a name="1071"><span class="lineNum">    1071 </span>            :       }</a>
+<a name="1072"><span class="lineNum">    1072 </span>            : </a>
+<a name="1073"><span class="lineNum">    1073 </span>            :       // clear interrupt flags</a>
+<a name="1074"><span class="lineNum">    1074 </span><span class="lineNoCov">          0 :       state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);</span></a>
+<a name="1075"><span class="lineNum">    1075 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
 <a name="1076"><span class="lineNum">    1076 </span><span class="lineNoCov">          0 :     } break;</span></a>
 <a name="1077"><span class="lineNum">    1077 </span>            :     </a>
 <a name="1078"><span class="lineNum">    1078 </span><span class="lineNoCov">          0 :     default:</span></a>
 <a name="1079"><span class="lineNum">    1079 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_UNSUPPORTED);</span></a>
 <a name="1080"><span class="lineNum">    1080 </span>            :   }</a>
 <a name="1081"><span class="lineNum">    1081 </span>            : </a>
-<a name="1082"><span class="lineNum">    1082 </span><span class="lineCov">          1 :   this-&gt;stagedMode = RADIOLIB_RADIO_MODE_NONE;</span></a>
-<a name="1083"><span class="lineNum">    1083 </span><span class="lineCov">          1 :   return(state);</span></a>
+<a name="1082"><span class="lineNum">    1082 </span><span class="lineNoCov">          0 :   this-&gt;stagedMode = mode;</span></a>
+<a name="1083"><span class="lineNum">    1083 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="1084"><span class="lineNum">    1084 </span>            : }</a>
 <a name="1085"><span class="lineNum">    1085 </span>            : </a>
-<a name="1086"><span class="lineNum">    1086 </span><span class="lineNoCov">          0 : float LR2021::getVoltage(uint8_t bits) {</span></a>
-<a name="1087"><span class="lineNum">    1087 </span><span class="lineNoCov">          0 :   if((bits &lt; 8) || (bits &gt; 13)) {</span></a>
-<a name="1088"><span class="lineNum">    1088 </span><span class="lineNoCov">          0 :     return(0);</span></a>
-<a name="1089"><span class="lineNum">    1089 </span>            :   }</a>
-<a name="1090"><span class="lineNum">    1090 </span>            : </a>
-<a name="1091"><span class="lineNum">    1091 </span>            :   uint16_t val;</a>
-<a name="1092"><span class="lineNum">    1092 </span><span class="lineNoCov">          0 :   if(getVbat(bits, &amp;val) != RADIOLIB_ERR_NONE) {</span></a>
-<a name="1093"><span class="lineNum">    1093 </span><span class="lineNoCov">          0 :     return(0);</span></a>
-<a name="1094"><span class="lineNum">    1094 </span>            :   }</a>
-<a name="1095"><span class="lineNum">    1095 </span>            :   </a>
-<a name="1096"><span class="lineNum">    1096 </span><span class="lineNoCov">          0 :   return((float)val / 1000.0f);</span></a>
-<a name="1097"><span class="lineNum">    1097 </span>            : }</a>
+<a name="1086"><span class="lineNum">    1086 </span><span class="lineCov">          1 : int16_t LR2021::launchMode() {</span></a>
+<a name="1087"><span class="lineNum">    1087 </span>            :   int16_t state;</a>
+<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">          1 :   switch(this-&gt;stagedMode) {</span></a>
+<a name="1089"><span class="lineNum">    1089 </span><span class="lineCov">          1 :     case(RADIOLIB_RADIO_MODE_RX): {</span></a>
+<a name="1090"><span class="lineNum">    1090 </span><span class="lineCov">          1 :       this-&gt;mod-&gt;setRfSwitchState(Module::MODE_RX);</span></a>
+<a name="1091"><span class="lineNum">    1091 </span><span class="lineCov">          1 :       state = setRx(this-&gt;rxTimeout);</span></a>
+<a name="1092"><span class="lineNum">    1092 </span><span class="lineCov">          1 :     } break;</span></a>
+<a name="1093"><span class="lineNum">    1093 </span>            :   </a>
+<a name="1094"><span class="lineNum">    1094 </span><span class="lineNoCov">          0 :     case(RADIOLIB_RADIO_MODE_TX): {</span></a>
+<a name="1095"><span class="lineNum">    1095 </span><span class="lineNoCov">          0 :       this-&gt;mod-&gt;setRfSwitchState(Module::MODE_TX);</span></a>
+<a name="1096"><span class="lineNum">    1096 </span><span class="lineNoCov">          0 :       state = setTx(RADIOLIB_LR2021_TX_TIMEOUT_NONE);</span></a>
+<a name="1097"><span class="lineNum">    1097 </span><span class="lineNoCov">          0 :       RADIOLIB_ASSERT(state);</span></a>
 <a name="1098"><span class="lineNum">    1098 </span>            : </a>
-<a name="1099"><span class="lineNum">    1099 </span><span class="lineNoCov">          0 : float LR2021::getTemperature(uint8_t source, uint8_t bits) {</span></a>
-<a name="1100"><span class="lineNum">    1100 </span><span class="lineNoCov">          0 :   if((bits &lt; 8) || (bits &gt; 13)) {</span></a>
-<a name="1101"><span class="lineNum">    1101 </span><span class="lineNoCov">          0 :     return(0);</span></a>
-<a name="1102"><span class="lineNum">    1102 </span>            :   }</a>
-<a name="1103"><span class="lineNum">    1103 </span>            : </a>
-<a name="1104"><span class="lineNum">    1104 </span>            :   float val;</a>
-<a name="1105"><span class="lineNum">    1105 </span><span class="lineNoCov">          0 :   if(getTemp(source, bits, &amp;val) != RADIOLIB_ERR_NONE) {</span></a>
-<a name="1106"><span class="lineNum">    1106 </span><span class="lineNoCov">          0 :     return(0);</span></a>
+<a name="1099"><span class="lineNum">    1099 </span>            :       // wait for BUSY to go low (= PA ramp up done)</a>
+<a name="1100"><span class="lineNum">    1100 </span><span class="lineNoCov">          0 :       while(this-&gt;mod-&gt;hal-&gt;digitalRead(this-&gt;mod-&gt;getGpio())) {</span></a>
+<a name="1101"><span class="lineNum">    1101 </span><span class="lineNoCov">          0 :         this-&gt;mod-&gt;hal-&gt;yield();</span></a>
+<a name="1102"><span class="lineNum">    1102 </span>            :       }</a>
+<a name="1103"><span class="lineNum">    1103 </span><span class="lineNoCov">          0 :     } break;</span></a>
+<a name="1104"><span class="lineNum">    1104 </span>            :     </a>
+<a name="1105"><span class="lineNum">    1105 </span><span class="lineNoCov">          0 :     default:</span></a>
+<a name="1106"><span class="lineNum">    1106 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_UNSUPPORTED);</span></a>
 <a name="1107"><span class="lineNum">    1107 </span>            :   }</a>
 <a name="1108"><span class="lineNum">    1108 </span>            : </a>
-<a name="1109"><span class="lineNum">    1109 </span><span class="lineNoCov">          0 :   return(val);</span></a>
-<a name="1110"><span class="lineNum">    1110 </span>            : }</a>
-<a name="1111"><span class="lineNum">    1111 </span>            : </a>
-<a name="1112"><span class="lineNum">    1112 </span><span class="lineCov">          1 : float LR2021::getRSSI() {</span></a>
-<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">          1 :   return(this-&gt;getRSSI(true));</span></a>
-<a name="1114"><span class="lineNum">    1114 </span>            : }</a>
-<a name="1115"><span class="lineNum">    1115 </span>            : </a>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">          1 : float LR2021::getRSSI(bool packet, bool skipReceive) {</span></a>
-<a name="1117"><span class="lineNum">    1117 </span><span class="lineCov">          1 :   float rssi = 0;</span></a>
-<a name="1118"><span class="lineNum">    1118 </span>            :   int16_t state;</a>
-<a name="1119"><span class="lineNum">    1119 </span><span class="lineCov">          1 :   if(!packet) { </span></a>
-<a name="1120"><span class="lineNum">    1120 </span>            :     // get instantaneous RSSI value</a>
-<a name="1121"><span class="lineNum">    1121 </span><span class="lineNoCov">          0 :     if(!skipReceive) { (void)startReceive(); }</span></a>
-<a name="1122"><span class="lineNum">    1122 </span><span class="lineNoCov">          0 :     state = this-&gt;getRssiInst(&amp;rssi);</span></a>
-<a name="1123"><span class="lineNum">    1123 </span><span class="lineNoCov">          0 :     if(!skipReceive) { (void)standby(); }</span></a>
-<a name="1124"><span class="lineNum">    1124 </span><span class="lineNoCov">          0 :     if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
-<a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 :     return(rssi);</span></a>
-<a name="1126"><span class="lineNum">    1126 </span>            :   }</a>
-<a name="1127"><span class="lineNum">    1127 </span>            : </a>
-<a name="1128"><span class="lineNum">    1128 </span>            :   // check modem type</a>
-<a name="1129"><span class="lineNum">    1129 </span><span class="lineCov">          1 :   uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
-<a name="1130"><span class="lineNum">    1130 </span><span class="lineCov">          1 :   state = this-&gt;getPacketType(&amp;modem);</span></a>
-<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">          1 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
-<a name="1132"><span class="lineNum">    1132 </span><span class="lineNoCov">          0 :   if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
-<a name="1133"><span class="lineNum">    1133 </span><span class="lineNoCov">          0 :     state = this-&gt;getLoRaPacketStatus(NULL, NULL, NULL, NULL, &amp;rssi, NULL);</span></a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineNoCov">          0 :   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
-<a name="1135"><span class="lineNum">    1135 </span><span class="lineNoCov">          0 :     state = this-&gt;getGfskPacketStatus(NULL, &amp;rssi, NULL, NULL, NULL, NULL);</span></a>
-<a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 :   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {</span></a>
-<a name="1137"><span class="lineNum">    1137 </span><span class="lineNoCov">          0 :     state = this-&gt;getOokPacketStatus(NULL, NULL, &amp;rssi, NULL, NULL, NULL);</span></a>
-<a name="1138"><span class="lineNum">    1138 </span>            :   } else {</a>
-<a name="1139"><span class="lineNum">    1139 </span><span class="lineNoCov">          0 :     return(0);</span></a>
-<a name="1140"><span class="lineNum">    1140 </span>            :   }</a>
-<a name="1141"><span class="lineNum">    1141 </span>            : </a>
-<a name="1142"><span class="lineNum">    1142 </span><span class="lineNoCov">          0 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
-<a name="1143"><span class="lineNum">    1143 </span><span class="lineNoCov">          0 :   return(rssi);</span></a>
-<a name="1144"><span class="lineNum">    1144 </span>            : }</a>
-<a name="1145"><span class="lineNum">    1145 </span>            : </a>
-<a name="1146"><span class="lineNum">    1146 </span><span class="lineCov">          1 : float LR2021::getSNR() {</span></a>
-<a name="1147"><span class="lineNum">    1147 </span>            :   float snr;</a>
-<a name="1148"><span class="lineNum">    1148 </span><span class="lineCov">          1 :   uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
-<a name="1149"><span class="lineNum">    1149 </span><span class="lineCov">          1 :   int16_t state = this-&gt;getPacketType(&amp;modem);</span></a>
-<a name="1150"><span class="lineNum">    1150 </span><span class="lineCov">          1 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
-<a name="1151"><span class="lineNum">    1151 </span><span class="lineNoCov">          0 :   if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) { return(0); }</span></a>
-<a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :   state = this-&gt;getLoRaPacketStatus(NULL, NULL, NULL, &amp;snr, NULL, NULL);</span></a>
-<a name="1153"><span class="lineNum">    1153 </span><span class="lineNoCov">          0 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
-<a name="1154"><span class="lineNum">    1154 </span><span class="lineNoCov">          0 :   return(snr);  </span></a>
-<a name="1155"><span class="lineNum">    1155 </span>            : }</a>
-<a name="1156"><span class="lineNum">    1156 </span>            : </a>
-<a name="1157"><span class="lineNum">    1157 </span><span class="lineCov">          1 : uint8_t LR2021::randomByte() {</span></a>
-<a name="1158"><span class="lineNum">    1158 </span><span class="lineCov">          1 :   uint32_t num = 0;</span></a>
-<a name="1159"><span class="lineNum">    1159 </span><span class="lineCov">          1 :   (void)getRandomNumber(&amp;num);</span></a>
-<a name="1160"><span class="lineNum">    1160 </span><span class="lineCov">          1 :   return((uint8_t)num);</span></a>
-<a name="1161"><span class="lineNum">    1161 </span>            : }</a>
-<a name="1162"><span class="lineNum">    1162 </span>            : </a>
-<a name="1163"><span class="lineNum">    1163 </span><span class="lineNoCov">          0 : int16_t LR2021::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC){</span></a>
-<a name="1164"><span class="lineNum">    1164 </span><span class="lineNoCov">          0 :   return(this-&gt;getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL));</span></a>
-<a name="1165"><span class="lineNum">    1165 </span>            : }</a>
-<a name="1166"><span class="lineNum">    1166 </span>            : </a>
-<a name="1167"><span class="lineNum">    1167 </span>            : #endif</a>
+<a name="1109"><span class="lineNum">    1109 </span><span class="lineCov">          1 :   this-&gt;stagedMode = RADIOLIB_RADIO_MODE_NONE;</span></a>
+<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">          1 :   return(state);</span></a>
+<a name="1111"><span class="lineNum">    1111 </span>            : }</a>
+<a name="1112"><span class="lineNum">    1112 </span>            : </a>
+<a name="1113"><span class="lineNum">    1113 </span><span class="lineNoCov">          0 : float LR2021::getVoltage(uint8_t bits) {</span></a>
+<a name="1114"><span class="lineNum">    1114 </span><span class="lineNoCov">          0 :   if((bits &lt; 8) || (bits &gt; 13)) {</span></a>
+<a name="1115"><span class="lineNum">    1115 </span><span class="lineNoCov">          0 :     return(0);</span></a>
+<a name="1116"><span class="lineNum">    1116 </span>            :   }</a>
+<a name="1117"><span class="lineNum">    1117 </span>            : </a>
+<a name="1118"><span class="lineNum">    1118 </span>            :   uint16_t val;</a>
+<a name="1119"><span class="lineNum">    1119 </span><span class="lineNoCov">          0 :   if(getVbat(bits, &amp;val) != RADIOLIB_ERR_NONE) {</span></a>
+<a name="1120"><span class="lineNum">    1120 </span><span class="lineNoCov">          0 :     return(0);</span></a>
+<a name="1121"><span class="lineNum">    1121 </span>            :   }</a>
+<a name="1122"><span class="lineNum">    1122 </span>            :   </a>
+<a name="1123"><span class="lineNum">    1123 </span><span class="lineNoCov">          0 :   return((float)val / 1000.0f);</span></a>
+<a name="1124"><span class="lineNum">    1124 </span>            : }</a>
+<a name="1125"><span class="lineNum">    1125 </span>            : </a>
+<a name="1126"><span class="lineNum">    1126 </span><span class="lineNoCov">          0 : float LR2021::getTemperature(uint8_t source, uint8_t bits) {</span></a>
+<a name="1127"><span class="lineNum">    1127 </span><span class="lineNoCov">          0 :   if((bits &lt; 8) || (bits &gt; 13)) {</span></a>
+<a name="1128"><span class="lineNum">    1128 </span><span class="lineNoCov">          0 :     return(0);</span></a>
+<a name="1129"><span class="lineNum">    1129 </span>            :   }</a>
+<a name="1130"><span class="lineNum">    1130 </span>            : </a>
+<a name="1131"><span class="lineNum">    1131 </span>            :   float val;</a>
+<a name="1132"><span class="lineNum">    1132 </span><span class="lineNoCov">          0 :   if(getTemp(source, bits, &amp;val) != RADIOLIB_ERR_NONE) {</span></a>
+<a name="1133"><span class="lineNum">    1133 </span><span class="lineNoCov">          0 :     return(0);</span></a>
+<a name="1134"><span class="lineNum">    1134 </span>            :   }</a>
+<a name="1135"><span class="lineNum">    1135 </span>            : </a>
+<a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 :   return(val);</span></a>
+<a name="1137"><span class="lineNum">    1137 </span>            : }</a>
+<a name="1138"><span class="lineNum">    1138 </span>            : </a>
+<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">          1 : float LR2021::getRSSI() {</span></a>
+<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">          1 :   return(this-&gt;getRSSI(true));</span></a>
+<a name="1141"><span class="lineNum">    1141 </span>            : }</a>
+<a name="1142"><span class="lineNum">    1142 </span>            : </a>
+<a name="1143"><span class="lineNum">    1143 </span><span class="lineCov">          1 : float LR2021::getRSSI(bool packet, bool skipReceive) {</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">          1 :   float rssi = 0;</span></a>
+<a name="1145"><span class="lineNum">    1145 </span>            :   int16_t state;</a>
+<a name="1146"><span class="lineNum">    1146 </span><span class="lineCov">          1 :   if(!packet) { </span></a>
+<a name="1147"><span class="lineNum">    1147 </span>            :     // get instantaneous RSSI value</a>
+<a name="1148"><span class="lineNum">    1148 </span><span class="lineNoCov">          0 :     if(!skipReceive) { (void)startReceive(); }</span></a>
+<a name="1149"><span class="lineNum">    1149 </span><span class="lineNoCov">          0 :     state = this-&gt;getRssiInst(&amp;rssi);</span></a>
+<a name="1150"><span class="lineNum">    1150 </span><span class="lineNoCov">          0 :     if(!skipReceive) { (void)standby(); }</span></a>
+<a name="1151"><span class="lineNum">    1151 </span><span class="lineNoCov">          0 :     if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
+<a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :     return(rssi);</span></a>
+<a name="1153"><span class="lineNum">    1153 </span>            :   }</a>
+<a name="1154"><span class="lineNum">    1154 </span>            : </a>
+<a name="1155"><span class="lineNum">    1155 </span>            :   // check modem type</a>
+<a name="1156"><span class="lineNum">    1156 </span><span class="lineCov">          1 :   uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
+<a name="1157"><span class="lineNum">    1157 </span><span class="lineCov">          1 :   state = this-&gt;getPacketType(&amp;modem);</span></a>
+<a name="1158"><span class="lineNum">    1158 </span><span class="lineCov">          1 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
+<a name="1159"><span class="lineNum">    1159 </span><span class="lineNoCov">          0 :   if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
+<a name="1160"><span class="lineNum">    1160 </span><span class="lineNoCov">          0 :     state = this-&gt;getLoRaPacketStatus(NULL, NULL, NULL, NULL, &amp;rssi, NULL);</span></a>
+<a name="1161"><span class="lineNum">    1161 </span><span class="lineNoCov">          0 :   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
+<a name="1162"><span class="lineNum">    1162 </span><span class="lineNoCov">          0 :     state = this-&gt;getGfskPacketStatus(NULL, &amp;rssi, NULL, NULL, NULL, NULL);</span></a>
+<a name="1163"><span class="lineNum">    1163 </span><span class="lineNoCov">          0 :   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {</span></a>
+<a name="1164"><span class="lineNum">    1164 </span><span class="lineNoCov">          0 :     state = this-&gt;getOokPacketStatus(NULL, NULL, &amp;rssi, NULL, NULL, NULL);</span></a>
+<a name="1165"><span class="lineNum">    1165 </span>            :   } else {</a>
+<a name="1166"><span class="lineNum">    1166 </span><span class="lineNoCov">          0 :     return(0);</span></a>
+<a name="1167"><span class="lineNum">    1167 </span>            :   }</a>
+<a name="1168"><span class="lineNum">    1168 </span>            : </a>
+<a name="1169"><span class="lineNum">    1169 </span><span class="lineNoCov">          0 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
+<a name="1170"><span class="lineNum">    1170 </span><span class="lineNoCov">          0 :   return(rssi);</span></a>
+<a name="1171"><span class="lineNum">    1171 </span>            : }</a>
+<a name="1172"><span class="lineNum">    1172 </span>            : </a>
+<a name="1173"><span class="lineNum">    1173 </span><span class="lineCov">          1 : float LR2021::getSNR() {</span></a>
+<a name="1174"><span class="lineNum">    1174 </span>            :   float snr;</a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">          1 :   uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;</span></a>
+<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">          1 :   int16_t state = this-&gt;getPacketType(&amp;modem);</span></a>
+<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">          1 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
+<a name="1178"><span class="lineNum">    1178 </span><span class="lineNoCov">          0 :   if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) { return(0); }</span></a>
+<a name="1179"><span class="lineNum">    1179 </span><span class="lineNoCov">          0 :   state = this-&gt;getLoRaPacketStatus(NULL, NULL, NULL, &amp;snr, NULL, NULL);</span></a>
+<a name="1180"><span class="lineNum">    1180 </span><span class="lineNoCov">          0 :   if(state != RADIOLIB_ERR_NONE) { return(0); }</span></a>
+<a name="1181"><span class="lineNum">    1181 </span><span class="lineNoCov">          0 :   return(snr);  </span></a>
+<a name="1182"><span class="lineNum">    1182 </span>            : }</a>
+<a name="1183"><span class="lineNum">    1183 </span>            : </a>
+<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">          1 : uint8_t LR2021::randomByte() {</span></a>
+<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">          1 :   uint32_t num = 0;</span></a>
+<a name="1186"><span class="lineNum">    1186 </span><span class="lineCov">          1 :   (void)getRandomNumber(&amp;num);</span></a>
+<a name="1187"><span class="lineNum">    1187 </span><span class="lineCov">          1 :   return((uint8_t)num);</span></a>
+<a name="1188"><span class="lineNum">    1188 </span>            : }</a>
+<a name="1189"><span class="lineNum">    1189 </span>            : </a>
+<a name="1190"><span class="lineNum">    1190 </span><span class="lineNoCov">          0 : int16_t LR2021::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC){</span></a>
+<a name="1191"><span class="lineNum">    1191 </span><span class="lineNoCov">          0 :   return(this-&gt;getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL));</span></a>
+<a name="1192"><span class="lineNum">    1192 </span>            : }</a>
+<a name="1193"><span class="lineNum">    1193 </span>            : </a>
+<a name="1194"><span class="lineNum">    1194 </span>            : #endif</a>
 </pre>
       </td>
     </tr>

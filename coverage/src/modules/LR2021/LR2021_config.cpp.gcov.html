@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-13 05:29:26</td>
+            <td class="headerValue">2026-06-14 08:22:16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -436,7 +436,7 @@
 <a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
 <a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :     this-&gt;preambleLengthLoRa = preambleLength;</span></a>
 <a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :     return(setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, </span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :       (this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, (uint8_t)this-&gt;invertIQEnabled));</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :       (this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, (uint8_t)this-&gt;invertIQEnabled));</span></a>
 <a name="378"><span class="lineNum">     378 </span>            :   </a>
 <a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
 <a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :     this-&gt;preambleLengthGFSK = preambleLength;</span></a>
@@ -520,9 +520,9 @@
 <a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
 <a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {</span></a>
 <a name="460"><span class="lineNum">     460 </span>            :     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion</a>
-<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :     this-&gt;crcTypeLoRa = len &gt; 0 ? RADIOLIB_LR2021_LORA_CRC_ENABLED : RADIOLIB_LR2021_LORA_CRC_DISABLED;</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :     this-&gt;crcTypeLoRa = len &gt; 0;</span></a>
 <a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :     return(setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, </span></a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :       (this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, (uint8_t)this-&gt;invertIQEnabled));</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :       (this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, (uint8_t)this-&gt;invertIQEnabled));</span></a>
 <a name="464"><span class="lineNum">     464 </span>            :   </a>
 <a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {</span></a>
 <a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :     if(len &gt; 4) {</span></a>
@@ -581,7 +581,7 @@
 <a name="519"><span class="lineNum">     519 </span>            : </a>
 <a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 :   this-&gt;invertIQEnabled = enable;</span></a>
 <a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :   return(setLoRaPacketParams(this-&gt;preambleLengthLoRa, this-&gt;headerType, </span></a>
-<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :     (this-&gt;headerType == RADIOLIB_LR2021_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, (uint8_t)this-&gt;invertIQEnabled));</span></a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :     (this-&gt;headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this-&gt;implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this-&gt;crcTypeLoRa, (uint8_t)this-&gt;invertIQEnabled));</span></a>
 <a name="523"><span class="lineNum">     523 </span>            : }</a>
 <a name="524"><span class="lineNum">     524 </span>            : </a>
 <a name="525"><span class="lineNum">     525 </span><span class="lineCov">          1 : int16_t LR2021::setBitRate(float br) {</span></a>
@@ -1053,11 +1053,11 @@
 <a name="991"><span class="lineNum">     991 </span>            : }</a>
 <a name="992"><span class="lineNum">     992 </span>            : </a>
 <a name="993"><span class="lineNum">     993 </span><span class="lineNoCov">          0 : int16_t LR2021::implicitHeader(size_t len) {</span></a>
-<a name="994"><span class="lineNum">     994 </span><span class="lineNoCov">          0 :   return(this-&gt;setLoRaHeaderType(RADIOLIB_LR2021_LORA_HEADER_IMPLICIT, len));</span></a>
+<a name="994"><span class="lineNum">     994 </span><span class="lineNoCov">          0 :   return(this-&gt;setLoRaHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT, len));</span></a>
 <a name="995"><span class="lineNum">     995 </span>            : }</a>
 <a name="996"><span class="lineNum">     996 </span>            : </a>
 <a name="997"><span class="lineNum">     997 </span><span class="lineNoCov">          0 : int16_t LR2021::explicitHeader() {</span></a>
-<a name="998"><span class="lineNum">     998 </span><span class="lineNoCov">          0 :   return(this-&gt;setLoRaHeaderType(RADIOLIB_LR2021_LORA_HEADER_EXPLICIT));</span></a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineNoCov">          0 :   return(this-&gt;setLoRaHeaderType(RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT));</span></a>
 <a name="999"><span class="lineNum">     999 </span>            : }</a>
 <a name="1000"><span class="lineNum">    1000 </span>            : </a>
 <a name="1001"><span class="lineNum">    1001 </span><span class="lineNoCov">          0 : int16_t LR2021::setNodeAddress(uint8_t nodeAddr) {</span></a>
