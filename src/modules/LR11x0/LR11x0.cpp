@@ -1484,6 +1484,14 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         return(RADIOLIB_ERR_WRONG_MODEM);
       }
 
+      // in implicit LoRa header mode, use the provided length if it is nonzero
+      // otherwise we trust the user has previously set the payload length manually
+      if((this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && 
+        (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
+        (cfg->receive.len != 0)) {
+        this->implicitLen = cfg->receive.len;
+      }
+
       // set DIO mapping
       if(cfg->receive.timeout != RADIOLIB_LR11X0_RX_TIMEOUT_INF) {
         cfg->receive.irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
@@ -1495,11 +1503,24 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
       RADIOLIB_ASSERT(state);
 
+      // restore maximum allowed received packet length (may have been changed by previous Tx)
+      if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+        state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, 
+          (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, 
+          this->crcTypeLoRa, this->invertIQEnabled);
+      
+      } else {
+        state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
+          (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH,
+          this->crcTypeGFSK, this->whitening);
+
+      }
+
       // set implicit mode and expected len if applicable
-      if((this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA)) {
+      /*if((this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && (modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA)) {
         state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, this->invertIQEnabled);
         RADIOLIB_ASSERT(state);
-      }
+      }*/
 
       // if max(uint32_t) is used, revert to RxContinuous
       if(cfg->receive.timeout == 0xFFFFFFFF) {
