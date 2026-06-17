@@ -245,8 +245,10 @@ public:
              spiHost, spiSCK, spiMISO, spiMOSI);
 
     // Try to initialize the bus - it may already be initialized by another
-    // component (shared bus). DMA is disabled because RadioLib does not
-    // allocate DMA-capable buffers and the transfers here are small.
+    // component (shared bus). While RadioLib does not
+    // allocate DMA-capable buffers and the transfers here are small,
+    // SPI_DMA_CH_AUTO is set because with SPI_DMA_DISABLED the SPI transaction
+    // is limited to 64 bytes (and our radio MTU can be much bigger).
     spi_bus_config_t bus_config = {};
     bus_config.mosi_io_num = spiMOSI;
     bus_config.miso_io_num = spiMISO;
@@ -262,7 +264,7 @@ public:
     bus_config.isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO;
     bus_config.intr_flags = 0;
 
-    esp_err_t ret = spi_bus_initialize(spiHost, &bus_config, SPI_DMA_DISABLED);
+    esp_err_t ret = spi_bus_initialize(spiHost, &bus_config, SPI_DMA_CH_AUTO);
     if (ret == ESP_OK) {
       busInitialized = true;
       ESP_LOGD("EspHal", "SPI bus initialized successfully");
