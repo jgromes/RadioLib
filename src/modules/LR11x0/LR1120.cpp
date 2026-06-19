@@ -9,7 +9,7 @@ LR1120::LR1120(Module* mod) : LR11x0(mod) {
 
 int16_t LR1120::begin(const ConfigLoRa_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::begin(cfg.bandwidth, cfg.spreadingFactor, cfg.codingRate, cfg.syncWord, cfg.preambleLength);
+  int16_t state = LR11x0::begin(cfg.bandwidth, cfg.spreadingFactor, cfg.codingRate, cfg.syncWord, cfg.preambleLength, (cfg.frequency > 1000.0f));
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
