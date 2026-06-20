@@ -299,10 +299,13 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 }
 
 void LoRaWANNode::clearPersistence() {
-  // clear & set all the device credentials
+  // clear all the persistent values
   memset(this->bufferPersist, 0, RADIOLIB_LORAWAN_PERSISTENCE_BUF_SIZE);
+  // reset TS004's fragmentation nonces to 0xFFFF to accept initial value 0
   memset(&this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS004], 0xFF, 8);
-  memset(&this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS009], 0x01, 1);
+  // allow enabling of TS009's test mode by setting to 1
+  this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS009] = 0x01;
+
   this->keyCheckSum = 0;
   this->devNonce = 0;
   this->joinNonce = 0;
