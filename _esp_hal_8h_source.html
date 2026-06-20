@@ -330,132 +330,134 @@ $(document).ready(function(){initNavTree('_esp_hal_8h_source.html',''); initResi
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>             spiHost, spiSCK, spiMISO, spiMOSI);</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="comment">// Try to initialize the bus - it may already be initialized by another</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="comment">// component (shared bus). DMA is disabled because RadioLib does not</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="comment">// allocate DMA-capable buffers and the transfers here are small.</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    spi_bus_config_t bus_config = {};</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    bus_config.mosi_io_num = spiMOSI;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    bus_config.miso_io_num = spiMISO;</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    bus_config.sclk_io_num = spiSCK;</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    bus_config.quadwp_io_num = -1;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    bus_config.quadhd_io_num = -1;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    bus_config.data4_io_num = -1;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    bus_config.data5_io_num = -1;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    bus_config.data6_io_num = -1;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    bus_config.data7_io_num = -1;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    bus_config.max_transfer_sz = SOC_SPI_MAXIMUM_BUFFER_SIZE;</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    bus_config.flags = 0;</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    bus_config.isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO;</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    bus_config.intr_flags = 0;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    esp_err_t ret = spi_bus_initialize(spiHost, &amp;bus_config, SPI_DMA_DISABLED);</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="keywordflow">if</span> (ret == ESP_OK) {</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>      busInitialized = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI bus initialized successfully&quot;</span>);</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ret == ESP_ERR_INVALID_STATE) {</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      <span class="comment">// Bus already initialized - this is OK for shared bus</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      busInitialized = <span class="keyword">false</span>; <span class="comment">// We didn&#39;t init it, so we won&#39;t free it</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI bus already initialized (shared bus)&quot;</span>);</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;Failed to initialize SPI bus: %s&quot;</span>,</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>               esp_err_to_name(ret));</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    }</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="comment">// Add the device. CS is left to RadioLib (software-driven via</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="comment">// digitalWrite on the Module&#39;s csPin), so spics_io_num is -1.</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    spi_device_interface_config_t dev_config = {};</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    dev_config.command_bits = 0;</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    dev_config.address_bits = 0;</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    dev_config.dummy_bits = 0;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    dev_config.mode = 0; <span class="comment">// SPI mode 0 (CPOL=0, CPHA=0)</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    dev_config.clock_source = SPI_CLK_SRC_DEFAULT;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    dev_config.duty_cycle_pos = 128; <span class="comment">// 50% duty cycle</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    dev_config.cs_ena_pretrans = 0;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    dev_config.cs_ena_posttrans = 0;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    dev_config.clock_speed_hz = (int)spiClockHz;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    dev_config.input_delay_ns = 0;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    dev_config.spics_io_num = -1; <span class="comment">// RadioLib drives CS in software</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    dev_config.flags = 0;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    dev_config.queue_size = 1;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    dev_config.pre_cb = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    dev_config.post_cb = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    ret = spi_bus_add_device(spiHost, &amp;dev_config, &amp;spiDevice);</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keywordflow">if</span> (ret != ESP_OK) {</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;Failed to add SPI device: %s&quot;</span>, esp_err_to_name(ret));</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    }</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    deviceAdded = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI device added (clock=%&quot;</span> PRIu32 <span class="stringliteral">&quot; Hz, software CS)&quot;</span>,</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>             spiClockHz);</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  }</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#abe787d5e556190eef2c63e1581235460">spiBeginTransaction</a>() {</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <span class="comment">// Acquire the SPI bus for this device</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">if</span> (spiDevice != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>      spi_device_acquire_bus(spiDevice, portMAX_DELAY);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    }</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  }</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a">spiTransfer</a>(uint8_t *out, <span class="keywordtype">size_t</span> len, uint8_t *in) {</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    <span class="keywordflow">if</span> (spiDevice == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI device not initialized!&quot;</span>);</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>    }</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    <span class="keywordflow">if</span> (len == 0) {</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    }</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    spi_transaction_t trans = {};</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    trans.length = len * 8; <span class="comment">// length in bits</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    trans.tx_buffer = out;</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    trans.rx_buffer = in;</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    esp_err_t ret = spi_device_polling_transmit(spiDevice, &amp;trans);</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keywordflow">if</span> (ret != ESP_OK) {</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI transfer failed: %s&quot;</span>, esp_err_to_name(ret));</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    }</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  }</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#a68d9271c76f8c96afb734a4634bf92e9">spiEndTransaction</a>() {</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="comment">// Release the SPI bus</span></div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <span class="keywordflow">if</span> (spiDevice != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>      spi_device_release_bus(spiDevice);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    }</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  }</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#a41c85e560155d644f5b4ce8444dd8b64">spiEnd</a>() {</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    <span class="comment">// Remove device from bus</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keywordflow">if</span> (deviceAdded &amp;&amp; spiDevice != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      spi_bus_remove_device(spiDevice);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>      spiDevice = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>      deviceAdded = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI device removed&quot;</span>);</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    }</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="comment">// Free the bus only if we initialized it</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordflow">if</span> (busInitialized) {</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>      spi_bus_free(spiHost);</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      busInitialized = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI bus freed&quot;</span>);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    }</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  }</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  int8_t spiSCK;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  int8_t spiMISO;</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  int8_t spiMOSI;</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  spi_host_device_t spiHost;</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  uint32_t spiClockHz;</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  spi_device_handle_t spiDevice;</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  <span class="keywordtype">bool</span> busInitialized;</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <span class="keywordtype">bool</span> deviceAdded;</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  <span class="keywordtype">bool</span> halInitialized;</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  int32_t tonePrevFreq;</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>};</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="preprocessor">#endif </span><span class="comment">// RADIOLIB_ESP_IDF_HAL</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="comment">// component (shared bus). While RadioLib does not</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="comment">// allocate DMA-capable buffers and the transfers here are small,</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="comment">// SPI_DMA_CH_AUTO is set because with SPI_DMA_DISABLED the SPI transaction</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="comment">// is limited to 64 bytes (and our radio MTU can be much bigger).</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    spi_bus_config_t bus_config = {};</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    bus_config.mosi_io_num = spiMOSI;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    bus_config.miso_io_num = spiMISO;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    bus_config.sclk_io_num = spiSCK;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    bus_config.quadwp_io_num = -1;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    bus_config.quadhd_io_num = -1;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    bus_config.data4_io_num = -1;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    bus_config.data5_io_num = -1;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    bus_config.data6_io_num = -1;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    bus_config.data7_io_num = -1;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    bus_config.max_transfer_sz = SOC_SPI_MAXIMUM_BUFFER_SIZE;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    bus_config.flags = 0;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    bus_config.isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    bus_config.intr_flags = 0;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    esp_err_t ret = spi_bus_initialize(spiHost, &amp;bus_config, SPI_DMA_CH_AUTO);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keywordflow">if</span> (ret == ESP_OK) {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>      busInitialized = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI bus initialized successfully&quot;</span>);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ret == ESP_ERR_INVALID_STATE) {</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      <span class="comment">// Bus already initialized - this is OK for shared bus</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      busInitialized = <span class="keyword">false</span>; <span class="comment">// We didn&#39;t init it, so we won&#39;t free it</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI bus already initialized (shared bus)&quot;</span>);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;Failed to initialize SPI bus: %s&quot;</span>,</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>               esp_err_to_name(ret));</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    }</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="comment">// Add the device. CS is left to RadioLib (software-driven via</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="comment">// digitalWrite on the Module&#39;s csPin), so spics_io_num is -1.</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    spi_device_interface_config_t dev_config = {};</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    dev_config.command_bits = 0;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    dev_config.address_bits = 0;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    dev_config.dummy_bits = 0;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    dev_config.mode = 0; <span class="comment">// SPI mode 0 (CPOL=0, CPHA=0)</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    dev_config.clock_source = SPI_CLK_SRC_DEFAULT;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    dev_config.duty_cycle_pos = 128; <span class="comment">// 50% duty cycle</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    dev_config.cs_ena_pretrans = 0;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    dev_config.cs_ena_posttrans = 0;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    dev_config.clock_speed_hz = (int)spiClockHz;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    dev_config.input_delay_ns = 0;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    dev_config.spics_io_num = -1; <span class="comment">// RadioLib drives CS in software</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    dev_config.flags = 0;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    dev_config.queue_size = 1;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    dev_config.pre_cb = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    dev_config.post_cb = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    ret = spi_bus_add_device(spiHost, &amp;dev_config, &amp;spiDevice);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">if</span> (ret != ESP_OK) {</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;Failed to add SPI device: %s&quot;</span>, esp_err_to_name(ret));</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    }</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    deviceAdded = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI device added (clock=%&quot;</span> PRIu32 <span class="stringliteral">&quot; Hz, software CS)&quot;</span>,</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>             spiClockHz);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  }</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#abe787d5e556190eef2c63e1581235460">spiBeginTransaction</a>() {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="comment">// Acquire the SPI bus for this device</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    <span class="keywordflow">if</span> (spiDevice != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      spi_device_acquire_bus(spiDevice, portMAX_DELAY);</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    }</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  }</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a">spiTransfer</a>(uint8_t *out, <span class="keywordtype">size_t</span> len, uint8_t *in) {</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    <span class="keywordflow">if</span> (spiDevice == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI device not initialized!&quot;</span>);</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    }</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    <span class="keywordflow">if</span> (len == 0) {</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    }</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    spi_transaction_t trans = {};</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    trans.length = len * 8; <span class="comment">// length in bits</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    trans.tx_buffer = out;</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    trans.rx_buffer = in;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    esp_err_t ret = spi_device_polling_transmit(spiDevice, &amp;trans);</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    <span class="keywordflow">if</span> (ret != ESP_OK) {</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>      ESP_LOGE(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI transfer failed: %s&quot;</span>, esp_err_to_name(ret));</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    }</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  }</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#a68d9271c76f8c96afb734a4634bf92e9">spiEndTransaction</a>() {</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    <span class="comment">// Release the SPI bus</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keywordflow">if</span> (spiDevice != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>      spi_device_release_bus(spiDevice);</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    }</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  }</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio_lib_hal.html#a41c85e560155d644f5b4ce8444dd8b64">spiEnd</a>() {</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="comment">// Remove device from bus</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="keywordflow">if</span> (deviceAdded &amp;&amp; spiDevice != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>      spi_bus_remove_device(spiDevice);</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>      spiDevice = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>      deviceAdded = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI device removed&quot;</span>);</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    }</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="comment">// Free the bus only if we initialized it</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keywordflow">if</span> (busInitialized) {</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      spi_bus_free(spiHost);</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      busInitialized = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>      ESP_LOGD(<span class="stringliteral">&quot;EspHal&quot;</span>, <span class="stringliteral">&quot;SPI bus freed&quot;</span>);</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    }</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  }</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  int8_t spiSCK;</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  int8_t spiMISO;</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  int8_t spiMOSI;</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  spi_host_device_t spiHost;</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  uint32_t spiClockHz;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  spi_device_handle_t spiDevice;</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  <span class="keywordtype">bool</span> busInitialized;</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  <span class="keywordtype">bool</span> deviceAdded;</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  <span class="keywordtype">bool</span> halInitialized;</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  int32_t tonePrevFreq;</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>};</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><span class="preprocessor">#endif </span><span class="comment">// RADIOLIB_ESP_IDF_HAL</span></div>
 <div class="ttc" id="aclass_radio_lib_hal_html"><div class="ttname"><a href="class_radio_lib_hal.html">RadioLibHal</a></div><div class="ttdoc">Hardware abstraction library base interface.</div><div class="ttdef"><b>Definition</b> Hal.h:18</div></div>
 <div class="ttc" id="aclass_radio_lib_hal_html_a0c7c2dffd662cefca7bf11e14c56dab2"><div class="ttname"><a href="class_radio_lib_hal.html#a0c7c2dffd662cefca7bf11e14c56dab2">RadioLibHal::digitalRead</a></div><div class="ttdeci">virtual uint32_t digitalRead(uint32_t pin)=0</div><div class="ttdoc">Digital read method. Must be implemented by the platform-specific hardware abstraction!</div></div>
 <div class="ttc" id="aclass_radio_lib_hal_html_a2ddf72a41b3cfbb63ea7ab5362003b56"><div class="ttname"><a href="class_radio_lib_hal.html#a2ddf72a41b3cfbb63ea7ab5362003b56">RadioLibHal::detachInterrupt</a></div><div class="ttdeci">virtual void detachInterrupt(uint32_t interruptNum)=0</div><div class="ttdoc">Method to detach function from an external interrupt. Must be implemented by the platform-specific ha...</div></div>
