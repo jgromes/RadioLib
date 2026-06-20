@@ -49,6 +49,11 @@ const float freqEnd = 435;
 void setup() {
   Serial.begin(115200);
 
+  // before calling begin(), correct crystal has to be selected
+  // most SX126x have a TCXO which needs 1.6V reference
+  // set to 0 if your radio has an XTAL
+  radio.tcxoVoltage = 1.6;
+
   // initialize SX1262 FSK modem at the initial frequency
   Serial.print(F("[SX1262] Initializing ... "));
   ConfigFSK_t config;
