@@ -2,8 +2,8 @@
 // ESP-IDF HAL for RadioLib using spi_master driver
 // This avoids conflicts with other SPI devices on the same bus
 
-#ifndef RADIOLIB_ESP_IDF_HAL
-#define RADIOLIB_ESP_IDF_HAL
+#if !defined(_RADIOLIB_ESP_IDF_HAL_H)
+#define _RADIOLIB_ESP_IDF_HAL_H
 
 #if defined(ESP_PLATFORM)
 #include "RadioLib.h"
@@ -372,4 +372,4 @@ private:
   int32_t tonePrevFreq;
 };
 #endif
-#endif // RADIOLIB_ESP_IDF_HAL
+#endif // _RADIOLIB_ESP_IDF_HAL_H
