@@ -18,18 +18,6 @@
 #include "sdkconfig.h"
 #include <cinttypes> // For PRIu32
 
-// Arduino-style macros for RadioLib compatibility
-#ifndef LOW
-#define LOW (0x0)
-#endif
-#ifndef HIGH
-#define HIGH (0x1)
-#endif
-#define INPUT (GPIO_MODE_INPUT)
-#define OUTPUT (GPIO_MODE_OUTPUT)
-#define RISING (GPIO_INTR_POSEDGE)
-#define FALLING (GPIO_INTR_NEGEDGE)
-
 // These are left undefined by the generic build; define them for the ESP-IDF HAL
 #if !defined(RADIOLIB_ESP32)
 #define RADIOLIB_ESP32
@@ -57,7 +45,8 @@ public:
    */
   EspHal(int8_t sck, int8_t miso, int8_t mosi,
          spi_host_device_t host = SPI2_HOST, uint32_t clockHz = 2000000)
-      : RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spiSCK(sck),
+      : RadioLibHal(GPIO_MODE_INPUT, GPIO_MODE_OUTPUT, 0, 1,
+                    GPIO_INTR_POSEDGE, GPIO_INTR_NEGEDGE), spiSCK(sck),
         spiMISO(miso), spiMOSI(mosi), spiHost(host), spiClockHz(clockHz),
         spiDevice(nullptr), busInitialized(false), deviceAdded(false),
         halInitialized(false), tonePrevFreq(-1) {}
@@ -93,7 +82,7 @@ public:
 
     gpio_config_t conf = {
         .pin_bit_mask = (1ULL << pin),
-        .mode = (mode == OUTPUT) ? GPIO_MODE_OUTPUT : GPIO_MODE_INPUT,
+        .mode = (mode == GPIO_MODE_OUTPUT) ? GPIO_MODE_OUTPUT : GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_DISABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
         .intr_type = GPIO_INTR_DISABLE,
