@@ -177,6 +177,10 @@ public:
     }
   }
 
+  // Yield to other FreeRTOS tasks so long RadioLib polling loops do not
+  // starve the IDLE task and trip the task watchdog on default ESP-IDF config.
+  void yield() override { taskYIELD(); }
+
   // Tone generation using the LEDC peripheral (lazily initialised on first use)
   void tone(uint32_t pin, unsigned int frequency,
             RadioLibTime_t duration = 0) override {
