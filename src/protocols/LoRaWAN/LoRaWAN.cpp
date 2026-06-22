@@ -1567,7 +1567,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
     // yield for multi-threaded platforms
     mod->hal->yield();
 
-    if(mod->hal->millis() > txEnd + this->scanGuard) {
+    if(mod->hal->millis() > txEnd + toa) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
@@ -1600,39 +1600,41 @@ static void LoRaWANNodeOnDownlinkAction(void) {
 }
 
 int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference) {
-  Module* mod = this->phyLayer->getMod();
-
-  int16_t state = RADIOLIB_ERR_UNKNOWN;
-
-  // either both must be set or none
-  if((dlDelay == 0 && tReference > 0) || (dlDelay > 0 && tReference == 0)) {
+  // Class A windows must be timed
+  if(dlDelay == 0 || tReference == 0) {
     return(RADIOLIB_ERR_NO_RX_WINDOW);
   }
 
-  const uint8_t currentDr = dlChannel->dr;
-  const ModemType_t modem = this->band->dataRates[currentDr].modem;
-  const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
-  const PacketConfig_t* pc = &this->band->dataRates[currentDr].pc;
-  RadioLibTime_t toaMinUs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 0);
-
-  // get the maximum allowed Time-on-Air of a packet given the current datarate
-  uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
-  
-  RadioLibTime_t toaMaxMs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, maxPayLen + 13) / 1000;
-
   // set the physical layer configuration for downlink
-  state = this->setPhyProperties(dlChannel, dir, this->txPowerMax - 2*this->txPowerSteps);
+  int16_t state = this->setPhyProperties(dlChannel, dir, this->txPowerMax - 2*this->txPowerSteps);
   RADIOLIB_ASSERT(state);
-
-  // calculate the timeout of an empty packet plus scanGuard
-  RadioLibTime_t timeoutUs = toaMinUs + this->scanGuard*1000;
+  
+  // get the maximum allowed Time-on-Air of a packet given the current datarate
+  uint8_t currentDr = dlChannel->dr;
+  uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
+  RadioLibTime_t toaMaxUs = this->phyLayer->getTimeOnAir(maxPayLen + 13);
 
   // set the radio Rx parameters
   RadioModeConfig_t modeCfg;
   modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
   modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
   modeCfg.receive.len = 0;
-  modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(timeoutUs);
+  modeCfg.receive.syncSymbols = 0;
+  modeCfg.receive.timeout = 0;
+  
+  // for LoRa, use at least 6 symbols and at least 16ms
+  ModemType_t modem = this->band->dataRates[currentDr].modem;
+  if(this->band->dataRates[currentDr].modem == RADIOLIB_MODEM_LORA) {
+    const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
+    uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000) / dr->lora.bandwidth;
+    if(6 * tSymbUs > (16 + this->scanGuard) * 1000) {
+      modeCfg.receive.syncSymbols = 6;
+    } else {
+      modeCfg.receive.syncSymbols = ((16 + this->scanGuard) * 1000) / tSymbUs + 1;
+    }
+    modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs * 1.1);
+  }
+  // for FSK, there is no timeout register, so we just use the 16ms software timeout
 
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
@@ -1641,38 +1643,53 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
   downlinkAction = false;
 
-  // if the Rx window must be awaited, do so
-  RadioLibTime_t tNow = mod->hal->millis();
-  if(dlDelay > 0 && tReference > 0) {
-    // calculate time at which the window should open
-    // - the launch of Rx window takes a few milliseconds, so shorten the waitLen a bit (launchDuration)
-    // - the Rx window is padded using scanGuard, so shorten the waitLen a bit (scanGuard / 2)
-    RadioLibTime_t tWindow = tReference + dlDelay - this->launchDuration - this->scanGuard / 2;
-    if(tNow > tWindow) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow - tWindow);
-      return(RADIOLIB_ERR_NO_RX_WINDOW);
-    }
-    this->sleepDelay(tWindow - tNow);
-  }
+  // calculate time at which the window should open
+  // - the launch of Rx window takes a few milliseconds, so compensate for that (launchDuration)
+  // - the Rx window is padded using scanGuard, so compensate for that (scanGuard / 2)
+  RadioLibTime_t tWindowOpen = tReference + dlDelay - this->launchDuration - this->scanGuard / 2;
 
+  Module* mod = this->phyLayer->getMod();
+  RadioLibTime_t tNow = mod->hal->millis();
+  if(tNow > tWindowOpen) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow - tWindowOpen);
+    return(RADIOLIB_ERR_NO_RX_WINDOW);
+  }
+  
+  // wait until the Rx window must open minus launchDuration
+  this->sleepDelay(tWindowOpen - tNow);
+  
+  // open Rx window by starting receive
+  state = this->phyLayer->launchMode();
+  
+  // get all window timings
+  tWindowOpen = mod->hal->millis(); // this should be exactly `launchDuration` later than the calculated value
+  
+  RADIOLIB_ASSERT(state);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (%lu ms)", window, this->scanGuard);
+  
+  // enable the LED if used
   if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
     mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelHigh);
   }
+  
+  // use a software window length of minimum 16ms (regardless of modulation) up to max time-on-air
+  RadioLibTime_t windowLength = RADIOLIB_MAX(16, toaMaxUs / 1000);
+  RadioLibTime_t tWindowClose = tWindowOpen + windowLength + this->scanGuard;
 
-  // open Rx window by starting receive with specified timeout
-  state = this->phyLayer->launchMode();
-  RadioLibTime_t tOpen = mod->hal->millis();
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (%lu + %lu ms)", window, timeoutUs / 1000UL, this->scanGuard);
-  
-  // sleep for the duration of the padded Rx window
-  this->sleepDelay(timeoutUs / 1000, false);
-  
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
-  // use a small additional delay in case the RxTimeout interrupt is slow to fire
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window closing", window);
-  while(!downlinkAction && mod->hal->millis() - tOpen <= timeoutUs / 1000 + this->scanGuard) {
+  // apply 2ms padding in case the RxTimeout interrupt is slow to fire
+  while(!downlinkAction && mod->hal->millis() <= tWindowClose + 2) {
     mod->hal->yield();
+  }
+
+  // get the actual window close timestamp
+  tWindowClose = mod->hal->millis();
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window closed", window);
+
+  this->phyLayer->clearPacketReceivedAction();
+  this->phyLayer->standby();
+  if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
   }
 
   // check IRQ bit for RxTimeout
@@ -1680,49 +1697,14 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
     return(timedOut);
   }
-
+  
   // if the IRQ bit for RxTimeout is set, put chip in standby and return
-  if(timedOut) {
-    this->phyLayer->clearPacketReceivedAction();
+  if(timedOut) {  
     this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
-    this->phyLayer->standby();
-    if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
-      mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
-    }
     return(0);  // no downlink
   }
-  
-  // if the IRQ bit for RxTimeout is not set, something is being received, 
-  // so keep listening for maximum ToA waiting for the DIO to fire
-  while(!downlinkAction && mod->hal->millis() - tOpen < toaMaxMs + this->scanGuard) {
-    mod->hal->yield();
-  }
-  
-  // sometimes we can get to a state when reception is still ongoing, but has not finished yet
-  // this has been observed on LR2021 - wait until either timeout, or Rx done is raised
-  // it should never take more than 300 ms
-  RadioLibTime_t start = mod->hal->millis();
-  while(!this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT) && !this->phyLayer->checkIrq(RADIOLIB_IRQ_RX_DONE)) {
-    mod->hal->yield();
-    if(mod->hal->millis() - start >= 300) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Timeout without IRQ!");
-      break;
-    }
-  }
 
-  // update time of downlink reception
-  if(downlinkAction) {
-    this->tDownlink = mod->hal->millis();
-  }
-
-  // we have a message, clear actions, go to standby
-  this->phyLayer->clearPacketReceivedAction();
-  this->phyLayer->standby();
-  if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
-    mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
-  }
-
-  // if all windows passed without receiving anything, return 0 for no window
+  // if we didn't get an IRQ, return 0 for no downlink
   if(!downlinkAction) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink missing!");
     return(0);
@@ -1735,6 +1717,16 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
     return(0);  // act as if no downlink was received
   }
+  
+  // update time of downlink reception
+  this->tDownlink = tWindowClose;
+#if RADIOLIB_DEBUG_PROTOCOL
+  RadioLibTime_t packetToaMs = this->phyLayer->getTimeOnAir(this->phyLayer->getPacketLength()) / 1000;
+  RadioLibTime_t tHeaderStart = this->tDownlink - packetToaMs;
+  int diff = tHeaderStart - tWindowOpen;
+  RadioLibTime_t diffAbs = RADIOLIB_ABS(diff);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx window timing: %dms %s", diffAbs, diff < 0 ? "late" : "early");
+#endif
 
   // return downlink window number (1/2)
   return(window);
@@ -1767,16 +1759,11 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   
   // configure radio
   RadioModeConfig_t modeCfg;
-  if(timeout) {
-    timeout -= (mod->hal->millis() - tStart);
-    timeout -= this->launchDuration;
-    modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(timeout * 1000);
-  } else {
-    modeCfg.receive.timeout = 0xFFFFFFFF; // max(uint32_t) is used for RxContinuous
-  }
   modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
   modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
   modeCfg.receive.len = 0;
+  modeCfg.receive.timeout = 0xFFFFFFFF;   // max(uint32_t) is used for RxContinuous
+  modeCfg.receive.syncSymbols = 0;        // disable preamble timeout for RxContinuous
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
 
