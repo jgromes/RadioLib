@@ -1674,7 +1674,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   }
   
   // use a software window length of minimum 16ms (regardless of modulation) up to max time-on-air
-  RadioLibTime_t windowLength = RADIOLIB_MAX(16, toaMaxUs / 1000);
+  // add an 11% padding to the maximum time on air to give some slack for the interrupt
+  RadioLibTime_t windowLength = RADIOLIB_MAX(16, toaMaxUs / 900);
   RadioLibTime_t tWindowClose = tWindowOpen + windowLength + this->scanGuard;
 
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
@@ -1765,6 +1766,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   modeCfg.receive.len = 0;
   modeCfg.receive.timeout = 0xFFFFFFFF;   // max(uint32_t) is used for RxContinuous
   modeCfg.receive.syncSymbols = 0;        // disable preamble timeout for RxContinuous
+
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
 
