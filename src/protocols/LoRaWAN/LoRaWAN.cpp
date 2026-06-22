@@ -1650,8 +1650,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 
   Module* mod = this->phyLayer->getMod();
   RadioLibTime_t tNow = mod->hal->millis();
-  if(tNow > tWindowOpen) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow - tWindowOpen);
+  if(tNow + this->launchDuration > tWindowOpen) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow + this->launchDuration - tWindowOpen);
     return(RADIOLIB_ERR_NO_RX_WINDOW);
   }
   
@@ -1665,7 +1665,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   tWindowOpen = mod->hal->millis(); // this should be exactly `launchDuration` later than the calculated value
   
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols and %lu units + %dms)", 
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols / %lu ticks + %dms)", 
                                   window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, this->scanGuard);
   
   // enable the LED if used
@@ -1734,7 +1734,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   return(window);
 }
 
-int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
+int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
   // check if Multicast using Class C is active
   if(this->getMulticastClass() == RADIOLIB_LORAWAN_CLASS_C) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Multicast RxC window");
@@ -1747,8 +1747,6 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   }
 
   Module* mod = this->phyLayer->getMod();
-  
-  RadioLibTime_t tStart = mod->hal->millis();
 
   // set the physical layer configuration for Class C window
   int16_t state = this->setPhyProperties(&this->channels[RADIOLIB_LORAWAN_RX_BC], RADIOLIB_LORAWAN_DOWNLINK, 
@@ -1778,55 +1776,47 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   state = this->phyLayer->launchMode();
   RadioLibTime_t tOpen = mod->hal->millis();
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opened RxC window");
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window open");
 
-  if(timeout) {
+  if(tWindowEnd) {
     // wait for the DIO interrupt to fire (RxDone or RxTimeout)
-    while(!downlinkAction && mod->hal->millis() - tOpen <= timeout) {
+    while(!downlinkAction && mod->hal->millis() < tWindowEnd) {
       mod->hal->yield();
     }
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closed RxC window");
+    RadioLibTime_t tClose = mod->hal->millis();
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window closed");
 
-    // check IRQ bit for RxTimeout
-    int16_t timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
-    if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
-      return(timedOut);
-    }
-
-    // if the IRQ bit for RxTimeout is set, put chip in standby and return
-    if(timedOut) {
-      this->phyLayer->clearPacketReceivedAction();
-      this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
-      this->phyLayer->standby();
-      if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
-        mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
-      }
-      return(0);  // no downlink
-    }
-
-    // update time of downlink reception
-    if(downlinkAction) {
-      this->tDownlink = mod->hal->millis();
-    }
-
-    // we have a message, clear actions, go to standby
     this->phyLayer->clearPacketReceivedAction();
     this->phyLayer->standby();
     if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
       mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
     }
 
+    // check IRQ bit for RxTimeout
+    int16_t timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
+    if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
+      return(timedOut);
+    }
+    
+    // if the IRQ bit for RxTimeout is set, put chip in standby and return
+    if(timedOut) {
+      this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
+      return(0);  // no downlink
+    }
+    
     // if all windows passed without receiving anything, return 0 for no window
     if(!downlinkAction) {
       return(0);
     }
     downlinkAction = false;
 
+    // update time of downlink reception
+    this->tDownlink = tClose;
+
     // Any frame received by an end-device containing a MACPayload greater than 
     // the specified maximum length M over the data rate used to receive the frame 
     // SHALL be silently discarded.
     uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_RX_BC].dr];
-
     if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
       return(0);  // act as if no downlink was received
     }
@@ -1842,9 +1832,9 @@ int16_t LoRaWANNode::receiveDownlink() {
   Module* mod = this->phyLayer->getMod();
 
   // if applicable, open Class C between uplink and Rx1
-  RadioLibTime_t timeoutClassC = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
-                                  mod->hal->millis() - 5*this->scanGuard;
-  int16_t state = this->receiveClassC(timeoutClassC);
+  RadioLibTime_t tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
+                                  5*this->launchDuration - this->scanGuard / 2;
+  int16_t state = this->receiveClassC(tWindowClose);
   RADIOLIB_ASSERT(state);
 
   // open Rx1 window
@@ -1861,9 +1851,9 @@ int16_t LoRaWANNode::receiveDownlink() {
   // we choose to ignore this part of the spec and open Rx2 as specified in v1.0.4
 
   // for LoRaWAN v1.0.4 Class C, there is an RxC window between Rx1 and Rx2
-  timeoutClassC = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
-                                  mod->hal->millis() - 5*this->scanGuard;
-  state = this->receiveClassC(timeoutClassC);
+  tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
+                                  5*this->launchDuration - this->scanGuard / 2;
+  state = this->receiveClassC(tWindowClose);
   RADIOLIB_ASSERT(state);
 
   // open Rx2 window

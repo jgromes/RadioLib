@@ -1203,7 +1203,7 @@ class LoRaWANNode {
     int16_t receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference);
 
     // handle a Class C receive window with timeout (between Class A windows) or without (between uplinks)
-    int16_t receiveClassC(RadioLibTime_t timeout = 0);
+    int16_t receiveClassC(RadioLibTime_t tWindowEnd = 0);
 
     // open a series of Class A (and C) downlinks
     virtual int16_t receiveDownlink();
