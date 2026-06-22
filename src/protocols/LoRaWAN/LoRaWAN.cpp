@@ -1665,7 +1665,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   tWindowOpen = mod->hal->millis(); // this should be exactly `launchDuration` later than the calculated value
   
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (%lu ms)", window, this->scanGuard);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols and %lu units + %dms)", 
+                                  window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, this->scanGuard);
   
   // enable the LED if used
   if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
