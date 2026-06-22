@@ -563,8 +563,10 @@ int16_t LR11x0::setTxInfinitePreamble(void) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_TX_INFINITE_PREAMBLE, true, NULL, 0));
 }
 
-int16_t LR11x0::setLoRaSynchTimeout(uint8_t symbolNum) {
-  uint8_t buff[1] = { symbolNum };
+// this implementation is not documented in the datasheet, but taken from SWL2001
+// https://github.com/Lora-net/SWL2001/blob/a8ddc544043e72807cf7db532478e1dda734ae7c/lbm_lib/smtc_modem_core/radio_drivers/lr11xx_driver/src/lr11xx_radio.c#L95
+int16_t LR11x0::setLoRaSynchTimeout(uint8_t symbolNum, bool format) {
+  uint8_t buff[2] = { symbolNum, (uint8_t)format };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_LORA_SYNCH_TIMEOUT, true, buff, sizeof(buff)));
 }
 

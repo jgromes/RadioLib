@@ -529,6 +529,7 @@ int16_t LR2021::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   RadioModeConfig_t cfg = {
     .receive = {
       .timeout = RADIOLIB_LR2021_RX_TIMEOUT_INF,
+      .syncSymbols = 0,
       .irqFlags = irqFlags,
       .irqMask = irqMask,
       .len = 0,
@@ -991,9 +992,27 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
       // restore maximum allowed received packet length (may have been changed by previous Tx)
       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
-        state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-          (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, 
+        state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType,
+          (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH,
           this->crcTypeLoRa, this->invertIQEnabled);
+        RADIOLIB_ASSERT(state);
+
+        // set the LoRa sync (symbol-number) timeout
+        bool mantissa = false;
+        uint8_t numSymbols = 0;
+        if(cfg->receive.syncSymbols < 0xFF) {
+          numSymbols = cfg->receive.syncSymbols;
+        } else {
+          uint16_t mant = cfg->receive.syncSymbols >> 1;
+          uint8_t exp = 0;
+          while(mant > 31) {
+            mant = (mant + 3) >> 2;
+            exp++;
+          }
+          mantissa = true;
+          numSymbols = (mant << 3) + exp;
+        }
+        state = setLoRaSynchTimeout(numSymbols, mantissa);
 
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
         state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType,
