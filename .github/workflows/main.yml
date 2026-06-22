@@ -243,10 +243,14 @@ jobs:
 
   esp-build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [esp32, esp32s3, esp32c3]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -261,16 +265,17 @@ jobs:
           cd esp-idf
           git checkout v5.4.3
           git submodule update --init --recursive
-      
+
       - name: Install ESP-IDF
         run: |
           cd ~/esp/esp-idf
-          ./install.sh esp32
-      
-      - name: Build the example
+          ./install.sh ${{ matrix.target }}
+
+      - name: Build the example for ${{ matrix.target }}
         run: |
           cd $PWD/examples/NonArduino/ESP-IDF
           . ~/esp/esp-idf/export.sh
+          idf.py set-target ${{ matrix.target }}
           idf.py build
           ../../../extras/test/ci/version.sh build/esp-sx1261.bin
 
