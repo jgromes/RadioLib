@@ -25,26 +25,7 @@ EspHal::EspHal(int8_t sck, int8_t miso, int8_t mosi,
 
 EspHal::~EspHal() { term(); }
 
-void EspHal::init() {
-  if (!halInitialized) {
-    spiBegin();
-    // Install the application-wide GPIO ISR service once.
-    // Loosely accept duplicate installations (ESP_ERR_INVALID_STATE)
-    esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
-    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-      ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
-               esp_err_to_name(ret));
-    }
-    halInitialized = true;
-  }
-}
-
-void EspHal::term() {
-  if (halInitialized) {
-    spiEnd();
-    halInitialized = false;
-  }
-}
+// implementations of pure virtual RadioLibHal methods
 
 void EspHal::pinMode(uint32_t pin, uint32_t mode) {
   if (pin == RADIOLIB_NC) {
@@ -131,71 +112,6 @@ long EspHal::pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) {
   }
 
   return micros() - pulseStart;
-}
-
-void EspHal::pullUpDown(uint32_t pin, bool enable, bool up) {
-  if (pin == RADIOLIB_NC) {
-    return;
-  }
-
-  if (enable) {
-    gpio_set_pull_mode((gpio_num_t)pin,
-                       up ? GPIO_PULLUP_ONLY : GPIO_PULLDOWN_ONLY);
-  } else {
-    gpio_set_pull_mode((gpio_num_t)pin, GPIO_FLOATING);
-  }
-}
-
-void EspHal::yield() { taskYIELD(); }
-
-void EspHal::tone(uint32_t pin, unsigned int frequency,
-                  RadioLibTime_t duration) {
-  if (pin == RADIOLIB_NC) {
-    return;
-  }
-  (void)duration;
-
-  // Configure the LEDC timer + channel only once
-  if (tonePrevFreq == -1) {
-    ledc_timer_config_t timer_config = {};
-    timer_config.speed_mode = LEDC_LOW_SPEED_MODE;
-    timer_config.duty_resolution = LEDC_TIMER_10_BIT;
-    timer_config.timer_num = LEDC_TIMER_0;
-    timer_config.freq_hz = (frequency > 0) ? frequency : 1000;
-    timer_config.clk_cfg = LEDC_AUTO_CLK;
-    ledc_timer_config(&timer_config);
-
-    ledc_channel_config_t channel_config = {};
-    channel_config.gpio_num = (int)pin;
-    channel_config.speed_mode = LEDC_LOW_SPEED_MODE;
-    channel_config.channel = (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL;
-    channel_config.timer_sel = LEDC_TIMER_0;
-    channel_config.duty = 512; // 50% duty at 10-bit resolution
-    channel_config.hpoint = 0;
-    ledc_channel_config(&channel_config);
-  }
-
-  // Update the frequency only when it actually changes
-  if ((int32_t)frequency != tonePrevFreq) {
-    ledc_set_freq(LEDC_LOW_SPEED_MODE, LEDC_TIMER_0, frequency);
-    ledc_set_duty(LEDC_LOW_SPEED_MODE,
-                  (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL, 512);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE,
-                     (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL);
-    tonePrevFreq = (int32_t)frequency;
-  }
-}
-
-void EspHal::noTone(uint32_t pin) {
-  if (pin == RADIOLIB_NC) {
-    return;
-  }
-  if (tonePrevFreq == -1) {
-    return; // never started
-  }
-  ledc_stop(LEDC_LOW_SPEED_MODE,
-            (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL, 0);
-  tonePrevFreq = -1;
 }
 
 void EspHal::spiBegin() {
@@ -315,6 +231,94 @@ void EspHal::spiEnd() {
     spi_bus_free(spiHost);
     busInitialized = false;
     ESP_LOGD("EspHal", "SPI bus freed");
+  }
+}
+
+// implementations of virtual RadioLibHal methods
+
+void EspHal::init() {
+  if (!halInitialized) {
+    spiBegin();
+    // Install the application-wide GPIO ISR service once.
+    // Loosely accept duplicate installations (ESP_ERR_INVALID_STATE)
+    esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
+    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+      ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
+               esp_err_to_name(ret));
+    }
+    halInitialized = true;
+  }
+}
+
+void EspHal::term() {
+  if (halInitialized) {
+    spiEnd();
+    halInitialized = false;
+  }
+}
+
+void EspHal::tone(uint32_t pin, unsigned int frequency,
+                  RadioLibTime_t duration) {
+  if (pin == RADIOLIB_NC) {
+    return;
+  }
+  (void)duration;
+
+  // Configure the LEDC timer + channel only once
+  if (tonePrevFreq == -1) {
+    ledc_timer_config_t timer_config = {};
+    timer_config.speed_mode = LEDC_LOW_SPEED_MODE;
+    timer_config.duty_resolution = LEDC_TIMER_10_BIT;
+    timer_config.timer_num = LEDC_TIMER_0;
+    timer_config.freq_hz = (frequency > 0) ? frequency : 1000;
+    timer_config.clk_cfg = LEDC_AUTO_CLK;
+    ledc_timer_config(&timer_config);
+
+    ledc_channel_config_t channel_config = {};
+    channel_config.gpio_num = (int)pin;
+    channel_config.speed_mode = LEDC_LOW_SPEED_MODE;
+    channel_config.channel = (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL;
+    channel_config.timer_sel = LEDC_TIMER_0;
+    channel_config.duty = 512; // 50% duty at 10-bit resolution
+    channel_config.hpoint = 0;
+    ledc_channel_config(&channel_config);
+  }
+
+  // Update the frequency only when it actually changes
+  if ((int32_t)frequency != tonePrevFreq) {
+    ledc_set_freq(LEDC_LOW_SPEED_MODE, LEDC_TIMER_0, frequency);
+    ledc_set_duty(LEDC_LOW_SPEED_MODE,
+                  (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL, 512);
+    ledc_update_duty(LEDC_LOW_SPEED_MODE,
+                     (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL);
+    tonePrevFreq = (int32_t)frequency;
+  }
+}
+
+void EspHal::noTone(uint32_t pin) {
+  if (pin == RADIOLIB_NC) {
+    return;
+  }
+  if (tonePrevFreq == -1) {
+    return; // never started
+  }
+  ledc_stop(LEDC_LOW_SPEED_MODE,
+            (ledc_channel_t)RADIOLIB_TONE_ESP32_CHANNEL, 0);
+  tonePrevFreq = -1;
+}
+
+void EspHal::yield() { taskYIELD(); }
+
+void EspHal::pullUpDown(uint32_t pin, bool enable, bool up) {
+  if (pin == RADIOLIB_NC) {
+    return;
+  }
+
+  if (enable) {
+    gpio_set_pull_mode((gpio_num_t)pin,
+                       up ? GPIO_PULLUP_ONLY : GPIO_PULLDOWN_ONLY);
+  } else {
+    gpio_set_pull_mode((gpio_num_t)pin, GPIO_FLOATING);
   }
 }
 

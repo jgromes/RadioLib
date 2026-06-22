@@ -39,42 +39,32 @@ public:
 
   virtual ~EspHal();
 
-  void init() override;
-  void term() override;
-
-  // GPIO operations
+  // implementations of pure virtual RadioLibHal methods
   void pinMode(uint32_t pin, uint32_t mode) override;
   void digitalWrite(uint32_t pin, uint32_t value) override;
   uint32_t digitalRead(uint32_t pin) override;
   void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void),
                        uint32_t mode) override;
   void detachInterrupt(uint32_t interruptNum) override;
-
-  // Timing functions
   void delay(unsigned long ms) override;
   void delayMicroseconds(unsigned long us) override;
   unsigned long millis() override;
   unsigned long micros() override;
   long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override;
-
-  // GPIO pull-up/pull-down configuration
-  void pullUpDown(uint32_t pin, bool enable, bool up) override;
-
-  // Yield to other FreeRTOS tasks so long RadioLib polling loops do not
-  // starve the IDLE task and trip the task watchdog on default ESP-IDF config.
-  void yield() override;
-
-  // Tone generation using the LEDC peripheral (lazily initialised on first use)
-  void tone(uint32_t pin, unsigned int frequency,
-            RadioLibTime_t duration = 0) override;
-  void noTone(uint32_t pin) override;
-
-  // SPI operations using spi_master driver
   void spiBegin();
   void spiBeginTransaction();
   void spiTransfer(uint8_t *out, size_t len, uint8_t *in);
   void spiEndTransaction();
   void spiEnd();
+
+  // implementations of virtual RadioLibHal methods
+  void init() override;
+  void term() override;
+  void tone(uint32_t pin, unsigned int frequency,
+            RadioLibTime_t duration = 0) override;
+  void noTone(uint32_t pin) override;
+  void yield() override;
+  void pullUpDown(uint32_t pin, bool enable, bool up) override;
 
 private:
   int8_t spiSCK;
