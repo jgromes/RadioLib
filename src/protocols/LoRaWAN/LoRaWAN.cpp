@@ -1708,7 +1708,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 
   // if we didn't get an IRQ, return 0 for no downlink
   if(!downlinkAction) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink missing!");
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No downlink!");
     return(0);
   }
   downlinkAction = false;
@@ -3445,10 +3445,10 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       syncWordLen = 3;
       RADIOLIB_DEBUG_PROTOCOL_PRINT("[FSK] BR = ");
       RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->fsk.bitRate, 1);
-      RADIOLIB_DEBUG_PROTOCOL_PRINT(", FD = ");
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG(", FD = ");
       RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->fsk.freqDev, 1);
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" kHz");
-                                      
+
     } break;
 
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
