@@ -973,7 +973,7 @@ class LR11x0: public LRxxxx {
   private:
 #endif
     // version info, to avoid calling methods that are not implemented by specific FW versions
-    LR11x0VersionInfo_t versionInfo = { 0 };
+    uint8_t versionDevice = 0;
     uint16_t versionCombined = 0;
 
     uint8_t wifiScanMode = 0;

@@ -326,7 +326,7 @@ int16_t LR11x0::enableSpiCrc(bool en) {
 }
 
 int16_t LR11x0::driveDiosInSleepMode(bool en) {
-  if((this->versionInfo.device == RADIOLIB_LR11X0_DEVICE_LR1110) && 
+  if((this->versionDevice == RADIOLIB_LR11X0_DEVICE_LR1110) && 
      (this->versionCombined < 0x0306)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("driveDiosInSleepMode was not implemented in LR1110 < 0306, skipping\n");
     return(RADIOLIB_ERR_NONE);
