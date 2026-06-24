@@ -220,7 +220,7 @@ void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
     uint8_t pull = dioNum == 0 ? RADIOLIB_LR2021_DIO_SLEEP_PULL_UP : RADIOLIB_LR2021_DIO_SLEEP_PULL_AUTO;
     // enable RF control for this pin and set the modes in which it is active
     (void)this->setDioFunction(dioNum + 5, RADIOLIB_LR2021_DIO_FUNCTION_RF_SWITCH, pull);
-    (void)this->setDioRfSwitchConfig(dioNum + 5, dioConfigs[i]);
+    (void)this->setDioRfSwitchConfig(dioNum + 5, dioConfigs[dioNum]);
   }
 }
 
