@@ -23,7 +23,7 @@ EspHal::EspHal(int8_t sck, int8_t miso, int8_t mosi,
       spiClockHz(clockHz), spiDevice(nullptr), busInitialized(false),
       deviceAdded(false), halInitialized(false), tonePrevFreq(-1) {}
 
-EspHal::~EspHal() { term(); }
+EspHal::~EspHal() { EspHal::term(); }
 
 // implementations of pure virtual RadioLibHal methods
 
