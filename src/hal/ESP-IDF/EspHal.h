@@ -9,10 +9,9 @@
 #include "RadioLib.h"
 #include "driver/spi_master.h"
 
-// These are left undefined by the generic build; define them for the ESP-IDF HAL
-#if !defined(RADIOLIB_ESP32)
-#define RADIOLIB_ESP32
-#endif
+// RADIOLIB_ESP32 is now set by BuildOpt.h for ESP_PLATFORM builds.
+// RADIOLIB_TONE_ESP32_CHANNEL stays here because LEDC_CHANNEL_0 is only
+// visible via driver/ledc.h, which BuildOpt.h does not pull in.
 #if !defined(RADIOLIB_TONE_ESP32_CHANNEL)
 #define RADIOLIB_TONE_ESP32_CHANNEL (LEDC_CHANNEL_0)
 #endif

@@ -232,7 +232,7 @@
   // ESP8266 boards
   #define RADIOLIB_PLATFORM                           "ESP8266"
 
-#elif defined(ESP32) || defined(ARDUINO_ARCH_ESP32) || defined(ESP_PLATFORM)
+#elif defined(ESP32) || defined(ARDUINO_ARCH_ESP32)
   #define RADIOLIB_ESP32
 
   // ESP32 boards
@@ -477,6 +477,27 @@
 
   #undef RADIOLIB_DEBUG_PORT
   #define RADIOLIB_DEBUG_PORT                         stdout
+
+  #define DEC 10
+  #define HEX 16
+  #define OCT 8
+  #define BIN 2
+
+  #include <stdint.h>
+
+#elif defined(ESP_PLATFORM)
+  // ESP-IDF (non-Arduino) build
+  #define RADIOLIB_PLATFORM                           "ESP-IDF"
+  #define RADIOLIB_ESP32
+
+  // ESP32 doesn't support tone(), but it can be emulated via LED control peripheral
+  #define RADIOLIB_TONE_UNSUPPORTED
+
+  #define RADIOLIB_NC                                 (0xFFFFFFFF)
+  #define RADIOLIB_NONVOLATILE
+  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        (*(reinterpret_cast<uint8_t *>(reinterpret_cast<void *>(addr))))
+  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       (*(reinterpret_cast<uint32_t *>(reinterpret_cast<void *>(addr))))
+  #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
 
   #define DEC 10
   #define HEX 16
