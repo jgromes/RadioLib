@@ -13,6 +13,9 @@
 #include "LR11x0_registers.h"
 #include "LR11x0_types.h"
 
+// latest firmware versions, in the order LR1110, LR1120, LR1121
+#define RADIOLIB_LR11X0_FIRMWARE_LATEST   { 0x0402, 0x0202, 0x0104 }
+
 // LR11X0 physical layer properties
 #define RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE                     1.0
 #define RADIOLIB_LR11X0_MAX_PACKET_LENGTH                       255
@@ -969,6 +972,10 @@ class LR11x0: public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
+    // version info, to avoid calling methods that are not implemented by specific FW versions
+    uint8_t versionDevice = 0;
+    uint16_t versionCombined = 0;
+
     uint8_t wifiScanMode = 0;
     bool gnss = false;
     int16_t modSetup(uint8_t modem);

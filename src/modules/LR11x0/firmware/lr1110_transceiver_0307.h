@@ -70,7 +70,7 @@
 /*!
  * \brief Array containing the firmware image
  */
-const uint32_t lr11xx_firmware_image[LR11XX_FIRMWARE_IMAGE_SIZE] = {
+const uint32_t lr11xx_firmware_image[LR11XX_FIRMWARE_IMAGE_SIZE] RADIOLIB_LR1110_FIRMWARE_ATTR = {
     0xc4fa791c, 0x7210409f, 0xbf601c2a, 0xb786ae60, 0x6b48ca19, 0x2682a714, 0x02603cb6, 0x18147bc5, 0x1fb8ad43,
     0xcc7aff2b, 0xf5710ccb, 0x68bef368, 0xd3b5223d, 0x8fc2bd69, 0xcceb7a85, 0xa9ec8afd, 0x6665784f, 0xb173117c,
     0x8ca11cb2, 0x81706a1c, 0x78f98c6b, 0xd93674f3, 0x66627f55, 0x1d4164f7, 0xf69c0446, 0x55d03f02, 0x73f64248,
