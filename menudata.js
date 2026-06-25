@@ -110,4 +110,5 @@ var menudata={children:[
 {text:"l",url:"globals.html#index_l"},
 {text:"r",url:"globals.html#index_r"}]},
 {text:"Variables",url:"globals_vars.html"},
-{text:"Macros",url:"globals_defs.html"}]}]}]}
+{text:"Macros",url:"globals_defs.html",children:[
+{text:"l",url:"globals_defs.html#index_l"}]}]}]}]}
