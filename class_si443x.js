@@ -2,7 +2,6 @@ var class_si443x =
 [
     [ "Si443x", "class_si443x.html#ae7cfff2efebfa01c8a50a5cbbe8775b9", null ],
     [ "begin", "class_si443x.html#a453eda5436dc4dfe0dad676dc3977752", null ],
-    [ "clearIrqAction", "class_si443x.html#a8d019f58551346c3f3bd8b72d2486109", null ],
     [ "clearIrqFlags", "class_si443x.html#a1cf4a145680562c66474267cbcf5c630", null ],
     [ "clearPacketReceivedAction", "class_si443x.html#ae8e1a9a70407d80d660496baa560c5ca", null ],
     [ "clearPacketSentAction", "class_si443x.html#a4fdc84341b1ec602f89ad00c7ca20f26", null ],
@@ -27,7 +26,6 @@ var class_si443x =
     [ "setDirectAction", "class_si443x.html#a48a59ff1ddc7c8ec820328174955de43", null ],
     [ "setEncoding", "class_si443x.html#a1382fc3b68f447e381613e6670747128", null ],
     [ "setFrequencyDeviation", "class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66", null ],
-    [ "setIrqAction", "class_si443x.html#a801b51059e61f93d4e01ae6ba8eb0726", null ],
     [ "setPacketReceivedAction", "class_si443x.html#a0e098ea9aa3945f0c38f59efe43b147e", null ],
     [ "setPacketSentAction", "class_si443x.html#af2d36121ca94736ef3ecb4c09aded753", null ],
     [ "setPreambleLength", "class_si443x.html#a6f8a1d33d222ed7d56772d9f1c5afa64", null ],

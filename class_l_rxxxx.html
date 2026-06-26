@@ -119,13 +119,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad653a5cb836ffde04ef55973d153484f" id="r_ad653a5cb836ffde04ef55973d153484f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_rxxxx.html#ad653a5cb836ffde04ef55973d153484f">reset</a> ()</td></tr>
 <tr class="memdesc:ad653a5cb836ffde04ef55973d153484f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin.  <br /></td></tr>
 <tr class="separator:ad653a5cb836ffde04ef55973d153484f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa52838eb97f91110fb381cddc8e7d03a" id="r_aa52838eb97f91110fb381cddc8e7d03a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_rxxxx.html#aa52838eb97f91110fb381cddc8e7d03a">setIrqAction</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:aa52838eb97f91110fb381cddc8e7d03a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when IRQ1 activates.  <br /></td></tr>
-<tr class="separator:aa52838eb97f91110fb381cddc8e7d03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2ae3c67468c0e0bfd970f12c7867330" id="r_ac2ae3c67468c0e0bfd970f12c7867330"><td class="memItemLeft" align="right" valign="top"><a id="ac2ae3c67468c0e0bfd970f12c7867330" name="ac2ae3c67468c0e0bfd970f12c7867330"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()</td></tr>
-<tr class="memdesc:ac2ae3c67468c0e0bfd970f12c7867330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when IRQ1 activates. <br /></td></tr>
-<tr class="separator:ac2ae3c67468c0e0bfd970f12c7867330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51974c95b458ec80c73d2c4a62d83684" id="r_a51974c95b458ec80c73d2c4a62d83684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_rxxxx.html#a51974c95b458ec80c73d2c4a62d83684">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:a51974c95b458ec80c73d2c4a62d83684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
 <tr class="separator:a51974c95b458ec80c73d2c4a62d83684"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -316,6 +309,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memitem:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer" id="r_a4d5b30493c8d7fcfb784e128362d596c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">read</a> (bool drop=true)</td></tr>
 <tr class="memdesc:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <br /></td></tr>
 <tr class="separator:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31a4343a375a28f1da615435ba996adc inherit pub_methods_class_physical_layer" id="r_a31a4343a375a28f1da615435ba996adc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a31a4343a375a28f1da615435ba996adc">setIrqAction</a> (void(*func)(void), bool rising=true)</td></tr>
+<tr class="memdesc:a31a4343a375a28f1da615435ba996adc inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when IRQ is activated.  <br /></td></tr>
+<tr class="separator:a31a4343a375a28f1da615435ba996adc inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08b040dbdf28c2ec14c1cc7f05e2d541 inherit pub_methods_class_physical_layer" id="r_a08b040dbdf28c2ec14c1cc7f05e2d541"><td class="memItemLeft" align="right" valign="top">
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()</td></tr>
+<tr class="memdesc:a08b040dbdf28c2ec14c1cc7f05e2d541 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when IRQ is activated. <br /></td></tr>
+<tr class="separator:a08b040dbdf28c2ec14c1cc7f05e2d541 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11c191a7edf3116bf468b9153237260 inherit pub_methods_class_physical_layer" id="r_ae11c191a7edf3116bf468b9153237260"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">setChannelScanAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:ae11c191a7edf3116bf468b9153237260 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a channel scan is finished.  <br /></td></tr>
 <tr class="separator:ae11c191a7edf3116bf468b9153237260 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -549,32 +549,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 <p>Reset method. Will reset the chip to the default state using RST pin. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="aa52838eb97f91110fb381cddc8e7d03a" name="aa52838eb97f91110fb381cddc8e7d03a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa52838eb97f91110fb381cddc8e7d03a">&#9670;&#160;</a></span>setIrqAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LRxxxx::setIrqAction </td>
-          <td>(</td>
-          <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>func</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when IRQ1 activates. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
