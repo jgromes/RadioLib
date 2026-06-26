@@ -24,6 +24,16 @@ if(ESP_PLATFORM)
     REQUIRES esp_driver_gpio esp_driver_spi esp_driver_ledc esp_timer
   )
 
+  # EspHal::delay() uses vTaskDelay(pdMS_TO_TICKS(ms)); below 1 kHz tick rate
+  # small delays round to zero (delay(5) -> vTaskDelay(0)). arduino-esp32
+  # makes this a hard error; we warn so users can opt in to lower tick rates
+  # if they really know what they are doing.
+  if(DEFINED CONFIG_FREERTOS_HZ AND CONFIG_FREERTOS_HZ LESS 1000)
+    message(WARNING
+      "RadioLib EspHal: CONFIG_FREERTOS_HZ is ${CONFIG_FREERTOS_HZ}; "
+      "set it to 1000 for accurate delay() resolution.")
+  endif()
+
   return()
 endif()
 
