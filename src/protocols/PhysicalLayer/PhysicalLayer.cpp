@@ -522,6 +522,17 @@ void PhysicalLayer::readBit(uint32_t pin) {
 
 #endif
 
+void PhysicalLayer::setIrqAction(void (*func)(void), bool rising) {
+  Module* mod = getMod();
+  mod->hal->attachInterrupt(mod->hal->pinToInterrupt(mod->getIrq()), func, 
+    rising ? mod->hal->GpioInterruptRising : mod->hal->GpioInterruptFalling);
+}
+
+void PhysicalLayer::clearIrqAction() {
+  Module* mod = getMod();
+  mod->hal->detachInterrupt(mod->hal->pinToInterrupt(mod->getIrq()));
+}
+
 void PhysicalLayer::setPacketReceivedAction(void (*func)(void)) {
   (void)func;
 }

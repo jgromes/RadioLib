@@ -167,16 +167,8 @@ int16_t nRF24::receiveDirect() {
   return(RADIOLIB_ERR_NONE);
 }
 
-void nRF24::setIrqAction(void (*func)(void)) {
-  this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptFalling);
-}
-
-void nRF24::clearIrqAction() {
-  this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
-}
-
 void nRF24::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func);
+  this->setIrqAction(func, false);
 }
 
 void nRF24::clearPacketReceivedAction() {
@@ -184,7 +176,7 @@ void nRF24::clearPacketReceivedAction() {
 }
 
 void nRF24::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func);
+  this->setIrqAction(func, false);
 }
 
 void nRF24::clearPacketSentAction() {

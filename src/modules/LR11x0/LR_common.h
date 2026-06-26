@@ -98,17 +98,6 @@ class LRxxxx: public PhysicalLayer {
     */
     int16_t reset();
 
-        /*!
-      \brief Sets interrupt service routine to call when IRQ1 activates.
-      \param func ISR to call.
-    */
-    void setIrqAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when IRQ1 activates.
-    */
-    void clearIrqAction();
-
     /*!
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.

@@ -210,16 +210,8 @@ int16_t Si443x::packetMode() {
   return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_MODULATION_MODE_CONTROL_2, RADIOLIB_SI443X_TX_DATA_SOURCE_FIFO, 5, 4));
 }
 
-void Si443x::setIrqAction(void (*func)(void)) {
-  this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptFalling);
-}
-
-void Si443x::clearIrqAction() {
-  this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
-}
-
 void Si443x::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func);
+  this->setIrqAction(func, false);
 }
 
 void Si443x::clearPacketReceivedAction() {
@@ -227,7 +219,7 @@ void Si443x::clearPacketReceivedAction() {
 }
 
 void Si443x::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func);
+  this->setIrqAction(func, false);
 }
 
 void Si443x::clearPacketSentAction() {
