@@ -15,6 +15,17 @@
 #include "sdkconfig.h"
 #include <cinttypes> // For PRIu32
 
+// EspHal::delay() uses vTaskDelay(pdMS_TO_TICKS(ms)) for the bulk of the
+// wait, so its resolution is the FreeRTOS tick. At the IDF default of
+// CONFIG_FREERTOS_HZ=100 the tick is 10 ms, which makes timing-sensitive
+// radio operations like LoRaWAN RX1/RX2 windows unreliable. Refuse to
+// build unless the user opts out explicitly via RADIOLIB_RELAX_RTOS_TICK.
+#if defined(CONFIG_FREERTOS_HZ) && (CONFIG_FREERTOS_HZ < 1000)
+  #if !defined(RADIOLIB_RELAX_RTOS_TICK) || (RADIOLIB_RELAX_RTOS_TICK != 1)
+    #error "RadioLib EspHal: CONFIG_FREERTOS_HZ is below 1000; set it to 1000 in sdkconfig for accurate delay() resolution, or define RADIOLIB_RELAX_RTOS_TICK=1 to bypass this check."
+  #endif
+#endif
+
 EspHal::EspHal(int8_t sck, int8_t miso, int8_t mosi,
                spi_host_device_t host, uint32_t clockHz)
     : RadioLibHal(GPIO_MODE_INPUT, GPIO_MODE_OUTPUT, 0, 1,
