@@ -36,6 +36,7 @@ void setup() {
   Serial.println(F("Initialise the radio"));
   ConfigLoRa_t config;
   config.frequency = 868; // The frequency here does not matter, as it will get changed by LoRaWAN anyway
+  //radio.tcxoVoltage = 1.6; // Some radio modules like SX126x often come with TCXO
   int state = radio.begin(config);
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
 

@@ -21,16 +21,22 @@
   #include "firmware/lr1110_transceiver_0307.h"
 #elif defined(RADIOLIB_LR1110_FIRMWARE_0401)
   #include "firmware/lr1110_transceiver_0401.h"
+#elif defined(RADIOLIB_LR1110_FIRMWARE_0402)
+  #include "firmware/lr1110_transceiver_0402.h"
 #elif defined(RADIOLIB_LR1120_FIRMWARE_0101)
   #include "firmware/lr1120_transceiver_0101.h"
 #elif defined(RADIOLIB_LR1120_FIRMWARE_0102)
   #include "firmware/lr1120_transceiver_0102.h"
 #elif defined(RADIOLIB_LR1120_FIRMWARE_0201)
   #include "firmware/lr1120_transceiver_0201.h"
+#elif defined(RADIOLIB_LR1120_FIRMWARE_0202)
+  #include "firmware/lr1120_transceiver_0202.h"
 #elif defined(RADIOLIB_LR1121_FIRMWARE_0102)
   #include "firmware/lr1121_transceiver_0102.h"
 #elif defined(RADIOLIB_LR1121_FIRMWARE_0103)
   #include "firmware/lr1121_transceiver_0103.h"
+#elif defined(RADIOLIB_LR1121_FIRMWARE_0104)
+  #include "firmware/lr1121_transceiver_0104.h"
 #else
   #error "No LR11x0 firmware image selected!"
 #endif

@@ -75,6 +75,11 @@ void setFlag(void) {
 void setup() {
   Serial.begin(9600);
 
+  // before calling begin(), correct crystal has to be selected
+  // some LR11x0 have a TCXO which needs 1.6V reference
+  // set to 0 if your radio has an XTAL
+  radio.tcxoVoltage = 1.6;
+
   // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
   ConfigLoRa_t config;

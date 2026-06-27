@@ -55,6 +55,11 @@ void setFlag(void) {
 void setup() {
   Serial.begin(9600);
 
+  // before calling begin(), correct crystal has to be selected
+  // some LR2021 have a TCXO which needs 1.6V reference
+  // set to 0 if your radio has an XTAL
+  radio.tcxoVoltage = 1.6;
+
   // LR2021 allows to use any DIO pin as the interrupt
   // as an example, we set DIO10 to be the IRQ
   // this has to be done prior to calling begin()!

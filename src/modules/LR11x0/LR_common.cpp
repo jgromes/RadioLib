@@ -11,14 +11,6 @@ LRxxxx::LRxxxx(Module* mod) : PhysicalLayer() {
   this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
 }
 
-void LRxxxx::setIrqAction(void (*func)(void)) {
-  this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptRising);
-}
-
-void LRxxxx::clearIrqAction() {
-  this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
-}
-
 void LRxxxx::setPacketReceivedAction(void (*func)(void)) {
   this->setIrqAction(func);
 }

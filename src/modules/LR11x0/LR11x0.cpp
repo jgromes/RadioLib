@@ -1685,35 +1685,48 @@ int16_t LR11x0::modSetup(uint8_t modem) {
 bool LR11x0::findChip(uint8_t ver) {
   uint8_t i = 0;
   bool flagFound = false;
+  LR11x0VersionInfo_t versionInfo;
   while((i < 10) && !flagFound) {
     // reset the module
     reset();
 
     // read the version
-    LR11x0VersionInfo_t info;
-    int16_t state = getVersionInfo(&info);
+    int16_t state = getVersionInfo(&versionInfo);
     RADIOLIB_ASSERT(state);
 
-    if((info.device == ver) || (info.device == RADIOLIB_LR11X0_DEVICE_BOOT)) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", info.device);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)info.fwMajor, (int)info.fwMinor);
+    if((versionInfo.device == ver) || (versionInfo.device == RADIOLIB_LR11X0_DEVICE_BOOT)) {
+      this->versionDevice = versionInfo.device;
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", versionInfo.device);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)versionInfo.fwMajor, (int)versionInfo.fwMinor);
       if(this->chipType != RADIOLIB_LR11X0_DEVICE_LR1121) {
-        RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)info.fwMajorWiFi, (int)info.fwMinorWiFi);
-        RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)info.fwGNSS, (int)info.almanacGNSS);
+        RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)versionInfo.fwMajorWiFi, (int)versionInfo.fwMinorWiFi);
+        RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)versionInfo.fwGNSS, (int)versionInfo.almanacGNSS);
       }
-      if(info.device == RADIOLIB_LR11X0_DEVICE_BOOT) {
+      if(versionInfo.device == RADIOLIB_LR11X0_DEVICE_BOOT) {
         RADIOLIB_DEBUG_BASIC_PRINTLN("Warning: device is in bootloader mode! Only FW update is possible now.");
       }
       flagFound = true;
     } else {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, info.device);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, versionInfo.device);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Expected: 0x%02x", ver);
       this->mod->hal->delay(10);
       i++;
     }
   }
-  
 
+  // check the firmware is up-to-date
+  if(flagFound && (this->versionDevice != RADIOLIB_LR11X0_DEVICE_BOOT)) {
+    this->versionCombined = (uint16_t)versionInfo.fwMajor << 8 | (uint16_t)versionInfo.fwMinor;
+    const uint16_t latestVersions[] = RADIOLIB_LR11X0_FIRMWARE_LATEST;
+    const uint16_t latest = latestVersions[(versionInfo.device - 1) & 0x03];
+    if(this->versionCombined < latest) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Detected outdated LR11x0 firmware (%04x < %04x)", this->versionCombined, latest);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("It is strongly recommended to update the firmware to version %04x!", latest);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Outdated firmware may be missing some features and have security vulnerabilities");
+      RADIOLIB_DEBUG_BASIC_PRINTLN("See RadioLib/examples/LR11x0/LR11x0_Firmware_Update for details");
+    }
+  }
+  
   return(flagFound);
 }
 
@@ -1753,10 +1766,13 @@ int16_t LR11x0::config(uint8_t modem) {
 
   // enable driving DIOs in sleep mode
   // this prevents IRQ going high when the device goes to sleep
-  // especially when using Rx duty cycle, this woukld make it look like received packets
+  // especially when using Rx duty cycle, this would make it look like received packets
   // there seems to be no measurable impact on power consumption in sleep mode
-  state = this->driveDiosInSleepMode(true);
-  RADIOLIB_ASSERT(state);
+  // also, LR1110 firmware before 0306 did not have this command
+  if(!((this->versionDevice == RADIOLIB_LR11X0_DEVICE_LR1110) && (this->versionCombined < 0x0306))) {
+    state = this->driveDiosInSleepMode(true);
+    RADIOLIB_ASSERT(state);
+  }
 
   // set modem
   state = this->setPacketType(modem);

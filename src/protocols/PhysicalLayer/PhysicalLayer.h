@@ -887,6 +887,18 @@ class PhysicalLayer {
     #endif
 
     /*!
+      \brief Sets interrupt service routine to call when IRQ is activated.
+      \param func ISR to call.
+      \param rising Whether to activate on rising (true) or falling (false) edge, defaults to rising.
+    */
+    virtual void setIrqAction(void (*func)(void), bool rising = true);
+
+    /*!
+      \brief Clears interrupt service routine to call when IRQ is activated.
+    */
+    virtual void clearIrqAction();
+
+    /*!
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */

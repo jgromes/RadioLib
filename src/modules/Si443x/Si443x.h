@@ -646,17 +646,6 @@ class Si443x: public PhysicalLayer {
     // interrupt methods
 
     /*!
-      \brief Sets interrupt service routine to call when IRQ activates.
-      \param func ISR to call.
-    */
-    void setIrqAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when IRQ activates.
-    */
-    void clearIrqAction();
-
-    /*!
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */

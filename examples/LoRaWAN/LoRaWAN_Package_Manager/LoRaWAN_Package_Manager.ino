@@ -43,6 +43,7 @@ void setup() {
   // Initialize radio and LoRaWAN node (omitted error handling)
   ConfigLoRa_t config;
   config.frequency = 868; // The frequency here does not matter, as it will get changed by LoRaWAN anyway
+  //radio.tcxoVoltage = 1.6; // Some radio modules like SX126x often come with TCXO
   radio.begin(config);
   node.beginOTAA(joinEUI, devEUI, NULL, appKey);  // LoRaWAN v1.0.4 - no NwkKey
 

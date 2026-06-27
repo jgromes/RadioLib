@@ -67,6 +67,11 @@ LR11x0GnssAlmanacStatus_t almStatus;
 void setup() {
   Serial.begin(9600);
 
+  // before calling begin(), correct crystal has to be selected
+  // some LR11x0 have a TCXO which needs 1.6V reference
+  // set to 0 if your radio has an XTAL
+  radio.tcxoVoltage = 1.6;
+
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));
   int state = radio.beginGNSS(RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS);
