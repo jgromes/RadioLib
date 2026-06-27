@@ -4,9 +4,9 @@ This example shows how to use RadioLib as ESP-IDF component, without the Arduino
 
 ## FreeRTOS tick rate
 
-The ESP-IDF HAL implements `delay(ms)` as `vTaskDelay(pdMS_TO_TICKS(ms))`, so its resolution is the FreeRTOS tick. ESP-IDF defaults `CONFIG_FREERTOS_HZ` to `100` (10 ms per tick), which rounds small delays down — e.g. `delay(5)` becomes `vTaskDelay(0)` and does not wait at all.
+The ESP-IDF HAL's `delay()` resolution depends on the FreeRTOS tick rate. The HAL refuses to build unless `CONFIG_FREERTOS_HZ=1000` so that radio timings — e.g. LoRaWAN RX1/RX2 windows that fire 1-2 ms after a transmit — are accurate. This example sets it via `sdkconfig.defaults`; do the same in any project that uses the HAL.
 
-The Arduino ESP32 core works around this by forcing `CONFIG_FREERTOS_HZ=1000` (see the [arduino-esp32 CMakeLists.txt](https://github.com/espressif/arduino-esp32/blob/master/CMakeLists.txt)). This example does the same via `sdkconfig.defaults`. If you copy the HAL into your own ESP-IDF project, set `CONFIG_FREERTOS_HZ=1000` in your `sdkconfig` to get accurate 1 ms-resolution delays.
+If you need to keep a lower tick rate, build with `-DRADIOLIB_RELAX_RTOS_TICK=1` to bypass the check. `delay()` will still be correct in that mode — it sleeps for the bulk of the wait and busy-waits the sub-tick remainder with `esp_rom_delay_us()` — but the busy-wait portion can be up to one tick period (10 ms at the IDF default of 100 Hz), which wastes CPU and power.
 
 ## Structure of the example
 
