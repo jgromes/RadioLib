@@ -74,7 +74,27 @@ void EspHal::detachInterrupt(uint32_t interruptNum) {
   gpio_isr_handler_remove((gpio_num_t)interruptNum);
 }
 
-void EspHal::delay(unsigned long ms) { vTaskDelay(pdMS_TO_TICKS(ms)); }
+void EspHal::delay(unsigned long ms) {
+  if (ms == 0) {
+    return;
+  }
+
+  // Hybrid sleep + busy-wait so the call is accurate even when
+  // CONFIG_FREERTOS_HZ < 1000. Sleep all-but-one tick under the
+  // scheduler, then busy-wait the remainder with microsecond precision.
+  // Worst-case busy-wait is one tick period (10 ms at the IDF default).
+  const uint64_t target_us = (uint64_t)esp_timer_get_time() + (uint64_t)ms * 1000ULL;
+
+  const TickType_t ticks = pdMS_TO_TICKS(ms);
+  if (ticks > 1) {
+    vTaskDelay(ticks - 1);
+  }
+
+  int64_t remaining_us = (int64_t)target_us - esp_timer_get_time();
+  if (remaining_us > 0) {
+    esp_rom_delay_us((uint32_t)remaining_us);
+  }
+}
 
 void EspHal::delayMicroseconds(unsigned long us) { esp_rom_delay_us(us); }
 
