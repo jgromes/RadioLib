@@ -13,9 +13,15 @@ if(ESP_PLATFORM)
   # required because ESP-IDF runs cmake in script mode
   # and needs idf_component_register()
 
+  # the ESP-IDF HAL was excluded from RADIOLIB_SOURCES by the filter above;
+  # pass it directly to idf_component_register so RADIOLIB_SOURCES stays
+  # HAL-free, the same way other build environments handle it
+  file(GLOB RADIOLIB_ESP_IDF_HAL_SOURCES "src/hal/ESP-IDF/*.cpp")
+
   idf_component_register(
-    SRCS ${RADIOLIB_SOURCES}
-    INCLUDE_DIRS . src 
+    SRCS ${RADIOLIB_SOURCES} ${RADIOLIB_ESP_IDF_HAL_SOURCES}
+    INCLUDE_DIRS . src
+    REQUIRES esp_driver_gpio esp_driver_spi esp_driver_ledc esp_timer
   )
 
   return()
