@@ -69,33 +69,33 @@ class LR11x0: public LRxxxx {
     /*!
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, set this value to 0.
+      To use XTAL, set this value to RadioLibTCXOVoltage_t::VoltageNone.
       \ingroup module_config_vars
     */
-    float tcxoVoltage = 1.6;
+    RadioLibTCXOVoltage_t tcxoVoltage = Voltage1V6;
     
     /*!
       \brief Initialization method for LoRa modem.
-      \param bw LoRa bandwidth in kHz.
+      \param bw LoRa bandwidth in Hz.
       \param sf LoRa spreading factor.
       \param cr LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
       is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
-      \param high defaults to false for Sub-GHz band, true for frequencies above 1GHz
+      \param high defaults to false for Sub-GHz band, true for frequencies above 1 GHz
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high = false);
+    int16_t begin(uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high = false);
 
     /*!
       \brief Initialization method for FSK modem.
-      \param br FSK bit rate in kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz.
-      \param rxBw Receiver bandwidth in kHz.
+      \param br FSK bit rate in bps.
+      \param freqDev Frequency deviation from carrier frequency in Hz.
+      \param rxBw Receiver bandwidth in Hz.
       \param preambleLength FSK preamble length in bits.
       \returns \ref status_codes
     */
-    int16_t beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength);
+    int16_t beginGFSK(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for LR-FHSS modem.
@@ -291,11 +291,11 @@ class LR11x0: public LRxxxx {
 
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz. (default, high = false)
-      \param bw LoRa bandwidth to be set in kHz.
+      \param bw LoRa bandwidth to be set in Hz.
       \param high if set to true, allowed bandwidth is 203.125, 406.25 and 812.5 kHz, frequency must be above 1GHz
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw, bool high = false);
+    int16_t setBandwidth(uint32_t bw, bool high = false);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
@@ -324,26 +324,27 @@ class LR11x0: public LRxxxx {
     int16_t setSyncWord(uint8_t syncWord);
 
     /*!
-      \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
-      \param br FSK bit rate to be set in kbps.
+      \brief Sets GFSK bit rate. Allowed values range from 600 bps to 300 kbps.
+      \param br FSK bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) /*override*/;
 
     /*!
-      \brief Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
-      \param freqDev GFSK frequency deviation to be set in kHz.
+      \brief Sets GFSK frequency deviation. Allowed values range from 0 to 200 kHz.
+      \param freqDev GFSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
 
     /*!
       \brief Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
       23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
-      \param rxBw GFSK receiver bandwidth to be set in kHz.
+      \param rxBw GFSK receiver bandwidth to be set in Hz. In case the provided value is not an exact match
+      with the supported values, the closest match will be selected.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
     
     /*!
       \brief Sets GFSK sync word in the form of array of up to 8 bytes.
@@ -440,13 +441,14 @@ class LR11x0: public LRxxxx {
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
-      \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
-      Set to 0 to disable TCXO.
-      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
+      \param voltage TCXO reference voltage, one of RadioLibTCXOVoltage_t values.
+      Set to RadioLibTCXOVoltage_t::VoltageNone to disable TCXO.
+      NOTE: After setting this parameter to RadioLibTCXOVoltage_t::VoltageNone,
+      the module will be reset (since there's no other way to disable TCXO).
       \param delay TCXO timeout in us. Defaults to 5000 us.
       \returns \ref status_codes
     */
-    int16_t setTCXO(float voltage, uint32_t delay = 5000);
+    int16_t setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay = 5000);
 
     /*!
       \brief Sets CRC configuration.

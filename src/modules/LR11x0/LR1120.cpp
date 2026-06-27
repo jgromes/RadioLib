@@ -9,28 +9,15 @@ LR1120::LR1120(Module* mod) : LR11x0(mod) {
 
 int16_t LR1120::begin(const ConfigLoRa_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::begin(cfg.bandwidth, cfg.spreadingFactor, cfg.codingRate, cfg.syncWord, cfg.preambleLength, (cfg.frequency > 1000.0f));
+  int16_t state = LR11x0::begin(cfg.bandwidth*1000.0f, cfg.spreadingFactor, cfg.codingRate, cfg.syncWord, cfg.preambleLength, (cfg.frequency > 1000.0f));
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(cfg.frequency);
+  state = setFrequency(cfg.frequency*1000000.0f);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);
   return(state);
-}
-
-int16_t LR1120::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(begin(cfg));
 }
 
 int16_t LR1120::beginGFSK(const ConfigFSK_t& cfg) {
@@ -39,23 +26,11 @@ int16_t LR1120::beginGFSK(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(cfg.frequency);
+  state = setFrequency(cfg.frequency*1000000.0f);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);
   return(state);
-}
-
-int16_t LR1120::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginGFSK(cfg));
 }
 
 int16_t LR1120::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
@@ -64,49 +39,38 @@ int16_t LR1120::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(cfg.frequency);
+  state = setFrequency(cfg.frequency*1000000.0f);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);
   return(state);
 }
 
-int16_t LR1120::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-  ConfigLRFHSS_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.codingRate = cr;
-  cfg.narrowGrid = narrowGrid;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginLRFHSS(cfg));
-}
-
-int16_t LR1120::setFrequency(float freq) {
+int16_t LR1120::setFrequency(uint32_t freq) {
   return(this->setFrequency(freq, false));
 }
 
-int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
+int16_t LR1120::setFrequency(uint32_t freq, bool skipCalibration, uint32_t band) {
   #if RADIOLIB_CHECK_PARAMS
-  if(!(((freq >= 150.0f) && (freq <= 960.0f)) ||
-    ((freq >= 1900.0f) && (freq <= 2200.0f)) ||
-    ((freq >= 2400.0f) && (freq <= 2500.0f)))) {
+  if(!(((freq >= RADIOLIB_UNIT_MEGA(150)) && (freq <= RADIOLIB_UNIT_MEGA(960))) ||
+    ((freq >= RADIOLIB_UNIT_MEGA(1900)) && (freq <= RADIOLIB_UNIT_MEGA(2200))) ||
+    ((freq >= RADIOLIB_UNIT_MEGA(2400)) && (freq <= RADIOLIB_UNIT_MEGA(2500))))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
   #endif
 
   // check if we need to recalibrate image
   int16_t state;
-  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ)) {
+  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_UNIT_MEGA(RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ))) {
     state = LR11x0::calibrateImageRejection(freq - band, freq + band);
     RADIOLIB_ASSERT(state);
   }
 
   // set frequency
-  state = LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f));
+  state = LR11x0::setRfFrequency(freq);
   RADIOLIB_ASSERT(state);
-  this->freqMHz = freq;
-  this->highFreq = (freq > 1000.0f);
+  this->freqHz = freq;
+  this->highFreq = (freq > RADIOLIB_UNIT_MEGA(1000));
 
   // apply workaround for GFSK
   return(workaroundGFSK());
@@ -174,13 +138,16 @@ int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPo
 int16_t LR1120::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginGFSK());
+      ConfigFSK_t cfg;
+      return(this->beginGFSK(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
-      return(this->beginLRFHSS());
+      ConfigLRFHSS_t cfg;
+      return(this->beginLRFHSS(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

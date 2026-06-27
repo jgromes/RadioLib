@@ -147,6 +147,7 @@ class LRxxxx: public PhysicalLayer {
     Module* mod;
     
     float freqMHz = 0;
+    uint32_t freqHz = 0;
     uint32_t rxTimeout = 0;
     uint32_t tcxoDelay = 0;
 

@@ -21,7 +21,7 @@ LR11x0::LR11x0(Module* mod) : LRxxxx(mod) {
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR11X0_IRQ_TIMEOUT;
 }
 
-int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high) {
+int16_t LR11x0::begin(uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
@@ -55,7 +55,7 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength) {
+int16_t LR11x0::beginGFSK(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
@@ -560,7 +560,7 @@ int16_t LR11x0::getChannelScanResult() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
-int16_t LR11x0::setBandwidth(float bw, bool high) {
+int16_t LR11x0::setBandwidth(uint32_t bw, bool high) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -569,35 +569,34 @@ int16_t LR11x0::setBandwidth(float bw, bool high) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  // ensure byte conversion doesn't overflow
-  if (high) {
-    RADIOLIB_CHECK_RANGE(bw, 203.125f, 815.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
-
-    if(fabsf(bw - 203.125f) <= 0.001f) {
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
-    } else if(fabsf(bw - 406.25f) <= 0.001f) {
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
-    } else if(fabsf(bw - 812.5f) <= 0.001f) {
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
-    } else {
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  // check allowed bandwidth values
+  if(high) {
+    switch(bw) {
+      case(203125):
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
+        break;
+      case(406250):
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
+        break;
+      case(812500):
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
+        break;
+      default:
+        return(RADIOLIB_ERR_INVALID_BANDWIDTH);
     }
-  } else {
-    RADIOLIB_CHECK_RANGE(bw, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     
-    // check allowed bandwidth values
-    uint8_t bw_div2 = bw / 2 + 0.01f;
-    switch (bw_div2)  {
-      case 31: // 62.5:
+  } else {
+    switch(bw)  {
+      case(62500):
         this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
         break;
-      case 62: // 125.0:
+      case(RADIOLIB_UNIT_KILO(125)):
         this->bandwidth = RADIOLIB_LR11X0_LORA_BW_125_0;
         break;
-      case 125: // 250.0
+      case(RADIOLIB_UNIT_KILO(250)):
         this->bandwidth = RADIOLIB_LR11X0_LORA_BW_250_0;
         break;
-      case 250: // 500.0
+      case(RADIOLIB_UNIT_KILO(500)):
         this->bandwidth = RADIOLIB_LR11X0_LORA_BW_500_0;
         break;
       default:
@@ -681,8 +680,8 @@ int16_t LR11x0::setSyncWord(uint8_t syncWord) {
   return(setLoRaSyncWord(syncWord));
 }
 
-int16_t LR11x0::setBitRate(float br) {
-  RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+int16_t LR11x0::setBitRate(uint32_t br) {
+  RADIOLIB_CHECK_RANGE(br, 600, RADIOLIB_UNIT_KILO(300), RADIOLIB_ERR_INVALID_BIT_RATE);
 
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -694,7 +693,7 @@ int16_t LR11x0::setBitRate(float br) {
 
   // set bit rate value
   // TODO implement fractional bit rate configuration
-  this->bitRate = br * 1000.0f;
+  this->bitRate = br;
   state = setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
   RADIOLIB_ASSERT(state);
 
@@ -702,7 +701,7 @@ int16_t LR11x0::setBitRate(float br) {
   return(workaroundGFSK());
 }
 
-int16_t LR11x0::setFrequencyDeviation(float freqDev) {
+int16_t LR11x0::setFrequencyDeviation(uint32_t freqDev) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -712,13 +711,10 @@ int16_t LR11x0::setFrequencyDeviation(float freqDev) {
   }
 
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev;
-  if(freqDev < 0.0f) {
-    newFreqDev = 0.6f;
-  }
+  float newFreqDev = freqDev ? freqDev : 600;
 
-  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
-  this->frequencyDev = newFreqDev * 1000.0f;
+  RADIOLIB_CHECK_RANGE(newFreqDev, 600, RADIOLIB_UNIT_KILO(200), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  this->frequencyDev = newFreqDev;
   state = setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev);
   RADIOLIB_ASSERT(state);
 
@@ -726,7 +722,7 @@ int16_t LR11x0::setFrequencyDeviation(float freqDev) {
   return(workaroundGFSK());
 }
 
-int16_t LR11x0::setRxBandwidth(float rxBw) {
+int16_t LR11x0::setRxBandwidth(uint32_t rxBw) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -764,7 +760,7 @@ int16_t LR11x0::setRxBandwidth(float rxBw) {
     RADIOLIB_LR11X0_GFSK_RX_BW_467_0,
   };
 
-  state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 467.0f, &this->rxBandwidth);
+  state = findRxBw((float)rxBw/1000.0f, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 467.0f, &this->rxBandwidth);
   RADIOLIB_ASSERT(state);
 
   // update modulation parameters
@@ -1044,7 +1040,7 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
+int16_t LR11x0::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
   // set mode to standby
   standby();
 
@@ -1056,31 +1052,14 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
     clearErrors();
   }
 
-  // check 0 V disable
-  if(fabsf(voltage - 0.0f) <= 0.001f) {
+  // check disable
+  if(voltage == RadioLibTCXOVoltage_t::VoltageNone) {
     setTcxoMode(0, 0);
     return(reset());
   }
 
   // check allowed voltage values
-  uint8_t tune = 0;
-  if(fabsf(voltage - 1.6f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_6;
-  } else if(fabsf(voltage - 1.7f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_7;
-  } else if(fabsf(voltage - 1.8f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_1_8;
-  } else if(fabsf(voltage - 2.2f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_2;
-  } else if(fabsf(voltage - 2.4f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_4;
-  } else if(fabsf(voltage - 2.7f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_2_7;
-  } else if(fabsf(voltage - 3.0f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_0;
-  } else if(fabsf(voltage - 3.3f) <= 0.001f) {
-    tune = RADIOLIB_LRXXXX_TCXO_VOLTAGE_3_3;
-  } else {
+  if(voltage > RadioLibTCXOVoltage_t::Voltage3V3) {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
   }
 
@@ -1092,7 +1071,7 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   }
  
   // enable TCXO control
-  return(setTcxoMode(tune, delayValue));
+  return(setTcxoMode((uint8_t)voltage, delayValue));
 }
 
 int16_t LR11x0::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool inverted) {
@@ -1673,7 +1652,7 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(this->tcxoVoltage > 0.0f) {
+  if(this->tcxoVoltage != RadioLibTCXOVoltage_t::VoltageNone) {
     state = setTCXO(this->tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
