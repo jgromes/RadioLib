@@ -760,7 +760,7 @@ int16_t LR11x0::setRxBandwidth(uint32_t rxBw) {
     RADIOLIB_LR11X0_GFSK_RX_BW_467_0,
   };
 
-  state = findRxBw((float)rxBw/1000.0f, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 467.0f, &this->rxBandwidth);
+  state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(467), &this->rxBandwidth);
   RADIOLIB_ASSERT(state);
 
   // update modulation parameters
