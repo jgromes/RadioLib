@@ -870,7 +870,7 @@ class LoRaWANNode {
       \brief Set the persistent buffer for a certain package.
       NOTE: Do NOT use, for Packages only!
     */
-    void setPersistencePackage(uint8_t pIndex, uint8_t* buff);
+    void setPersistencePackage(uint8_t pIndex, const uint8_t* buff);
 
     /*!
       \brief Set the exact time a transmission should occur. Note: this is the internal clock time.

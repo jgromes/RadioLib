@@ -1624,7 +1624,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   
   // for LoRa, use at least 6 symbols and at least 16ms
   ModemType_t modem = this->band->dataRates[currentDr].modem;
-  if(this->band->dataRates[currentDr].modem == RADIOLIB_MODEM_LORA) {
+  if(modem == RADIOLIB_MODEM_LORA) {
     const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
     uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000) / dr->lora.bandwidth;
     if(6 * tSymbUs > (16 + this->scanGuard) * 1000) {
@@ -1774,7 +1774,6 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
 
   // open RxC window by starting receive with specified timeout
   state = this->phyLayer->launchMode();
-  RadioLibTime_t tOpen = mod->hal->millis();
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window open");
 
@@ -1829,8 +1828,6 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
 }
 
 int16_t LoRaWANNode::receiveDownlink() {
-  Module* mod = this->phyLayer->getMod();
-
   // if applicable, open Class C between uplink and Rx1
   RadioLibTime_t tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
                                   5*this->launchDuration - this->scanGuard / 2;
@@ -3318,10 +3315,10 @@ void LoRaWANNode::setActivityLeds(const uint32_t pins[4]) {
 void LoRaWANNode::getPersistencePackage(uint8_t pIndex, uint8_t* buff) {
   switch(pIndex) {
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS004): {
-      memcpy(buff, &this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS004], 8);
+      memcpy(buff, &this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS004], 8);
     } break;
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS009): {
-      memcpy(buff, &this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS009], 1);
+      memcpy(buff, &this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS009], 1);
     } break;
     default: {
       // just ignore
@@ -3329,13 +3326,13 @@ void LoRaWANNode::getPersistencePackage(uint8_t pIndex, uint8_t* buff) {
   }
 }
 
-void LoRaWANNode::setPersistencePackage(uint8_t pIndex, uint8_t* buff) {
+void LoRaWANNode::setPersistencePackage(uint8_t pIndex, const uint8_t* buff) {
   switch(pIndex) {
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS004): {
-      memcpy(&this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS004], buff, 8);
+      memcpy(&this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS004], buff, 8);
     } break;
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS009): {
-      memcpy(&this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS009], buff, 1);
+      memcpy(&this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS009], buff, 1);
     } break;
     default: {
       // just ignore
