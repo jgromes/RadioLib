@@ -1,8 +1,6 @@
 #include "MockPhysicalLayer.hpp"
 
-#include <string.h>
-
-extern "C" int FuzzLoRaWANDownlink(const uint8_t* data, size_t size) {
+extern "C" int FuzzLoRaWAN(const uint8_t* data, size_t size) {
   if(size < 10) { return(0); }
 
   // initialize default software AES-128
@@ -33,44 +31,6 @@ extern "C" int FuzzLoRaWANDownlink(const uint8_t* data, size_t size) {
   uint8_t outBuffer[256] = {0};
   LoRaWANEvent_t event;
   node.parseDownlink(outBuffer, &outLen, RADIOLIB_LORAWAN_RX1, &event);
-
-  return(0);
-}
-
-static FuzzPhysicalLayer phy;
-static void FuzzLoRaWANPersistCallback(uint8_t* buf, size_t len) {
-  memcpy(buf, phy.currentPacketData, len);
-}
-
-extern "C" int FuzzLoRaWANPersistBuffer(const uint8_t* data, size_t size) {
-  if(size < RADIOLIB_LORAWAN_SESSION_BUF_SIZE) { return(0); }
-
-  // initialize default software AES-128
-  FuzzHal hal;
-  static RadioLibSoftwareAES128 RadioLibAES128Instance;
-  hal.aes128 = &RadioLibAES128Instance;
-
-  // create a FuzzPhysicalLayer with a mock module
-  Module mod(&hal, 1, 2, 3, 4);
-  phy.mod = &mod;
-
-  // pass the input from the fuzzer
-  phy.currentPacketLength = size;
-  phy.currentPacketData = data;
-
-  // set some default AES keys
-  uint8_t defaultKey[16] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
-
-  // instantiate EU868 band (or any other band)
-  LoRaWANNode node(&phy, &EU868);
-
-  // set persistent buffer callbacks and try to "load" a buffer
-  node.setCallbackRestorePersistence(FuzzLoRaWANPersistCallback);
-  node.setCallbackRestoreSession(FuzzLoRaWANPersistCallback);
-  node.loadBuffers();
-
-  // configure node with keys and addresses
-  node.beginABP(0x12345678, defaultKey, defaultKey, defaultKey, defaultKey);
 
   return(0);
 }

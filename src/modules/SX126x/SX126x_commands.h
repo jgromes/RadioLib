@@ -302,9 +302,6 @@
 #define RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US                   11          //  7     0                          8.20 us
 #define RADIOLIB_SX126X_SCAN_INTERVAL_8_68_US                   12          //  7     0                          8.68 us
 
-//RADIOLIB_SX126X_CMD_SET_LORA_SYMB_NUM_TIMEOUT
-#define RADIOLIB_SX126X_MAX_LORA_SYMB_NUM_TIMEOUT               248         //  7     0   maximum supported LoRa symbol number timeout
-
 #endif
 
 #endif
