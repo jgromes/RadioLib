@@ -106,6 +106,10 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:aa03f9966637ddfe74fd6dc0f735c6b00" id="r_aa03f9966637ddfe74fd6dc0f735c6b00"><td class="memItemLeft" align="right" valign="top"><a id="aa03f9966637ddfe74fd6dc0f735c6b00" name="aa03f9966637ddfe74fd6dc0f735c6b00"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>BufferCb_t</b>) (uint8_t *buf, size_t len)</td></tr>
+<tr class="memdesc:aa03f9966637ddfe74fd6dc0f735c6b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback signature for buffer save/load operations. <br /></td></tr>
+<tr class="separator:aa03f9966637ddfe74fd6dc0f735c6b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aec67bd3fa7ec0f6e4bf6b86d971e9e" id="r_a3aec67bd3fa7ec0f6e4bf6b86d971e9e"><td class="memItemLeft" align="right" valign="top"><a id="a3aec67bd3fa7ec0f6e4bf6b86d971e9e" name="a3aec67bd3fa7ec0f6e4bf6b86d971e9e"></a>
 typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>SleepCb_t</b>) (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> ms)</td></tr>
 <tr class="memdesc:a3aec67bd3fa7ec0f6e4bf6b86d971e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback to a user-provided sleep function. <br /></td></tr>
@@ -116,22 +120,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae05de563f765f14fe267e4d65844f76" id="r_aae05de563f765f14fe267e4d65844f76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy, const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *band, uint8_t subBand=0)</td></tr>
 <tr class="memdesc:aae05de563f765f14fe267e4d65844f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:aae05de563f765f14fe267e4d65844f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84004883006b4a498d4899874952445b" id="r_a84004883006b4a498d4899874952445b"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">getBufferNonces</a> ()</td></tr>
-<tr class="memdesc:a84004883006b4a498d4899874952445b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the internal buffer that holds the LW base parameters.  <br /></td></tr>
-<tr class="separator:a84004883006b4a498d4899874952445b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad99e2fa4738648a6f3efe72ff785def2" id="r_ad99e2fa4738648a6f3efe72ff785def2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad99e2fa4738648a6f3efe72ff785def2">setBufferNonces</a> (const uint8_t *persistentBuffer)</td></tr>
-<tr class="memdesc:ad99e2fa4738648a6f3efe72ff785def2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW base parameters with a supplied buffer.  <br /></td></tr>
-<tr class="separator:ad99e2fa4738648a6f3efe72ff785def2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0feeaed200d8f94ad94c3ed49f404847" id="r_a0feeaed200d8f94ad94c3ed49f404847"><td class="memItemLeft" align="right" valign="top"><a id="a0feeaed200d8f94ad94c3ed49f404847" name="a0feeaed200d8f94ad94c3ed49f404847"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clearSession</b> ()</td></tr>
 <tr class="memdesc:a0feeaed200d8f94ad94c3ed49f404847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear an active session. This requires the device to rejoin the network. <br /></td></tr>
 <tr class="separator:a0feeaed200d8f94ad94c3ed49f404847"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90369a4f2c4da11527872a7bbbf9ab06" id="r_a90369a4f2c4da11527872a7bbbf9ab06"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06">getBufferSession</a> ()</td></tr>
-<tr class="memdesc:a90369a4f2c4da11527872a7bbbf9ab06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the internal buffer that holds the LW session parameters.  <br /></td></tr>
-<tr class="separator:a90369a4f2c4da11527872a7bbbf9ab06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedeb50c9ccb81e8092233d34e039cfa4" id="r_aedeb50c9ccb81e8092233d34e039cfa4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aedeb50c9ccb81e8092233d34e039cfa4">setBufferSession</a> (const uint8_t *persistentBuffer)</td></tr>
-<tr class="memdesc:aedeb50c9ccb81e8092233d34e039cfa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW session parameters with a supplied buffer.  <br /></td></tr>
-<tr class="separator:aedeb50c9ccb81e8092233d34e039cfa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30ce4e89272d0106181e671fbdec3aad" id="r_a30ce4e89272d0106181e671fbdec3aad"><td class="memItemLeft" align="right" valign="top"><a id="a30ce4e89272d0106181e671fbdec3aad" name="a30ce4e89272d0106181e671fbdec3aad"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackStorePersistence</b> (<a class="el" href="class_lo_ra_w_a_n_node.html#aa03f9966637ddfe74fd6dc0f735c6b00">BufferCb_t</a> cb)</td></tr>
+<tr class="memdesc:a30ce4e89272d0106181e671fbdec3aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback invoked by the library when the persistence buffer needs to be saved. The callback receives a pointer to the serialized buffer and its length; the user should write this data to non-volatile storage (flash, EEPROM, etc.). <br /></td></tr>
+<tr class="separator:a30ce4e89272d0106181e671fbdec3aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e35d68db55b5b1a48f32aed24e4b8e3" id="r_a1e35d68db55b5b1a48f32aed24e4b8e3"><td class="memItemLeft" align="right" valign="top"><a id="a1e35d68db55b5b1a48f32aed24e4b8e3" name="a1e35d68db55b5b1a48f32aed24e4b8e3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackRestorePersistence</b> (<a class="el" href="class_lo_ra_w_a_n_node.html#aa03f9966637ddfe74fd6dc0f735c6b00">BufferCb_t</a> cb)</td></tr>
+<tr class="memdesc:a1e35d68db55b5b1a48f32aed24e4b8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback invoked by the library when the persistence buffer needs to be loaded. The callback receives a pointer to the buffer and its length; the user should fill it with data previously saved by the savePersistenceBuffer callback. <br /></td></tr>
+<tr class="separator:a1e35d68db55b5b1a48f32aed24e4b8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1454121a03c82fdf2263cc9ad160c22" id="r_af1454121a03c82fdf2263cc9ad160c22"><td class="memItemLeft" align="right" valign="top"><a id="af1454121a03c82fdf2263cc9ad160c22" name="af1454121a03c82fdf2263cc9ad160c22"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackStoreSession</b> (<a class="el" href="class_lo_ra_w_a_n_node.html#aa03f9966637ddfe74fd6dc0f735c6b00">BufferCb_t</a> cb)</td></tr>
+<tr class="memdesc:af1454121a03c82fdf2263cc9ad160c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback invoked by the library when the session buffer needs to be saved. The callback receives a pointer to the serialized buffer and its length; the user should write this data to persistent RAM on platforms that do not retain normal RAM during sleep. <br /></td></tr>
+<tr class="separator:af1454121a03c82fdf2263cc9ad160c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdbca28868c9fc2e95735c5abdf7e50b" id="r_abdbca28868c9fc2e95735c5abdf7e50b"><td class="memItemLeft" align="right" valign="top"><a id="abdbca28868c9fc2e95735c5abdf7e50b" name="abdbca28868c9fc2e95735c5abdf7e50b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackRestoreSession</b> (<a class="el" href="class_lo_ra_w_a_n_node.html#aa03f9966637ddfe74fd6dc0f735c6b00">BufferCb_t</a> cb)</td></tr>
+<tr class="memdesc:abdbca28868c9fc2e95735c5abdf7e50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback invoked by the library when the session buffer needs to be loaded. The callback receives a pointer to the buffer and its length; the user should fill it with data previously saved by the savePersistenceBuffer callback. <br /></td></tr>
+<tr class="separator:abdbca28868c9fc2e95735c5abdf7e50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a501899c7233c3887537ec55b5f662dc9" id="r_a501899c7233c3887537ec55b5f662dc9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a501899c7233c3887537ec55b5f662dc9">loadBuffers</a> ()</td></tr>
+<tr class="memdesc:a501899c7233c3887537ec55b5f662dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger the registered buffer callbacks to restore persistence and session buffers.  <br /></td></tr>
+<tr class="separator:a501899c7233c3887537ec55b5f662dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2df20a240812f184786dda5ace171ef" id="r_ab2df20a240812f184786dda5ace171ef"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ab2df20a240812f184786dda5ace171ef">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, const uint8_t *nwkKey, const uint8_t *appKey)</td></tr>
 <tr class="memdesc:ab2df20a240812f184786dda5ace171ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <br /></td></tr>
 <tr class="separator:ab2df20a240812f184786dda5ace171ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,6 +223,14 @@ int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>setClass</b> (uint
 <tr class="memitem:aea3edcd00d47db9a49db00dadefbea7b" id="r_aea3edcd00d47db9a49db00dadefbea7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aea3edcd00d47db9a49db00dadefbea7b">setActivityLeds</a> (const uint32_t pins[4])</td></tr>
 <tr class="memdesc:aea3edcd00d47db9a49db00dadefbea7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pins for activity LEDs that will indicate when the radio is transmitting (Tx) or receiving (Rx).  <br /></td></tr>
 <tr class="separator:aea3edcd00d47db9a49db00dadefbea7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5634ecbf232138623d9d38ab4acaf882" id="r_a5634ecbf232138623d9d38ab4acaf882"><td class="memItemLeft" align="right" valign="top"><a id="a5634ecbf232138623d9d38ab4acaf882" name="a5634ecbf232138623d9d38ab4acaf882"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getPersistencePackage</b> (uint8_t pIndex, uint8_t *buff)</td></tr>
+<tr class="memdesc:a5634ecbf232138623d9d38ab4acaf882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the persistent buffer for a certain package. NOTE: Do NOT use, for Packages only! <br /></td></tr>
+<tr class="separator:a5634ecbf232138623d9d38ab4acaf882"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0712df79b2c52986f46bfee7a590c03b" id="r_a0712df79b2c52986f46bfee7a590c03b"><td class="memItemLeft" align="right" valign="top"><a id="a0712df79b2c52986f46bfee7a590c03b" name="a0712df79b2c52986f46bfee7a590c03b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPersistencePackage</b> (uint8_t pIndex, uint8_t *buff)</td></tr>
+<tr class="memdesc:a0712df79b2c52986f46bfee7a590c03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the persistent buffer for a certain package. NOTE: Do NOT use, for Packages only! <br /></td></tr>
+<tr class="separator:a0712df79b2c52986f46bfee7a590c03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c7ae2edfe324e11498b13aa042665f" id="r_a16c7ae2edfe324e11498b13aa042665f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a16c7ae2edfe324e11498b13aa042665f">scheduleTransmission</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> tUplink)</td></tr>
 <tr class="memdesc:a16c7ae2edfe324e11498b13aa042665f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the exact time a transmission should occur. Note: this is the internal clock time. On Arduino platforms, this is the usual time supplied by millis(). If the supplied time is larger than the current time, <a class="el" href="class_lo_ra_w_a_n_node.html#a11c2fbe631063da69355f8d74f4bf3b8" title="Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.">sendReceive()</a> or uplink() will delay until the scheduled time.  <br /></td></tr>
 <tr class="separator:a16c7ae2edfe324e11498b13aa042665f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -283,8 +302,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSleepFunction</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2176aa3d546e6b00e870a7e1e310c403" id="r_a2176aa3d546e6b00e870a7e1e310c403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403">scanGuard</a> = 10</td></tr>
-<tr class="memdesc:a2176aa3d546e6b00e870a7e1e310c403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rx window padding in milliseconds according to the spec, the Rx window must be at least enough time to effectively detect a preamble but we pad it a bit on both sides (start and end) to make sure it is wide enough The larger this number the more power will be consumed! So be careful about changing it. For debugging purposes 50 is a reasonable start, but for production devices it should be as low as possible. 0 is a valid time.  <br /></td></tr>
+<tr class="memitem:a2176aa3d546e6b00e870a7e1e310c403" id="r_a2176aa3d546e6b00e870a7e1e310c403"><td class="memItemLeft" align="right" valign="top"><a id="a2176aa3d546e6b00e870a7e1e310c403" name="a2176aa3d546e6b00e870a7e1e310c403"></a>
+<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>scanGuard</b> = 0</td></tr>
+<tr class="memdesc:a2176aa3d546e6b00e870a7e1e310c403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rx window padding in milliseconds. NOTE: If your clock has a stable drift, use RADIOLIB_CLOCK_DRIFT_MS instead (see <a class="el" href="_build_opt_8h_source.html">BuildOpt.h</a>). On any modern microcontroller it should not be necessary to use scanGuard. However, if your clock is unstable, you can use e.g. scanGuard = 20 to widen the Rx window by 20 milliseconds (open 10ms early, close 10ms late). 500 is the <b>maximum</b> value, but it is not a good idea to go anywhere near that. If you have to go above 50 you probably have a bug somewhere. Check your device timing. <br /></td></tr>
 <tr class="separator:a2176aa3d546e6b00e870a7e1e310c403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -615,46 +635,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a84004883006b4a498d4899874952445b" name="a84004883006b4a498d4899874952445b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84004883006b4a498d4899874952445b">&#9670;&#160;</a></span>getBufferNonces()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t * LoRaWANNode::getBufferNonces </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the pointer to the internal buffer that holds the LW base parameters. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LORAWAN_NONCES_BUF_SIZE </dd></dl>
-
-</div>
-</div>
-<a id="a90369a4f2c4da11527872a7bbbf9ab06" name="a90369a4f2c4da11527872a7bbbf9ab06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90369a4f2c4da11527872a7bbbf9ab06">&#9670;&#160;</a></span>getBufferSession()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t * LoRaWANNode::getBufferSession </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the pointer to the internal buffer that holds the LW session parameters. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LORAWAN_SESSION_BUF_SIZE </dd></dl>
-
-</div>
-</div>
 <a id="a2180d3dd4a74783e4b51177b061d6ba1" name="a2180d3dd4a74783e4b51177b061d6ba1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2180d3dd4a74783e4b51177b061d6ba1">&#9670;&#160;</a></span>getClass()</h2>
 
@@ -900,6 +880,26 @@ Public Attributes</h2></td></tr>
 
 <p>Get the LoRaWAN version of this node. </p>
 <dl class="section return"><dt>Returns</dt><dd>Version major number (0 for LoRaWAN 1.0.x, 1 for LoRaWAN 1.1). </dd></dl>
+
+</div>
+</div>
+<a id="a501899c7233c3887537ec55b5f662dc9" name="a501899c7233c3887537ec55b5f662dc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501899c7233c3887537ec55b5f662dc9">&#9670;&#160;</a></span>loadBuffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::loadBuffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Trigger the registered buffer callbacks to restore persistence and session buffers. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -1344,60 +1344,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad99e2fa4738648a6f3efe72ff785def2" name="ad99e2fa4738648a6f3efe72ff785def2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad99e2fa4738648a6f3efe72ff785def2">&#9670;&#160;</a></span>setBufferNonces()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LoRaWANNode::setBufferNonces </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>persistentBuffer</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Fill the internal buffer that holds the LW base parameters with a supplied buffer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">persistentBuffer</td><td>Buffer that should match the internal format (previously extracted using getBufferNonces) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="aedeb50c9ccb81e8092233d34e039cfa4" name="aedeb50c9ccb81e8092233d34e039cfa4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedeb50c9ccb81e8092233d34e039cfa4">&#9670;&#160;</a></span>setBufferSession()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LoRaWANNode::setBufferSession </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>persistentBuffer</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Fill the internal buffer that holds the LW session parameters with a supplied buffer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">persistentBuffer</td><td>Buffer that should match the internal format (previously extracted using getBufferSession) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
 <a id="a2d9a53560ebfbaf006eefd9761424d80" name="a2d9a53560ebfbaf006eefd9761424d80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d9a53560ebfbaf006eefd9761424d80">&#9670;&#160;</a></span>setCSMA()</h2>
 
@@ -1783,24 +1729,6 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the session was stopped successfully, false otherwise </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2176aa3d546e6b00e870a7e1e310c403" name="a2176aa3d546e6b00e870a7e1e310c403"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2176aa3d546e6b00e870a7e1e310c403">&#9670;&#160;</a></span>scanGuard</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> LoRaWANNode::scanGuard = 10</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Rx window padding in milliseconds according to the spec, the Rx window must be at least enough time to effectively detect a preamble but we pad it a bit on both sides (start and end) to make sure it is wide enough The larger this number the more power will be consumed! So be careful about changing it. For debugging purposes 50 is a reasonable start, but for production devices it should be as low as possible. 0 is a valid time. </p>
-<p>500 is the <b>maximum</b> value, but it is not a good idea to go anywhere near that. If you have to go above 50 you probably have a bug somewhere. Check your device timing. </p>
 
 </div>
 </div>

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['setsecondscb_5ft_0',['SetSecondsCb_t',['../class_lo_ra_w_a_n_package_t_s003.html#a49b5567a23241a2321c0b7a554ec8adf',1,'LoRaWANPackageTS003']]],
-  ['sleepcb_5ft_1',['SleepCb_t',['../class_lo_ra_w_a_n_node.html#a3aec67bd3fa7ec0f6e4bf6b86d971e9e',1,'LoRaWANNode']]],
-  ['spicheckstatuscb_5ft_2',['SPIcheckStatusCb_t',['../class_module.html#a1ad7bef7d380d3b6b88dca99bd35d640',1,'Module']]],
-  ['spiparsestatuscb_5ft_3',['SPIparseStatusCb_t',['../class_module.html#a9393088249856eab568126aeb2493e4a',1,'Module']]]
+  ['radiolibirqflags_5ft_0',['RadioLibIrqFlags_t',['../group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77',1,'TypeDef.h']]],
+  ['radiolibtime_5ft_1',['RadioLibTime_t',['../group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd',1,'TypeDef.h']]]
 ];

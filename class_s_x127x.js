@@ -71,6 +71,7 @@ var class_s_x127x =
     [ "setFifoThreshold", "class_s_x127x.html#a7b9529ac87f62c32c9c5fac3dc6e08a9", null ],
     [ "setFrequencyDeviation", "class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679", null ],
     [ "setIrqFlags", "class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666", null ],
+    [ "setLoRaSymbNumTimeout", "class_s_x127x.html#a01b14edcf2eecef2a238bc98b6e38121", null ],
     [ "setLowBatteryThreshold", "class_s_x127x.html#a9ca9aa18e13e8390ec437e249e1d2472", null ],
     [ "setNodeAddress", "class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95", null ],
     [ "setOOK", "class_s_x127x.html#ae41eb412ab6758c83f0c12772beb5b46", null ],

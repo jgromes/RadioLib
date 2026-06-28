@@ -331,6 +331,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:adbc4021380dc557114625dc51262cf90" id="r_adbc4021380dc557114625dc51262cf90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adbc4021380dc557114625dc51262cf90">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
 <tr class="memdesc:adbc4021380dc557114625dc51262cf90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <br /></td></tr>
 <tr class="separator:adbc4021380dc557114625dc51262cf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01b14edcf2eecef2a238bc98b6e38121" id="r_a01b14edcf2eecef2a238bc98b6e38121"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a01b14edcf2eecef2a238bc98b6e38121">setLoRaSymbNumTimeout</a> (uint16_t numSymbols)</td></tr>
+<tr class="memdesc:a01b14edcf2eecef2a238bc98b6e38121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will abort reception if no valid preamble/header is detected within this many LoRa symbols. Only available in LoRa mode.  <br /></td></tr>
+<tr class="separator:a01b14edcf2eecef2a238bc98b6e38121"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22de05835dda9ed287ec48f60ef91f55" id="r_a22de05835dda9ed287ec48f60ef91f55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a22de05835dda9ed287ec48f60ef91f55">getIrqFlags</a> () override</td></tr>
 <tr class="memdesc:a22de05835dda9ed287ec48f60ef91f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read currently active IRQ flags.  <br /></td></tr>
 <tr class="separator:a22de05835dda9ed287ec48f60ef91f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2708,6 +2711,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af88dcb54dc8e9a1edaf9f1c3e5ee2b74">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a01b14edcf2eecef2a238bc98b6e38121" name="a01b14edcf2eecef2a238bc98b6e38121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01b14edcf2eecef2a238bc98b6e38121">&#9670;&#160;</a></span>setLoRaSymbNumTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::setLoRaSymbNumTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>numSymbols</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will abort reception if no valid preamble/header is detected within this many LoRa symbols. Only available in LoRa mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numSymbols</td><td>Number of LoRa symbols to wait for (0 - 1023). Set to 0 to disable the timeout. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

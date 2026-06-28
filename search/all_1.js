@@ -22,7 +22,8 @@ var searchData=
   ['bellmodem_5ft_19',['BellModem_t',['../struct_bell_modem__t.html',1,'']]],
   ['bit_20field_20widths_20in_20module_3a_3aspiconfig_20width_20array_20',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]],
   ['bitrate_21',['bitrate',['../struct_f_s_k_rate__t.html#a2500c6dee65326b52d4e58ecf4b6d107',1,'FSKRate_t::bitRate'],['../struct_config_f_s_k__t.html#a1c74421993ef302f956ffdf0f2c5713f',1,'ConfigFSK_t::bitRate'],['../struct_config_b_p_s_k__t.html#a98e8cd835eff01985459054597815d81',1,'ConfigBPSK_t::bitRate'],['../struct_config_o_o_k__t.html#ac0b938de680dd239f4acfc328f7ad0bd',1,'ConfigOOK_t::bitRate'],['../struct_config_f_l_r_c__t.html#ab86fa32156b7d01f8785974d0ab26c51',1,'ConfigFLRC_t::bitRate'],['../struct_config_b_l_e__t.html#ad8acc65d98aea470ec4f8329524c128d',1,'ConfigBLE_t::bitRate']]],
-  ['bw_22',['bw',['../struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21',1,'LrFhssRate_t']]],
-  ['by_20radiolib_23',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
-  ['bytearr_24',['byteArr',['../class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d',1,'ITA2String']]]
+  ['buffercb_5ft_22',['BufferCb_t',['../class_lo_ra_w_a_n_node.html#aa03f9966637ddfe74fd6dc0f735c6b00',1,'LoRaWANNode']]],
+  ['bw_23',['bw',['../struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21',1,'LrFhssRate_t']]],
+  ['by_20radiolib_24',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
+  ['bytearr_25',['byteArr',['../class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d',1,'ITA2String']]]
 ];

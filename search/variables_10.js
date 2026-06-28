@@ -21,6 +21,7 @@ var searchData=
   ['stream_18',['stream',['../struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681',1,'Module::SPIConfig_t']]],
   ['svid_19',['svId',['../struct_l_r11x0_gnss_satellite__t.html#a0513395fd04c052b862c443dfbe75e84',1,'LR11x0GnssSatellite_t']]],
   ['symnum_20',['symNum',['../struct_c_a_d_scan_config__t.html#a5cb000f071f740c8cc81ea2f04dd9b60',1,'CADScanConfig_t']]],
-  ['syncword_21',['syncword',['../struct_l_r2021_lo_ra_side_detector__t.html#a4bd06c0f405e69e56743811b3ac3d46c',1,'LR2021LoRaSideDetector_t::syncWord'],['../struct_config_lo_ra__t.html#a607787adaf1cf2eb678828410ee6352d',1,'ConfigLoRa_t::syncWord']]],
-  ['syncwordlength_22',['syncWordLength',['../struct_f_s_k_packet_config__t.html#a57ba915ccd7c896fc7f9642868c4a33e',1,'FSKPacketConfig_t']]]
+  ['syncsymbols_21',['syncSymbols',['../struct_receive_config__t.html#a98671eda063cddb23be10ef9be429831',1,'ReceiveConfig_t']]],
+  ['syncword_22',['syncword',['../struct_l_r2021_lo_ra_side_detector__t.html#a4bd06c0f405e69e56743811b3ac3d46c',1,'LR2021LoRaSideDetector_t::syncWord'],['../struct_config_lo_ra__t.html#a607787adaf1cf2eb678828410ee6352d',1,'ConfigLoRa_t::syncWord']]],
+  ['syncwordlength_23',['syncWordLength',['../struct_f_s_k_packet_config__t.html#a57ba915ccd7c896fc7f9642868c4a33e',1,'FSKPacketConfig_t']]]
 ];
