@@ -1617,7 +1617,7 @@ int16_t LR11x0::workaroundGFSK() {
 
   } else if((this->bitRate == 600) && (this->frequencyDev == 800) && (this->rxBandwidth == RADIOLIB_LR11X0_GFSK_RX_BW_4_8))  {
     // value to write depends on the frequency
-    valFix3 = (this->freqMHz >= 1000.0f) ? 0x1100 : 0x0600;
+    valFix3 = (this->freqHz >= RADIOLIB_LR11X0_LF_CUTOFF_FREQ) ? 0x1100 : 0x0600;
   
   }
 

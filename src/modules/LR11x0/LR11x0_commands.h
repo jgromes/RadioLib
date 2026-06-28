@@ -219,6 +219,7 @@
 #define RADIOLIB_LR11X0_CALIBRATE_LF_RC                         (0x01UL << 0)   //  0     0                low frequency RC
 #define RADIOLIB_LR11X0_CALIBRATE_ALL                           (0x3FUL << 0)   //  5     0                everything
 #define RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ                   (20)
+#define RADIOLIB_LR11X0_LF_CUTOFF_FREQ                          (RADIOLIB_UNIT_MEGA(1000))
 
 // RADIOLIB_LR11X0_CMD_SET_REG_MODE
 #define RADIOLIB_LR11X0_REG_MODE_LDO                            (0x00UL << 0)   //  0     0     regulator mode: LDO in all modes

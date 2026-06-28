@@ -70,7 +70,7 @@ int16_t LR1120::setFrequency(uint32_t freq, bool skipCalibration, uint32_t band)
   state = LR11x0::setRfFrequency(freq);
   RADIOLIB_ASSERT(state);
   this->freqHz = freq;
-  this->highFreq = (freq > RADIOLIB_UNIT_MEGA(1000));
+  this->highFreq = (freq > RADIOLIB_LR11X0_LF_CUTOFF_FREQ);
 
   // apply workaround for GFSK
   return(workaroundGFSK());
