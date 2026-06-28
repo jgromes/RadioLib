@@ -551,25 +551,6 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t begin(const ConfigFSK_t& config);
-
-    /*!
-      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
-      \brief Initialization method.
-      \param freq Carrier frequency in MHz. Defaults to 434 MHz.
-      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 58.0 kHz.
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength Preamble Length in bits. Defaults to 16 bits.
-      \returns \ref status_codes
-    */
-    int16_t begin(
-      float freq = RADIOLIB_CC1101_DEFAULT_FREQ,
-      float br = RADIOLIB_CC1101_DEFAULT_BR,
-      float freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV,
-      float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
-      int8_t pwr = RADIOLIB_CC1101_DEFAULT_POWER,
-      uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
         
     /*!
       \brief Initialization method for 4-FSK modem.
@@ -579,25 +560,6 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginFSK4(const ConfigFSK_t& config);
-    
-    /*!
-      \deprecated Use \ref beginFSK4(const ConfigFSK_t& config) instead.
-      \brief Initialization method for 4-FSK modulation.
-      \param freq Carrier frequency in MHz. Defaults to 434 MHz.
-      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 58.0 kHz.
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength Preamble Length in bits. Defaults to 16 bits.
-      \returns \ref status_codes
-    */
-    int16_t beginFSK4(
-      float freq = RADIOLIB_CC1101_DEFAULT_FREQ,
-      float br = RADIOLIB_CC1101_DEFAULT_BR,
-      float freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV,
-      float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
-      int8_t pwr = RADIOLIB_CC1101_DEFAULT_POWER,
-      uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
 
     /*!
       \brief Reset method - resets the chip using manual reset sequence (without RESET pin).
@@ -778,19 +740,19 @@ class CC1101: public PhysicalLayer {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in bands 300.0 to 348.0 MHz,
-      387.0 to 464.0 MHz and 779.0 to 928.0 MHz.
-      \param freq Carrier frequency to be set in MHz.
+      \brief Sets carrier frequency. Allowed values are in bands 300 to 348 MHz,
+      387 to 464 MHz and 779 to 928 MHz.
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq) override;
+    int16_t setFrequency(uint32_t freq) /*override*/;
 
     /*!
-      \brief Sets bit rate. Allowed values range from 0.025 to 600.0 kbps.
+      \brief Sets bit rate. Allowed values range from 25 bps to 600 kbps.
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) /*override*/;
 
     /*!
       \brief Sets bit rate tolerance in BSCFG register. Allowed values are 0:(0%), 1(3,125%), 2:(6,25%) and 3:(12,5%).
@@ -802,10 +764,11 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Sets receiver bandwidth. Allowed values are 58, 68, 81, 102, 116, 135, 162,
       203, 232, 270, 325, 406, 464, 541, 650 and 812 kHz.
-      \param rxBw Receiver bandwidth to be set in kHz.
+      \param rxBw GFSK receiver bandwidth to be set in Hz. In case the provided value is not an exact match
+      with the supported values, the closest match will be selected.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
 
      /*!
       \brief calculates and sets Rx bandwidth based on the freq, baud and freq uncertainty.
@@ -817,17 +780,17 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Sets frequency deviation. Allowed values range from 1.587 to 380.8 kHz.
-      \param freqDev Frequency deviation to be set in kHz.
+      \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
 
     /*!
       \brief Gets frequency deviation. 
       \param[out] freqDev Pointer to variable where to save the frequency deviation.
       \returns \ref status_codes
     */
-    int16_t getFrequencyDeviation(float *freqDev);
+    int16_t getFrequencyDeviation(uint32_t *freqDev);
 
     /*!
       \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
@@ -1067,8 +1030,8 @@ class CC1101: public PhysicalLayer {
   #endif
     Module* mod;
 
-    float frequency = RADIOLIB_CC1101_DEFAULT_FREQ;
-    float bitRate = RADIOLIB_CC1101_DEFAULT_BR;
+    uint32_t frequency = RADIOLIB_UNIT_MEGA(RADIOLIB_CC1101_DEFAULT_FREQ);
+    uint32_t bitRate = RADIOLIB_UNIT_KILO(RADIOLIB_CC1101_DEFAULT_BR);
     uint8_t rawRSSI = 0;
     uint8_t rawLQI = 0;
     uint8_t modulation = RADIOLIB_CC1101_MOD_FORMAT_2_FSK;
@@ -1088,7 +1051,7 @@ class CC1101: public PhysicalLayer {
     int16_t transmitDirect(bool sync, uint32_t frf);
     int16_t receiveDirect(bool sync);
     int16_t directMode(bool sync);
-    static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
+    static void getExpMant(uint32_t target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint16_t len);
 };
 
