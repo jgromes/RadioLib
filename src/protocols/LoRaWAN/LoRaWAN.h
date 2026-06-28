@@ -954,8 +954,12 @@ class LoRaWANNode {
     */
     RadioLibTime_t dutyCycleInterval(RadioLibTime_t msPerHour, RadioLibTime_t airtime);
 
-    /*! \brief Returns time in milliseconds until next uplink is available under dutyCycle limits */
-    RadioLibTime_t timeUntilUplink();
+    /*! 
+      \brief Calculate the time until next uplink is available under dutyCycle limits.
+      \param seconds Set to true to get time in seconds instead of milliseconds.
+      \returns Time until next uplink (default unit: milliseconds).
+    */
+    RadioLibTime_t timeUntilUplink(bool seconds = false);
 
     /*! 
       \brief Returns the maximum allowed uplink payload size given the current MAC state.

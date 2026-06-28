@@ -119,18 +119,17 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     this->tUplink = tNow;
   }
 
-  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled) {
-    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
-      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
-    }
+  // check if dutycycle must be enforced
+  if(this->timeUntilUplink() > this->tUplink - tNow) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink unavailable - time remaining: %lu ms", this->timeUntilUplink());
+    return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
   if(lenUp == 0 && fPort == 0) {
     this->isMACPayload = true;
   }
 
-  // check if the requested payload + fPort are allowed, also given dutycycle
+  // check if the requested payload + fPort are allowed, also given time on air
   state = this->isValidUplink(lenUp, fPort);
   RADIOLIB_ASSERT(state);
 
@@ -998,11 +997,10 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
     this->tUplink = tNow;
   }
 
-  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled) {
-    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
-      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
-    }
+  // check if dutycycle must be enforced
+  if(this->timeUntilUplink() > this->tUplink - tNow) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink unavailable - time remaining: %lu ms", this->timeUntilUplink());
+    return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
   // starting a new session, so make sure to update event fields already
@@ -3817,11 +3815,19 @@ RadioLibTime_t LoRaWANNode::dutyCycleInterval(RadioLibTime_t msPerHour, RadioLib
   return(delayMs);
 }
 
-RadioLibTime_t LoRaWANNode::timeUntilUplink() {
+RadioLibTime_t LoRaWANNode::timeUntilUplink(bool seconds) {
+  if(!this->dutyCycleEnabled) {
+    return(0);
+  }
+
   Module* mod = this->phyLayer->getMod();
   RadioLibTime_t nextUplink = this->tUplinkEnd + dutyCycleInterval(this->dutyCycle, this->lastToA);
-  if(mod->hal->millis() > nextUplink){
+  if(mod->hal->millis() >= nextUplink){
     return(0);
+  }
+
+  if(seconds) {
+    return((nextUplink - mod->hal->millis()) / 1000 + 1);
   }
   return(nextUplink - mod->hal->millis() + 1);
 }
