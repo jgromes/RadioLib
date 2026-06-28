@@ -302,21 +302,20 @@ enum LoRaWANSchemeSession_t {
   RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN        = RADIOLIB_LORAWAN_SESSION_FCNT_UP + sizeof(uint32_t),        // 4 bytes
   RADIOLIB_LORAWAN_SESSION_A_FCNT_DOWN        = RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN + sizeof(uint32_t),    // 4 bytes
   RADIOLIB_LORAWAN_SESSION_ADR_FCNT           = RADIOLIB_LORAWAN_SESSION_A_FCNT_DOWN + sizeof(uint32_t),    // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP       = RADIOLIB_LORAWAN_SESSION_ADR_FCNT + sizeof(uint32_t), 	    // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP       = RADIOLIB_LORAWAN_SESSION_ADR_FCNT + sizeof(uint32_t),       // 4 bytes
   RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN     = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP + sizeof(uint32_t),   // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_RJ_COUNT0          = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN + sizeof(uint32_t), // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_RJ_COUNT1          = RADIOLIB_LORAWAN_SESSION_RJ_COUNT0 + sizeof(uint16_t), 	    // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_RX_A_FCNT          = RADIOLIB_LORAWAN_SESSION_RJ_COUNT1 + sizeof(uint16_t), 	    // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_VERSION            = RADIOLIB_LORAWAN_SESSION_RX_A_FCNT + sizeof(uint32_t), 	    // 1 byte
-  RADIOLIB_LORAWAN_SESSION_CLASS              = RADIOLIB_LORAWAN_SESSION_VERSION + 1,                       // 1 byte
+  RADIOLIB_LORAWAN_SESSION_RX_A_FCNT          = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN + sizeof(uint16_t), // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_VERSION            = RADIOLIB_LORAWAN_SESSION_RX_A_FCNT + sizeof(uint32_t),      // 1 byte
+  RADIOLIB_LORAWAN_SESSION_BAND               = RADIOLIB_LORAWAN_SESSION_VERSION + 1,                       // 1 byte
+  RADIOLIB_LORAWAN_SESSION_CLASS              = RADIOLIB_LORAWAN_SESSION_BAND + 1,                          // 1 byte
   RADIOLIB_LORAWAN_SESSION_LINK_ADR           = RADIOLIB_LORAWAN_SESSION_CLASS + sizeof(uint8_t),           // 14 bytes
-  RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE         = RADIOLIB_LORAWAN_SESSION_LINK_ADR + 14, 	                  // 1 byte
-  RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP     = RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE + 1, 	                  // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP    = RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP + 4, 	              // 1 byte
+  RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE         = RADIOLIB_LORAWAN_SESSION_LINK_ADR + 14,                     // 1 byte
+  RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP     = RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE + 1,                    // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP    = RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP + 4,                // 1 byte
   RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP     = RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP + 1,               // 1 byte
-  RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP    = RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP + 1, 	              // 1 byte
+  RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP    = RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP + 1,                // 1 byte
   RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP = RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP + 1,               // 1 byte
-  RADIOLIB_LORAWAN_SESSION_UL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP + 1, 	          // 16*5 bytes
+  RADIOLIB_LORAWAN_SESSION_UL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP + 1,            // 16*5 bytes
   RADIOLIB_LORAWAN_SESSION_DL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_UL_CHANNELS + RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS*5, // 16*4 bytes
   RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS = RADIOLIB_LORAWAN_SESSION_DL_CHANNELS + RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS*4, // 2 bytes
   RADIOLIB_LORAWAN_SESSION_MAC_QUEUE          = RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS + RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS,    // 12 bytes                   // 15 bytes
@@ -793,6 +792,14 @@ class LoRaWANNode {
     */
     int16_t getMacDeviceTimeAns(uint32_t* timestamp, uint16_t* milliseconds, bool returnUnix = true);
 
+    /*!
+      \brief Set LoRaWAN (sub)band. This cannot be done during an active session.
+      \param band LoRaWAN band / region (e.g. EU868 or US915).
+      \param subBand Subband for fixed regions (such as US915).
+      \returns \ref status_codes
+    */
+   int16_t setBand(const LoRaWANBand_t* band, uint8_t subBand = 0);
+    
     /*!
       \brief Set uplink datarate. This should not be used when ADR is enabled.
       \param drUp Datarate to use for uplinks.

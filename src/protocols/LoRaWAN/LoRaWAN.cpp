@@ -588,6 +588,11 @@ int16_t LoRaWANNode::loadSessionBuffer() {
     return(RADIOLIB_ERR_SESSION_DISCARDED);
   }
 
+  // check the band plan
+  if(buff[RADIOLIB_LORAWAN_SESSION_BAND] != this->band->bandNum) {
+    return(RADIOLIB_ERR_SESSION_DISCARDED);
+  }
+
   // copy the whole buffer over
   memcpy(this->bufferSession, buff, RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
 
@@ -957,6 +962,7 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   
   // store network parameters
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_VERSION], this->rev);
+  LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_BAND], this->band->bandNum);
 
   // received JoinAccept, so update JoinNonce value in event
   if(joinEvent) {
@@ -1093,6 +1099,7 @@ int16_t LoRaWANNode::activateABP() {
 
   // store network parameters
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_VERSION], this->rev);
+  LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_BAND], this->band->bandNum);
 
   if(this->rev == 1) {
     LoRaWANNode::pushMacCommand(RADIOLIB_LORAWAN_MAC_RESET, &this->rev, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
@@ -3165,6 +3172,31 @@ void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t di
     i += fLen;
   }
   *lenInOut -= numDeleted;
+}
+
+int16_t LoRaWANNode::setBand(const LoRaWANBand_t* band, uint8_t subBand) {
+  // check values
+  if(band == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(subBand > band->txSpans[0].numChannels / 8) {
+    return(RADIOLIB_ERR_INVALID_SUBBAND);
+  }
+
+  // only allow changing the band when there is no session
+  if(this->sessionStatus != RADIOLIB_LORAWAN_SESSION_NONE) {
+    return(RADIOLIB_ERR_INVALID_MODE);
+  }
+
+  // check if anything changed at all
+  if(band->bandNum == this->band->bandNum && subBand == this->subBand) {
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  // set values
+  this->band = band;
+  this->subBand = subBand;
+ return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
