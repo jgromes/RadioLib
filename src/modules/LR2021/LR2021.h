@@ -916,7 +916,7 @@ class LR2021: public LRxxxx {
     // LoRa commands
     int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ);
-    int16_t setLoRaSynchTimeout(uint8_t numSymbols, bool format);
+    int16_t setLoRaSynchTimeout(uint16_t numSymbols);
     int16_t setLoRaSyncword(uint8_t syncword);
     int16_t setLoRaSideDetConfig(uint8_t* configs, size_t numSideDets);
     int16_t setLoRaSideDetSyncword(uint8_t* syncwords, size_t numSideDets);
