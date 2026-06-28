@@ -23,7 +23,7 @@ LR2021::LR2021(Module* mod) : LRxxxx(mod) {
 
 int16_t LR2021::begin(const ConfigLoRa_t& cfg) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency*1000000.0f, RADIOLIB_LR2021_PACKET_TYPE_LORA);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -55,10 +55,10 @@ int16_t LR2021::begin(const ConfigLoRa_t& cfg) {
 
 int16_t LR2021::beginGFSK(const ConfigFSK_t& cfg) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
-  this->frequencyDev = cfg.frequencyDeviation * 1000.0f;
+  this->frequencyDev = cfg.frequencyDeviation;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency*1000000.0f, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -99,7 +99,7 @@ int16_t LR2021::beginOOK(const ConfigOOK_t& cfg) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency*1000000.0f, RADIOLIB_LR2021_PACKET_TYPE_OOK);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_OOK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -135,7 +135,7 @@ int16_t LR2021::beginOOK(const ConfigOOK_t& cfg) {
 
 int16_t LR2021::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency*1000000.0f, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // set grid spacing
@@ -164,7 +164,7 @@ int16_t LR2021::beginFLRC(const ConfigFLRC_t& cfg) {
   this->crcLenGFSK = 1;
 
   // set module properties and perform initial setup
-  int16_t state = this->modSetup(cfg.frequency*1000000.0f, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
+  int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_FLRC);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -865,7 +865,7 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
       n_coded_bits = n_coded_bits_flt + 0.5f;
 
       // now calculate the real time on air
-      return((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate / 1000.0f));
+      return((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate));
     } 
   }
 

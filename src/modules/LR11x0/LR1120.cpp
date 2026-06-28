@@ -9,11 +9,11 @@ LR1120::LR1120(Module* mod) : LR11x0(mod) {
 
 int16_t LR1120::begin(const ConfigLoRa_t& cfg) {
   // execute common part
-  int16_t state = LR11x0::begin(cfg.bandwidth*1000.0f, cfg.spreadingFactor, cfg.codingRate, cfg.syncWord, cfg.preambleLength, (cfg.frequency > 1000.0f));
+  int16_t state = LR11x0::begin(cfg.bandwidth, cfg.spreadingFactor, cfg.codingRate, cfg.syncWord, cfg.preambleLength, (cfg.frequency > RADIOLIB_LR11X0_LF_CUTOFF_FREQ));
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(cfg.frequency*1000000.0f);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);
@@ -26,7 +26,7 @@ int16_t LR1120::beginGFSK(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(cfg.frequency*1000000.0f);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);
@@ -39,7 +39,7 @@ int16_t LR1120::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(cfg.frequency*1000000.0f);
+  state = setFrequency(cfg.frequency);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);
