@@ -858,7 +858,7 @@ class LR11x0: public LRxxxx {
     int16_t setCad(void);
     int16_t setTxCw(void);
     int16_t setTxInfinitePreamble(void);
-    int16_t setLoRaSynchTimeout(uint8_t symbolNum, bool format);
+    int16_t setLoRaSynchTimeout(uint16_t numSymbols);
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
     int16_t setRangingReqAddr(uint32_t addr);
     int16_t getRangingResult(uint8_t type, float* res);

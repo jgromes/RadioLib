@@ -674,15 +674,6 @@ class SX126x: public PhysicalLayer {
     int16_t explicitHeader();
 
     /*!
-      \brief Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will
-      abort reception if no valid preamble/header is detected within this many LoRa symbols.
-      Only available in LoRa mode.
-      \param symbolNum Number of LoRa symbols to wait for. Set to 0 to disable the timeout.
-      \returns \ref status_codes
-    */
-    int16_t setLoRaSymbNumTimeout(uint8_t symbolNum);
-
-    /*!
       \brief Set regulator mode to LDO.
       \returns \ref status_codes
     */
@@ -893,6 +884,7 @@ class SX126x: public PhysicalLayer {
     int16_t setPacketParamsBPSK(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t payloadLenBits);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     int16_t setRegulatorMode(uint8_t mode);
+    int16_t setLoRaSymbNumTimeout(uint8_t symbolNum);
     uint8_t getStatus();
     uint32_t getPacketStatus();
     uint16_t getDeviceErrors();

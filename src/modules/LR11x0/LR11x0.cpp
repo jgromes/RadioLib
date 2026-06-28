@@ -1511,22 +1511,7 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
           this->crcTypeLoRa, this->invertIQEnabled);
         RADIOLIB_ASSERT(state);
 
-        // set the LoRa sync (symbol-number) timeout
-        bool mantissa = false;
-        uint8_t numSymbols = 0;
-        if(cfg->receive.syncSymbols < 0xFF) {
-          numSymbols = cfg->receive.syncSymbols;
-        } else {
-          uint16_t mant = cfg->receive.syncSymbols >> 1;
-          uint8_t exp = 0;
-          while(mant > 31) {
-            mant = (mant + 3) >> 2;
-            exp++;
-          }
-          mantissa = true;
-          numSymbols = (mant << 3) + exp;
-        }
-        state = setLoRaSynchTimeout(numSymbols, mantissa);
+        state = setLoRaSynchTimeout(cfg->receive.syncSymbols);
 
       } else {
         state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
