@@ -32,8 +32,22 @@ int16_t LR2021::setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_PACKET_PARAMS, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setLoRaSynchTimeout(uint8_t numSymbols, bool format) {
-  uint8_t buff[] = { numSymbols, (uint8_t)format };
+int16_t LR2021::setLoRaSynchTimeout(uint16_t numSymbols) {
+  bool mantissa = false;
+  uint8_t val = 0;
+  if(numSymbols <= 0xFF) {
+    val = numSymbols;
+  } else {
+    uint16_t mant = numSymbols >> 1;
+    uint8_t exp = 0;
+    while(mant > 31) {
+      mant = (mant + 3) >> 2;
+      exp++;
+    }
+    mantissa = true;
+    val = (mant << 3) + exp;
+  }
+  uint8_t buff[2] = { val, (uint8_t)mantissa };
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SYNCH_TIMEOUT, true, buff, sizeof(buff)));
 }
 
