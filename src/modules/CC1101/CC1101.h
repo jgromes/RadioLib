@@ -513,10 +513,10 @@
 #define RADIOLIB_CC1101_GDO0_ACTIVE                             0b00000001  //  0     0   GDO0 is active/asserted
 
 // RadioLib defaults
-#define RADIOLIB_CC1101_DEFAULT_FREQ                            434.0
-#define RADIOLIB_CC1101_DEFAULT_BR                              4.8
-#define RADIOLIB_CC1101_DEFAULT_FREQDEV                         5.0
-#define RADIOLIB_CC1101_DEFAULT_RXBW                            58.0
+#define RADIOLIB_CC1101_DEFAULT_FREQ                            RADIOLIB_UNIT_MEGA(434)
+#define RADIOLIB_CC1101_DEFAULT_BR                              4800
+#define RADIOLIB_CC1101_DEFAULT_FREQDEV                         5000
+#define RADIOLIB_CC1101_DEFAULT_RXBW                            RADIOLIB_UNIT_KILO(58)
 #define RADIOLIB_CC1101_DEFAULT_POWER                           10
 #define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                     16
 #define RADIOLIB_CC1101_DEFAULT_SW                              {0x12, 0xAD}
@@ -1030,8 +1030,8 @@ class CC1101: public PhysicalLayer {
   #endif
     Module* mod;
 
-    uint32_t frequency = RADIOLIB_UNIT_MEGA(RADIOLIB_CC1101_DEFAULT_FREQ);
-    uint32_t bitRate = RADIOLIB_UNIT_KILO(RADIOLIB_CC1101_DEFAULT_BR);
+    uint32_t frequency = RADIOLIB_CC1101_DEFAULT_FREQ;
+    uint32_t bitRate = RADIOLIB_CC1101_DEFAULT_BR;
     uint8_t rawRSSI = 0;
     uint8_t rawLQI = 0;
     uint8_t modulation = RADIOLIB_CC1101_MOD_FORMAT_2_FSK;
