@@ -1,10 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3":[4,0,28,17],
-"struct_lo_ra_w_a_n_band__t.html#abb14a7c48ec89a944f441517b1d55986":[4,0,28,0],
-"struct_lo_ra_w_a_n_band__t.html#ac6b39e29fe554cd53349d80dfff1f479":[4,0,28,6],
-"struct_lo_ra_w_a_n_band__t.html#ad7ab17cc0b530fb99c3be39fd6411802":[4,0,28,1],
-"struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f":[4,0,28,13],
 "struct_lo_ra_w_a_n_band__t.html#ae58f859a72e64aa4a6fe218ba7e21c10":[4,0,28,8],
 "struct_lo_ra_w_a_n_band__t.html#aef289b63007a6e085c7c66f71209d84c":[4,0,28,4],
 "struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529":[4,0,28,12],
@@ -84,8 +79,7 @@ var NAVTREEINDEX8 =
 "struct_receive_config__t.html":[4,0,80],
 "struct_receive_config__t.html#a557d8d3dc76034acd036a9b371a72375":[4,0,80,0],
 "struct_receive_config__t.html#a6f10529de8f6871a102d19afa08e102a":[4,0,80,2],
-"struct_receive_config__t.html#a8a9ce1e992fda95d10e7c5de9de05dac":[4,0,80,4],
-"struct_receive_config__t.html#a98671eda063cddb23be10ef9be429831":[4,0,80,3],
+"struct_receive_config__t.html#a8a9ce1e992fda95d10e7c5de9de05dac":[4,0,80,3],
 "struct_receive_config__t.html#ac51926e9674783440b286bfb56e15c99":[4,0,80,1],
 "struct_s_s_t_v_mode__t.html":[4,0,96],
 "struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820":[4,0,96,4],
