@@ -1284,6 +1284,24 @@ RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(timeout);
 }
 
+int16_t SX127x::setLoRaSymbNumTimeout(uint16_t numSymbols) {
+  // this method is only available in LoRa mode
+  if(getActiveModem() != RADIOLIB_SX127X_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // the symbol timeout is a 10-bit value, split across two registers:
+  // the 2 most significant bits are in REG_MODEM_CONFIG_2, the 8 least significant bits in REG_SYMB_TIMEOUT_LSB
+  if(numSymbols > 0x3FF) {
+    numSymbols = 0x3FF;
+  }
+  uint8_t msb = (uint8_t)((numSymbols >> 8) & 0x03);
+  uint8_t lsb = (uint8_t)(numSymbols & 0xFF);
+  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, msb, 1, 0);
+  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, lsb);
+  return(state);
+}
+
 uint32_t SX127x::getIrqFlags() {
   return((uint32_t)this->getIRQFlags());
 }
@@ -1767,15 +1785,23 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         if(cfg->receive.timeout == 0xFFFFFFFF) {
           cfg->receive.timeout = 0;
         }
-        if(cfg->receive.timeout != 0) {
-          // for non-zero timeout value, change mode to Rx single and set the timeout
-          this->rxMode = RADIOLIB_SX127X_RXSINGLE;
-          uint8_t msb_sym = (cfg->receive.timeout > 0x3FF) ? 0x3 : (uint8_t)(cfg->receive.timeout >> 8);
-          uint8_t lsb_sym = (cfg->receive.timeout > 0x3FF) ? 0xFF : (uint8_t)(cfg->receive.timeout & 0xFF);
-          state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, msb_sym, 1, 0);
-          state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, lsb_sym);
-          RADIOLIB_ASSERT(state);
+
+        // the SX127x LoRa modem has no dedicated Rx window timer - the only available
+        // timeout is the symbol (sync) timeout. Use the explicit syncSymbols if provided,
+        // otherwise fall back to the timeout value (which is expressed in symbols on this chip).
+        uint16_t symbNum = cfg->receive.syncSymbols;
+        if((symbNum == 0) && (cfg->receive.timeout != 0)) {
+          symbNum = (cfg->receive.timeout > 0x3FF) ? 0x3FF : (uint16_t)cfg->receive.timeout;
         }
+
+        // for non-zero timeout value, set mode to Rx single and set the timeout
+        if(cfg->receive.timeout != 0) {
+          this->rxMode = RADIOLIB_SX127X_RXSINGLE;
+        }
+
+        // set the LoRa symbol-number (sync) timeout
+        state = this->setLoRaSymbNumTimeout(symbNum);
+        RADIOLIB_ASSERT(state);
 
         // in FHSS mode, enable channel change interrupt
         if(this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF) {

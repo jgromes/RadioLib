@@ -136,6 +136,7 @@ int16_t PhysicalLayer::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlag
   RadioModeConfig_t cfg = {
     .receive = {
       .timeout = timeout,
+      .syncSymbols = 0,
       .irqFlags = irqFlags,
       .irqMask = irqMask,
       .len = len,
