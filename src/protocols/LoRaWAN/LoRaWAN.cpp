@@ -1737,7 +1737,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
   if(this->getMulticastClass() == RADIOLIB_LORAWAN_CLASS_C) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Multicast RxC window");
   // check if the device is configured as standard Class C
-  } else if(this->lwClass == RADIOLIB_LORAWAN_CLASS_C) {
+  } else if(this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_C) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Unicast RxC window");
   // otherwise, ignore this call without error
   } else {
@@ -1954,7 +1954,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     // (...) it SHALL silently discard the entire frame.
     // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
     if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
-      if(this->lwClass == RADIOLIB_LORAWAN_CLASS_A) { // Class A is good regardless of Rx window
+      if(this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_A) { // Class A is good regardless of Rx window
         ok = true;
       }
       if(window < RADIOLIB_LORAWAN_RX_BC) {           // Rx1 and Rx2 are good regardless of class
@@ -1999,7 +1999,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // (...) it SHALL silently discard the entire frame.
   // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
   // Note: we check Device Class == A because Relay also uses a third Rx window
-  if(fOptsLen > 0 && this->lwClass != RADIOLIB_LORAWAN_CLASS_A && window == RADIOLIB_LORAWAN_RX_BC) {
+  if(fOptsLen > 0 && this->getUnicastClass() != RADIOLIB_LORAWAN_CLASS_A && window == RADIOLIB_LORAWAN_RX_BC) {
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
@@ -2112,7 +2112,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // do some housekeeping for normal Class A downlinks (not allowed for RxB / RxC)
   // this is either in Rx1 or Rx2 for any class, or any Rx window for Class A (including RxR in Relay)
-  if(window < RADIOLIB_LORAWAN_RX_BC || this->lwClass == RADIOLIB_LORAWAN_CLASS_A) {
+  if(window < RADIOLIB_LORAWAN_RX_BC || this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_A) {
 
     // a Class A downlink was received, so restart the ADR counter with the next uplink
     this->adrFCnt = this->getFCntUp() + 1;
@@ -2323,7 +2323,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
 int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaWANEvent_t* eventDown) {
   // only allow if the device is Unicast-C or Multicast-C, otherwise ignore without error
-  if(this->lwClass != RADIOLIB_LORAWAN_CLASS_C && this->getMulticastClass() != RADIOLIB_LORAWAN_CLASS_C) {
+  if(this->getUnicastClass() != RADIOLIB_LORAWAN_CLASS_C && this->getMulticastClass() != RADIOLIB_LORAWAN_CLASS_C) {
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -3350,8 +3350,18 @@ const LoRaWANBand_t* LoRaWANNode::getBand() {
   return(this->band);
 }
 
-uint8_t LoRaWANNode::getClass() {
+uint8_t LoRaWANNode::getUnicastClass() {
   return(this->lwClass);
+}
+
+uint8_t LoRaWANNode::getClass() {
+  if(this->getMulticastClass() == RADIOLIB_LORAWAN_CLASS_C) {
+    return(RADIOLIB_LORAWAN_CLASS_C);
+  }
+  if(this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_C) {
+    return(RADIOLIB_LORAWAN_CLASS_C);
+  }
+  return(RADIOLIB_LORAWAN_CLASS_A);
 }
 
 uint8_t LoRaWANNode::getVersionMajor() {

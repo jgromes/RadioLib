@@ -891,6 +891,18 @@ class LoRaWANNode {
       \brief Get the LoRaWAN class of this node.
       \returns Class type (RADIOLIB_LORAWAN_CLASS_*).
     */
+    uint8_t getUnicastClass();
+
+    /*!
+      \brief Request the currently configured class for Multicast.
+      \returns Class C if configured, otherwise Class A (B is not supported)
+    */
+    uint8_t getMulticastClass();
+    
+    /*! 
+      \brief Get the LoRaWAN class of this node.
+      \returns Class type (RADIOLIB_LORAWAN_CLASS_*).
+    */
     uint8_t getClass();
 
     /*! 
@@ -966,12 +978,6 @@ class LoRaWANNode {
       Most importantly, this includes dwell time limitations and ADR.
     */
     virtual uint8_t getMaxPayloadLen();
-
-    /*!
-      \brief Request the currently configured class for Multicast.
-      \returns Class C if configured, otherwise Class A (B is not supported)
-    */
-    uint8_t getMulticastClass();
 
     /*! \brief Callback to a user-provided sleep function. */
     typedef void (*SleepCb_t)(RadioLibTime_t ms);
