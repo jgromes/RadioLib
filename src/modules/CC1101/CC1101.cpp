@@ -577,10 +577,8 @@ int16_t CC1101::getFrequencyDeviation(uint32_t *freqDev) {
   uint8_t m = (uint8_t)SPIgetRegValue(RADIOLIB_CC1101_REG_DEVIATN, 2, 0);
 
   // calculate frequency deviation (pag. 79 of the CC1101 datasheet):
-  //
   //   freqDev = (fXosc / 2^17) * (8 + m) * 2^e
-  //
-  *freqDev = (RADIOLIB_UNIT_MEGA(RADIOLIB_CC1101_CRYSTAL_FREQ) / (uint32_t(1) << 17)) - (8 + m) * (uint32_t(1) << e);
+  *freqDev = (RADIOLIB_UNIT_MEGA(RADIOLIB_CC1101_CRYSTAL_FREQ) * (uint32_t)(8 + m) * (uint32_t(1) << e))/ (uint32_t(1) << 17);
 
   return(RADIOLIB_ERR_NONE);
 }
