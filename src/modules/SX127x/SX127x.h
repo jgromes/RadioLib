@@ -1113,15 +1113,6 @@ class SX127x: public PhysicalLayer {
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
-      \brief Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will
-      abort reception if no valid preamble/header is detected within this many LoRa symbols.
-      Only available in LoRa mode.
-      \param numSymbols Number of LoRa symbols to wait for (0 - 1023). Set to 0 to disable the timeout.
-      \returns \ref status_codes
-    */
-    int16_t setLoRaSymbNumTimeout(uint16_t numSymbols);
-
-    /*!
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
     */

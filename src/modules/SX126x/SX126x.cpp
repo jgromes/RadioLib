@@ -497,7 +497,6 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   RadioModeConfig_t cfg = {
     .receive = {
       .timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF,
-      .syncSymbols = 0,
       .irqFlags = irqFlags,
       .irqMask = irqMask,
       .len = 0,
@@ -978,10 +977,6 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       uint8_t modem = getPacketType();
       if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
         state = setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled);
-        RADIOLIB_ASSERT(state);
-
-        // set the LoRa symbol-number (sync) timeout
-        state = setLoRaSymbNumTimeout((cfg->receive.syncSymbols > 0xFF) ? 0xFF : (uint8_t)cfg->receive.syncSymbols);
       } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
         state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
           this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH);
