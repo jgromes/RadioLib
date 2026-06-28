@@ -178,7 +178,10 @@ struct StandbyConfig_t {
 struct ReceiveConfig_t {
   /*! \brief  Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive). */
   uint32_t timeout;
-  
+
+  /*! \brief LoRa sync timeout, given as the number of LoRa symbols. */
+  uint16_t syncSymbols;
+
   /*! \brief Sets the IRQ flags. */
   RadioLibIrqFlags_t irqFlags;
   

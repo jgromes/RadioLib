@@ -119,18 +119,17 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     this->tUplink = tNow;
   }
 
-  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled) {
-    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
-      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
-    }
+  // check if dutycycle must be enforced
+  if(this->timeUntilUplink() > this->tUplink - tNow) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink unavailable - time remaining: %lu ms", this->timeUntilUplink());
+    return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
   if(lenUp == 0 && fPort == 0) {
     this->isMACPayload = true;
   }
 
-  // check if the requested payload + fPort are allowed, also given dutycycle
+  // check if the requested payload + fPort are allowed, also given time on air
   state = this->isValidUplink(lenUp, fPort);
   RADIOLIB_ASSERT(state);
 
@@ -589,6 +588,11 @@ int16_t LoRaWANNode::loadSessionBuffer() {
     return(RADIOLIB_ERR_SESSION_DISCARDED);
   }
 
+  // check the band plan
+  if(buff[RADIOLIB_LORAWAN_SESSION_BAND] != this->band->bandNum) {
+    return(RADIOLIB_ERR_SESSION_DISCARDED);
+  }
+
   // copy the whole buffer over
   memcpy(this->bufferSession, buff, RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
 
@@ -958,6 +962,7 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   
   // store network parameters
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_VERSION], this->rev);
+  LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_BAND], this->band->bandNum);
 
   // received JoinAccept, so update JoinNonce value in event
   if(joinEvent) {
@@ -998,11 +1003,10 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
     this->tUplink = tNow;
   }
 
-  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled) {
-    if(this->tUplinkEnd + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
-      return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
-    }
+  // check if dutycycle must be enforced
+  if(this->timeUntilUplink() > this->tUplink - tNow) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink unavailable - time remaining: %lu ms", this->timeUntilUplink());
+    return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
   // starting a new session, so make sure to update event fields already
@@ -1095,6 +1099,7 @@ int16_t LoRaWANNode::activateABP() {
 
   // store network parameters
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_VERSION], this->rev);
+  LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_BAND], this->band->bandNum);
 
   if(this->rev == 1) {
     LoRaWANNode::pushMacCommand(RADIOLIB_LORAWAN_MAC_RESET, &this->rev, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
@@ -1567,7 +1572,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
     // yield for multi-threaded platforms
     mod->hal->yield();
 
-    if(mod->hal->millis() > txEnd + this->scanGuard) {
+    if(mod->hal->millis() > txEnd + toa) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
@@ -1600,39 +1605,41 @@ static void LoRaWANNodeOnDownlinkAction(void) {
 }
 
 int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference) {
-  Module* mod = this->phyLayer->getMod();
-
-  int16_t state = RADIOLIB_ERR_UNKNOWN;
-
-  // either both must be set or none
-  if((dlDelay == 0 && tReference > 0) || (dlDelay > 0 && tReference == 0)) {
+  // Class A windows must be timed
+  if(dlDelay == 0 || tReference == 0) {
     return(RADIOLIB_ERR_NO_RX_WINDOW);
   }
 
-  const uint8_t currentDr = dlChannel->dr;
-  const ModemType_t modem = this->band->dataRates[currentDr].modem;
-  const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
-  const PacketConfig_t* pc = &this->band->dataRates[currentDr].pc;
-  RadioLibTime_t toaMinUs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 0);
-
-  // get the maximum allowed Time-on-Air of a packet given the current datarate
-  uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
-  
-  RadioLibTime_t toaMaxMs = this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, maxPayLen + 13) / 1000;
-
   // set the physical layer configuration for downlink
-  state = this->setPhyProperties(dlChannel, dir, this->txPowerMax - 2*this->txPowerSteps);
+  int16_t state = this->setPhyProperties(dlChannel, dir, this->txPowerMax - 2*this->txPowerSteps);
   RADIOLIB_ASSERT(state);
-
-  // calculate the timeout of an empty packet plus scanGuard
-  RadioLibTime_t timeoutUs = toaMinUs + this->scanGuard*1000;
+  
+  // get the maximum allowed Time-on-Air of a packet given the current datarate
+  uint8_t currentDr = dlChannel->dr;
+  uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
+  RadioLibTime_t toaMaxUs = this->phyLayer->getTimeOnAir(maxPayLen + 13);
 
   // set the radio Rx parameters
   RadioModeConfig_t modeCfg;
   modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
   modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
   modeCfg.receive.len = 0;
-  modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(timeoutUs);
+  modeCfg.receive.syncSymbols = 0;
+  modeCfg.receive.timeout = 0;
+  
+  // for LoRa, use at least 6 symbols and at least 16ms
+  ModemType_t modem = this->band->dataRates[currentDr].modem;
+  if(modem == RADIOLIB_MODEM_LORA) {
+    const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
+    uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000) / dr->lora.bandwidth;
+    if(6 * tSymbUs > (16 + this->scanGuard) * 1000) {
+      modeCfg.receive.syncSymbols = 6;
+    } else {
+      modeCfg.receive.syncSymbols = ((16 + this->scanGuard) * 1000) / tSymbUs + 1;
+    }
+    modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs * 1.1);
+  }
+  // for FSK, there is no timeout register, so we just use the 16ms software timeout
 
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
@@ -1641,38 +1648,55 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
   downlinkAction = false;
 
-  // if the Rx window must be awaited, do so
-  RadioLibTime_t tNow = mod->hal->millis();
-  if(dlDelay > 0 && tReference > 0) {
-    // calculate time at which the window should open
-    // - the launch of Rx window takes a few milliseconds, so shorten the waitLen a bit (launchDuration)
-    // - the Rx window is padded using scanGuard, so shorten the waitLen a bit (scanGuard / 2)
-    RadioLibTime_t tWindow = tReference + dlDelay - this->launchDuration - this->scanGuard / 2;
-    if(tNow > tWindow) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow - tWindow);
-      return(RADIOLIB_ERR_NO_RX_WINDOW);
-    }
-    this->sleepDelay(tWindow - tNow);
-  }
+  // calculate time at which the window should open
+  // - the launch of Rx window takes a few milliseconds, so compensate for that (launchDuration)
+  // - the Rx window is padded using scanGuard, so compensate for that (scanGuard / 2)
+  RadioLibTime_t tWindowOpen = tReference + dlDelay - this->launchDuration - this->scanGuard / 2;
 
+  Module* mod = this->phyLayer->getMod();
+  RadioLibTime_t tNow = mod->hal->millis();
+  if(tNow + this->launchDuration > tWindowOpen) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow + this->launchDuration - tWindowOpen);
+    return(RADIOLIB_ERR_NO_RX_WINDOW);
+  }
+  
+  // wait until the Rx window must open minus launchDuration
+  this->sleepDelay(tWindowOpen - tNow);
+  
+  // open Rx window by starting receive
+  state = this->phyLayer->launchMode();
+  
+  // get all window timings
+  tWindowOpen = mod->hal->millis(); // this should be exactly `launchDuration` later than the calculated value
+  
+  RADIOLIB_ASSERT(state);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols / %lu ticks + %dms)", 
+                                  window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, this->scanGuard);
+  
+  // enable the LED if used
   if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
     mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelHigh);
   }
+  
+  // use a software window length of minimum 16ms (regardless of modulation) up to max time-on-air
+  // add an 11% padding to the maximum time on air to give some slack for the interrupt
+  RadioLibTime_t windowLength = RADIOLIB_MAX(16, toaMaxUs / 900);
+  RadioLibTime_t tWindowClose = tWindowOpen + windowLength + this->scanGuard;
 
-  // open Rx window by starting receive with specified timeout
-  state = this->phyLayer->launchMode();
-  RadioLibTime_t tOpen = mod->hal->millis();
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (%lu + %lu ms)", window, timeoutUs / 1000UL, this->scanGuard);
-  
-  // sleep for the duration of the padded Rx window
-  this->sleepDelay(timeoutUs / 1000, false);
-  
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
-  // use a small additional delay in case the RxTimeout interrupt is slow to fire
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window closing", window);
-  while(!downlinkAction && mod->hal->millis() - tOpen <= timeoutUs / 1000 + this->scanGuard) {
+  // apply 2ms padding in case the RxTimeout interrupt is slow to fire
+  while(!downlinkAction && mod->hal->millis() <= tWindowClose + 2) {
     mod->hal->yield();
+  }
+
+  // get the actual window close timestamp
+  tWindowClose = mod->hal->millis();
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window closed", window);
+
+  this->phyLayer->clearPacketReceivedAction();
+  this->phyLayer->standby();
+  if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
+    mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
   }
 
   // check IRQ bit for RxTimeout
@@ -1680,51 +1704,16 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
     return(timedOut);
   }
-
+  
   // if the IRQ bit for RxTimeout is set, put chip in standby and return
-  if(timedOut) {
-    this->phyLayer->clearPacketReceivedAction();
+  if(timedOut) {  
     this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
-    this->phyLayer->standby();
-    if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
-      mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
-    }
     return(0);  // no downlink
   }
-  
-  // if the IRQ bit for RxTimeout is not set, something is being received, 
-  // so keep listening for maximum ToA waiting for the DIO to fire
-  while(!downlinkAction && mod->hal->millis() - tOpen < toaMaxMs + this->scanGuard) {
-    mod->hal->yield();
-  }
-  
-  // sometimes we can get to a state when reception is still ongoing, but has not finished yet
-  // this has been observed on LR2021 - wait until either timeout, or Rx done is raised
-  // it should never take more than 300 ms
-  RadioLibTime_t start = mod->hal->millis();
-  while(!this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT) && !this->phyLayer->checkIrq(RADIOLIB_IRQ_RX_DONE)) {
-    mod->hal->yield();
-    if(mod->hal->millis() - start >= 300) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Timeout without IRQ!");
-      break;
-    }
-  }
 
-  // update time of downlink reception
-  if(downlinkAction) {
-    this->tDownlink = mod->hal->millis();
-  }
-
-  // we have a message, clear actions, go to standby
-  this->phyLayer->clearPacketReceivedAction();
-  this->phyLayer->standby();
-  if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
-    mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
-  }
-
-  // if all windows passed without receiving anything, return 0 for no window
+  // if we didn't get an IRQ, return 0 for no downlink
   if(!downlinkAction) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink missing!");
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No downlink!");
     return(0);
   }
   downlinkAction = false;
@@ -1735,17 +1724,27 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
     return(0);  // act as if no downlink was received
   }
+  
+  // update time of downlink reception
+  this->tDownlink = tWindowClose;
+#if RADIOLIB_DEBUG_PROTOCOL
+  RadioLibTime_t packetToaMs = this->phyLayer->getTimeOnAir(this->phyLayer->getPacketLength()) / 1000;
+  RadioLibTime_t tHeaderStart = this->tDownlink - packetToaMs;
+  int diff = tHeaderStart - tWindowOpen;
+  RadioLibTime_t diffAbs = RADIOLIB_ABS(diff);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx window timing: %dms %s", diffAbs, diff < 0 ? "late" : "early");
+#endif
 
   // return downlink window number (1/2)
   return(window);
 }
 
-int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
+int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
   // check if Multicast using Class C is active
   if(this->getMulticastClass() == RADIOLIB_LORAWAN_CLASS_C) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Multicast RxC window");
   // check if the device is configured as standard Class C
-  } else if(this->lwClass == RADIOLIB_LORAWAN_CLASS_C) {
+  } else if(this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_C) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Unicast RxC window");
   // otherwise, ignore this call without error
   } else {
@@ -1753,8 +1752,6 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   }
 
   Module* mod = this->phyLayer->getMod();
-  
-  RadioLibTime_t tStart = mod->hal->millis();
 
   // set the physical layer configuration for Class C window
   int16_t state = this->setPhyProperties(&this->channels[RADIOLIB_LORAWAN_RX_BC], RADIOLIB_LORAWAN_DOWNLINK, 
@@ -1767,16 +1764,12 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
   
   // configure radio
   RadioModeConfig_t modeCfg;
-  if(timeout) {
-    timeout -= (mod->hal->millis() - tStart);
-    timeout -= this->launchDuration;
-    modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(timeout * 1000);
-  } else {
-    modeCfg.receive.timeout = 0xFFFFFFFF; // max(uint32_t) is used for RxContinuous
-  }
   modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
   modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
   modeCfg.receive.len = 0;
+  modeCfg.receive.timeout = 0xFFFFFFFF;   // max(uint32_t) is used for RxContinuous
+  modeCfg.receive.syncSymbols = 0;        // disable preamble timeout for RxContinuous
+
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
 
@@ -1786,57 +1779,48 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
 
   // open RxC window by starting receive with specified timeout
   state = this->phyLayer->launchMode();
-  RadioLibTime_t tOpen = mod->hal->millis();
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opened RxC window");
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window open");
 
-  if(timeout) {
+  if(tWindowEnd) {
     // wait for the DIO interrupt to fire (RxDone or RxTimeout)
-    while(!downlinkAction && mod->hal->millis() - tOpen <= timeout) {
+    while(!downlinkAction && mod->hal->millis() < tWindowEnd) {
       mod->hal->yield();
     }
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closed RxC window");
+    RadioLibTime_t tClose = mod->hal->millis();
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window closed");
 
-    // check IRQ bit for RxTimeout
-    int16_t timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
-    if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
-      return(timedOut);
-    }
-
-    // if the IRQ bit for RxTimeout is set, put chip in standby and return
-    if(timedOut) {
-      this->phyLayer->clearPacketReceivedAction();
-      this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
-      this->phyLayer->standby();
-      if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
-        mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
-      }
-      return(0);  // no downlink
-    }
-
-    // update time of downlink reception
-    if(downlinkAction) {
-      this->tDownlink = mod->hal->millis();
-    }
-
-    // we have a message, clear actions, go to standby
     this->phyLayer->clearPacketReceivedAction();
     this->phyLayer->standby();
     if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
       mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
     }
 
+    // check IRQ bit for RxTimeout
+    int16_t timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
+    if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
+      return(timedOut);
+    }
+    
+    // if the IRQ bit for RxTimeout is set, put chip in standby and return
+    if(timedOut) {
+      this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
+      return(0);  // no downlink
+    }
+    
     // if all windows passed without receiving anything, return 0 for no window
     if(!downlinkAction) {
       return(0);
     }
     downlinkAction = false;
 
+    // update time of downlink reception
+    this->tDownlink = tClose;
+
     // Any frame received by an end-device containing a MACPayload greater than 
     // the specified maximum length M over the data rate used to receive the frame 
     // SHALL be silently discarded.
     uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_RX_BC].dr];
-
     if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
       return(0);  // act as if no downlink was received
     }
@@ -1849,12 +1833,10 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t timeout) {
 }
 
 int16_t LoRaWANNode::receiveDownlink() {
-  Module* mod = this->phyLayer->getMod();
-
   // if applicable, open Class C between uplink and Rx1
-  RadioLibTime_t timeoutClassC = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
-                                  mod->hal->millis() - 5*this->scanGuard;
-  int16_t state = this->receiveClassC(timeoutClassC);
+  RadioLibTime_t tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
+                                  5*this->launchDuration - this->scanGuard / 2;
+  int16_t state = this->receiveClassC(tWindowClose);
   RADIOLIB_ASSERT(state);
 
   // open Rx1 window
@@ -1871,9 +1853,9 @@ int16_t LoRaWANNode::receiveDownlink() {
   // we choose to ignore this part of the spec and open Rx2 as specified in v1.0.4
 
   // for LoRaWAN v1.0.4 Class C, there is an RxC window between Rx1 and Rx2
-  timeoutClassC = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
-                                  mod->hal->millis() - 5*this->scanGuard;
-  state = this->receiveClassC(timeoutClassC);
+  tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
+                                  5*this->launchDuration - this->scanGuard / 2;
+  state = this->receiveClassC(tWindowClose);
   RADIOLIB_ASSERT(state);
 
   // open Rx2 window
@@ -1979,7 +1961,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     // (...) it SHALL silently discard the entire frame.
     // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
     if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
-      if(this->lwClass == RADIOLIB_LORAWAN_CLASS_A) { // Class A is good regardless of Rx window
+      if(this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_A) { // Class A is good regardless of Rx window
         ok = true;
       }
       if(window < RADIOLIB_LORAWAN_RX_BC) {           // Rx1 and Rx2 are good regardless of class
@@ -2024,7 +2006,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // (...) it SHALL silently discard the entire frame.
   // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
   // Note: we check Device Class == A because Relay also uses a third Rx window
-  if(fOptsLen > 0 && this->lwClass != RADIOLIB_LORAWAN_CLASS_A && window == RADIOLIB_LORAWAN_RX_BC) {
+  if(fOptsLen > 0 && this->getUnicastClass() != RADIOLIB_LORAWAN_CLASS_A && window == RADIOLIB_LORAWAN_RX_BC) {
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
@@ -2137,7 +2119,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // do some housekeeping for normal Class A downlinks (not allowed for RxB / RxC)
   // this is either in Rx1 or Rx2 for any class, or any Rx window for Class A (including RxR in Relay)
-  if(window < RADIOLIB_LORAWAN_RX_BC || this->lwClass == RADIOLIB_LORAWAN_CLASS_A) {
+  if(window < RADIOLIB_LORAWAN_RX_BC || this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_A) {
 
     // a Class A downlink was received, so restart the ADR counter with the next uplink
     this->adrFCnt = this->getFCntUp() + 1;
@@ -2348,7 +2330,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
 int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaWANEvent_t* eventDown) {
   // only allow if the device is Unicast-C or Multicast-C, otherwise ignore without error
-  if(this->lwClass != RADIOLIB_LORAWAN_CLASS_C && this->getMulticastClass() != RADIOLIB_LORAWAN_CLASS_C) {
+  if(this->getUnicastClass() != RADIOLIB_LORAWAN_CLASS_C && this->getMulticastClass() != RADIOLIB_LORAWAN_CLASS_C) {
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -3192,6 +3174,31 @@ void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t di
   *lenInOut -= numDeleted;
 }
 
+int16_t LoRaWANNode::setBand(const LoRaWANBand_t* band, uint8_t subBand) {
+  // check values
+  if(band == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(subBand > band->txSpans[0].numChannels / 8) {
+    return(RADIOLIB_ERR_INVALID_SUBBAND);
+  }
+
+  // only allow changing the band when there is no session
+  if(this->sessionStatus != RADIOLIB_LORAWAN_SESSION_NONE) {
+    return(RADIOLIB_ERR_INVALID_MODE);
+  }
+
+  // check if anything changed at all
+  if(band->bandNum == this->band->bandNum && subBand == this->subBand) {
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  // set values
+  this->band = band;
+  this->subBand = subBand;
+ return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
   // if called before activation, already create a session
   if(this->sessionStatus == RADIOLIB_LORAWAN_SESSION_NONE) {
@@ -3338,10 +3345,10 @@ void LoRaWANNode::setActivityLeds(const uint32_t pins[4]) {
 void LoRaWANNode::getPersistencePackage(uint8_t pIndex, uint8_t* buff) {
   switch(pIndex) {
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS004): {
-      memcpy(buff, &this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS004], 8);
+      memcpy(buff, &this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS004], 8);
     } break;
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS009): {
-      memcpy(buff, &this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS009], 1);
+      memcpy(buff, &this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS009], 1);
     } break;
     default: {
       // just ignore
@@ -3349,13 +3356,13 @@ void LoRaWANNode::getPersistencePackage(uint8_t pIndex, uint8_t* buff) {
   }
 }
 
-void LoRaWANNode::setPersistencePackage(uint8_t pIndex, uint8_t* buff) {
+void LoRaWANNode::setPersistencePackage(uint8_t pIndex, const uint8_t* buff) {
   switch(pIndex) {
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS004): {
-      memcpy(&this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS004], buff, 8);
+      memcpy(&this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS004], buff, 8);
     } break;
     case(RADIOLIB_LORAWAN_PERSISTENCE_TS009): {
-      memcpy(&this->bufferSession[RADIOLIB_LORAWAN_PERSISTENCE_TS009], buff, 1);
+      memcpy(&this->bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_TS009], buff, 1);
     } break;
     default: {
       // just ignore
@@ -3375,8 +3382,18 @@ const LoRaWANBand_t* LoRaWANNode::getBand() {
   return(this->band);
 }
 
-uint8_t LoRaWANNode::getClass() {
+uint8_t LoRaWANNode::getUnicastClass() {
   return(this->lwClass);
+}
+
+uint8_t LoRaWANNode::getClass() {
+  if(this->getMulticastClass() == RADIOLIB_LORAWAN_CLASS_C) {
+    return(RADIOLIB_LORAWAN_CLASS_C);
+  }
+  if(this->getUnicastClass() == RADIOLIB_LORAWAN_CLASS_C) {
+    return(RADIOLIB_LORAWAN_CLASS_C);
+  }
+  return(RADIOLIB_LORAWAN_CLASS_A);
 }
 
 uint8_t LoRaWANNode::getVersionMajor() {
@@ -3465,10 +3482,10 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       syncWordLen = 3;
       RADIOLIB_DEBUG_PROTOCOL_PRINT("[FSK] BR = ");
       RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->fsk.bitRate, 1);
-      RADIOLIB_DEBUG_PROTOCOL_PRINT(", FD = ");
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG(", FD = ");
       RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG((double)dr->fsk.freqDev, 1);
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" kHz");
-                                      
+
     } break;
 
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
@@ -3840,11 +3857,19 @@ RadioLibTime_t LoRaWANNode::dutyCycleInterval(RadioLibTime_t msPerHour, RadioLib
   return(delayMs);
 }
 
-RadioLibTime_t LoRaWANNode::timeUntilUplink() {
+RadioLibTime_t LoRaWANNode::timeUntilUplink(bool seconds) {
+  if(!this->dutyCycleEnabled) {
+    return(0);
+  }
+
   Module* mod = this->phyLayer->getMod();
   RadioLibTime_t nextUplink = this->tUplinkEnd + dutyCycleInterval(this->dutyCycle, this->lastToA);
-  if(mod->hal->millis() > nextUplink){
+  if(mod->hal->millis() >= nextUplink){
     return(0);
+  }
+
+  if(seconds) {
+    return((nextUplink - mod->hal->millis()) / 1000 + 1);
   }
   return(nextUplink - mod->hal->millis() + 1);
 }
