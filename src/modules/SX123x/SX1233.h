@@ -38,27 +38,14 @@ class SX1233: public SX1231  {
     int16_t begin(const ConfigFSK_t& config) override;
 
     /*!
-      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
-      \brief Initialization method.
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
-      \param power Output power in dBm. Defaults to 10 dBm.
-      \param preambleLen Preamble Length in bits. Defaults to 16 bits.
-      \returns \ref status_codes
-    */
-    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16) override;
-
-    /*!
-      \brief Sets bit rate. Allowed values range from 0.5 to 300.0 kbps.
+      \brief Sets bit rate. Allowed values range from 500 bps to 300 kbps.
       SX1233 also allows 500 kbps and 600 kbps operation.
       NOTE: For 500 kbps rate, the receiver frequency should be offset by 50 kHz from the transmitter.
             For 600 kbps rate, the receiver frequency should be offset by 40 kHz from the transmitter.
-      \param br Bit rate to be set in kbps.
+      \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) /*override*/;
 
 #if !RADIOLIB_GODMODE
   private:
