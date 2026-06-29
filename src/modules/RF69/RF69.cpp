@@ -92,17 +92,6 @@ int16_t RF69::begin(const ConfigFSK_t& cfg) {
   return(state);
 }
 
-int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLen) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = pwr;
-  cfg.preambleLength = preambleLen;
-  return(this->begin(cfg));
-}
-
 void RF69::reset() {
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelHigh);
@@ -538,29 +527,32 @@ int16_t RF69::setOokPeakThresholdDecrement(uint8_t value) {
   return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OOK_PEAK, value, 2, 0, 5));
 }
 
-int16_t RF69::setFrequency(float freq) {
+int16_t RF69::setFrequency(uint32_t freq) {
   // check allowed frequency range
-  if(!(((freq > 290.0f) && (freq < 340.0f)) ||
-       ((freq > 431.0f) && (freq < 510.0f)) ||
-       ((freq > 862.0f) && (freq < 1020.0f)))) {
-    return(RADIOLIB_ERR_INVALID_FREQUENCY);
+  #if RADIOLIB_CHECK_PARAMS
+  if(!(((freq >= RADIOLIB_UNIT_MEGA(290)) && (freq <= RADIOLIB_UNIT_MEGA(340))) ||
+    ((freq >= RADIOLIB_UNIT_MEGA(431)) && (freq <= RADIOLIB_UNIT_MEGA(510))) ||
+    ((freq >= RADIOLIB_UNIT_MEGA(862)) && (freq <= RADIOLIB_UNIT_MEGA(1020))))) {
+      return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
+  #endif
 
   // set mode to standby
   setMode(RADIOLIB_RF69_STANDBY);
 
-  //set carrier frequency
-  //FRF(23:0) = freq / Fstep = freq * (1 / Fstep) = freq * (2^19 / 32.0) (pag. 17 of datasheet) 
-  uint32_t FRF = (freq * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_RF69_CRYSTAL_FREQ;
+  // set carrier frequency
+  // FRF(23:0) = freq / Fstep = freq * (1 / Fstep) = freq * (2^19 / 32.0) (page 17 of datasheet) 
+  // this has to use 64-bit ints to not overflow
+  uint32_t FRF = ((uint64_t)freq * (uint64_t)((uint64_t)1 << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ);
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FRF_LSB, FRF & 0x0000FF);
-
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t RF69::getFrequency(float *freq) {
-  uint32_t FRF = 0;
+int16_t RF69::getFrequency(uint32_t *freq) {
+  RADIOLIB_ASSERT_PTR(freq);
+  uint64_t FRF = 0;
 
   //FRF(23:0) = [     [FRF_MSB]|[FRF_MID]|[FRF_LSB]]
   //FRF(32:0) = [0x00|[FRF_MSB]|[FRF_MID]|[FRF_LSB]]
@@ -569,17 +561,16 @@ int16_t RF69::getFrequency(float *freq) {
   FRF |= (((uint32_t)(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_FRF_LSB, 7, 0)) <<  0) & 0x000000FF);
 
   //freq = Fstep * FRF(23:0) = (32.0 / 2^19) * FRF(23:0) (pag. 17 of datasheet) 
-  *freq = FRF * ( RADIOLIB_RF69_CRYSTAL_FREQ / (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT) );
-
+  *freq = (FRF * RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ)) / (uint64_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t RF69::setBitRate(float br) {
+int16_t RF69::setBitRate(uint32_t br) {
   // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine
-  RADIOLIB_CHECK_RANGE(br, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+  RADIOLIB_CHECK_RANGE(br, 500, RADIOLIB_UNIT_KILO(300), RADIOLIB_ERR_INVALID_BIT_RATE);
 
   // check bitrate-bandwidth ratio
-  if(!(br < 2000 * this->rxBandwidth)) {
+  if(!(br < 2 * this->rxBandwidth)) {
     return(RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO);
   }
 
@@ -587,7 +578,7 @@ int16_t RF69::setBitRate(float br) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set bit rate
-  uint16_t bitRateRaw = 32000 / br;
+  uint32_t bitRateRaw = RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ) / br;
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRateRaw & 0xFF00) >> 8, 7, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRateRaw & 0x00FF, 7, 0);
   if(state == RADIOLIB_ERR_NONE) {
@@ -596,65 +587,72 @@ int16_t RF69::setBitRate(float br) {
   return(state);
 }
 
-int16_t RF69::setRxBandwidth(float rxBw) {
+int16_t RF69::setRxBandwidth(uint32_t rxBw) {
+  RADIOLIB_CHECK_RANGE(rxBw, RADIOLIB_UNIT_KILO(58), RADIOLIB_UNIT_KILO(812), RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
   // check bitrate-bandwidth ratio
-  if(!(this->bitRate < 2000 * rxBw)) {
+  if(!(this->bitRate < 2 * rxBw)) {
     return(RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO);
-  }
-
-  // set mode to standby
-  int16_t state = setMode(RADIOLIB_RF69_STANDBY);
-  RADIOLIB_ASSERT(state);
-
-  // calculate exponent and mantissa values for receiver bandwidth
-  for(int8_t e = 7; e >= 0; e--) {
-    for(int8_t m = 2; m >= 0; m--) {
-      float point = (RADIOLIB_RF69_CRYSTAL_FREQ * 1000000.0f)/(((4 * m) + 16) * ((uint32_t)1 << (e + (this->ookEnabled ? 3 : 2))));
-      if(fabsf(rxBw - (point / 1000.0f)) <= 0.1f) {
-        // set Rx bandwidth
-        state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, (m << 3) | e, 4, 0);
-        if(state == RADIOLIB_ERR_NONE) {
-          this->rxBandwidth = rxBw;
-        }
-        return(state);
-      }
-    }
-  }
-
-  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-}
-
-int16_t RF69::setFrequencyDeviation(float freqDev) {
-  // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev;
-  if(freqDev < 0.0f) {
-    newFreqDev = 0.6f;
-  }
-
-  // check frequency deviation range
-  if(!((newFreqDev + this->bitRate/2 <= 500))) {
-    return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
   // set mode to standby
   setMode(RADIOLIB_RF69_STANDBY);
 
+  // todo reuse from LRxxxx?
+  const uint32_t rxBwAvg[] = {
+    2850, 3500, 4550, 5750, 7050,
+    9100, 11450, 14050, 18200, 22900,
+    28150, 36500, 45850, 56250, 72900,
+    91650, 112500, 145850, 183350, 225000,
+    291650, 366650, 450000,
+  };
+
+  // iterate through the table and find whether the user-provided value
+  // is lower than the pre-computed average of the adjacent bandwidth values
+  // if it is, we consider that to be a match even though the actual value is not precise
+  int16_t state;
+  for(size_t i = 0; i < sizeof(rxBwAvg)/sizeof(rxBwAvg[0]); i++) {
+    if(rxBw < rxBwAvg[i]) {
+      uint8_t e = 7 - i / 3;
+      uint8_t m = 2 - i % 3;
+      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, (m << 3) | e, 4, 0);
+      if(state == RADIOLIB_ERR_NONE) {
+        this->rxBandwidth = rxBw;
+      }
+      return(state);
+    }
+  }
+
+  // if nothing matched up to here, match with the last value
+  if(rxBw <= RADIOLIB_UNIT_KILO(500)) {
+    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, 0, 4, 0);
+    if(state == RADIOLIB_ERR_NONE) {
+      this->rxBandwidth = rxBw;
+    }
+    return(state);
+  }
+
+  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+}
+
+int16_t RF69::setFrequencyDeviation(uint32_t freqDev) {
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev ? freqDev : 600;
+
+  // set mode to standby
+  setMode(RADIOLIB_RF69_STANDBY);
+
   // set frequency deviation from carrier frequency
-  uint32_t fdev = (newFreqDev * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / 32000;
+  uint32_t fdev = (newFreqDev * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ);
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FDEV_MSB, (fdev & 0xFF00) >> 8, 5, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FDEV_LSB, fdev & 0x00FF, 7, 0);
-
   return(state);
 }
 
-int16_t RF69::getFrequencyDeviation(float *freqDev) {
-  if(freqDev == NULL) {
-    return(RADIOLIB_ERR_NULL_POINTER);
-  }
+int16_t RF69::getFrequencyDeviation(uint32_t *freqDev) {
+  RADIOLIB_ASSERT_PTR(freqDev);
 
   if(this->ookEnabled) {
-    *freqDev = 0.0;
-    
+    *freqDev = 0;
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -665,9 +663,7 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
 
   // calculate frequency deviation from raw value obtained from register 
   // Fdev = Fstep * Fdev(13:0) (pag. 20 of datasheet)
-  *freqDev = (1000.0f * fdev * RADIOLIB_RF69_CRYSTAL_FREQ) / 
-    (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
-
+  *freqDev = (fdev * RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ)) / (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
   return(RADIOLIB_ERR_NONE);
 }
 
