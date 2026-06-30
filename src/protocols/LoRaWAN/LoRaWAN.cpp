@@ -1470,6 +1470,12 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
     }
   }
 
+#if RADIOLIB_DEBUG_PROTOCOL
+  memcpy(&out[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)], in, lenIn);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %lu) plain:", (unsigned long)this->fCntUp);
+  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(&out[RADIOLIB_AES128_BLOCK_SIZE], 13 + lenIn + this->fOptsUpLen);
+#endif
+
   // select encryption key based on the target fPort
   uint8_t* encKey = this->appSKey;
   if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
@@ -1499,9 +1505,6 @@ void LoRaWANNode::micUplink(uint8_t* inOut, size_t lenInOut) {
   }
   block1[RADIOLIB_LORAWAN_MIC_DATA_RATE_POS] = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
   block1[RADIOLIB_LORAWAN_MIC_CH_INDEX_POS] = this->channels[RADIOLIB_LORAWAN_UPLINK].idx;
-  
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %lu) encoded:", (unsigned long)this->fCntUp);
-  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(inOut, lenInOut);
 
   // calculate authentication codes
   memcpy(inOut, block1, RADIOLIB_AES128_BLOCK_SIZE);
