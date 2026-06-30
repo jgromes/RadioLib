@@ -43,7 +43,7 @@ int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   // convert endians
   if(data && (state == RADIOLIB_ERR_NONE)) {
     for(size_t i = 0; i < len; i++) {
-      data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
+      data[i] = ((uint32_t)rplBuff[i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[1 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[3 + i*sizeof(uint32_t)];
     }
   }
 
