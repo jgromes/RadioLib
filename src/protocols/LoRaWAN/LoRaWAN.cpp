@@ -1628,6 +1628,10 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
   RadioLibTime_t toaMaxUs = this->phyLayer->getTimeOnAir(maxPayLen + 13);
 
+  RadioLibTime_t minWidth = 10;
+  // pad the Rx window with a 1ms drift per 1s delay, plus user-applied offset
+  RadioLibTime_t padding = 1 + dlDelay / 1000 + this->scanGuardA;
+
   // set the radio Rx parameters
   RadioModeConfig_t modeCfg;
   modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
@@ -1636,19 +1640,23 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   modeCfg.receive.syncSymbols = 0;
   modeCfg.receive.timeout = 0;
   
-  // for LoRa, use at least 6 symbols and at least 16ms
+  // for LoRa, expect a signal within 6 symbols as timeout
   ModemType_t modem = this->band->dataRates[currentDr].modem;
   if(modem == RADIOLIB_MODEM_LORA) {
     const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
     uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000) / dr->lora.bandwidth;
-    if(6 * tSymbUs > (16 + this->scanGuard) * 1000) {
+    if(6 * tSymbUs > (minWidth + padding) * 1000) {
       modeCfg.receive.syncSymbols = 6;
     } else {
-      modeCfg.receive.syncSymbols = ((16 + this->scanGuard) * 1000) / tSymbUs + 1;
+      modeCfg.receive.syncSymbols = ((minWidth + padding) * 1000) / tSymbUs + 1;
     }
     modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs * 1.1);
+  
+  // for FSK, there is no timeout register, so we just use software timeout
+  // as FSK is bloody fast, apply some padding to make sure we are on time
+  } else if(modem == RADIOLIB_MODEM_FSK) {
+    padding += 4;
   }
-  // for FSK, there is no timeout register, so we just use the 16ms software timeout
 
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
@@ -1659,8 +1667,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 
   // calculate time at which the window should open
   // - the launch of Rx window takes a few milliseconds, so compensate for that (launchDuration)
-  // - the Rx window is padded using scanGuard, so compensate for that (scanGuard / 2)
-  RadioLibTime_t tWindowOpen = tReference + dlDelay - this->launchDuration - this->scanGuard / 2;
+  // - the Rx window is padded, so compensate for that (padding / 2)
+  RadioLibTime_t tWindowOpen = tReference + dlDelay - this->launchDuration - padding / 2;
 
   Module* mod = this->phyLayer->getMod();
   RadioLibTime_t tNow = mod->hal->millis();
@@ -1680,7 +1688,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols / %lu ticks + %dms)", 
-                                  window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, this->scanGuard);
+                                  window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, padding);
   
   // enable the LED if used
   if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
@@ -1690,7 +1698,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // use a software window length of minimum 16ms (regardless of modulation) up to max time-on-air
   // add an 11% padding to the maximum time on air to give some slack for the interrupt
   RadioLibTime_t windowLength = RADIOLIB_MAX(16, toaMaxUs / 900);
-  RadioLibTime_t tWindowClose = tWindowOpen + windowLength + this->scanGuard;
+  RadioLibTime_t tWindowClose = tWindowOpen + windowLength + padding;
 
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
   // apply 2ms padding in case the RxTimeout interrupt is slow to fire
@@ -1843,8 +1851,7 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
 
 int16_t LoRaWANNode::receiveDownlink() {
   // if applicable, open Class C between uplink and Rx1
-  RadioLibTime_t tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - \
-                                  5*this->launchDuration - this->scanGuard / 2;
+  RadioLibTime_t tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX1] - this->scanGuardC;
   int16_t state = this->receiveClassC(tWindowClose);
   RADIOLIB_ASSERT(state);
 
@@ -1862,8 +1869,7 @@ int16_t LoRaWANNode::receiveDownlink() {
   // we choose to ignore this part of the spec and open Rx2 as specified in v1.0.4
 
   // for LoRaWAN v1.0.4 Class C, there is an RxC window between Rx1 and Rx2
-  tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - \
-                                  5*this->launchDuration - this->scanGuard / 2;
+  tWindowClose = this->tUplinkEnd + this->rxDelays[RADIOLIB_LORAWAN_RX2] - this->scanGuardC;
   state = this->receiveClassC(tWindowClose);
   RADIOLIB_ASSERT(state);
 
