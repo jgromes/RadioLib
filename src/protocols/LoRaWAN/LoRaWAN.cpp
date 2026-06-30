@@ -208,6 +208,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
       delete[] uplinkMsg;
       delete[] frmPayload;
       #endif
+      this->tDone = mod->hal->millis();
       return(state);
     }
 
@@ -266,6 +267,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   // if a hardware error occurred, return
   if(state < RADIOLIB_ERR_NONE) {
     this->saveSessionBuffer();
+    this->tDone = mod->hal->millis();
     return(state);
   }
 
@@ -280,18 +282,22 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     // remove only non-persistent MAC commands, the other commands should be re-sent until downlink is received
     LoRaWANNode::clearMacCommands(this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
     this->saveSessionBuffer();
+    this->tDone = mod->hal->millis();
     return(rxWindow);
   }
   
   // parse the contents - if there is a parsing error, silently drop it
   state = this->parseDownlink(dataDown, lenDown, rxWindow, eventDown);
+  this->tDone = mod->hal->millis();
   RADIOLIB_ASSERT(state);
 
   // parsed all nicely, save the buffer
   this->saveSessionBuffer();
 
   // open RxC window (this returns if not applicable)
-  this->receiveClassC();
+  state = this->receiveClassC();
+  this->tDone = mod->hal->millis();
+  RADIOLIB_ASSERT(state);
   
   // return Rx window (which is > 0)
   return(rxWindow);
@@ -3433,6 +3439,13 @@ uint32_t LoRaWANNode::getDevAddr() {
 
 RadioLibTime_t LoRaWANNode::getLastToA() {
   return(this->lastToA);
+}
+
+RadioLibTime_t LoRaWANNode::getLastDuration(bool seconds) {
+  if(seconds) {
+    return((this->tDone - this->tUplink) / 1000);
+  }
+  return(this->tDone - this->tUplink);
 }
 
 uint8_t LoRaWANNode::getMacUplinkLen() {

@@ -959,6 +959,20 @@ class LoRaWANNode {
     RadioLibTime_t getLastToA();
 
     /*!
+      \brief Get the duration of the last uplink/downlink cycle.
+      \param seconds Set to true to get time in seconds (rounded down).
+      \return Duration of last sendReceive call (default unit: milliseconds).
+    */
+    RadioLibTime_t getLastDuration(bool seconds = false);
+    
+    /*! 
+      \brief Calculate the time until next uplink is available under dutyCycle limits.
+      \param seconds Set to true to get time in seconds instead of milliseconds (rounded up).
+      \returns Time until next uplink (default unit: milliseconds).
+    */
+    RadioLibTime_t timeUntilUplink(bool seconds = false);
+
+    /*!
       \brief Get the length of the pending MAC uplink payload
       \returns Number of bytes of MAC uplink payload
     */
@@ -972,13 +986,6 @@ class LoRaWANNode {
       \returns Required interval (delay) in milliseconds between consecutive uplinks.
     */
     RadioLibTime_t dutyCycleInterval(RadioLibTime_t msPerHour, RadioLibTime_t airtime);
-
-    /*! 
-      \brief Calculate the time until next uplink is available under dutyCycle limits.
-      \param seconds Set to true to get time in seconds instead of milliseconds.
-      \returns Time until next uplink (default unit: milliseconds).
-    */
-    RadioLibTime_t timeUntilUplink(bool seconds = false);
 
     /*! 
       \brief Returns the maximum allowed uplink payload size given the current MAC state.
@@ -1097,6 +1104,7 @@ class LoRaWANNode {
 
     RadioLibTime_t tUplink = 0;   // scheduled uplink transmission time (internal clock)
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
+    RadioLibTime_t tDone = 0;     // track time spent during sendReceive
 
     // multicast groups
     MulticastGroup_t mcGroups[RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS];
