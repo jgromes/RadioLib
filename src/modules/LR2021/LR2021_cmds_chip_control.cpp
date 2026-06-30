@@ -52,17 +52,17 @@ int16_t LR2021::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   // build buffers - later we need to ensure endians are correct, 
   // so there is probably no way to do this without copying buffers and iterating
   #if RADIOLIB_STATIC_ONLY
-    uint8_t rplBuff[RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN];
+    uint32_t rplBuff[RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN / sizeof(uint32_t)];
   #else
-    uint8_t* rplBuff = new uint8_t[len*sizeof(uint32_t)];
+    uint32_t* rplBuff = new uint32_t[len];
   #endif
 
-  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_READ_REG_MEM_32, false, rplBuff, len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_READ_REG_MEM_32, false, (uint8_t*) rplBuff, len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
 
   // convert endians
   if(data && (state == RADIOLIB_ERR_NONE)) {
     for(size_t i = 0; i < len; i++) {
-      data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
+      data[i] = __builtin_bswap32(rplBuff[i]);
     }
   }
 
