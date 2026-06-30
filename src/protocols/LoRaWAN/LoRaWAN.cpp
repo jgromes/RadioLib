@@ -2679,9 +2679,14 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         // downlink channel is identical to uplink channel
         this->dynamicChannels[RADIOLIB_LORAWAN_DOWNLINK][macChIndex] = this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][macChIndex];
   
-        // add the new channel
+        // add the new channel to the mask with defined channels
         this->channelMasks[0] |= (0x0001 << macChIndex);
-        this->channelFlags[0] |= (0x0001 << macChIndex);
+
+        // "The newly defined or modified channel is enabled and can be used immediately for communication."
+        // but this is only the case if it is available for the current datarate of course
+        if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr >= macDrMin && this->channels[RADIOLIB_LORAWAN_UPLINK].dr <= macDrMax) {
+          this->channelFlags[0] |= (0x0001 << macChIndex);
+        }
       } else {
         this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][macChIndex] = RADIOLIB_LORAWAN_CHANNEL_NONE;
         this->dynamicChannels[RADIOLIB_LORAWAN_DOWNLINK][macChIndex] = RADIOLIB_LORAWAN_CHANNEL_NONE;
