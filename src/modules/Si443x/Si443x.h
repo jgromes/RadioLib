@@ -10,6 +10,7 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // Si443x physical layer properties
+#define RADIOLIB_SI443X_CRYSTAL_FREQ                            10.0f
 #define RADIOLIB_SI443X_FREQUENCY_STEP_SIZE                     156.25
 #define RADIOLIB_SI443X_MAX_PACKET_LENGTH                       64
 
@@ -570,13 +571,13 @@ class Si443x: public PhysicalLayer {
 
     /*!
       \brief Initialization method.
-      \param br Bit rate of the FSK transmission in kbps (kilobits per second).
-      \param freqDev Frequency deviation of the FSK transmission in kHz.
-      \param rxBw Receiver bandwidth in kHz.
-      \param preambleLen Preamble Length in bits.
+      \param br Bit rate of the FSK transmission in bps.
+      \param freqDev Frequency deviation of the FSK transmission in Hz.
+      \param rxBw Receiver bandwidth in Hz.
+      \param preambleLen Preamble length in bits.
       \returns \ref status_codes
     */
-    int16_t begin(float br, float freqDev, float rxBw, uint8_t preambleLen);
+    int16_t begin(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint8_t preambleLen);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using SDN pin.
@@ -717,25 +718,25 @@ class Si443x: public PhysicalLayer {
     // configuration methods
 
     /*!
-      \brief Sets FSK bit rate. Allowed values range from 0.123 to 256.0 kbps.
-      \param br Bit rate to be set (in kbps).
+      \brief Sets FSK bit rate. Allowed values range from 123 bps to 256 kbps.
+      \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) /*override*/;
 
     /*!
-      \brief Sets FSK frequency deviation from carrier frequency. Allowed values range from 0.625 to 320.0 kHz.
-      \param freqDev Frequency deviation to be set (in kHz).
+      \brief Sets FSK frequency deviation from carrier frequency. Allowed values range from 625 Hz to 320 kHz.
+      \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
 
     /*!
       \brief Sets receiver bandwidth. Allowed values range from 2.6 to 620.7 kHz.
-      \param rxBw Receiver bandwidth to be set in kHz.
+      \param rxBw Receiver bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
 
     /*!
       \brief Sets sync word. Up to 4 bytes can be set as sync word.
@@ -849,16 +850,16 @@ class Si443x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-    int16_t setFrequencyRaw(float newFreq);
+    int16_t setFrequencyRaw(uint32_t newFreq);
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
     Module* mod;
 
-    float bitRate = 0;
-    float frequencyDev = 0;
-    float frequency = 0;
+    uint32_t bitRate = 0;
+    uint32_t frequencyDev = 0;
+    uint32_t frequency = 0;
 
     size_t packetLength = 0;
     bool packetLengthQueried = false;
