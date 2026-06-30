@@ -57,7 +57,7 @@ int16_t LR2021::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
     uint32_t* rplBuff = new uint32_t[len];
   #endif
 
-  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_READ_REG_MEM_32, false, (uint8_t*) rplBuff, len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_READ_REG_MEM_32, false, reinterpret_cast<uint8_t*>(rplBuff), len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
 
   // convert endians
   if(data && (state == RADIOLIB_ERR_NONE)) {
