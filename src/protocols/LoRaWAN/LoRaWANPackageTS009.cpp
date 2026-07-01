@@ -5,22 +5,25 @@
 #include "LoRaWANPackageTS009.h"
 #include <string.h>
 
-LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb)
-  : LoRaWANPackage(RADIOLIB_LORAWAN_PACKAGE_TS009, pacMan, node, secondsCb),
-    radioModule(NULL), delaySecondsCallback(NULL), uplinkIntervalCallback(NULL), rebootCallback(NULL) {
+LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, RadioLibHal* hal, LoRaWANNode* node, GetSecondsCb_t secondsCb)
+  : LoRaWANPackage(RADIOLIB_LORAWAN_PACKAGE_TS009, pacMan, hal, node, secondsCb),
+    radio(NULL), delaySecondsCallback(NULL), uplinkIntervalCallback(NULL), confirmedCallback(NULL), rebootCallback(NULL) {
   this->packageVersion = 1;
+
+  // retrieve whether the package is allowed to be enabled
+  this->lorawanNode->getPersistencePackage(RADIOLIB_LORAWAN_PERSISTENCE_TS009, &this->enabled);
+  if(!this->enabled) {
+    return;
+  }
 
   // default configuration for certification testing
   this->lorawanNode->setDatarate(5);
   this->lorawanNode->setADR(false);
   this->lorawanNode->setDutyCycle(true, 3600000);
-
-  // LCTT has terrible timing
-  this->lorawanNode->scanGuard = 150;
 }
 
 void LoRaWANPackageTS009::setPhysicalLayer(PhysicalLayer* radio) {
-  this->radioModule = radio;
+  this->radio = radio;
 }
 
 void LoRaWANPackageTS009::setDelaySecondsCallback(DelaySecondsCb_t delayCb) {
@@ -31,31 +34,32 @@ void LoRaWANPackageTS009::setUplinkIntervalCallback(UplinkIntervalCb_t intervalC
   this->uplinkIntervalCallback = intervalCb;
 }
 
+void LoRaWANPackageTS009::setConfirmedCallback(ConfirmedCb_t confirmedCb) {
+  this->confirmedCallback = confirmedCb;
+}
+
 void LoRaWANPackageTS009::setRebootCallback(RebootCb_t rebootCb) {
   this->rebootCallback = rebootCb;
 }
 
-bool LoRaWANPackageTS009::getConfirmed() {
-  return(this->confirmed);
-}
-
-size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown, LoRaWANEvent_t* event) {
+size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown, uint8_t* dataOut, size_t* lenOut, LoRaWANEvent_t* event) {
   (void)event;
-  if(lenDown == 0 || dataDown == NULL) {
+  *lenOut = 0;
+  if(!this->enabled || lenDown == 0 || dataDown == NULL) {
     return(0);
   }
 
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TS009 CID = 0x%02x, len = %d", dataDown[0], lenDown - 1);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("CID = 0x%02x, len = %d", dataDown[0], lenDown - 1);
 
-  this->lenUp = 0;
+  size_t len = 0;
 
   switch(dataDown[0]) {
     case(RADIOLIB_LORAWAN_TS009_PACKAGE_VERSION): {
-      this->lenUp = 3;
-      this->dataUp[1] = RADIOLIB_LORAWAN_PACKAGE_TS009;
-      this->dataUp[2] = 1;
+      len = 3;
+      dataOut[1] = RADIOLIB_LORAWAN_PACKAGE_TS009;
+      dataOut[2] = 1;
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PackageIdentifier: %d, PackageVersion: %d", 
-                              this->dataUp[1], this->dataUp[2]);
+                                      dataOut[1], dataOut[2]);
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_DUT_RESET): {
@@ -78,7 +82,7 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
         uint8_t classType = dataDown[1];
         if(this->lorawanNode) {
           this->lorawanNode->setClass(classType);
-          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Switching to class: %s", (classType == 0) ? "A" : (classType == 1 ? "B" : "C"));
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Switching to Class %c", "ABC"[classType]);
         }
       }
     } break;
@@ -121,11 +125,15 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
       if(lenDown > 1) {
         switch(dataDown[1]) {
           case 1:
-            this->confirmed = false;
+            if(this->confirmedCallback) {
+              this->confirmedCallback(false);
+            }
             RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX Frames: Unconfirmed");
             break;
           case 2:
-            this->confirmed = true;
+            if(this->confirmedCallback) {
+              this->confirmedCallback(true);
+            }
             RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX Frames: Confirmed");
             break;
           default:
@@ -137,23 +145,23 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
     case(RADIOLIB_LORAWAN_TS009_ECHO_PAYLOAD): {
       if(lenDown > 1) {
         for(size_t i = 1; i < lenDown; i++) {
-          this->dataUp[i] = dataDown[i] + 1;
+          dataOut[i] = dataDown[i] + 1;
         }
         // clip to maximum payload size
-        this->lenUp = RADIOLIB_MIN(lenDown, this->lorawanNode->getMaxPayloadLen());
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Echoing %d bytes with increment", this->lenUp - 1);
+        len = RADIOLIB_MIN(lenDown, this->lorawanNode->getMaxPayloadLen());
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Echoing %d bytes with increment", len - 1);
       }
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_RX_APP_CNT): {
       if(this->lorawanNode) {
-        this->lenUp = 3;
+        len = 3;
         uint16_t aFcntDown16 = (uint16_t)this->lorawanNode->getRxFCnt();
         for(uint8_t i = 0; i < RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS; i++) {
           aFcntDown16 += (uint16_t)this->lorawanNode->getRxFCntMulticast(i);
         }
-        this->dataUp[1] = aFcntDown16 & 0xFF;
-        this->dataUp[2] = aFcntDown16 >> 8;
+        dataOut[1] = aFcntDown16 & 0xFF;
+        dataOut[2] = aFcntDown16 >> 8;
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("aFCntDown16: %d", aFcntDown16);
       }
     } break;
@@ -176,12 +184,22 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
       }
     } break;
 
-    case(RADIOLIB_LORAWAN_TS009_PING_SLOT_INFO): {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PingSlotInfo not implemented");
+    case(RADIOLIB_LORAWAN_TS009_FRAG_SESSION_CNT): {
+      if(this->lorawanNode) {
+        uint8_t nonceBuf[8];
+        this->lorawanNode->getPersistencePackage(RADIOLIB_LORAWAN_PERSISTENCE_TS004, nonceBuf);
+        uint8_t fragIndex = dataDown[1] & 0x03;
+        len = 4;
+        dataOut[1] = fragIndex;
+        dataOut[2] = nonceBuf[fragIndex * 2];
+        dataOut[3] = nonceBuf[fragIndex * 2 + 1];
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("FragSession index: %d, Cnt: %d", fragIndex, 
+                                        (nonceBuf[fragIndex * 2 + 1] << 8) | nonceBuf[fragIndex * 2]);
+      }
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_TX_CW): {
-      if(lenDown > 6 && this->radioModule) {
+      if(lenDown > 6 && this->radio) {
         uint16_t timeout = ((uint16_t)dataDown[2] << 8) | (uint16_t)dataDown[1];
         uint32_t freqRaw = ((uint32_t)dataDown[5] << 16) | ((uint32_t)dataDown[4] << 8) | 
                            ((uint32_t)dataDown[3]);
@@ -190,42 +208,47 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
 
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %7.3f MHz, %d dBm, %d s", freq, txPower, timeout);
 
-        this->radioModule->setFrequency(freq);
-        this->radioModule->setOutputPower(txPower);
-        this->radioModule->transmitDirect();
+        this->radio->setFrequency(freq);
+        this->radio->setOutputPower(txPower);
+        this->radio->transmitDirect();
         this->delaySecondsCallback(timeout);
-        this->radioModule->standby();
+        this->radio->standby();
       }
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_DUT_FPORT224_DISABLE): {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Disabling package");
       this->enabled = false;
+      const uint8_t* flag = &this->enabled;
+      this->lorawanNode->setPersistencePackage(RADIOLIB_LORAWAN_PERSISTENCE_TS009, flag);
+      
+      // give flash saving some time before rebooting
+      this->hal->delay(100);
       this->reboot();
 
     } break;
 
     case(RADIOLIB_LORAWAN_TS009_DUT_VERSIONS): {
-      this->lenUp = 13;
-      this->dataUp[1] = RADIOLIB_VERSION_MAJOR;
-      this->dataUp[2] = RADIOLIB_VERSION_MINOR;
-      this->dataUp[3] = RADIOLIB_VERSION_PATCH;
-      this->dataUp[4] = RADIOLIB_VERSION_EXTRA;
+      len = 13;
+      dataOut[1] = RADIOLIB_VERSION_MAJOR;
+      dataOut[2] = RADIOLIB_VERSION_MINOR;
+      dataOut[3] = RADIOLIB_VERSION_PATCH;
+      dataOut[4] = RADIOLIB_VERSION_EXTRA;
 
-      this->dataUp[5] = 1;
+      dataOut[5] = 1;
 #if (LORAWAN_VERSION == 1)
-      this->dataUp[6] = 1;
-      this->dataUp[7] = 0;
+      dataOut[6] = 1;
+      dataOut[7] = 0;
 #else
-      this->dataUp[6] = 0;
-      this->dataUp[7] = 4;
+      dataOut[6] = 0;
+      dataOut[7] = 4;
 #endif
-      this->dataUp[8] = 0;
+      dataOut[8] = 0;
 
-      this->dataUp[9] = 1;
-      this->dataUp[10] = 0;
-      this->dataUp[11] = 4;
-      this->dataUp[12] = 0;
+      dataOut[9] = 1;
+      dataOut[10] = 0;
+      dataOut[11] = 4;
+      dataOut[12] = 0;
 
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Device versions requested");
     } break;
@@ -236,10 +259,11 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
   }
 
   // if data was set, copy the command ID
-  if(this->lenUp > 0) {
-    this->dataUp[0] = dataDown[0];
+  if(len > 0) {
+    dataOut[0] = dataDown[0];
   }
 
+  *lenOut = len;
   return(lenDown);
 }
 
