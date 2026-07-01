@@ -9,6 +9,11 @@
   #include <SPI.h>
 #endif
 
+// Keep this SubGhz include here to fix Platformio LDO (#718).
+#if defined(STM32WLxx)
+  #include <SubGhz.h>
+#endif
+
 /*!
   \def END_OF_MODE_TABLE Value to use as the last element in a mode table to indicate the
   end of the table. See \ref setRfSwitchTable for details.
