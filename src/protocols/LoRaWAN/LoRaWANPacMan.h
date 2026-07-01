@@ -66,10 +66,8 @@ class LoRaWANPackage {
 
     /*!
       \brief Execute any scheduled task that is due now and report when this package
-      next needs servicing. This performs scheduling decisions and side effects only;
-      it must NOT build uplink payload bytes nor advance transmit state. When an uplink
-      is due now it reports so via uplinkDue; the bytes are produced later by
-      buildUplink() at the actual moment of transmission.
+      next needs servicing. When an uplink is due now it reports so via uplinkDue; 
+      the bytes are produced later by buildUplink() at the actual moment of transmission.
       \param tNext Pointer that receives the time of the next task.
       \param uplinkDue Pointer set to true if an uplink is ready to be sent now.
       \returns true if the package has a pending or scheduled task, false otherwise
@@ -78,8 +76,7 @@ class LoRaWANPackage {
 
     /*!
       \brief Build the uplink that handleTask() reported as due, at the moment of
-      transmission, and advance the package's transmit schedule. Capturing time-
-      sensitive data (e.g. timestamps) here keeps it fresh despite dutycycle delays.
+      transmission, and advance the package's transmit schedule.
       \param dataOut Pointer to the manager's answer buffer (write uplink here)
       \returns Number of uplink bytes written (0 if nothing to send)
     */
@@ -187,9 +184,9 @@ class LoRaWANPackageManager {
 
     /*!
       \brief Execute any due tasks across all packages and report when the manager
-      next needs servicing. Returns at the first package reporting an uplink due now.
+      next needs servicing.
       \param tNext Pointer that receives the relative time (in seconds) until the
-      next task. Set to 0 if uplink data is ready to be sent now. It includes
+      next task. Returns 0 if uplink data is ready to be sent now. It includes
       dutycycle constraints if applicable.
       \returns true if any package has a pending or scheduled task, false otherwise
     */
@@ -203,19 +200,6 @@ class LoRaWANPackageManager {
       \returns true if data was fetched, false otherwise
     */
     bool getUplinkData(uint8_t* dataOut, size_t* lenOut, uint8_t* fPort);
-
-    /*!
-      \brief Process the TS007 multi-package access package's own commands
-      (PackageVersionReq, DevPackageReq). The MultiPackBufferReq command is handled
-      separately because it must be the single command in a downlink. Parsing stops
-      at the first PackageID field (bit 7 set) or unknown command.
-      \param dataDown Pointer to received command data (PackageID field already stripped)
-      \param lenDown Length of command data
-      \param ansOut Pointer to buffer for the answer bytes
-      \param ansLen Pointer to store answer length
-      \returns Number of bytes consumed from dataDown
-    */
-    size_t processPackageManagerData(const uint8_t* dataDown, size_t lenDown, uint8_t* ansOut, size_t* ansLen);
 
     bool isEnabledFPort(uint8_t fPort) {
       for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
@@ -233,6 +217,10 @@ class LoRaWANPackageManager {
     // Set up transmission of a MultiPackBufferReq answer (TS007 section 4.4).
     // Uses the persistent ANS buffer; sets the transmit cursor or the error flag.
     void handleMultiPackBufferReq(uint8_t startByte, uint8_t stopByte);
+
+    // Process the TS007 multi-package access package's own commands
+    // (PackageVersionReq, DevPackageReq).
+    size_t processPackageManagerData(const uint8_t* dataDown, size_t lenDown, uint8_t* ansOut, size_t* ansLen);
 
     RadioLibHal* hal;
     LoRaWANNode* lorawanNode;
@@ -252,7 +240,7 @@ class LoRaWANPackageManager {
 
     // Persistent TS007 ANS buffer (answers only, no Command Token). Kept in memory for
     // on-demand retransmission via MultiPackBufferReq until a new multi-package command
-    // set is received. Separate from ansBuffer so routine uplinks cannot clobber it.
+    // set is received. Separate from ansBuffer.
     uint8_t ts007Buffer[RADIOLIB_LORAWAN_TS007_ANS_BUFFER_SIZE];
     size_t ts007BufferLen;
     uint8_t commandToken;   // TS007 Command Token to append to FPort 225 uplinks
