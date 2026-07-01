@@ -151,7 +151,7 @@ class LoRaWANPackageManager {
 
     /*!
       \brief Enable TS007 Multi-package Access Control package
-      \returns Status code
+      \returns \ref status_codes
     */
     int16_t enableTS007();
 
