@@ -90,7 +90,7 @@ int16_t LoRaWANPackageManager::enableTS003(uint8_t fPort, SetSecondsCb_t setSeco
 
   // create package if not already created
   if(this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003] == NULL) {
-    this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003] = new LoRaWANPackageTS003(this, this->lorawanNode, this->getSecondsCb);
+    this->packages[RADIOLIB_LORAWAN_PACKAGE_TS003] = new LoRaWANPackageTS003(this, this->hal, this->lorawanNode, this->getSecondsCb);
     this->packagePorts[RADIOLIB_LORAWAN_PACKAGE_TS003] = fPort;
   }
 
