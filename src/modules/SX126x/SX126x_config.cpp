@@ -664,7 +664,9 @@ int16_t SX126x::invertIQ(bool enable) {
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
-  standby();
+  // force RC oscillator - typically this is called on startup,
+  // so we cannot rely on what the user may have provided
+  (void)standby(RADIOLIB_SX126X_STANDBY_RC);
 
   // check RADIOLIB_SX126X_XOSC_START_ERR flag and clear it
   if(getDeviceErrors() & RADIOLIB_SX126X_XOSC_START_ERR) {
