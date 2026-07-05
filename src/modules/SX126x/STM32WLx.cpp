@@ -137,6 +137,38 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
 
+int16_t STM32WLx::checkOutputPower(int8_t power, int8_t* clipped) {
+  // check the user did not request power output that is not possible
+  const Module* mod = this->getMod();
+  bool hp_supported = mod->findRfSwitchMode(MODE_TX_HP);
+  bool lp_supported = mod->findRfSwitchMode(MODE_TX_LP);
+
+  // set PA config based on which PAs are supported
+  if(hp_supported && lp_supported) {
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(22, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -17, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else if(!hp_supported && lp_supported) {
+    // only LP supported
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else if(hp_supported && !lp_supported) {
+    // only HP supported
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    // neither PA is supported
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
   int16_t res = SX126x::clearIrqStatus(clearIrqParams);
   // The NVIC interrupt is level-sensitive, so clear away any pending
