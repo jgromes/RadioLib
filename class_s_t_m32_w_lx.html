@@ -145,9 +145,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7f54bfff828901c4effbcc38ca8edc8" id="r_ae7f54bfff828901c4effbcc38ca8edc8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ae7f54bfff828901c4effbcc38ca8edc8">beginFSK</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float <a class="el" href="group__module__config__vars.html#ga8f778ea6a60a20470dd9a4c7be25817c">tcxoVoltage</a>=1.6, bool <a class="el" href="group__module__config__vars.html#ga383002c662713c23a00b32deaeb524d1">useRegulatorLDO</a>=false) override</td></tr>
 <tr class="memdesc:ae7f54bfff828901c4effbcc38ca8edc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.    <br /></td></tr>
 <tr class="separator:ae7f54bfff828901c4effbcc38ca8edc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9afbde1c466907598974cc3923784c5b" id="r_a9afbde1c466907598974cc3923784c5b"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b">setOutputPower</a> (int8_t power) override</td></tr>
+<tr class="memitem:a9afbde1c466907598974cc3923784c5b" id="r_a9afbde1c466907598974cc3923784c5b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b">setOutputPower</a> (int8_t power) override</td></tr>
 <tr class="memdesc:a9afbde1c466907598974cc3923784c5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -17 to 22 dBm.  <br /></td></tr>
 <tr class="separator:a9afbde1c466907598974cc3923784c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e11cfc715bbc14620022adce2ea55a3" id="r_a9e11cfc715bbc14620022adce2ea55a3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a9e11cfc715bbc14620022adce2ea55a3">checkOutputPower</a> (int8_t power, int8_t *clipped) override</td></tr>
+<tr class="memdesc:a9e11cfc715bbc14620022adce2ea55a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable.  <br /></td></tr>
+<tr class="separator:a9e11cfc715bbc14620022adce2ea55a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad23dafdeb21b97165be74ef8f093866c" id="r_ad23dafdeb21b97165be74ef8f093866c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ad23dafdeb21b97165be74ef8f093866c">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:ad23dafdeb21b97165be74ef8f093866c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
 <tr class="separator:ad23dafdeb21b97165be74ef8f093866c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -927,6 +930,54 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>This method initializes the FSK modem with the specified configuration. Supports designated initializers when using C++14 or above. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>   </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1">SX1262</a>.</p>
+
+</div>
+</div>
+<a id="a9e11cfc715bbc14620022adce2ea55a3" name="a9e11cfc715bbc14620022adce2ea55a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e11cfc715bbc14620022adce2ea55a3">&#9670;&#160;</a></span>checkOutputPower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t STM32WLx::checkOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>clipped</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if output power is configurable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power in dBm. </td></tr>
+    <tr><td class="paramname">clipped</td><td>Clipped output power value to what is possible within the module's range. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">PhysicalLayer</a>.</p>
 
 </div>
 </div>
