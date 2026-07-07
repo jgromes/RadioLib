@@ -421,11 +421,21 @@ int16_t LR2021::scanChannel() {
 
 int16_t LR2021::scanChannel(const ChannelScanConfig_t &cfg) {
   // set mode to CAD
-  int state = startChannelScan(cfg);
+  int16_t state = startChannelScan(cfg);
   RADIOLIB_ASSERT(state);
 
-  // wait for channel activity detected or timeout
-  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+  // Wait for the CAD to finish. The LR2021 latches the CadDone (and CadDetected) interrupt in the IRQ status
+  // register, but does not assert it on the DIO pin when the CAD exits back to standby (the CAD_ONLY exit
+  // mode used here). Polling the DIO pin (as Rx/Tx do) therefore never completes and hangs forever, so poll
+  // the IRQ status register instead, bounded by a timeout derived from the CAD duration as a safety net.
+  uint8_t symbols = (cfg.cad.symNum == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) ? 2 : cfg.cad.symNum;
+  RadioLibTime_t symbolTime = (this->bandwidthKhz > 0.0f) ? (RadioLibTime_t)(((uint32_t)1 << this->spreadingFactor) / this->bandwidthKhz) : 0;
+  RadioLibTime_t timeout = (RadioLibTime_t)(symbols + 8) * symbolTime + 20;
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(!(getIrqStatus() & (RADIOLIB_LR2021_IRQ_CAD_DETECTED | RADIOLIB_LR2021_IRQ_CAD_DONE))) {
+    if(this->mod->hal->millis() - start >= timeout) {
+      return(RADIOLIB_ERR_RX_TIMEOUT);
+    }
     this->mod->hal->yield();
   }
 
