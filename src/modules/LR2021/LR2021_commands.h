@@ -335,9 +335,9 @@
 #define RADIOLIB_LR2021_TIMESTAMP_SOURCE_HEADER                 (0x04UL << 0)   //  3     0                       LoRa header
 
 // RADIOLIB_LR2021_CMD_SET_CAD_PARAMS
-#define RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK                  (0x00UL << 0)   //  1     0     CAD exit mode: the configured fallback mode
-#define RADIOLIB_LR2021_CAD_EXIT_MODE_TX                        (0x01UL << 0)   //  1     0                    Tx
-#define RADIOLIB_LR2021_CAD_EXIT_MODE_RX                        (0x02UL << 0)   //  1     0                    Rx
+#define RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK                  (0x00UL << 0)   //  7     0     CAD exit mode: CAD only, return to the configured fallback mode (datasheet CAD_ONLY)
+#define RADIOLIB_LR2021_CAD_EXIT_MODE_RX                        (0x01UL << 0)   //  7     0                   stay in Rx if activity is detected (datasheet CAD_RX)
+#define RADIOLIB_LR2021_CAD_EXIT_MODE_TX                        (0x10UL << 0)   //  7     0                   go to Tx if no activity is detected / LBT (datasheet CAD_LBT)
 #define RADIOLIB_LR2021_CAD_PARAM_DEFAULT                       (0xFFUL << 0)   //  7     0     used by the CAD methods to specify default parameter value
 
 // RADIOLIB_LR2021_CMD_SEL_PA
