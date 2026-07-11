@@ -146,6 +146,10 @@ class LRxxxx: public PhysicalLayer {
   protected:
     Module* mod;
     
+    // flag to determine whether we are in the sub-GHz or 2.4 GHz range
+    // this is needed to automatically detect which PA to use
+    bool highFreq = false;
+    
     float freqMHz = 0;
     uint32_t rxTimeout = 0;
     uint32_t tcxoDelay = 0;

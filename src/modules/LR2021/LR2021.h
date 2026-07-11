@@ -828,9 +828,6 @@ class LR2021: public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    // flag to determine whether we are in the sub-GHz or 2.4 GHz range
-    // this is needed to automatically detect which PA to use
-    bool highFreq = false;
     uint8_t gainModeLf = RADIOLIB_LR2021_RX_BOOST_LF;
     uint8_t gainModeHf = RADIOLIB_LR2021_RX_BOOST_HF;
 

@@ -1346,7 +1346,7 @@ int16_t LR11x0::autoLDRO() {
   }
 
   this->ldroAuto = true;
-  return(RADIOLIB_ERR_NONE);
+  return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
 int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {

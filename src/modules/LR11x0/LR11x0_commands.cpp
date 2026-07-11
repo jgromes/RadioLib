@@ -461,7 +461,10 @@ int16_t LR11x0::setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    if(symbolLength >= 16.0f) {
+    // LDRO on SX128x seems to be working differently to sub-GHz LoRa, as it is always needed for SF > 10
+    // if SX128x bandwidth is being used, we use this approach instead of the symbol time to preserve compatibility
+    bool sx128xLdro = this->highFreq && ((bw >= RADIOLIB_LR11X0_LORA_BW_203_125) || (bw <= RADIOLIB_LR11X0_LORA_BW_812_50)) && (sf > 10);
+    if((symbolLength >= 16.0f) || sx128xLdro) {
       this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_ENABLED;
     } else {
       this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_DISABLED;
