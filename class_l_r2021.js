@@ -9,6 +9,7 @@ var class_l_r2021 =
       [ "MODE_TX_HF", "class_l_r2021.html#a7cc93cb3b185f23008a5c4c250110c2eab7ce6e88852aea8f8401bc109744b2bf", null ]
     ] ],
     [ "LR2021", "class_l_r2021.html#a0e61b0b25a43fb572e1bcd34fc02dda2", null ],
+    [ "autoLDRO", "class_l_r2021.html#a23acd9e39748699b52205fcd3cf367a1", null ],
     [ "begin", "class_l_r2021.html#a164170ead873b7ed43b23b3a739d5ce9", null ],
     [ "begin", "class_l_r2021.html#a1b13119ff624af7a283ea9a0a9386b6b", null ],
     [ "beginFLRC", "class_l_r2021.html#a24ca16a9a60bdbd2c1053b5ab1ff1f88", null ],
@@ -27,6 +28,7 @@ var class_l_r2021 =
     [ "finishReceive", "class_l_r2021.html#aabaa4984504bdd10ae75e0163c0871db", null ],
     [ "finishTransmit", "class_l_r2021.html#a80bfd550e471626da5e8c6bab1e3f415", null ],
     [ "fixedPacketLengthMode", "class_l_r2021.html#a934a871e6f92b290541fe975f6f32bae", null ],
+    [ "forceLDRO", "class_l_r2021.html#a5b591243b7eba34ed7b808885232152b", null ],
     [ "getChannelScanResult", "class_l_r2021.html#a5c8560915043a2c21892b51bc576ea73", null ],
     [ "getIrqFlags", "class_l_r2021.html#a3ed89cc7405fc0e0157a146cb1aee07c", null ],
     [ "getLoRaPacketStatus", "class_l_r2021.html#a127d986eb3e735849c81b80f70ab8a39", null ],
