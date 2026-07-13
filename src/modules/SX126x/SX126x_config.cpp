@@ -41,46 +41,43 @@ void SX126x::clearChannelScanAction() {
   this->clearDio1Action();
 }
 
-int16_t SX126x::setBandwidth(float bw) {
+int16_t SX126x::setBandwidth(uint32_t bw) {
+  RADIOLIB_CHECK_RANGE(bw, 7800, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_BANDWIDTH);
+
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  // ensure byte conversion doesn't overflow
-  RADIOLIB_CHECK_RANGE(bw, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
-
-  // check allowed bandwidth values
-  uint8_t bw_div2 = bw / 2 + 0.01f;
-  switch (bw_div2)  {
-    case 3: // 7.8:
+  switch(bw)  {
+    case(7800):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_7_8;
       break;
-    case 5: // 10.4:
+    case(10400):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_10_4;
       break;
-    case 7: // 15.6:
+    case(15600):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_15_6;
       break;
-    case 10: // 20.8:
+    case(20800):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_20_8;
       break;
-    case 15: // 31.25:
+    case(31250):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_31_25;
       break;
-    case 20: // 41.7:
+    case(41700):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_41_7;
       break;
-    case 31: // 62.5:
+    case(62500):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_62_5;
       break;
-    case 62: // 125.0:
+    case(RADIOLIB_UNIT_KILO(125)):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_125_0;
       break;
-    case 125: // 250.0
+    case(RADIOLIB_UNIT_KILO(250)):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_250_0;
       break;
-    case 250: // 500.0
+    case(RADIOLIB_UNIT_KILO(500)):
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_500_0;
       break;
     default:
@@ -88,17 +85,17 @@ int16_t SX126x::setBandwidth(float bw) {
   }
 
   // update modulation parameters
-  this->bandwidthKhz = bw;
+  this->bandwidthHz = bw;
   return(setModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
 int16_t SX126x::setSpreadingFactor(uint8_t sf) {
+  RADIOLIB_CHECK_RANGE(sf, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
+
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
-
-  RADIOLIB_CHECK_RANGE(sf, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
 
   // update modulation parameters
   this->spreadingFactor = sf;
@@ -106,12 +103,12 @@ int16_t SX126x::setSpreadingFactor(uint8_t sf) {
 }
 
 int16_t SX126x::setCodingRate(uint8_t cr, bool longInterleave) {
+  RADIOLIB_CHECK_RANGE(cr, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
-
-  RADIOLIB_CHECK_RANGE(cr, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
 
   if(longInterleave) {
     switch(cr) {
@@ -191,22 +188,18 @@ int16_t SX126x::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
-int16_t SX126x::setFrequencyDeviation(float freqDev) {
+int16_t SX126x::setFrequencyDeviation(uint32_t freqDev) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev;
-  if(freqDev < 0.0f) {
-    newFreqDev = 0.6f;
-  }
-
-  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  float newFreqDev = freqDev ? freqDev : 600;
+  RADIOLIB_CHECK_RANGE(newFreqDev, 600, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0f) * (float)((uint32_t)(1) << 25)) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f));
+  uint32_t freqDevRaw = (uint32_t)((newFreqDev * (1UL << 25)) / (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ)));
 
   // check modulation parameters
   this->frequencyDev = freqDevRaw;
@@ -215,26 +208,25 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
-int16_t SX126x::setBitRate(float br) {
-  // check active modem
+int16_t SX126x::setBitRate(uint32_t br) {
+  // check active modem and valid range
+  uint32_t brRaw;
   uint8_t modem = getPacketType();
-  if((modem != RADIOLIB_SX126X_PACKET_TYPE_GFSK) &&
-     (modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) &&
-     (modem != RADIOLIB_SX126X_PACKET_TYPE_BPSK)) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
     // at the moment only the very specific 488.28125 bps rate is supported
-    RADIOLIB_CHECK_RANGE(br, 0.488f, 0.489f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    if(br != 488) { return(RADIOLIB_ERR_INVALID_BIT_RATE); }
+    brRaw = RADIOLIB_SX126X_LR_FHSS_BIT_RATE_RAW;
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
     // this should be just either 100 or 600 bps, not the range
     // but the BPSK support is so experimental it probably does not matter
-    RADIOLIB_CHECK_RANGE(br, 0.1f, 0.6f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 100, 600, RADIOLIB_ERR_INVALID_BIT_RATE);
+    brRaw = (uint32_t)((RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / br);
+  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+    RADIOLIB_CHECK_RANGE(br, 600, RADIOLIB_UNIT_KILO(300), RADIOLIB_ERR_INVALID_BIT_RATE);
+    brRaw = (uint32_t)((RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / br);
+  } else {
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
-
-  // calculate raw bit rate value
-  uint32_t brRaw = (uint32_t)((RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f * 32.0f) / (br * 1000.0f));
 
   // check modulation parameters
   this->bitRate = brRaw;
@@ -331,7 +323,8 @@ int16_t SX126x::checkDataRate(DataRate_t dr, ModemType_t modem) {
   return(state);
 }
 
-int16_t SX126x::findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val) {
+// TODO move to PHY and reuse from other modules
+int16_t SX126x::findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {
   // lookup tables to avoid comparing a whole bunch of floats
   const uint16_t rxBwAvg[] = {
     53, 66, 85, 107, 132, 171, 215, 264,
@@ -342,16 +335,15 @@ int16_t SX126x::findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float r
   // iterate through the table and find whether the user-provided value
   // is lower than the pre-computed average of the adjacent bandwidth values
   // if it is, we consider that to be a match even though the actual value is not precise
-  uint16_t rxBwInt = rxBw*10.0f;
   for(size_t i = 0; i < (lutSize - 1); i++) {
-    if(rxBwInt < rxBwAvg[i]) {
+    if(rxBw < rxBwAvg[i]) {
       *val = lut[i];
       return(RADIOLIB_ERR_NONE);
     }
   }
 
   // if nothing matched up to here, match with the last value
-  if(rxBwInt <= rxBwMax*10) {
+  if(rxBw <= rxBwMax) {
     *val = lut[lutSize - 1];
     return(RADIOLIB_ERR_NONE);
   }
@@ -359,7 +351,7 @@ int16_t SX126x::findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float r
   return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 }
 
-int16_t SX126x::setRxBandwidth(float rxBw) {
+int16_t SX126x::setRxBandwidth(uint32_t rxBw) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -389,7 +381,7 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
     RADIOLIB_SX126X_GFSK_RX_BW_467_0,
   };
 
-  int16_t state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), 467.0f, &this->rxBandwidth);
+  int16_t state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(467), &this->rxBandwidth);
   RADIOLIB_ASSERT(state);
 
   // update modulation parameters
@@ -662,7 +654,7 @@ int16_t SX126x::invertIQ(bool enable) {
   return(setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled));
 }
 
-int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
+int16_t SX126x::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
   // set mode to standby
   standby();
 
@@ -671,40 +663,23 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
     clearDeviceErrors();
   }
 
-  // check 0 V disable
-  if(fabsf(voltage - 0.0f) <= 0.001f) {
+  // check disable
+  if(voltage == RadioLibTCXOVoltage_t::VoltageNone) {
     return(reset(true));
   }
 
   // check allowed voltage values
-  uint8_t data[4];
-  if(fabsf(voltage - 1.6f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_6;
-  } else if(fabsf(voltage - 1.7f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_7;
-  } else if(fabsf(voltage - 1.8f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_8;
-  } else if(fabsf(voltage - 2.2f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_2;
-  } else if(fabsf(voltage - 2.4f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_4;
-  } else if(fabsf(voltage - 2.7f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_7;
-  } else if(fabsf(voltage - 3.0f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_3_0;
-  } else if(fabsf(voltage - 3.3f) <= 0.001f) {
-    data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_3_3;
-  } else {
+  if(voltage > RadioLibTCXOVoltage_t::Voltage3V3) {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
   }
 
   // calculate delay
-  uint32_t delayValue = (float)delay / 15.625f;
-  data[1] = (uint8_t)((delayValue >> 16) & 0xFF);
-  data[2] = (uint8_t)((delayValue >> 8) & 0xFF);
-  data[3] = (uint8_t)(delayValue & 0xFF);
-
   this->tcxoDelay = delay;
+  uint32_t delayValue = (this->tcxoDelay * 8) / 125; // divide by 15.625
+  uint8_t data[] = {
+    (uint8_t)voltage, (uint8_t)((delayValue >> 16) & 0xFF),
+    (uint8_t)((delayValue >> 8) & 0xFF), (uint8_t)(delayValue & 0xFF),
+  };
 
   // enable TCXO control on DIO3
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4));
@@ -775,10 +750,10 @@ int16_t SX126x::setHeaderType(uint8_t hdrType, size_t len) {
   return(state);
 }
 
-int16_t SX126x::setFrequencyRaw(float freq) {
+int16_t SX126x::setFrequencyRaw(uint32_t freq) {
   // calculate raw value
-  this->freqMHz = freq;
-  uint32_t frf = (this->freqMHz * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
+  this->freqHz = freq;
+  uint32_t frf = ((uint64_t)this->freqHz * (uint64_t)((uint64_t)1 << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ);
   return(setRfFrequency(frf));
 }
 

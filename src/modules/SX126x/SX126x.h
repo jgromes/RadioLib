@@ -70,10 +70,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0.
+      To use XTAL, set this value to RadioLibTCXOVoltage_t::VoltageNone.
       \ingroup module_config_vars
     */
-    float tcxoVoltage = 1.6;
+    RadioLibTCXOVoltage_t tcxoVoltage = Voltage1V6;
 
     /*! 
       \brief Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
@@ -95,21 +95,20 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Initialization method for FSK modem.
-      \param br FSK bit rate in kbps. Allowed values range from 0.6 to 300.0 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz. Allowed values range from 0.0 to 200.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0,
-      46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
+      \param br FSK bit rate in bps.
+      \param freqDev Frequency deviation from carrier frequency in Hz.
+      \param rxBw Receiver bandwidth in Hz.
       \param preambleLength FSK preamble length in bits. Allowed values range from 0 to 65535.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength);
+    int16_t beginFSK(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for BPSK modem.
-      \param br FSK bit rate in kbps. Only 100 and 600 bps is supported.
+      \param br FSK bit rate in bps. Only 100 and 600 bps is supported.
       \returns \ref status_codes
     */
-    int16_t beginBPSK(float br);
+    int16_t beginBPSK(uint32_t br);
 
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
@@ -383,10 +382,10 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.
-      \param bw LoRa bandwidth to be set in kHz.
+      \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    virtual int16_t setBandwidth(float bw);
+    virtual int16_t setBandwidth(uint32_t bw);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
@@ -439,18 +438,18 @@ class SX126x: public PhysicalLayer {
     int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
-      \brief Sets FSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
-      \param freqDev FSK frequency deviation to be set in kHz.
+      \brief Sets FSK frequency deviation. Allowed values range from 0 to 200 kHz.
+      \param freqDev FSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
 
     /*!
-      \brief Sets FSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
-      \param br FSK bit rate to be set in kbps.
+      \brief Sets FSK bit rate. Allowed values range from 600 bps to 300 kbps.
+      \param br FSK bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) /*override*/;
 
     /*!
       \brief Set data rate.
@@ -473,10 +472,11 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets FSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
       23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
-      \param rxBw FSK receiver bandwidth to be set in kHz.
+      \param rxBw GFSK receiver bandwidth to be set in Hz. In case the provided value is not an exact match
+      with the supported values, the closest match will be selected.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
 
     /*!
       \brief Enables or disables Rx Boosted Gain mode as described in SX126x datasheet
@@ -531,14 +531,14 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
-      \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
-      Set to 0 to disable TCXO.
-      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
-
+      \param voltage TCXO reference voltage in volts, one of RadioLibTCXOVoltage_t values. 
+      Set to RadioLibTCXOVoltage_t::VoltageNone to disable TCXO.
+      NOTE: After setting this parameter to RadioLibTCXOVoltage_t::VoltageNone,
+      the module will be reset (since there's no other way to disable TCXO).
       \param delay TCXO timeout in us. Defaults to 5000 us.
       \returns \ref status_codes
     */
-    int16_t setTCXO(float voltage, uint32_t delay = 5000);
+    int16_t setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay = 5000);
 
     /*!
       \brief Set DIO2 to function as RF switch (default in Semtech example designs).
@@ -810,20 +810,20 @@ class SX126x: public PhysicalLayer {
      /*!
       \brief Perform image rejection calibration for the specified frequency.
       Will try to use Semtech-defined presets first, and if none of them matches,
-      custom iamge calibration will be attempted using calibrateImageRejection.
-      \param freq Frequency to perform the calibration for.
+      custom image calibration will be attempted using calibrateImageRejection.
+      \param freq Frequency in Hz to perform the calibration for.
       \returns \ref status_codes
     */
-    int16_t calibrateImage(float freq);
+    int16_t calibrateImage(uint32_t freq);
 
     /*!
       \brief Perform image rejection calibration for the specified frequency band.
       WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance
-      \param freqMin Frequency band lower bound.
-      \param freqMax Frequency band upper bound.
+      \param freqMin Frequency band lower bound in Hz.
+      \param freqMax Frequency band upper bound in Hz.
       \returns \ref status_codes
     */
-    int16_t calibrateImageRejection(float freqMin, float freqMax);
+    int16_t calibrateImageRejection(uint32_t freqMin, uint32_t freqMax);
 
     /*!
       \brief Set PA ramp-up time. Set to 200us by default.
@@ -895,7 +895,7 @@ class SX126x: public PhysicalLayer {
 #endif
     const char* chipType = NULL;
     uint8_t bandwidth = 0;
-    float freqMHz = 0;
+    uint32_t freqHz = 0;
     
     // Allow subclasses to define different TX modes
     uint8_t txMode = Module::MODE_TX;
@@ -903,7 +903,7 @@ class SX126x: public PhysicalLayer {
     // pointer to PA lookup table - may be overridden by the user
     SX126x::paTableEntry_t* paOptTable = nullptr;
 
-    int16_t setFrequencyRaw(float freq);
+    int16_t setFrequencyRaw(uint32_t freq);
     int16_t fixPaClamping(bool enable = true);
 
     // common low-level SPI interface
@@ -916,13 +916,13 @@ class SX126x: public PhysicalLayer {
 
     uint8_t spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
     uint16_t preambleLengthLoRa = 0;
-    float bandwidthKhz = 0;
+    uint32_t bandwidthHz = 0;
     bool ldroAuto = true;
 
     uint32_t bitRate = 0, frequencyDev = 0;
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, whitening = 0, packetType = 0;
     uint16_t preambleLengthFSK = 0;
-    float rxBandwidthKhz = 0;
+    uint32_t rxBandwidthHz = 0;
 
     uint32_t tcxoDelay = 0;
     uint8_t pwr = 0;
@@ -955,7 +955,7 @@ class SX126x: public PhysicalLayer {
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
     int16_t directMode();
     int16_t packetMode();
-    int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
+    int16_t findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
 
     // fixes to errata
     int16_t fixSensitivity();
