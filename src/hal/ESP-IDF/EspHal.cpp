@@ -3,7 +3,12 @@
 
 #include "EspHal.h"
 
-#if defined(ESP_PLATFORM)
+// Only build the native ESP-IDF HAL for pure ESP-IDF targets. Under Arduino
+// (including Arduino-ESP32, which also defines ESP_PLATFORM) RadioLib uses
+// ArduinoHal instead, and this file's IDF spi_master driver code may not even
+// compile against the older ESP-IDF bundled with the Arduino core. Mirrors the
+// RADIOLIB_BUILD_ARDUINO guard in ArduinoHal.cpp.
+#if defined(ESP_PLATFORM) && !defined(ARDUINO)
 
 #include "driver/gpio.h"
 #include "driver/ledc.h"
@@ -353,4 +358,4 @@ void EspHal::pullUpDown(uint32_t pin, bool enable, bool up) {
   }
 }
 
-#endif // ESP_PLATFORM
+#endif // ESP_PLATFORM && !ARDUINO

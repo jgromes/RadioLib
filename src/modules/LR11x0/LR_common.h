@@ -146,14 +146,19 @@ class LRxxxx: public PhysicalLayer {
   protected:
     Module* mod;
     
+    // flag to determine whether we are in the sub-GHz or 2.4 GHz range
+    // this is needed to automatically detect which PA to use
+    bool highFreq = false;
+    
     uint32_t freqHz = 0;
+
     uint32_t rxTimeout = 0;
     uint32_t tcxoDelay = 0;
 
     // cached LoRa parameters
     uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
     uint16_t preambleLengthLoRa = 0;
-    float bandwidthKhz = 0;
+    uint32_t bandwidthHz = 0;
     bool ldroAuto = true;
     size_t implicitLen = 0;
     bool invertIQEnabled = false;

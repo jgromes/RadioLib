@@ -224,7 +224,34 @@ void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
   }
 }
 
-int16_t LR2021::setBandwidth(float bw) {
+int16_t LR2021::forceLDRO(bool enable) {
+  // check packet type
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // update modulation parameters
+  this->ldroAuto = false;
+  this->ldrOptimize = (uint8_t)enable;
+  return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
+}
+
+int16_t LR2021::autoLDRO() {
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  this->ldroAuto = true;
+  return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
+}
+
+int16_t LR2021::setBandwidth(uint32_t bw) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -232,46 +259,43 @@ int16_t LR2021::setBandwidth(float bw) {
   if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
-    
-  // convert to int to avoid bunch of math
-  int bw_div2 = bw / 2 + 0.01f;
 
   // check allowed bandwidth values
-  switch (bw_div2)  {
-    case 15:
+  switch(bw)  {
+    case(31250):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_31;
       break;
-    case 20:
+    case(41670):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_41;
       break;
-    case 31:
+    case(62500):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_62;
       break;
-    case 41:
+    case(83340):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_83;
       break;
-    case 50:
+    case(RADIOLIB_UNIT_KILO(101)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_101;
       break;
-    case 101:
+    case(RADIOLIB_UNIT_KILO(203)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_203;
       break;
-    case 62:
+    case(RADIOLIB_UNIT_KILO(125)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_125;
       break;
-    case 125:
+    case(RADIOLIB_UNIT_KILO(250)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_250;
       break;
-    case 203:
+    case(RADIOLIB_UNIT_KILO(406)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_406;
       break;
-    case 250:
+    case(RADIOLIB_UNIT_KILO(500)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_500;
       break;
-    case 406:
+    case(RADIOLIB_UNIT_KILO(812)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_812;
       break;
-    case 500:
+    case(RADIOLIB_UNIT_KILO(1000)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_1000;
       break;
     default:
@@ -279,7 +303,7 @@ int16_t LR2021::setBandwidth(float bw) {
   }
 
   // update modulation parameters
-  this->bandwidthKhz = bw;
+  this->bandwidthHz = bw;
   return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
@@ -401,7 +425,7 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t LR2021::setTCXO(float voltage, uint32_t delay) {
+int16_t LR2021::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
   // set mode to standby
   standby();
 
@@ -1069,7 +1093,7 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
   }
 
   // if bandwidth is higher than 500 kHz, at most 2 side detectors are allowed
-  if((this->bandwidthKhz > 500.0f) && (numDetectors > 2)) {
+  if((this->bandwidthHz > RADIOLIB_UNIT_KILO(500)) && (numDetectors > 2)) {
     return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
   }
 
@@ -1105,7 +1129,7 @@ int16_t LR2021::setSideDetector(const LR2021LoRaSideDetector_t* cfg, size_t numD
   }
 
   // sum of detection factors multiplied by BW must be smaller than 32E6
-  if(sumDetFactors*(uint32_t)this->bandwidthKhz >= 32000UL) {
+  if(sumDetFactors*(uint32_t)this->bandwidthHz >= RADIOLIB_UNIT_MEGA(32)) {
     return(RADIOLIB_ERR_INVALID_SIDE_DETECT);
   }
 

@@ -127,9 +127,6 @@ class LR1120: public LR11x0 {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    // flag to determine whether we are in the sub-GHz or 2.4 GHz range
-    // this is needed to automatically detect which PA to use
-    bool highFreq = false;
 
 };
 

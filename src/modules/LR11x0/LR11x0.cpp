@@ -424,7 +424,7 @@ int16_t LR11x0::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   DataRate_t dr = {
     .lora = {
       .spreadingFactor = this->spreadingFactor,
-      .bandwidth = this->bandwidthKhz,
+      .bandwidth = this->bandwidthHz,
       .codingRate = this->codingRate,
     }
   };
@@ -606,7 +606,7 @@ int16_t LR11x0::setBandwidth(uint32_t bw, bool high) {
   }
 
   // update modulation parameters
-  this->bandwidthKhz = bw;
+  this->bandwidthHz = bw;
   return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
@@ -1326,7 +1326,7 @@ int16_t LR11x0::autoLDRO() {
   }
 
   this->ldroAuto = true;
-  return(RADIOLIB_ERR_NONE);
+  return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
 int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {

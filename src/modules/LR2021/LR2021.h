@@ -399,12 +399,27 @@ class LR2021: public LRxxxx {
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
-      \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
-      101.56, 203.13, 250.0, 406.25, 500.0 kHz, 812.5 kHz and 1000.0 kHz.
-      \param bw LoRa bandwidth to be set in kHz.
+      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
+      the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call LR2021::autoLDRO()
+      \param enable Force LDRO to be always enabled (true) or disabled (false).
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t forceLDRO(bool enable);
+
+    /*!
+      \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
+      when symbol length exceeds 16 ms, or in cases when SX128x LoRa bandwidths are used with SF > 10.
+      \returns \ref status_codes
+    */
+    int16_t autoLDRO();
+
+    /*!
+      \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
+      101.56, 203.13, 250.0, 406.25, 500.0 kHz, 812.5 kHz and 1000.0 kHz.
+      \param bw LoRa bandwidth to be set in Hz.
+      \returns \ref status_codes
+    */
+    int16_t setBandwidth(uint32_t bw);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
@@ -441,14 +456,15 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
-      \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
-      Set to 0 to disable TCXO.
-      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
+      \param voltage TCXO reference voltage in volts, one of RadioLibTCXOVoltage_t values. 
+      Set to RadioLibTCXOVoltage_t::VoltageNone to disable TCXO.
+      NOTE: After setting this parameter to RadioLibTCXOVoltage_t::VoltageNone,
+      the module will be reset (since there's no other way to disable TCXO).
       \param delay TCXO timeout in us. Defaults to 1000000 (1 second), because especially on the first startup,
       this delay may be measured very inaccurately.
       \returns \ref status_codes
     */
-    int16_t setTCXO(float voltage, uint32_t delay = 1000000);
+    int16_t setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay = 1000000);
 
     /*!
       \brief Sets CRC configuration.
@@ -747,9 +763,6 @@ class LR2021: public LRxxxx {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    // flag to determine whether we are in the sub-GHz or 2.4 GHz range
-    // this is needed to automatically detect which PA to use
-    bool highFreq = false;
     uint8_t gainModeLf = RADIOLIB_LR2021_RX_BOOST_LF;
     uint8_t gainModeHf = RADIOLIB_LR2021_RX_BOOST_HF;
 

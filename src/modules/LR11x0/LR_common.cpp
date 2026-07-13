@@ -52,7 +52,7 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
       }
 
       dr.lora.spreadingFactor = this->spreadingFactor;
-      dr.lora.bandwidth = this->bandwidthKhz;
+      dr.lora.bandwidth = this->bandwidthHz;
       dr.lora.codingRate = cr;
 
       pc.lora.preambleLength = this->preambleLengthLoRa;
@@ -63,8 +63,8 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
     }
 
     case ModemType_t::RADIOLIB_MODEM_FSK: {
-      dr.fsk.bitRate = (float)this->bitRate / 1000.0f;
-      dr.fsk.freqDev = (float)this->frequencyDev;
+      dr.fsk.bitRate = this->bitRate;
+      dr.fsk.freqDev = this->frequencyDev;
       pc.fsk.preambleLength = this->preambleLengthGFSK;
       pc.fsk.syncWordLength = this->syncWordLength; 
       pc.fsk.crcLength = this->crcLenGFSK;
@@ -89,7 +89,7 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
 
 RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
   // check active modem
-  if (modem == ModemType_t::RADIOLIB_MODEM_LORA) {  
+  if(modem == ModemType_t::RADIOLIB_MODEM_LORA) {  
     uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << dr.lora.spreadingFactor) / (dr.lora.bandwidth * 10) ;
     uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
     uint8_t sfCoeff2 = 8;

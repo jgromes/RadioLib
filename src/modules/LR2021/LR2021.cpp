@@ -490,7 +490,7 @@ int16_t LR2021::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   DataRate_t dr = {
     .lora = {
       .spreadingFactor = this->spreadingFactor,
-      .bandwidth = this->bandwidthKhz,
+      .bandwidth = this->bandwidthHz,
       .codingRate = this->codingRate,
     }
   };
@@ -1111,6 +1111,8 @@ float LR2021::getRSSI(bool packet, bool skipReceive) {
     state = this->getGfskPacketStatus(NULL, &rssi, NULL, NULL, NULL, NULL);
   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     state = this->getOokPacketStatus(NULL, NULL, &rssi, NULL, NULL, NULL);
+  } else if (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
+    state = this->getFlrcPacketStatus(NULL, &rssi, NULL, NULL);
   } else {
     return(0);
   }
