@@ -108,6 +108,12 @@ AX25Frame::~AX25Frame() {
 }
 
 AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
+  // guard against self-assignment - required since the buffers owned by
+  // "this" are freed below before being (re)populated from "frame"
+  if(this == &frame) {
+    return(*this);
+  }
+
   // destination callsign/SSID
   memcpy(this->destCallsign, frame.destCallsign, strlen(frame.destCallsign));
   this->destCallsign[strlen(frame.destCallsign)] = '\0';
@@ -118,12 +124,32 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
   this->srcCallsign[strlen(frame.srcCallsign)] = '\0';
   this->srcSSID = frame.srcSSID;
 
-  // repeaters
+  // repeaters - free any buffers this frame already owns, then (re)allocate
+  // to match the size actually needed for the incoming frame
+  #if !RADIOLIB_STATIC_ONLY
+    if(this->numRepeaters > 0) {
+      for(uint8_t i = 0; i < this->numRepeaters; i++) {
+        delete[] this->repeaterCallsigns[i];
+      }
+      delete[] this->repeaterCallsigns;
+      delete[] this->repeaterSSIDs;
+    }
+  #endif
   this->numRepeaters = frame.numRepeaters;
-  for(uint8_t i = 0; i < this->numRepeaters; i++) {
-    memcpy(this->repeaterCallsigns[i], frame.repeaterCallsigns[i], strlen(frame.repeaterCallsigns[i]));
+  if(this->numRepeaters > 0) {
+    #if !RADIOLIB_STATIC_ONLY
+      this->repeaterCallsigns = new char*[this->numRepeaters];
+      for(uint8_t i = 0; i < this->numRepeaters; i++) {
+        this->repeaterCallsigns[i] = new char[strlen(frame.repeaterCallsigns[i]) + 1];
+      }
+      this->repeaterSSIDs = new uint8_t[this->numRepeaters];
+    #endif
+    for(uint8_t i = 0; i < this->numRepeaters; i++) {
+      memcpy(this->repeaterCallsigns[i], frame.repeaterCallsigns[i], strlen(frame.repeaterCallsigns[i]));
+      this->repeaterCallsigns[i][strlen(frame.repeaterCallsigns[i])] = '\0';
+    }
+    memcpy(this->repeaterSSIDs, frame.repeaterSSIDs, this->numRepeaters);
   }
-  memcpy(this->repeaterSSIDs, frame.repeaterSSIDs, this->numRepeaters);
 
   // control field
   this->control = frame.control;
@@ -135,9 +161,19 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
   // PID field
   this->protocolID = frame.protocolID;
 
-  // info field
+  // info field - same free-then-(re)allocate pattern as above
+  #if !RADIOLIB_STATIC_ONLY
+    if(this->infoLen > 0) {
+      delete[] this->info;
+    }
+  #endif
   this->infoLen = frame.infoLen;
-  memcpy(this->info, frame.info, this->infoLen);
+  if(this->infoLen > 0) {
+    #if !RADIOLIB_STATIC_ONLY
+      this->info = new uint8_t[this->infoLen];
+    #endif
+    memcpy(this->info, frame.info, this->infoLen);
+  }
 
   return(*this);
 }
