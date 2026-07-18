@@ -2420,7 +2420,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pins</td><td>A reference to an array of pins to control. This should always be an array of 3 elements. If you need less pins, use RADIOLIB_NC for the unused elements.</td></tr>
+    <tr><td class="paramname">pins</td><td>A reference to an array of pins to control. This should always be an array of 5 elements. If you need less pins, use RADIOLIB_NC for the unused elements.</td></tr>
     <tr><td class="paramname">table</td><td>A reference to an array of pin values to use for each supported mode. Each element is an RfSwitchMode_T struct that lists the mode for which it applies and the values for each of the pins passed in the pins argument respectively.</td></tr>
   </table>
   </dd>
@@ -2433,7 +2433,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>For example, on a board that has an RF switch with an enable pin connected to PA0 and a TX/RX select pin connected to PA1:</p>
 <div class="fragment"><div class="line"><span class="comment">// In global scope, define the pin array and mode table</span></div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint32_t rfswitch_pins[] =</div>
-<div class="line">                       {PA0,  PA1,  RADIOLIB_NC};</div>
+<div class="line">                       {PA0,  PA1,  RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC};</div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> rfswitch_table[] = {</div>
 <div class="line">  {<a class="code hl_enumvalue" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a>,  {LOW,  LOW}},</div>
 <div class="line">  {<a class="code hl_enumvalue" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a>,    {HIGH, LOW}},</div>
