@@ -28,6 +28,7 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
   // set repeaters
   this->numRepeaters = 0;
   #if !RADIOLIB_STATIC_ONLY
+    this->info = NULL;
     this->repeaterCallsigns = NULL;
     this->repeaterSSIDs = NULL;
   #endif
@@ -64,6 +65,12 @@ AX25Frame::AX25Frame(const AX25Frame& frame)
   strncpy(this->destCallsign, frame.destCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
   strncpy(this->srcCallsign, frame.srcCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
 
+  #if !RADIOLIB_STATIC_ONLY
+    this->info = NULL;
+    this->repeaterCallsigns = NULL;
+    this->repeaterSSIDs = NULL;
+  #endif
+
   if(frame.infoLen) {
     #if !RADIOLIB_STATIC_ONLY
       this->info = new uint8_t[frame.infoLen];
@@ -92,17 +99,24 @@ AX25Frame::AX25Frame(const AX25Frame& frame)
 AX25Frame::~AX25Frame() {
   #if !RADIOLIB_STATIC_ONLY
     // deallocate info field
-    if(infoLen > 0) {
+    if(this->info != NULL) {
       delete[] this->info;
+      this->info = NULL;
     }
 
     // deallocate repeaters
-    if(this->numRepeaters > 0) {
+    if(this->repeaterCallsigns != NULL) {
       for(uint8_t i = 0; i < this->numRepeaters; i++) {
-        delete[] this->repeaterCallsigns[i];
+        if(this->repeaterCallsigns[i] != NULL) {
+          delete[] this->repeaterCallsigns[i];
+        }
       }
       delete[] this->repeaterCallsigns;
+      this->repeaterCallsigns = NULL;
+    }
+    if(this->repeaterSSIDs != NULL) {
       delete[] this->repeaterSSIDs;
+      this->repeaterSSIDs = NULL;
     }
   #endif
 }
@@ -127,12 +141,18 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
   // repeaters - free any buffers this frame already owns, then (re)allocate
   // to match the size actually needed for the incoming frame
   #if !RADIOLIB_STATIC_ONLY
-    if(this->numRepeaters > 0) {
+    if(this->repeaterCallsigns != NULL) {
       for(uint8_t i = 0; i < this->numRepeaters; i++) {
-        delete[] this->repeaterCallsigns[i];
+        if(this->repeaterCallsigns[i] != NULL) {
+          delete[] this->repeaterCallsigns[i];
+        }
       }
       delete[] this->repeaterCallsigns;
+      this->repeaterCallsigns = NULL;
+    }
+    if(this->repeaterSSIDs != NULL) {
       delete[] this->repeaterSSIDs;
+      this->repeaterSSIDs = NULL;
     }
   #endif
   this->numRepeaters = frame.numRepeaters;
@@ -163,8 +183,9 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
 
   // info field - same free-then-(re)allocate pattern as above
   #if !RADIOLIB_STATIC_ONLY
-    if(this->infoLen > 0) {
+    if(this->info != NULL) {
       delete[] this->info;
+      this->info = NULL;
     }
   #endif
   this->infoLen = frame.infoLen;
