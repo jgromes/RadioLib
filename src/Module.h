@@ -435,7 +435,7 @@ class Module {
 
 
       \param pins A reference to an array of pins to control. This
-      should always be an array of 3 elements. If you need less pins,
+      should always be an array of 5 elements. If you need less pins,
       use RADIOLIB_NC for the unused elements.
 
       \param table A reference to an array of pin values to use for each
@@ -470,7 +470,7 @@ class Module {
       \code
       // In global scope, define the pin array and mode table
       static const uint32_t rfswitch_pins[] =
-                             {PA0,  PA1,  RADIOLIB_NC};
+                             {PA0,  PA1,  RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC};
       static const Module::RfSwitchMode_t rfswitch_table[] = {
         {Module::MODE_IDLE,  {LOW,  LOW}},
         {Module::MODE_RX,    {HIGH, LOW}},
