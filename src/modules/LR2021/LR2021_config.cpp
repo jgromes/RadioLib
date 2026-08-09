@@ -993,7 +993,16 @@ int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
     this->implicitLen = len;
     return(state);
   
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    // LoRa mode does not have fixed/variable packet length mode, but it does have implicit/explicit header
+    // in terms of packet length, that is equivalent with fixed/variable packets, so let's assume that's what the user meant
+    if(mode == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) {
+      return(this->implicitHeader(len));
+    }
+    return(this->explicitHeader());
+  
   }
+
 
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
