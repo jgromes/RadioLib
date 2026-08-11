@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('_l_r2021_8h_source.html',''); initResi
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>    int16_t setDioIrqConfig(uint8_t dio, uint32_t irq);</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    int16_t clearIrqState(uint32_t irq);</div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    int16_t getAndClearIrqStatus(uint32_t* irq);</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    int16_t configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint8_t rxHighThreshold, uint8_t txHighThreshold);</div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    int16_t configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint16_t rxHighThreshold, uint16_t txLowThreshold, uint16_t rxLowThreshold, uint16_t txHighThreshold);</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    int16_t getFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    int16_t clearFifoIrqFlags(uint8_t rxFifoFlags, uint8_t txFifoFlags);</div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>    int16_t getAndClearFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);</div>
