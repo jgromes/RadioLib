@@ -1,5 +1,12 @@
 var NAVTREEINDEX8 =
 {
+"struct_lo_ra_w_a_n_band__t.html#a8bd0d705d9c0dbe87d25e83cc54e922c":[4,0,28,5],
+"struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e":[4,0,28,18],
+"struct_lo_ra_w_a_n_band__t.html#a92195dec46b60a55913cd3af43f410f9":[4,0,28,7],
+"struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055":[4,0,28,9],
+"struct_lo_ra_w_a_n_band__t.html#a9bd952022473cb08e067c763325d689c":[4,0,28,15],
+"struct_lo_ra_w_a_n_band__t.html#aa22d7d7670846b36d3104439d18e5f15":[4,0,28,11],
+"struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3":[4,0,28,17],
 "struct_lo_ra_w_a_n_band__t.html#abb14a7c48ec89a944f441517b1d55986":[4,0,28,0],
 "struct_lo_ra_w_a_n_band__t.html#ac6b39e29fe554cd53349d80dfff1f479":[4,0,28,6],
 "struct_lo_ra_w_a_n_band__t.html#ad7ab17cc0b530fb99c3be39fd6411802":[4,0,28,1],

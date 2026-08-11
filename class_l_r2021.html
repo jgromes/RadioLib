@@ -387,6 +387,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f88f57889841379423aef67aaf8a7e0" id="r_a1f88f57889841379423aef67aaf8a7e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a1f88f57889841379423aef67aaf8a7e0">getLoRaRxHeaderInfo</a> (uint8_t *cr, bool *hasCRC)</td></tr>
 <tr class="memdesc:a1f88f57889841379423aef67aaf8a7e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.  <br /></td></tr>
 <tr class="separator:a1f88f57889841379423aef67aaf8a7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a647a61e3253ed99340213b07fd43eac1" id="r_a647a61e3253ed99340213b07fd43eac1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a647a61e3253ed99340213b07fd43eac1">getErrors</a> (uint16_t *err)</td></tr>
+<tr class="memdesc:a647a61e3253ed99340213b07fd43eac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get internal error bits.  <br /></td></tr>
+<tr class="separator:a647a61e3253ed99340213b07fd43eac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a8dae340e83135d69cc07517b2bfe2d" id="r_a9a8dae340e83135d69cc07517b2bfe2d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a9a8dae340e83135d69cc07517b2bfe2d">getLoRaRxStats</a> (uint16_t *pktRxTotal, uint16_t *pktCrcError, uint16_t *headerCrcError, uint16_t *falseSynch)</td></tr>
+<tr class="memdesc:a9a8dae340e83135d69cc07517b2bfe2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LoRa Rx statistics.  <br /></td></tr>
+<tr class="separator:a9a8dae340e83135d69cc07517b2bfe2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40182eedf52cbaf06c74b07c9c641628" id="r_a40182eedf52cbaf06c74b07c9c641628"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a40182eedf52cbaf06c74b07c9c641628">getRangingStats</a> (uint16_t *exchangeValid, uint16_t *requestValid, uint16_t *responseDone, uint16_t *timeout, uint16_t *requestDiscarded)</td></tr>
+<tr class="memdesc:a40182eedf52cbaf06c74b07c9c641628"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ranging Rx statistics.  <br /></td></tr>
+<tr class="separator:a40182eedf52cbaf06c74b07c9c641628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff93b160d3eb5eb6b2e4207d1dbc01f1" id="r_aff93b160d3eb5eb6b2e4207d1dbc01f1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#aff93b160d3eb5eb6b2e4207d1dbc01f1">getGfskRxStats</a> (uint16_t *packetRx, uint16_t *packetCrcError, uint16_t *lenError, uint16_t *preambleDet, uint16_t *syncOk, uint16_t *syncFail, uint16_t *timeout)</td></tr>
+<tr class="memdesc:aff93b160d3eb5eb6b2e4207d1dbc01f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get GFSK Rx statistics.  <br /></td></tr>
+<tr class="separator:aff93b160d3eb5eb6b2e4207d1dbc01f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9972069127aaefe808d92c4bafc391ec" id="r_a9972069127aaefe808d92c4bafc391ec"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a9972069127aaefe808d92c4bafc391ec">getOqpskRxStats</a> (uint16_t *packetRx, uint16_t *crcError, uint16_t *lenError)</td></tr>
+<tr class="memdesc:a9972069127aaefe808d92c4bafc391ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get OQPSK Rx statistics.  <br /></td></tr>
+<tr class="separator:a9972069127aaefe808d92c4bafc391ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf24c447348c074027471525ddabafa9" id="r_adf24c447348c074027471525ddabafa9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#adf24c447348c074027471525ddabafa9">getFlrcRxStats</a> (uint16_t *packetRx, uint16_t *packetCrcError, uint16_t *lenError)</td></tr>
+<tr class="memdesc:adf24c447348c074027471525ddabafa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get FLRC Rx statistics.  <br /></td></tr>
+<tr class="separator:adf24c447348c074027471525ddabafa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a582e323e3bf6c3ae8d4a9eafe263a9bc" id="r_a582e323e3bf6c3ae8d4a9eafe263a9bc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a582e323e3bf6c3ae8d4a9eafe263a9bc">getOokRxStats</a> (uint16_t *packetRx, uint16_t *crcError, uint16_t *lenError)</td></tr>
+<tr class="memdesc:a582e323e3bf6c3ae8d4a9eafe263a9bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get OOK Rx statistics.  <br /></td></tr>
+<tr class="separator:a582e323e3bf6c3ae8d4a9eafe263a9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1433,6 +1454,151 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a647a61e3253ed99340213b07fd43eac1" name="a647a61e3253ed99340213b07fd43eac1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a647a61e3253ed99340213b07fd43eac1">&#9670;&#160;</a></span>getErrors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getErrors </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>err</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get internal error bits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">err</td><td>Pointer to variable to store the error bits. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="adf24c447348c074027471525ddabafa9" name="adf24c447348c074027471525ddabafa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf24c447348c074027471525ddabafa9">&#9670;&#160;</a></span>getFlrcRxStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getFlrcRxStats </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>packetRx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>packetCrcError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>lenError</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get FLRC Rx statistics. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packetRx</td><td>number of received packets. </td></tr>
+    <tr><td class="paramname">packetCrcError</td><td>Number of received packets with a CRC error. </td></tr>
+    <tr><td class="paramname">lenError</td><td>Number of packets with a length error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aff93b160d3eb5eb6b2e4207d1dbc01f1" name="aff93b160d3eb5eb6b2e4207d1dbc01f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff93b160d3eb5eb6b2e4207d1dbc01f1">&#9670;&#160;</a></span>getGfskRxStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getGfskRxStats </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>packetRx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>packetCrcError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>lenError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>preambleDet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>syncOk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>syncFail</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get GFSK Rx statistics. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packetRx</td><td>number of received packets. </td></tr>
+    <tr><td class="paramname">packetCrcError</td><td>Number of received packets with a CRC error. </td></tr>
+    <tr><td class="paramname">lenError</td><td>Number of packets with a length error. </td></tr>
+    <tr><td class="paramname">preambleDet</td><td>Number of detections. </td></tr>
+    <tr><td class="paramname">syncOk</td><td>Number of correct found Syncwords. </td></tr>
+    <tr><td class="paramname">syncFail</td><td>Number of failed Syncwords. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Number of RTC timeouts. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a3ed89cc7405fc0e0157a146cb1aee07c" name="a3ed89cc7405fc0e0157a146cb1aee07c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ed89cc7405fc0e0157a146cb1aee07c">&#9670;&#160;</a></span>getIrqFlags()</h2>
 
@@ -1574,6 +1740,58 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a9a8dae340e83135d69cc07517b2bfe2d" name="a9a8dae340e83135d69cc07517b2bfe2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a8dae340e83135d69cc07517b2bfe2d">&#9670;&#160;</a></span>getLoRaRxStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getLoRaRxStats </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>pktRxTotal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>pktCrcError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>headerCrcError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>falseSynch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get LoRa Rx statistics. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pktRxTotal</td><td>Total number of received packets. </td></tr>
+    <tr><td class="paramname">pktCrcError</td><td>Number of received packets with a CRC error. </td></tr>
+    <tr><td class="paramname">headerCrcError</td><td>Number of received packets with a header error. </td></tr>
+    <tr><td class="paramname">falseSynch</td><td>Number of false synchronizations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a8d7069e59abecae1e4b48de5920da4b3" name="a8d7069e59abecae1e4b48de5920da4b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8d7069e59abecae1e4b48de5920da4b3">&#9670;&#160;</a></span>getModem()</h2>
 
@@ -1611,6 +1829,96 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a582e323e3bf6c3ae8d4a9eafe263a9bc" name="a582e323e3bf6c3ae8d4a9eafe263a9bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a582e323e3bf6c3ae8d4a9eafe263a9bc">&#9670;&#160;</a></span>getOokRxStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getOokRxStats </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>packetRx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>crcError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>lenError</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get OOK Rx statistics. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packetRx</td><td>number of received packets. </td></tr>
+    <tr><td class="paramname">packetCrcError</td><td>Number of received packets with a CRC error. </td></tr>
+    <tr><td class="paramname">lenError</td><td>Number of packets with a length error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9972069127aaefe808d92c4bafc391ec" name="a9972069127aaefe808d92c4bafc391ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9972069127aaefe808d92c4bafc391ec">&#9670;&#160;</a></span>getOqpskRxStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getOqpskRxStats </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>packetRx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>crcError</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>lenError</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get OQPSK Rx statistics. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packetRx</td><td>number of received packets. </td></tr>
+    <tr><td class="paramname">packetCrcError</td><td>Number of received packets with a CRC error. </td></tr>
+    <tr><td class="paramname">lenError</td><td>Number of packets with a length error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="aea734806d4056f8ea47b4f828bcf8b3b" name="aea734806d4056f8ea47b4f828bcf8b3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea734806d4056f8ea47b4f828bcf8b3b">&#9670;&#160;</a></span>getPacketLength()</h2>
 
@@ -1645,6 +1953,65 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="section return"><dt>Returns</dt><dd>Length of last received packet in bytes. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a2fe95169b5cdc8cabe1f2af66cad6ef6">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a40182eedf52cbaf06c74b07c9c641628" name="a40182eedf52cbaf06c74b07c9c641628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40182eedf52cbaf06c74b07c9c641628">&#9670;&#160;</a></span>getRangingStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getRangingStats </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>exchangeValid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>requestValid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>responseDone</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>timeout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>requestDiscarded</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get ranging Rx statistics. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">exchangeValid</td><td>Number of valid ranging exchanges. </td></tr>
+    <tr><td class="paramname">requestValid</td><td>Number of valid ranging requests done. </td></tr>
+    <tr><td class="paramname">responseDone</td><td>Number of ranging responses done. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Number of ftimeout events that have occurred. </td></tr>
+    <tr><td class="paramname">requestDiscarded</td><td>Number of discarded ranging requests. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
