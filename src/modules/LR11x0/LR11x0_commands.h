@@ -450,6 +450,7 @@
 // RADIOLIB_LR11X0_CMD_GET_LORA_RX_HEADER_INFOS
 #define RADIOLIB_LR11X0_LAST_HEADER_CRC_ENABLED                 (0x01UL << 4)   //  4     4     last header CRC: enabled
 #define RADIOLIB_LR11X0_LAST_HEADER_CRC_DISABLED                (0x00UL << 4)   //  4     4                      disabled
+#define RADIOLIB_LR11X0_LAST_HEADER_CR_MASK                     (0x07UL << 0)   //  2     0     last header coding rate
 
 // RADIOLIB_LR11X0_CMD_WIFI_SCAN
 #define RADIOLIB_LR11X0_WIFI_SCAN_802_11_B                      (0x01UL << 0)   //  7     0     Wi-Fi type to scan: 802.11b
