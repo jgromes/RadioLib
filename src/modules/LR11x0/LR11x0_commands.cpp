@@ -673,7 +673,7 @@ int16_t LR11x0::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_LORA_RX_HEADER_INFOS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(cr) { *cr = (buff[0] & 0x70) >> 4; }
+  if(cr) { *cr = buff[0] & RADIOLIB_LR11X0_LAST_HEADER_CR_MASK; }
   if(hasCRC) { *hasCRC = (buff[0] & RADIOLIB_LR11X0_LAST_HEADER_CRC_ENABLED) != 0; }
 
   return(state);
