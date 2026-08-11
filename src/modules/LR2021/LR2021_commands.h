@@ -386,7 +386,9 @@
 #define RADIOLIB_LR2021_LORA_CR_4_8                             (0x04UL << 0)   //  3     0                       4/8
 #define RADIOLIB_LR2021_LORA_CR_4_5_LI                          (0x05UL << 0)   //  3     0                       4/5 long interleaver
 #define RADIOLIB_LR2021_LORA_CR_4_6_LI                          (0x06UL << 0)   //  3     0                       4/6 long interleaver
-#define RADIOLIB_LR2021_LORA_CR_4_7_LI                          (0x07UL << 0)   //  3     0                       4/7 long interleaver
+#define RADIOLIB_LR2021_LORA_CR_4_8_LI                          (0x07UL << 0)   //  3     0                       4/8 long interleaver
+#define RADIOLIB_LR2021_LORA_CR_4_6_LI_CONV                     (0x08UL << 0)   //  3     0                       4/6 long interleaver, convolutional
+#define RADIOLIB_LR2021_LORA_CR_4_8_LI_CONV                     (0x09UL << 0)   //  3     0                       4/8 long interleaver, convolutional
 #define RADIOLIB_LR2021_LORA_LDRO_DISABLED                      (0x00UL << 0)   //  1     0     LDRO/PPM configuration: disabled
 #define RADIOLIB_LR2021_LORA_LDRO_ENABLED                       (0x01UL << 0)   //  1     0                             enabled
 
