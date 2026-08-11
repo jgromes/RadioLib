@@ -162,7 +162,7 @@ int16_t LR2021::calibrateFrontEnd(const uint16_t freq[3]) {
 }
 
 int16_t LR2021::getVbat(uint8_t resolution, uint16_t* vbat) {
-  uint8_t reqBuff[] = { (uint8_t)(RADIOLIB_LR2021_VBAT_FORMAT_MV | ((RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET + resolution) & 0x07)) };
+  uint8_t reqBuff[] = { (uint8_t)(RADIOLIB_LR2021_VBAT_FORMAT_MV | ((resolution - RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET) & 0x07)) };
   uint8_t rplBuff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_V_BAT, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(vbat) { *vbat = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1]; }
@@ -170,7 +170,7 @@ int16_t LR2021::getVbat(uint8_t resolution, uint16_t* vbat) {
 }
 
 int16_t LR2021::getTemp(uint8_t source, uint8_t resolution, float* temp) {
-  uint8_t reqBuff[] = { (uint8_t)((source & 0x30) | RADIOLIB_LR2021_TEMP_FORMAT_DEG_C | ((RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET + resolution) & 0x07)) };
+  uint8_t reqBuff[] = { (uint8_t)((source & 0x30) | RADIOLIB_LR2021_TEMP_FORMAT_DEG_C | ((resolution - RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET) & 0x07)) };
   uint8_t rplBuff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_TEMP, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(temp) { 
