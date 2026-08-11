@@ -830,7 +830,75 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC);
-
+    
+    /*!
+      \brief Get internal error bits.
+      \param err Pointer to variable to store the error bits.
+      \returns \ref status_codes
+    */
+    int16_t getErrors(uint16_t* err);
+    
+    /*!
+      \brief Get LoRa Rx statistics.
+      \param pktRxTotal Total number of received packets.
+      \param pktCrcError Number of received packets with a CRC error.
+      \param headerCrcError Number of received packets with a header error.
+      \param falseSynch Number of false synchronizations.
+      \returns \ref status_codes
+    */
+    int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);
+    
+    /*!
+      \brief Get ranging Rx statistics.
+      \param exchangeValid Number of valid ranging exchanges.
+      \param requestValid Number of valid ranging requests done.
+      \param responseDone Number of ranging responses done.
+      \param timeout Number of ftimeout events that have occurred.
+      \param requestDiscarded Number of discarded ranging requests.
+      \returns \ref status_codes
+    */
+    int16_t getRangingStats(uint16_t* exchangeValid, uint16_t* requestValid, uint16_t* responseDone, uint16_t* timeout, uint16_t* requestDiscarded);
+    
+    /*!
+      \brief Get GFSK Rx statistics.
+      \param packetRx number of received packets.
+      \param packetCrcError Number of received packets with a CRC error.
+      \param lenError Number of packets with a length error.
+      \param preambleDet Number of detections.
+      \param syncOk Number of correct found Syncwords.
+      \param syncFail Number of failed Syncwords.
+      \param timeout Number of RTC timeouts.
+      \returns \ref status_codes
+    */
+    int16_t getGfskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);
+    
+    /*!
+      \brief Get OQPSK Rx statistics.
+      \param packetRx number of received packets.
+      \param packetCrcError Number of received packets with a CRC error.
+      \param lenError Number of packets with a length error.
+      \returns \ref status_codes
+    */
+    int16_t getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
+    
+    /*!
+      \brief Get FLRC Rx statistics.
+      \param packetRx number of received packets.
+      \param packetCrcError Number of received packets with a CRC error.
+      \param lenError Number of packets with a length error.
+      \returns \ref status_codes
+    */
+    int16_t getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError);
+    
+    /*!
+      \brief Get OOK Rx statistics.
+      \param packetRx number of received packets.
+      \param packetCrcError Number of received packets with a CRC error.
+      \param lenError Number of packets with a length error.
+      \returns \ref status_codes
+    */
+    int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
+    
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -884,7 +952,6 @@ class LR2021: public LRxxxx {
     int16_t getRandomNumber(uint32_t* rnd);
     int16_t getVersion(uint8_t* major, uint8_t* minor);
     int16_t clearErrors(void);
-    int16_t getErrors(uint16_t* err);
     int16_t setDioFunction(uint8_t dio, uint8_t func, uint8_t pullDrive);
     int16_t setDioRfSwitchConfig(uint8_t dio, uint8_t func);
     int16_t setDioIrqConfig(uint8_t dio, uint32_t irq);
@@ -934,7 +1001,6 @@ class LR2021: public LRxxxx {
     int16_t setLoRaSideDetSyncword(uint8_t* syncwords, size_t numSideDets);
     int16_t setLoRaCadParams(uint8_t numSymbols, bool preambleOnly, uint8_t pnrDelta, uint8_t cadExitMode, uint32_t timeout, uint8_t detPeak);
     int16_t setLoRaCad(void);
-    int16_t getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint16_t* headerCrcError, uint16_t* falseSynch);
     int16_t setLoRaAddress(uint8_t addrLen, uint8_t addrPos, const uint8_t* addr);
     int16_t setLoRaHopping(uint8_t hopCtrl, uint16_t hopPeriod, const uint32_t* freqHops, size_t numFreqHops);
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
@@ -945,7 +1011,6 @@ class LR2021: public LRxxxx {
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
     int16_t setRangingReqAddr(uint32_t addr);
     int16_t getRangingResult(uint8_t type, uint32_t* rng1, uint8_t* rssi1, uint32_t* rng2);
-    int16_t getRangingStats(uint16_t* exchangeValid, uint16_t* requestValid, uint16_t* responseDone, uint16_t* timeout, uint16_t* requestDiscarded);
     int16_t setRangingTxRxDelay(uint32_t delay);
     int16_t setRangingParams(bool spyMode, uint8_t nbSymbols);
 
@@ -956,12 +1021,10 @@ class LR2021: public LRxxxx {
     int16_t setGfskCrcParams(uint32_t poly, uint32_t init);
     int16_t setGfskSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
     int16_t setGfskAddress(uint8_t addrNode, uint8_t addrBroadcast);
-    int16_t getGfskRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError, uint16_t* preambleDet, uint16_t* syncOk, uint16_t* syncFail, uint16_t* timeout);
     int16_t getGfskPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
 
     // OQPSK commands
     int16_t setOqpskParams(uint8_t mode, uint8_t rxBw, uint8_t payloadLen, uint16_t preambleLen, bool addrFilt, bool fcsManual);
-    int16_t getOqpskRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
     int16_t getOqpskPacketStatus(uint8_t* rxHeader, uint16_t* payloadLen, float* rssiAvg, float* rssiSync, float* lqi);
     int16_t setOqpskPacketLen(uint8_t len);
     int16_t setOqpskAddress(const uint8_t longDestAddr[8], uint16_t shortDestAddr, uint16_t panId, uint8_t transId);
@@ -973,7 +1036,6 @@ class LR2021: public LRxxxx {
     // FLRC commands
     int16_t setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape);
     int16_t setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, bool fixedLength, uint8_t crc, uint16_t payloadLen);
-    int16_t getFlrcRxStats(uint16_t* packetRx, uint16_t* packetCrcError, uint16_t* lenError);
     int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum);
     int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);
 
@@ -989,7 +1051,6 @@ class LR2021: public LRxxxx {
     int16_t setOokCrcParams(uint32_t poly, uint32_t init);
     int16_t setOokSyncword(const uint8_t* syncWord, size_t syncWordLen, bool msbFirst);
     int16_t setOokAddress(uint8_t addrNode, uint8_t addrBroadcast);
-    int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
     int16_t getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiHigh, bool* addrMatchNode, bool* addrMatchBroadcast, float* lqi);
     int16_t setOokDetector(uint16_t preamblePattern, uint8_t patternLen, uint8_t patternNumRepeaters, bool syncWordRaw, bool sofDelimiterRising, uint8_t sofDelimiterLen);
     int16_t setOokWhiteningParams(uint8_t bitIdx, uint16_t poly, uint16_t init);
