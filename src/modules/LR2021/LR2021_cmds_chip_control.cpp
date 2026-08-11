@@ -240,8 +240,19 @@ int16_t LR2021::getAndClearIrqStatus(uint32_t* irq) {
   return(state);
 }
 
-int16_t LR2021::configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint8_t rxHighThreshold, uint8_t txHighThreshold) {
-  uint8_t buff[] = { rxFifoIrq, txFifoIrq, rxHighThreshold, txHighThreshold };
+int16_t LR2021::configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint16_t rxHighThreshold, uint16_t txLowThreshold, uint16_t rxLowThreshold, uint16_t txHighThreshold) {
+  uint8_t buff[] = {
+	rxFifoIrq,
+	txFifoIrq,
+	(uint8_t)((rxHighThreshold >> 8) & 0xFF),
+	(uint8_t)(rxHighThreshold & 0xFF),
+	(uint8_t)((txLowThreshold >> 8) & 0xFF),
+	(uint8_t)(txLowThreshold & 0xFF),
+	(uint8_t)((rxLowThreshold >> 8) & 0xFF),
+	(uint8_t)(rxLowThreshold & 0xFF),
+	(uint8_t)((txHighThreshold >> 8) & 0xFF),
+	(uint8_t)(txHighThreshold & 0xFF),
+	};
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_CONFIG_FIFO_IRQ, true, buff, sizeof(buff)));
 }
 
