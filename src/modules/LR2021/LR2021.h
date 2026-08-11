@@ -890,7 +890,7 @@ class LR2021: public LRxxxx {
     int16_t setDioIrqConfig(uint8_t dio, uint32_t irq);
     int16_t clearIrqState(uint32_t irq);
     int16_t getAndClearIrqStatus(uint32_t* irq);
-    int16_t configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint8_t rxHighThreshold, uint8_t txHighThreshold);
+    int16_t configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint16_t rxHighThreshold, uint16_t txLowThreshold, uint16_t rxLowThreshold, uint16_t txHighThreshold);
     int16_t getFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);
     int16_t clearFifoIrqFlags(uint8_t rxFifoFlags, uint8_t txFifoFlags);
     int16_t getAndClearFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);
