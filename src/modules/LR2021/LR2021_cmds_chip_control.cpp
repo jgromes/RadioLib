@@ -170,12 +170,14 @@ int16_t LR2021::getVbat(uint8_t resolution, uint16_t* vbat) {
 }
 
 int16_t LR2021::getTemp(uint8_t source, uint8_t resolution, float* temp) {
-  uint8_t reqBuff[] = { (uint8_t)((source & 0x30) | RADIOLIB_LR2021_TEMP_FORMAT_DEG_C | ((resolution - RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET) & 0x07)) };
+  // reading of temperature in degrees seems broken and the datasheet disagrees with reference implementation
+  // so we read out the raw value and convert it here
+  uint8_t reqBuff[] = { (uint8_t)((source & 0x30) | RADIOLIB_LR2021_TEMP_FORMAT_RAW | ((resolution - RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET) & 0x07)) };
   uint8_t rplBuff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_TEMP, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(temp) { 
     uint16_t raw = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1];
-    *temp = (float)raw/320.0f;
+    *temp = 25.0f + (0.7295f - 1.35f * raw / 8192.0f) * (1000.0f / 1.7f);
   }
   return(state);
 }
