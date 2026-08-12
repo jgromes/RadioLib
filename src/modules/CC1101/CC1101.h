@@ -900,6 +900,13 @@ class CC1101: public PhysicalLayer {
     int16_t setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold);
 
     /*!
+      \brief Enables/disables automatic switch to reception after transmission. Uses the TXOFF_RX mode of CC1101
+      \param enable True to enable automatic switch
+      \returns \ref status_codes
+    */
+    int16_t enableRxAfterTx(bool enable = true);
+
+    /*!
       \brief Sets node and broadcast addresses. Calling this method will also enable address filtering.
       \param nodeAddr Node address to be set.
       \param numBroadcastAddrs Number of broadcast addresses to be used. Can be set to 0 (no broadcast),

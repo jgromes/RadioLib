@@ -354,18 +354,25 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 int16_t CC1101::finishTransmit() {
   // set mode to standby to disable transmitter/RF switch
   
-  // Check MARCSTATE for Idle to let anything in the FIFO empty
+  // expected MARCSTATE should be 0x01 (IDLE) except if TXOFF_RX is enabled
+  byte expectedState = (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 1, 0) == RADIOLIB_CC1101_TXOFF_RX ? 0x0D : 0x01);
+
+  // Check MARCSTATE is in expected state to let anything in the FIFO empty
   // Timeout is 2x FIFO transmit time
   RadioLibTime_t timeout = (1.0f/(this->bitRate))*(RADIOLIB_CC1101_FIFO_SIZE*2.0f);
   RadioLibTime_t start = this->mod->hal->millis();
-  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x01) {
+  
+  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != expectedState) {
     if(this->mod->hal->millis() - start > timeout) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
   
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
+  // set standby mode only if IDLE state is expected
+  if (expectedState == 0x01) {
+    int16_t state = standby();
+    RADIOLIB_ASSERT(state);
+  }
 
   // flush Tx FIFO
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
@@ -784,6 +791,11 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThresho
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, pqt << 5, 7, 5);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
   return(state);
+}
+
+int16_t CC1101::enableRxAfterTx(bool enable) {
+  // change the MCSM1 TXOFF_MODE to enable/disable auto switch to RX after TX
+  return SPIsetRegValue(RADIOLIB_CC1101_REG_MCSM1, (enable ? RADIOLIB_CC1101_TXOFF_RX : RADIOLIB_CC1101_TXOFF_IDLE), 1, 0);
 }
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
