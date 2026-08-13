@@ -355,7 +355,7 @@ int16_t CC1101::finishTransmit() {
   // set mode to standby to disable transmitter/RF switch
   
   // expected MARCSTATE should be 0x01 (IDLE) except if TXOFF_RX is enabled
-  byte expectedState = (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 1, 0) == RADIOLIB_CC1101_TXOFF_RX ? 0x0D : 0x01);
+  uint8_t expectedState = (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 1, 0) == RADIOLIB_CC1101_TXOFF_RX ? 0x0D : 0x01);
 
   // Check MARCSTATE is in expected state to let anything in the FIFO empty
   // Timeout is 2x FIFO transmit time
