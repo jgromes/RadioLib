@@ -354,18 +354,25 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 int16_t CC1101::finishTransmit() {
   // set mode to standby to disable transmitter/RF switch
   
-  // Check MARCSTATE for Idle to let anything in the FIFO empty
+  // expected MARCSTATE should be 0x01 (IDLE) except if TXOFF_RX is enabled
+  uint8_t expectedState = (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 1, 0) == RADIOLIB_CC1101_TXOFF_RX ? 0x0D : 0x01);
+
+  // Check MARCSTATE is in expected state to let anything in the FIFO empty
   // Timeout is 2x FIFO transmit time
   RadioLibTime_t timeout = (1.0f/(this->bitRate))*(RADIOLIB_CC1101_FIFO_SIZE*2.0f);
   RadioLibTime_t start = this->mod->hal->millis();
-  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x01) {
+  
+  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != expectedState) {
     if(this->mod->hal->millis() - start > timeout) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
   
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
+  // set standby mode only if IDLE state is expected
+  if (expectedState == 0x01) {
+    int16_t state = standby();
+    RADIOLIB_ASSERT(state);
+  }
 
   // flush Tx FIFO
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
@@ -710,10 +717,10 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
 }
 
 int16_t CC1101::setSyncWord(uint8_t* sync, size_t len) {
-  return this->setSyncWord(sync, len, 0, false);
+  return this->setSyncWord(sync, len, 0, false, false);
 }
 
-int16_t CC1101::setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {
+int16_t CC1101::setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense, bool repeatSync) {
   if((maxErrBits > 1) || (len != 2)) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
   }
@@ -726,7 +733,7 @@ int16_t CC1101::setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErr
   }
 
   // enable sync word filtering
-  int16_t state = enableSyncWordFiltering(maxErrBits, requireCarrierSense);
+  int16_t state = enableSyncWordFiltering(maxErrBits, requireCarrierSense, repeatSync);
   RADIOLIB_ASSERT(state);
 
   // set sync word register
@@ -736,9 +743,9 @@ int16_t CC1101::setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErr
   return(state);
 }
 
-int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bool requireCarrierSense) {
+int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bool requireCarrierSense, bool repeatSync) {
   uint8_t syncWord[] = { syncH, syncL };
-  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense));
+  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense, repeatSync));
 }
 
 int16_t CC1101::setPreambleLength(size_t len) {
@@ -784,6 +791,11 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThresho
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, pqt << 5, 7, 5);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
   return(state);
+}
+
+int16_t CC1101::enableRxAfterTx(bool enable) {
+  // change the MCSM1 TXOFF_MODE to enable/disable auto switch to RX after TX
+  return SPIsetRegValue(RADIOLIB_CC1101_REG_MCSM1, (enable ? RADIOLIB_CC1101_TXOFF_RX : RADIOLIB_CC1101_TXOFF_IDLE), 1, 0);
 }
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
@@ -888,22 +900,28 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
   return(setPacketMode(RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE, maxLen));
 }
 
-int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense) {
+int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense, bool repeatSync) {
   int16_t state = RADIOLIB_ERR_NONE;
 
-  switch(maxErrBits) {
-    case 0:
-      // in 16 bit sync word, expect all 16 bits
-      state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG2, (requireCarrierSense ? RADIOLIB_CC1101_SYNC_MODE_16_16_THR : RADIOLIB_CC1101_SYNC_MODE_16_16), 2, 0);
-      break;
-    case 1:
-      // in 16 bit sync word, expect at least 15 bits
-      state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG2, (requireCarrierSense ? RADIOLIB_CC1101_SYNC_MODE_15_16_THR : RADIOLIB_CC1101_SYNC_MODE_15_16), 2, 0);
-      break;
-    default:
-      state = RADIOLIB_ERR_INVALID_SYNC_WORD;
-      break;
+  if (repeatSync) {
+    // in repeated sync word mode, use the 30/32 mode which allows for 2 bit errors in the sync word
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG2, (requireCarrierSense ? RADIOLIB_CC1101_SYNC_MODE_30_32_THR : RADIOLIB_CC1101_SYNC_MODE_30_32), 2, 0);
+  } else {
+    switch(maxErrBits) {
+      case 0:
+        // in 16 bit sync word, expect all 16 bits
+        state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG2, (requireCarrierSense ? RADIOLIB_CC1101_SYNC_MODE_16_16_THR : RADIOLIB_CC1101_SYNC_MODE_16_16), 2, 0);
+        break;
+      case 1:
+        // in 16 bit sync word, expect at least 15 bits
+        state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG2, (requireCarrierSense ? RADIOLIB_CC1101_SYNC_MODE_15_16_THR : RADIOLIB_CC1101_SYNC_MODE_15_16), 2, 0);
+        break;
+      default:
+        state = RADIOLIB_ERR_INVALID_SYNC_WORD;
+        break;
+    }
   }
+
   return(state);
 }
 
