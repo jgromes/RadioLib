@@ -663,6 +663,87 @@
 */
 #define RADIOLIB_ERR_ADSB_INVALID_CATEGORY                      (-1401)
 
+// ── SSDVClient-specific error codes ───────────────────────────────────────
+/*!
+  \brief Callsign is empty or longer than 6 characters.
+*/
+#define RADIOLIB_ERR_SSDV_CALLSIGN_TOO_LONG     (-1501)
+
+/*!
+  \brief Callsign contains characters outside the SSDV base-40 charset. 
+         Valid characters: A–Z, 0–9, '-', '/', '.'.
+*/
+#define RADIOLIB_ERR_SSDV_CALLSIGN_INVALID      (-1502)
+
+/*!
+  \brief JPEG data pointer is NULL or length is zero.
+*/
+#define RADIOLIB_ERR_SSDV_NO_IMAGE              (-1503)
+
+/*!
+  \brief quality parameter outside the valid range 0–7.
+*/
+#define RADIOLIB_ERR_SSDV_INVALID_QUALITY       (-1504)
+
+/*!
+  \brief JPEG encoding failure. This usually means the JPEG is not 
+  in a format accepted by the encoder (progressive DCT, wrong colour space, 
+  dimensions not multiples of 16, etc.).
+*/
+#define RADIOLIB_ERR_SSDV_ENCODE_FAILED         (-1505)
+
+/*!
+  \brief malloc() returned NULL while allocating the packet buffer.
+*/
+#define RADIOLIB_ERR_SSDV_ALLOC_FAILED          (-1506)
+
+/*!
+  \brief begin() has not been called, or returned an error.
+*/
+#define RADIOLIB_ERR_SSDV_NOT_INITIALIZED       (-1507)
+
+/*!
+  \brief transmit() was called but no image has been loaded with setImage().
+*/
+#define RADIOLIB_ERR_SSDV_NO_PACKET_BUFFER      (-1508)
+
+/*!
+  \brief transmit() was called after all packets for the current image were sent.
+*/
+#define RADIOLIB_ERR_SSDV_ALL_SENT              (-1509)
+
+/*!
+  \brief The JPEG data appears to be truncated: the encoder requested more
+  input after all bytes had already been consumed (no JPEG EOI marker found).
+*/
+#define RADIOLIB_ERR_SSDV_JPEG_TRUNCATED        (-1510)
+
+/*!
+  \brief The two encoding passes yielded a different packet count.
+*/
+#define RADIOLIB_ERR_SSDV_INTERNAL_MISMATCH     (-1511)
+
+/*!
+  \brief The received SSDV packet was too short, 
+  failed CRC and/or RS-FEC validation.
+*/
+#define RADIOLIB_ERR_SSDV_INVALID_PACKET          (-1512)
+
+/*!
+  \brief The JPEG decoder is not or not properly initialized.
+*/
+#define RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED (-1513)
+
+/*!
+  \brief The internal ssdv decoder ran into an error while processing a packet.
+*/
+#define RADIOLIB_ERR_SSDV_DECODE_FAILED           (-1514)
+
+/*!
+  \brief The image was not fully received yet.
+*/
+#define RADIOLIB_ERR_SSDV_NO_JPEG                 (-1515)
+
 /*!
   \}
 */

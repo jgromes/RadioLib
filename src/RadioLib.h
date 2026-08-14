@@ -125,6 +125,7 @@
 #include "protocols/LoRaWAN/LoRaWAN.h"
 #include "protocols/LoRaWAN/LoRaWANPacMan.h"
 #include "protocols/ADSB/ADSB.h"
+#include "protocols/SSDV/SSDV.h"
 
 // utilities
 #include "utils/CRC.h"
