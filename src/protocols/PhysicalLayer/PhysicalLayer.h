@@ -639,6 +639,27 @@ class PhysicalLayer {
     virtual int16_t setOutputPower(int8_t power);
 
     /*!
+      \brief Sets offset of the output power. Useful for devices where the radio has an external power amplifier,
+      or of the RF system has a known loss between the radio and the antenna.
+      \param offset Offset to apply. If the PA has a linear gain of 12 dB, call radio.setOutputPowerOffset(12).
+      If the setup has 1 dB of loss, call radio.setOutputPowerOffset(-1) to compensate.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPowerOffset(int8_t offset);
+
+    /*!
+      \brief Sets offset of the output power. Useful for devices where the radio has an external power amplifier,
+      or of the RF system has a known loss between the radio and the antenna.
+      This overload allows to compensate a non-linear PA gain, dependant on the radio power output via a lookup table.
+      \param lut Pointer to a lookup table to use - for each output power configuration, value from the lookup table
+      will be applied as offset.
+      \param steps Number of steps/entries in the lookup table - this depends on the range of output power
+      by the radio module. Different radio modules support different output power ranges!
+      \returns \ref status_codes
+    */
+    int16_t setOutputPowerOffset(const int8_t* lut, size_t steps);
+
+    /*!
       \brief Check if output power is configurable. Must be implemented in module class if the module supports it.
       \param power Output power in dBm. The allowed range depends on the module used.
       \param clipped Clipped output power value to what is possible within the module's range.
@@ -1001,6 +1022,8 @@ class PhysicalLayer {
 #endif
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
+    
+    int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut);
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
@@ -1037,6 +1060,8 @@ class PhysicalLayer {
     friend class FT8Client;
     friend class LoRaWANNode;
     friend class M17Client;
+
+    int8_t paOffsetLut[48] = { 0 };
 };
 
 #endif
