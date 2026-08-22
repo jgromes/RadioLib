@@ -1085,10 +1085,10 @@ int16_t CC1101::beginCommon(const ConfigFSK_t& cfg) {
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     int16_t version = getChipVersion();
-    if((version == RADIOLIB_CC1101_VERSION_CURRENT) || (version == RADIOLIB_CC1101_VERSION_LEGACY) || (version == RADIOLIB_CC1101_VERSION_CLONE)) {
+    if((version == RADIOLIB_CC1101_VERSION_CURRENT) || (version == RADIOLIB_CC1101_VERSION_LEGACY) || (version == RADIOLIB_CC1101_VERSION_CLONE) || (version == RADIOLIB_CC1101_VERSION_CLONE2)) {
       flagFound = true;
     } else {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("CC1101 not found! (%d of 10 tries) RADIOLIB_CC1101_REG_VERSION == 0x%04X, expected 0x0004/0x0014", i + 1, version);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("CC1101 not found! (%d of 10 tries) RADIOLIB_CC1101_REG_VERSION == 0x%02X, expected 0x04/0x14/0x17/0x03", i + 1, version);
       this->mod->hal->delay(10);
       i++;
     }

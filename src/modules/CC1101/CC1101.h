@@ -472,6 +472,7 @@
 #define RADIOLIB_CC1101_VERSION_CURRENT                         0x14
 #define RADIOLIB_CC1101_VERSION_LEGACY                          0x04
 #define RADIOLIB_CC1101_VERSION_CLONE                           0x17
+#define RADIOLIB_CC1101_VERSION_CLONE2                          0x03
 
 // RADIOLIB_CC1101_REG_MARCSTATE
 #define RADIOLIB_CC1101_MARC_STATE_SLEEP                        0x00        //  4     0   main radio control state: sleep
