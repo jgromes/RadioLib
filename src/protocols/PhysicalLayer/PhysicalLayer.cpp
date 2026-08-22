@@ -644,7 +644,7 @@ int16_t PhysicalLayer::setOutputPowerOffset(int8_t offset) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t PhysicalLayer::setOutputPowerOffset(int8_t* lut, size_t steps) {
+int16_t PhysicalLayer::setOutputPowerOffset(const int8_t* lut, size_t steps) {
   RADIOLIB_ASSERT_PTR(lut);
   if(steps > sizeof(this->paOffsetLut)) {
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
@@ -653,10 +653,10 @@ int16_t PhysicalLayer::setOutputPowerOffset(int8_t* lut, size_t steps) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, int8_t* pwrIn, int8_t* pwrOut) {
+int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut) {
   RADIOLIB_ASSERT_PTR(pwrIn);
   RADIOLIB_ASSERT_PTR(pwrOut);
-  if(base - *pwrIn > sizeof(this->paOffsetLut)) {
+  if(base - *pwrIn >= sizeof(this->paOffsetLut)) {
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
   *pwrOut = this->paOffsetLut[base - *pwrIn] + *pwrIn;

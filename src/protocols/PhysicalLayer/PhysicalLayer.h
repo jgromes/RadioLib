@@ -657,7 +657,7 @@ class PhysicalLayer {
       by the radio module. Different radio modules support different output power ranges!
       \returns \ref status_codes
     */
-    int16_t setOutputPowerOffset(int8_t* lut, size_t steps);
+    int16_t setOutputPowerOffset(const int8_t* lut, size_t steps);
 
     /*!
       \brief Check if output power is configurable. Must be implemented in module class if the module supports it.
@@ -1023,7 +1023,7 @@ class PhysicalLayer {
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
     
-    int16_t applyOutputPowerOffset(int8_t base, int8_t* pwrIn, int8_t* pwrOut);
+    int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut);
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
