@@ -146,8 +146,13 @@ int16_t LR2021::setOutputPower(int8_t power) {
 }
 
 int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(this->highFreq ? -9 : -19, &power, &pwr);
+  RADIOLIB_ASSERT(state);
+
   // check if power value is configurable
-  int16_t state = this->checkOutputPower(power, NULL);
+  state = this->checkOutputPower(pwr, NULL);
   RADIOLIB_ASSERT(state);
   
   //! \TODO: [LR2021] how and when to configure OCP?
@@ -162,7 +167,7 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   LR2021PaTableEntry_t* table = this->paOptTable[this->highFreq] ? this->paOptTable[this->highFreq] : defaultTables[this->highFreq];
   
   // update PA config
-  const LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[power + 19] : &table[power + 9];
+  const LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[pwr + 19] : &table[pwr + 9];
   state = setPaConfig(this->highFreq, 
     RADIOLIB_LR2021_PA_LF_MODE_FSM, 
     this->highFreq ? RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED : paCfg->paDutyCycle, 
