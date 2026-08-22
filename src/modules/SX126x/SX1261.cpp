@@ -6,8 +6,13 @@ SX1261::SX1261(Module* mod): SX1262(mod) {
 }
 
 int16_t SX1261::setOutputPower(int8_t power) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(-9, &power, &pwr);
+  RADIOLIB_ASSERT(state);
+
   // check if power value is configurable
-  int16_t state = checkOutputPower(power, NULL);
+  state = this->checkOutputPower(pwr, NULL);
   RADIOLIB_ASSERT(state);
 
   // get current OCP configuration
@@ -17,18 +22,17 @@ int16_t SX1261::setOutputPower(int8_t power) {
 
   // set PA config
   uint8_t paDutyCycle = 0x04;
-  int8_t txPwr = power;
-  if(power == 15) {
+  if(pwr == 15) {
     // for 15 dBm, increase the duty cycle and lowe the power to set
     // SX1261/2 datasheet, DS.SX1261-2.W.APP Rev. 2.1 page 78
     paDutyCycle = 0x06;
-    txPwr--;
+    pwr--;
   }
   state = SX126x::setPaConfig(paDutyCycle, RADIOLIB_SX126X_PA_CONFIG_SX1261, 0x00);
   RADIOLIB_ASSERT(state);
 
   // set output power with default 200us ramp
-  state = SX126x::setTxParams(txPwr, RADIOLIB_SX126X_PA_RAMP_200U);
+  state = SX126x::setTxParams(pwr, RADIOLIB_SX126X_PA_RAMP_200U);
   RADIOLIB_ASSERT(state);
 
   // restore OCP configuration
