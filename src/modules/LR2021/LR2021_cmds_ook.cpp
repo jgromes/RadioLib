@@ -14,8 +14,9 @@ int16_t LR2021::setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uin
     pulseShape, rxBw, depth,
   };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_MODULATION_PARAMS, true, buff, sizeof(buff));
-  // datasheet erratum: must be called again after this command for LF
-  if(this->dcdcMode && !this->highFreq && state == RADIOLIB_ERR_NONE) { this->setRegulatorDCDC(); }
+  if (state == RADIOLIB_ERR_NONE) {
+    state = this->setDCDCworkaround();
+  }
   return(state);
 }
 

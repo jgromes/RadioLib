@@ -337,4 +337,62 @@ int16_t LR2021::getPramVersion(uint16_t* version) {
   return(state);
 }
 
+int16_t LR2021::setRegulatorLDO() {
+  return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_OFF));
+}
+
+int16_t LR2021::setRegulatorDCDC() {
+  return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_NORMAL));
+}
+
+// workaround: port of semtech's code altered to use local freqMHz/highFreq - magic numbers are theirs
+int16_t LR2021::setDCDCworkaround() {
+  uint32_t adcCtrlRaw = 0;
+  int16_t state = this->readRegMem32(RADIOLIB_LR2021_REG_DCDC_ADC_CTRL, &adcCtrlRaw, sizeof(adcCtrlRaw));
+  RADIOLIB_ASSERT(state);
+  const uint32_t anaDec = ( adcCtrlRaw >> 8 ) & 0x7;
+
+  if (!this->highFreq && (anaDec == 1 || anaDec == 2)) {
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 20, 11 << 20);
+    RADIOLIB_ASSERT(state);
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 16, 13 << 16);
+    RADIOLIB_ASSERT(state);
+  } else {
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 20, 15 << 20);
+    RADIOLIB_ASSERT(state);    
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 16, 15 << 16);
+    RADIOLIB_ASSERT(state);
+  }
+
+  uint32_t freq_lf = (uint32_t)(2800000 * 1.048576f);
+  if (anaDec == 1) {
+    freq_lf = (uint32_t)(4300000 * 1.048576f);
+  } 
+  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+  RADIOLIB_ASSERT(state);
+  
+  state = this->setFrequency(this->freqMHz, true);
+  return(state);
+}
+
+// workaround: magic numbers are theirs
+int16_t LR2021::resetDCDCworkaround() {
+  if(this->freqMHz) {
+    int16_t state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 20, 15 << 20);
+    RADIOLIB_ASSERT(state);
+
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 16, 15 << 16);
+    RADIOLIB_ASSERT(state);
+
+    uint32_t freq_lf = (uint32_t)(2800000 * 1.048576f);
+    state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+    RADIOLIB_ASSERT(state);
+
+    state = this->setFrequency(this->freqMHz, true);
+    return(state);
+  } else {
+    return RADIOLIB_ERR_NONE;
+  }
+}
+
 #endif

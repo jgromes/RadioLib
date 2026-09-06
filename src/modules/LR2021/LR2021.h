@@ -927,9 +927,6 @@ class LR2021: public LRxxxx {
     uint8_t gainModeLf = RADIOLIB_LR2021_RX_BOOST_LF;
     uint8_t gainModeHf = RADIOLIB_LR2021_RX_BOOST_HF;
 
-    // dcdc mode needs to be tracked and re-executed after certain commands (erratum)
-    bool dcdcMode = false;
-
     // cached FLRC parameters
     uint16_t bitRateFlrc = 0;
     uint8_t codingRateFlrc = 0;
@@ -1073,7 +1070,10 @@ class LR2021: public LRxxxx {
 
     // test commands
     int16_t setTxTestMode(uint8_t mode);
-};
+
+    // port of semtech's workaround
+    int16_t setDCDCworkaround();
+    int16_t resetDCDCworkaround();
 
 #endif
 
