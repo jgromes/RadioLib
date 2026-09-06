@@ -140,12 +140,8 @@ int16_t LR2021::setDefaultRxTxTimeout(uint32_t rxTimeout, uint32_t txTimeout) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_DEFAULT_RX_TX_TIMEOUT, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setRegMode(uint8_t simoUsage, const uint8_t rampTimes[4]) {
-  uint8_t buff[] = { simoUsage, 
-    rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RC2RU], rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_TX2RU], 
-    rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RU2RC], rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RAMP_DOWN],
-  };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_REG_MODE, true, buff, sizeof(buff)));
+int16_t LR2021::setRegMode(uint8_t mode) {
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_REG_MODE, true, &mode, sizeof(mode)));
 }
 
 int16_t LR2021::calibrate(uint8_t blocks) {

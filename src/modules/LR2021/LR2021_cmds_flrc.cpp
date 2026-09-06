@@ -9,7 +9,10 @@
 
 int16_t LR2021::setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape) {
   uint8_t buff[] = { brBw, (uint8_t)((cr << 4) | (pulseShape & 0x0F)) };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_FLRC_MODULATION_PARAMS, true, buff, sizeof(buff)));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_FLRC_MODULATION_PARAMS, true, buff, sizeof(buff));
+  // datasheet erratum: must be called again after this command for LF
+  if(this->dcdcMode && !this->highFreq && state == RADIOLIB_ERR_NONE) { this->setRegulatorDCDC(); }
+  return(state);
 }
 
 int16_t LR2021::setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, bool fixedLength, uint8_t crc, uint16_t payloadLen) {

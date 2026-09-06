@@ -14,7 +14,10 @@ int16_t LR2021::setGfskModulationParams(uint32_t bitRate, uint8_t pulseShape, ui
     pulseShape, rxBw, (uint8_t)((freqDev >> 16) & 0xFF),
     (uint8_t)((freqDev >> 8) & 0xFF), (uint8_t)(freqDev & 0xFF),
   };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_GFSK_MODULATION_PARAMS, true, buff, sizeof(buff)));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_GFSK_MODULATION_PARAMS, true, buff, sizeof(buff));
+  // datasheet erratum: must be called again after this command for LF
+  if(this->dcdcMode && !this->highFreq && state == RADIOLIB_ERR_NONE) { this->setRegulatorDCDC(); }
+  return(state);
 }
 
 int16_t LR2021::setGfskPacketParams(uint16_t preambleLen, uint8_t preambleDetect, bool longPreamble, bool pldLenBits, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t dcFree) {

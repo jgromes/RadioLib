@@ -13,7 +13,10 @@ int16_t LR2021::setRfFrequency(uint32_t rfFreq) {
 
 int16_t LR2021::setRxPath(uint8_t rxPath, uint8_t rxBoost) {
   uint8_t buff[] = { (uint8_t)(rxPath & 0x01), (uint8_t)(rxBoost & 0x07) };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_PATH, true, buff, sizeof(buff)));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_PATH, true, buff, sizeof(buff));
+  // datasheet erratum: must be called again after this command for LF
+  if(this->dcdcMode && !this->highFreq && state == RADIOLIB_ERR_NONE) { this->setRegulatorDCDC(); }
+  return(state);
 }
 
 int16_t LR2021::getRssiInst(float* rssi) {

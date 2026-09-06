@@ -898,6 +898,19 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
+
+    /*!
+      \brief Set regulator mode to LDO.
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorLDO();
+
+    /*!
+      \brief Set regulator mode to DC-DC.
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorDCDC();
+   
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -913,6 +926,9 @@ class LR2021: public LRxxxx {
 #endif
     uint8_t gainModeLf = RADIOLIB_LR2021_RX_BOOST_LF;
     uint8_t gainModeHf = RADIOLIB_LR2021_RX_BOOST_HF;
+
+    // dcdc mode needs to be tracked and re-executed after certain commands (erratum)
+    bool dcdcMode = false;
 
     // cached FLRC parameters
     uint16_t bitRateFlrc = 0;

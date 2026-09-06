@@ -1198,4 +1198,14 @@ int16_t LR2021::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC){
   return(this->getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL));
 }
 
+int16_t LR2021::setRegulatorLDO() {
+  this->dcdcMode = false;
+  return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_OFF));
+}
+
+int16_t LR2021::setRegulatorDCDC() {
+  this->dcdcMode = true;
+  return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_NORMAL));
+}
+
 #endif
