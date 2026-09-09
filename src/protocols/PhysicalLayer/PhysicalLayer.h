@@ -644,7 +644,7 @@ class PhysicalLayer {
     /*!
       \brief Sets offset of the output power. Useful for devices where the radio has an external power amplifier,
       or of the RF system has a known loss between the radio and the antenna.
-      NOTE: This method must be called BEFORE any calls to radio.begin() or readio.setOutputPower()
+      NOTE: This method must be called BEFORE any calls to radio.begin() or radio.setOutputPower()
       for the offset to be applied!
       \param offset Offset to apply. If the PA has a linear gain of 12 dB, call radio.setOutputPowerOffset(12).
       If the setup has 1 dB of loss, call radio.setOutputPowerOffset(-1) to compensate.
@@ -656,7 +656,7 @@ class PhysicalLayer {
       \brief Sets offset of the output power. Useful for devices where the radio has an external power amplifier,
       or of the RF system has a known loss between the radio and the antenna.
       This overload allows to compensate a non-linear PA gain, dependant on the radio power output via a lookup table.
-      NOTE: This method must be called BEFORE any calls to radio.begin() or readio.setOutputPower()
+      NOTE: This method must be called BEFORE any calls to radio.begin() or radio.setOutputPower()
       for the offset to be applied!
       \param lut Pointer to a lookup table to use - for each output power configuration, value from the lookup table
       will be applied as offset.
