@@ -33,8 +33,8 @@ struct LoRaRate_t {
   /*! \brief LoRa spreading factor */
   uint8_t spreadingFactor;
   
-  /*! \brief LoRa bandwidth in kHz */
-  float bandwidth;
+  /*! \brief LoRa bandwidth in Hz */
+  uint32_t bandwidth;
 
   /*! \brief LoRa coding rate denominator */
   uint8_t codingRate;
@@ -45,11 +45,11 @@ struct LoRaRate_t {
   \brief Data rate structure interpretation in case FSK is used
 */
 struct FSKRate_t {
-  /*! \brief FSK bit rate in kbps */
-  float bitRate;
+  /*! \brief FSK bit rate in bps */
+  uint32_t bitRate;
   
-  /*! \brief FSK frequency deviation in kHz */
-  float freqDev;
+  /*! \brief FSK frequency deviation in Hz */
+  uint32_t freqDev;
 };
 
 /*!
