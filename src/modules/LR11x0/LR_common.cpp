@@ -89,8 +89,8 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
 
 RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
   // check active modem
-  if(modem == ModemType_t::RADIOLIB_MODEM_LORA) {  
-    uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << dr.lora.spreadingFactor) / (dr.lora.bandwidth * 10) ;
+  if(modem == ModemType_t::RADIOLIB_MODEM_LORA) {
+    uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
     uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
     uint8_t sfCoeff2 = 8;
     if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
@@ -119,7 +119,12 @@ RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
     return((symbolLength_us * nSymbol_x4) / 4);
 
   } else if(modem == ModemType_t::RADIOLIB_MODEM_FSK) {
-    return((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (uint32_t)len * 8) / (dr.fsk.bitRate / 1000.0f)));
+    size_t num_bits = ((uint32_t)pc.fsk.crcLength * 8UL) + (uint32_t)pc.fsk.syncWordLength + (uint32_t)pc.fsk.preambleLength + ((uint32_t)len * 8UL);
+    if(this->packetType != 0) {
+      //! \todo [LRxxxx] Implement ToA calculation for extended GFSK modes (9/15-bit packet lengths)
+      num_bits += 8;
+    }
+    return((num_bits * RADIOLIB_UNIT_MEGA(1)) / dr.fsk.bitRate);
 
   } else if(modem == ModemType_t::RADIOLIB_MODEM_LRFHSS) {
     // calculate the number of bits based on coding rate
