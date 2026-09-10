@@ -959,6 +959,20 @@ class LoRaWANNode {
     RadioLibTime_t getLastToA();
 
     /*!
+      \brief Get the duration of the last uplink/downlink cycle.
+      \param seconds Set to true to get time in seconds (rounded down).
+      \return Duration of last sendReceive call (default unit: milliseconds).
+    */
+    RadioLibTime_t getLastDuration(bool seconds = false);
+    
+    /*! 
+      \brief Calculate the time until next uplink is available under dutyCycle limits.
+      \param seconds Set to true to get time in seconds instead of milliseconds (rounded up).
+      \returns Time until next uplink (default unit: milliseconds).
+    */
+    RadioLibTime_t timeUntilUplink(bool seconds = false);
+
+    /*!
       \brief Get the length of the pending MAC uplink payload
       \returns Number of bytes of MAC uplink payload
     */
@@ -972,13 +986,6 @@ class LoRaWANNode {
       \returns Required interval (delay) in milliseconds between consecutive uplinks.
     */
     RadioLibTime_t dutyCycleInterval(RadioLibTime_t msPerHour, RadioLibTime_t airtime);
-
-    /*! 
-      \brief Calculate the time until next uplink is available under dutyCycle limits.
-      \param seconds Set to true to get time in seconds instead of milliseconds.
-      \returns Time until next uplink (default unit: milliseconds).
-    */
-    RadioLibTime_t timeUntilUplink(bool seconds = false);
 
     /*! 
       \brief Returns the maximum allowed uplink payload size given the current MAC state.
@@ -1019,15 +1026,23 @@ class LoRaWANNode {
     void removePackage(uint8_t fPort);
 
     /*!
-      \brief Rx window padding in milliseconds.
+      \brief Class A Rx window padding in milliseconds.
       NOTE: If your clock has a stable drift, use RADIOLIB_CLOCK_DRIFT_MS instead (see BuildOpt.h).
-      On any modern microcontroller it should not be necessary to use scanGuard.
-      However, if your clock is unstable, you can use e.g. scanGuard = 20 to widen
+      On any modern microcontroller it should not be necessary to use scanGuardA.
+      However, if your clock is unstable, you can use e.g. scanGuardA = 20 to widen
       the Rx window by 20 milliseconds (open 10ms early, close 10ms late).
       500 is the **maximum** value, but it is not a good idea to go anywhere near that.
       If you have to go above 50 you probably have a bug somewhere. Check your device timing.
     */
-    RadioLibTime_t scanGuard = 0;
+    RadioLibTime_t scanGuardA = 0;
+
+    /*!
+      \brief Class C inverse Rx window padding in milliseconds.
+      The Class C receive window should close early enough to prepare for Rx1 and Rx2.
+      This switchover time depends on MCU clock speed and SPI clock speed.
+      Increase this value if you encounter RADIOLIB_ERR_NO_RX_WINDOW.
+    */
+    RadioLibTime_t scanGuardC = 50;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -1097,6 +1112,7 @@ class LoRaWANNode {
 
     RadioLibTime_t tUplink = 0;   // scheduled uplink transmission time (internal clock)
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
+    RadioLibTime_t tDone = 0;     // track time spent during sendReceive
 
     // multicast groups
     MulticastGroup_t mcGroups[RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS];
