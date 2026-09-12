@@ -735,7 +735,7 @@ class RF69: public PhysicalLayer {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Gets carrier frequency.
@@ -749,7 +749,7 @@ class RF69: public PhysicalLayer {
       \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Sets receiver bandwidth. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6,
@@ -764,7 +764,7 @@ class RF69: public PhysicalLayer {
       \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Gets frequency deviation.
