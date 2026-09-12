@@ -37,14 +37,14 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
   this->bchCoder = &RadioLibBCHInstance;
 }
 
-int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
+int16_t PagerClient::begin(uint32_t base, uint16_t speed, bool invert, uint16_t shift) {
   // calculate duration of 1 bit in us
   dataRate = (float)speed/1000.0f;
   bitDuration = (RadioLibTime_t)1000000/speed;
 
   // calculate 24-bit frequency
   baseFreq = base;
-  baseFreqRaw = (baseFreq * 1000000.0f) / phyLayer->freqStep;
+  baseFreqRaw = baseFreq / phyLayer->freqStep;
 
   // calculate module carrier frequency resolution
   uint16_t step = round(phyLayer->freqStep);
