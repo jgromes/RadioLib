@@ -66,7 +66,7 @@ void setup() {
   state = radio.setBitRate(RADIOLIB_UNIT_KILO(100));
   state = radio.setFrequencyDeviation(RADIOLIB_UNIT_KILO(10));
   state = radio.setRxBandwidth(RADIOLIB_UNIT_KILO(250));
-  state = radio.setOutputPower(RADIOLIB_UNIT_KILO(10));
+  state = radio.setOutputPower(10);
   state = radio.setCurrentLimit(RADIOLIB_UNIT_KILO(100));
   state = radio.setDataShaping(RADIOLIB_SHAPING_1_0);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
