@@ -238,17 +238,17 @@ int16_t PhysicalLayer::receiveDirect() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setFrequency(float freq) {
+int16_t PhysicalLayer::setFrequency(uint32_t freq) {
   (void)freq;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setBitRate(float br) {
+int16_t PhysicalLayer::setBitRate(uint32_t br) {
   (void)br;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setFrequencyDeviation(float freqDev) {
+int16_t PhysicalLayer::setFrequencyDeviation(uint32_t freqDev) {
   (void)freqDev;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }

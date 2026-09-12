@@ -593,25 +593,25 @@ class PhysicalLayer {
 
     /*!
       \brief Sets carrier frequency. Must be implemented in module class.
-      \param freq Carrier frequency to be set in MHz.
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    virtual int16_t setFrequency(float freq);
+    virtual int16_t setFrequency(uint32_t freq);
 
     /*!
       \brief Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.
-      \param br Bit rate to be set (in kbps).
+      \param br Bit rate to be set (in bps).
       \returns \ref status_codes
     */
-    virtual int16_t setBitRate(float br);
+    virtual int16_t setBitRate(uint32_t br);
 
     /*!
       \brief Sets FSK frequency deviation from carrier frequency. Only available in FSK mode.
       Must be implemented in module class.
-      \param freqDev Frequency deviation to be set (in kHz).
+      \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    virtual int16_t setFrequencyDeviation(float freqDev);
+    virtual int16_t setFrequencyDeviation(uint32_t freqDev);
 
     /*!
       \brief Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.
