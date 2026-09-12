@@ -41,7 +41,7 @@ class Si4430: public Si4432 {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets output power. Allowed values range from -8 to 13 dBm in 3 dBm steps.

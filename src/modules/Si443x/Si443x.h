@@ -722,14 +722,14 @@ class Si443x: public PhysicalLayer {
       \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Sets FSK frequency deviation from carrier frequency. Allowed values range from 625 Hz to 320 kHz.
       \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets receiver bandwidth. Allowed values range from 2.6 to 620.7 kHz.
