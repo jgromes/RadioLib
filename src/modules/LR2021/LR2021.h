@@ -346,7 +346,7 @@ class LR2021: public LRxxxx {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150 to 1090 MHz,
@@ -488,14 +488,14 @@ class LR2021: public LRxxxx {
       \param br FSK bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Sets GFSK frequency deviation. Allowed values range from 600 Hz to 500 kHz.
       \param freqDev GFSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
