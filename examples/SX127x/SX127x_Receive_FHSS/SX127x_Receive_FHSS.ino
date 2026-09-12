@@ -46,8 +46,8 @@ volatile bool fhssChangeFlag = false;
 
 // the channel frequencies can be generated randomly or hard coded
 // NOTE: The frequency list MUST be the same on both sides!
-float channels[] = { 433.0, 433.4, 433.2, 433.6, 434.0, 433.8 };
-int numberOfChannels = sizeof(channels) / sizeof(float);
+uint32_t channels[] = { 433000000, 433400000, 433200000, 433600000, 434000000, 433800000 };
+int numberOfChannels = sizeof(channels) / sizeof(uint32_t);
 
 // counter to keep track of how many frequency hops were performed
 int hopsCompleted = 0;
