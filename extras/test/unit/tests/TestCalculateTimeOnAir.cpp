@@ -26,8 +26,8 @@ static std::vector<RadioConfig> allConfigs = {
     { "SX127x", RADIOLIB_MODEM_LORA, {.lora={12,RADIOLIB_UNIT_KILO(125),7}}, {.lora={8,false,true,true}}, {1,24,64,128}, {892928,1810432,3645440,6627328} }, // 892.93, 1810.43, 3645.50, 6627.59
     { "SX127x", RADIOLIB_MODEM_FSK,  {.fsk={RADIOLIB_UNIT_KILO(100),RADIOLIB_UNIT_KILO(5)}},    {.fsk={16,16,3}}, {1,16,32,61}, {640,1840,3120,5440} },
 
-    { "SX128x", RADIOLIB_MODEM_LORA, {.lora={5,RADIOLIB_UNIT_KILO(400),5}}, {.lora={8,false,true,false}}, {1,50,200}, {2580,10179,34180} }, // 2.54, 10.02, 33.65
-    { "SX128x", RADIOLIB_MODEM_LORA, {.lora={12,RADIOLIB_UNIT_KILO(800),7}}, {.lora={16,false,true,true}}, {10,100,250}, {216319,861440,1936640} }, // 212.99, 848.19, 1910
+    { "SX128x", RADIOLIB_MODEM_LORA, {.lora={5,RADIOLIB_UNIT_KILO(400),5}}, {.lora={8,false,true,false}}, {1,50,200}, {2580,10180,34180} }, // 2.54, 10.02, 33.65
+    { "SX128x", RADIOLIB_MODEM_LORA, {.lora={12,RADIOLIB_UNIT_KILO(800),7}}, {.lora={16,false,true,true}}, {10,100,250}, {216320,861440,1936640} }, // 212.99, 848.19, 1910
     { "SX128x", RADIOLIB_MODEM_FSK,  {.fsk={RADIOLIB_UNIT_KILO(250),RADIOLIB_UNIT_KILO(100)}},  {.fsk={16,16,2}}, {1,32,64,128}, {224,1216,2240,4288} },
 
     // also covers LR2021 as the calculation is shared in the LRxxxx base class
