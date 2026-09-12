@@ -32,13 +32,13 @@ class FSK4Client {
 
     /*!
       \brief Initialization method.
-      \param base Base (space) frequency to be used in MHz (in FSK-4 mode),
+      \param base Base (space) RF frequency to be used in Hz (in FSK-4 mode),
       or the space tone frequency in Hz (in AFSK mode)
       \param shift Frequency shift between each tone in Hz.
       \param rate Baud rate to be used during transmission.
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint32_t shift, uint16_t rate);
+    int16_t begin(uint32_t base, uint32_t shift, uint16_t rate);
 
     /*!
       \brief Send out idle condition (RF tone at mark frequency).
