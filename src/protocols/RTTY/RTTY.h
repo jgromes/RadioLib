@@ -34,14 +34,14 @@ class RTTYClient: public RadioLibPrint {
 
     /*!
       \brief Initialization method.
-      \param base Base (space) frequency to be used in MHz (in 2-FSK mode), or the space tone frequency in Hz (in AFSK mode)
+      \param base Base (space) RF frequency to be used in Hz (in 2-FSK mode), or the space tone frequency in Hz (in AFSK mode)
       \param shift Frequency shift between mark and space in Hz.
       \param rate Baud rate to be used during transmission.
       \param enc Encoding to be used. Defaults to ASCII.
       \param stopBits Number of stop bits to be used.
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint32_t shift, uint16_t rate, uint8_t enc = RADIOLIB_ASCII, uint8_t stopBits = 1);
+    int16_t begin(uint32_t base, uint32_t shift, uint16_t rate, uint8_t enc = RADIOLIB_ASCII, uint8_t stopBits = 1);
 
     /*!
       \brief Send out idle condition (RF tone at mark frequency).
