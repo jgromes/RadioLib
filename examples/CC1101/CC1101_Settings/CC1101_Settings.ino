@@ -49,7 +49,7 @@ void setup() {
   // initialize CC1101 at 434 MHz
   Serial.print(F("[CC1101] Initializing ... "));
   ConfigFSK_t config1;
-  config1.frequency = 434;
+  config1.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -69,20 +69,20 @@ void setup() {
   // preamble length:                     32 bits
   #if (__cplusplus < 201402L)
     ConfigFSK_t config2;
-    config2.frequency = 434.0;
-    config2.bitRate = 32.0;
-    config2.frequencyDeviation = 60.0;
-    config2.receiverBandwidth = 250.0;
+    config2.frequency = RADIOLIB_UNIT_MEGA(434);
+    config2.bitRate = RADIOLIB_UNIT_KILO(32);
+    config2.frequencyDeviation = RADIOLIB_UNIT_KILO(60);
+    config2.receiverBandwidth = RADIOLIB_UNIT_KILO(250);
     config2.power = 7;
     config2.preambleLength = 32;
     state = radio2.begin(config2);
   #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
-      .frequency = 434.0,
-      .bitRate = 32.0,
-      .frequencyDeviation = 60.0,
-      .receiverBandwidth = 250.0,
+      .frequency = RADIOLIB_UNIT_MEGA(434),
+      .bitRate = RADIOLIB_UNIT_KILO(32),
+      .frequencyDeviation = RADIOLIB_UNIT_KILO(60),
+      .receiverBandwidth = RADIOLIB_UNIT_KILO(250),
       .power = 7,
       .preambleLength = 32
     });
@@ -99,13 +99,13 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433500000) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("[CC1101] Selected frequency is invalid for this module!"));
     while (true) { delay(10); }
   }
 
   // set bit rate to 100.0 kbps
-  state = radio1.setBitRate(100.0);
+  state = radio1.setBitRate(RADIOLIB_UNIT_KILO(100));
   if (state == RADIOLIB_ERR_INVALID_BIT_RATE) {
     Serial.println(F("[CC1101] Selected bit rate is invalid for this module!"));
     while (true) { delay(10); }
@@ -116,13 +116,13 @@ void setup() {
   }
 
   // set receiver bandwidth to 250.0 kHz
-  if (radio1.setRxBandwidth(250.0) == RADIOLIB_ERR_INVALID_RX_BANDWIDTH) {
+  if (radio1.setRxBandwidth(RADIOLIB_UNIT_KILO(250)) == RADIOLIB_ERR_INVALID_RX_BANDWIDTH) {
     Serial.println(F("[CC1101] Selected receiver bandwidth is invalid for this module!"));
     while (true) { delay(10); }
   }
 
   // set allowed frequency deviation to 10.0 kHz
-  if (radio1.setFrequencyDeviation(10.0) == RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION) {
+  if (radio1.setFrequencyDeviation(RADIOLIB_UNIT_KILO(10)) == RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION) {
     Serial.println(F("[CC1101] Selected frequency deviation is invalid for this module!"));
     while (true) { delay(10); }
   }
