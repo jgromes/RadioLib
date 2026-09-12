@@ -546,7 +546,7 @@ int16_t CC1101::autoSetRxBandwidth() {
 
 int16_t CC1101::setFrequencyDeviation(uint32_t freqDev) {
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev ? freqDev : 1587;
+  uint32_t newFreqDev = freqDev ? freqDev : 1587;
 
   // check range
   RADIOLIB_CHECK_RANGE(newFreqDev, 1587, 380800, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);

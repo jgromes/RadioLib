@@ -746,14 +746,14 @@ class CC1101: public PhysicalLayer {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets bit rate. Allowed values range from 25 bps to 600 kbps.
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Sets bit rate tolerance in BSCFG register. Allowed values are 0:(0%), 1(3,125%), 2:(6,25%) and 3:(12,5%).
@@ -784,7 +784,7 @@ class CC1101: public PhysicalLayer {
       \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Gets frequency deviation. 
