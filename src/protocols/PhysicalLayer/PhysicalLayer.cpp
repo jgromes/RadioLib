@@ -466,7 +466,7 @@ int16_t PhysicalLayer::startDirect() {
   RADIOLIB_ASSERT(state);
 
   // set frequency deviation to the lowest possible value
-  state = setFrequencyDeviation(-1);
+  state = setFrequencyDeviation(0);
   return(state);
 }
 

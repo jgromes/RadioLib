@@ -833,10 +833,7 @@ int16_t SX127x::setFrequencyDeviation(uint32_t freqDev) {
   }
 
   // set frequency deviation to lowest available setting (required for digimodes)
-  uint32_t newFreqDev = freqDev;
-  if(freqDev < 0) {
-    newFreqDev = 600;
-  }
+  float newFreqDev = freqDev ? freqDev : 600;
 
   // check frequency deviation range
   if(!((newFreqDev + this->bitRate/2 <= RADIOLIB_UNIT_KILO(250)) && (freqDev <= RADIOLIB_UNIT_KILO(200)))) {

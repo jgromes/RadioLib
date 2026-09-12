@@ -548,10 +548,8 @@ int16_t CC1101::setFrequencyDeviation(uint32_t freqDev) {
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev ? freqDev : 1587;
 
-  // check range unless 0 (special value)
-  if(freqDev != 0) {
-    RADIOLIB_CHECK_RANGE(newFreqDev, 1587, 380800, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
-  }
+  // check range
+  RADIOLIB_CHECK_RANGE(newFreqDev, 1587, 380800, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // set mode to standby
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
