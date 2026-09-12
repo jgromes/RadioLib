@@ -442,14 +442,14 @@ class SX126x: public PhysicalLayer {
       \param freqDev FSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets FSK bit rate. Allowed values range from 600 bps to 300 kbps.
       \param br FSK bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Set data rate.

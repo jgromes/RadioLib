@@ -73,7 +73,7 @@ class SX1268: public SX126x {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
