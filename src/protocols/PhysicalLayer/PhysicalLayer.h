@@ -1024,9 +1024,26 @@ class PhysicalLayer {
     */
     int16_t calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, DataRate_t* dr, uint32_t* wakePeriod, uint32_t* sleepPeriod);
 
+    /*!
+      \brief Get the minimum output power supported by the radio.
+      This includes any previously configured PA offset.
+      \returns The minimum supported output power in dBm.
+    */
+    int8_t getOutputPowerMin() const { return(powerMin); }
+    
+    /*!
+      \brief Get the maximum output power supported by the radio.
+      This includes any previously configured PA offset.
+      \returns The maximum supported output power in dBm.
+    */
+    int8_t getOutputPowerMax() const { return(powerMax); }
+
 #if !RADIOLIB_GODMODE
   protected:
 #endif
+    int8_t powerMin = 0, powerMax = 0;
+    uint8_t paSteps = 0;
+    
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
     
