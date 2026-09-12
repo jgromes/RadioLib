@@ -1367,7 +1367,7 @@ void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
 template<typename T>
 T LoRaWANNode::checkSum(const uint8_t* buff, size_t size) {
   T result = 0;
-  for(uint16_t i = 0; i < size; i += sizeof(T)) {
+  for(size_t i = 0; i < size; i += sizeof(T)) {
     T word = 0;
     for(size_t j = 0; j < sizeof(T); j++) {
       word <<= 8;

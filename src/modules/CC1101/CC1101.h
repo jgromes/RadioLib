@@ -472,6 +472,7 @@
 #define RADIOLIB_CC1101_VERSION_CURRENT                         0x14
 #define RADIOLIB_CC1101_VERSION_LEGACY                          0x04
 #define RADIOLIB_CC1101_VERSION_CLONE                           0x17
+#define RADIOLIB_CC1101_VERSION_CLONE2                          0x03
 
 // RADIOLIB_CC1101_REG_MARCSTATE
 #define RADIOLIB_CC1101_MARC_STATE_SLEEP                        0x00        //  4     0   main radio control state: sleep
@@ -831,9 +832,10 @@ class CC1101: public PhysicalLayer {
       \param syncL LSB of the sync word.
       \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
+      \param repeatSync Repeat 16-bit sync word twice (enables the 32-bit sync word mode of CC1101).
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSync = false);
 
     /*!
       \brief Sets 1 or 2 bytes of sync word.
@@ -841,9 +843,10 @@ class CC1101: public PhysicalLayer {
       \param len Sync word length in bytes.
       \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
+      \param repeatSync Repeat 16-bit sync word twice (enables the 32-bit sync word mode of CC1101).
       \returns \ref status_codes
     */
-    int16_t setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSync = false);
 
     /*!
       \brief Sets preamble length.
@@ -859,6 +862,13 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold);
+
+    /*!
+      \brief Enables/disables automatic switch to reception after transmission. Uses the TXOFF_RX mode of CC1101
+      \param enable True to enable automatic switch
+      \returns \ref status_codes
+    */
+    int16_t enableRxAfterTx(bool enable = true);
 
     /*!
       \brief Sets node and broadcast addresses. Calling this method will also enable address filtering.
@@ -920,9 +930,10 @@ class CC1101: public PhysicalLayer {
       \brief Enable sync word filtering and generation.
       \param maxErrBits Maximum number of allowed error bits in sync word.
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
+      \param repeatSync Repeat 16-bit sync word twice (enables the 32-bit sync word mode of CC1101).
       \returns \ref status_codes
     */
-    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSync = false);
 
     /*!
       \brief Disable preamble and sync word filtering and generation.
