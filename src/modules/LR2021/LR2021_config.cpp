@@ -233,6 +233,33 @@ void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
   }
 }
 
+int16_t LR2021::forceLDRO(bool enable) {
+  // check packet type
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // update modulation parameters
+  this->ldroAuto = false;
+  this->ldrOptimize = (uint8_t)enable;
+  return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
+}
+
+int16_t LR2021::autoLDRO() {
+  uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  this->ldroAuto = true;
+  return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
+}
+
 int16_t LR2021::setBandwidth(float bw) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
@@ -975,7 +1002,16 @@ int16_t LR2021::setPacketMode(uint8_t mode, uint8_t len) {
     this->implicitLen = len;
     return(state);
   
+  } else if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    // LoRa mode does not have fixed/variable packet length mode, but it does have implicit/explicit header
+    // in terms of packet length, that is equivalent with fixed/variable packets, so let's assume that's what the user meant
+    if(mode == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) {
+      return(this->implicitHeader(len));
+    }
+    return(this->explicitHeader());
+  
   }
+
 
   return(RADIOLIB_ERR_WRONG_MODEM);
 }

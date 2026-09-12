@@ -1178,6 +1178,8 @@ float LR2021::getRSSI(bool packet, bool skipReceive) {
     state = this->getGfskPacketStatus(NULL, &rssi, NULL, NULL, NULL, NULL);
   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     state = this->getOokPacketStatus(NULL, NULL, &rssi, NULL, NULL, NULL);
+  } else if (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
+    state = this->getFlrcPacketStatus(NULL, &rssi, NULL, NULL);
   } else {
     return(0);
   }
@@ -1204,6 +1206,11 @@ uint8_t LR2021::randomByte() {
 }
 
 int16_t LR2021::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC){
+  // check if in explicit header mode, as LR11x0, SX126x, SX127x and SX128x do
+  if(this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
   return(this->getLoRaPacketStatus(cr, hasCRC, NULL, NULL, NULL, NULL));
 }
 

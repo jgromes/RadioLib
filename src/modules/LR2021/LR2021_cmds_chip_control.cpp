@@ -62,7 +62,7 @@ int16_t LR2021::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   // convert endians
   if(data && (state == RADIOLIB_ERR_NONE)) {
     for(size_t i = 0; i < len; i++) {
-      data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
+      data[i] = ((uint32_t)rplBuff[i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[1 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[3 + i*sizeof(uint32_t)];
     }
   }
 
@@ -162,7 +162,7 @@ int16_t LR2021::calibrateFrontEnd(const uint16_t freq[3]) {
 }
 
 int16_t LR2021::getVbat(uint8_t resolution, uint16_t* vbat) {
-  uint8_t reqBuff[] = { (uint8_t)(RADIOLIB_LR2021_VBAT_FORMAT_MV | ((RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET + resolution) & 0x07)) };
+  uint8_t reqBuff[] = { (uint8_t)(RADIOLIB_LR2021_VBAT_FORMAT_MV | ((resolution - RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET) & 0x07)) };
   uint8_t rplBuff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_V_BAT, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(vbat) { *vbat = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1]; }
@@ -170,12 +170,14 @@ int16_t LR2021::getVbat(uint8_t resolution, uint16_t* vbat) {
 }
 
 int16_t LR2021::getTemp(uint8_t source, uint8_t resolution, float* temp) {
-  uint8_t reqBuff[] = { (uint8_t)((source & 0x30) | RADIOLIB_LR2021_TEMP_FORMAT_DEG_C | ((RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET + resolution) & 0x07)) };
+  // reading of temperature in degrees seems broken and the datasheet disagrees with reference implementation
+  // so we read out the raw value and convert it here
+  uint8_t reqBuff[] = { (uint8_t)((source & 0x30) | RADIOLIB_LR2021_TEMP_FORMAT_RAW | ((resolution - RADIOLIB_LR2021_MEAS_RESOLUTION_OFFSET) & 0x07)) };
   uint8_t rplBuff[2] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_TEMP, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(temp) { 
     uint16_t raw = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1];
-    *temp = (float)raw/320.0f;
+    *temp = 25.0f + (0.7295f - 1.35f * raw / 8192.0f) * (1000.0f / 1.7f);
   }
   return(state);
 }
@@ -240,8 +242,19 @@ int16_t LR2021::getAndClearIrqStatus(uint32_t* irq) {
   return(state);
 }
 
-int16_t LR2021::configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint8_t rxHighThreshold, uint8_t txHighThreshold) {
-  uint8_t buff[] = { rxFifoIrq, txFifoIrq, rxHighThreshold, txHighThreshold };
+int16_t LR2021::configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint16_t rxHighThreshold, uint16_t txLowThreshold, uint16_t rxLowThreshold, uint16_t txHighThreshold) {
+  uint8_t buff[] = {
+	rxFifoIrq,
+	txFifoIrq,
+	(uint8_t)((rxHighThreshold >> 8) & 0xFF),
+	(uint8_t)(rxHighThreshold & 0xFF),
+	(uint8_t)((txLowThreshold >> 8) & 0xFF),
+	(uint8_t)(txLowThreshold & 0xFF),
+	(uint8_t)((rxLowThreshold >> 8) & 0xFF),
+	(uint8_t)(rxLowThreshold & 0xFF),
+	(uint8_t)((txHighThreshold >> 8) & 0xFF),
+	(uint8_t)(txHighThreshold & 0xFF),
+	};
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_CONFIG_FIFO_IRQ, true, buff, sizeof(buff)));
 }
 

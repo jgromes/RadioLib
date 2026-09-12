@@ -612,7 +612,7 @@ class LR11x0: public LRxxxx {
 
     /*!
       \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
-      when symbol length exceeds 16 ms.
+      when symbol length exceeds 16 ms, or in cases when SX128x LoRa bandwidths are used with SF > 10.
       \returns \ref status_codes
     */
     int16_t autoLDRO();

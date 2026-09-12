@@ -192,7 +192,9 @@ int16_t SX126x::reset(bool verify) {
   RadioLibTime_t start = this->mod->hal->millis();
   while(true) {
     // try to set mode to standby
-    int16_t state = standby();
+    // force usage of RC standby here - if this is being called during startup,
+    // and user set standbyXOSC to true with TCXO, this would attempt to use the TCXO
+    int16_t state = standby(RADIOLIB_SX126X_STANDBY_RC);
     if(state == RADIOLIB_ERR_NONE) {
       // standby command successful
       return(RADIOLIB_ERR_NONE);

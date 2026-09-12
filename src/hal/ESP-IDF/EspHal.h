@@ -5,7 +5,11 @@
 #if !defined(_RADIOLIB_ESP_IDF_HAL_H)
 #define _RADIOLIB_ESP_IDF_HAL_H
 
-#if defined(ESP_PLATFORM)
+// Only expose the native ESP-IDF HAL for pure ESP-IDF targets. Arduino builds
+// (Arduino-ESP32 also defines ESP_PLATFORM) use ArduinoHal instead. Note this
+// guard runs before RadioLib.h is included, so it must test the compiler's
+// predefined ARDUINO macro directly rather than RADIOLIB_BUILD_ARDUINO.
+#if defined(ESP_PLATFORM) && !defined(ARDUINO)
 #include "RadioLib.h"
 #include "driver/spi_master.h"
 
@@ -77,5 +81,5 @@ private:
   bool halInitialized;
   int32_t tonePrevFreq;
 };
-#endif
+#endif // ESP_PLATFORM && !ARDUINO
 #endif // _RADIOLIB_ESP_IDF_HAL_H
