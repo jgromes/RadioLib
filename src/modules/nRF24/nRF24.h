@@ -345,14 +345,14 @@ class nRF24: public PhysicalLayer {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.
       \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Sets output power. Allowed values are -18, -12, -6 or 0 dBm.
@@ -420,7 +420,7 @@ class nRF24: public PhysicalLayer {
       \param freqDev Dummy frequency deviation parameter, no configuration will be changed.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
      /*!
       \brief Query modem for the packet length of received payload.
