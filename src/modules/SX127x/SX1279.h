@@ -50,7 +50,7 @@ class SX1279: public SX1278 {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
     
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio

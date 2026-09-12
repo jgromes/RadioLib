@@ -945,7 +945,7 @@ class SX127x: public PhysicalLayer {
       \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(uint32_t freqDev) /*override*/;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets FSK receiver bandwidth. Allowed values range from 2600 Hz to 250 kHz. Only available in FSK mode.

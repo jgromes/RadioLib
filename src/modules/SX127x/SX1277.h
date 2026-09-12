@@ -50,7 +50,7 @@ class SX1277: public SX1278 {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets LoRa link spreading factor. Allowed values range from 6 to 9. Only available in LoRa mode.

@@ -135,7 +135,7 @@ class SX1272: public SX127x {
       \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(uint32_t freq) /*override*/;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets LoRa link bandwidth. Allowed values are 125000, 250000 and 500000 Hz. Only available in LoRa mode.
@@ -164,7 +164,7 @@ class SX1272: public SX127x {
       \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
     
     /*!
       \brief Set data rate.
