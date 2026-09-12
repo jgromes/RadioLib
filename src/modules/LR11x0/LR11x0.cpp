@@ -712,7 +712,7 @@ int16_t LR11x0::setFrequencyDeviation(uint32_t freqDev) {
   }
 
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev ? freqDev : 600;
+  uint32_t newFreqDev = freqDev ? freqDev : 600;
 
   RADIOLIB_CHECK_RANGE(newFreqDev, 600, RADIOLIB_UNIT_KILO(200), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   this->frequencyDev = newFreqDev;

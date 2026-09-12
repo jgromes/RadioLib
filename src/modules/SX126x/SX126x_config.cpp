@@ -195,7 +195,7 @@ int16_t SX126x::setFrequencyDeviation(uint32_t freqDev) {
   }
 
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev ? freqDev : 600;
+  uint32_t newFreqDev = freqDev ? freqDev : 600;
   RADIOLIB_CHECK_RANGE(newFreqDev, 600, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value

@@ -636,7 +636,7 @@ int16_t RF69::setRxBandwidth(uint32_t rxBw) {
 
 int16_t RF69::setFrequencyDeviation(uint32_t freqDev) {
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev ? freqDev : 600;
+  uint32_t newFreqDev = freqDev ? freqDev : 600;
 
   // set mode to standby
   setMode(RADIOLIB_RF69_STANDBY);

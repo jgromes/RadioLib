@@ -383,7 +383,7 @@ int16_t Si443x::setBitRate(uint32_t br) {
 
 int16_t Si443x::setFrequencyDeviation(uint32_t freqDev) {
   // set frequency deviation to lowest available setting (required for digimodes)
-  float newFreqDev = freqDev ? freqDev : 625;
+  uint32_t newFreqDev = freqDev ? freqDev : 625;
   RADIOLIB_CHECK_RANGE(newFreqDev, 625, RADIOLIB_UNIT_KILO(320), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
