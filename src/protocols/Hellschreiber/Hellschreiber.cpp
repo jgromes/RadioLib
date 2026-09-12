@@ -89,10 +89,10 @@ HellClient::HellClient(AFSKClient* audio) {
 }
 #endif
 
-int16_t HellClient::begin(float base, float rate) {
+int16_t HellClient::begin(uint32_t base, float rate) {
   // calculate 24-bit frequency
   baseFreqHz = base;
-  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
+  baseFreq = base / phyLayer->freqStep;
 
   // calculate "pixel" duration
   pixelDuration = 1000000.0f/rate;
