@@ -9,14 +9,6 @@ LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, LoRaWANN
   : LoRaWANPackage(RADIOLIB_LORAWAN_PACKAGE_TS009, pacMan, node, secondsCb),
     radioModule(NULL), delaySecondsCallback(NULL), uplinkIntervalCallback(NULL), rebootCallback(NULL) {
   this->packageVersion = 1;
-
-  // default configuration for certification testing
-  this->lorawanNode->setDatarate(5);
-  this->lorawanNode->setADR(false);
-  this->lorawanNode->setDutyCycle(true, 3600000);
-
-  // LCTT has terrible timing
-  this->lorawanNode->scanGuard = 150;
 }
 
 void LoRaWANPackageTS009::setPhysicalLayer(PhysicalLayer* radio) {
