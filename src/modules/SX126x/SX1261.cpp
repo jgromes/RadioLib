@@ -3,17 +3,19 @@
 
 SX1261::SX1261(Module* mod): SX1262(mod) {
   chipType = RADIOLIB_SX1261_CHIP_TYPE;
+  this->powerMin = -17;
+  this->powerMax = 15;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t SX1261::setOutputPower(int8_t power) {
   // apply offset for external PA
   int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(-9, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(-17, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   // check if power value is configurable
-  state = this->checkOutputPower(pwr, NULL);
-  RADIOLIB_ASSERT(state);
+  RADIOLIB_CHECK_RANGE(pwr, -17, 15, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // get current OCP configuration
   uint8_t ocp = 0;
@@ -37,14 +39,6 @@ int16_t SX1261::setOutputPower(int8_t power) {
 
   // restore OCP configuration
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
-}
-
-int16_t SX1261::checkOutputPower(int8_t power, int8_t* clipped) {
-  if(clipped) {
-    *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(15, power));
-  }
-  RADIOLIB_CHECK_RANGE(power, -17, 15, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  return(RADIOLIB_ERR_NONE);
 }
 
 #endif
