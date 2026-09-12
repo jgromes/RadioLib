@@ -664,7 +664,9 @@ int16_t SX126x::invertIQ(bool enable) {
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
-  standby();
+  // force RC oscillator - typically this is called on startup,
+  // so we cannot rely on what the user may have provided
+  (void)standby(RADIOLIB_SX126X_STANDBY_RC);
 
   // check RADIOLIB_SX126X_XOSC_START_ERR flag and clear it
   if(getDeviceErrors() & RADIOLIB_SX126X_XOSC_START_ERR) {
@@ -740,6 +742,19 @@ int16_t SX126x::setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax,
 
 void SX126x::setPaTable(SX126x::paTableEntry_t* table) {
   this->paOptTable = table;
+}
+
+int16_t SX126x::setStandbyXOSC(bool enable) {
+  // set the internal variable
+  this->standbyXOSC = enable;
+
+  // call standby to start the oscillator
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // update Rx/Tx fallback mode
+  uint8_t mode = this->standbyXOSC ? RADIOLIB_SX126X_RX_TX_FALLBACK_MODE_STDBY_XOSC : RADIOLIB_SX126X_RX_TX_FALLBACK_MODE_STDBY_RC;
+  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_TX_FALLBACK_MODE, &mode, 1));
 }
 
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
