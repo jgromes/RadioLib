@@ -700,6 +700,15 @@ class PhysicalLayer {
       \returns SNR of the last received packet in dB.
     */
     virtual float getSNR();
+
+    /*!
+      \brief Convert from bytes to LoRa symbols.
+      \param dr Data rate.
+      \param pc Packet configuration.
+      \param len Payload length in bytes.
+      \returns The total number of LoRa symbols, including preamble, sync and possible header.
+    */
+    static float getNumSymbols(DataRate_t dr, PacketConfig_t pc, size_t len);
     
     /*!
       \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.

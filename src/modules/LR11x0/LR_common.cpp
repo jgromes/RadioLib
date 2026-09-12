@@ -41,6 +41,7 @@ uint32_t LRxxxx::getIrqStatus() {
 RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
   DataRate_t dr = {};
   PacketConfig_t pc = {};
+  size_t packetLen = len;
   switch(modem) {
     case ModemType_t::RADIOLIB_MODEM_LORA: {
       uint8_t cr = this->codingRate;
@@ -68,6 +69,10 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
       pc.fsk.preambleLength = this->preambleLengthGFSK;
       pc.fsk.syncWordLength = this->syncWordLength; 
       pc.fsk.crcLength = this->crcLenGFSK;
+      if(this->packetType != 0) {
+        //! \todo [LRxxxx] Implement ToA calculation for extended GFSK modes (9/15-bit packet lengths)
+        packetLen++;
+      }
       break;
     }
 
@@ -84,46 +89,18 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  return(this->calculateTimeOnAir(modem, dr, pc, len));
+  return(this->calculateTimeOnAir(modem, dr, pc, packetLen));
 }
 
 RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
   // check active modem
   if(modem == ModemType_t::RADIOLIB_MODEM_LORA) {
     uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
-    uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
-    uint8_t sfCoeff2 = 8;
-    if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
-      sfCoeff1_x4 = 25; // 6.25 * 4
-      sfCoeff2 = 0;
-    }
-    uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
-    if(pc.lora.ldrOptimize) {
-      sfDivisor = 4*(dr.lora.spreadingFactor - 2);
-    }
-    const int8_t bitsPerCrc = 16;
-    const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
-
-    // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
-    int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
-    if(bitCount < 0) {
-      bitCount = 0;
-    }
-    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
-    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
-
-    // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
-    uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
-
-    // get time-on-air in us
+    size_t nSymbol_x4 = PhysicalLayer::getNumSymbols(dr, pc, len) * 4;
     return((symbolLength_us * nSymbol_x4) / 4);
 
   } else if(modem == ModemType_t::RADIOLIB_MODEM_FSK) {
     size_t num_bits = ((uint32_t)pc.fsk.crcLength * 8UL) + (uint32_t)pc.fsk.syncWordLength + (uint32_t)pc.fsk.preambleLength + ((uint32_t)len * 8UL);
-    if(this->packetType != 0) {
-      //! \todo [LRxxxx] Implement ToA calculation for extended GFSK modes (9/15-bit packet lengths)
-      num_bits += 8;
-    }
     return((num_bits * RADIOLIB_UNIT_MEGA(1)) / dr.fsk.bitRate);
 
   } else if(modem == ModemType_t::RADIOLIB_MODEM_LRFHSS) {

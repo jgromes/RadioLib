@@ -740,38 +740,18 @@ int16_t SX126x::getLoRaRxHeaderInfo(uint8_t* cr, bool* hasCRC) {
 RadioLibTime_t SX126x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
   // everything is in microseconds to allow integer arithmetic
   // some constants have .25, these are multiplied by 4, and have _x4 postfix to indicate that fact
-  switch (modem) {
+  switch(modem) {
     case RADIOLIB_MODEM_LORA: {
-      uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << dr.lora.spreadingFactor) / (dr.lora.bandwidth * 10) ;
-      uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
-      uint8_t sfCoeff2 = 8;
-      if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
-        sfCoeff1_x4 = 25; // 6.25 * 4
-        sfCoeff2 = 0;
-      }
-      uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
-      if(pc.lora.ldrOptimize) {
-        sfDivisor = 4*(dr.lora.spreadingFactor - 2);
-      }
-      const int8_t bitsPerCrc = 16;
-      const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
-
-      // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
-      int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
-      if(bitCount < 0) {
-        bitCount = 0;
-      }
-      // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
-      uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
-
-      // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
-      uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
-
+      uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
+      size_t nSymbol_x4 = PhysicalLayer::getNumSymbols(dr, pc, len) * 4;
       return((symbolLength_us * nSymbol_x4) / 4);
     }
+
     case RADIOLIB_MODEM_FSK: {
-       return((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (uint32_t)len * 8) / (dr.fsk.bitRate / 1000.0f)));
+      size_t num_bits = ((uint32_t)pc.fsk.crcLength * 8UL) + (uint32_t)pc.fsk.syncWordLength + (uint32_t)pc.fsk.preambleLength + ((uint32_t)len * 8UL);
+      return((num_bits * RADIOLIB_UNIT_MEGA(1)) / dr.fsk.bitRate);
     }
+
     case RADIOLIB_MODEM_LRFHSS: {
       // calculate the number of bits based on coding rate
       uint16_t N_bits;
@@ -803,6 +783,7 @@ RadioLibTime_t SX126x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
       uint16_t N_totalBits = (RADIOLIB_SX126X_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
       return(((uint32_t)N_totalBits * 8 * 1000000UL) / 488.28215f);
     }
+
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
@@ -816,6 +797,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   DataRate_t dataRate = {};
   PacketConfig_t packetConfig = {};
 
+  size_t packetLen = len;
   if(type == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     uint8_t cr = this->codingRate;
     // We assume same calculation for short and long interleaving, so map CR values 0-4 and 5-7 to the same values
@@ -833,6 +815,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     packetConfig.lora.crcEnabled = (bool)this->crcTypeLoRa;
     packetConfig.lora.implicitHeader = this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT;
     packetConfig.lora.ldrOptimize = (bool)this->ldrOptimize;
+  
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     modem = RADIOLIB_MODEM_FSK;
 
@@ -849,7 +832,8 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     packetConfig.fsk.preambleLength = this->preambleLengthFSK;
     packetConfig.fsk.syncWordLength = this->syncWordLength;
     packetConfig.fsk.crcLength = crcLen;
-  } else if(type == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
+  }
+   else if(type == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
     modem = RADIOLIB_MODEM_LRFHSS;
 
     dataRate.lrFhss.bw = this->lrFhssBw;
@@ -857,6 +841,11 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     dataRate.lrFhss.narrowGrid = this->lrFhssGridNonFcc;
     
     packetConfig.lrFhss.hdrCount = this->lrFhssHdrCount;
+
+    if(this->packetType != RADIOLIB_SX126X_GFSK_PACKET_FIXED) {
+      packetLen++;
+    }
+  
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
     // BPSK is so experimental it does not have a specific data rate structure
     // so just reuse FSK
@@ -874,7 +863,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   
   }
 
-  return(calculateTimeOnAir(modem, dataRate, packetConfig, len));
+  return(calculateTimeOnAir(modem, dataRate, packetConfig, packetLen));
 }
 
 RadioLibTime_t SX126x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
