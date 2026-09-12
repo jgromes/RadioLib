@@ -138,6 +138,10 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
   RADIOLIB_ASSERT(state);
   this->freqMHz = freq;
   this->highFreq = (freq > RADIOLIB_LR2021_LF_CUTOFF_FREQ);
+  
+  // power limits depend on the frequency band
+  this->updatePowerLimits(this->highFreq);
+
   return(state);
 }
 
