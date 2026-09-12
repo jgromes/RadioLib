@@ -95,7 +95,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.beginFSK(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -113,7 +113,7 @@ void setup() {
   Serial.print(F("[SSTV] Initializing ... "));
   // 0 Hz tone frequency:         434.0 MHz
   // SSTV mode:                   Wrasse (SC2-180)
-  state = sstv.begin(434.0, Wrasse);
+  state = sstv.begin(RADIOLIB_UNIT_MEGA(434), Wrasse);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
