@@ -45,7 +45,7 @@ class SX1233: public SX1231  {
       \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint32_t br) /*override*/;
+    int16_t setBitRate(uint32_t br) override;
 
 #if !RADIOLIB_GODMODE
   private:
