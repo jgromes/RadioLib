@@ -202,12 +202,11 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
         uint16_t timeout = ((uint16_t)dataDown[2] << 8) | (uint16_t)dataDown[1];
         uint32_t freqRaw = ((uint32_t)dataDown[5] << 16) | ((uint32_t)dataDown[4] << 8) | 
                            ((uint32_t)dataDown[3]);
-        float freq = (float)freqRaw / 10000.0f;
         uint8_t txPower = dataDown[6];
 
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %7.3f MHz, %d dBm, %d s", freq, txPower, timeout);
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %d MHz, %d dBm, %d s", (unsigned long)(freq * 100UL), txPower, timeout);
 
-        (void)this->radio->setFrequency(freq);
+        (void)this->radio->setFrequency(freqRaw * 100UL);
         (void)this->radio->setOutputPower(txPower);
         (void)this->radio->transmitDirect();
         this->delaySecondsCallback(timeout);
