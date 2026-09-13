@@ -354,14 +354,14 @@ int16_t LR2021::setDCDCworkaround() {
   const uint32_t anaDec = ( adcCtrlRaw >> 8 ) & 0x7;
 
   if (!this->highFreq && (anaDec == 1 || anaDec == 2)) {
-    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 20, 11 << 20);
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 20, 11UL << 20);
     RADIOLIB_ASSERT(state);
-    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 16, 13 << 16);
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 16, 13UL << 16);
     RADIOLIB_ASSERT(state);
   } else {
-    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 20, 15 << 20);
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 20, 15UL << 20);
     RADIOLIB_ASSERT(state);    
-    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 16, 15 << 16);
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 16, 15UL << 16);
     RADIOLIB_ASSERT(state);
   }
 
@@ -379,23 +379,21 @@ int16_t LR2021::setDCDCworkaround() {
 }
 
 int16_t LR2021::resetDCDCworkaround() {
+  int16_t state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 20, 15UL << 20);
+  RADIOLIB_ASSERT(state);
+
+  state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 16, 15UL << 16);
+  RADIOLIB_ASSERT(state);
+
+  // semtech number: 2800000 * 1.048576f (lines 558, 666)
+  uint32_t freq_lf = 2936012;
+  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+  RADIOLIB_ASSERT(state);
+
   if(this->freqMHz) {
-    int16_t state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 20, 15 << 20);
-    RADIOLIB_ASSERT(state);
-
-    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0xF << 16, 15 << 16);
-    RADIOLIB_ASSERT(state);
-
-    // semtech number: 2800000 * 1.048576f (lines 558, 666)
-    uint32_t freq_lf = 2936012;
-    state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
-    RADIOLIB_ASSERT(state);
-
     state = this->setFrequency(this->freqMHz, true);
-    return(state);
-  } else {
-    return RADIOLIB_ERR_NONE;
   }
+  return(state);
 }
 
 #endif
