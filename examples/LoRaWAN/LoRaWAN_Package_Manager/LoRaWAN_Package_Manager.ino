@@ -52,7 +52,7 @@ void setup() {
   // Enable TS003 (Application Time) on default FPort
   pacMan.enableTS003(RADIOLIB_LORAWAN_FPORT_TS003, setSeconds);
   // Enable TS009 (Certification Protocol) with delay, interval, and reboot callbacks
-  pacMan.enableTS009(&radio, delaySeconds, setUplinkInterval, performReboot);
+  pacMan.enableTS009(&radio, delaySeconds, setUplinkInterval, setConfirmed, performReboot);
 
   // Activate a.k.a. join the network
   node.activateOTAA();
@@ -62,7 +62,7 @@ uint8_t uplink[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE], downlink[RADIOLIB_LORAWAN_MAX
 size_t uplLen = 0, downLen = 0;
 uint8_t fPort;
 bool confirmed = false;
-uint32_t lastUplinkTime = 0;
+RadioLibTime_t tNextTask = 0, tNextUplink = 0;
 LoRaWANEvent_t evtUp, evtDown;
 
 void loop() {
@@ -77,7 +77,7 @@ void loop() {
   }
 
   // Get current time
-  tNow = getSeconds();
+  RadioLibTime_t tNow = getSeconds();
 
   // Let the package manager execute any due tasks and report when it next needs servicing
   bool update = false;
@@ -116,8 +116,7 @@ void loop() {
     // If next action is in the future, await it
     tNow = getSeconds();
     delay((tNext - tNow) * 1000);
-
-    continue;
+    return;
   }
 
   // Otherwise (Class C), check if there is a downlink ready for processing
@@ -135,7 +134,6 @@ void loop() {
     Serial.println(evtDown.fPort);
     Serial.print(F("\tCast: "));
     Serial.println(evtDown.multicast ? "Multi" : "Uni");
-    continue;
   }
 }
 

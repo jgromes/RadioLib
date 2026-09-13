@@ -33,10 +33,6 @@ Radio radio = new RadioModule();
 // LORAWAN CONFIGURATION
 // ============================================================================
 
-// How often to send an uplink (in seconds)
-// Consider legal & FUP constraints - see notes
-uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // 5 minutes
-
 // JoinEUI - previous versions of LoRaWAN called this AppEUI
 // For development purposes you can use all zeros - see wiki for details
 #define RADIOLIB_LORAWAN_JOIN_EUI  0x0000000000000000
@@ -65,6 +61,14 @@ const LoRaWANBand_t Region = EU868;
 
 // Subband choice: for US915/AU915 set to 2, for CN470 set to 1, otherwise leave on 0
 const uint8_t subBand = 0;
+
+// How often to send an uplink (in seconds)
+// Consider legal & FUP constraints - see notes
+uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // 5 minutes
+
+// Whether to send confirmed uplinks
+// This should be off by default
+bool confirmed = false;
 
 // ============================================================================
 // SUPPORT CODE - Do not modify unless you know what you're doing

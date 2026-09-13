@@ -62,3 +62,11 @@ void setUplinkInterval(RadioLibTime_t intervalSeconds) {
   // Application specific implementation to set the uplink interval.
   uplinkIntervalSeconds = intervalSeconds;
 }
+
+// This function is called by a package when it receives a TX frames control command.
+void setConfirmed(bool isConfirmed) {
+  Serial.print(F("Setting uplinks to "));
+  Serial.println(isConfirmed ? "confirmed" : "unconfirmed");
+
+  confirmed = isConfirmed;
+}
