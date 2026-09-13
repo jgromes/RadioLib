@@ -846,7 +846,6 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setOutputPower(int8_t power, uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel);
 
-
     /*!
       \brief Sets custom PA configuration table.
       \param table Pointer to user-provided PA configuration table.
@@ -855,6 +854,14 @@ class SX126x: public PhysicalLayer {
       Set to NULL to return back to the default table.
     */
     void setPaTable(SX126x::paTableEntry_t* table);
+    
+    /*!
+      \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
+      between Rx and Tx modes.
+      \param enable Set to true for XOSC standby, false for RC standby.
+      \returns \ref status_codes
+    */
+    int16_t setStandbyXOSC(bool enable);
 
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
