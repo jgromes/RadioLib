@@ -247,12 +247,12 @@ class LoRaWANPackageManager {
 
     // Transmission state for a pending uplink (TS007 fragments are sent over several
     // calls; a plain package uplink is sent in one)
-    bool managerPending;    // a staged uplink is due now
-    int8_t pendingBuildPackage; // package index that builds its uplink at send time, or -1 = prebuilt buffer
+    bool pendingUplink;     // a staged uplink is due now
+    uint8_t pendingPackage; // package index that builds its uplink at send time
     size_t txCursor;        // next BaseByte to transmit (TS007 fragmentation)
     size_t txStop;          // last TS007 ANS buffer index to transmit (inclusive)
-    bool txForceFrag;       // always wrap in MultiPackBufferFrag (Req response)
-    bool txError;           // next uplink is the [0x02][0xFF] error frame
+    bool sendFragmented;    // always wrap in MultiPackBufferFrag (Req response)
+    bool indexError;        // next uplink is the [0x02][0xFF] error frame
 
 };
 

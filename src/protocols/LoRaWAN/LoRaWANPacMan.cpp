@@ -35,14 +35,6 @@ size_t LoRaWANPackage::buildUplink(uint8_t* dataOut) {
   return(0);
 }
 
-// #if defined(RADIOLIB_BUILD_ARDUINO)
-// // LoRaWANPackageManager implementation
-// LoRaWANPackageManager::LoRaWANPackageManager(LoRaWANNode* node, GetSecondsCb_t secondsCb) {
-//   RadioLibHal* hal = new ArduinoHal();
-
-//   return(LoRaWANPackageManager(hal, node, secondsCb));
-// }
-// #endif
 
 // LoRaWANPackageManager implementation
 LoRaWANPackageManager::LoRaWANPackageManager(RadioLibHal* hal, LoRaWANNode* node, GetSecondsCb_t secondsCb) {
@@ -58,23 +50,17 @@ LoRaWANPackageManager::LoRaWANPackageManager(RadioLibHal* hal, LoRaWANNode* node
   this->lorawanNode = node;
   this->getSecondsCb = secondsCb;
 
-  // if the user does not provide their own AES-128, use the software one
-  #if !RADIOLIB_CUSTOM_AES128
-  static RadioLibSoftwareAES128 RadioLibAES128Instance;
-  this->hal->aes128 = &RadioLibAES128Instance;
-  #endif
-
   // Initialize the staging buffer, persistent TS007 buffer and transmission state
   this->ansBufferLen = 0;
   this->ansFPort = 0;
   this->ts007BufferLen = 0;
   this->commandToken = 0;
-  this->managerPending = false;
-  this->pendingBuildPackage = -1;
+  this->pendingUplink = false;
+  this->pendingPackage = 0;
   this->txCursor = 0;
   this->txStop = 0;
-  this->txForceFrag = false;
-  this->txError = false;
+  this->sendFragmented = false;
+  this->indexError = false;
 }
 
 int16_t LoRaWANPackageManager::enableTS003(uint8_t fPort, SetSecondsCb_t setSecondsFunc) {
@@ -110,8 +96,7 @@ int16_t LoRaWANPackageManager::enableTS007() {
     return RADIOLIB_ERR_NETWORK_NOT_JOINED;
   }
 
-  // TS007 is a manager-level package, not directly instantiated
-  // Just enable it in the manager
+  // TS007 is a manager-level package, not a separate one
   this->packagePorts[RADIOLIB_LORAWAN_PACKAGE_TS007] = RADIOLIB_LORAWAN_FPORT_TS007;
   this->enabledPackages[RADIOLIB_LORAWAN_PACKAGE_TS007] = true;
 
@@ -123,11 +108,11 @@ int16_t LoRaWANPackageManager::enableTS007() {
 
 int16_t LoRaWANPackageManager::enableTS009(PhysicalLayer* radio, DelaySecondsCb_t delayCb, UplinkIntervalCb_t intervalCb, ConfirmedCb_t confirmedCb, RebootCb_t rebootCb) {
   // check if node is not activated
-  if(this->lorawanNode == NULL || this->lorawanNode->isActivated()) {
-    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
-  }
-  if(this->getSecondsCb == NULL) {
+  if(this->lorawanNode == NULL || this->getSecondsCb == NULL || radio == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(this->lorawanNode->isActivated()) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
 
   // create package if not already created
@@ -164,18 +149,21 @@ void LoRaWANPackageManager::requestAppTime() {
 }
 
 int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, LoRaWANEvent_t* eventDown) {
-  if(data == NULL) {
+  if(data == NULL || eventDown == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
-  // If the downlink arrived on a package-specific FPort (not the package
-  // manager's TS007 FPort), dispatch its commands to the package on that FPort.
+  // if the downlink arrived on a package-specific FPort (not the package
+  // manager's TS007 FPort), dispatch the data to the package on that FPort.
   if(eventDown->fPort != RADIOLIB_LORAWAN_FPORT_TS007) {
     // Find package registered on this FPort
     for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
       if(!this->enabledPackages[i]) {
         continue;
       }
+
+      // if we find an enabled package and FPort matches, process the downlink data
+      // if there is a response payload, this overwrites any previous response payload
       if(this->packagePorts[i] == eventDown->fPort) {
         LoRaWANPackage* pkg = this->packages[i];
         if(pkg == NULL) {
@@ -184,14 +172,15 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
         }
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Routing %d bytes on FPort %d to package %d", len, eventDown->fPort, i);
 
-        // Drive the package command by command, collecting answers into the single
-        // manager answer buffer. The package processes one command per call and
-        // returns how many bytes it consumed.
+        // parse the data command by command, collecting answers into the single manager answer buffer.
+        // the package processes one command per call and returns how many bytes it consumed
         size_t pos = 0;
         size_t outLen = 0;
         while(pos < len && outLen < sizeof(this->ansBuffer)) {
           size_t aLen = 0;
           size_t consumed = pkg->processData(&data[pos], len - pos, &this->ansBuffer[outLen], &aLen, eventDown);
+
+          // stop at an unknown command
           if(consumed == 0) {
             break;
           }
@@ -202,12 +191,12 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
         if(outLen > 0) {
           this->ansBufferLen = outLen;
           this->ansFPort = eventDown->fPort;
-          this->txError = false;
-          this->txForceFrag = false;
+          this->indexError = false;
+          this->sendFragmented = false;
           this->txCursor = 0;
           this->txStop = outLen - 1;
-          this->pendingBuildPackage = -1;
-          this->managerPending = true;
+          this->pendingPackage = RADIOLIB_LORAWAN_PACKAGE_TS007;
+          this->pendingUplink = true;
         }
         return(RADIOLIB_ERR_NONE);
       }
@@ -218,8 +207,8 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
     return(RADIOLIB_ERR_NONE);
   }
 
-  // This is a multi-package access downlink on FPort 225 (TS007 section 3.1).
-  // These messages SHALL NOT be sent via multicast; drop them silently if they are.
+  // this is a multi-package access downlink on FPort 225 (TS007 section 3.1)
+  // these messages SHALL NOT be sent via multicast; drop them silently if they are
   if(eventDown->multicast) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Multi-package downlink received on multicast, dropping");
     return(RADIOLIB_ERR_NONE);
@@ -234,8 +223,8 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
     return(RADIOLIB_ERR_NONE);
   }
 
-  // A downlink that only contains a MultiPackBufferReq carries no Command Token and
-  // must be the single command (TS007 section 4.4). Package 0 needs no PackageID
+  // a downlink that only contains a MultiPackBufferReq carries no Command Token and
+  // must be the single command (TS007 section 4.4). Package 0 (TS007) needs no PackageID
   // prefix, so such a downlink starts directly with CID 0x02.
   if(data[0] == RADIOLIB_LORAWAN_TS007_CID_MULTI_PACK_BUFFER) {
     if(len != 3) {
@@ -249,21 +238,21 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
     return(RADIOLIB_ERR_NONE);
   }
 
-  // Normal command set: the last byte is the Command Token; the rest is the body.
+  // normal command set: the last byte is the Command Token; the rest is the body
   uint8_t token = data[len - 1];
   size_t bodyLen = len - 1;
 
-  // Build the ANS buffer (answers only, no token) into the persistent TS007 buffer.
-  // Dispatch one command at a time, switching packages on a PackageID field. Whenever
-  // a request command is prefixed with a PackageID, that PackageID is also copied into
-  // the answer (once per run of consecutive same-package commands).
+  // build the ANS buffer (answers only, no token) into the persistent TS007 buffer.
+  // dispatch one command at a time, switching packages on a PackageID field
+  // whenever a request command is prefixed with a PackageID, that PackageID is also 
+  // copied into the answer (once per run of consecutive same-package commands).
   size_t outPos = 0;
   size_t pos = 0;
   uint8_t currentPkg = 0;       // first command belongs to package 0 unless prefixed
   int16_t pkgPrefixByte = -1;   // PackageID byte to copy into the answer, if any
 
   while(pos < bodyLen && outPos < sizeof(this->ts007Buffer)) {
-    // A PackageID field (bit 7 set) selects the package for the following run
+    // a PackageID field (bit 7 set) selects the package for the following run
     if(data[pos] & RADIOLIB_LORAWAN_TS007_PACKAGE_ID_FLAG) {
       pkgPrefixByte = data[pos];
       currentPkg = data[pos] & ~RADIOLIB_LORAWAN_TS007_PACKAGE_ID_FLAG;
@@ -273,7 +262,7 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
       }
     }
 
-    // Tentatively write the PackageID prefix; roll back if the command has no answer
+    // tentatively write the PackageID prefix; roll back if the command has no answer
     size_t runStart = outPos;
     bool wrotePrefix = false;
     if(pkgPrefixByte >= 0) {
@@ -281,7 +270,7 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
       wrotePrefix = true;
     }
 
-    // Dispatch a single command to the current package
+    // dispatch a single command to the current package
     size_t aLen = 0;
     size_t consumed = 0;
     if(currentPkg == RADIOLIB_LORAWAN_PACKAGE_TS007) {
@@ -292,14 +281,14 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
       consumed = this->packages[currentPkg]->processData(&data[pos], bodyLen - pos, &this->ts007Buffer[outPos], &aLen, eventDown);
 
     } else {
-      // Unknown or disabled package: we cannot know its command length, so stop.
+      // unknown or disabled package: we cannot know its command length, so stop.
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TS007 unknown/disabled package %d, stopping", currentPkg);
       outPos = runStart;
       break;
     }
 
     if(consumed == 0) {
-      // Nothing consumed: avoid an infinite loop
+      // nothing consumed: avoid an infinite loop
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TS007 package %d consumed 0 bytes, stopping", currentPkg);
       outPos = runStart;
       break;
@@ -310,23 +299,23 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
       outPos += aLen;
       pkgPrefixByte = -1;     // PackageID already emitted for this run
     } else if(wrotePrefix) {
-      outPos = runStart;      // no answer: drop the dangling prefix, keep it for next cmd
+      outPos = runStart;      // no answer: drop the pending prefix, keep it for next cmd
     }
   }
 
-  // The TS007 buffer is sized to the maximum (128 bytes); store the answers and token
+  // the TS007 buffer is sized to the maximum (128 bytes); store the answers and token
   this->ts007BufferLen = outPos;
   this->ansFPort = RADIOLIB_LORAWAN_FPORT_TS007;
   this->commandToken = token;
 
-  // Schedule a proactive uplink of the full buffer; getUplinkData() decides at send
+  // schedule a proactive uplink of the full buffer; getUplinkData() decides at send
   // time whether it fits in one frame or must be fragmented.
-  this->txError = false;
-  this->txForceFrag = false;
+  this->indexError = false;
+  this->sendFragmented = false;
   this->txCursor = 0;
   this->txStop = (this->ts007BufferLen > 0) ? (this->ts007BufferLen - 1) : 0;
-  this->pendingBuildPackage = -1;
-  this->managerPending = true;
+  this->pendingPackage = RADIOLIB_LORAWAN_PACKAGE_TS007;
+  this->pendingUplink = true;
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TS007 built ANS buffer of %d bytes, token %d",
                                   this->ts007BufferLen, this->commandToken);
@@ -334,31 +323,34 @@ int16_t LoRaWANPackageManager::processDownlink(const uint8_t* data, size_t len, 
 }
 
 void LoRaWANPackageManager::handleMultiPackBufferReq(uint8_t startByte, uint8_t stopByte) {
-  // Invalid request: no stored buffer, StartByte out of range, or StopByte < StartByte.
-  // Respond with a MultiPackBufferFrag carrying Error=0xFF (TS007 section 4.4).
+  // invalid request: no stored buffer, StartByte out of range, or StopByte < StartByte.
+  // respond with a MultiPackBufferFrag carrying Error=0xFF (TS007 section 4.4).
   this->ansFPort = RADIOLIB_LORAWAN_FPORT_TS007;
-  this->pendingBuildPackage = -1;
+  this->pendingPackage = RADIOLIB_LORAWAN_PACKAGE_TS007;
   if(this->ts007BufferLen == 0 || startByte > this->ts007BufferLen - 1 || stopByte < startByte) {
-    this->txError = true;
-    this->managerPending = true;
+    this->indexError = true;
+    this->pendingUplink = true;
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TS007 MultiPackBufferReq invalid, queueing error");
     return;
   }
 
-  // Valid request: retransmit ts007Buffer[startByte .. min(stopByte, len-1)] as fragments.
-  this->txError = false;
-  this->txForceFrag = true;
+  // valid request: retransmit ts007Buffer[startByte .. min(stopByte, len-1)] as fragments.
+  this->indexError = false;
+  this->sendFragmented = true;
   this->txCursor = startByte;
   this->txStop = (stopByte > this->ts007BufferLen - 1) ? (this->ts007BufferLen - 1) : stopByte - 1; // TODO LCTT bug!
-  this->managerPending = true;
+  this->pendingUplink = true;
 }
 
 bool LoRaWANPackageManager::handleTask(RadioLibTime_t* tNext) {
-  // a staged uplink (TS007 response/fragment, dedicated-FPort answer, or scheduled
-  // package uplink) is due now
+  if(tNext == NULL) {
+    return(0);
+  }
+  
   RadioLibTime_t tNow = this->getSecondsCb();
-
-  if(this->managerPending) {
+  
+  // check if there is a pending response uplink
+  if(this->pendingUplink) {
     *tNext = tNow + this->lorawanNode->timeUntilUplink(true);
     return(true);
   }
@@ -366,8 +358,8 @@ bool LoRaWANPackageManager::handleTask(RadioLibTime_t* tNext) {
   bool found = false;
   RadioLibTime_t earliest = 0xFFFFFFFF;
 
-  // drive each package's scheduled task, letting it write any due uplink into the
-  // single manager answer buffer
+  // even if there is no pending response, a package may have some scheduled
+  // task-related uplink (such as AppTimeReq), so check the packages
   for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_PACKAGES; i++) {
     if(!this->enabledPackages[i] || this->packages[i] == NULL) {
       continue;
@@ -389,11 +381,11 @@ bool LoRaWANPackageManager::handleTask(RadioLibTime_t* tNext) {
     // (getUplinkData) so time-sensitive data stays fresh despite any dutycycle delay.
     if(t <= tNow && uplinkDue) {
       this->ansFPort = this->packagePorts[i];
-      this->txError = false;
-      this->txForceFrag = false;
+      this->indexError = false;
+      this->sendFragmented = false;
       this->txCursor = 0;
-      this->pendingBuildPackage = i;
-      this->managerPending = true;
+      this->pendingPackage = i;
+      this->pendingUplink = true;
       *tNext = tNow;
       return(true);
     }
@@ -418,57 +410,57 @@ bool LoRaWANPackageManager::getUplinkData(uint8_t* dataOut, size_t* lenOut, uint
     return(false);
   }
 
-  if(!this->managerPending) {
+  if(!this->pendingUplink) {
     *lenOut = 0;
     return(false);
   }
 
   *fPort = this->ansFPort;
 
-  // A plain (non multi-package) uplink is sent as-is on its package's FPort
+  // a plain (non TS007) uplink is sent as-is on its package's FPort
   if(this->ansFPort != RADIOLIB_LORAWAN_FPORT_TS007) {
-    // A scheduled package uplink is built now, at the moment of transmission, so
+    // a scheduled package uplink is built now, at the moment of transmission, so
     // time-sensitive data (e.g. the TS003 timestamp) is captured fresh.
-    if(this->pendingBuildPackage >= 0) {
-      *lenOut = this->packages[this->pendingBuildPackage]->buildUplink(dataOut);
-      this->pendingBuildPackage = -1;
-      this->managerPending = false;
+    if(this->pendingPackage > 0) {
+      *lenOut = this->packages[this->pendingPackage]->buildUplink(dataOut);
+      this->pendingPackage = RADIOLIB_LORAWAN_PACKAGE_TS007; // written into manager buffer
+      this->pendingUplink = false;
       return(*lenOut > 0);
     }
 
-    // Otherwise it is a prebuilt dedicated-FPort answer staged by processData
+    // otherwise it is a prebuilt dedicated-FPort answer staged by processData
     memcpy(dataOut, this->ansBuffer, this->ansBufferLen);
     *lenOut = this->ansBufferLen;
-    this->managerPending = false;
+    this->pendingUplink = false;
     return(true);
   }
 
   // TS007 multi-package uplink on FPort 225 (whole buffer, fragment, or error)
 
-  // Invalid MultiPackBufferReq: respond with MultiPackBufferFrag carrying Error=0xFF
-  if(this->txError) {
+  // invalid MultiPackBufferReq: respond with MultiPackBufferFrag carrying Error=0xFF
+  if(this->indexError) {
     dataOut[0] = RADIOLIB_LORAWAN_TS007_CID_MULTI_PACK_BUFFER;
     dataOut[1] = RADIOLIB_LORAWAN_TS007_ERROR;
     *lenOut = 2;
-    this->txError = false;
-    this->managerPending = false;
+    this->indexError = false;
+    this->pendingUplink = false;
     return(true);
   }
 
-  // Maximum applicative payload for the current data rate
+  // maximum applicative payload for the current data rate
   size_t maxLen = this->lorawanNode->getMaxPayloadLen();
 
-  // Whole buffer: if it fits with the appended token, transmit it unmodified
-  if(!this->txForceFrag && this->txCursor == 0 && (this->ts007BufferLen + 1) <= maxLen) {
+  // whole buffer: if it fits with the appended token, transmit it unmodified
+  if(!this->sendFragmented && this->txCursor == 0 && (this->ts007BufferLen + 1) <= maxLen) {
     memcpy(dataOut, this->ts007Buffer, this->ts007BufferLen);
     dataOut[this->ts007BufferLen] = this->commandToken;
     *lenOut = this->ts007BufferLen + 1;
-    this->managerPending = false;
+    this->pendingUplink = false;
     return(true);
   }
 
-  // Otherwise fragment using MultiPackBufferFrag: [0x02][BaseByte][bytes][token]
-  // Each fragment carries up to (maxLen - 3) ANS bytes (CID + BaseByte + token).
+  // otherwise fragment using MultiPackBufferFrag: [0x02][BaseByte][bytes][token]
+  // aach fragment carries up to (maxLen - 3) ANS bytes (CID + BaseByte + token).
   size_t avail = (maxLen > 3) ? (maxLen - 3) : 1;
   size_t remaining = (this->txStop >= this->txCursor) ? (this->txStop - this->txCursor + 1) : 0;
   size_t chunk = (remaining < avail) ? remaining : avail;
@@ -482,8 +474,8 @@ bool LoRaWANPackageManager::getUplinkData(uint8_t* dataOut, size_t* lenOut, uint
   this->txCursor += chunk;
   if(this->txCursor > this->txStop) {
     // all requested bytes sent; keep the ANS buffer for further retransmissions
-    this->managerPending = false;
-    this->txForceFrag = false;
+    this->pendingUplink = false;
+    this->sendFragmented = false;
   }
   return(true);
 }
@@ -559,8 +551,8 @@ size_t LoRaWANPackageManager::processPackageManagerData(const uint8_t* dataDown,
     } break;
 
     default: {
-      // Unknown command (or MultiPackBufferReq in an invalid position): stop here.
-      // The length of an unknown command is not derivable, so we cannot continue.
+      // unknown command (or MultiPackBufferReq in an invalid position): stop here.
+      // the length of an unknown command is not derivable, so we cannot continue.
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TS007 unknown command 0x%02x, stopping", dataDown[0]);
       return(0);
     }

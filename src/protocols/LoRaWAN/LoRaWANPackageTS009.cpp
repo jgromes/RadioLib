@@ -15,14 +15,12 @@ LoRaWANPackageTS009::LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, RadioLib
   if(!this->enabled) {
     return;
   }
-
-  // default configuration for certification testing
-  this->lorawanNode->setDatarate(5);
-  this->lorawanNode->setADR(false);
-  this->lorawanNode->setDutyCycle(true, 3600000);
 }
 
 void LoRaWANPackageTS009::setPhysicalLayer(PhysicalLayer* radio) {
+  if(radio == NULL) {
+    return;
+  }
   this->radio = radio;
 }
 
@@ -43,9 +41,13 @@ void LoRaWANPackageTS009::setRebootCallback(RebootCb_t rebootCb) {
 }
 
 size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown, uint8_t* dataOut, size_t* lenOut, LoRaWANEvent_t* event) {
+  if(dataDown == NULL || dataOut == NULL || lenOut == NULL) {
+    return(0);
+  }
   (void)event;
+
   *lenOut = 0;
-  if(!this->enabled || lenDown == 0 || dataDown == NULL) {
+  if(!this->enabled || lenDown == 0) {
     return(0);
   }
 
@@ -71,9 +73,6 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Reverting to Join state");
       if(this->lorawanNode) {
         this->lorawanNode->clearSession();
-        this->lorawanNode->setDatarate(5);
-        this->lorawanNode->setADR(false);
-        this->lorawanNode->setDutyCycle(true, 3600000);
       }
     } break;
 
@@ -208,11 +207,11 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
 
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %7.3f MHz, %d dBm, %d s", freq, txPower, timeout);
 
-        this->radio->setFrequency(freq);
-        this->radio->setOutputPower(txPower);
-        this->radio->transmitDirect();
+        (void)this->radio->setFrequency(freq);
+        (void)this->radio->setOutputPower(txPower);
+        (void)this->radio->transmitDirect();
         this->delaySecondsCallback(timeout);
-        this->radio->standby();
+        (void)this->radio->standby();
       }
     } break;
 

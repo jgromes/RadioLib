@@ -13,6 +13,9 @@ void LoRaWANPackageTS003::setSecondsCb(SetSecondsCb_t cb) {
 }
 
 bool LoRaWANPackageTS003::handleTask(RadioLibTime_t* tNext, bool* uplinkDue) {
+  if(tNext == NULL || uplinkDue == NULL) {
+    return(false);
+  }
   *uplinkDue = false;
 
   RadioLibTime_t nowSec = this->getSeconds();
@@ -37,6 +40,9 @@ bool LoRaWANPackageTS003::handleTask(RadioLibTime_t* tNext, bool* uplinkDue) {
 }
 
 size_t LoRaWANPackageTS003::buildUplink(uint8_t* dataOut) {
+  if(dataOut == NULL) {
+    return(0);
+  }
   RadioLibTime_t nowSec = this->getSeconds();
 
   // build the AppTimeReq with the current time, captured here at send time
@@ -61,6 +67,9 @@ size_t LoRaWANPackageTS003::buildUplink(uint8_t* dataOut) {
 }
 
 size_t LoRaWANPackageTS003::processData(const uint8_t* dataDown, size_t lenDown, uint8_t* dataOut, size_t* lenOut, LoRaWANEvent_t* event) {
+  if(dataDown == NULL || dataOut == NULL || lenOut == NULL) {
+    return(0);
+  }
   (void)event;
 
   *lenOut = 0;
@@ -166,6 +175,9 @@ int16_t LoRaWANPackageTS003::requestAppTime(bool force) {
 }
 
 size_t LoRaWANPackageTS003::buildAppTimeReq(uint8_t* dataOut) {
+  if(dataOut == NULL) {
+    return(0);
+  }
   dataOut[0] = RADIOLIB_LORAWAN_TS003_APP_TIME;
 
   RadioLibTime_t now = this->getSeconds();
