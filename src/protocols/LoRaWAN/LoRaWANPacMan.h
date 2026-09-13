@@ -234,25 +234,25 @@ class LoRaWANPackageManager {
     // Staging buffer for a plain (non multi-package) uplink: a dedicated-FPort answer
     // or a scheduled package uplink. Packages write here (via the dataOut buffer they
     // are handed); it is overwritten on each newly staged uplink.
-    uint8_t ansBuffer[255];
-    size_t ansBufferLen;
-    uint8_t ansFPort;       // FPort on which the staged uplink will be sent (225 = TS007)
+    uint8_t ansBuffer[255] = { 0 };
+    size_t ansBufferLen = 0;
+    uint8_t ansFPort = 0;         // FPort on which the staged uplink will be sent (225 = TS007)
 
     // Persistent TS007 ANS buffer (answers only, no Command Token). Kept in memory for
     // on-demand retransmission via MultiPackBufferReq until a new multi-package command
     // set is received. Separate from ansBuffer.
-    uint8_t ts007Buffer[RADIOLIB_LORAWAN_TS007_ANS_BUFFER_SIZE];
-    size_t ts007BufferLen;
-    uint8_t commandToken;   // TS007 Command Token to append to FPort 225 uplinks
+    uint8_t ts007Buffer[RADIOLIB_LORAWAN_TS007_ANS_BUFFER_SIZE] = { 0 };
+    size_t ts007BufferLen = 0;
+    uint8_t commandToken = 0;     // TS007 Command Token to append to FPort 225 uplinks
 
     // Transmission state for a pending uplink (TS007 fragments are sent over several
     // calls; a plain package uplink is sent in one)
-    bool pendingUplink;     // a staged uplink is due now
-    uint8_t pendingPackage; // package index that builds its uplink at send time
-    size_t txCursor;        // next BaseByte to transmit (TS007 fragmentation)
-    size_t txStop;          // last TS007 ANS buffer index to transmit (inclusive)
-    bool sendFragmented;    // always wrap in MultiPackBufferFrag (Req response)
-    bool indexError;        // next uplink is the [0x02][0xFF] error frame
+    bool pendingUplink = false;   // a staged uplink is due now
+    uint8_t pendingPackage = 0;   // package index that builds its uplink at send time
+    size_t txCursor = 0;          // next BaseByte to transmit (TS007 fragmentation)
+    size_t txStop = 0;            // last TS007 ANS buffer index to transmit (inclusive)
+    bool sendFragmented = false;  // always wrap in MultiPackBufferFrag (Req response)
+    bool indexError = false;      // next uplink is the [0x02][0xFF] error frame
 
 };
 
