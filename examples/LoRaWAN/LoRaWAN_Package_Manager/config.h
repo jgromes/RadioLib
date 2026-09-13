@@ -4,12 +4,21 @@
 #include <RadioLib.h>
 
 // ============================================================================
+// HAL CONFIGURATION
+// ============================================================================
+
+// The Package Manager needs a reference to the HAL that is in use
+// Thus, we must create a HAL and supply it to both the radio and the
+// Package Manager ourselves
+ArduinoHal hal;
+
+// ============================================================================
 // RADIO HARDWARE CONFIGURATION
 // ============================================================================
 
 // First you have to set your radio model and pin configuration
 // This is provided just as a default example (SX1278)
-SX1278 radio = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(&hal, 10, 2, 9, 3);
 
 // If you have RadioBoards (https://github.com/radiolib-org/RadioBoards)
 // and are using one of the supported boards, you can do the following:

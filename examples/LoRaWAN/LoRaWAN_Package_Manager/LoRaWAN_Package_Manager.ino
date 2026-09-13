@@ -31,10 +31,10 @@
 #include "example.h"
 
 // Create the package manager and give it a notion of current time in seconds
-LoRaWANPackageManager pacMan(&node, getSeconds);
+LoRaWANPackageManager pacMan(&hal, &node, getSeconds);
 
-// Forward declaration of downlink processing function
-void processDownlink(int16_t state);
+// Forward declaration of uplink/downlink function
+void sendReceive();
 
 void setup() {
   Serial.begin(115200);
@@ -47,7 +47,7 @@ void setup() {
   radio.begin(config);
   node.beginOTAA(joinEUI, devEUI, NULL, appKey);  // LoRaWAN v1.0.4 - no NwkKey
 
-  // Warning: radio.begin() must be called before enabling packages!
+  // Warning: radio.begin() and loadBuffers() must be called before enabling packages!
 
   // Enable TS003 (Application Time) on default FPort
   pacMan.enableTS003(RADIOLIB_LORAWAN_FPORT_TS003, setSeconds);
@@ -76,73 +76,111 @@ void loop() {
     }
   }
 
-  // Check if the package manager requests confirmed uplinks
-  confirmed = pacMan.getConfirmed();
-
   // Get current time
-  RadioLibTime_t now = getSeconds();
+  tNow = getSeconds();
 
-  // Check package manager for next task
-  LoRaWANTaskInfo task = pacMan.hasTask();
-
-  // Perform an action if required
-  if(task.type == RADIOLIB_LORAWAN_TASK_ACTION && task.time <= now) {
-    pacMan.doAction();
-    return;
+  // Let the package manager execute any due tasks and report when it next needs servicing
+  bool update = false;
+  if(pacMan.handleTask(&tNextTask) && tNextTask <= tNow) {
+    pacMan.getUplinkData(uplink, &uplLen, &fPort);
+    sendReceive();
+    update = true;
   }
 
-  // Send an uplink if required
-  if(task.type == RADIOLIB_LORAWAN_TASK_UPLINK && task.time <= now) {
-    // Can only send once dutycycle allows
-    if(node.timeUntilUplink() > 0) {
-      return;
+  // If there is no package uplink, send normal user uplinks at regular intervals
+  // This would be where you read your sensors
+  else if(tNextUplink <= tNow) {
+    uplink[0] = 0xAA;
+    uplink[1] = 0x55;
+    uplLen = 2;
+    fPort = 1;
+    sendReceive();
+    update = true;
+  }
+
+  // If we did something, update the time of next uplink and next task
+  if(update) {
+    // Next uplink: at scheduled interval, unless constrained by dutycycle
+    tNextUplink = getSeconds() + RADIOLIB_MAX(uplinkIntervalSeconds - node.getLastDuration(true),
+                                              node.timeUntilUplink(true));
+
+    // Update the timestamp of the next task as we may have processed something
+    pacMan.handleTask(&tNextTask);
+  }
+
+  // If Class A, we can delay/sleep until the next event
+  if(node.getClass() == RADIOLIB_LORAWAN_CLASS_A) {
+    // Check which is first: package task or regular uplink
+    uint32_t tNext = RADIOLIB_MIN(tNextTask, tNextUplink);
+
+    // If next action is in the future, await it
+    tNow = getSeconds();
+    delay((tNext - tNow) * 1000);
+
+    continue;
+  }
+
+  // Otherwise (Class C), check if there is a downlink ready for processing
+  if(node.getDownlinkClassC(downlink, &downLen, &evtDown) > 0) {
+    Serial.println(F("Received a Class C downlink"));
+
+    if(downLen > 0) {
+      pacMan.processDownlink(downlink, downLen, &evtDown);
     }
 
-    // Get uplink data from package manager and send it
-    if(pacMan.getUplinkData(uplink, &uplLen, &fPort)) {
-      lastUplinkTime = now;
-      int16_t state = node.sendReceive(uplink, uplLen, fPort, downlink, &downLen, confirmed, &evtUp, &evtDown);
-      processDownlink(state);
-
-    }
-    return;
+    // Print extra information about the event
+    Serial.print(F("\tFCnt: "));
+    Serial.println(evtDown.fCnt);
+    Serial.print(F("\tPort: "));
+    Serial.println(evtDown.fPort);
+    Serial.print(F("\tCast: "));
+    Serial.println(evtDown.multicast ? "Multi" : "Uni");
+    continue;
   }
-
-
-  // Send normal application uplinks at regular intervals
-  // This would be where you read your sensors and send regular updates
-  if(now - lastUplinkTime >= uplinkIntervalSeconds && node.timeUntilUplink() == 0) {
-    lastUplinkTime = now;
-
-    // Dummy data
-    uint8_t payload[2] = { 0xAA, 0x55 };
-    int16_t state = node.sendReceive(payload, sizeof(payload), 1, downlink, &downLen, confirmed, &evtUp, &evtDown);
-    processDownlink(state);
-  }
-
 }
 
 // Function to process downlink data and forward package downlinks to package manager
-void processDownlink(int16_t state) {
+void sendReceive() {
+  // send uplink and listen for downlinks
+  int16_t state = node.sendReceive(uplink, uplLen, fPort, downlink, &downLen, confirmed, &evtUp, &evtDown);
+
+  // Check for an error
   if(state < RADIOLIB_ERR_NONE) {
     Serial.print(F("Error during sendReceive: "));
     Serial.println(state);
     return;
   }
-  if(state == RADIOLIB_ERR_NONE || downLen == 0) {
-    Serial.println(F("No downlink data"));
+
+  // Check for a downlink
+  if(state == RADIOLIB_ERR_NONE) {
     return;
   }
 
-  Serial.println(F("Received downlink data:"));
+  // If we got a downlink, check if it carries DeviceTimeAns
+  uint32_t timestamp = 0;
+  uint16_t fraction = 0;
+  if(node.getMacDeviceTimeAns(&timestamp, &fraction, false) == RADIOLIB_ERR_NONE) {
+    setSeconds(timestamp);
+    Serial.println(F("Set time using DeviceTime"));
+  }
+
+  // Did it contain any application data?
+  if(downLen == 0) {
+    Serial.println(F("MAC-only downlink"));
+    return;
+  }
 
   // Forward package downlinks to package manager
-  if(downLen > 0 && pacMan.isEnabledFPort(evtDown.fPort)) {
-    Serial.println(F("It is a package downlink"));
+  if(pacMan.isEnabledFPort(evtDown.fPort)) {
+    Serial.println(F("Received a package downlink"));
     pacMan.processDownlink(downlink, downLen, &evtDown);
-
-  // Process normal downlinks for ourselves
-  } else if(downLen > 0) {
-    arrayDump(downlink, downLen);
+    return;
   }
+
+  // Finally, if we get here, process a normal downlinks for ourselves
+  Serial.println(F("Downlink with user-data:"));
+  for(size_t i = 0; i < downLen; i++) {
+    Serial.print(downlink[i], HEX);
+  }
+  Serial.println();
 }
