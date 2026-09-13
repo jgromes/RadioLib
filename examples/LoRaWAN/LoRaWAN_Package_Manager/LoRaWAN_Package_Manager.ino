@@ -61,7 +61,6 @@ void setup() {
 uint8_t uplink[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE], downlink[RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE];
 size_t uplLen = 0, downLen = 0;
 uint8_t fPort;
-bool confirmed = false;
 RadioLibTime_t tNextTask = 0, tNextUplink = 0;
 LoRaWANEvent_t evtUp, evtDown;
 
