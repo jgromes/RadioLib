@@ -26,14 +26,19 @@ class LoRaWANPackageTS003 : public LoRaWANPackage {
     LoRaWANPackageTS003(const LoRaWANPackageTS003& obj) = delete;
 
     /*!
-      \brief Process downlink data for the TS003 application time package
-      \param dataDown Pointer to received downlink data
-      \param lenDown Length of downlink data
+      \brief Process a single TS003 command, writing any answer into the provided buffer
+      \param dataDown Pointer to received command data
+      \param lenDown Length of command data
+      \param dataOut Pointer to the manager's answer buffer
+      \param lenOut Pointer that receives the number of answer bytes written
+      \param event Pointer to downlink event data
+      \returns Number of bytes consumed
     */
-    size_t processData(const uint8_t* dataDown, size_t lenDown, LoRaWANEvent_t* event) override;
+    size_t processData(const uint8_t* dataDown, size_t lenDown, uint8_t* dataOut, size_t* lenOut, LoRaWANEvent_t* event) override;
 
     /*!
-      \brief Send an application time request
+      \brief Schedule an application time request to be sent at the next opportunity
+      \param force Require a response, even if the clock is already in sync
       \returns \ref status_codes
     */
     int16_t requestAppTime(bool force = false);
@@ -46,25 +51,35 @@ class LoRaWANPackageTS003 : public LoRaWANPackage {
     void setSecondsCb(SetSecondsCb_t setSecondsCb);
 
     /*!
-      \brief Find out what the next task is and when it occurs
-      \returns `LoRaWANTaskInfo` containing task type and time
+      \brief Report when the next AppTimeReq is due and whether one is due now.
+      Does not build the payload (see buildUplink).
+      \param tNext Pointer that receives the time of the next task
+      \param uplinkDue Pointer set to true if an AppTimeReq uplink is due now
+      \returns true if a task is pending or scheduled, false otherwise
     */
-    LoRaWANTaskInfo hasTask() override;
+    bool handleTask(RadioLibTime_t* tNext, bool* uplinkDue) override;
 
     /*!
-      \brief Perform an ACTION task (if any).
+      \brief Build the due AppTimeReq with the current time and advance the schedule.
+      Called at the moment of transmission so the timestamp stays fresh.
+      \param dataOut Pointer to the manager's answer buffer
+      \returns Number of uplink bytes written
     */
-    void doAction() override;
+    size_t buildUplink(uint8_t* dataOut) override;
 
 #if !RADIOLIB_GODMODE
   protected:
 #endif
+
+    // build an AppTimeReq into the provided buffer; returns the number of bytes written
+    size_t buildAppTimeReq(uint8_t* dataOut);
 
     SetSecondsCb_t setSeconds;      // callback to configure current GPS time in seconds since epoch
     uint8_t tokenReq;               // validation of AppTimeReq response
     uint8_t transmissions;          // maximum number of AppTimeReq (re)transmissions
     uint32_t periodicity;           // requested interval between AppTimeReq transmissions (s)
     RadioLibTime_t nextAppReqTime;  // next scheduled AppTimeReq transmission
+    bool forceReq;                  // set the force bit on the next AppTimeReq
 
 #if !RADIOLIB_GODMODE
   private:
@@ -76,8 +91,8 @@ class LoRaWANPackageTS003 : public LoRaWANPackage {
       \param node Pointer to the LoRaWAN node
       \param secondsCb Pointer to getSeconds() function
     */
-    LoRaWANPackageTS003(LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb);
-
+    LoRaWANPackageTS003(LoRaWANPackageManager* pacMan, RadioLibHal* hal, LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    
     // allow LoRaWANPackageManager to access the private constructor
     friend LoRaWANPackageManager;
 };
