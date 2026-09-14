@@ -467,15 +467,6 @@ class LR2021: public LRxxxx {
       or the high-frequency 2.4 GHz PA (true).
     */
     void setPaTable(LR2021PaTableEntry_t* table, bool highFreq);
-
-    /*!
-      \brief Check if output power is configurable.
-      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
-      \param power Output power in dBm, PA will be determined automatically.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
     
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
@@ -926,6 +917,7 @@ class LR2021: public LRxxxx {
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t exitMode, RadioLibTime_t timeout);
+    void updatePowerLimits(bool highFreq);
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);

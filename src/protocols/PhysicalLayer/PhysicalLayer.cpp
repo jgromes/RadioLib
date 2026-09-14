@@ -639,3 +639,32 @@ int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, ui
 
   return(RADIOLIB_ERR_NONE);
 }
+
+int16_t PhysicalLayer::setOutputPowerOffset(int8_t offset) {
+  memset(this->paOffsetLut, offset, sizeof(this->paOffsetLut));
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::setOutputPowerOffset(const int8_t* lut, size_t steps) {
+  RADIOLIB_ASSERT_PTR(lut);
+  if(steps > sizeof(this->paOffsetLut)) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  memcpy(this->paOffsetLut, lut, steps);
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut) {
+  RADIOLIB_ASSERT_PTR(pwrIn);
+  RADIOLIB_ASSERT_PTR(pwrOut);
+  const int idx = (int)*pwrIn - (int)base;
+  if((idx < 0) || (idx >= (int)this->paSteps)) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  *pwrOut = *pwrIn - this->paOffsetLut[idx];
+
+  // update the minimum and maximum supported power
+  this->powerMin = base + this->paOffsetLut[0];
+  this->powerMax = base + this->paSteps - 1 + this->paOffsetLut[this->paSteps];
+  return(RADIOLIB_ERR_NONE);
+}

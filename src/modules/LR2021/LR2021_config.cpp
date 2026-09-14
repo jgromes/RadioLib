@@ -138,6 +138,10 @@ int16_t LR2021::setFrequency(float freq, bool skipCalibration) {
   RADIOLIB_ASSERT(state);
   this->freqMHz = freq;
   this->highFreq = (freq > RADIOLIB_LR2021_LF_CUTOFF_FREQ);
+  
+  // power limits depend on the frequency band
+  this->updatePowerLimits(this->highFreq);
+
   return(state);
 }
 
@@ -146,9 +150,17 @@ int16_t LR2021::setOutputPower(int8_t power) {
 }
 
 int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
-  // check if power value is configurable
-  int16_t state = this->checkOutputPower(power, NULL);
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(this->highFreq ? -9 : -19, &power, &pwr);
   RADIOLIB_ASSERT(state);
+
+  // check if power value is configurable
+  if(this->highFreq) {
+    RADIOLIB_CHECK_RANGE(power, -19, 12, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
   
   //! \TODO: [LR2021] how and when to configure OCP?
 
@@ -162,7 +174,7 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   LR2021PaTableEntry_t* table = this->paOptTable[this->highFreq] ? this->paOptTable[this->highFreq] : defaultTables[this->highFreq];
   
   // update PA config
-  const LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[power + 19] : &table[power + 9];
+  const LR2021PaTableEntry_t* paCfg = this->highFreq ? &table[pwr + 19] : &table[pwr + 9];
   state = setPaConfig(this->highFreq, 
     RADIOLIB_LR2021_PA_LF_MODE_FSM, 
     this->highFreq ? RADIOLIB_LR2021_PA_LF_DUTY_CYCLE_UNUSED : paCfg->paDutyCycle, 
@@ -177,24 +189,6 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
 
 void LR2021::setPaTable(LR2021PaTableEntry_t* table, bool highFreq) {
   this->paOptTable[highFreq] = table;
-}
-
-int16_t LR2021::checkOutputPower(int8_t power, int8_t* clipped) {
-  if(this->highFreq) {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-19, RADIOLIB_MIN(12, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -19, 12, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-
-  } else {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-
-  }
-  
-  return(RADIOLIB_ERR_NONE);
 }
 
 void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {

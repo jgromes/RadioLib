@@ -6,6 +6,9 @@ CC1101::CC1101(Module* module) : PhysicalLayer() {
   this->freqStep = RADIOLIB_CC1101_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_CC1101_MAX_PACKET_LENGTH;
   this->mod = module;
+  this->powerMin = -30;
+  this->powerMax = 10;
+  this->paSteps = 8;
 }
 
 int16_t CC1101::begin(const ConfigFSK_t& cfg) {
@@ -623,62 +626,25 @@ int16_t CC1101::getFrequencyDeviation(float *freqDev) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t CC1101::setOutputPower(int8_t pwr) {
-  // check if power value is configurable
-  uint8_t powerRaw = 0;
-  int16_t state = checkOutputPower(pwr, NULL, &powerRaw);
+int16_t CC1101::setOutputPower(int8_t power) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(-30, &power, &pwr);
   RADIOLIB_ASSERT(state);
+  
+  // check if power value is configurable
+  const int8_t allowedPwrs[8] = { -30, -20, -15, -10, 0, 5, 7, 10 };
+  bool found = false;
+  for(size_t i = 0; i < sizeof(allowedPwrs); i++) {
+    if(allowedPwrs[i] == pwr) {
+      found = true;
+      break;
+    }
+  }
+  if(!found) { return(RADIOLIB_ERR_INVALID_OUTPUT_POWER); }
 
   // store the value
   this->power = pwr;
-
-  if(this->modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK){
-    // Amplitude modulation:
-    // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
-    // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
-
-    const uint8_t paValues[2] = { 0x00, powerRaw };
-    SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_PATABLE, paValues, 2);
-    return(RADIOLIB_ERR_NONE);
-
-  } else {
-    // Freq modulation:
-    // PA_TABLE[0] is the power to be used when transmitting.
-    return(SPIsetRegValue(RADIOLIB_CC1101_REG_PATABLE, powerRaw));
-  }
-}
-
-int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped) {
-  return(checkOutputPower(power, clipped, NULL));
-}
-
-int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
-  const int8_t allowedPwrs[8] = { -30, -20, -15, -10, 0, 5, 7, 10 };
-
-  if(clipped) {
-    if(power <= -30) {
-      *clipped = -30;
-    } else if(power >= 10) {
-      *clipped = 10;
-    } else {
-      for(int i = 0; i < 8; i++) {
-        if(allowedPwrs[i] > power) {
-          break;
-        }
-        *clipped = allowedPwrs[i];
-      }
-    }
-  }
-
-  // if just a check occurs (and not requesting the raw power value), return now
-  if(!raw) {
-    for(size_t i = 0; i < sizeof(allowedPwrs); i++) {
-      if(allowedPwrs[i] == power) {
-        return(RADIOLIB_ERR_NONE);
-      }
-    }
-    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
 
   // round to the known frequency settings
   uint8_t f;
@@ -697,6 +663,7 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
   }
 
   // get raw power setting
+  uint8_t powerRaw;
   uint8_t paTable[8][4] = {{0x12, 0x12, 0x03, 0x03},
                            {0x0D, 0x0E, 0x0F, 0x0E},
                            {0x1C, 0x1D, 0x1E, 0x1E},
@@ -707,13 +674,26 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
                            {0xC2, 0xC0, 0xC2, 0xC0}};
 
   for(uint8_t i = 0; i < sizeof(allowedPwrs); i++) {
-    if(power == allowedPwrs[i]) {
-      *raw = paTable[i][f];
-      return(RADIOLIB_ERR_NONE);
+    if(pwr == allowedPwrs[i]) {
+      powerRaw = paTable[i][f];
+      break;
     }
   }
-  
-  return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+
+  if(this->modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK){
+    // Amplitude modulation:
+    // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
+    // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
+
+    const uint8_t paValues[2] = { 0x00, powerRaw };
+    SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_PATABLE, paValues, 2);
+    return(RADIOLIB_ERR_NONE);
+
+  } else {
+    // Freq modulation:
+    // PA_TABLE[0] is the power to be used when transmitting.
+    return(SPIsetRegValue(RADIOLIB_CC1101_REG_PATABLE, powerRaw));
+  }
 }
 
 int16_t CC1101::setSyncWord(uint8_t* sync, size_t len) {

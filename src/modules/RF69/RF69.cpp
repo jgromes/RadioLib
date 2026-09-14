@@ -6,6 +6,9 @@ RF69::RF69(Module* module) : PhysicalLayer() {
   this->freqStep = RADIOLIB_RF69_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_RF69_MAX_PACKET_LENGTH;
   this->mod = module;
+  this->powerMin = -18;
+  this->powerMax = 20;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t RF69::begin(const ConfigFSK_t& cfg) {
@@ -671,11 +674,16 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t RF69::setOutputPower(int8_t pwr) {
-  return(setOutputPower(pwr, false));
+int16_t RF69::setOutputPower(int8_t power) {
+  return(setOutputPower(power, false));
 }
 
-int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
+int16_t RF69::setOutputPower(int8_t power, bool highPower) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(-18, &power, &pwr);
+  RADIOLIB_ASSERT(state);
+
   if(highPower) {
     RADIOLIB_CHECK_RANGE(pwr, -2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   } else {
@@ -686,7 +694,6 @@ int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set output power
-  int16_t state;
   if(highPower) {
     // check if both PA1 and PA2 are needed
     if(pwr <= 10) {
