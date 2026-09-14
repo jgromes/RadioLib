@@ -614,7 +614,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Default constructor. Called internally when creating new LoRa instance.
-      \param mod Instance of Module that will be used to communicate with the %LoRa chip.
+      \param mod Instance of Module that will be used to communicate with the LoRa chip.
     */
     explicit SX127x(Module* mod);
 
@@ -637,8 +637,8 @@ class SX127x: public PhysicalLayer {
       \brief Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.
       \param chipVersions Array of possible values in SPI version register. Used to verify the connection and hardware version.
       \param numVersions Number of possible chip versions.
-      \param syncWord %LoRa sync word.
-      \param preambleLength Length of %LoRa transmission preamble in symbols.
+      \param syncWord LoRa sync word.
+      \param preambleLength Length of LoRa transmission preamble in symbols.
       \returns \ref status_codes
     */
     int16_t begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength);
@@ -657,10 +657,10 @@ class SX127x: public PhysicalLayer {
       \param preambleLength Length of FSK preamble in bits.
       \returns \ref status_codes
     */
-    int16_t beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength);
+    int16_t beginFSK(const uint8_t* chipVersions, uint8_t numVersions, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength);
 
     /*!
-      \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
+      \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem.
       For overloads to transmit Arduino String or C-string, see PhysicalLayer::transmit.
       \param data Binary data that will be transmitted.
       \param len Length of binary data to transmit (in bytes).
@@ -670,7 +670,7 @@ class SX127x: public PhysicalLayer {
     int16_t transmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
-      \brief Binary receive method. Will attempt to receive arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
+      \brief Binary receive method. Will attempt to receive arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem.
       For overloads to receive Arduino String, see PhysicalLayer::receive.
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
@@ -681,7 +681,7 @@ class SX127x: public PhysicalLayer {
     int16_t receive(uint8_t* data, size_t len, RadioLibTime_t timeout = 0) override;
 
     /*!
-      \brief Performs scan for valid %LoRa preamble in the current channel.
+      \brief Performs scan for valid LoRa preamble in the current channel.
       \returns \ref status_codes
     */
     int16_t scanChannel() override;
@@ -694,20 +694,20 @@ class SX127x: public PhysicalLayer {
     int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
-      \brief Sets the %LoRa module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
+      \brief Sets the LoRa module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
       %Module will wake up automatically when methods like transmit or receive are called.
       \returns \ref status_codes
     */
     int16_t sleep() override;
 
     /*!
-      \brief Sets the %LoRa module to standby.
+      \brief Sets the LoRa module to standby.
       \returns \ref status_codes
     */
     int16_t standby() override;
 
     /*!
-      \brief Sets the %LoRa module to standby.
+      \brief Sets the LoRa module to standby.
       \param mode Standby mode to be used. No effect, implemented only for PhysicalLayer compatibility.
       \returns \ref status_codes
     */
@@ -894,7 +894,7 @@ class SX127x: public PhysicalLayer {
     // configuration methods
 
     /*!
-      \brief Sets %LoRa sync word. Only available in %LoRa mode.
+      \brief Sets LoRa sync word. Only available in LoRa mode.
       \param syncWord Sync word to be set.
       \returns \ref status_codes
     */
@@ -908,7 +908,7 @@ class SX127x: public PhysicalLayer {
     int16_t setCurrentLimit(uint8_t currentLimit);
 
     /*!
-      \brief Sets %LoRa or FSK preamble length. Allowed values range from 6 to 65535 in %LoRa mode or 0 to 65535 in FSK mode.
+      \brief Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.
       \param preambleLength Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode).
       \returns \ref status_codes
     */
@@ -942,24 +942,24 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.
-      \param freqDev Frequency deviation to be set (in kHz).
+      \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
-      \brief Sets FSK receiver bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
-      \param rxBw Receiver bandwidth to be set (in kHz).
+      \brief Sets FSK receiver bandwidth. Allowed values range from 2600 Hz to 250 kHz. Only available in FSK mode.
+      \param rxBw Receiver bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
 
     /*!
-      \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
-      \param afcBw Receiver AFC bandwidth to be set (in kHz).
+      \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 2600 to 250 kHz. Only available in FSK mode.
+      \param afcBw Receiver AFC bandwidth to be set (in Hz).
       \returns \ref status_codes
     */
-    int16_t setAFCBandwidth(float afcBw);
+    int16_t setAFCBandwidth(uint32_t afcBw);
 
     /*!
       \brief Enables or disables FSK automatic frequency correction(AFC)
@@ -1306,8 +1306,8 @@ class SX127x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-    float frequency = 0;
-    float bandwidth = 125;
+    uint32_t frequency = 0;
+    uint32_t bandwidth = RADIOLIB_UNIT_KILO(125);
     uint8_t spreadingFactor = 9;
     size_t packetLength = 0;
     uint8_t codingRate = 0;
@@ -1319,8 +1319,8 @@ class SX127x: public PhysicalLayer {
 
     virtual int16_t configFSK();
     int16_t getActiveModem();
-    int16_t setFrequencyRaw(float newFreq);
-    int16_t setBitRateCommon(float br, uint8_t fracRegAddr);
+    int16_t setFrequencyRaw(uint32_t newFreq);
+    int16_t setBitRateCommon(uint32_t br, uint8_t fracRegAddr);
     float getRSSICommon(bool packet, bool skipReceive, int16_t offset);
     int16_t setHeaderType(uint8_t headerType, uint8_t bitIndex, size_t len = 0xFF);
 
@@ -1329,7 +1329,7 @@ class SX127x: public PhysicalLayer {
 #endif
     Module* mod;
 
-    float bitRate = 0, frequencyDev = 0;
+    uint32_t bitRate = 0, frequencyDev = 0;
     bool crcOn = true; // default value used in FSK mode
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;
@@ -1342,8 +1342,8 @@ class SX127x: public PhysicalLayer {
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
-    int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
-    int16_t setRxBw(float rxBw, bool afc);
+    int16_t findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
+    int16_t setRxBw(uint32_t rxBw, bool afc);
 
     virtual void errataFix(bool rx); // should be implemented in derived class
 };

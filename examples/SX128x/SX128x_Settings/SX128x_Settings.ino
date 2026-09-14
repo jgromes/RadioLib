@@ -52,7 +52,7 @@ void setup() {
   // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
   ConfigLoRa_t config1;
-  config1.frequency = 2400;
+  config1.frequency = RADIOLIB_UNIT_MEGA(2400);
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -74,11 +74,10 @@ void setup() {
   // sync word:                   0x12 (private network)
   // output power:                2 dBm
   // preamble length:             20 symbols
-  state = radio2.begin(2450.0, 1625.0, 7, 5, 0x12, 2, 20);
   #if (__cplusplus < 201402L)
     ConfigLoRa_t config2;
-    config2.frequency = 2450.0;
-    config2.bandwidth = 1625.0;
+    config2.frequency = RADIOLIB_UNIT_MEGA(2450);
+    config2.bandwidth = RADIOLIB_UNIT_KILO(1625);
     config2.spreadingFactor = 7;
     config2.codingRate = 5;
     config2.syncWord = 0x12;
@@ -88,8 +87,8 @@ void setup() {
   #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
-      .frequency = 2450.0,
-      .bandwidth = 1625.0,
+      .frequency = RADIOLIB_UNIT_MEGA(2450),
+      .bandwidth = RADIOLIB_UNIT_KILO(1625),
       .spreadingFactor = 7,
       .codingRate = 5,
       .syncWord = 0x12,
@@ -108,14 +107,14 @@ void setup() {
   // you can also change the settings at runtime
   // and check if the configuration was changed successfully
 
-  // set carrier frequency to 2410.5 MHz
-  if (radio1.setFrequency(2410.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
+  // set carrier frequency to 2410 MHz
+  if (radio1.setFrequency(RADIOLIB_UNIT_MEGA(2410)) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true) { delay(10); }
   }
 
   // set bandwidth to 203.125 kHz
-  if (radio1.setBandwidth(203.125) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(203125) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true) { delay(10); }
   }

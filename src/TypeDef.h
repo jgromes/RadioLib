@@ -693,4 +693,25 @@ typedef uint32_t RadioLibIrqFlags_t;
   \}
 */
 
+// unit prefix macros
+#define RADIOLIB_UNIT_KILO(X)             ((uint32_t)(X) * (uint32_t)1000)
+#define RADIOLIB_UNIT_KILO_FLT(X)         ((uint32_t)((float)(X) * 1000.0f))
+#define RADIOLIB_UNIT_MEGA(X)             ((uint32_t)(X) * (uint32_t)1000000)
+#define RADIOLIB_UNIT_MEGA_FLT(X)         ((uint32_t)((float)(X) * 1000000.0f))
+
+/*!
+  \brief Type used for TCXO reference voltage levels.
+*/
+enum RadioLibTCXOVoltage_t {
+  VoltageNone = -1,
+  Voltage1V6,
+  Voltage1V7,
+  Voltage1V8,
+  Voltage2V2,
+  Voltage2V4,
+  Voltage2V7,
+  Voltage3V0,
+  Voltage3V3,
+};
+
 #endif

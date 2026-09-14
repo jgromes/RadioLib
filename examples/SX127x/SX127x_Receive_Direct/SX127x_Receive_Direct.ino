@@ -44,9 +44,9 @@ void setup() {
   // initialize SX1278 with FSK modem at 9600 bps
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434.0;
-  config.bitRate = 9.6;
-  config.frequencyDeviation = 20.0;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
+  config.bitRate = 9600;
+  config.frequencyDeviation = RADIOLIB_UNIT_KILO(20);
   int state = radio.beginFSK(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

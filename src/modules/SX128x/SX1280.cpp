@@ -158,7 +158,7 @@ int32_t SX1280::getRangingResultRaw() {
 
 float SX1280::getRangingResult() {
   int32_t raw = getRangingResultCommon(false);
-  return((float)raw * 150.0f / (4.096f * this->bandwidthKhz));
+  return((float)raw * 150000.0f / (4.096f * this->bandwidthHz));
 }
 
 int32_t SX1280::getRangingResultCommon(bool filtered) {

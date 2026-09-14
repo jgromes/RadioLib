@@ -60,7 +60,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

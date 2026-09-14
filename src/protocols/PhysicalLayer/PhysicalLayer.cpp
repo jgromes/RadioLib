@@ -238,17 +238,17 @@ int16_t PhysicalLayer::receiveDirect() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setFrequency(float freq) {
+int16_t PhysicalLayer::setFrequency(uint32_t freq) {
   (void)freq;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setBitRate(float br) {
+int16_t PhysicalLayer::setBitRate(uint32_t br) {
   (void)br;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setFrequencyDeviation(float freqDev) {
+int16_t PhysicalLayer::setFrequencyDeviation(uint32_t freqDev) {
   (void)freqDev;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
@@ -313,6 +313,34 @@ float PhysicalLayer::getRSSI() {
 
 float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+float PhysicalLayer::getNumSymbols(DataRate_t dr, PacketConfig_t pc, size_t len) {
+  uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
+  uint8_t sfCoeff2 = 8;
+  if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
+    sfCoeff1_x4 = 25; // 6.25 * 4
+    sfCoeff2 = 0;
+  }
+  uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
+  if(pc.lora.ldrOptimize) {
+    sfDivisor = 4*(dr.lora.spreadingFactor - 2);
+  }
+  const int8_t bitsPerCrc = 16;
+  const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
+
+  // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
+  int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
+  if(bitCount < 0) {
+    bitCount = 0;
+  }
+
+  // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
+  uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
+
+  // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
+  uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
+  return((float)nSymbol_x4 / 4.0f);
 }
 
 RadioLibTime_t PhysicalLayer::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
@@ -438,7 +466,7 @@ int16_t PhysicalLayer::startDirect() {
   RADIOLIB_ASSERT(state);
 
   // set frequency deviation to the lowest possible value
-  state = setFrequencyDeviation(-1);
+  state = setFrequencyDeviation(0);
   return(state);
 }
 

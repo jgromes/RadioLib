@@ -41,12 +41,12 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // some LR11x0 have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio.tcxoVoltage = 1.6;
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
   ConfigLRFHSS_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.beginLRFHSS(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -63,12 +63,12 @@ void setup() {
 
   // the following settings can also
   // be modified at run-time
-  state = radio.setFrequency(433.5);
+  state = radio.setFrequency(RADIOLIB_UNIT_MEGA(433));
   state = radio.setLrFhssConfig(RADIOLIB_LRXXXX_LR_FHSS_BW_1523_4,  // bandwidth
                                 RADIOLIB_LRXXXX_LR_FHSS_CR_1_2,     // coding rate
                                 3,                                  // header count
                                 0x13A);                             // hopping sequence seed
-  state = radio.setOutputPower(10.0);
+  state = radio.setOutputPower(10);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67};
   state = radio.setSyncWord(syncWord, 4);
   if (state != RADIOLIB_ERR_NONE) {

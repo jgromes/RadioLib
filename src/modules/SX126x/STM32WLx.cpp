@@ -32,40 +32,12 @@ int16_t STM32WLx::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t STM32WLx::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  // Execute common part
-  int16_t state = SX1262::begin(freq, bw, sf, cr, syncWord, power, preambleLength, tcxoVoltage, useRegulatorLDO);
-  RADIOLIB_ASSERT(state);
-
-  // This overrides the value in SX126x::begin()
-  // On STM32WL, DIO2 is hardwired to the radio IRQ on the MCU, so it
-  // should really not be used as RfSwitch control output.
-  state = setDio2AsRfSwitch(false);
-  RADIOLIB_ASSERT(state);
-
-  return(state);
-}
-
 int16_t STM32WLx::beginFSK(const ConfigFSK_t& cfg) {
   // Execute common part
   int16_t state = SX1262::beginFSK(cfg);
   RADIOLIB_ASSERT(state);
 
   // This overrides the value in SX126x::begin()
-  // On STM32WL, DIO2 is hardwired to the radio IRQ on the MCU, so it
-  // should really not be used as RfSwitch control output.
-  state = setDio2AsRfSwitch(false);
-  RADIOLIB_ASSERT(state);
-
-  return(state);
-}
-
-int16_t STM32WLx::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  // Execute common part
-  int16_t state = SX1262::beginFSK(freq, br, freqDev, rxBw, power, preambleLength, tcxoVoltage, useRegulatorLDO);
-  RADIOLIB_ASSERT(state);
-
-  // This overrides the value in SX126x::beginFSK()
   // On STM32WL, DIO2 is hardwired to the radio IRQ on the MCU, so it
   // should really not be used as RfSwitch control output.
   state = setDio2AsRfSwitch(false);

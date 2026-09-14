@@ -36,10 +36,10 @@ class HellClient: public RadioLibPrint {
 
     /*!
       \brief Initialization method.
-      \param base Base RF frequency to be used in MHz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode).
+      \param base Base RF frequency to be used in Hz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode).
       \param rate Baud rate to be used during transmission. Defaults to 122.5 ("Feld Hell")
     */
-    int16_t begin(float base, float rate = 122.5);
+    int16_t begin(uint32_t base, float rate = 122.5);
 
     /*!
       \brief Method to "print" a buffer of pixels, this is exposed to allow users to send custom characters.

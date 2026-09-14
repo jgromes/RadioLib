@@ -68,20 +68,6 @@ int16_t SX1262::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(begin(cfg));
-}
-
 int16_t SX1262::beginFSK(const ConfigFSK_t& cfg) {
   // execute common part
   int16_t state = SX126x::beginFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
@@ -98,19 +84,6 @@ int16_t SX1262::beginFSK(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   return(state);
-}
-
-int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginFSK(cfg));
 }
 
 int16_t SX1262::beginBPSK(const ConfigBPSK_t& cfg) {
@@ -131,16 +104,6 @@ int16_t SX1262::beginBPSK(const ConfigBPSK_t& cfg) {
   return(state);
 }
 
-int16_t SX1262::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigBPSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginBPSK(cfg));
-}
-
 int16_t SX1262::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // execute common part
   int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
@@ -159,27 +122,15 @@ int16_t SX1262::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   return(state);
 }
 
-int16_t SX1262::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLRFHSS_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.codingRate = cr;
-  cfg.narrowGrid = narrowGrid;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginLRFHSS(cfg));
-}
-
-int16_t SX1262::setFrequency(float freq) {
+int16_t SX1262::setFrequency(uint32_t freq) {
   return(setFrequency(freq, false));
 }
 
-int16_t SX1262::setFrequency(float freq, bool skipCalibration) {
-  RADIOLIB_CHECK_RANGE(freq, 150.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
+int16_t SX1262::setFrequency(uint32_t freq, bool skipCalibration) {
+  RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(150), RADIOLIB_UNIT_MEGA(960), RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // check if we need to recalibrate image
-  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
+  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
     int16_t state = this->calibrateImage(freq);
     RADIOLIB_ASSERT(state);
   }
@@ -216,13 +167,16 @@ int16_t SX1262::checkOutputPower(int8_t power, int8_t* clipped) {
 int16_t SX1262::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginFSK());
+      ConfigFSK_t cfg;
+      return(this->beginFSK(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
-      return(this->beginLRFHSS());
+      ConfigLRFHSS_t cfg;
+      return(this->beginLRFHSS(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

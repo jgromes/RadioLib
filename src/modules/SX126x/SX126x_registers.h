@@ -165,6 +165,7 @@
 #define RADIOLIB_SX126X_LR_FHSS_BW_773_44                       (0x07UL << 0)   //  7     0                        773.44 kHz
 #define RADIOLIB_SX126X_LR_FHSS_BW_1523_4                       (0x08UL << 0)   //  7     0                        1523.4 kHz
 #define RADIOLIB_SX126X_LR_FHSS_BW_1574_2                       (0x09UL << 0)   //  7     0                        1574.2 kHz
+#define RADIOLIB_SX126X_LR_FHSS_BIT_RATE_RAW                    (2097152)       //  31    0     raw LR-FHSS bit rate (488.28125 bps)
 
 #endif
 

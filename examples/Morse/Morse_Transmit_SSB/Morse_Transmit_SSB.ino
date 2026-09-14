@@ -50,7 +50,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.beginFSK(config);
 
   // when using one of the non-LoRa modules for RTTY
@@ -69,7 +69,7 @@ void setup() {
   Serial.print(F("[Morse] Initializing ... "));
   // carrier wave frequency:      434.0 MHz
   // speed:                       20 words per minute
-  state = morse.begin(434.0);
+  state = morse.begin(RADIOLIB_UNIT_MEGA(434));
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

@@ -20,19 +20,8 @@ int16_t Si4432::begin(const ConfigFSK_t& cfg) {
   return(state);
 }
 
-int16_t Si4432::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLen;
-  return(this->begin(cfg));
-}
-
-int16_t Si4432::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 240.0f, 930.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
+int16_t Si4432::setFrequency(uint32_t freq) {
+  RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(240), RADIOLIB_UNIT_MEGA(930), RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency
   return(Si443x::setFrequencyRaw(freq));

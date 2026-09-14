@@ -42,7 +42,7 @@ void setup() {
   // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
   ConfigBLE_t config;
-  config.frequency = 2400;
+  config.frequency = RADIOLIB_UNIT_MEGA(2400);
   int state = radio.beginBLE(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -59,11 +59,11 @@ void setup() {
 
   // the following settings can also
   // be modified at run-time
-  state = radio.setFrequency(2410.5);
-  state = radio.setBitRate(250);
-  state = radio.setFrequencyDeviation(100.0);
+  state = radio.setFrequency(RADIOLIB_UNIT_MEGA(2410));
+  state = radio.setBitRate(RADIOLIB_UNIT_KILO(250));
+  state = radio.setFrequencyDeviation(RADIOLIB_UNIT_KILO(100));
   state = radio.setOutputPower(5);
-  state = radio.setDataShaping(1.0);
+  state = radio.setDataShaping(RADIOLIB_SHAPING_1_0);
   state = radio.setAccessAddress(0x12345678);
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));

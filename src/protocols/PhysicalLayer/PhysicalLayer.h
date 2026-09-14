@@ -33,8 +33,8 @@ struct LoRaRate_t {
   /*! \brief LoRa spreading factor */
   uint8_t spreadingFactor;
   
-  /*! \brief LoRa bandwidth in kHz */
-  float bandwidth;
+  /*! \brief LoRa bandwidth in Hz */
+  uint32_t bandwidth;
 
   /*! \brief LoRa coding rate denominator */
   uint8_t codingRate;
@@ -45,11 +45,11 @@ struct LoRaRate_t {
   \brief Data rate structure interpretation in case FSK is used
 */
 struct FSKRate_t {
-  /*! \brief FSK bit rate in kbps */
-  float bitRate;
+  /*! \brief FSK bit rate in bps */
+  uint32_t bitRate;
   
-  /*! \brief FSK frequency deviation in kHz */
-  float freqDev;
+  /*! \brief FSK frequency deviation in Hz */
+  uint32_t freqDev;
 };
 
 /*!
@@ -282,9 +282,9 @@ enum RadioModeType_t {
 
 struct ConfigLoRa_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-  float frequency = 434.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(434);
   /*! \brief LoRa bandwidth in kHz. Defaults to 125.0 kHz. */
-  float bandwidth = 125.0;
+  uint32_t bandwidth = RADIOLIB_UNIT_KILO(125);
   /*! \brief LoRa spreading factor. Defaults to 9. */
   uint8_t spreadingFactor = 9;
   /*! \brief LoRa coding rate. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
@@ -300,13 +300,13 @@ struct ConfigLoRa_t {
 
 struct ConfigFSK_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-  float frequency = 434.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(434);
   /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-  float bitRate = 4.8;
+  uint32_t bitRate = 4800;
   /*! \brief FSK frequency deviation in kHz. Defaults to 5.0 kHz. */
-  float frequencyDeviation = 5.0;
+  uint32_t frequencyDeviation = RADIOLIB_UNIT_KILO(5);
   /*! \brief FSK receiver bandwidth in kHz. Defaults to 125.0 kHz. */
-  float receiverBandwidth = 125.0;
+  uint32_t receiverBandwidth = RADIOLIB_UNIT_KILO(125);
   /*! \brief Output power in dBm. Defaults to 10 dBm. */
   int8_t power = 10;
   /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
@@ -315,20 +315,20 @@ struct ConfigFSK_t {
 
 struct ConfigBPSK_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-  float frequency = 434.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(434);
   /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-  float bitRate = 4.8;
+  uint32_t bitRate = 4800;
   /*! \brief Output power in dBm. Defaults to 10 dBm. */
   int8_t power = 10;
 };
 
 struct ConfigOOK_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-  float frequency = 434.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(434);
   /*! \brief FSK bit rate in kbps. Defaults to 4.8 kbps. */
-  float bitRate = 4.8;
+  uint32_t bitRate = 4800;
   /*! \brief FSK receiver bandwidth in kHz. Defaults to 125.0 kHz. */
-  float receiverBandwidth = 125.0;
+  uint32_t receiverBandwidth = RADIOLIB_UNIT_KILO(125);
   /*! \brief Output power in dBm. Defaults to 10 dBm. */
   int8_t power = 10;
   /*! \brief FSK preamble length in bits. Defaults to 16 bits. */
@@ -337,7 +337,7 @@ struct ConfigOOK_t {
 
 struct ConfigLRFHSS_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-  float frequency = 434.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(434);
   /*! \brief LR-FHSS bandwidth, one of RADIOLIB_LR_FHSS_BW_* values. Defaults to 722.66 kHz. */
   uint8_t bandwidth = RADIOLIB_LR_FHSS_BW_722_66;
   /*! \brief LR-FHSS coding rate, one of RADIOLIB_LR_FHSS_CR_* values. Defaults to 2/3 coding rate. */
@@ -350,9 +350,9 @@ struct ConfigLRFHSS_t {
 
 struct ConfigFLRC_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
-  float frequency = 434.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(434);
   /*! \brief FLRC bit rate in kbps. Defaults to 650 kbps. */
-  float bitRate = 650.0;
+  uint32_t bitRate = RADIOLIB_UNIT_KILO(650);
   /*! \brief FLRC coding rate. Defaults to RADIOLIB_FLRC_CR_2_3 (coding rate 2/3). */
   uint8_t codingRate = RADIOLIB_FLRC_CR_2_3;
   /*! \brief Output power in dBm. Defaults to 10 dBm. */
@@ -365,11 +365,11 @@ struct ConfigFLRC_t {
 
 struct ConfigBLE_t {
   /*! \brief Carrier frequency in MHz. Defaults to 2400.0 MHz. */
-  float frequency = 2400.0;
+  uint32_t frequency = RADIOLIB_UNIT_MEGA(2400);
   /*! \brief BLE bit rate in kbps. Defaults to 800 kbps. */
   uint16_t bitRate = 800;
   /*! \brief BLE frequency deviation in kHz. Defaults to 400.0 kHz. */
-  float frequencyDeviation = 400.0;
+  uint32_t frequencyDeviation = RADIOLIB_UNIT_KILO(400);
   /*! \brief Output power in dBm. Defaults to 10 dBm. */
   int8_t power = 10;
   /*! \brief Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5. */
@@ -593,25 +593,25 @@ class PhysicalLayer {
 
     /*!
       \brief Sets carrier frequency. Must be implemented in module class.
-      \param freq Carrier frequency to be set in MHz.
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    virtual int16_t setFrequency(float freq);
+    virtual int16_t setFrequency(uint32_t freq);
 
     /*!
       \brief Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.
-      \param br Bit rate to be set (in kbps).
+      \param br Bit rate to be set (in bps).
       \returns \ref status_codes
     */
-    virtual int16_t setBitRate(float br);
+    virtual int16_t setBitRate(uint32_t br);
 
     /*!
       \brief Sets FSK frequency deviation from carrier frequency. Only available in FSK mode.
       Must be implemented in module class.
-      \param freqDev Frequency deviation to be set (in kHz).
+      \param freqDev Frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    virtual int16_t setFrequencyDeviation(float freqDev);
+    virtual int16_t setFrequencyDeviation(uint32_t freqDev);
 
     /*!
       \brief Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.
@@ -700,6 +700,15 @@ class PhysicalLayer {
       \returns SNR of the last received packet in dB.
     */
     virtual float getSNR();
+
+    /*!
+      \brief Convert from bytes to LoRa symbols.
+      \param dr Data rate.
+      \param pc Packet configuration.
+      \param len Payload length in bytes.
+      \returns The total number of LoRa symbols, including preamble, sync and possible header.
+    */
+    static float getNumSymbols(DataRate_t dr, PacketConfig_t pc, size_t len);
     
     /*!
       \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.

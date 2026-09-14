@@ -66,15 +66,6 @@ int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   return(state);
 }
 
-int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = dr;
-  cfg.power = pwr;
-  this->addressWidth = addrWidth;
-  return(this->begin(cfg));
-}
-
 int16_t nRF24::sleep() {
   return(this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, RADIOLIB_NRF24_POWER_DOWN, 1, 1));
 }
@@ -291,13 +282,12 @@ int16_t nRF24::finishReceive() {
   return(standby());
 }
 
-int16_t nRF24::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE((uint16_t)freq, 2400, 2525, RADIOLIB_ERR_INVALID_FREQUENCY);
+int16_t nRF24::setFrequency(uint32_t freq) {
+  RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(2400), RADIOLIB_UNIT_MEGA(2525), RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency
-  uint8_t freqRaw = (uint16_t)freq - 2400;
+  uint8_t freqRaw = (freq - RADIOLIB_UNIT_MEGA(2400))/(RADIOLIB_UNIT_MEGA(1000));
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0);
-
   if(state == RADIOLIB_ERR_NONE) {
     this->frequency = freq;
   }
@@ -305,13 +295,13 @@ int16_t nRF24::setFrequency(float freq) {
   return(state);
 }
 
-int16_t nRF24::setBitRate(float br) {
+int16_t nRF24::setBitRate(uint32_t br) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
   // set data rate
-  uint16_t bitRate = (uint16_t)br;
+  uint16_t bitRate = br / RADIOLIB_UNIT_KILO(1);
   if(bitRate == 250) {
     state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_250_KBPS, 5, 5);
     state |= this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_250_KBPS, 3, 3);
@@ -328,7 +318,6 @@ int16_t nRF24::setBitRate(float br) {
   if(state == RADIOLIB_ERR_NONE) {
     this->dataRate = bitRate;
   }
-
 
   return(state);
 }
@@ -506,7 +495,7 @@ bool nRF24::isCarrierDetected() {
   return(this->mod->SPIgetRegValue(RADIOLIB_NRF24_REG_RPD, 0, 0) == 1);
 }
 
-int16_t nRF24::setFrequencyDeviation(float freqDev) {
+int16_t nRF24::setFrequencyDeviation(uint32_t freqDev) {
   // nRF24 is unable to set frequency deviation
   // this method is implemented only for PhysicalLayer compatibility
   (void)freqDev;

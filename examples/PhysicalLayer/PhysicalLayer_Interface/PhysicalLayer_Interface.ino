@@ -45,7 +45,7 @@ void setup() {
   // specific to that radio type, such as the begin() method
   Serial.print(F("[Radio] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -58,7 +58,7 @@ void setup() {
   // or we can use the "phy" pointer to access the common layer
   // PhysicalLayer has some common configuration
   Serial.print(F("[PHY] Changing frequency ... "));
-  state = phy->setFrequency(433.5);
+  state = phy->setFrequency(RADIOLIB_UNIT_MEGA(433));
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
