@@ -403,6 +403,16 @@ int16_t LRxxxx::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, 
     state = this->mod->SPIwriteStream(cmd, out, outLen, true, false);
     RADIOLIB_ASSERT(state);
 
+    // wait for BUSY to go low
+    RadioLibTime_t start = this->mod->hal->millis();
+    while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+      this->mod->hal->yield();
+      if(this->mod->hal->millis() - start >= this->mod->spiConfig.timeout) {
+        RADIOLIB_DEBUG_BASIC_PRINTLN("BUSY pin timeout after read request!");
+        return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+      }
+    }
+
     // read the result without command
     this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_0;
     state = this->mod->SPIreadStream(RADIOLIB_LRXXXX_CMD_NOP, data, len, true, false);
