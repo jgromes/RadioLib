@@ -15,6 +15,7 @@ file(GLOB_RECURSE TEST_SOURCES
   "tests/TestCalculateTimeOnAir.cpp"
   "tests/TestPhyComplete.cpp"
   "tests/TestCrypto.cpp"
+  "tests/TestReedSolomon.cpp"
 )
 
 # create the executable
