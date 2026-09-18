@@ -245,6 +245,15 @@
 #elif defined(ARDUINO_ARCH_STM32)
   // official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
   #define RADIOLIB_PLATFORM                           "Arduino STM32 (official)"
+  #if defined(ARDUINO_API_VERSION)
+    // core releases that pulled in ArduinoCore-API (api/ArduinoAPI.h, which defines this
+    // macro) moved pinMode()/digitalWrite()/attachInterrupt() to typed PinMode/PinStatus
+    // arguments; older releases predate ArduinoCore-API and keep the untyped uint32_t
+    // signatures, so they fall through to the untyped default below instead.
+    #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+    #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+    #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
+  #endif
 
 #elif defined(SAMD_SERIES)
   // Adafruit SAMD boards (M0 and M4)

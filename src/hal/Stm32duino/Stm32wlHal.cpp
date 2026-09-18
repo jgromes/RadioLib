@@ -47,7 +47,7 @@ class Stm32wlxHal : public ArduinoHal {
           // Nothing to do
           break;
         default:
-          ::pinMode(dwPin, dwMode);
+          ::pinMode(dwPin, RADIOLIB_ARDUINOHAL_PIN_MODE_CAST dwMode);
           break;
       }
     }
@@ -73,7 +73,7 @@ class Stm32wlxHal : public ArduinoHal {
           break;
 
         default:
-          ::digitalWrite(dwPin, dwVal);
+          ::digitalWrite(dwPin, RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST dwVal);
           break;
       }
     }
