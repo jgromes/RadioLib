@@ -415,7 +415,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
   }
 
   // parse status (only if GPIO did not timeout)
-  if((state == RADIOLIB_ERR_NONE) && (this->spiConfig.parseStatusCb != nullptr) && (numBytes > 0)) {
+  if((state == RADIOLIB_ERR_NONE) && (this->spiConfig.parseStatusCb != nullptr) && (buffLen > this->spiConfig.statusPos)) {
     state = this->spiConfig.parseStatusCb(buffIn[this->spiConfig.statusPos]);
   }
   
