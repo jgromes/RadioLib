@@ -303,7 +303,11 @@ int16_t PhysicalLayer::checkDataRate(DataRate_t dr, ModemType_t modem) {
 
 size_t PhysicalLayer::getPacketLength(bool update) {
   (void)update;
-  return(0);
+  // technically this should be returning some unsigned value, not a negative status code
+  // however, 0 could be misinterpreted in this case
+  // the value of RADIOLIB_ERR_UNSUPPORTED (-25) when converted to 32-bit unsigned int is 4294967271
+  // that is conmfortably out of range for any possible packet length
+  return((size_t)RADIOLIB_ERR_UNSUPPORTED);
 }
 
 float PhysicalLayer::getRSSI() {

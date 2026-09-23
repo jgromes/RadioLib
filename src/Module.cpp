@@ -415,7 +415,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
   }
 
   // parse status (only if GPIO did not timeout)
-  if((state == RADIOLIB_ERR_NONE) && (this->spiConfig.parseStatusCb != nullptr) && (numBytes > 0)) {
+  if((state == RADIOLIB_ERR_NONE) && (this->spiConfig.parseStatusCb != nullptr) && (buffLen > this->spiConfig.statusPos)) {
     state = this->spiConfig.parseStatusCb(buffIn[this->spiConfig.statusPos]);
   }
   
@@ -427,6 +427,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
 
   // print debug information
   #if RADIOLIB_DEBUG_SPI
+    RADIOLIB_DEBUG_SPI_PRINTLN("LEN\t%d", buffLen);
     // print command byte(s)
     RADIOLIB_DEBUG_SPI_PRINT("CMD");
     if(write) {
@@ -457,6 +458,10 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%02X\t", buffIn[n]);
     }
     RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG("");
+    // if there is enough data to evaluate the status byte, print it as well
+    if(buffLen > this->spiConfig.statusPos) {
+      RADIOLIB_DEBUG_SPI_PRINTLN("STAT\t%02X", buffIn[this->spiConfig.statusPos]);
+    }
   #endif
 
   #if !RADIOLIB_STATIC_ONLY

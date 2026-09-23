@@ -285,8 +285,15 @@ int16_t SX126x::setRegulatorMode(uint8_t mode) {
 }
 
 uint8_t SX126x::getStatus() {
+  const uint8_t cmd = RADIOLIB_SX126X_CMD_GET_STATUS;
   uint8_t data = 0;
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_STATUS, &data, 0);
+
+  // temporarily set status width to 0, since in this case, status byte is the thing we are trying to read
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
+  (void)this->mod->SPItransferStream(&cmd, 1, false, NULL, &data, 1, true);
+
+  // restore and return the value
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
   return(data);
 }
 
