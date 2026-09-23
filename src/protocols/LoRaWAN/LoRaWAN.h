@@ -272,18 +272,21 @@ struct LoRaWANPackage_t {
   bool isAppPack;
 };
 
-#define RADIOLIB_LORAWAN_NONCES_VERSION_VAL (0x0003)
+#define RADIOLIB_LORAWAN_NONCES_VERSION_VAL (0x0004)
 
-enum LoRaWANSchemeBase_t {
-  RADIOLIB_LORAWAN_NONCES_START       = 0x00,
-  RADIOLIB_LORAWAN_NONCES_VERSION     = RADIOLIB_LORAWAN_NONCES_START,                            // 2 bytes
-  RADIOLIB_LORAWAN_NONCES_MODE        = RADIOLIB_LORAWAN_NONCES_VERSION + sizeof(uint16_t),       // 2 bytes
-  RADIOLIB_LORAWAN_NONCES_PLAN        = RADIOLIB_LORAWAN_NONCES_MODE + sizeof(uint16_t),          // 1 byte
-  RADIOLIB_LORAWAN_NONCES_CHECKSUM    = RADIOLIB_LORAWAN_NONCES_PLAN + sizeof(uint8_t),           // 2 bytes
-  RADIOLIB_LORAWAN_NONCES_DEV_NONCE   = RADIOLIB_LORAWAN_NONCES_CHECKSUM + sizeof(uint16_t),      // 2 bytes
-  RADIOLIB_LORAWAN_NONCES_JOIN_NONCE  = RADIOLIB_LORAWAN_NONCES_DEV_NONCE + sizeof(uint16_t),     // 3 bytes
-  RADIOLIB_LORAWAN_NONCES_SIGNATURE   = RADIOLIB_LORAWAN_NONCES_JOIN_NONCE + 3,                   // 2 bytes
-  RADIOLIB_LORAWAN_NONCES_BUF_SIZE    = RADIOLIB_LORAWAN_NONCES_SIGNATURE + sizeof(uint16_t)      // Nonces buffer size
+enum LoRaWANSchemePersistence_t {
+  RADIOLIB_LORAWAN_NONCES_START           = 0x00,
+  RADIOLIB_LORAWAN_PERSISTENCE_SIZE       = RADIOLIB_LORAWAN_NONCES_START,
+  RADIOLIB_LORAWAN_PERSISTENCE_VERSION    = RADIOLIB_LORAWAN_PERSISTENCE_SIZE + 1,
+  RADIOLIB_LORAWAN_PERSISTENCE_KEYS       = RADIOLIB_LORAWAN_PERSISTENCE_VERSION + 2,
+  RADIOLIB_LORAWAN_PERSISTENCE_JOIN_NONCE = RADIOLIB_LORAWAN_PERSISTENCE_KEYS + 4,
+  RADIOLIB_LORAWAN_PERSISTENCE_DEV_NONCE  = RADIOLIB_LORAWAN_PERSISTENCE_JOIN_NONCE + 3,
+  RADIOLIB_LORAWAN_PERSISTENCE_RJ_COUNT   = RADIOLIB_LORAWAN_PERSISTENCE_DEV_NONCE + 2,
+  RADIOLIB_LORAWAN_PERSISTENCE_TS004      = RADIOLIB_LORAWAN_PERSISTENCE_RJ_COUNT + 2,
+  RADIOLIB_LORAWAN_PERSISTENCE_TS009      = RADIOLIB_LORAWAN_PERSISTENCE_TS004 + 8,
+  RADIOLIB_LORAWAN_PERSISTENCE_RFU        = RADIOLIB_LORAWAN_PERSISTENCE_TS009 + 1,
+  RADIOLIB_LORAWAN_PERSISTENCE_SIGNATURE  = RADIOLIB_LORAWAN_PERSISTENCE_RFU + 5,
+  RADIOLIB_LORAWAN_PERSISTENCE_BUF_SIZE   = RADIOLIB_LORAWAN_PERSISTENCE_SIGNATURE + 4
 };
 
 enum LoRaWANSchemeSession_t {
@@ -295,31 +298,30 @@ enum LoRaWANSchemeSession_t {
   RADIOLIB_LORAWAN_SESSION_SNWK_SINT_KEY      = RADIOLIB_LORAWAN_SESSION_FNWK_SINT_KEY + RADIOLIB_AES128_KEY_SIZE,  // 16 bytes
   RADIOLIB_LORAWAN_SESSION_DEV_ADDR           = RADIOLIB_LORAWAN_SESSION_SNWK_SINT_KEY + RADIOLIB_AES128_KEY_SIZE,  // 4 bytes
   RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE   = RADIOLIB_LORAWAN_SESSION_DEV_ADDR + sizeof(uint32_t),               // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_FCNT_UP            = RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE + sizeof(uint16_t),       // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_FCNT_UP            = RADIOLIB_LORAWAN_SESSION_NONCES_SIGNATURE + sizeof(uint32_t),       // 4 bytes
   RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN        = RADIOLIB_LORAWAN_SESSION_FCNT_UP + sizeof(uint32_t),        // 4 bytes
   RADIOLIB_LORAWAN_SESSION_A_FCNT_DOWN        = RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN + sizeof(uint32_t),    // 4 bytes
   RADIOLIB_LORAWAN_SESSION_ADR_FCNT           = RADIOLIB_LORAWAN_SESSION_A_FCNT_DOWN + sizeof(uint32_t),    // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP       = RADIOLIB_LORAWAN_SESSION_ADR_FCNT + sizeof(uint32_t), 	    // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP       = RADIOLIB_LORAWAN_SESSION_ADR_FCNT + sizeof(uint32_t),       // 4 bytes
   RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN     = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_UP + sizeof(uint32_t),   // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_RJ_COUNT0          = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN + sizeof(uint32_t), // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_RJ_COUNT1          = RADIOLIB_LORAWAN_SESSION_RJ_COUNT0 + sizeof(uint16_t), 	    // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_RX_A_FCNT          = RADIOLIB_LORAWAN_SESSION_RJ_COUNT1 + sizeof(uint16_t), 	    // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_VERSION            = RADIOLIB_LORAWAN_SESSION_RX_A_FCNT + sizeof(uint32_t), 	    // 1 byte
-  RADIOLIB_LORAWAN_SESSION_CLASS              = RADIOLIB_LORAWAN_SESSION_VERSION + 1,                       // 1 byte
+  RADIOLIB_LORAWAN_SESSION_RX_A_FCNT          = RADIOLIB_LORAWAN_SESSION_CONF_FCNT_DOWN + sizeof(uint16_t), // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_VERSION            = RADIOLIB_LORAWAN_SESSION_RX_A_FCNT + sizeof(uint32_t),      // 1 byte
+  RADIOLIB_LORAWAN_SESSION_BAND               = RADIOLIB_LORAWAN_SESSION_VERSION + 1,                       // 1 byte
+  RADIOLIB_LORAWAN_SESSION_CLASS              = RADIOLIB_LORAWAN_SESSION_BAND + 1,                          // 1 byte
   RADIOLIB_LORAWAN_SESSION_LINK_ADR           = RADIOLIB_LORAWAN_SESSION_CLASS + sizeof(uint8_t),           // 14 bytes
-  RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE         = RADIOLIB_LORAWAN_SESSION_LINK_ADR + 14, 	                  // 1 byte
-  RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP     = RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE + 1, 	                  // 4 bytes
-  RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP    = RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP + 4, 	              // 1 byte
+  RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE         = RADIOLIB_LORAWAN_SESSION_LINK_ADR + 14,                     // 1 byte
+  RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP     = RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE + 1,                    // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP    = RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP + 4,                // 1 byte
   RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP     = RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP + 1,               // 1 byte
-  RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP    = RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP + 1, 	              // 1 byte
+  RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP    = RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP + 1,                // 1 byte
   RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP = RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP + 1,               // 1 byte
-  RADIOLIB_LORAWAN_SESSION_UL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP + 1, 	          // 16*5 bytes
+  RADIOLIB_LORAWAN_SESSION_UL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP + 1,            // 16*5 bytes
   RADIOLIB_LORAWAN_SESSION_DL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_UL_CHANNELS + RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS*5, // 16*4 bytes
   RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS = RADIOLIB_LORAWAN_SESSION_DL_CHANNELS + RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS*4, // 2 bytes
   RADIOLIB_LORAWAN_SESSION_MAC_QUEUE          = RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS + RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS,    // 12 bytes                   // 15 bytes
   RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN      = RADIOLIB_LORAWAN_SESSION_MAC_QUEUE + RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN,           // 1 byte
-  RADIOLIB_LORAWAN_SESSION_SIGNATURE          = RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN + sizeof(uint8_t),   // 2 bytes
-  RADIOLIB_LORAWAN_SESSION_BUF_SIZE           = RADIOLIB_LORAWAN_SESSION_SIGNATURE + sizeof(uint16_t)       // Session buffer size
+  RADIOLIB_LORAWAN_SESSION_SIGNATURE          = RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN + sizeof(uint8_t),   // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_BUF_SIZE           = RADIOLIB_LORAWAN_SESSION_SIGNATURE + sizeof(uint32_t)       // Session buffer size
 };
 
 /*!
@@ -561,35 +563,46 @@ class LoRaWANNode {
     LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand = 0);
 
     /*!
-      \brief Returns the pointer to the internal buffer that holds the LW base parameters
-      \returns Pointer to uint8_t array of size RADIOLIB_LORAWAN_NONCES_BUF_SIZE
-    */
-    uint8_t* getBufferNonces();
-
-    /*!
-      \brief Fill the internal buffer that holds the LW base parameters with a supplied buffer
-      \param persistentBuffer Buffer that should match the internal format (previously extracted using getBufferNonces)
-      \returns \ref status_codes
-    */
-    int16_t setBufferNonces(const uint8_t* persistentBuffer);
-
-    /*!
       \brief Clear an active session. This requires the device to rejoin the network.
     */
     void clearSession();
 
-    /*!
-      \brief Returns the pointer to the internal buffer that holds the LW session parameters
-      \returns Pointer to uint8_t array of size RADIOLIB_LORAWAN_SESSION_BUF_SIZE
-    */
-    uint8_t* getBufferSession();
+    /*! \brief Callback signature for buffer save/load operations. */
+    typedef void (*BufferCb_t)(uint8_t* buf, size_t len);
 
     /*!
-      \brief Fill the internal buffer that holds the LW session parameters with a supplied buffer
-      \param persistentBuffer Buffer that should match the internal format (previously extracted using getBufferSession)
+      \brief Register a callback invoked by the library when the persistence buffer needs to be saved.
+      The callback receives a pointer to the serialized buffer and its length; the user should
+      write this data to non-volatile storage (flash, EEPROM, etc.).
+    */
+    void setCallbackStorePersistence(BufferCb_t cb);
+
+    /*!
+      \brief Register a callback invoked by the library when the persistence buffer needs to be loaded.
+      The callback receives a pointer to the buffer and its length; the user should fill it with
+      data previously saved by the savePersistenceBuffer callback.
+    */
+    void setCallbackRestorePersistence(BufferCb_t cb);
+
+    /*!
+      \brief Register a callback invoked by the library when the session buffer needs to be saved.
+      The callback receives a pointer to the serialized buffer and its length; the user should
+      write this data to persistent RAM on platforms that do not retain normal RAM during sleep.
+    */
+    void setCallbackStoreSession(BufferCb_t cb);
+
+    /*!
+      \brief Register a callback invoked by the library when the session buffer needs to be loaded.
+      The callback receives a pointer to the buffer and its length; the user should fill it with
+      data previously saved by the savePersistenceBuffer callback.
+    */
+    void setCallbackRestoreSession(BufferCb_t cb);
+
+    /*!
+      \brief Trigger the registered buffer callbacks to restore persistence and session buffers.
       \returns \ref status_codes
     */
-    int16_t setBufferSession(const uint8_t* persistentBuffer);
+    int16_t loadBuffers();
 
     /*!
       \brief Set the device credentials and activation configuration
@@ -780,6 +793,14 @@ class LoRaWANNode {
     int16_t getMacDeviceTimeAns(uint32_t* timestamp, uint16_t* milliseconds, bool returnUnix = true);
 
     /*!
+      \brief Set LoRaWAN (sub)band. This cannot be done during an active session.
+      \param band LoRaWAN band / region (e.g. EU868 or US915).
+      \param subBand Subband for fixed regions (such as US915).
+      \returns \ref status_codes
+    */
+   int16_t setBand(const LoRaWANBand_t* band, uint8_t subBand = 0);
+    
+    /*!
       \brief Set uplink datarate. This should not be used when ADR is enabled.
       \param drUp Datarate to use for uplinks.
       \returns \ref status_codes
@@ -847,6 +868,18 @@ class LoRaWANNode {
     void setActivityLeds(const uint32_t pins[4]);
 
     /*!
+      \brief Get the persistent buffer for a certain package.
+      NOTE: Do NOT use, for Packages only!
+    */
+    void getPersistencePackage(uint8_t pIndex, uint8_t* buff);
+
+    /*!
+      \brief Set the persistent buffer for a certain package.
+      NOTE: Do NOT use, for Packages only!
+    */
+    void setPersistencePackage(uint8_t pIndex, const uint8_t* buff);
+
+    /*!
       \brief Set the exact time a transmission should occur. Note: this is the internal clock time.
       On Arduino platforms, this is the usual time supplied by millis().
       If the supplied time is larger than the current time, sendReceive() or uplink() will delay
@@ -861,6 +894,18 @@ class LoRaWANNode {
     */
     const LoRaWANBand_t* getBand();
 
+    /*! 
+      \brief Get the LoRaWAN class of this node.
+      \returns Class type (RADIOLIB_LORAWAN_CLASS_*).
+    */
+    uint8_t getUnicastClass();
+
+    /*!
+      \brief Request the currently configured class for Multicast.
+      \returns Class C if configured, otherwise Class A (B is not supported)
+    */
+    uint8_t getMulticastClass();
+    
     /*! 
       \brief Get the LoRaWAN class of this node.
       \returns Class type (RADIOLIB_LORAWAN_CLASS_*).
@@ -914,6 +959,20 @@ class LoRaWANNode {
     RadioLibTime_t getLastToA();
 
     /*!
+      \brief Get the duration of the last uplink/downlink cycle.
+      \param seconds Set to true to get time in seconds (rounded down).
+      \return Duration of last sendReceive call (default unit: milliseconds).
+    */
+    RadioLibTime_t getLastDuration(bool seconds = false);
+    
+    /*! 
+      \brief Calculate the time until next uplink is available under dutyCycle limits.
+      \param seconds Set to true to get time in seconds instead of milliseconds (rounded up).
+      \returns Time until next uplink (default unit: milliseconds).
+    */
+    RadioLibTime_t timeUntilUplink(bool seconds = false);
+
+    /*!
       \brief Get the length of the pending MAC uplink payload
       \returns Number of bytes of MAC uplink payload
     */
@@ -928,20 +987,11 @@ class LoRaWANNode {
     */
     RadioLibTime_t dutyCycleInterval(RadioLibTime_t msPerHour, RadioLibTime_t airtime);
 
-    /*! \brief Returns time in milliseconds until next uplink is available under dutyCycle limits */
-    RadioLibTime_t timeUntilUplink();
-
     /*! 
       \brief Returns the maximum allowed uplink payload size given the current MAC state.
       Most importantly, this includes dwell time limitations and ADR.
     */
     virtual uint8_t getMaxPayloadLen();
-
-    /*!
-      \brief Request the currently configured class for Multicast.
-      \returns Class C if configured, otherwise Class A (B is not supported)
-    */
-    uint8_t getMulticastClass();
 
     /*! \brief Callback to a user-provided sleep function. */
     typedef void (*SleepCb_t)(RadioLibTime_t ms);
@@ -976,18 +1026,23 @@ class LoRaWANNode {
     void removePackage(uint8_t fPort);
 
     /*!
-      \brief Rx window padding in milliseconds
-      according to the spec, the Rx window must be at least enough time to effectively detect a preamble
-      but we pad it a bit on both sides (start and end) to make sure it is wide enough
-      The larger this number the more power will be consumed! So be careful about changing it.
-      For debugging purposes 50 is a reasonable start, but for production devices it should
-      be as low as possible.
-      0 is a valid time.
-
+      \brief Class A Rx window padding in milliseconds.
+      NOTE: If your clock has a stable drift, use RADIOLIB_CLOCK_DRIFT_MS instead (see BuildOpt.h).
+      On any modern microcontroller it should not be necessary to use scanGuardA.
+      However, if your clock is unstable, you can use e.g. scanGuardA = 20 to widen
+      the Rx window by 20 milliseconds (open 10ms early, close 10ms late).
       500 is the **maximum** value, but it is not a good idea to go anywhere near that.
       If you have to go above 50 you probably have a bug somewhere. Check your device timing.
     */
-    RadioLibTime_t scanGuard = 10;
+    RadioLibTime_t scanGuardA = 0;
+
+    /*!
+      \brief Class C inverse Rx window padding in milliseconds.
+      The Class C receive window should close early enough to prepare for Rx1 and Rx2.
+      This switchover time depends on MCU clock speed and SPI clock speed.
+      Increase this value if you encounter RADIOLIB_ERR_NO_RX_WINDOW.
+    */
+    RadioLibTime_t scanGuardC = 50;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -996,7 +1051,7 @@ class LoRaWANNode {
     const LoRaWANBand_t* band = NULL;
 
     // a buffer that holds all LW base parameters that should persist at all times!
-    uint8_t bufferNonces[RADIOLIB_LORAWAN_NONCES_BUF_SIZE] = { 0 };
+    uint8_t bufferPersist[RADIOLIB_LORAWAN_PERSISTENCE_BUF_SIZE] = { 0 };
 
     // a buffer that holds all LW session parameters that preferably persist, but can be afforded to get lost
     uint8_t bufferSession[RADIOLIB_LORAWAN_SESSION_BUF_SIZE] = { 0 };
@@ -1024,7 +1079,7 @@ class LoRaWANNode {
     uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
 
-    uint16_t keyCheckSum = 0;
+    uint32_t keyCheckSum = 0;
     
     // device-specific parameters, persistent through sessions
     uint16_t devNonce = 0;
@@ -1057,6 +1112,7 @@ class LoRaWANNode {
 
     RadioLibTime_t tUplink = 0;   // scheduled uplink transmission time (internal clock)
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
+    RadioLibTime_t tDone = 0;     // track time spent during sendReceive
 
     // multicast groups
     MulticastGroup_t mcGroups[RADIOLIB_LORAWAN_MAX_NUM_MC_GROUPS];
@@ -1125,11 +1181,29 @@ class LoRaWANNode {
     // user-provided sleep callback
     SleepCb_t sleepCb = nullptr;
 
+    // user-provided buffer callbacks
+    BufferCb_t storePersistenceBufferCb = nullptr;
+    BufferCb_t restorePersistenceBufferCb = nullptr;
+    BufferCb_t storeSessionBufferCb = nullptr;
+    BufferCb_t restoreSessionBufferCb = nullptr;
+
     // this will reset the device credentials, so the device starts completely new
-    void clearNonces();
+    void clearPersistence();
+
+    // trigger a save of the persistence buffer
+    void savePersistenceBuffer();
+
+    // load the persistence buffer from non-volatile storage.
+    int16_t loadPersistenceBuffer();
 
     // setup an empty session with default parameters
     void createSession();
+
+    // returns the pointer to the internal buffer that holds the LW session parameters
+    void saveSessionBuffer();
+
+    // fill the internal buffer that holds the LW session parameters with a supplied buffer
+    int16_t loadSessionBuffer();
 
     // setup Join-Request payload
     void composeJoinRequest(uint8_t* joinRequestMsg);
@@ -1159,7 +1233,7 @@ class LoRaWANNode {
     int16_t receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference);
 
     // handle a Class C receive window with timeout (between Class A windows) or without (between uplinks)
-    int16_t receiveClassC(RadioLibTime_t timeout = 0);
+    int16_t receiveClassC(RadioLibTime_t tWindowEnd = 0);
 
     // open a series of Class A (and C) downlinks
     virtual int16_t receiveDownlink();
@@ -1248,10 +1322,11 @@ class LoRaWANNode {
     // function that allows sleeping via user-provided callback
     void sleepDelay(RadioLibTime_t ms, bool radioOff = true);
 
-    // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
-    static uint16_t checkSum16(const uint8_t *key, uint16_t keyLen);
+    // checksum over a byte array, XOR-ing sizeof(T)-byte big-endian words
+    template<typename T>
+    static T checkSum(const uint8_t* buff, size_t size);
 
-    // check the integrity of a buffer using a 16-bit checksum located in the last two bytes of the buffer
+    // check the integrity of a buffer using a 32-bit checksum located in the last four bytes of the buffer
     static int16_t checkBufferCommon(const uint8_t *buffer, uint16_t size);
 
     // network-to-host conversion method - takes data from network packet and converts it to the host endians
@@ -1287,6 +1362,22 @@ void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
   for(size_t i = 0; i < targetSize; i++) {
     *(buffPtr++) = val >> 8*i;
   }
+}
+
+template<typename T>
+T LoRaWANNode::checkSum(const uint8_t* buff, size_t size) {
+  T result = 0;
+  for(size_t i = 0; i < size; i += sizeof(T)) {
+    T word = 0;
+    for(size_t j = 0; j < sizeof(T); j++) {
+      word <<= 8;
+      if(i + j < size) {
+        word |= buff[i + j];
+      }
+    }
+    result ^= word;
+  }
+  return(result);
 }
 
 #endif

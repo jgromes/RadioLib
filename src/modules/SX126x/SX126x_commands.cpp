@@ -101,6 +101,31 @@ int16_t SX126x::setRx(uint32_t timeout) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
+// this implementation is not documented in the datasheet, but taken from LoRaMac-node
+// https://github.com/Lora-net/LoRaMac-node/blob/dcbcfb329b4a343ab007bc19ac43a8dc952b3354/src/radio/sx126x/sx126x.c#L367
+int16_t SX126x::setLoRaSymbNumTimeout(uint8_t symbolNum) {
+  // the symbol number timeout is encoded as a mantissa-exponent pair
+  // before being passed to the command
+  uint8_t mant = (symbolNum > RADIOLIB_SX126X_MAX_LORA_SYMB_NUM_TIMEOUT ? RADIOLIB_SX126X_MAX_LORA_SYMB_NUM_TIMEOUT : symbolNum) >> 1;
+  uint8_t exp = 0;
+  while(mant > 31) {
+    mant = (mant + 3) >> 2;
+    exp++;
+  }
+
+  // pass the encoded value to the command
+  uint8_t reg = mant << (2*exp + 1);
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_LORA_SYMB_NUM_TIMEOUT, &reg, 1);
+  RADIOLIB_ASSERT(state);
+
+  // for non-zero timeouts, the mantissa-exponent value must also be written to a register
+  if(symbolNum != 0) {
+    reg = exp + (mant << 3);
+    state = this->writeRegister(RADIOLIB_SX126X_REG_LORA_SYNC_TIMEOUT, &reg, 1);
+  }
+  return(state);
+}
+
 int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
   // default CAD parameters are selected according to recommendations on Semtech DS.SX1261-2.W.APP rev. 1.1, page 92.
 

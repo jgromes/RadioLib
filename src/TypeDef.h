@@ -613,6 +613,11 @@
 */
 #define RADIOLIB_ERR_INVALID_MULTICAST_GROUP                    (-1122)
 
+/*!
+  \brief The requested subband is invalid for this band (or there is no subband).
+*/
+#define RADIOLIB_ERR_INVALID_SUBBAND                            (-1123)
+
 // LR11x0-specific status codes
 
 /*!
