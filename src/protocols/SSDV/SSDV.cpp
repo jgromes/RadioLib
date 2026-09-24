@@ -435,7 +435,7 @@ static void ssdvOutEmptyBlock(SSDVState_t* s) {
   ssdvOutInt(s, 0, 0);
 }
 
-static bool ssdvIsAbsoluteDc(SSDVState_t* s) {
+static bool ssdvIsAbsoluteDc(const SSDVState_t* s) {
   return(s->resetMcu == s->mcuId && (s->mcuPart == 0 || s->mcuPart >= s->ycParts));
 }
 
@@ -745,7 +745,7 @@ static uint8_t ssdvHaveMarkerData(SSDVState_t* s) {
         }
 
         size_t j = 17;
-        for(uint8_t i = 1; (i <= 16) && (i < l); i++) {
+        for(size_t i = 1; (i <= 16) && (i < l); i++) {
           j += d[i];
         }
         if(j > l) {
@@ -1253,7 +1253,7 @@ int16_t SSDVClient::transmitPacket(uint8_t offset, uint16_t* packetId) {
     return(RADIOLIB_ERR_SSDV_ALL_SENT);
   }
 
-  uint8_t* pkt = &this->packetBuf[(size_t)this->packetIndex * RADIOLIB_SSDV_PACKET_LEN];
+  const uint8_t* pkt = &this->packetBuf[(size_t)this->packetIndex * RADIOLIB_SSDV_PACKET_LEN];
   int16_t state = this->phyLayer->transmit(pkt + offset, RADIOLIB_SSDV_PACKET_LEN - offset);
   RADIOLIB_ASSERT(state);
 
