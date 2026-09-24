@@ -4,14 +4,14 @@
   This example receives SSDV image packets over LoRa, validates each
   one, and prints the decoded header fields to the serial console.
 
+  The radio settings (frequency, bandwidth, spreading factor, coding rate)
+  MUST match those used in the SSDV_Transmit example for a successful
+  over-the-air link.
+
   Optionally — by defining ENABLE_JPEG_RECONSTRUCT below — packets are
   fed into the SSDV decoder to reconstruct a complete JPEG image in RAM.
   When the last packet arrives (EOI), the JPEG length is printed and the
   raw bytes are hex-dumped.
-
-  The radio settings (frequency, bandwidth, spreading factor, coding rate)
-  MUST match those used in the SSDV_Transmit example for a successful
-  over-the-air link.
 
   JPEG reconstruction requirements:
     • The userJpegBuf[] array below must be large enough to hold the
@@ -20,6 +20,10 @@
     • Only practical on platforms with ≥ 30 KB free SRAM
       (ESP32, RP2040, STM32, etc.).  Comment out ENABLE_JPEG_RECONSTRUCT
       on AVR Arduinos.
+
+  Assuming you save the reconstructed serial output in a file 'recv.txt', 
+  you can convert it to a JPEG named 'recv.jpeg' using this Python command:
+  import sys;open('recv.jpg','wb').write(bytes.fromhex(open('recv.txt').read()))
 
   For default module settings, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/Default-configuration
