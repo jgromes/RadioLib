@@ -16,7 +16,7 @@
   JPEG reconstruction requirements:
     • The userJpegBuf[] array below must be large enough to hold the
       reconstructed JPEG.  Enlarge JPEG_BUF_SIZE for bigger images.
-    • Sufficient free heap is needed for the ~2 KB ssdv_t decoder state.
+    • Sufficient free heap is needed for the ~1.3 KB decoder state.
     • Only practical on platforms with ≥ 30 KB free SRAM
       (ESP32, RP2040, STM32, etc.).  Comment out ENABLE_JPEG_RECONSTRUCT
       on AVR Arduinos.
@@ -156,7 +156,7 @@ void loop() {
   }
 
   // validate the packet
-  int rsErrors = 0;
+  int16_t rsErrors = 0;
   state = SSDVClient::isValidPacket(packet, &rsErrors);
   if(state != RADIOLIB_ERR_NONE) {
     Serial.println(F("  [RX] Invalid packet — CRC/RS check failed, discarding."));
@@ -172,30 +172,30 @@ void loop() {
   }
 
   // parse the header
-  ssdv_packet_info_t info;
+  SSDVPacketInfo_t info;
   SSDVClient::parseHeader(packet, &info);
 
   packetsReceived++;
 
-  // check for missed packets by comparing with the previous packet_id.
-  if(lastPacketId != 0xFFFF && info.packet_id > (uint16_t)(lastPacketId + 1)) {
-    uint16_t gap = info.packet_id - lastPacketId - 1;
+  // check for missed packets by comparing with the previous packet_id
+  if(lastPacketId != 0xFFFF && info.packetId > (uint16_t)(lastPacketId + 1)) {
+    uint16_t gap = info.packetId - lastPacketId - 1;
     packetsMissing += gap;
     Serial.print(F("  [!] Gap detected: "));
     Serial.print(gap);
     Serial.println(F(" packet(s) missing."));
   }
-  lastPacketId = info.packet_id;
+  lastPacketId = info.packetId;
 
   // print packet info
   Serial.print(F("  Callsign : "));
-  Serial.println(info.callsign_s);
+  Serial.println(info.callsign);
 
   Serial.print(F("  Image ID : "));
-  Serial.println(info.image_id, HEX);
+  Serial.println(info.imageId, HEX);
 
   Serial.print(F("  Packet   : "));
-  Serial.print(info.packet_id);
+  Serial.print(info.packetId);
   Serial.print(F("  ("));
   Serial.print(info.width);
   Serial.print(F("x"));
@@ -203,12 +203,12 @@ void loop() {
   Serial.print(F("  Q"));
   Serial.print(info.quality);
   Serial.print(F("  MCU "));
-  if(info.mcu_id == 0xFFFF) {
+  if(info.mcuId == 0xFFFF) {
     Serial.print(F("none"));
   } else {
-    Serial.print(info.mcu_id);
+    Serial.print(info.mcuId);
     Serial.print(F("/"));
-    Serial.print(info.mcu_count - 1);
+    Serial.print(info.mcuCount - 1);
   }
   if(info.eoi) {
     Serial.print(F("  EOI"));
@@ -216,7 +216,7 @@ void loop() {
   Serial.println();
 
   Serial.print(F("  Type     : "));
-  Serial.println(info.type == SSDV_TYPE_NORMAL ? F("Normal (FEC)") : F("No-FEC"));
+  Serial.println(info.type == RADIOLIB_SSDV_TYPE_NORMAL ? F("Normal (FEC)") : F("No-FEC"));
 
   // print radio link quality metrics
   float rssi = radio.getRSSI();
@@ -233,17 +233,17 @@ void loop() {
 #ifdef ENABLE_JPEG_RECONSTRUCT
 
   // if the image ID changed, a new image has started; reset the decoder.
-  if(currentImageId != -1 && info.image_id != (uint8_t)currentImageId) {
+  if(currentImageId != -1 && info.imageId != (uint8_t)currentImageId) {
     Serial.print(F("[JPEG] New image detected (ID 0x"));
-    Serial.print(info.image_id, HEX);
+    Serial.print(info.imageId, HEX);
     Serial.println(F("). Resetting decoder."));
     ssdv.resetDecoder();
     packetsReceived   = 1;   // this packet is the first of the new image
     packetsWithErrors = (rsErrors > 0) ? 1 : 0;
     packetsMissing    = 0;
-    lastPacketId      = info.packet_id;
+    lastPacketId      = info.packetId;
   }
-  currentImageId = info.image_id;
+  currentImageId = info.imageId;
 
   state = ssdv.feedPacket(packet);
 
