@@ -1850,9 +1850,11 @@ int16_t SX128x::SPIparseStatus(uint8_t in) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool SX128x::findChip(const char* verStr) {
+bool SX128x::findChip(char type) {
   uint8_t i = 0;
   bool flagFound = false;
+  char verStr[] = "SX128x";
+  verStr[5] = type;
   while((i < 10) && !flagFound) {
     // reset the module
     reset(true);

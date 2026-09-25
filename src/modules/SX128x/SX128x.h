@@ -972,7 +972,7 @@ class SX128x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    const char* chipType = NULL;
+    char chipType = 'x';
 
     Module* getMod() override;
     int16_t modSetup(uint8_t modem);
@@ -1035,7 +1035,7 @@ class SX128x: public PhysicalLayer {
     // cached BLE parameters
     uint8_t connectionState = 0, crcBLE = 0, bleTestPayload = 0;
 
-    bool findChip(const char* verStr);
+    bool findChip(char type);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 };

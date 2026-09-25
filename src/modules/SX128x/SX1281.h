@@ -9,7 +9,7 @@
 #include "SX128x.h"
 
 // RADIOLIB_SX128X_REG_VERSION_STRING
-#define RADIOLIB_SX1281_CHIP_TYPE                               "SX1281"
+#define RADIOLIB_SX1281_CHIP_TYPE                               '1'
 
 /*!
   \class SX1281
