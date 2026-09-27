@@ -818,7 +818,7 @@ class RF69: public PhysicalLayer {
       \param len Sync word length in bytes.
       \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
     */
-    int16_t setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
+    int16_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
 
     /*!
       \brief Sets preamble length.
