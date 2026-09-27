@@ -253,9 +253,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memitem:a0be84b13d46cb345be25c75d87bf7804" id="r_a0be84b13d46cb345be25c75d87bf7804"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a0be84b13d46cb345be25c75d87bf7804">setOutputPower</a> (int8_t pwr, bool highPower)</td></tr>
 <tr class="memdesc:a0be84b13d46cb345be25c75d87bf7804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).  <br /></td></tr>
 <tr class="separator:a0be84b13d46cb345be25c75d87bf7804"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26667d50ec845c28e17236c69c886561" id="r_a26667d50ec845c28e17236c69c886561"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a26667d50ec845c28e17236c69c886561">setSyncWord</a> (uint8_t *syncWord, size_t len, uint8_t maxErrBits=0)</td></tr>
-<tr class="memdesc:a26667d50ec845c28e17236c69c886561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets sync word. Up to 8 bytes can be set as sync word.  <br /></td></tr>
-<tr class="separator:a26667d50ec845c28e17236c69c886561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac36a862c95b2c88e63fbce78953c46" id="r_abac36a862c95b2c88e63fbce78953c46"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#abac36a862c95b2c88e63fbce78953c46">setSyncWord</a> (uint8_t *syncWord, size_t len) override</td></tr>
+<tr class="memdesc:abac36a862c95b2c88e63fbce78953c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets sync word. Up to 8 bytes can be set as sync word. Override for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, with maximum error bits set to 0.  <br /></td></tr>
+<tr class="separator:abac36a862c95b2c88e63fbce78953c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53cfd97f9d8d365d76d0b4aa03b96a1e" id="r_a53cfd97f9d8d365d76d0b4aa03b96a1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a53cfd97f9d8d365d76d0b4aa03b96a1e">setSyncWord</a> (uint8_t *syncWord, size_t len, uint8_t maxErrBits)</td></tr>
+<tr class="memdesc:a53cfd97f9d8d365d76d0b4aa03b96a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets sync word. Up to 8 bytes can be set as sync word.  <br /></td></tr>
+<tr class="separator:a53cfd97f9d8d365d76d0b4aa03b96a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a529dd8d3fad97c10b9319391eb2a7ad1" id="r_a529dd8d3fad97c10b9319391eb2a7ad1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a529dd8d3fad97c10b9319391eb2a7ad1">setPreambleLength</a> (size_t preambleLen) override</td></tr>
 <tr class="memdesc:a529dd8d3fad97c10b9319391eb2a7ad1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
 <tr class="separator:a529dd8d3fad97c10b9319391eb2a7ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2509,7 +2512,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 </div>
 </div>
 <a id="a6c71cdc1238e1368274670758431a977" name="a6c71cdc1238e1368274670758431a977"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c71cdc1238e1368274670758431a977">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c71cdc1238e1368274670758431a977">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2556,8 +2559,55 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a26667d50ec845c28e17236c69c886561" name="a26667d50ec845c28e17236c69c886561"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26667d50ec845c28e17236c69c886561">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[2/2]</span></h2>
+<a id="abac36a862c95b2c88e63fbce78953c46" name="abac36a862c95b2c88e63fbce78953c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abac36a862c95b2c88e63fbce78953c46">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::setSyncWord </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>syncWord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets sync word. Up to 8 bytes can be set as sync word. Override for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, with maximum error bits set to 0. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">syncWord</td><td>Pointer to the array of sync word bytes. </td></tr>
+    <tr><td class="paramname">len</td><td>Sync word length in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a53cfd97f9d8d365d76d0b4aa03b96a1e" name="a53cfd97f9d8d365d76d0b4aa03b96a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53cfd97f9d8d365d76d0b4aa03b96a1e">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2578,7 +2628,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>maxErrBits</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>maxErrBits</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2593,7 +2643,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
   <table class="params">
     <tr><td class="paramname">syncWord</td><td>Pointer to the array of sync word bytes. </td></tr>
     <tr><td class="paramname">len</td><td>Sync word length in bytes. </td></tr>
-    <tr><td class="paramname">maxErrBits</td><td>Maximum allowed number of bit errors in received sync word. Defaults to 0. </td></tr>
+    <tr><td class="paramname">maxErrBits</td><td>Maximum allowed number of bit errors in received sync word. </td></tr>
   </table>
   </dd>
 </dl>
