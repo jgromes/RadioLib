@@ -19,7 +19,7 @@ jobs:
     - name: Install cppcheck
       run: |
         sudo apt-get update
-        sudo apt-get install -y cppcheck
+        sudo apt-get install -y cppcheck=2.13.0-1
 
     - name: Run cppcheck
       run: ./extras/cppcheck/cppcheck.sh
