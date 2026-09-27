@@ -814,11 +814,19 @@ class RF69: public PhysicalLayer {
 
     /*!
       \brief Sets sync word. Up to 8 bytes can be set as sync word.
+      Override for PhysicalLayer compatibility, with maximum error bits set to 0.
       \param syncWord Pointer to the array of sync word bytes.
       \param len Sync word length in bytes.
-      \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
     */
-    int16_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
+    int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
+
+    /*!
+      \brief Sets sync word. Up to 8 bytes can be set as sync word.
+      \param syncWord Pointer to the array of sync word bytes.
+      \param len Sync word length in bytes.
+      \param maxErrBits Maximum allowed number of bit errors in received sync word.
+    */
+    int16_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits);
 
     /*!
       \brief Sets preamble length.
