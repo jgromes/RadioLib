@@ -12,6 +12,8 @@
 #define RADIOLIB_CC1101_FIFO_SIZE                               64
 #define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0f
 #define RADIOLIB_CC1101_DIV_EXPONENT                            16
+#define RADIOLIB_CC1101_POUT_MIN                                -30
+#define RADIOLIB_CC1101_POUT_MAX                                10
 
 // CC1101 SPI commands
 #define RADIOLIB_CC1101_CMD_READ                                0b10000000

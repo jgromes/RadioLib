@@ -6,8 +6,8 @@ CC1101::CC1101(Module* module) : PhysicalLayer() {
   this->freqStep = RADIOLIB_CC1101_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_CC1101_MAX_PACKET_LENGTH;
   this->mod = module;
-  this->powerMin = -30;
-  this->powerMax = 10;
+  this->powerMin = RADIOLIB_CC1101_POUT_MIN;
+  this->powerMax = RADIOLIB_CC1101_POUT_MAX;
   this->paSteps = 8;
 }
 
@@ -629,7 +629,7 @@ int16_t CC1101::getFrequencyDeviation(float *freqDev) {
 int16_t CC1101::setOutputPower(int8_t power) {
   // apply offset for external PA
   int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(-30, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_CC1101_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
   
   // check if power value is configurable
