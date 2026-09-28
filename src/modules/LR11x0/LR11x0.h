@@ -21,6 +21,16 @@
 #define RADIOLIB_LR11X0_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_LR11X0_CRYSTAL_FREQ                            32.0
 #define RADIOLIB_LR11X0_DIV_EXPONENT                            25
+#define RADIOLIB_LR1110_LP_POUT_MIN                             -17
+#define RADIOLIB_LR1110_LP_POUT_MAX                             14
+#define RADIOLIB_LR1110_HP_POUT_MIN                             -9
+#define RADIOLIB_LR1110_HP_POUT_MAX                             22
+#define RADIOLIB_LR112X_LP_POUT_MIN                             -17
+#define RADIOLIB_LR112X_LP_POUT_MAX                             14
+#define RADIOLIB_LR112X_HP_POUT_MIN                             -9
+#define RADIOLIB_LR112X_HP_POUT_MAX                             22
+#define RADIOLIB_LR112X_HF_POUT_MIN                             -18
+#define RADIOLIB_LR112X_HF_POUT_MAX                             13
 
 /*!
   \class LR11x0

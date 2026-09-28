@@ -123,17 +123,18 @@ int16_t LR1120::setOutputPower(int8_t power) {
 int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs) {
   // apply offset for external PA
   int8_t pwr = power;
-  int8_t lutBase = this->highFreq ? -18 : -17;
+  int8_t lutBase = this->highFreq ? RADIOLIB_LR112X_HF_POUT_MIN : RADIOLIB_LR112X_LP_POUT_MIN;
   int16_t state = this->applyOutputPowerOffset(lutBase, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   // check if power value is configurable
+  bool useHp = forceHighPower || (pwr > RADIOLIB_LR112X_LP_POUT_MAX);
   if(this->highFreq) {
-    RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else if(forceHighPower || (pwr > 14)) {
-    RADIOLIB_CHECK_RANGE(pwr, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR112X_HF_POUT_MIN, RADIOLIB_LR112X_HF_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else if(useHp) {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR112X_HP_POUT_MIN, RADIOLIB_LR112X_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   } else {
-    RADIOLIB_CHECK_RANGE(pwr, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR112X_LP_POUT_MIN, RADIOLIB_LR112X_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
 
   // determine whether to use HP or LP PA and check range accordingly
@@ -143,7 +144,7 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   if(this->highFreq) {
     paSel = 2;
     this->txMode = LR11x0::MODE_TX_HF;
-  } else if(forceHighPower || (pwr > 14)) {
+  } else if(useHp) {
     paSel = 1;
     paSupply = 1;
     this->txMode = LR11x0::MODE_TX_HP;
@@ -176,11 +177,11 @@ int16_t LR1120::setModem(ModemType_t modem) {
 
 void LR1120::updatePowerLimits(bool highFreq) {
   if(highFreq) {
-    this->powerMin = -18;
-    this->powerMax = 13;
+    this->powerMin = RADIOLIB_LR112X_HF_POUT_MIN;
+    this->powerMax = RADIOLIB_LR112X_HF_POUT_MAX;
   } else {
-    this->powerMin = -17;
-    this->powerMax = 22;
+    this->powerMin = RADIOLIB_LR112X_LP_POUT_MIN;
+    this->powerMax = RADIOLIB_LR112X_HP_POUT_MAX;
   }
   this->paSteps = this->powerMax - this->powerMin + 1;
 }
