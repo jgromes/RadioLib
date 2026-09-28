@@ -48,6 +48,7 @@ const uint32_t uplinkIntervalSeconds = 1UL * 60UL;    // minutes x seconds
 // put your EUI & keys in to your platformio.ini - see wiki for more tips
 
 // regional choices: EU868, US915, AU915, AS923, AS923_2, AS923_3, AS923_4, IN865, KR920, CN500
+#define RADIOLIB_LORAWAN_REGION_EU868_ENABLE
 const LoRaWANBand_t Region = EU868;
 const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 

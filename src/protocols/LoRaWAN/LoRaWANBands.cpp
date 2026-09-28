@@ -3,20 +3,43 @@
 #if !RADIOLIB_EXCLUDE_LORAWAN
 
 // array of pointers to currently supported LoRaWAN bands
-const LoRaWANBand_t* LoRaWANBands[RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS] = {
+const LoRaWANBand_t* LoRaWANBands[RADIOLIB_LORAWAN_NUM_ENABLED_BANDS] = {
+#if defined(RADIOLIB_LORAWAN_REGION_EU868_ENABLE)
   &EU868,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_US915_ENABLE)
   &US915,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_EU433_ENABLE)
   &EU433,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_AU915_ENABLE)
   &AU915,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_CN470_ENABLE)
   &CN470,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_ENABLE)
   &AS923,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_2_ENABLE)
   &AS923_2,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_3_ENABLE)
   &AS923_3,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_4_ENABLE)
   &AS923_4,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_KR920_ENABLE)
   &KR920,
+#endif
+#if defined(RADIOLIB_LORAWAN_REGION_IN865_ENABLE)
   &IN865,
+#endif
 };
 
+#if defined(RADIOLIB_LORAWAN_REGION_EU868_ENABLE)
 const LoRaWANBand_t EU868 = {
   .bandNum = BandEU868,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -84,7 +107,9 @@ const LoRaWANBand_t EU868 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_US915_ENABLE)
 const LoRaWANBand_t US915 = {
   .bandNum = BandUS915,
   .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
@@ -173,7 +198,9 @@ const LoRaWANBand_t US915 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_EU433_ENABLE)
 const LoRaWANBand_t EU433 = {
   .bandNum = BandEU433,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -241,7 +268,9 @@ const LoRaWANBand_t EU433 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_AU915_ENABLE)
 const LoRaWANBand_t AU915 = {
   .bandNum = BandAU915,
   .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
@@ -330,7 +359,9 @@ const LoRaWANBand_t AU915 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_CN470_ENABLE)
 const LoRaWANBand_t CN470 = {
   .bandNum = BandCN470,
   .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
@@ -412,7 +443,9 @@ const LoRaWANBand_t CN470 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_ENABLE)
 const LoRaWANBand_t AS923 = {
   .bandNum = BandAS923,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -480,7 +513,9 @@ const LoRaWANBand_t AS923 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_2_ENABLE)
 const LoRaWANBand_t AS923_2 = {
   .bandNum = BandAS923_2,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -548,7 +583,9 @@ const LoRaWANBand_t AS923_2 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_3_ENABLE)
 const LoRaWANBand_t AS923_3 = {
   .bandNum = BandAS923_3,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -616,7 +653,9 @@ const LoRaWANBand_t AS923_3 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_AS923_4_ENABLE)
 const LoRaWANBand_t AS923_4 = {
   .bandNum = BandAS923_4,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -684,7 +723,9 @@ const LoRaWANBand_t AS923_4 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_KR920_ENABLE)
 const LoRaWANBand_t KR920 = {
   .bandNum = BandKR920,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -752,7 +793,9 @@ const LoRaWANBand_t KR920 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
+#if defined(RADIOLIB_LORAWAN_REGION_IN865_ENABLE)
 const LoRaWANBand_t IN865 = {
   .bandNum = BandIN865,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
@@ -820,5 +863,6 @@ const LoRaWANBand_t IN865 = {
     RADIOLIB_DATARATE_NONE
   }
 };
+#endif
 
 #endif
