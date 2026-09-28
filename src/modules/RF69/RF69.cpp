@@ -709,7 +709,11 @@ int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
   return(state);
 }
 
-int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
+int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len) {
+  return(this->setSyncWord(syncWord, len, 0));
+}
+
+int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // check constraints
   if((maxErrBits > 7) || (len == 0) || (len > 8)) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);

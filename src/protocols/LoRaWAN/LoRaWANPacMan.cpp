@@ -49,18 +49,6 @@ LoRaWANPackageManager::LoRaWANPackageManager(RadioLibHal* hal, LoRaWANNode* node
   this->hal = hal;
   this->lorawanNode = node;
   this->getSecondsCb = secondsCb;
-
-  // Initialize the staging buffer, persistent TS007 buffer and transmission state
-  this->ansBufferLen = 0;
-  this->ansFPort = 0;
-  this->ts007BufferLen = 0;
-  this->commandToken = 0;
-  this->pendingUplink = false;
-  this->pendingPackage = 0;
-  this->txCursor = 0;
-  this->txStop = 0;
-  this->sendFragmented = false;
-  this->indexError = false;
 }
 
 int16_t LoRaWANPackageManager::enableTS003(uint8_t fPort, SetSecondsCb_t setSecondsFunc) {

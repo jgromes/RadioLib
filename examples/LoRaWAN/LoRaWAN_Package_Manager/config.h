@@ -4,12 +4,21 @@
 #include <RadioLib.h>
 
 // ============================================================================
+// HAL CONFIGURATION
+// ============================================================================
+
+// The Package Manager needs a reference to the HAL that is in use
+// Thus, we must create a HAL and supply it to both the radio and the
+// Package Manager ourselves
+ArduinoHal hal;
+
+// ============================================================================
 // RADIO HARDWARE CONFIGURATION
 // ============================================================================
 
 // First you have to set your radio model and pin configuration
 // This is provided just as a default example (SX1278)
-SX1278 radio = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(&hal, 10, 2, 9, 3);
 
 // If you have RadioBoards (https://github.com/radiolib-org/RadioBoards)
 // and are using one of the supported boards, you can do the following:
@@ -23,10 +32,6 @@ Radio radio = new RadioModule();
 // ============================================================================
 // LORAWAN CONFIGURATION
 // ============================================================================
-
-// How often to send an uplink (in seconds)
-// Consider legal & FUP constraints - see notes
-uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // 5 minutes
 
 // JoinEUI - previous versions of LoRaWAN called this AppEUI
 // For development purposes you can use all zeros - see wiki for details
@@ -56,6 +61,14 @@ const LoRaWANBand_t Region = EU868;
 
 // Subband choice: for US915/AU915 set to 2, for CN470 set to 1, otherwise leave on 0
 const uint8_t subBand = 0;
+
+// How often to send an uplink (in seconds)
+// Consider legal & FUP constraints - see notes
+uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // 5 minutes
+
+// Whether to send confirmed uplinks
+// This should be off by default
+bool confirmed = false;
 
 // ============================================================================
 // SUPPORT CODE - Do not modify unless you know what you're doing
