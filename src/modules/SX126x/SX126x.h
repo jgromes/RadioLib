@@ -25,6 +25,10 @@
 #define RADIOLIB_SX1262_POUT_MAX                                22
 #define RADIOLIB_SX1268_POUT_MIN                                -9
 #define RADIOLIB_SX1268_POUT_MAX                                22
+#define RADIOLIB_STM32WLX_LP_POUT_MIN                           -17
+#define RADIOLIB_STM32WLX_LP_POUT_MAX                           14
+#define RADIOLIB_STM32WLX_HP_POUT_MIN                           -9
+#define RADIOLIB_STM32WLX_HP_POUT_MAX                           22
 
 // LR-FHSS packet lengths
 #define RADIOLIB_SX126X_LR_FHSS_MAX_ENC_SIZE                    (608)
