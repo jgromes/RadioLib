@@ -3,19 +3,19 @@
 
 SX1261::SX1261(Module* mod): SX1262(mod) {
   chipType = RADIOLIB_SX1261_CHIP_TYPE;
-  this->powerMin = -17;
-  this->powerMax = 15;
+  this->powerMin = RADIOLIB_SX1261_POUT_MIN;
+  this->powerMax = RADIOLIB_SX1261_POUT_MAX;
   this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t SX1261::setOutputPower(int8_t power) {
   // apply offset for external PA
   int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(-17, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1261_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   // check if power value is configurable
-  RADIOLIB_CHECK_RANGE(pwr, -17, 15, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1261_POUT_MIN, RADIOLIB_SX1261_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // get current OCP configuration
   uint8_t ocp = 0;
@@ -24,7 +24,7 @@ int16_t SX1261::setOutputPower(int8_t power) {
 
   // set PA config
   uint8_t paDutyCycle = 0x04;
-  if(pwr == 15) {
+  if(pwr == RADIOLIB_SX1261_POUT_MAX) {
     // for 15 dBm, increase the duty cycle and lowe the power to set
     // SX1261/2 datasheet, DS.SX1261-2.W.APP Rev. 2.1 page 78
     paDutyCycle = 0x06;

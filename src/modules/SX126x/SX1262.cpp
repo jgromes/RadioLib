@@ -43,8 +43,8 @@ static const SX126x::paTableEntry_t paOptimizedTable[RADIOLIB_SX126X_PA_TABLE_LE
 
 SX1262::SX1262(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1262_CHIP_TYPE;
-  this->powerMin = -9;
-  this->powerMax = 22;
+  this->powerMin = RADIOLIB_SX1262_POUT_MIN;
+  this->powerMax = RADIOLIB_SX1262_POUT_MAX;
   this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
@@ -198,17 +198,17 @@ int16_t SX1262::setOutputPower(int8_t power) {
 int16_t SX1262::setOutputPower(int8_t power, bool optimize) {
   // apply offset for external PA
   int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(-9, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1262_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   // check if power value is configurable
-  RADIOLIB_CHECK_RANGE(pwr, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1262_POUT_MIN, RADIOLIB_SX1262_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set PA config
   SX126x::paTableEntry_t* paTable = this->paOptTable ? this->paOptTable : const_cast<SX126x::paTableEntry_t*>(paOptimizedTable);
-  int8_t paVal = optimize ? paTable[pwr + 9].paVal : pwr;
-  uint8_t paDutyCycle = optimize ? paTable[pwr + 9].paDutyCycle : 0x04;
-  uint8_t hpMax = optimize ? paTable[pwr + 9].hpMax : 0x07;
+  int8_t paVal = optimize ? paTable[pwr - RADIOLIB_SX1262_POUT_MIN].paVal : pwr;
+  uint8_t paDutyCycle = optimize ? paTable[pwr - RADIOLIB_SX1262_POUT_MIN].paDutyCycle : 0x04;
+  uint8_t hpMax = optimize ? paTable[pwr - RADIOLIB_SX1262_POUT_MIN].hpMax : 0x07;
   return(SX126x::setOutputPower(paVal, paDutyCycle, hpMax, RADIOLIB_SX126X_PA_CONFIG_SX1262));
 }
 
