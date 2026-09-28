@@ -6,8 +6,8 @@ RF69::RF69(Module* module) : PhysicalLayer() {
   this->freqStep = RADIOLIB_RF69_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_RF69_MAX_PACKET_LENGTH;
   this->mod = module;
-  this->powerMin = -18;
-  this->powerMax = 20;
+  this->powerMin = RADIOLIB_RF69_LP_POUT_MIN;
+  this->powerMax = RADIOLIB_RF69_HP_POUT_MAX;
   this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
@@ -681,13 +681,13 @@ int16_t RF69::setOutputPower(int8_t power) {
 int16_t RF69::setOutputPower(int8_t power, bool highPower) {
   // apply offset for external PA
   int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(-18, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_RF69_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   if(highPower) {
-    RADIOLIB_CHECK_RANGE(pwr, -2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_RF69_HP_POUT_MIN, RADIOLIB_RF69_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   } else {
-    RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_RF69_LP_POUT_MIN, RADIOLIB_RF69_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
 
   // set mode to standby
