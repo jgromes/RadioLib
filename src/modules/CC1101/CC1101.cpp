@@ -663,7 +663,6 @@ int16_t CC1101::setOutputPower(int8_t power) {
   }
 
   // get raw power setting
-  uint8_t powerRaw;
   uint8_t paTable[8][4] = {{0x12, 0x12, 0x03, 0x03},
                            {0x0D, 0x0E, 0x0F, 0x0E},
                            {0x1C, 0x1D, 0x1E, 0x1E},
@@ -672,7 +671,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
                            {0x85, 0x84, 0x81, 0xCD},
                            {0xCB, 0xC8, 0xCB, 0xC7},
                            {0xC2, 0xC0, 0xC2, 0xC0}};
-
+  uint8_t powerRaw = paTable[0][0];
   for(uint8_t i = 0; i < sizeof(allowedPwrs); i++) {
     if(pwr == allowedPwrs[i]) {
       powerRaw = paTable[i][f];
