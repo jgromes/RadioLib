@@ -3,7 +3,9 @@
 #if !RADIOLIB_EXCLUDE_SX127X
 
 SX1272::SX1272(Module* mod) : SX127x(mod) {
-
+  this->powerMin = RADIOLIB_SX1272_RFO_POUT_MIN;
+  this->powerMax = RADIOLIB_SX1272_PA_BOOST_POUT_MAX;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t SX1272::begin(const ConfigLoRa_t& cfg) {
@@ -327,10 +329,18 @@ int16_t SX1272::setOutputPower(int8_t power) {
 }
 
 int16_t SX1272::setOutputPower(int8_t power, bool forceRfo) {
-  // check if power value is configurable
-  bool useRfo = (power < 2) || forceRfo;
-  int16_t state = checkOutputPower(power, NULL, useRfo);
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1272_RFO_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
+
+  // check if power value is configurable
+  bool useRfo = (power < RADIOLIB_SX1272_PA_BOOST_POUT_MIN) || forceRfo;
+  if(useRfo) {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1272_RFO_POUT_MIN, RADIOLIB_SX1272_RFO_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1272_PA_BOOST_POUT_MIN, RADIOLIB_SX1272_PA_BOOST_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
 
   // set mode to standby
   state = SX127x::standby();
@@ -360,26 +370,6 @@ int16_t SX1272::setOutputPower(int8_t power, bool forceRfo) {
   }
 
   return(state);
-}
-
-int16_t SX1272::checkOutputPower(int8_t power, int8_t* clipped) {
-  return(checkOutputPower(power, clipped, false));
-}
-
-int16_t SX1272::checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) {
-  // check allowed power range
-  if(useRfo) {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-1, RADIOLIB_MIN(14, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -1, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(2, RADIOLIB_MIN(20, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, 2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
-  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX1272::setGain(uint8_t gain) {
