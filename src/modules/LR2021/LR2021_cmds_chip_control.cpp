@@ -140,12 +140,8 @@ int16_t LR2021::setDefaultRxTxTimeout(uint32_t rxTimeout, uint32_t txTimeout) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_DEFAULT_RX_TX_TIMEOUT, true, buff, sizeof(buff)));
 }
 
-int16_t LR2021::setRegMode(uint8_t simoUsage, const uint8_t rampTimes[4]) {
-  uint8_t buff[] = { simoUsage, 
-    rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RC2RU], rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_TX2RU], 
-    rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RU2RC], rampTimes[RADIOLIB_LR2021_REG_MODE_RAMP_INDEX_RAMP_DOWN],
-  };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_REG_MODE, true, buff, sizeof(buff)));
+int16_t LR2021::setRegMode(uint8_t mode) {
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_REG_MODE, true, &mode, sizeof(mode)));
 }
 
 int16_t LR2021::calibrate(uint8_t blocks) {
@@ -338,6 +334,65 @@ int16_t LR2021::getPramVersion(uint16_t* version) {
   uint32_t val = 0;
   int16_t state = this->readRegMem32(RADIOLIB_LR2021_PRAM_ADDR_VERSION, &val, 1);
   if(version) { *version = ((val >>8) & 0xFFFF);  }
+  return(state);
+}
+
+int16_t LR2021::setRegulatorLDO() {
+  return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_OFF));
+}
+
+int16_t LR2021::setRegulatorDCDC() {
+  return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_NORMAL));
+}
+
+// workaround: port of semtech's code altered to use local freqMHz/highFreq - magic numbers are theirs
+// https://github.com/Lora-net/usp/blob/351b20153506/smtc_rac_lib/radio_drivers/lr20xx_driver/src/lr20xx_workarounds.c
+int16_t LR2021::setDCDCworkaround() {
+  uint32_t adcCtrlRaw = 0;
+  int16_t state = this->readRegMem32(RADIOLIB_LR2021_REG_DCDC_ADC_CTRL, &adcCtrlRaw, sizeof(adcCtrlRaw));
+  RADIOLIB_ASSERT(state);
+  const uint32_t anaDec = ( adcCtrlRaw >> 8 ) & 0x7;
+
+  if (!this->highFreq && (anaDec == 1 || anaDec == 2)) {
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 20, 11UL << 20);
+    RADIOLIB_ASSERT(state);
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 16, 13UL << 16);
+    RADIOLIB_ASSERT(state);
+  } else {
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 20, 15UL << 20);
+    RADIOLIB_ASSERT(state);    
+    state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 16, 15UL << 16);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // semtech number: 2800000 * 1.048576f (lines 558, 666)
+  uint32_t freq_lf = 2936012;
+  if (anaDec == 1) {
+    // semtech number: 4300000 * 1.048576f (lines 554, 666)
+    freq_lf = 4508876;
+  } 
+  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+  RADIOLIB_ASSERT(state);
+  
+  state = this->setFrequency(this->freqMHz, true);
+  return(state);
+}
+
+int16_t LR2021::resetDCDCworkaround() {
+  int16_t state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 20, 15UL << 20);
+  RADIOLIB_ASSERT(state);
+
+  state = this->writeRegMemMask32(RADIOLIB_LR2021_REG_DCDC_SWITCHER, 0x0FUL << 16, 15UL << 16);
+  RADIOLIB_ASSERT(state);
+
+  // semtech number: 2800000 * 1.048576f (lines 558, 666)
+  uint32_t freq_lf = 2936012;
+  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+  RADIOLIB_ASSERT(state);
+
+  if(this->freqMHz) {
+    state = this->setFrequency(this->freqMHz, true);
+  }
   return(state);
 }
 

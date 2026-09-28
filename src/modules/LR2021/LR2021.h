@@ -898,6 +898,19 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t getOokRxStats(uint16_t* packetRx, uint16_t* crcError, uint16_t* lenError);
+
+    /*!
+      \brief Set regulator mode to LDO.
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorLDO();
+
+    /*!
+      \brief Set regulator mode to DC-DC.
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorDCDC();
+   
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -943,7 +956,7 @@ class LR2021: public LRxxxx {
     int16_t getRxPktLength(uint16_t* len);
     int16_t resetRxStats(void);
     int16_t setDefaultRxTxTimeout(uint32_t rxTimeout, uint32_t txTimeout);
-    int16_t setRegMode(uint8_t simoUsage, const uint8_t rampTimes[4]);
+    int16_t setRegMode(uint8_t mode);
     int16_t calibrate(uint8_t blocks);
     int16_t calibrateFrontEnd(const uint16_t freq[3]);
     int16_t getVbat(uint8_t resolution, uint16_t* vbat);
@@ -1057,8 +1070,11 @@ class LR2021: public LRxxxx {
 
     // test commands
     int16_t setTxTestMode(uint8_t mode);
-};
 
+    // port of semtech's workaround
+    int16_t setDCDCworkaround();
+    int16_t resetDCDCworkaround();
+};
 #endif
 
 #endif

@@ -1630,7 +1630,8 @@ int16_t SX128x::modSetup(uint8_t modem) {
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  this->mod->spiConfig.statusPos = 0;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX128X_CMD_READ_REGISTER;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
@@ -1651,8 +1652,22 @@ int16_t SX128x::modSetup(uint8_t modem) {
 }
 
 uint8_t SX128x::getStatus() {
+  const uint8_t cmd = RADIOLIB_SX128X_CMD_GET_STATUS;
   uint8_t data = 0;
-  this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_STATUS, &data, 0);
+  
+  // unlike SX126x, the very first command byte sent is not reservedm, but the status
+  // to handle this correctly, we have to temporarily set the status width to 0,
+  // and then read one byte
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
+
+  // additionally, to be fully comply with the datasheet, we have to send out the GetStatus command byte
+  // see https://github.com/jgromes/RadioLib/issues/1872 for details
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_GET_STATUS;
+  (void)this->mod->SPItransferStream(NULL, 0, false, &cmd, &data, 1, true);
+
+  // restore everything, GetStatus is the only exchange which behaves like this
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX128X_CMD_NOP;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
   return(data);
 }
 
