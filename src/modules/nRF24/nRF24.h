@@ -9,6 +9,8 @@
 // nRF24 physical layer properties
 #define RADIOLIB_NRF24_FREQUENCY_STEP_SIZE                      1000000.0
 #define RADIOLIB_NRF24_MAX_PACKET_LENGTH                        32
+#define RADIOLIB_NRF24_POUT_MIN                                 -18
+#define RADIOLIB_NRF24_POUT_MAX                                 0
 
 // nRF24 SPI commands
 #define RADIOLIB_NRF24_CMD_READ                                 0b00000000

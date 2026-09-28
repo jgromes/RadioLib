@@ -6,8 +6,8 @@ nRF24::nRF24(Module* mod) : PhysicalLayer() {
   this->freqStep = RADIOLIB_NRF24_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_NRF24_MAX_PACKET_LENGTH;
   this->mod = mod;
-  this->powerMin = -18;
-  this->powerMax = 0;
+  this->powerMin = RADIOLIB_NRF24_POUT_MIN;
+  this->powerMax = RADIOLIB_NRF24_POUT_MAX;
   this->paSteps = 4;
 }
 
