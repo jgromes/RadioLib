@@ -26,6 +26,10 @@
   224-255  RS(255,223) parity -                 over bytes 1-223
 */
 
+#ifndef RADIOLIB_SSDV_MAX_PACKETS
+#define RADIOLIB_SSDV_MAX_PACKETS                               (512)
+#endif
+
 // packet sizes in bytes
 #define RADIOLIB_SSDV_PACKET_LEN                                (256)
 #define RADIOLIB_SSDV_HEADER_LEN                                (15)
@@ -98,8 +102,76 @@ struct SSDVPacketInfo_t {
   uint16_t mcuCount;
 };
 
-// internal encoder/decoder state, defined in SSDV.cpp
-struct SSDVState_t;
+// internal encoder/decoder state
+// maximum size of the DQT and DHT tables, plus room for marker data
+#define RADIOLIB_SSDV_TBL_LEN                                   (546)
+#define RADIOLIB_SSDV_HBUFF_LEN                                 (16)
+
+struct SSDVState_t {
+  // packet configuration
+  uint8_t type;
+  uint16_t payloadLen;
+  uint16_t crcDataLen;
+
+  // image information
+  uint16_t width;
+  uint16_t height;
+  uint32_t callsign;
+  uint8_t imageId;
+  uint16_t packetId;
+  uint8_t mcuMode;
+  uint16_t mcuId;
+  uint16_t mcuCount;
+  uint8_t quality;
+  uint16_t packetMcuId;
+  uint8_t packetMcuOffset;
+
+  // input bytes and bits
+  const uint8_t* inp;
+  size_t inLen;
+  size_t inSkip;
+  uint32_t workBits;
+  uint8_t workLen;
+
+  // output bytes and bits
+  uint8_t* out;
+  uint8_t* outp;
+  size_t outLen;
+  bool outStuff;
+  uint32_t outBits;
+  uint8_t outBitsLen;
+
+  // JPEG state machine
+  uint8_t state;
+  bool encoding;
+  uint16_t marker;
+  uint16_t markerLen;
+  uint8_t* markerData;
+  uint16_t markerDataLen;
+  bool greyscale;
+  uint8_t component;      // 0 = Y, 1 = Cb, 2 = Cr
+  uint8_t ycParts;        // number of Y blocks per MCU
+  uint8_t mcuPart;        // 0 - 3 = Y, then Cb, Cr
+  uint8_t acPart;         // 0 = DC, 1 - 63 = AC
+  int32_t dc[3];
+  int32_t adc[3];
+  uint8_t acRle;
+  uint8_t acAccRle;
+  uint16_t dri;
+  uint32_t resetMcu;
+  uint32_t nextResetMcu;
+  uint8_t needBits;
+
+  // source (input) and destination (output) Huffman and quantisation tables
+  uint8_t srcTbls[RADIOLIB_SSDV_TBL_LEN + RADIOLIB_SSDV_HBUFF_LEN];
+  uint8_t* srcDht[2][2];
+  uint8_t* srcDqt[2];
+  uint16_t srcTblLen;
+  uint8_t dstTbls[RADIOLIB_SSDV_TBL_LEN];
+  uint8_t* dstDht[2][2];
+  uint8_t* dstDqt[2];
+  uint16_t dstTblLen;
+};
 
 /*!
   \class SSDVClient
@@ -245,20 +317,19 @@ class SSDVClient {
 #if !RADIOLIB_GODMODE
   private:
 #endif
+    SSDVState_t coder;
     PhysicalLayer* phyLayer;
     bool fec;
     bool initialized;
     char callsign[RADIOLIB_SSDV_CALLSIGN_MAX_LEN + 1];
     uint8_t imageId;
+    uint8_t* imageBuf;
 
     // transmitter
-    uint8_t* packetBuf;
     uint16_t packetCount;
     uint16_t packetIndex;
 
     // receiver
-    SSDVState_t* decoder;
-    uint8_t* jpegBuf;
     size_t jpegBufLen;
     size_t jpegLen;
     bool jpegReady;

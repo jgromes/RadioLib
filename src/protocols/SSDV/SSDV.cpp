@@ -16,10 +16,6 @@
   The first MCU of each packet is byte-aligned and DC-absolute, so the decoder can resume after lost packets.
 */
 
-// maximum size of the DQT and DHT tables, plus room for marker data
-#define RADIOLIB_SSDV_TBL_LEN                                   (546)
-#define RADIOLIB_SSDV_HBUFF_LEN                                 (16)
-
 // JPEG markers
 #define RADIOLIB_SSDV_JPEG_TEM                                  (0xFF01)
 #define RADIOLIB_SSDV_JPEG_SOF0                                 (0xFFC0)
@@ -53,72 +49,6 @@ enum {
   SSDV_STATE_HUFF,
   SSDV_STATE_INT,
   SSDV_STATE_EOI,
-};
-
-struct SSDVState_t {
-  // packet configuration
-  uint8_t type;
-  uint16_t payloadLen;
-  uint16_t crcDataLen;
-
-  // image information
-  uint16_t width;
-  uint16_t height;
-  uint32_t callsign;
-  uint8_t imageId;
-  uint16_t packetId;
-  uint8_t mcuMode;
-  uint16_t mcuId;
-  uint16_t mcuCount;
-  uint8_t quality;
-  uint16_t packetMcuId;
-  uint8_t packetMcuOffset;
-
-  // input bytes and bits
-  const uint8_t* inp;
-  size_t inLen;
-  size_t inSkip;
-  uint32_t workBits;
-  uint8_t workLen;
-
-  // output bytes and bits
-  uint8_t* out;
-  uint8_t* outp;
-  size_t outLen;
-  bool outStuff;
-  uint32_t outBits;
-  uint8_t outBitsLen;
-
-  // JPEG state machine
-  uint8_t state;
-  bool encoding;
-  uint16_t marker;
-  uint16_t markerLen;
-  uint8_t* markerData;
-  uint16_t markerDataLen;
-  bool greyscale;
-  uint8_t component;      // 0 = Y, 1 = Cb, 2 = Cr
-  uint8_t ycParts;        // number of Y blocks per MCU
-  uint8_t mcuPart;        // 0 - 3 = Y, then Cb, Cr
-  uint8_t acPart;         // 0 = DC, 1 - 63 = AC
-  int32_t dc[3];
-  int32_t adc[3];
-  uint8_t acRle;
-  uint8_t acAccRle;
-  uint16_t dri;
-  uint32_t resetMcu;
-  uint32_t nextResetMcu;
-  uint8_t needBits;
-
-  // source (input) and destination (output) Huffman and quantisation tables
-  uint8_t srcTbls[RADIOLIB_SSDV_TBL_LEN + RADIOLIB_SSDV_HBUFF_LEN];
-  uint8_t* srcDht[2][2];
-  uint8_t* srcDqt[2];
-  uint16_t srcTblLen;
-  uint8_t dstTbls[RADIOLIB_SSDV_TBL_LEN];
-  uint8_t* dstDht[2][2];
-  uint8_t* dstDqt[2];
-  uint16_t dstTblLen;
 };
 
 // JFIF APP0 and SOS header data
@@ -1111,16 +1041,21 @@ static uint8_t ssdvDecFeed(SSDVState_t* s, const uint8_t* packet) {
 // SSDVClient
 // ------------------------------------------------------------------------------------------------
 
+#if RADIOLIB_STATIC_ONLY
+static uint8_t jpegBuffer[RADIOLIB_SSDV_MAX_PACKETS * RADIOLIB_SSDV_PACKET_LEN];
+#endif
+
 SSDVClient::SSDVClient(PhysicalLayer* phy, bool fec)
-  : phyLayer(phy), fec(fec), initialized(false), imageId(0xFF),
-    packetBuf(NULL), packetCount(0), packetIndex(0),
-    decoder(NULL), jpegBuf(NULL), jpegBufLen(0), jpegLen(0), jpegReady(false) {
+  : phyLayer(phy), fec(fec), initialized(false), imageId(0xFF), imageBuf(NULL), 
+    packetCount(0), packetIndex(0),
+    jpegBufLen(0), jpegLen(0), jpegReady(false) {
+      
   memset(this->callsign, 0, sizeof(this->callsign));
+  this->resetDecoder();
 }
 
 SSDVClient::~SSDVClient() {
   this->clearImage();
-  this->endDecoder();
 }
 
 int16_t SSDVClient::begin(const char* callsign) {
@@ -1147,10 +1082,11 @@ int16_t SSDVClient::begin(const char* callsign) {
 }
 
 int32_t SSDVClient::encode(const uint8_t* jpegData, size_t jpegLen, uint8_t quality, uint8_t* dst, uint16_t maxPackets) {
-  SSDVState_t* s = new SSDVState_t;
+  SSDVState_t* s = &this->coder;
   if(s == NULL) {
     return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
+  this->resetDecoder();
 
   uint8_t pkt[RADIOLIB_SSDV_PACKET_LEN];
   ssdvEncInit(s, this->fec ? RADIOLIB_SSDV_TYPE_NORMAL : RADIOLIB_SSDV_TYPE_NOFEC, this->callsign, this->imageId, quality);
@@ -1183,7 +1119,6 @@ int32_t SSDVClient::encode(const uint8_t* jpegData, size_t jpegLen, uint8_t qual
     }
   }
 
-  delete s;
   return(state == RADIOLIB_ERR_NONE ? count : state);
 }
 
@@ -1207,12 +1142,19 @@ int16_t SSDVClient::setImage(const uint8_t* jpegData, size_t jpegLen, uint8_t qu
     return((int16_t)count);
   }
 
-  this->packetBuf = new uint8_t[(size_t)count * RADIOLIB_SSDV_PACKET_LEN];
-  if(this->packetBuf == NULL) {
+#if RADIOLIB_STATIC_ONLY
+  this->imageBuf = jpegBuffer;
+  if((size_t)count * RADIOLIB_SSDV_PACKET_LEN < sizeof(jpegBuffer)) {
+    return(RADIOLIB_ERR_SSDV_BUFFER_TOO_SMALL);
+  }
+#else
+  this->imageBuf = new uint8_t[(size_t)count * RADIOLIB_SSDV_PACKET_LEN];
+  if(this->imageBuf == NULL) {
     return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
+#endif
 
-  int32_t stored = this->encode(jpegData, jpegLen, quality, this->packetBuf, (uint16_t)count);
+  int32_t stored = this->encode(jpegData, jpegLen, quality, this->imageBuf, (uint16_t)count);
   if(stored != count) {
     this->clearImage();
     return((int16_t)(stored < 0 ? stored : RADIOLIB_ERR_SSDV_INTERNAL_MISMATCH));
@@ -1246,14 +1188,14 @@ int16_t SSDVClient::transmitPacket(uint8_t offset, uint16_t* packetId) {
   if(!this->initialized) {
     return(RADIOLIB_ERR_SSDV_NOT_INITIALIZED);
   }
-  if(this->packetBuf == NULL) {
+  if(this->imageBuf == NULL) {
     return(RADIOLIB_ERR_SSDV_NO_PACKET_BUFFER);
   }
   if(this->isDone()) {
     return(RADIOLIB_ERR_SSDV_ALL_SENT);
   }
 
-  const uint8_t* pkt = &this->packetBuf[(size_t)this->packetIndex * RADIOLIB_SSDV_PACKET_LEN];
+  uint8_t* pkt = &this->imageBuf[(size_t)this->packetIndex * RADIOLIB_SSDV_PACKET_LEN];
   int16_t state = this->phyLayer->transmit(pkt + offset, RADIOLIB_SSDV_PACKET_LEN - offset);
   RADIOLIB_ASSERT(state);
 
@@ -1265,8 +1207,12 @@ int16_t SSDVClient::transmitPacket(uint8_t offset, uint16_t* packetId) {
 }
 
 void SSDVClient::clearImage() {
-  delete[] this->packetBuf;
-  this->packetBuf = NULL;
+#if RADIOLIB_STATIC_ONLY
+  memset(this->imageBuf, 0, sizeof(this->imageBuf));
+#else
+  delete[] this->imageBuf;
+#endif
+  this->imageBuf = NULL;
   this->packetCount = 0;
   this->packetIndex = 0;
 }
@@ -1352,31 +1298,22 @@ void SSDVClient::parseHeader(const uint8_t* packet, SSDVPacketInfo_t* info) {
   }
 }
 
-int16_t SSDVClient::beginDecoder(uint8_t* jpegBuf, size_t jpegBufLen) {
-  if(jpegBuf == NULL || jpegBufLen == 0) {
+int16_t SSDVClient::beginDecoder(uint8_t* imageBuf, size_t jpegBufLen) {
+  if(imageBuf == NULL || jpegBufLen == 0) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
-  this->endDecoder();
-  this->decoder = new SSDVState_t;
-  if(this->decoder == NULL) {
-    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
-  }
-
-  this->jpegBuf = jpegBuf;
+  this->imageBuf = imageBuf;
   this->jpegBufLen = jpegBufLen;
   return(this->resetDecoder());
 }
 
 int16_t SSDVClient::feedPacket(const uint8_t* packet) {
-  if(this->decoder == NULL) {
-    return(RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED);
-  }
   if(packet == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
-  switch(ssdvDecFeed(this->decoder, packet)) {
+  switch(ssdvDecFeed(&this->coder, packet)) {
     case SSDV_CODEC_EOI:
       this->jpegReady = true;
       return(RADIOLIB_SSDV_EOI);
@@ -1388,9 +1325,6 @@ int16_t SSDVClient::feedPacket(const uint8_t* packet) {
 }
 
 int16_t SSDVClient::getJpeg(uint8_t** jpegPtr, size_t* jpegLen) {
-  if(this->decoder == NULL) {
-    return(RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED);
-  }
   if(jpegPtr == NULL || jpegLen == NULL) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
@@ -1400,7 +1334,7 @@ int16_t SSDVClient::getJpeg(uint8_t** jpegPtr, size_t* jpegLen) {
 
   // finalize only once: blank any missing MCUs, then append EOI
   if(this->jpegLen == 0) {
-    SSDVState_t* s = this->decoder;
+    SSDVState_t* s = &this->coder;
     if(s->mcuId < s->mcuCount) {
       ssdvFillGap(s, s->mcuCount);
     }
@@ -1414,29 +1348,16 @@ int16_t SSDVClient::getJpeg(uint8_t** jpegPtr, size_t* jpegLen) {
     this->jpegLen = (size_t)(s->outp - s->out);
   }
 
-  *jpegPtr = this->jpegBuf;
+  *jpegPtr = this->imageBuf;
   *jpegLen = this->jpegLen;
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SSDVClient::resetDecoder() {
-  if(this->decoder == NULL) {
-    return(RADIOLIB_ERR_SSDV_DECODER_NOT_INITIALIZED);
-  }
-
-  ssdvDecInit(this->decoder, this->jpegBuf, this->jpegBufLen);
+  ssdvDecInit(&this->coder, this->imageBuf, this->jpegBufLen);
   this->jpegLen = 0;
   this->jpegReady = false;
   return(RADIOLIB_ERR_NONE);
-}
-
-void SSDVClient::endDecoder() {
-  delete this->decoder;
-  this->decoder = NULL;
-  this->jpegBuf = NULL;
-  this->jpegBufLen = 0;
-  this->jpegLen = 0;
-  this->jpegReady = false;
 }
 
 #endif
