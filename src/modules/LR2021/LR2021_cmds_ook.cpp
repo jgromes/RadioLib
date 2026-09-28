@@ -13,7 +13,11 @@ int16_t LR2021::setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uin
     (uint8_t)((bitRate >> 8) & 0xFF), (uint8_t)(bitRate & 0xFF),
     pulseShape, rxBw, depth,
   };
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_MODULATION_PARAMS, true, buff, sizeof(buff)));
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_OOK_MODULATION_PARAMS, true, buff, sizeof(buff));
+  if (state == RADIOLIB_ERR_NONE) {
+    state = this->setDCDCworkaround();
+  }
+  return(state);
 }
 
 int16_t LR2021::setOokPacketParams(uint16_t preambleLen, uint8_t addrComp, uint8_t packetFormat, uint16_t payloadLen, uint8_t crc, uint8_t manchester) {
