@@ -883,11 +883,11 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t 
 
 void LR2021::updatePowerLimits(bool highFreq) {
   if(highFreq) {
-    this->powerMin = -19;
-    this->powerMax = 12;
+    this->powerMin = RADIOLIB_LR2021_HF_POUT_MIN;
+    this->powerMax = RADIOLIB_LR2021_HF_POUT_MAX;
   } else {
-    this->powerMin = -9;
-    this->powerMax = 22;
+    this->powerMin = RADIOLIB_LR2021_LF_POUT_MIN;
+    this->powerMax = RADIOLIB_LR2021_LF_POUT_MAX;
   }
   this->paSteps = this->powerMax - this->powerMin + 1;
 }

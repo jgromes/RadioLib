@@ -17,6 +17,10 @@
 #define RADIOLIB_LR2021_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_LR2021_CRYSTAL_FREQ                            32.0
 #define RADIOLIB_LR2021_DIV_EXPONENT                            25
+#define RADIOLIB_LR2021_LF_POUT_MIN                             -9
+#define RADIOLIB_LR2021_LF_POUT_MAX                             22
+#define RADIOLIB_LR2021_HF_POUT_MIN                             -19
+#define RADIOLIB_LR2021_HF_POUT_MAX                             12
 
 /*!
   \class LR2021
