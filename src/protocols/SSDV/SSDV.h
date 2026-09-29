@@ -138,8 +138,9 @@ struct SSDVState_t {
   uint8_t* outp;
   size_t outLen;
   bool outStuff;
-  uint32_t outBits;
+  uint64_t outBits;
   uint8_t outBitsLen;
+  bool outOverflow;       // bits were dropped because the output buffer was full
 
   // JPEG state machine
   uint8_t state;
@@ -207,6 +208,9 @@ class SSDVClient {
     /*!
       \brief Encode a JPEG image into SSDV packets. Any previously loaded image is discarded.
       The packets are stored on heap (numPackets() * 256 bytes), so the JPEG may be released afterwards.
+      With RADIOLIB_STATIC_ONLY, a static buffer of RADIOLIB_SSDV_MAX_PACKETS packets is used instead,
+      which only one SSDVClient instance can hold at a time.
+      Does not affect an image that is being received.
       \param jpegData Complete JPEG file.
       \param jpegLen Length of the JPEG in bytes.
       \param quality Quality level 0 - 7, corresponding to JPEG quality 13, 18, 29, 43, 50, 71, 86 and 100. Defaults to 4.
@@ -310,26 +314,28 @@ class SSDVClient {
     int16_t resetDecoder();
 
     /*!
-      \brief Release the decoder state. The output buffer is owned by the caller and is not released.
+      \brief Detach the decoder from its output buffer. The buffer is owned by the caller and is not released.
     */
     void endDecoder();
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    SSDVState_t coder;
     PhysicalLayer* phyLayer;
     bool fec;
     bool initialized;
     char callsign[RADIOLIB_SSDV_CALLSIGN_MAX_LEN + 1];
     uint8_t imageId;
-    uint8_t* imageBuf;
 
-    // transmitter
+    // transmitter, the packet buffer is owned by this instance
+    SSDVState_t encoder;
+    uint8_t* txBuf;
     uint16_t packetCount;
     uint16_t packetIndex;
 
-    // receiver
+    // receiver, the JPEG buffer is owned by the caller
+    SSDVState_t decoder;
+    uint8_t* rxBuf;
     size_t jpegBufLen;
     size_t jpegLen;
     bool jpegReady;

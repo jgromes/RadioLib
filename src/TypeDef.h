@@ -740,6 +740,12 @@
 #define RADIOLIB_ERR_SSDV_NO_JPEG                               (-1513)
 
 /*!
+  \brief The static packet buffer is in use by another SSDVClient instance.
+  Only one instance can hold an image when RADIOLIB_STATIC_ONLY is enabled.
+*/
+#define RADIOLIB_ERR_SSDV_BUFFER_IN_USE                         (-1514)
+
+/*!
   \}
 */
 
