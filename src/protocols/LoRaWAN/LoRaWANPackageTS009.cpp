@@ -204,7 +204,7 @@ size_t LoRaWANPackageTS009::processData(const uint8_t* dataDown, size_t lenDown,
                            ((uint32_t)dataDown[3]);
         uint8_t txPower = dataDown[6];
 
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %d MHz, %d dBm, %d s", (unsigned long)(freq * 100UL), txPower, timeout);
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TX CW: %d MHz, %d dBm, %d s", (unsigned long)(freqRaw * 100UL), txPower, timeout);
 
         (void)this->radio->setFrequency(freqRaw * 100UL);
         (void)this->radio->setOutputPower(txPower);
