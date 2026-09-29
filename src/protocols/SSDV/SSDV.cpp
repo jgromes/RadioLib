@@ -1048,7 +1048,7 @@ static uint8_t ssdvDecFeed(SSDVState_t* s, const uint8_t* packet) {
 
 #if RADIOLIB_STATIC_ONLY
 // packet buffer shared by all instances, only one of them can hold an image at a time
-static uint8_t ssdvTxBuffer[RADIOLIB_SSDV_MAX_PACKETS * RADIOLIB_SSDV_PACKET_LEN];
+static uint8_t ssdvTxBuffer[(uint32_t)RADIOLIB_SSDV_MAX_PACKETS * (uint32_t)RADIOLIB_SSDV_PACKET_LEN];
 static const SSDVClient* ssdvTxBufferOwner = NULL;
 #endif
 
