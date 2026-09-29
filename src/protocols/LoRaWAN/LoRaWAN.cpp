@@ -2067,7 +2067,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   bool isConfirmedDown = false;
   // check if this is a confirmed downlink and if that is even allowed
-  if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xFE) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
+  if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xE0) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
     if(multicast) {
       #if !RADIOLIB_STATIC_ONLY
         delete[] downlinkMsg;
@@ -2129,7 +2129,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // if this is a confirmed downlink, save the downlink FCnt value
   // this sets the ACK bit on the next uplink
   if(isConfirmedDown) {
-    this->confFCntDown = this->aFCntDown;
+    this->confFCntDown = devFCnt32;
   }
 
   // do some housekeeping for normal Class A downlinks (not allowed for RxB / RxC)
