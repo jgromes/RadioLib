@@ -235,16 +235,6 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 
   } // end of transmission & reception
 
-  // note: if an error occurred, it may still be the case that a transmission occurred
-  // therefore, we act as if a transmission occurred before throwing the actual error
-  // this feels to be the best way to comply to spec
-
-  // increase frame counter by one for the next uplink
-  this->fCntUp += 1;
-
-  // the downlink confirmation was acknowledged, so clear the counter value
-  this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
-
   // pass the uplink info if requested
   if(eventUp) {
     eventUp->dir = RADIOLIB_LORAWAN_UPLINK;
@@ -258,6 +248,16 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     eventUp->nbTrans = trans;
     eventUp->multicast = false;
   }
+
+  // note: if an error occurred, it may still be the case that a transmission occurred
+  // therefore, we act as if a transmission occurred before throwing the actual error
+  // this feels to be the best way to comply to spec
+
+  // increase frame counter by one for the next uplink
+  this->fCntUp += 1;
+
+  // the downlink confirmation was acknowledged, so clear the counter value
+  this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
 
   #if !RADIOLIB_STATIC_ONLY
     delete[] uplinkMsg;
