@@ -865,7 +865,7 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t 
 
   uint8_t mode = exitMode; 
   if(mode == RADIOLIB_LR2021_CAD_PARAM_DEFAULT) {
-    mode = RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK;
+    mode = RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK;
   }
 
   uint32_t timeout_raw = (float)timeout / 30.52f;
