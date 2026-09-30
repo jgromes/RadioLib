@@ -49,6 +49,9 @@ int16_t SX126x::sleep() {
 }
 
 int16_t SX126x::sleep(bool retainConfig) {
+  // the data buffer is not retained in sleep
+  this->prestagedLen = 0;
+
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 

@@ -349,6 +349,9 @@ int16_t LR11x0::sleep() {
 }
 
 int16_t LR11x0::sleep(bool retainConfig, uint32_t sleepTime) {
+  // the data buffer is not retained in sleep
+  this->prestagedLen = 0;
+
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
@@ -368,6 +371,32 @@ int16_t LR11x0::sleep(bool retainConfig, uint32_t sleepTime) {
   this->mod->hal->delay(1);
 
   return(state);
+}
+
+int16_t LR11x0::prestageTransmit(const uint8_t* data, size_t len, uint8_t addr) {
+  // check packet length
+  if(len > RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // in LR-FHSS mode the frame is built by the device during staging, so there is nothing to write ahead
+  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  // anything left from an earlier prestage is about to be overwritten
+  this->prestagedLen = 0;
+
+  // write packet to buffer
+  state = writeBuffer8(data, len);
+  RADIOLIB_ASSERT(state);
+
+  this->prestagedLen = len;
+  this->prestagedId = prestageId(data, len, addr);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LR11x0::finishTransmit() {
@@ -439,6 +468,9 @@ int16_t LR11x0::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
 }
 
 int16_t LR11x0::readData(uint8_t* data, size_t len) {
+  // the buffer now holds a received frame, not a prestaged payload
+  this->prestagedLen = 0;
+
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -550,7 +582,8 @@ int16_t LR11x0::getChannelScanResult() {
   // check CAD result
   uint32_t cadResult = getIrqStatus();
   if(cadResult & RADIOLIB_LR11X0_IRQ_CAD_DETECTED) {
-    // detected some LoRa activity
+    // detected some LoRa activity - with a Rx exit mode the module is receiving into the buffer by now
+    this->prestagedLen = 0;
     return(RADIOLIB_LORA_DETECTED);
   } else if(cadResult & RADIOLIB_LR11X0_IRQ_CAD_DONE) {
     // channel is free
@@ -1475,6 +1508,9 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   switch(mode) {
     case(RADIOLIB_RADIO_MODE_RX): {
+      // reception overwrites the buffer
+      this->prestagedLen = 0;
+
       // check active modem
       uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
       state = getPacketType(&modem);
@@ -1567,9 +1603,13 @@ int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         RADIOLIB_ASSERT(state);
 
       } else {
-        // write packet to buffer
-        state = writeBuffer8(cfg->transmit.data, cfg->transmit.len);
-        RADIOLIB_ASSERT(state);
+        // write packet to buffer, unless prestageTransmit() already put this payload there
+        if((this->prestagedLen != cfg->transmit.len) ||
+           (this->prestagedId != prestageId(cfg->transmit.data, cfg->transmit.len, cfg->transmit.addr))) {
+          state = writeBuffer8(cfg->transmit.data, cfg->transmit.len);
+          RADIOLIB_ASSERT(state);
+        }
+        this->prestagedLen = 0;
 
       }
 

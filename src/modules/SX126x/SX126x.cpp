@@ -177,6 +177,8 @@ int16_t SX126x::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16
 }
 
 int16_t SX126x::reset(bool verify) {
+  this->prestagedLen = 0;
+
   // run the reset sequence
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelLow);
@@ -449,6 +451,33 @@ int16_t SX126x::hopLRFHSS() {
   return(clearIrqStatus());
 }
 
+int16_t SX126x::prestageTransmit(const uint8_t* data, size_t len, uint8_t addr) {
+  // check packet length
+  if(len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // in LR-FHSS mode the frame is built during staging, so there is nothing to write ahead of it
+  if(getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  // anything left from an earlier prestage is about to be overwritten
+  this->prestagedLen = 0;
+
+  // set buffer pointers
+  int16_t state = setBufferBaseAddress();
+  RADIOLIB_ASSERT(state);
+
+  // write packet to buffer
+  state = writeBuffer(data, len);
+  RADIOLIB_ASSERT(state);
+
+  this->prestagedLen = len;
+  this->prestagedId = prestageId(data, len, addr);
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t SX126x::finishTransmit() {
   // clear interrupt flags
   int16_t state = clearIrqStatus();
@@ -535,6 +564,9 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
 }
 
 int16_t SX126x::readData(uint8_t* data, size_t len) {
+  // the buffer now holds a received frame, not a prestaged payload
+  this->prestagedLen = 0;
+
   // this method may get called from receive() after Rx timeout
   // if that's the case, the first call will return "SPI command timeout error"
   // check the IRQ to be sure this really originated from timeout event
@@ -624,7 +656,8 @@ int16_t SX126x::getChannelScanResult() {
   // check CAD result
   uint16_t cadResult = getIrqFlags();
   if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DETECTED) {
-    // detected some LoRa activity
+    // detected some LoRa activity - with a Rx exit mode the module is receiving into the buffer by now
+    this->prestagedLen = 0;
     return(RADIOLIB_LORA_DETECTED);
   } else if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DONE) {
     // channel is free
@@ -950,6 +983,9 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   switch(mode) {
     case(RADIOLIB_RADIO_MODE_RX): {
+      // reception overwrites the shared buffer
+      this->prestagedLen = 0;
+
       // in implicit header mode, use the provided length if it is nonzero
       // otherwise we trust the user has previously set the payload length manually
       if((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (cfg->receive.len != 0)) {
@@ -1041,9 +1077,15 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = setBufferBaseAddress();
       RADIOLIB_ASSERT(state);
 
-      // write packet to buffer
+      // write packet to buffer, unless prestageTransmit() already put this payload there
       if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
-        state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+        if((this->prestagedLen == cfg->transmit.len) &&
+           (this->prestagedId == prestageId(cfg->transmit.data, cfg->transmit.len, cfg->transmit.addr))) {
+          state = RADIOLIB_ERR_NONE;
+        } else {
+          state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+        }
+        this->prestagedLen = 0;
       
       } else {
         // first, reset the LR-FHSS state machine

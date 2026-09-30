@@ -540,6 +540,20 @@ class PhysicalLayer {
     virtual int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0);
 
     /*!
+      \brief Write packet data into the module's transmit buffer without starting a transmission.
+      A subsequent transmit of the same data will skip the buffer write, so only the mode switch itself
+      stands between the decision to transmit and the carrier going up. Intended for listen-before-talk,
+      where the payload can be written while the module is in standby, before the channel scan.
+      The prestaged data is discarded whenever anything may have disturbed the buffer, in which case the
+      transmit writes it as usual - a caller never has to check whether the prestage survived.
+      \param data Binary data that will be prestaged.
+      \param len Length of binary data to prestage (in bytes).
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      \returns \ref status_codes, RADIOLIB_ERR_UNSUPPORTED on modules with no pre-loadable buffer.
+    */
+    virtual int16_t prestageTransmit(const uint8_t* data, size_t len, uint8_t addr = 0);
+
+    /*!
       \brief Clean up after transmission is done.
       \returns \ref status_codes
     */
@@ -1001,6 +1015,15 @@ class PhysicalLayer {
 #endif
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
+
+    /*! \brief Length of the payload prestageTransmit() left in the module's buffer, or 0 if none */
+    size_t prestagedLen = 0;
+
+    /*! \brief Fingerprint of that payload, so a transmit of anything else is not sent from the buffer */
+    uint32_t prestagedId = 0;
+
+    /*! \brief Fingerprint of a payload, for matching a transmit against the prestaged one */
+    static uint32_t prestageId(const uint8_t* data, size_t len, uint8_t addr);
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
