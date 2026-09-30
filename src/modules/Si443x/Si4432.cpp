@@ -28,7 +28,7 @@ int16_t Si4432::setFrequency(uint32_t freq) {
 }
 
 int16_t Si4432::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -1, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(power, RADIOLIB_SI4432_POUT_MIN, RADIOLIB_SI4432_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set output power
   Module* mod = this->getMod();

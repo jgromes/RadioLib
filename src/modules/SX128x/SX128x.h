@@ -14,6 +14,8 @@
 #define RADIOLIB_SX128X_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_SX128X_CRYSTAL_FREQ                            52.0f
 #define RADIOLIB_SX128X_DIV_EXPONENT                            18
+#define RADIOLIB_SX128X_POUT_MIN                                -18
+#define RADIOLIB_SX128X_POUT_MAX                                13
 
 // SX128X SPI commands
 #define RADIOLIB_SX128X_CMD_NOP                                 0x00
@@ -644,18 +646,10 @@ class SX128x: public PhysicalLayer {
 
     /*!
       \brief Sets output power. Allowed values are in range from -18 to 13 dBm.
-      \param pwr Output power to be set in dBm.
+      \param power Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr) override;
-
-    /*!
-      \brief Check if output power is configurable.
-      \param pwr Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t pwr, int8_t* clipped) override;
+    int16_t setOutputPower(int8_t power) override;
     
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
@@ -964,7 +958,7 @@ class SX128x: public PhysicalLayer {
     static int16_t SPIparseStatus(uint8_t in);
 
     // common parameters
-    uint8_t power = 0;
+    uint8_t txPower = 0;
     uint32_t rxTimeout = 0;
 
     // cached LoRa parameters

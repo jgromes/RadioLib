@@ -235,16 +235,6 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 
   } // end of transmission & reception
 
-  // note: if an error occurred, it may still be the case that a transmission occurred
-  // therefore, we act as if a transmission occurred before throwing the actual error
-  // this feels to be the best way to comply to spec
-
-  // increase frame counter by one for the next uplink
-  this->fCntUp += 1;
-
-  // the downlink confirmation was acknowledged, so clear the counter value
-  this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
-
   // pass the uplink info if requested
   if(eventUp) {
     eventUp->dir = RADIOLIB_LORAWAN_UPLINK;
@@ -258,6 +248,16 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     eventUp->nbTrans = trans;
     eventUp->multicast = false;
   }
+
+  // note: if an error occurred, it may still be the case that a transmission occurred
+  // therefore, we act as if a transmission occurred before throwing the actual error
+  // this feels to be the best way to comply to spec
+
+  // increase frame counter by one for the next uplink
+  this->fCntUp += 1;
+
+  // the downlink confirmation was acknowledged, so clear the counter value
+  this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
 
   #if !RADIOLIB_STATIC_ONLY
     delete[] uplinkMsg;
@@ -2067,7 +2067,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   bool isConfirmedDown = false;
   // check if this is a confirmed downlink and if that is even allowed
-  if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xFE) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
+  if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xE0) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
     if(multicast) {
       #if !RADIOLIB_STATIC_ONLY
         delete[] downlinkMsg;
@@ -2129,7 +2129,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // if this is a confirmed downlink, save the downlink FCnt value
   // this sets the ACK bit on the next uplink
   if(isConfirmedDown) {
-    this->confFCntDown = this->aFCntDown;
+    this->confFCntDown = devFCnt32;
   }
 
   // do some housekeeping for normal Class A downlinks (not allowed for RxB / RxC)
@@ -2475,10 +2475,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // only allow TxPower if less than / equal to the maximum number of defined steps
       if(macTxSteps <= this->band->powerNumSteps) {
         int8_t power = this->txPowerMax - 2*macTxSteps;
-        int8_t powerActual = 0;
-        state = this->phyLayer->checkOutputPower(power, &powerActual);
         // only acknowledge if the radio is able to operate at or below the requested power level
-        if(state == RADIOLIB_ERR_NONE || (state == RADIOLIB_ERR_INVALID_OUTPUT_POWER && powerActual < power)) {
+        // i.e., the requested power equals or exceeds the minimum possible power
+        if(power >= this->phyLayer->powerMin) {
           pwrAck = 1;
         } else {
           RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure Tx power %d, code %d!", power, state);
@@ -3472,19 +3471,21 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   RADIOLIB_ASSERT(state);
   state = this->phyLayer->setDataRate(*dr, this->band->dataRates[chnl->dr].modem);
   RADIOLIB_ASSERT(state);
-
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
+
   RADIOLIB_DEBUG_PROTOCOL_PRINT("Frequency = %lu Hz, TX = %d dBm", (unsigned long)(chnl->freq * 100UL), pwr);
   state = this->phyLayer->setFrequency(chnl->freq * 100UL);
   RADIOLIB_ASSERT(state);
   
-  // at this point, assume that Tx power value is already checked, so ignore the return value
-  // this call is only used to clip a value that is higher than the module supports
-  (void)this->phyLayer->checkOutputPower(pwr, &pwr);
+  // set Tx power (refuse if requested value is too low, clip if requested value is too high)
+  if(pwr < this->phyLayer->powerMin) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  pwr = RADIOLIB_MIN(pwr, this->phyLayer->powerMax);
   state = this->phyLayer->setOutputPower(pwr);
   RADIOLIB_ASSERT(state);
 
-  // this only needs to be done once-ish
+  // set modem-specific sync-word and other PHY parameters
   uint8_t syncWord[4] = { 0 };
   uint8_t syncWordLen = 0;
   

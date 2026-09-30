@@ -21,7 +21,7 @@ int16_t Si4431::begin(const ConfigFSK_t& cfg) {
 }
 
 int16_t Si4431::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -8, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(power, RADIOLIB_SI4431_POUT_MIN, RADIOLIB_SI4431_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set output power
   Module* mod = this->getMod();
