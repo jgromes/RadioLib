@@ -369,12 +369,12 @@ int16_t SX1278::setOutputPower(int8_t power, bool forceRfo) {
 
   if(useRfo) {
     uint8_t paCfg = 0;
-    if(power < 0) {
+    if(pwr < 0) {
       // low power mode RFO output
-      paCfg = RADIOLIB_SX1278_LOW_POWER | (power + 3);
+      paCfg = RADIOLIB_SX1278_LOW_POWER | (pwr + 3);
     } else {
       // high power mode RFO output
-      paCfg = RADIOLIB_SX1278_MAX_POWER | power;
+      paCfg = RADIOLIB_SX1278_MAX_POWER | pwr;
     }
 
     state |= mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PA_CONFIG, RADIOLIB_SX127X_PA_SELECT_RFO, 7, 7);
@@ -385,7 +385,7 @@ int16_t SX1278::setOutputPower(int8_t power, bool forceRfo) {
     if(power != RADIOLIB_SX1278_PA_BOOST_POUT_MAX) {
       // power is 2 - 17 dBm, enable PA1 + PA2 on PA_BOOST
       state |= mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PA_CONFIG, RADIOLIB_SX127X_PA_SELECT_BOOST, 7, 7);
-      state |= mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PA_CONFIG, RADIOLIB_SX1278_MAX_POWER | (power - 2), 6, 0);
+      state |= mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PA_CONFIG, RADIOLIB_SX1278_MAX_POWER | (pwr - 2), 6, 0);
       state |= mod->SPIsetRegValue(RADIOLIB_SX1278_REG_PA_DAC, RADIOLIB_SX127X_PA_BOOST_OFF, 2, 0);
 
     } else {
