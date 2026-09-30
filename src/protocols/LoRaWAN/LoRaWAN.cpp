@@ -2475,10 +2475,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // only allow TxPower if less than / equal to the maximum number of defined steps
       if(macTxSteps <= this->band->powerNumSteps) {
         int8_t power = this->txPowerMax - 2*macTxSteps;
-        int8_t powerActual = 0;
-        state = this->phyLayer->checkOutputPower(power, &powerActual);
         // only acknowledge if the radio is able to operate at or below the requested power level
-        if(state == RADIOLIB_ERR_NONE || (state == RADIOLIB_ERR_INVALID_OUTPUT_POWER && powerActual < power)) {
+        // i.e., the requested power equals or exceeds the minimum possible power
+        if(power >= this->phyLayer->powerMin) {
           pwrAck = 1;
         } else {
           RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure Tx power %d, code %d!", power, state);
@@ -3476,21 +3475,24 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   RADIOLIB_ASSERT(state);
   state = this->phyLayer->setDataRate(*dr, this->band->dataRates[chnl->dr].modem);
   RADIOLIB_ASSERT(state);
-
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
   RADIOLIB_DEBUG_PROTOCOL_PRINT("Frequency = ");
   RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT_NOTAG(chnl->freq / 10000.0, 3);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG(" MHz, TX = %d dBm", pwr);
+  
+    // set frequency
   state = this->phyLayer->setFrequency(chnl->freq / 10000.0);
   RADIOLIB_ASSERT(state);
   
-  // at this point, assume that Tx power value is already checked, so ignore the return value
-  // this call is only used to clip a value that is higher than the module supports
-  (void)this->phyLayer->checkOutputPower(pwr, &pwr);
+  // set Tx power (refuse if requested value is too low, clip if requested value is too high)
+  if(pwr < this->phyLayer->powerMin) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  pwr = RADIOLIB_MIN(pwr, this->phyLayer->powerMax);
   state = this->phyLayer->setOutputPower(pwr);
   RADIOLIB_ASSERT(state);
 
-  // this only needs to be done once-ish
+  // set modem-specific sync-word and other PHY parameters
   uint8_t syncWord[4] = { 0 };
   uint8_t syncWordLen = 0;
   

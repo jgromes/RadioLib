@@ -12,6 +12,8 @@
 #define RADIOLIB_CC1101_FIFO_SIZE                               64
 #define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0f
 #define RADIOLIB_CC1101_DIV_EXPONENT                            16
+#define RADIOLIB_CC1101_POUT_MIN                                -30
+#define RADIOLIB_CC1101_POUT_MAX                                10
 
 // CC1101 SPI commands
 #define RADIOLIB_CC1101_CMD_READ                                0b10000000
@@ -836,24 +838,6 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t pwr) override;
-
-    /*!
-      \brief Check if output power is configurable.
-      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
-      \param power Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-
-    /*!
-      \brief Check if output power is configurable.
-      \param power Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \param raw Raw internal value.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw);
 
     /*!
       \brief Set 1 or 2 bytes of sync word.
