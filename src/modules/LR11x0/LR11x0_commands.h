@@ -279,7 +279,7 @@
 
 // RADIOLIB_LR11X0_CMD_SET_STANDBY
 #define RADIOLIB_LR11X0_STANDBY_RC                              (0x00UL << 0)   //  7     0     standby mode: RC oscillator
-#define RADIOLIB_LR11X0_STANDBY_XOSC                            (0x00UL << 0)   //  7     0                   XTAL/TCXO oscillator
+#define RADIOLIB_LR11X0_STANDBY_XOSC                            (0x01UL << 0)   //  7     0                   XTAL/TCXO oscillator
 
 // RADIOLIB_LR11X0_CMD_ERASE_INFO_PAGE
 #define RADIOLIB_LR11X0_INFO_PAGE                               (1)
