@@ -404,10 +404,11 @@ int16_t LRxxxx::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, 
     state = this->mod->SPIwriteStream(cmd, out, outLen, true, false);
     RADIOLIB_ASSERT(state);
 
-    // read the result without command
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_0;
-    state = this->mod->SPIreadStream(RADIOLIB_LRXXXX_CMD_NOP, data, len, true, false);
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
+    // read the result without command - the second transaction carries no command bytes,
+    // so the command length is passed explicitly instead of changing spiConfig. spiConfig is
+    // shared by every caller of this Module, and a command issued between the two transactions
+    // would otherwise be framed with a zero-length command and read back status bytes
+    state = this->mod->SPIreadStream(NULL, 0, data, len, true, false);
 
   } else {
     // write is just a single transaction
