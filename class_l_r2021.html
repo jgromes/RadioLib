@@ -2706,7 +2706,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Performs scan for LoRa transmission in the current channel. Detects both preamble and payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">config</td><td>CAD configuration structure. </td></tr>
+    <tr><td class="paramname">config</td><td>CAD configuration structure. Its exitMode must be one of RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK, RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_RX or RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_LBT - the RADIOLIB_LR2021_CAD_EXIT_MODE_* values belong to the RSSI-based CAD and are not valid here. </td></tr>
   </table>
   </dd>
 </dl>
