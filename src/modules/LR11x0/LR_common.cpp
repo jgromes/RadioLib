@@ -30,10 +30,7 @@ void LRxxxx::clearPacketSentAction() {
 uint32_t LRxxxx::getIrqStatus() {
   // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
   uint8_t buff[6] = { 0 };
-  Module::BitWidth_t statusWidth = mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS];
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = statusWidth;
+  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, 0);
   uint32_t irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5];
   return(irq);
 }
@@ -344,10 +341,7 @@ int16_t LRxxxx::SPIcheckStatus(Module* mod) {
   // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
   uint8_t buff[6] = { 0 };
-  Module::BitWidth_t statusWidth = mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS];
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = statusWidth;
+  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, 0);
   RADIOLIB_ASSERT(state);
   return(LRxxxx::SPIparseStatus(buff[0]));
 }
