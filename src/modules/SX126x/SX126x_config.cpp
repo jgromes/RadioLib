@@ -678,7 +678,7 @@ int16_t SX126x::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
   // calculate delay
   this->tcxoDelay = delay;
   uint32_t delayValue = (this->tcxoDelay * 8) / 125; // divide by 15.625
-  uint8_t data[] = {
+  const uint8_t data[] = {
     (uint8_t)voltage, (uint8_t)((delayValue >> 16) & 0xFF),
     (uint8_t)((delayValue >> 8) & 0xFF), (uint8_t)(delayValue & 0xFF),
   };
