@@ -40,11 +40,11 @@ class MorseClient: public RadioLibPrint {
 
     /*!
       \brief Initialization method.
-      \param base Base RF frequency to be used in MHz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode)
+      \param base Base RF frequency to be used in Hz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode)
       \param speed Coding speed in words per minute.
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint8_t speed = 20);
+    int16_t begin(uint32_t base, uint8_t speed = 20);
 
     /*!
       \brief Send start signal.

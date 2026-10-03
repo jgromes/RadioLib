@@ -42,7 +42,7 @@ Module* ExternalRadio::getMod() {
   return(mod);
 }
 
-int16_t ExternalRadio::setFrequencyDeviation(float freqDev) {
+int16_t ExternalRadio::setFrequencyDeviation(uint32_t freqDev) {
   (void)freqDev;
   return(RADIOLIB_ERR_NONE);
 }

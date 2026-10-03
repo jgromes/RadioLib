@@ -40,7 +40,7 @@ void setup() {
   // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
   ConfigFLRC_t config;
-  config.frequency = 2400;
+  config.frequency = RADIOLIB_UNIT_MEGA(2400);
   int state = radio.beginFLRC(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -57,11 +57,11 @@ void setup() {
 
   // the following settings can also
   // be modified at run-time
-  state = radio.setFrequency(2410.5);
-  state = radio.setBitRate(520);
+  state = radio.setFrequency(RADIOLIB_UNIT_MEGA(2410));
+  state = radio.setBitRate(RADIOLIB_UNIT_KILO(520));
   state = radio.setCodingRate(2);
   state = radio.setOutputPower(5);
-  state = radio.setDataShaping(1.0);
+  state = radio.setDataShaping(RADIOLIB_SHAPING_1_0);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67};
   state = radio.setSyncWord(syncWord, 4);
   if (state != RADIOLIB_ERR_NONE) {

@@ -51,16 +51,16 @@ void setup() {
   // bit rate:                    1.2 kbps (1200 baud 2-FSK AX.25)
   // frequency deviation:         0.5 kHz  (1200 baud 2-FSK AX.25)
   ConfigFSK_t config;
-  config.frequency = 434.0;
-  config.bitRate = 1.2;
-  config.receiverBandwidth = 0.5;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
+  config.bitRate = 1200;
+  config.receiverBandwidth = 500;
   int state = radio.beginFSK(config);
   // for C++14 and newer, you can use initializer lists
   /*
   int state = radio.beginFSK({
-    .frequency = 434.0, 
-    .bitRate = 1.2, 
-    .frequencyDeviation = 0.5
+    .frequency = RADIOLIB_UNIT_MEGA(434), 
+    .bitRate = 1200, 
+    .frequencyDeviation = 500
   });
   */
 

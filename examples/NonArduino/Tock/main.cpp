@@ -48,8 +48,8 @@ int main(void) {
 
   // Setup the radio
   // The settings here work for the SparkFun LoRa Thing Plus - expLoRaBLE
-  radio->tcxoVoltage = 0;
-  int state = radio->begin({.frequency = 915.0});
+  radio->tcxoVoltage = RadioLibTCXOVoltage_t::VoltageNone;
+  int state = radio->begin({.frequency = RADIOLIB_UNIT_MEGA(915)});
 
   if (state != RADIOLIB_ERR_NONE) {
     printf("failed, code %d\r\n", state);
