@@ -2438,8 +2438,6 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
           this->channelMasks[i] = m8;
         }
       }
-      
-      int16_t state;
 
       // try to apply the datarate configuration
       // if value is set to 'keep current values', retrieve current value
@@ -2449,7 +2447,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
 
       if(this->band->dataRates[macDrUp].modem != RADIOLIB_MODEM_NONE) {
         // check if the module supports this data rate
-        state = this->phyLayer->checkDataRate(this->band->dataRates[macDrUp].dr, 
+        int16_t state = this->phyLayer->checkDataRate(this->band->dataRates[macDrUp].dr, 
                                               this->band->dataRates[macDrUp].modem);
         
         // if datarate in hardware all good, set datarate for now
