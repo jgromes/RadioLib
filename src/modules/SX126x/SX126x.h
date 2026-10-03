@@ -301,6 +301,17 @@ class SX126x: public PhysicalLayer {
     int16_t finishTransmit() override;
 
     /*!
+      \brief Write packet data into the module's buffer without starting a transmission. A subsequent
+      transmit of the same data skips the buffer write. Not supported in LR-FHSS mode, where the frame is
+      built at transmit time.
+      \param data Binary data that will be prestaged.
+      \param len Length of binary data to prestage (in bytes).
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      \returns \ref status_codes
+    */
+    int16_t prestageTransmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
+
+    /*!
       \brief Clean up after reception is done.
       \returns \ref status_codes
     */

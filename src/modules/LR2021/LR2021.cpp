@@ -460,6 +460,9 @@ int16_t LR2021::sleep() {
 }
 
 int16_t LR2021::sleep(bool retainConfig, uint32_t sleepTime) {
+  // the FIFO configuration is not retained in sleep
+  this->prestagedLen = 0;
+
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
@@ -490,6 +493,36 @@ size_t LR2021::getPacketLength(bool update) {
   uint16_t len = 0;
   (void)getRxPktLength(&len);
   return((size_t)len);
+}
+
+int16_t LR2021::prestageTransmit(const uint8_t* data, size_t len, uint8_t addr) {
+  // check packet length
+  if(len > RADIOLIB_LR2021_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // in LR-FHSS mode the frame is built by the device during staging, so there is nothing to write ahead
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  // anything left from an earlier prestage is about to be discarded
+  this->prestagedLen = 0;
+
+  // the Tx FIFO is appended to, so it has to start empty
+  state = clearTxFifo();
+  RADIOLIB_ASSERT(state);
+
+  // write packet to FIFO
+  state = writeRadioTxFifo(data, len);
+  RADIOLIB_ASSERT(state);
+
+  this->prestagedLen = len;
+  this->prestagedId = prestageId(data, len, addr);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LR2021::finishTransmit() {
@@ -868,6 +901,12 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t 
     mode = RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK;
   }
 
+  // with the LBT exit mode (0x10) a clear channel sends the Tx FIFO, which empties it,
+  // so a later transmit of the same payload has to write it again
+  if(mode == 0x10) {
+    this->prestagedLen = 0;
+  }
+
   uint32_t timeout_raw = (float)timeout / 30.52f;
 
   // set LoRa CAD parameters
@@ -1063,8 +1102,18 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME, this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
+      } else if((this->prestagedLen == cfg->transmit.len) &&
+                (this->prestagedId == prestageId(cfg->transmit.data, cfg->transmit.len, cfg->transmit.addr))) {
+        // prestageTransmit() already put this payload in the FIFO
+        this->prestagedLen = 0;
+
       } else {
-        // write packet to buffer
+        // the Tx FIFO is appended to, so drop anything a prestage or an aborted transmit left in it
+        this->prestagedLen = 0;
+        state = clearTxFifo();
+        RADIOLIB_ASSERT(state);
+
+        // write packet to FIFO
         state = writeRadioTxFifo(cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
