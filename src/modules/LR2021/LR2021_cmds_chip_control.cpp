@@ -374,7 +374,7 @@ int16_t LR2021::setDCDCworkaround() {
   state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
   RADIOLIB_ASSERT(state);
   
-  state = this->setFrequency(this->freq, true);
+  state = this->setFrequency(this->freqHz, true);
   return(state);
 }
 
@@ -390,8 +390,8 @@ int16_t LR2021::resetDCDCworkaround() {
   state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
   RADIOLIB_ASSERT(state);
 
-  if(this->freq) {
-    state = this->setFrequency(this->freq, true);
+  if(this->freqHz) {
+    state = this->setFrequency(this->freqHz, true);
   }
   return(state);
 }
