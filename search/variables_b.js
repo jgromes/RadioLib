@@ -12,8 +12,12 @@ var searchData=
   ['mcfreq_9',['mcFreq',['../struct_multicast_group__t.html#a27a5c465366dfab179d300c504b9790e',1,'MulticastGroup_t']]],
   ['mcgroupid_10',['mcGroupId',['../struct_lo_ra_w_a_n_event__t.html#ae736b2264c2727af7eb6a2ff47a491e9',1,'LoRaWANEvent_t']]],
   ['mcnwkskey_11',['mcNwkSKey',['../struct_multicast_group__t.html#af968ab7abfabcb522304d05e4db3c52e',1,'MulticastGroup_t']]],
-  ['message_12',['message',['../struct_a_d_s_b_frame.html#ad64ff1777cfa2beee43cb04233cbabf6',1,'ADSBFrame']]],
-  ['messagetype_13',['messageType',['../struct_a_d_s_b_frame.html#a513448a23759533f8cbeb7cc725ed392',1,'ADSBFrame']]],
-  ['mode_14',['mode',['../struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462',1,'Module::RfSwitchMode_t::mode'],['../struct_standby_config__t.html#a2a6825328bcd22700af1f95af4e721d3',1,'StandbyConfig_t::mode'],['../struct_sleep_config__t.html#a75875bc27a2db3b0ec7c6b31b1ba8835',1,'SleepConfig_t::mode']]],
-  ['multicast_15',['multicast',['../struct_lo_ra_w_a_n_event__t.html#aa33f78c5a3133dc16a3f692e9d473fc8',1,'LoRaWANEvent_t']]]
+  ['mcucount_12',['mcuCount',['../struct_s_s_d_v_packet_info__t.html#a39b66cefeabe709659268a8b3e254b25',1,'SSDVPacketInfo_t']]],
+  ['mcuid_13',['mcuId',['../struct_s_s_d_v_packet_info__t.html#a5f4075256f03f6468ad61992f47676ed',1,'SSDVPacketInfo_t']]],
+  ['mcumode_14',['mcuMode',['../struct_s_s_d_v_packet_info__t.html#ab6da65cda618b43a5b812581def1e387',1,'SSDVPacketInfo_t']]],
+  ['mcuoffset_15',['mcuOffset',['../struct_s_s_d_v_packet_info__t.html#a0aa730c900cb22ae8b3e1cc76069c144',1,'SSDVPacketInfo_t']]],
+  ['message_16',['message',['../struct_a_d_s_b_frame.html#ad64ff1777cfa2beee43cb04233cbabf6',1,'ADSBFrame']]],
+  ['messagetype_17',['messageType',['../struct_a_d_s_b_frame.html#a513448a23759533f8cbeb7cc725ed392',1,'ADSBFrame']]],
+  ['mode_18',['mode',['../struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462',1,'Module::RfSwitchMode_t::mode'],['../struct_standby_config__t.html#a2a6825328bcd22700af1f95af4e721d3',1,'StandbyConfig_t::mode'],['../struct_sleep_config__t.html#a75875bc27a2db3b0ec7c6b31b1ba8835',1,'SleepConfig_t::mode']]],
+  ['multicast_19',['multicast',['../struct_lo_ra_w_a_n_event__t.html#aa33f78c5a3133dc16a3f692e9d473fc8',1,'LoRaWANEvent_t']]]
 ];

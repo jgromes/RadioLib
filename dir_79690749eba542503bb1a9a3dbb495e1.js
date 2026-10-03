@@ -14,5 +14,6 @@ var dir_79690749eba542503bb1a9a3dbb495e1 =
     [ "PhysicalLayer", "dir_2cdd3c47e80335731aa10f67042c391a.html", "dir_2cdd3c47e80335731aa10f67042c391a" ],
     [ "Print", "dir_2248554564c3ddf80e1cd7e195a7aaf0.html", "dir_2248554564c3ddf80e1cd7e195a7aaf0" ],
     [ "RTTY", "dir_620e20826520c01cf981aa9c981ff885.html", "dir_620e20826520c01cf981aa9c981ff885" ],
+    [ "SSDV", "dir_91f7498aa3b2a8939d98899140adc3bd.html", "dir_91f7498aa3b2a8939d98899140adc3bd" ],
     [ "SSTV", "dir_66ce0d8112a82c480b60d648cf9cb1ca.html", "dir_66ce0d8112a82c480b60d648cf9cb1ca" ]
 ];

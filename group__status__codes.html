@@ -509,6 +509,66 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_ADSB_INVALID_CATEGORY</b>&#160;&#160;&#160;(-1401)</td></tr>
 <tr class="memdesc:ga07f5bd5f1eb62c8129f808c90e96a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parsed aircraft category is invalid. <br /></td></tr>
 <tr class="separator:ga07f5bd5f1eb62c8129f808c90e96a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae0ab7fe4550d02eef07cbabad355a8f2" id="r_gae0ab7fe4550d02eef07cbabad355a8f2"><td class="memItemLeft" align="right" valign="top"><a id="gae0ab7fe4550d02eef07cbabad355a8f2" name="gae0ab7fe4550d02eef07cbabad355a8f2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_CALLSIGN_TOO_LONG</b>&#160;&#160;&#160;(-1500)</td></tr>
+<tr class="memdesc:gae0ab7fe4550d02eef07cbabad355a8f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callsign is empty or longer than 6 characters. <br /></td></tr>
+<tr class="separator:gae0ab7fe4550d02eef07cbabad355a8f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf006a116498caace887ba12c66d9c45f" id="r_gaf006a116498caace887ba12c66d9c45f"><td class="memItemLeft" align="right" valign="top"><a id="gaf006a116498caace887ba12c66d9c45f" name="gaf006a116498caace887ba12c66d9c45f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_CALLSIGN_INVALID</b>&#160;&#160;&#160;(-1501)</td></tr>
+<tr class="memdesc:gaf006a116498caace887ba12c66d9c45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callsign contains characters outside the SSDV base-40 charset. Valid characters: A–Z, 0–9, '-', '/', '.'. <br /></td></tr>
+<tr class="separator:gaf006a116498caace887ba12c66d9c45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0cdaf0c5cb1c5c50906e5f943aa16871" id="r_ga0cdaf0c5cb1c5c50906e5f943aa16871"><td class="memItemLeft" align="right" valign="top"><a id="ga0cdaf0c5cb1c5c50906e5f943aa16871" name="ga0cdaf0c5cb1c5c50906e5f943aa16871"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_NO_IMAGE</b>&#160;&#160;&#160;(-1502)</td></tr>
+<tr class="memdesc:ga0cdaf0c5cb1c5c50906e5f943aa16871"><td class="mdescLeft">&#160;</td><td class="mdescRight">JPEG data pointer is NULL or length is zero. <br /></td></tr>
+<tr class="separator:ga0cdaf0c5cb1c5c50906e5f943aa16871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2dfe33931bd569ad3619bf19032bd8cc" id="r_ga2dfe33931bd569ad3619bf19032bd8cc"><td class="memItemLeft" align="right" valign="top"><a id="ga2dfe33931bd569ad3619bf19032bd8cc" name="ga2dfe33931bd569ad3619bf19032bd8cc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_INVALID_QUALITY</b>&#160;&#160;&#160;(-1503)</td></tr>
+<tr class="memdesc:ga2dfe33931bd569ad3619bf19032bd8cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">quality parameter outside the valid range 0–7. <br /></td></tr>
+<tr class="separator:ga2dfe33931bd569ad3619bf19032bd8cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77cc8b09329703df0236cb422829bcbe" id="r_ga77cc8b09329703df0236cb422829bcbe"><td class="memItemLeft" align="right" valign="top"><a id="ga77cc8b09329703df0236cb422829bcbe" name="ga77cc8b09329703df0236cb422829bcbe"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_ENCODE_FAILED</b>&#160;&#160;&#160;(-1504)</td></tr>
+<tr class="memdesc:ga77cc8b09329703df0236cb422829bcbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">JPEG encoding failure. This usually means the JPEG is not in a format accepted by the encoder (progressive DCT, wrong colour space, dimensions not multiples of 16, etc.). <br /></td></tr>
+<tr class="separator:ga77cc8b09329703df0236cb422829bcbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga79424cced7516ded1d1f509dfd54ec72" id="r_ga79424cced7516ded1d1f509dfd54ec72"><td class="memItemLeft" align="right" valign="top"><a id="ga79424cced7516ded1d1f509dfd54ec72" name="ga79424cced7516ded1d1f509dfd54ec72"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_NOT_INITIALIZED</b>&#160;&#160;&#160;(-1505)</td></tr>
+<tr class="memdesc:ga79424cced7516ded1d1f509dfd54ec72"><td class="mdescLeft">&#160;</td><td class="mdescRight">begin() has not been called, or returned an error. <br /></td></tr>
+<tr class="separator:ga79424cced7516ded1d1f509dfd54ec72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4844158bceb256beb2c2499cde4582e" id="r_gaf4844158bceb256beb2c2499cde4582e"><td class="memItemLeft" align="right" valign="top"><a id="gaf4844158bceb256beb2c2499cde4582e" name="gaf4844158bceb256beb2c2499cde4582e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_NO_PACKET_BUFFER</b>&#160;&#160;&#160;(-1506)</td></tr>
+<tr class="memdesc:gaf4844158bceb256beb2c2499cde4582e"><td class="mdescLeft">&#160;</td><td class="mdescRight">transmit() was called but no image has been loaded with setImage(). <br /></td></tr>
+<tr class="separator:gaf4844158bceb256beb2c2499cde4582e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5ba391b8d6c13610c941ca9a42119d3d" id="r_ga5ba391b8d6c13610c941ca9a42119d3d"><td class="memItemLeft" align="right" valign="top"><a id="ga5ba391b8d6c13610c941ca9a42119d3d" name="ga5ba391b8d6c13610c941ca9a42119d3d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_ALL_SENT</b>&#160;&#160;&#160;(-1507)</td></tr>
+<tr class="memdesc:ga5ba391b8d6c13610c941ca9a42119d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">transmit() was called after all packets for the current image were sent. <br /></td></tr>
+<tr class="separator:ga5ba391b8d6c13610c941ca9a42119d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8df0f9ff64a8703e4a2fa3ed75ac8fdf" id="r_ga8df0f9ff64a8703e4a2fa3ed75ac8fdf"><td class="memItemLeft" align="right" valign="top"><a id="ga8df0f9ff64a8703e4a2fa3ed75ac8fdf" name="ga8df0f9ff64a8703e4a2fa3ed75ac8fdf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_JPEG_TRUNCATED</b>&#160;&#160;&#160;(-1508)</td></tr>
+<tr class="memdesc:ga8df0f9ff64a8703e4a2fa3ed75ac8fdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The JPEG data appears to be truncated: the encoder requested more input after all bytes had already been consumed (no JPEG EOI marker found). <br /></td></tr>
+<tr class="separator:ga8df0f9ff64a8703e4a2fa3ed75ac8fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga21f670026156db56419d531f76f125bb" id="r_ga21f670026156db56419d531f76f125bb"><td class="memItemLeft" align="right" valign="top"><a id="ga21f670026156db56419d531f76f125bb" name="ga21f670026156db56419d531f76f125bb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_INTERNAL_MISMATCH</b>&#160;&#160;&#160;(-1509)</td></tr>
+<tr class="memdesc:ga21f670026156db56419d531f76f125bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two encoding passes yielded a different packet count. <br /></td></tr>
+<tr class="separator:ga21f670026156db56419d531f76f125bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04e051097c908d9c8793f7adf0769fd2" id="r_ga04e051097c908d9c8793f7adf0769fd2"><td class="memItemLeft" align="right" valign="top"><a id="ga04e051097c908d9c8793f7adf0769fd2" name="ga04e051097c908d9c8793f7adf0769fd2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_INVALID_PACKET</b>&#160;&#160;&#160;(-1510)</td></tr>
+<tr class="memdesc:ga04e051097c908d9c8793f7adf0769fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The received SSDV packet was too short, failed CRC and/or RS-FEC validation. <br /></td></tr>
+<tr class="separator:ga04e051097c908d9c8793f7adf0769fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad92811efc2d53c9a8aa8ad2f4ce51cac" id="r_gad92811efc2d53c9a8aa8ad2f4ce51cac"><td class="memItemLeft" align="right" valign="top"><a id="gad92811efc2d53c9a8aa8ad2f4ce51cac" name="gad92811efc2d53c9a8aa8ad2f4ce51cac"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_DECODE_FAILED</b>&#160;&#160;&#160;(-1511)</td></tr>
+<tr class="memdesc:gad92811efc2d53c9a8aa8ad2f4ce51cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal ssdv decoder ran into an error while processing a packet. <br /></td></tr>
+<tr class="separator:gad92811efc2d53c9a8aa8ad2f4ce51cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e420f330a72079b504e0ca8109e6973" id="r_ga4e420f330a72079b504e0ca8109e6973"><td class="memItemLeft" align="right" valign="top"><a id="ga4e420f330a72079b504e0ca8109e6973" name="ga4e420f330a72079b504e0ca8109e6973"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_BUFFER_TOO_SMALL</b>&#160;&#160;&#160;(-1512)</td></tr>
+<tr class="memdesc:ga4e420f330a72079b504e0ca8109e6973"><td class="mdescLeft">&#160;</td><td class="mdescRight">The statically sized buffer is too small for the requested image. <br /></td></tr>
+<tr class="separator:ga4e420f330a72079b504e0ca8109e6973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad3ce9d7af2c973db184885c81b8f3afd" id="r_gad3ce9d7af2c973db184885c81b8f3afd"><td class="memItemLeft" align="right" valign="top"><a id="gad3ce9d7af2c973db184885c81b8f3afd" name="gad3ce9d7af2c973db184885c81b8f3afd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_NO_JPEG</b>&#160;&#160;&#160;(-1513)</td></tr>
+<tr class="memdesc:gad3ce9d7af2c973db184885c81b8f3afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The image was not fully received yet. <br /></td></tr>
+<tr class="separator:gad3ce9d7af2c973db184885c81b8f3afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga953b10ed9dc2cbbc12f5a8add10dbd62" id="r_ga953b10ed9dc2cbbc12f5a8add10dbd62"><td class="memItemLeft" align="right" valign="top"><a id="ga953b10ed9dc2cbbc12f5a8add10dbd62" name="ga953b10ed9dc2cbbc12f5a8add10dbd62"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_BUFFER_IN_USE</b>&#160;&#160;&#160;(-1514)</td></tr>
+<tr class="memdesc:ga953b10ed9dc2cbbc12f5a8add10dbd62"><td class="mdescLeft">&#160;</td><td class="mdescRight">The static packet buffer is in use by another <a class="el" href="class_s_s_d_v_client.html" title="Client for SSDV image transmission and reception. Encodes a baseline JPEG into 256-byte SSDV packets ...">SSDVClient</a> instance. Only one instance can hold an image when RADIOLIB_STATIC_ONLY is enabled. <br /></td></tr>
+<tr class="separator:ga953b10ed9dc2cbbc12f5a8add10dbd62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>

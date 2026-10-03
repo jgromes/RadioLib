@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['values_0',['values',['../struct_module_1_1_rf_switch_mode__t.html#a694fecae172f868d8ca400319920ed66',1,'Module::RfSwitchMode_t']]],
-  ['values_20aliases_1',['Data shaping filter values aliases.',['../group__config__shaping.html',1,'']]],
-  ['variablepacketlengthmode_2',['variablepacketlengthmode',['../class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f',1,'CC1101::variablePacketLengthMode()'],['../class_l_r11x0.html#adcd56cf63e91449b6cd03782a69c3451',1,'LR11x0::variablePacketLengthMode()'],['../class_l_r2021.html#a68728e2b6347b49bae942a9360f40988',1,'LR2021::variablePacketLengthMode()'],['../class_r_f69.html#af434c67aabe02258ee6696a59973617b',1,'RF69::variablePacketLengthMode()'],['../class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a',1,'Si443x::variablePacketLengthMode()'],['../class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d',1,'SX126x::variablePacketLengthMode()'],['../class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c',1,'SX127x::variablePacketLengthMode()'],['../class_s_x128x.html#a5ddb01757b3b9f3fa1b82b9419fc9340',1,'SX128x::variablePacketLengthMode()']]],
-  ['variables_3',['Module Hardware Configuration Variables',['../group__module__config__vars.html',1,'']]],
-  ['verifycmac_4',['verifyCMAC',['../class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455',1,'RadioLibAES128']]],
-  ['viscode_5',['visCode',['../struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820',1,'SSTVMode_t']]]
+  ['updatecmac_0',['updateCMAC',['../class_radio_lib_a_e_s128.html#aeec27beaeabfd82807db2f09e7c8dd4e',1,'RadioLibAES128']]],
+  ['updatefirmware_1',['updateFirmware',['../class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85',1,'LR11x0']]],
+  ['updategnssalmanac_2',['updateGnssAlmanac',['../class_l_r11x0.html#a96aa9566399e46fc03f2b73b44058e3f',1,'LR11x0']]],
+  ['uploadpatch_3',['uploadPatch',['../class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1',1,'SX126x']]],
+  ['used_20by_20radiolib_4',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
+  ['user_5',['user',['../struct_lo_ra_w_a_n_mac_command__t.html#a269530a63c3e2a66393fb10286a3b5b6',1,'LoRaWANMacCommand_t']]],
+  ['useregulatorldo_6',['useRegulatorLDO',['../group__module__config__vars.html#ga383002c662713c23a00b32deaeb524d1',1,'SX126x']]],
+  ['userepeaters_7',['useRepeaters',['../class_a_p_r_s_client.html#a454fb0a3423f75e909b16640b27b176a',1,'APRSClient']]]
 ];

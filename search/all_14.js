@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['waitformicroseconds_0',['waitForMicroseconds',['../class_module.html#a7df4c687249c07af2594a5f7ad0a946f',1,'Module']]],
-  ['width_1',['width',['../struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40',1,'SSTVMode_t']]],
-  ['width_20array_2',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]],
-  ['widths_3',['widths',['../struct_module_1_1_s_p_i_config__t.html#a8cd88af331563749f10ac69b63e1755a',1,'Module::SPIConfig_t']]],
-  ['widths_20in_20module_3a_3aspiconfig_20width_20array_4',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]],
-  ['wifiscan_5',['wifiScan',['../class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab',1,'LR11x0']]],
-  ['write_6',['write',['../class_bell_client.html#a69bd78bf3be2724b4f34c80c2bd3a6df',1,'BellClient::write()'],['../class_f_s_k4_client.html#a78ead0e1e85706ae513edbceb2184925',1,'FSK4Client::write(const uint8_t *buff, size_t len)'],['../class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22',1,'FSK4Client::write(uint8_t b)'],['../class_hell_client.html#af557774ad72c24a94faff8c2be30f0d1',1,'HellClient::write()'],['../class_morse_client.html#a4a9cf8bf1a8bd270417a1a9fca660ef1',1,'MorseClient::write()'],['../class_r_t_t_y_client.html#a23220f58b7bda1f24b6343875561586a',1,'RTTYClient::write()']]]
+  ['values_0',['values',['../struct_module_1_1_rf_switch_mode__t.html#a694fecae172f868d8ca400319920ed66',1,'Module::RfSwitchMode_t']]],
+  ['values_20aliases_1',['Data shaping filter values aliases.',['../group__config__shaping.html',1,'']]],
+  ['variablepacketlengthmode_2',['variablepacketlengthmode',['../class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f',1,'CC1101::variablePacketLengthMode()'],['../class_l_r11x0.html#adcd56cf63e91449b6cd03782a69c3451',1,'LR11x0::variablePacketLengthMode()'],['../class_l_r2021.html#a68728e2b6347b49bae942a9360f40988',1,'LR2021::variablePacketLengthMode()'],['../class_r_f69.html#af434c67aabe02258ee6696a59973617b',1,'RF69::variablePacketLengthMode()'],['../class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a',1,'Si443x::variablePacketLengthMode()'],['../class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d',1,'SX126x::variablePacketLengthMode()'],['../class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c',1,'SX127x::variablePacketLengthMode()'],['../class_s_x128x.html#a5ddb01757b3b9f3fa1b82b9419fc9340',1,'SX128x::variablePacketLengthMode()']]],
+  ['variables_3',['Module Hardware Configuration Variables',['../group__module__config__vars.html',1,'']]],
+  ['verifycmac_4',['verifyCMAC',['../class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455',1,'RadioLibAES128']]],
+  ['viscode_5',['visCode',['../struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820',1,'SSTVMode_t']]]
 ];
