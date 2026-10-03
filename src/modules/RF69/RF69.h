@@ -14,6 +14,10 @@
 #define RADIOLIB_RF69_MAX_PACKET_LENGTH                         64
 #define RADIOLIB_RF69_CRYSTAL_FREQ                              32.0f
 #define RADIOLIB_RF69_DIV_EXPONENT                              19
+#define RADIOLIB_RF69_LP_POUT_MIN                               -18
+#define RADIOLIB_RF69_LP_POUT_MAX                               13
+#define RADIOLIB_RF69_HP_POUT_MIN                               -2
+#define RADIOLIB_RF69_HP_POUT_MAX                               20
 
 // RF69 register map
 #define RADIOLIB_RF69_REG_FIFO                                  0x00
@@ -797,20 +801,20 @@ class RF69: public PhysicalLayer {
       low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
       Doest not force high power mode; for modules using high power port,
       use RF69::setOutputPower(pwr, true)
-      \param pwr Output power to be set in dBm.
+      \param power Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr) override;
+    int16_t setOutputPower(int8_t power) override;
 
     /*!
       \brief Sets output power. Allowed values range from -18 to 13 dBm for
       low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
-      \param pwr Output power to be set in dBm.
+      \param power Output power to be set in dBm.
       \param highPower Set to true when using modules high power port (RF69H/HC/HCW),
       or to false for models without high power port - RF69C/CW.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr, bool highPower);
+    int16_t setOutputPower(int8_t power, bool highPower);
 
     /*!
       \brief Sets sync word. Up to 8 bytes can be set as sync word.

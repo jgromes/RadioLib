@@ -5,6 +5,7 @@
 
 LR1120::LR1120(Module* mod) : LR11x0(mod) {
   chipType = RADIOLIB_LR11X0_DEVICE_LR1120;
+  this->updatePowerLimits(false);
 }
 
 int16_t LR1120::begin(const ConfigLoRa_t& cfg) {
@@ -107,6 +108,9 @@ int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
   RADIOLIB_ASSERT(state);
   this->freqMHz = freq;
   this->highFreq = (freq > 1000.0f);
+  
+  // power limits depend on the frequency band
+  this->updatePowerLimits(this->highFreq);
 
   // apply workaround for GFSK
   return(workaroundGFSK());
@@ -117,9 +121,21 @@ int16_t LR1120::setOutputPower(int8_t power) {
 }
 
 int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs) {
-  // check if power value is configurable
-  int16_t state = this->checkOutputPower(power, NULL, forceHighPower);
+  // apply offset for external PA
+  int8_t pwr = power;
+  int8_t lutBase = this->highFreq ? RADIOLIB_LR112X_HF_POUT_MIN : RADIOLIB_LR112X_LP_POUT_MIN;
+  int16_t state = this->applyOutputPowerOffset(lutBase, &power, &pwr);
   RADIOLIB_ASSERT(state);
+
+  // check if power value is configurable
+  bool useHp = forceHighPower || (pwr > RADIOLIB_LR112X_LP_POUT_MAX);
+  if(this->highFreq) {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR112X_HF_POUT_MIN, RADIOLIB_LR112X_HF_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else if(useHp) {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR112X_HP_POUT_MIN, RADIOLIB_LR112X_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR112X_LP_POUT_MIN, RADIOLIB_LR112X_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
 
   // determine whether to use HP or LP PA and check range accordingly
   uint8_t paSel = 0;
@@ -128,7 +144,7 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   if(this->highFreq) {
     paSel = 2;
     this->txMode = LR11x0::MODE_TX_HF;
-  } else if(forceHighPower || (power > 14)) {
+  } else if(useHp) {
     paSel = 1;
     paSupply = 1;
     this->txMode = LR11x0::MODE_TX_HP;
@@ -138,37 +154,8 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
 
   // update PA config and set output power - always use VBAT for high-power PA
   // the value returned by LRxxxx class is offset by 3 for LR11x0
-  state = LR11x0::setOutputPower(power, paSel, paSupply, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
+  state = LR11x0::setOutputPower(pwr, paSel, paSupply, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
   return(state);
-}
-
-int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped) {
-  return(checkOutputPower(power, clipped, false));
-}
-
-int16_t LR1120::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) {
-  if(this->highFreq) {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  if(forceHighPower || (power > 14)) {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
-  } else {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
-  }
-  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LR1120::setModem(ModemType_t modem) {
@@ -186,6 +173,17 @@ int16_t LR1120::setModem(ModemType_t modem) {
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
   return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
+void LR1120::updatePowerLimits(bool highFreq) {
+  if(highFreq) {
+    this->powerMin = RADIOLIB_LR112X_HF_POUT_MIN;
+    this->powerMax = RADIOLIB_LR112X_HF_POUT_MAX;
+  } else {
+    this->powerMin = RADIOLIB_LR112X_LP_POUT_MIN;
+    this->powerMax = RADIOLIB_LR112X_HP_POUT_MAX;
+  }
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 #endif

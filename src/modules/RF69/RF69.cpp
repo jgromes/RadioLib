@@ -6,6 +6,9 @@ RF69::RF69(Module* module) : PhysicalLayer() {
   this->freqStep = RADIOLIB_RF69_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_RF69_MAX_PACKET_LENGTH;
   this->mod = module;
+  this->powerMin = RADIOLIB_RF69_LP_POUT_MIN;
+  this->powerMax = RADIOLIB_RF69_HP_POUT_MAX;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t RF69::begin(const ConfigFSK_t& cfg) {
@@ -671,38 +674,42 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t RF69::setOutputPower(int8_t pwr) {
-  return(setOutputPower(pwr, false));
+int16_t RF69::setOutputPower(int8_t power) {
+  return(setOutputPower(power, false));
 }
 
-int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
+int16_t RF69::setOutputPower(int8_t power, bool highPower) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_RF69_LP_POUT_MIN, &power, &pwr);
+  RADIOLIB_ASSERT(state);
+
   if(highPower) {
-    RADIOLIB_CHECK_RANGE(pwr, -2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_RF69_HP_POUT_MIN, RADIOLIB_RF69_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   } else {
-    RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_RF69_LP_POUT_MIN, RADIOLIB_RF69_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
 
   // set mode to standby
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set output power
-  int16_t state;
   if(highPower) {
     // check if both PA1 and PA2 are needed
     if(pwr <= 10) {
       // -2 to 13 dBm, PA1 is enough
-      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_OFF | RADIOLIB_RF69_PA1_ON | RADIOLIB_RF69_PA2_OFF | (power + 18), 7, 0);
+      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_OFF | RADIOLIB_RF69_PA1_ON | RADIOLIB_RF69_PA2_OFF | (pwr + 18), 7, 0);
     } else if(pwr <= 17) {
       // 13 to 17 dBm, both PAs required
-      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_OFF | RADIOLIB_RF69_PA1_ON | RADIOLIB_RF69_PA2_ON | (power + 14), 7, 0);
+      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_OFF | RADIOLIB_RF69_PA1_ON | RADIOLIB_RF69_PA2_ON | (pwr + 14), 7, 0);
     } else {
       // 18 - 20 dBm, both PAs and hig power settings required
-      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_OFF | RADIOLIB_RF69_PA1_ON | RADIOLIB_RF69_PA2_ON | (power + 11), 7, 0);
+      state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_OFF | RADIOLIB_RF69_PA1_ON | RADIOLIB_RF69_PA2_ON | (pwr + 11), 7, 0);
     }
 
   } else {
     // low power module, use only PA0
-    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_ON | RADIOLIB_RF69_PA1_OFF | RADIOLIB_RF69_PA2_OFF | (power + 18), 7, 0);
+    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PA_LEVEL, RADIOLIB_RF69_PA0_ON | RADIOLIB_RF69_PA1_OFF | RADIOLIB_RF69_PA2_OFF | (pwr + 18), 7, 0);
   }
 
   // cache the power value

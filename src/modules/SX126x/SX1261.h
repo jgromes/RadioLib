@@ -34,14 +34,6 @@ class SX1261 : public SX1262 {
     */
     int16_t setOutputPower(int8_t power) override;
 
-    /*!
-      \brief Check if output power is configurable.
-      \param power Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-
 #if !RADIOLIB_GODMODE
   private:
 #endif

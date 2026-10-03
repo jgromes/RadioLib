@@ -19,6 +19,16 @@
 #define RADIOLIB_SX126X_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_SX126X_CRYSTAL_FREQ                            32.0f
 #define RADIOLIB_SX126X_DIV_EXPONENT                            25
+#define RADIOLIB_SX1261_POUT_MIN                                -17
+#define RADIOLIB_SX1261_POUT_MAX                                15
+#define RADIOLIB_SX1262_POUT_MIN                                -9
+#define RADIOLIB_SX1262_POUT_MAX                                22
+#define RADIOLIB_SX1268_POUT_MIN                                -9
+#define RADIOLIB_SX1268_POUT_MAX                                22
+#define RADIOLIB_STM32WLX_LP_POUT_MIN                           -17
+#define RADIOLIB_STM32WLX_LP_POUT_MAX                           14
+#define RADIOLIB_STM32WLX_HP_POUT_MIN                           -9
+#define RADIOLIB_STM32WLX_HP_POUT_MAX                           22
 
 // LR-FHSS packet lengths
 #define RADIOLIB_SX126X_LR_FHSS_MAX_ENC_SIZE                    (608)
@@ -891,6 +901,7 @@ class SX126x: public PhysicalLayer {
     int16_t setPacketParamsBPSK(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t payloadLenBits);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     int16_t setRegulatorMode(uint8_t mode);
+    int16_t setLoRaSymbNumTimeout(uint8_t symbolNum);
     uint8_t getStatus();
     uint32_t getPacketStatus();
     uint16_t getDeviceErrors();
