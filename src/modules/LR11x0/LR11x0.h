@@ -73,6 +73,12 @@ class LR11x0: public LRxxxx {
       \ingroup module_config_vars
     */
     float tcxoVoltage = 1.6;
+
+    /*!
+      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
+      \ingroup module_config_vars
+    */
+    bool standbyXOSC = false;
     
     /*!
       \brief Initialization method for LoRa modem.
@@ -162,7 +168,8 @@ class LR11x0: public LRxxxx {
     int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
-      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility).
+      Uses 13 MHz RC oscillator by default, or external oscillator if \ref standbyXOSC is set to true.
       \returns \ref status_codes
     */
     int16_t standby() override;
@@ -601,6 +608,14 @@ class LR11x0: public LRxxxx {
 
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+
+    /*!
+      \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
+      between Rx and Tx modes.
+      \param enable Set to true for XOSC standby, false for RC standby.
+      \returns \ref status_codes
+    */
+    int16_t setStandbyXOSC(bool enable);
 
     /*!
       \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
