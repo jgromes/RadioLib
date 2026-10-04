@@ -177,7 +177,7 @@
 #define RADIOLIB_LORAWAN_MAC_PROPRIETARY                        (0x80)
 
 // the maximum number of simultaneously available channels
-#define RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS               (16)
+#define RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS               (24)
 #define RADIOLIB_LORAWAN_MAX_NUM_SUBBANDS                       (12)
 #define RADIOLIB_LORAWAN_MAX_NUM_FIXED_CHANNELS                 (96)
 
