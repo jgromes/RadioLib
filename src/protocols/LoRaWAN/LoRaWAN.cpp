@@ -2640,6 +2640,12 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         return(true);
       }
 
+      // not part of the specification, but NACK an index that is out of range
+      if(macChIndex >= RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS) {
+        optOut[0] = 0;
+        return(true);
+      }
+
       // check if the outermost datarates are defined and if the device supports them
       if(this->band->dataRates[macDrMin].modem != RADIOLIB_MODEM_NONE && this->band->dataRates[macDrMax].modem != RADIOLIB_MODEM_NONE) {
         if(this->phyLayer->checkDataRate(this->band->dataRates[macDrMin].dr, this->band->dataRates[macDrMin].modem) == RADIOLIB_ERR_NONE) {
