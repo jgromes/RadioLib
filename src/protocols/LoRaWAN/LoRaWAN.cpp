@@ -2478,7 +2478,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         if(power >= this->phyLayer->powerMin) {
           pwrAck = 1;
         } else {
-          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure Tx power %d, code %d!", power, state);
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure Tx power %d", power);
         }
       }
 
