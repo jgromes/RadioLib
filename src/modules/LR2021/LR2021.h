@@ -78,6 +78,12 @@ class LR2021: public LRxxxx {
     */
     float tcxoVoltage = 1.6;
 
+    /*!
+      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
+      \ingroup module_config_vars
+    */
+    bool standbyXOSC = false;
+
     // basic methods
 
     /*!
@@ -257,7 +263,8 @@ class LR2021: public LRxxxx {
     int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
-      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility).
+      Uses 13 MHz RC oscillator by default, or external oscillator if \ref standbyXOSC is set to true.
       \returns \ref status_codes
     */
     int16_t standby() override;
@@ -470,6 +477,14 @@ class LR2021: public LRxxxx {
       or the high-frequency 2.4 GHz PA (true).
     */
     void setPaTable(LR2021PaTableEntry_t* table, bool highFreq);
+
+    /*!
+      \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
+      between Rx and Tx modes.
+      \param enable Set to true for XOSC standby, false for RC standby.
+      \returns \ref status_codes
+    */
+    int16_t setStandbyXOSC(bool enable);
 
     /*!
       \brief Check if output power is configurable.
