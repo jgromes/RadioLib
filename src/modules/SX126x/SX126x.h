@@ -219,7 +219,8 @@ class SX126x: public PhysicalLayer {
     int16_t sleep(bool retainConfig);
 
     /*!
-      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility).
+      Uses 13 MHz RC oscillator by default, or external oscillator if \ref standbyXOSC is set to true.
       \returns \ref status_codes
     */
     int16_t standby() override;
