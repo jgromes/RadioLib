@@ -73,12 +73,6 @@ class LR11x0: public LRxxxx {
       \ingroup module_config_vars
     */
     float tcxoVoltage = 1.6;
-
-    /*!
-      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
-      \ingroup module_config_vars
-    */
-    bool standbyXOSC = false;
     
     /*!
       \brief Initialization method for LoRa modem.
@@ -993,6 +987,7 @@ class LR11x0: public LRxxxx {
 
     uint8_t wifiScanMode = 0;
     bool gnss = false;
+    bool standbyXOSC = false;
     int16_t modSetup(uint8_t modem);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);

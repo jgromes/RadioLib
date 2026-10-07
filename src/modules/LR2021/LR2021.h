@@ -78,12 +78,6 @@ class LR2021: public LRxxxx {
     */
     float tcxoVoltage = 1.6;
 
-    /*!
-      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
-      \ingroup module_config_vars
-    */
-    bool standbyXOSC = false;
-
     // basic methods
 
     /*!
@@ -944,6 +938,8 @@ class LR2021: public LRxxxx {
 #endif
     uint8_t gainModeLf = RADIOLIB_LR2021_RX_BOOST_LF;
     uint8_t gainModeHf = RADIOLIB_LR2021_RX_BOOST_HF;
+
+    bool standbyXOSC = false;
 
     // cached FLRC parameters
     uint16_t bitRateFlrc = 0;
