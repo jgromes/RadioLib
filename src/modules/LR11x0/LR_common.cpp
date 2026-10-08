@@ -192,7 +192,9 @@ int16_t LRxxxx::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
   // the status check command doesn't return status in the same place as other read commands
   // but only as the first byte (as with any other command), hence LRxxxx::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  // the reply carries no status bytes of its own, so read it with the status length at zero,
+  // the same way LRxxxx::SPIcheckStatus does for this transfer
+  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, 0);
 
   // pass the replies
   if(stat1) { *stat1 = buff[0]; }

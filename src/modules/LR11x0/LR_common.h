@@ -143,6 +143,17 @@ class LRxxxx: public PhysicalLayer {
     */
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
+    /*!
+      \brief Read the chip status: Stat1, Stat2 and the IRQ word, as returned by any NOP transfer.
+      Stat2 carries the chip's current mode - RADIOLIB_LR11X0_STAT_2_MODE_* on LR11x0, the same field in
+      bits 2..0 on LR2021 - which is the only way to tell whether the radio is still in Rx.
+      \param stat1 Pointer to a variable for Stat1, or NULL.
+      \param stat2 Pointer to a variable for Stat2, or NULL.
+      \param irq Pointer to a variable for the IRQ word, or NULL.
+      \returns \ref status_codes
+    */
+    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
+
   protected:
     Module* mod;
     
@@ -175,7 +186,6 @@ class LRxxxx: public PhysicalLayer {
     // the only difference is the 16-bit command code - however, having everything in this base class
     // will actually increase the binary size, because of the extra method calls that are needed
     // for that reason, only the methods that are 100% the same are kept here
-    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     uint8_t roundRampTime(uint32_t rampTimeUs);
     int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
