@@ -1550,13 +1550,15 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = setBufferBaseAddress();
       RADIOLIB_ASSERT(state);
 
-      // write packet to buffer
-      if(modem == RADIOLIB_SX128X_PACKET_TYPE_BLE) {
-        // first 2 bytes of BLE payload are PDU header
-        state = writeBuffer(cfg->transmit.data, cfg->transmit.len, 2);
-        RADIOLIB_ASSERT(state);
-      } else {
-        state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+      // write packet to buffer - unless the caller already did that with writeTxBuffer,
+      // which it signals by leaving the payload pointer empty
+      if(cfg->transmit.data != NULL) {
+        if(modem == RADIOLIB_SX128X_PACKET_TYPE_BLE) {
+          // first 2 bytes of BLE payload are PDU header
+          state = writeBuffer(cfg->transmit.data, cfg->transmit.len, 2);
+        } else {
+          state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+        }
         RADIOLIB_ASSERT(state);
       }
 
@@ -1575,6 +1577,28 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   this->stagedMode = mode;
   return(state);
+}
+
+int16_t SX128x::writeTxBuffer(const uint8_t* data, size_t len) {
+  if(data == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(len > RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // set buffer pointers
+  int16_t state = setBufferBaseAddress();
+  RADIOLIB_ASSERT(state);
+
+  // first 2 bytes of BLE payload are PDU header
+  const uint8_t offset = (getPacketType() == RADIOLIB_SX128X_PACKET_TYPE_BLE) ? 2 : 0;
+  return(writeBuffer(data, (uint8_t)len, offset));
+}
+
+int16_t SX128x::clearTxBuffer() {
+  // the data buffer is overwritten by the next write, so there is nothing to discard
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX128x::launchMode() {

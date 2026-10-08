@@ -742,6 +742,12 @@ class SX126x: public PhysicalLayer {
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
 
+    /*! \copydoc PhysicalLayer::writeTxBuffer */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
+
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Set interrupt service routine function to call when data bit is received in direct mode.

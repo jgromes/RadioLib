@@ -712,6 +712,12 @@ class LR2021: public LRxxxx {
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
 
+    /*! \copydoc PhysicalLayer::writeTxBuffer */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
+
     /*!
       \brief Read the supply voltage on the Vbat pin.
       \param bits Measurement resolution in bits, 8 to 13.

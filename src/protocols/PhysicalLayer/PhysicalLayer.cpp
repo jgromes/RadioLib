@@ -581,6 +581,16 @@ int16_t PhysicalLayer::launchMode() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::writeTxBuffer(const uint8_t* data, size_t len) {
+  (void)data;
+  (void)len;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::clearTxBuffer() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 #if RADIOLIB_INTERRUPT_TIMING
 void PhysicalLayer::setInterruptSetup(void (*func)(uint32_t)) {
   Module* mod = getMod();

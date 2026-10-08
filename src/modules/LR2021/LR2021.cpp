@@ -1058,13 +1058,19 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       RADIOLIB_ASSERT(state);
 
       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
+        // an LR-FHSS frame is built from the payload in this step, so it cannot be written ahead
+        if(cfg->transmit.data == NULL) {
+          return(RADIOLIB_ERR_UNSUPPORTED);
+        }
+
         // in LR-FHSS mode, the packet is built by the device
         //! \todo [LR2021] add configurable LR-FHSS device offset
         state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME, this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
-      } else {
-        // write packet to buffer
+      } else if(cfg->transmit.data != NULL) {
+        // write packet to buffer - unless the caller already did that with writeTxBuffer,
+        // which it signals by leaving the payload pointer empty
         state = writeRadioTxFifo(cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
@@ -1081,6 +1087,25 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   this->stagedMode = mode;
   return(state);
+}
+
+int16_t LR2021::writeTxBuffer(const uint8_t* data, size_t len) {
+  if(data == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(len > RADIOLIB_LR2021_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // the transmit FIFO appends, so anything left in it has to go first
+  int16_t state = clearTxFifo();
+  RADIOLIB_ASSERT(state);
+
+  return(writeRadioTxFifo(data, len));
+}
+
+int16_t LR2021::clearTxBuffer() {
+  return(clearTxFifo());
 }
 
 int16_t LR2021::launchMode() {
