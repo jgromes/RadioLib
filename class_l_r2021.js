@@ -88,6 +88,7 @@ var class_l_r2021 =
     [ "setRxBoostedGainMode", "class_l_r2021.html#ad3a71766e8fa71dc9224006b580de8f9", null ],
     [ "setSideDetector", "class_l_r2021.html#aca2d2d22e793e32c50efd5f01881979e", null ],
     [ "setSpreadingFactor", "class_l_r2021.html#aca6e0999997105037967da5e571c0b29", null ],
+    [ "setStandbyXOSC", "class_l_r2021.html#a214b1a9a6e6e9355fc4ce2a0f90ae75b", null ],
     [ "setSyncWord", "class_l_r2021.html#ab67fef9d1e4719d51871100e058be93d", null ],
     [ "setSyncWord", "class_l_r2021.html#a0792e44750e268eb38c3c2f28b13455a", null ],
     [ "setTCXO", "class_l_r2021.html#a2c2a421e4a6308a24166a23ff50e613c", null ],

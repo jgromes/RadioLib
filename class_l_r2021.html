@@ -178,7 +178,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a80fbe7fbdc6cd06e068b8cfa72cf5fc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.  <br /></td></tr>
 <tr class="separator:a80fbe7fbdc6cd06e068b8cfa72cf5fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab065a956b2fcc17169b5c228dc66b8c0" id="r_ab065a956b2fcc17169b5c228dc66b8c0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0">standby</a> () override</td></tr>
-<tr class="memdesc:ab065a956b2fcc17169b5c228dc66b8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, uses 13 MHz RC oscillator).  <br /></td></tr>
+<tr class="memdesc:ab065a956b2fcc17169b5c228dc66b8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility). Uses 13 MHz RC oscillator by default, or external oscillator if standbyXOSC is set to true.  <br /></td></tr>
 <tr class="separator:ab065a956b2fcc17169b5c228dc66b8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c1f96d15e812fe61f5be741d3a47c38" id="r_a1c1f96d15e812fe61f5be741d3a47c38"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a1c1f96d15e812fe61f5be741d3a47c38">standby</a> (uint8_t mode) override</td></tr>
 <tr class="memdesc:a1c1f96d15e812fe61f5be741d3a47c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
@@ -187,10 +187,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5016d7784e0204cf0cac1794c05e9f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
 <tr class="separator:a5016d7784e0204cf0cac1794c05e9f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e54c607b9c6e19406abc9f8ad29a817" id="r_a0e54c607b9c6e19406abc9f8ad29a817"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a0e54c607b9c6e19406abc9f8ad29a817">sleep</a> () override</td></tr>
-<tr class="memdesc:a0e54c607b9c6e19406abc9f8ad29a817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. Overload with warm start enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
+<tr class="memdesc:a0e54c607b9c6e19406abc9f8ad29a817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility). Uses 13 MHz RC oscillator...">standby()</a>. Overload with warm start enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="separator:a0e54c607b9c6e19406abc9f8ad29a817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade792fc1fdac2a5b68d76267cd24833f" id="r_ade792fc1fdac2a5b68d76267cd24833f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#ade792fc1fdac2a5b68d76267cd24833f">sleep</a> (bool retainConfig, uint32_t sleepTime)</td></tr>
-<tr class="memdesc:ade792fc1fdac2a5b68d76267cd24833f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>.  <br /></td></tr>
+<tr class="memdesc:ade792fc1fdac2a5b68d76267cd24833f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility). Uses 13 MHz RC oscillator...">standby()</a>.  <br /></td></tr>
 <tr class="separator:ade792fc1fdac2a5b68d76267cd24833f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea734806d4056f8ea47b4f828bcf8b3b" id="r_aea734806d4056f8ea47b4f828bcf8b3b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#aea734806d4056f8ea47b4f828bcf8b3b">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:aea734806d4056f8ea47b4f828bcf8b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <br /></td></tr>
@@ -249,6 +249,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a12f0e8db918e6eb860265bfeb6518ac4" id="r_a12f0e8db918e6eb860265bfeb6518ac4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a12f0e8db918e6eb860265bfeb6518ac4">setPaTable</a> (LR2021PaTableEntry_t *table, bool highFreq)</td></tr>
 <tr class="memdesc:a12f0e8db918e6eb860265bfeb6518ac4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets custom PA configuration table.  <br /></td></tr>
 <tr class="separator:a12f0e8db918e6eb860265bfeb6518ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214b1a9a6e6e9355fc4ce2a0f90ae75b" id="r_a214b1a9a6e6e9355fc4ce2a0f90ae75b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a214b1a9a6e6e9355fc4ce2a0f90ae75b">setStandbyXOSC</a> (bool enable)</td></tr>
+<tr class="memdesc:a214b1a9a6e6e9355fc4ce2a0f90ae75b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set standby mode to be used. XOSC standby uses more power, but allows faster switching between Rx and Tx modes.  <br /></td></tr>
+<tr class="separator:a214b1a9a6e6e9355fc4ce2a0f90ae75b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39c82cdc7a22f252dfd36b2516ee7c49" id="r_a39c82cdc7a22f252dfd36b2516ee7c49"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a39c82cdc7a22f252dfd36b2516ee7c49">checkOutputPower</a> (int8_t power, int8_t *clipped) override</td></tr>
 <tr class="memdesc:a39c82cdc7a22f252dfd36b2516ee7c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. This method is needed for compatibility with <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536" title="Check if output power is configurable. Must be implemented in module class if the module supports it.">PhysicalLayer::checkOutputPower</a>.  <br /></td></tr>
 <tr class="separator:a39c82cdc7a22f252dfd36b2516ee7c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3726,6 +3729,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a214b1a9a6e6e9355fc4ce2a0f90ae75b" name="a214b1a9a6e6e9355fc4ce2a0f90ae75b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a214b1a9a6e6e9355fc4ce2a0f90ae75b">&#9670;&#160;</a></span>setStandbyXOSC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setStandbyXOSC </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set standby mode to be used. XOSC standby uses more power, but allows faster switching between Rx and Tx modes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>Set to true for XOSC standby, false for RC standby. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="ab67fef9d1e4719d51871100e058be93d" name="ab67fef9d1e4719d51871100e058be93d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab67fef9d1e4719d51871100e058be93d">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
 
@@ -3902,7 +3932,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 </table>
 </div><div class="memdoc">
 
-<p>Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. Overload with warm start enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </p>
+<p>Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility). Uses 13 MHz RC oscillator...">standby()</a>. Overload with warm start enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">PhysicalLayer</a>.</p>
@@ -3935,7 +3965,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
       </table>
 </div><div class="memdoc">
 
-<p>Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. </p>
+<p>Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r2021.html#ab065a956b2fcc17169b5c228dc66b8c0" title="Sets the module to standby mode (overload for PhysicalLayer compatibility). Uses 13 MHz RC oscillator...">standby()</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">retainConfig</td><td>Set to true to retain configuration of the currently active modem ("warm start") or to false to discard current configuration ("cold start"). Defaults to true. </td></tr>
@@ -4020,7 +4050,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 </table>
 </div><div class="memdoc">
 
-<p>Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, uses 13 MHz RC oscillator). </p>
+<p>Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility). Uses 13 MHz RC oscillator by default, or external oscillator if standbyXOSC is set to true. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#acbcaf6aefcb77a354797e66222fe5018">PhysicalLayer</a>.</p>

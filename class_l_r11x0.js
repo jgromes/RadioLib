@@ -78,6 +78,7 @@ var class_l_r11x0 =
     [ "setRxBandwidth", "class_l_r11x0.html#a25f5ee68b3c2638ae613c87ed1c3fc64", null ],
     [ "setRxBoostedGainMode", "class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a", null ],
     [ "setSpreadingFactor", "class_l_r11x0.html#adf6895cbf7af7e00ea06c5b2b5040cb4", null ],
+    [ "setStandbyXOSC", "class_l_r11x0.html#a3cd3d9990425b46531ac7011f4c7694f", null ],
     [ "setSyncWord", "class_l_r11x0.html#ab8c54b1b105605ffe0908c5ff9362932", null ],
     [ "setSyncWord", "class_l_r11x0.html#aee7dbdbd76f4639395af4a0db17025a7", null ],
     [ "setTCXO", "class_l_r11x0.html#a971b4ccd1d5479e9d72aa9649e8fef55", null ],

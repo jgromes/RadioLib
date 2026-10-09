@@ -57,13 +57,13 @@ var NAVTREEINDEX =
 [
 "_a_d_s_b_8h_source.html",
 "class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e",
-"class_l_r2021.html#acf55c538925942546916a1ee2be075d8",
-"class_pi_hal.html#a7debfa73095e727950831af2e8aab5f7",
-"class_s_x1262.html#aad6afe7d3164690045c6d64a26ea4225",
-"class_s_x127x.html#a41089d9e5b45217d3e31ac22b5326b66",
-"classn_r_f24.html#a0db248d2bcdb4ca2b401e8e638442916",
-"group__status__codes.html#ga733a7f3f12109103384522dac4d1146e",
-"struct_l_r11x0_wifi_result_extended__t.html"
+"class_l_r2021.html#aca6e0999997105037967da5e571c0b29",
+"class_pi_hal.html#a6b0d64ed834b91f67b3344ce8c573d7b",
+"class_s_x1262.html#a9ceab9913d102c2fd657a1a91afaf9cc",
+"class_s_x127x.html#a3bd7fb49a3b27707aff6636ff6dee550",
+"classn_r_f24.html#a0429a9d6524005065e6fac21aaebdcbf",
+"group__status__codes.html#ga6b75df06d8c18366f85848331c49a1af",
+"struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

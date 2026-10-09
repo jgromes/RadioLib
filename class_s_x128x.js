@@ -69,6 +69,7 @@ var class_s_x128x =
     [ "setRfSwitchPins", "class_s_x128x.html#a5ba683fbc4a46418ce3736f224fb55f2", null ],
     [ "setRfSwitchTable", "class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958", null ],
     [ "setSpreadingFactor", "class_s_x128x.html#ae435f57132f76f4283abb870176acf54", null ],
+    [ "setStandbyXOSC", "class_s_x128x.html#a97a0a4580ecd0e58a468c765a1ac793d", null ],
     [ "setSyncWord", "class_s_x128x.html#a6eef935cc2170908aae1ec356d70dc5d", null ],
     [ "setSyncWord", "class_s_x128x.html#a1bef6b6f3058be6b1681c78334342bc1", null ],
     [ "setWhitening", "class_s_x128x.html#a8b3eea268f21bf911b6eaf37c5eb0b5f", null ],

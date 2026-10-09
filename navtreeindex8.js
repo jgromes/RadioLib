@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd":[4,0,53,2],
+"struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f":[4,0,53,5],
+"struct_l_r11x0_wifi_result__t.html#aedbfd390bee0e0995321e0a5caedac53":[4,0,53,4],
 "struct_l_r11x0_wifi_result_extended__t.html":[4,0,54],
 "struct_l_r11x0_wifi_result_extended__t.html#a16a6732a8af0332f64c0f6bcc0d5257f":[4,0,54,7],
 "struct_l_r11x0_wifi_result_extended__t.html#a403e9bde552ca9b07cdf49a2d295c563":[4,0,54,4],
