@@ -323,7 +323,7 @@ int16_t LR11x0::scanChannel(const ChannelScanConfig_t &config) {
 }
 
 int16_t LR11x0::standby() {
-  return(LR11x0::standby(RADIOLIB_LR11X0_STANDBY_RC));
+  return(LR11x0::standby(this->standbyXOSC ? RADIOLIB_LR11X0_STANDBY_XOSC : RADIOLIB_LR11X0_STANDBY_RC));
 }
 
 int16_t LR11x0::standby(uint8_t mode) {
@@ -1047,7 +1047,9 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
 
 int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
-  standby();
+  // force RC oscillator - typically this is called on startup,
+  // so we cannot rely on what the user may have provided
+  (void)standby(RADIOLIB_LR11X0_STANDBY_RC);
 
   // check RADIOLIB_LR11X0_ERROR_STAT_HF_XOSC_START_ERR flag and clear it
   uint16_t errors = 0;
@@ -1321,6 +1323,19 @@ void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
 
   // set it
   this->setDioAsRfSwitch(enable, modes[0], modes[1], modes[2], modes[3], modes[4], modes[5], modes[6]);
+}
+
+int16_t LR11x0::setStandbyXOSC(bool enable) {
+  // set the internal variable
+  this->standbyXOSC = enable;
+
+  // call standby to start the oscillator
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // update Rx/Tx fallback mode
+  uint8_t mode = this->standbyXOSC ? RADIOLIB_LR11X0_FALLBACK_MODE_STBY_XOSC : RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC;
+  return(this->setRxTxFallbackMode(mode));
 }
 
 int16_t LR11x0::forceLDRO(bool enable) {
@@ -1673,7 +1688,8 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR11x0");
 
   // set mode to standby
-  int16_t state = standby();
+  // force the device to use RC oscillator, as XOSC may not be ready yet
+  int16_t state = standby(RADIOLIB_LR11X0_STANDBY_RC);
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
@@ -1737,8 +1753,8 @@ bool LR11x0::findChip(uint8_t ver) {
 int16_t LR11x0::config(uint8_t modem) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
 
-  // set Rx/Tx fallback mode to STDBY_RC
-  state = this->setRxTxFallbackMode(RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC);
+  // set Rx/Tx fallback mode
+  state = this->setRxTxFallbackMode(this->standbyXOSC ? RADIOLIB_LR11X0_FALLBACK_MODE_STBY_XOSC : RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC);
   RADIOLIB_ASSERT(state);
 
   // clear IRQ

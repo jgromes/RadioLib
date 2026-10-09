@@ -355,7 +355,9 @@ int16_t LRxxxx::SPIcheckStatus(Module* mod) {
 int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile) {
   // build buffers - later we need to ensure endians are correct, 
   // so there is probably no way to do this without copying buffers and iterating
-  size_t buffLen = sizeof(uint32_t) + len*sizeof(uint32_t);
+  // LR2021 has 24-bit address, whereas LR11x0 has 32-bit
+  const size_t addrLen = (this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] >= Module::BITS_32) ? 4 : 3;
+  size_t buffLen = addrLen + len*sizeof(uint32_t);
   #if RADIOLIB_STATIC_ONLY
     uint8_t dataBuff[sizeof(uint32_t) + RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN];
   #else
@@ -364,8 +366,7 @@ int16_t LRxxxx::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
 
   // set the address or offset
   uint8_t* dataBuffPtr = reinterpret_cast<uint8_t*>(dataBuff);
-  if(this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] >= Module::BITS_32) {
-    // LR2021 has 24-bit address, whereas LR11x0 has 32-bit
+  if(addrLen == 4) {
     *(dataBuffPtr++) = (uint8_t)((addrOffset >> 24) & 0xFF);
   }
   

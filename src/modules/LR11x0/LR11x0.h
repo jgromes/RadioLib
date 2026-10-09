@@ -172,7 +172,8 @@ class LR11x0: public LRxxxx {
     int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
-      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility).
+      Uses 13 MHz RC oscillator by default, or external oscillator if \ref standbyXOSC is set to true.
       \returns \ref status_codes
     */
     int16_t standby() override;
@@ -613,6 +614,14 @@ class LR11x0: public LRxxxx {
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
+      \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
+      between Rx and Tx modes.
+      \param enable Set to true for XOSC standby, false for RC standby.
+      \returns \ref status_codes
+    */
+    int16_t setStandbyXOSC(bool enable);
+
+    /*!
       \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
       the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call LR11x0::autoLDRO()
       \param enable Force LDRO to be always enabled (true) or disabled (false).
@@ -988,6 +997,7 @@ class LR11x0: public LRxxxx {
 
     uint8_t wifiScanMode = 0;
     bool gnss = false;
+    bool standbyXOSC = false;
     int16_t modSetup(uint8_t modem);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);

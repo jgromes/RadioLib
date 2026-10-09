@@ -349,7 +349,7 @@ int16_t LR2021::setRegulatorDCDC() {
 // https://github.com/Lora-net/usp/blob/351b20153506/smtc_rac_lib/radio_drivers/lr20xx_driver/src/lr20xx_workarounds.c
 int16_t LR2021::setDCDCworkaround() {
   uint32_t adcCtrlRaw = 0;
-  int16_t state = this->readRegMem32(RADIOLIB_LR2021_REG_DCDC_ADC_CTRL, &adcCtrlRaw, sizeof(adcCtrlRaw));
+  int16_t state = this->readRegMem32(RADIOLIB_LR2021_REG_DCDC_ADC_CTRL, &adcCtrlRaw, 1);
   RADIOLIB_ASSERT(state);
   const uint32_t anaDec = ( adcCtrlRaw >> 8 ) & 0x7;
 
@@ -371,7 +371,7 @@ int16_t LR2021::setDCDCworkaround() {
     // semtech number: 4300000 * 1.048576f (lines 554, 666)
     freq_lf = 4508876;
   } 
-  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, 1);
   RADIOLIB_ASSERT(state);
   
   state = this->setFrequency(this->freqMHz, true);
@@ -387,7 +387,7 @@ int16_t LR2021::resetDCDCworkaround() {
 
   // semtech number: 2800000 * 1.048576f (lines 558, 666)
   uint32_t freq_lf = 2936012;
-  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, sizeof(freq_lf));
+  state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, 1);
   RADIOLIB_ASSERT(state);
 
   if(this->freqMHz) {

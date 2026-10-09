@@ -335,6 +335,8 @@
 #define RADIOLIB_LR2021_TIMESTAMP_SOURCE_HEADER                 (0x04UL << 0)   //  3     0                       LoRa header
 
 // RADIOLIB_LR2021_CMD_SET_CAD_PARAMS
+// NOTE: these are the exit modes of the RSSI-based CAD (all activity other than LoRa).
+//       LoRa CAD uses a different encoding - see RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_* below.
 #define RADIOLIB_LR2021_CAD_EXIT_MODE_FALLBACK                  (0x00UL << 0)   //  1     0     CAD exit mode: the configured fallback mode
 #define RADIOLIB_LR2021_CAD_EXIT_MODE_TX                        (0x01UL << 0)   //  1     0                    Tx
 #define RADIOLIB_LR2021_CAD_EXIT_MODE_RX                        (0x02UL << 0)   //  1     0                    Rx
@@ -407,6 +409,10 @@
 // RADIOLIB_LR2021_CMD_SET_LORA_CAD_PARAMS
 #define RADIOLIB_LR2021_LORA_CAD_PNR_DELTA_STANDARD             (0x00UL << 0)   //  7     0     LoRa CAD speed: normal
 #define RADIOLIB_LR2021_LORA_CAD_PNR_DELTA_FAST                 (0x08UL << 0)   //  7     0                     fast CAD
+// NOTE: LoRa CAD has its own exit mode encoding, which is NOT the same as the RSSI-based CAD above.
+#define RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK             (0x00UL << 0)   //  7     0     LoRa CAD exit mode: the configured fallback mode (CAD_ONLY)
+#define RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_RX                   (0x01UL << 0)   //  7     0                         Rx if activity detected (CAD_RX)
+#define RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_LBT                  (0x10UL << 0)   //  7     0                         Tx if no activity detected (CAD_LBT)
 
 // RADIOLIB_LR2021_CMD_SET_LORA_HOPPING
 #define RADIOLIB_LR2021_LORA_HOPPING_DISABLED                   (0x00UL << 6)   //  7     6     LoRa intra-packet hopping: disabled
