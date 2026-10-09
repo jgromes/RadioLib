@@ -214,12 +214,12 @@ int16_t SSTVClient::begin(const SSTVMode_t& mode) {
 }
 #endif
 
-int16_t SSTVClient::begin(float base, const SSTVMode_t& mode) {
+int16_t SSTVClient::begin(uint32_t base, const SSTVMode_t& mode) {
   // save mode
   txMode = mode;
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
+  baseFreq = base / phyLayer->freqStep;
 
   // configure for direct mode
   return(phyLayer->startDirect());

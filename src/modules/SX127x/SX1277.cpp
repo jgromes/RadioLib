@@ -35,19 +35,6 @@ int16_t SX1277::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t SX1277::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->gain = gain;
-  return(begin(cfg));
-}
-
 int16_t SX1277::beginFSK(const ConfigFSK_t& cfg) {
   // execute common part
   const uint8_t versions[] = { RADIOLIB_SX1278_CHIP_VERSION, RADIOLIB_SX1278_CHIP_VERSION_ALT, RADIOLIB_SX1278_CHIP_VERSION_RFM9X };
@@ -81,26 +68,14 @@ int16_t SX1277::beginFSK(const ConfigFSK_t& cfg) {
   return(state);
 }
 
-int16_t SX1277::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->enableOOK = enableOOK;
-  return(beginFSK(cfg));
-}
-
-int16_t SX1277::setFrequency(float freq) {
+int16_t SX1277::setFrequency(uint32_t freq) {
   // NOTE: The datasheet specifies Band 2 as 410-525 MHz, but the hardware has been
   // verified to work down to ~395 MHz. The lower bound is set here to 395 MHz to
   // accommodate real-world use cases (e.g. TinyGS satellites, radiosondes) while
   // adding a small margin below the 400 MHz practical limit.
-  if(!(((freq >= 137.0f) && (freq <= 175.0f)) ||
-       ((freq >= 395.0f) && (freq <= 525.0f)) ||
-       ((freq >= 862.0f) && (freq <= 1020.0f)))) {
+  if(!(((freq >= RADIOLIB_UNIT_MEGA(137)) && (freq <= RADIOLIB_UNIT_MEGA(175))) ||
+       ((freq >= RADIOLIB_UNIT_MEGA(395)) && (freq <= RADIOLIB_UNIT_MEGA(525))) ||
+       ((freq >= RADIOLIB_UNIT_MEGA(862)) && (freq <= RADIOLIB_UNIT_MEGA(1020))))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
 
@@ -192,15 +167,15 @@ int16_t SX1277::checkDataRate(DataRate_t dr, ModemType_t modem) {
   
   // select interpretation based on modem
   if(modem == RADIOLIB_MODEM_FSK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
-    if(!((dr.fsk.freqDev + dr.fsk.bitRate/2.0f <= 250.0f) && (dr.fsk.freqDev <= 200.0f))) {
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 500, RADIOLIB_UNIT_KILO(300), RADIOLIB_ERR_INVALID_BIT_RATE);
+    if(!((dr.fsk.freqDev + dr.fsk.bitRate/2 <= RADIOLIB_UNIT_KILO(250)) && (dr.fsk.freqDev <= RADIOLIB_UNIT_KILO(200)))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     }
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_MODEM_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 6, 9, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
-    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 7800, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
   
@@ -212,10 +187,12 @@ int16_t SX1277::checkDataRate(DataRate_t dr, ModemType_t modem) {
 int16_t SX1277::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginFSK());
+      ConfigFSK_t cfg;
+      return(this->beginFSK(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

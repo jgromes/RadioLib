@@ -66,7 +66,7 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // some LR11x0 have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio.tcxoVoltage = 1.6;
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));

@@ -138,13 +138,13 @@ class SSTVClient {
 
     /*!
       \brief Initialization method for 2-FSK.
-      \param base Base "0 Hz tone" RF frequency to be used in MHz.
+      \param base Base "0 Hz tone" RF frequency to be used in Hz.
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, 
       ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7,
       Robot36 and Robot37.
       \returns \ref status_codes
     */
-    int16_t begin(float base, const SSTVMode_t& mode);
+    int16_t begin(uint32_t base, const SSTVMode_t& mode);
 
     #if !RADIOLIB_EXCLUDE_AFSK
     /*!

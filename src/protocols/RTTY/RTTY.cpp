@@ -20,7 +20,7 @@ RTTYClient::RTTYClient(AFSKClient* audio) {
 }
 #endif
 
-int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc, uint8_t stopBits) {
+int16_t RTTYClient::begin(uint32_t base, uint32_t shift, uint16_t rate, uint8_t enc, uint8_t stopBits) {
   // save configuration
   RadioLibPrint::encoding = enc;
   stopBitsNum = stopBits;
@@ -46,7 +46,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   }
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
+  baseFreq = base / phyLayer->freqStep;
 
   // configure for direct mode
   return(phyLayer->startDirect());

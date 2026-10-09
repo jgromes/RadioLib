@@ -55,7 +55,7 @@ class ExternalRadio: public PhysicalLayer {
       \param freqDev Ignored.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Dummy implementation overriding PhysicalLayer.

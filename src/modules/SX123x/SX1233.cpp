@@ -48,7 +48,7 @@ int16_t SX1233::begin(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
-  this->rxBandwidth = 125.0;
+  this->rxBandwidth = RADIOLIB_RF69_DEFAULT_RXBW;
   state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
@@ -68,9 +68,9 @@ int16_t SX1233::begin(const ConfigFSK_t& cfg) {
   state = setPreambleLength(cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
-  // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
-  uint8_t syncWord[] = {0x2D, 0x01};
-  state = setSyncWord(syncWord, 2);
+  // set default sync word
+  uint8_t syncWord[] = RADIOLIB_RF69_DEFAULT_SW;
+  state = setSyncWord(syncWord, sizeof(syncWord));
   RADIOLIB_ASSERT(state);
 
   // set default packet length mode
@@ -91,30 +91,18 @@ int16_t SX1233::begin(const ConfigFSK_t& cfg) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLen;
-  return(this->begin(cfg));
-}
-
-int16_t SX1233::setBitRate(float br) {
+int16_t SX1233::setBitRate(uint32_t br) {
   // check high bit-rate operation
   uint8_t pllBandwidth = RADIOLIB_SX1233_PLL_BW_LOW_BIT_RATE;
-  if((fabsf(br - 500.0f) < 0.1f) || (fabsf(br - 600.0f) < 0.1f)) {
+  if((br == RADIOLIB_UNIT_KILO(500)) || (br == RADIOLIB_UNIT_KILO(600))) {
     pllBandwidth = RADIOLIB_SX1233_PLL_BW_HIGH_BIT_RATE;
   } else {
     // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine
-    RADIOLIB_CHECK_RANGE(br, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 500, RADIOLIB_UNIT_KILO(300), RADIOLIB_ERR_INVALID_BIT_RATE);
   }
-  
 
   // check bitrate-bandwidth ratio
-  if(!(br < 2000 * this->rxBandwidth)) {
+  if(!(br < 2 * this->rxBandwidth)) {
     return(RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO);
   }
 
@@ -127,9 +115,9 @@ int16_t SX1233::setBitRate(float br) {
   RADIOLIB_ASSERT(state);
 
   // set bit rate
-  uint16_t bitRate = 32000 / br;
-  state = mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
-  state |= mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
+  uint32_t bitRateRaw = RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ) / br;
+  state = mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRateRaw & 0xFF00) >> 8, 7, 0);
+  state |= mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRateRaw & 0x00FF, 7, 0);
   if(state == RADIOLIB_ERR_NONE) {
     this->bitRate = br;
   }
