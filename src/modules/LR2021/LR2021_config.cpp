@@ -432,7 +432,7 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t LR2021::setTCXO(float voltage, uint32_t delay) {
+int16_t LR2021::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
   // force RC oscillator - typically this is called on startup,
   // so we cannot rely on what the user may have provided
   (void)standby(RADIOLIB_LR2021_STANDBY_RC);
