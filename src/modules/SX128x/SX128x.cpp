@@ -17,6 +17,9 @@ SX128x::SX128x(Module* mod) : PhysicalLayer() {
   this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_SX128X_IRQ_CAD_DONE;
   this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_SX128X_IRQ_CAD_DETECTED;
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
+  this->powerMin = RADIOLIB_SX128X_POUT_MIN;
+  this->powerMax = RADIOLIB_SX128X_POUT_MAX;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t SX128x::begin(const ConfigLoRa_t& cfg) {
@@ -729,21 +732,17 @@ int16_t SX128x::setCodingRate(uint8_t cr, bool longInterleaving) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t SX128x::setOutputPower(int8_t pwr) {
-  // check if power value is configurable
-  int16_t state = checkOutputPower(pwr, NULL);
+int16_t SX128x::setOutputPower(int8_t power) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX128X_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-  this->power = pwr + 18;
-  return(setTxParams(this->power));
-}
+  // check if power value is configurable
+  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX128X_POUT_MIN, RADIOLIB_SX128X_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
-int16_t SX128x::checkOutputPower(int8_t pwr, int8_t* clipped) {
-  if(clipped) {
-    *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, pwr));
-  }
-  RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  return(RADIOLIB_ERR_NONE);
+  this->txPower = pwr - RADIOLIB_SX128X_POUT_MIN;
+  return(setTxParams(this->txPower));
 }
 
 int16_t SX128x::setModem(ModemType_t modem) {
@@ -1554,7 +1553,7 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       RADIOLIB_ASSERT(state);
 
       // update output power
-      state = setTxParams(this->power);
+      state = setTxParams(this->txPower);
       RADIOLIB_ASSERT(state);
 
       // set buffer pointers

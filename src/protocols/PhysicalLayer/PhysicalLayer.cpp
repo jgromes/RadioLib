@@ -136,6 +136,7 @@ int16_t PhysicalLayer::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlag
   RadioModeConfig_t cfg = {
     .receive = {
       .timeout = timeout,
+      .syncSymbols = 0,
       .irqFlags = irqFlags,
       .irqMask = irqMask,
       .len = len,
@@ -269,12 +270,6 @@ int16_t PhysicalLayer::invertIQ(bool enable) {
 
 int16_t PhysicalLayer::setOutputPower(int8_t power) {
   (void)power;
-  return(RADIOLIB_ERR_UNSUPPORTED);
-}
-
-int16_t PhysicalLayer::checkOutputPower(int8_t power, int8_t* clipped) {
-  (void)power;
-  (void)clipped;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -640,5 +635,34 @@ int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, ui
     symbolLength * (minSymbols + 1)); //(B)
   RADIOLIB_DEBUG_BASIC_PRINTLN("Auto wake period: %lu", (long unsigned int)*wakePeriod);
 
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::setOutputPowerOffset(int8_t offset) {
+  memset(this->paOffsetLut, offset, sizeof(this->paOffsetLut));
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::setOutputPowerOffset(const int8_t* lut, size_t steps) {
+  RADIOLIB_ASSERT_PTR(lut);
+  if(steps > sizeof(this->paOffsetLut)) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  memcpy(this->paOffsetLut, lut, steps);
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut) {
+  RADIOLIB_ASSERT_PTR(pwrIn);
+  RADIOLIB_ASSERT_PTR(pwrOut);
+  const int idx = (int)*pwrIn - (int)base;
+  if((idx < 0) || (idx >= (int)this->paSteps)) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  *pwrOut = *pwrIn - this->paOffsetLut[idx];
+
+  // update the minimum and maximum supported power
+  this->powerMin = base + this->paOffsetLut[0];
+  this->powerMax = base + this->paSteps - 1 + this->paOffsetLut[this->paSteps];
   return(RADIOLIB_ERR_NONE);
 }

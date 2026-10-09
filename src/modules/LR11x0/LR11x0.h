@@ -21,6 +21,16 @@
 #define RADIOLIB_LR11X0_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_LR11X0_CRYSTAL_FREQ                            32.0
 #define RADIOLIB_LR11X0_DIV_EXPONENT                            25
+#define RADIOLIB_LR1110_LP_POUT_MIN                             -17
+#define RADIOLIB_LR1110_LP_POUT_MAX                             14
+#define RADIOLIB_LR1110_HP_POUT_MIN                             -9
+#define RADIOLIB_LR1110_HP_POUT_MAX                             22
+#define RADIOLIB_LR112X_LP_POUT_MIN                             -17
+#define RADIOLIB_LR112X_LP_POUT_MAX                             14
+#define RADIOLIB_LR112X_HP_POUT_MIN                             -9
+#define RADIOLIB_LR112X_HP_POUT_MAX                             22
+#define RADIOLIB_LR112X_HF_POUT_MIN                             -18
+#define RADIOLIB_LR112X_HF_POUT_MAX                             13
 
 /*!
   \class LR11x0
@@ -870,7 +880,7 @@ class LR11x0: public LRxxxx {
     int16_t setCad(void);
     int16_t setTxCw(void);
     int16_t setTxInfinitePreamble(void);
-    int16_t setLoRaSynchTimeout(uint8_t symbolNum);
+    int16_t setLoRaSynchTimeout(uint16_t numSymbols);
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
     int16_t setRangingReqAddr(uint32_t addr);
     int16_t getRangingResult(uint8_t type, float* res);
