@@ -72,12 +72,6 @@ class SX126x: public PhysicalLayer {
     explicit SX126x(Module* mod);
 
     /*!
-      \brief Whether to use XOSC (true) or RC (false) oscillator in standby mode. Defaults to false.
-      \ingroup module_config_vars
-    */
-    bool standbyXOSC = false;
-
-    /*!
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, either set this value to 0.
@@ -936,6 +930,7 @@ class SX126x: public PhysicalLayer {
     uint16_t preambleLengthLoRa = 0;
     float bandwidthKhz = 0;
     bool ldroAuto = true;
+    bool standbyXOSC = false;
 
     uint32_t bitRate = 0, frequencyDev = 0;
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, whitening = 0, packetType = 0;
