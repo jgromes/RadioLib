@@ -53,6 +53,7 @@ void setup() {
   Serial.print(F("[SX1280] Initializing ... "));
   ConfigLoRa_t config1;
   config1.frequency = RADIOLIB_UNIT_MEGA(2400);
+  config1.bandwidth = 812500;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
