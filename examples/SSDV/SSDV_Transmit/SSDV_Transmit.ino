@@ -45,8 +45,8 @@ void setup() {
 
   // initialise the radio
   ConfigLoRa_t config;
-  config.frequency = 434.250;
-  config.bandwidth = 62.5;
+  config.frequency = RADIOLIB_UNIT_KILO(434250);
+  config.bandwidth = 62500;
   int16_t state = radio.begin(config);
 
   if(state != RADIOLIB_ERR_NONE) {
