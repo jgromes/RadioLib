@@ -527,7 +527,8 @@ class SX128x: public PhysicalLayer {
     int16_t sleep(bool retainConfig);
 
     /*!
-      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility).
+      Uses 13 MHz RC oscillator by default, or external oscillator if \ref standbyXOSC is set to true.
       \returns \ref status_codes
     */
     int16_t standby() override;
@@ -937,6 +938,14 @@ class SX128x: public PhysicalLayer {
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
+      \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
+      between Rx and Tx modes.
+      \param enable Set to true for XOSC standby, false for RC standby.
+      \returns \ref status_codes
+    */
+    int16_t setStandbyXOSC(bool enable);
+
+    /*!
      \brief Dummy random method, to ensure PhysicalLayer compatibility.
      \returns Always returns 0.
    */
@@ -1018,6 +1027,7 @@ class SX128x: public PhysicalLayer {
     // common parameters
     uint8_t power = 0;
     uint32_t rxTimeout = 0;
+    bool standbyXOSC = false;
 
     // cached LoRa parameters
     uint8_t invertIQEnabled = RADIOLIB_SX128X_LORA_IQ_STANDARD;

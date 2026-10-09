@@ -179,6 +179,19 @@ void LR2021::setPaTable(LR2021PaTableEntry_t* table, bool highFreq) {
   this->paOptTable[highFreq] = table;
 }
 
+int16_t LR2021::setStandbyXOSC(bool enable) {
+  // set the internal variable
+  this->standbyXOSC = enable;
+
+  // call standby to start the oscillator
+  int16_t state = this->standbyXOSC ? standby(RADIOLIB_LR2021_STANDBY_XOSC) : standby(RADIOLIB_LR2021_STANDBY_RC);
+  RADIOLIB_ASSERT(state);
+
+  // update Rx/Tx fallback mode
+  uint8_t mode = this->standbyXOSC ? RADIOLIB_LR2021_FALLBACK_MODE_STBY_XOSC : RADIOLIB_LR2021_FALLBACK_MODE_STBY_RC;
+  return(setRxTxFallbackMode(mode));
+}
+
 int16_t LR2021::checkOutputPower(int8_t power, int8_t* clipped) {
   if(this->highFreq) {
     if(clipped) {
@@ -429,8 +442,9 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
 }
 
 int16_t LR2021::setTCXO(float voltage, uint32_t delay) {
-  // set mode to standby
-  standby();
+  // force RC oscillator - typically this is called on startup,
+  // so we cannot rely on what the user may have provided
+  (void)standby(RADIOLIB_LR2021_STANDBY_RC);
 
   // check oscillator startup error flag and clear it
   uint16_t errors = 0;

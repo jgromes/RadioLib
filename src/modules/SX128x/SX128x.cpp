@@ -240,7 +240,9 @@ int16_t SX128x::reset(bool verify) {
   RadioLibTime_t start = this->mod->hal->millis();
   while(true) {
     // try to set mode to standby
-    int16_t state = standby();
+    // force usage of RC standby here - if this is being called during startup,
+    // and user set standbyXOSC to true with TCXO, this would attempt to use the TCXO
+    int16_t state = standby(RADIOLIB_SX128X_STANDBY_RC);
     if(state == RADIOLIB_ERR_NONE) {
       // standby command successful
       return(RADIOLIB_ERR_NONE);
@@ -427,7 +429,7 @@ int16_t SX128x::sleep(bool retainConfig) {
 }
 
 int16_t SX128x::standby() {
-  return(SX128x::standby(RADIOLIB_SX128X_STANDBY_RC));
+  return(SX128x::standby(this->standbyXOSC ? RADIOLIB_SX128X_STANDBY_XOSC : RADIOLIB_SX128X_STANDBY_RC));
 }
 
 int16_t SX128x::standby(uint8_t mode) {
@@ -1457,6 +1459,15 @@ void SX128x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
 
 void SX128x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   this->mod->setRfSwitchTable(pins, table);
+}
+
+int16_t SX128x::setStandbyXOSC(bool enable) {
+  // set the internal variable
+  this->standbyXOSC = enable;
+
+  // call standby to start the oscillator
+  int16_t state = this->standbyXOSC ? standby(RADIOLIB_SX128X_STANDBY_XOSC) : standby(RADIOLIB_SX128X_STANDBY_RC);
+  return state;
 }
 
 uint8_t SX128x::randomByte() {

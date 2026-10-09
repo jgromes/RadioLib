@@ -434,7 +434,7 @@ int16_t LR2021::scanChannel(const ChannelScanConfig_t &cfg) {
 }
 
 int16_t LR2021::standby() {
-  return(this->standby(RADIOLIB_LR2021_STANDBY_RC));
+  return(LR2021::standby(this->standbyXOSC ? RADIOLIB_LR2021_STANDBY_XOSC : RADIOLIB_LR2021_STANDBY_RC));
 }
 
 int16_t LR2021::standby(uint8_t mode) {
@@ -744,7 +744,8 @@ int16_t LR2021::modSetup(float freq, uint8_t modem) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR2021");
 
   // set mode to standby
-  int16_t state = standby();
+  // force the device to use RC oscillator, as XOSC may not be ready yet
+  int16_t state = standby(RADIOLIB_LR2021_STANDBY_RC);
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
@@ -793,8 +794,8 @@ bool LR2021::findChip(void) {
 }
 
 int16_t LR2021::config(uint8_t modem) {
-  // set Rx/Tx fallback mode to STDBY_RC
-  int16_t state = this->setRxTxFallbackMode(RADIOLIB_LR2021_FALLBACK_MODE_STBY_RC);
+  // set Rx/Tx fallback mode
+  int16_t state = this->setRxTxFallbackMode(this->standbyXOSC ? RADIOLIB_LR2021_FALLBACK_MODE_STBY_XOSC : RADIOLIB_LR2021_FALLBACK_MODE_STBY_RC);
   RADIOLIB_ASSERT(state);
 
   // clear IRQ
