@@ -172,13 +172,17 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
-      \param config CAD configuration structure.
+      \param config CAD configuration structure. Its exitMode must be one of
+      RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK, RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_RX or
+      RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_LBT - the RADIOLIB_LR2021_CAD_EXIT_MODE_* values belong to the
+      RSSI-based CAD and are not valid here.
       \returns \ref status_codes
     */
     int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
-      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility).
+      Uses 13 MHz RC oscillator by default, or external oscillator if \ref standbyXOSC is set to true.
       \returns \ref status_codes
     */
     int16_t standby() override;
@@ -389,6 +393,14 @@ class LR2021: public LRxxxx {
       or the high-frequency 2.4 GHz PA (true).
     */
     void setPaTable(LR2021PaTableEntry_t* table, bool highFreq);
+
+    /*!
+      \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
+      between Rx and Tx modes.
+      \param enable Set to true for XOSC standby, false for RC standby.
+      \returns \ref status_codes
+    */
+    int16_t setStandbyXOSC(bool enable);
     
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
@@ -841,6 +853,8 @@ class LR2021: public LRxxxx {
 #endif
     uint8_t gainModeLf = RADIOLIB_LR2021_RX_BOOST_LF;
     uint8_t gainModeHf = RADIOLIB_LR2021_RX_BOOST_HF;
+
+    bool standbyXOSC = false;
 
     // cached FLRC parameters
     uint16_t bitRateFlrc = 0;
