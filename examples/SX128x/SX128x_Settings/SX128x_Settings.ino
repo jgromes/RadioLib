@@ -53,6 +53,7 @@ void setup() {
   Serial.print(F("[SX1280] Initializing ... "));
   ConfigLoRa_t config1;
   config1.frequency = 2400;
+  config1.bandwidth = 812.5;
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -74,7 +75,6 @@ void setup() {
   // sync word:                   0x12 (private network)
   // output power:                2 dBm
   // preamble length:             20 symbols
-  state = radio2.begin(2450.0, 1625.0, 7, 5, 0x12, 2, 20);
   #if (__cplusplus < 201402L)
     ConfigLoRa_t config2;
     config2.frequency = 2450.0;
