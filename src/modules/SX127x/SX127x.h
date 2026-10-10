@@ -1219,6 +1219,17 @@ class SX127x: public PhysicalLayer {
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
 
+    /*!
+      \copydoc PhysicalLayer::writeTxBuffer
+      \note Only available for the LoRa modem. In FSK/OOK the FIFO is written as a stream, with the
+      length and the optional address byte ahead of the payload, so the payload cannot be written on
+      its own; this reports RADIOLIB_ERR_WRONG_MODEM there.
+    */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
+
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Set interrupt service routine function to call when data bit is received in direct mode.

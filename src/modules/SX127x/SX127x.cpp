@@ -1819,6 +1819,13 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = setMode(RADIOLIB_SX127X_STANDBY);
 
       int16_t modem = getActiveModem();
+
+      // an empty payload pointer means the caller already wrote it with writeTxBuffer, which the
+      // FSK/OOK FIFO cannot do - there the length and address bytes are written below, ahead of it
+      if((cfg->transmit.data == NULL) && (modem != RADIOLIB_SX127X_LORA)) {
+        return(RADIOLIB_ERR_WRONG_MODEM);
+      }
+
       if(modem == RADIOLIB_SX127X_LORA) {
         // check packet length
         if(cfg->transmit.len > RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
@@ -1870,13 +1877,15 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       
       }
 
-      // write packet to FIFO
-      size_t packetLen = cfg->transmit.len;
-      if((modem == RADIOLIB_SX127X_FSK_OOK) && (cfg->transmit.len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)) {
-        packetLen = RADIOLIB_SX127X_FIFO_THRESH - 1;
-        this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_THRESH, RADIOLIB_SX127X_TX_START_FIFO_NOT_EMPTY, 7, 7);
+      // write packet to FIFO - unless the caller already did that with writeTxBuffer
+      if(cfg->transmit.data != NULL) {
+        size_t packetLen = cfg->transmit.len;
+        if((modem == RADIOLIB_SX127X_FSK_OOK) && (cfg->transmit.len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)) {
+          packetLen = RADIOLIB_SX127X_FIFO_THRESH - 1;
+          this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_THRESH, RADIOLIB_SX127X_TX_START_FIFO_NOT_EMPTY, 7, 7);
+        }
+        this->mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, cfg->transmit.data, packetLen);
       }
-      this->mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, cfg->transmit.data, packetLen);
     } break;
     
     default:
@@ -1885,6 +1894,39 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   this->stagedMode = mode;
   return(state);
+}
+
+int16_t SX127x::writeTxBuffer(const uint8_t* data, size_t len) {
+  if(data == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+
+  // in FSK/OOK the FIFO is a stream that starts with the length and the optional address byte,
+  // so the payload cannot be written ahead of them
+  if(getActiveModem() != RADIOLIB_SX127X_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+  if(len > RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // the FIFO is only accessible outside Rx and Tx
+  int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
+
+  // set FIFO pointers - the transmission reads from the Tx base address, so the pointer
+  // left behind by this write does not matter
+  state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_TX_BASE_ADDR, RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX);
+  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_ADDR_PTR, RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX);
+  RADIOLIB_ASSERT(state);
+
+  this->mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, data, len);
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t SX127x::clearTxBuffer() {
+  // the FIFO contents are overwritten by the next write, so there is nothing to discard
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX127x::launchMode() {
