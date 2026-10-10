@@ -171,6 +171,23 @@ int16_t PhysicalLayer::startTransmit(const uint8_t* data, size_t len, uint8_t ad
   return(this->launchMode());
 }
 
+int16_t PhysicalLayer::prestageTransmit(const uint8_t* data, size_t len, uint8_t addr) {
+  (void)data;
+  (void)len;
+  (void)addr;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+uint32_t PhysicalLayer::prestageId(const uint8_t* data, size_t len, uint8_t addr) {
+  // cheap non-cryptographic fingerprint (FNV-1a), only used to tell one payload from another;
+  // it touches RAM only, so it costs nothing next to the buffer write it saves
+  uint32_t id = 2166136261UL;
+  for(size_t i = 0; i < len; i++) {
+    id = (id ^ data[i]) * 16777619UL;
+  }
+  return((id ^ addr) * 16777619UL);
+}
+
 int16_t PhysicalLayer::finishTransmit() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }

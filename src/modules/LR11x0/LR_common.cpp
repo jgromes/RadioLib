@@ -167,6 +167,8 @@ RadioLibTime_t LRxxxx::calculateRxTimeout(RadioLibTime_t timeoutUs) {
 }
 
 int16_t LRxxxx::reset() {
+  this->prestagedLen = 0;
+
   // run the reset sequence
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelLow);

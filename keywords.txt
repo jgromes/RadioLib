@@ -143,6 +143,7 @@ setDio1Action	KEYWORD2
 clearDio0Action	KEYWORD2
 clearDio1Action	KEYWORD2
 startTransmit	KEYWORD2
+prestageTransmit	KEYWORD2
 finishTransmit	KEYWORD2
 startReceive	KEYWORD2
 readData	KEYWORD2
