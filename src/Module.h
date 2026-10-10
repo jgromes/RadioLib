@@ -384,6 +384,22 @@ class Module {
     */
     int16_t SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write, const uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio);
 
+    /*!
+      \brief Method to perform a read transfer with SPI stream, with an explicit status length.
+      Used by commands whose reply does not carry the configured status bytes, so that the shared
+      SPI configuration does not have to be changed for the duration of the transfer.
+      \param cmd SPI operation command.
+      \param cmdLen SPI command length in bytes.
+      \param write Set to true for write commands, false for read commands.
+      \param dataOut Data that will be transferred from master to slave.
+      \param dataIn Data that was transferred from slave to master.
+      \param numBytes Number of bytes to transfer.
+      \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
+      \param statusLen Number of status bytes the reply carries before the data, in bytes.
+      \returns \ref status_codes
+    */
+    int16_t SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write, const uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint8_t statusLen);
+
     // pin number access methods
     // getCs is omitted on purpose, as it can interfere when accessing the SPI in a concurrent environment
     // so it is considered to be part of the SPI pins and hence not accessible from outside

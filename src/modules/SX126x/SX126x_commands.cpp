@@ -288,12 +288,9 @@ uint8_t SX126x::getStatus() {
   const uint8_t cmd = RADIOLIB_SX126X_CMD_GET_STATUS;
   uint8_t data = 0;
 
-  // temporarily set status width to 0, since in this case, status byte is the thing we are trying to read
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  (void)this->mod->SPItransferStream(&cmd, 1, false, NULL, &data, 1, true);
-
-  // restore and return the value
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  // the status byte is the thing we are trying to read, so this reply carries no status bytes
+  // ahead of the data - passed per call, as spiConfig is shared with everything else using this module
+  (void)this->mod->SPItransferStream(&cmd, 1, false, NULL, &data, 1, true, 0);
   return(data);
 }
 

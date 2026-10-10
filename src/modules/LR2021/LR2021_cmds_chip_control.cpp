@@ -10,10 +10,8 @@
 
 int16_t LR2021::readRadioRxFifo(uint8_t* data, size_t len) {
   // FIFO read is just a single transaction sent without the status code
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  int16_t state = this->mod->SPIreadStream(RADIOLIB_LR2021_CMD_READ_RX_FIFO, data, len, true, false);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_16;
-  return(state);
+  const uint8_t cmd[2] = { (uint8_t)(RADIOLIB_LR2021_CMD_READ_RX_FIFO >> 8), (uint8_t)(RADIOLIB_LR2021_CMD_READ_RX_FIFO & 0xFF) };
+  return(this->mod->SPItransferStream(cmd, sizeof(cmd), false, NULL, data, len, true, 0));
 }
 
 int16_t LR2021::writeRadioTxFifo(const uint8_t* data, size_t len) {

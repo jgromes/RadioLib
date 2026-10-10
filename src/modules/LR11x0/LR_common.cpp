@@ -30,10 +30,7 @@ void LRxxxx::clearPacketSentAction() {
 uint32_t LRxxxx::getIrqStatus() {
   // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
   uint8_t buff[6] = { 0 };
-  Module::BitWidth_t statusWidth = mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS];
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = statusWidth;
+  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, 0);
   uint32_t irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5];
   return(irq);
 }
@@ -195,7 +192,9 @@ int16_t LRxxxx::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
   // the status check command doesn't return status in the same place as other read commands
   // but only as the first byte (as with any other command), hence LRxxxx::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  // the reply carries no status bytes of its own, so read it with the status length at zero,
+  // the same way LRxxxx::SPIcheckStatus does for this transfer
+  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, 0);
 
   // pass the replies
   if(stat1) { *stat1 = buff[0]; }
@@ -344,10 +343,7 @@ int16_t LRxxxx::SPIcheckStatus(Module* mod) {
   // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
   uint8_t buff[6] = { 0 };
-  Module::BitWidth_t statusWidth = mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS];
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
-  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = statusWidth;
+  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, 0);
   RADIOLIB_ASSERT(state);
   return(LRxxxx::SPIparseStatus(buff[0]));
 }
@@ -404,10 +400,11 @@ int16_t LRxxxx::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, 
     state = this->mod->SPIwriteStream(cmd, out, outLen, true, false);
     RADIOLIB_ASSERT(state);
 
-    // read the result without command
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_0;
-    state = this->mod->SPIreadStream(RADIOLIB_LRXXXX_CMD_NOP, data, len, true, false);
-    this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
+    // read the result without command - the second transaction carries no command bytes,
+    // so the command length is passed explicitly instead of changing spiConfig. spiConfig is
+    // shared by every caller of this Module, and a command issued between the two transactions
+    // would otherwise be framed with a zero-length command and read back status bytes
+    state = this->mod->SPIreadStream(NULL, 0, data, len, true, false);
 
   } else {
     // write is just a single transaction
