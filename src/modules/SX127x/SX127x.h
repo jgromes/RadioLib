@@ -934,7 +934,7 @@ class SX127x: public PhysicalLayer {
       \param autoCorrect When set to true, frequency will be automatically corrected.
       \returns Frequency error in Hz.
     */
-    float getFrequencyError(bool autoCorrect = false);
+    int32_t getFrequencyError(bool autoCorrect = false);
 
     /*!
       \brief Gets current AFC error.

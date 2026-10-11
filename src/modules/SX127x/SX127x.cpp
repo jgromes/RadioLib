@@ -711,7 +711,7 @@ int16_t SX127x::invertPreamble(bool enable) {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
-float SX127x::getFrequencyError(bool autoCorrect) {
+int32_t SX127x::getFrequencyError(bool autoCorrect) {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
     // get raw frequency error
@@ -719,22 +719,25 @@ float SX127x::getFrequencyError(bool autoCorrect) {
     raw |= (uint16_t)this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_FEI_MID) << 8;
     raw |= this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_FEI_LSB);
 
-    uint32_t base = (uint32_t)2 << 23;
-    float error;
-
     // check the first bit
+    int32_t error;
     if(raw & 0x80000) {
       // frequency error is negative
       raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
-      error = (((float)raw * (float)base)/32000000.0f) * ((float)this->bandwidth/500000.0f) * -1.0f;
+      error = ((int64_t)raw*(int64_t)256*(int64_t)this->bandwidth)/((int64_t)-244140625);
     } else {
-      error = (((float)raw * (float)base)/32000000.0f) * ((float)this->bandwidth/500000.0f);
+      error = ((int64_t)raw*(int64_t)256*(int64_t)this->bandwidth)/((int64_t)244140625);
     }
 
     if(autoCorrect) {
       // adjust LoRa modem data rate
-      float ppmOffset = 0.95f * (error/32.0f);
+      // scaled up to PPB, because in typical usage this will only be a few PPM
+      int32_t ppbError = ((int64_t)error * (int64_t)1000000000)/(int64_t)this->frequency;
+      int32_t ppbOffset = (950 * ppbError) / 1000;
+
+      // convert back to PPM with rounding
+      int32_t ppmOffset = (ppbOffset > 0) ? (ppbOffset + 500)/1000 : (ppbOffset - 500)/1000;
       this->mod->SPIwriteRegister(0x27, (uint8_t)ppmOffset);
     }
 
@@ -745,17 +748,15 @@ float SX127x::getFrequencyError(bool autoCorrect) {
     uint16_t raw = (uint16_t)this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_FEI_MSB_FSK) << 8;
     raw |= this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_FEI_LSB_FSK);
 
-    uint32_t base = 1;
-    float error;
-
     // check the first bit
+    int32_t error;
     if(raw & 0x8000) {
       // frequency error is negative
       raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
-      error = (float)raw * (32000000.0f / (float)(base << 19)) * -1.0f;
+      error = ((int64_t)raw * (int64_t)31250) / (int64_t)-512;
     } else {
-      error = (float)raw * (32000000.0f / (float)(base << 19));
+      error = ((int64_t)raw * (int64_t)31250) / (int64_t)512;
     }
 
     return(error);
