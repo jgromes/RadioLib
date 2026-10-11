@@ -1,5 +1,17 @@
 var NAVTREEINDEX8 =
 {
+"struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f":[4,0,52,6],
+"struct_l_r11x0_version_info__t.html#a6686a59a55b567b11b325b7087d682b2":[4,0,52,1],
+"struct_l_r11x0_version_info__t.html#a8c572580b8dba18d46ae50b4a4dd5a8d":[4,0,52,7],
+"struct_l_r11x0_version_info__t.html#a93ffc624cb2545411a409e7879a6d597":[4,0,52,5],
+"struct_l_r11x0_version_info__t.html#aba5ac25e1acff5678991483d3a56084a":[4,0,52,2],
+"struct_l_r11x0_version_info__t.html#ad1839f1cb6a067cc21651d95908cff67":[4,0,52,0],
+"struct_l_r11x0_version_info__t.html#add0c362641afcfff4a2ef3563e5f1c36":[4,0,52,4],
+"struct_l_r11x0_wifi_result__t.html":[4,0,53],
+"struct_l_r11x0_wifi_result__t.html#a18a5615328bfc7b549a7ef1a5514c087":[4,0,53,0],
+"struct_l_r11x0_wifi_result__t.html#a520382420ad088ac1ace3754192cbfeb":[4,0,53,1],
+"struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a":[4,0,53,6],
+"struct_l_r11x0_wifi_result__t.html#a9fb28ba0ff8e6625322b081a4bda5628":[4,0,53,3],
 "struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd":[4,0,53,2],
 "struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f":[4,0,53,5],
 "struct_l_r11x0_wifi_result__t.html#aedbfd390bee0e0995321e0a5caedac53":[4,0,53,4],

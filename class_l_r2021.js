@@ -23,6 +23,7 @@ var class_l_r2021 =
     [ "checkDataRate", "class_l_r2021.html#a2271630945521d4a1eaa3a29dcffac1b", null ],
     [ "checkOutputPower", "class_l_r2021.html#a39c82cdc7a22f252dfd36b2516ee7c49", null ],
     [ "clearIrqFlags", "class_l_r2021.html#a21cee48cac6a64d518353aa2389f8074", null ],
+    [ "clearTxBuffer", "class_l_r2021.html#accb8d61618b3063edd8d678600492a10", null ],
     [ "disableAddressFiltering", "class_l_r2021.html#a2f586b966393cd54bdd885ea70dd1709", null ],
     [ "explicitHeader", "class_l_r2021.html#a53cf216f8aee520a559b64cc03f61901", null ],
     [ "finishReceive", "class_l_r2021.html#aabaa4984504bdd10ae75e0163c0871db", null ],
@@ -113,6 +114,7 @@ var class_l_r2021 =
     [ "transmit", "class_l_r2021.html#a8126dd09cf4c51eabcf7f72dc03b068d", null ],
     [ "transmitDirect", "class_l_r2021.html#a670691f6a40a82f2e6b25e90c4200f57", null ],
     [ "variablePacketLengthMode", "class_l_r2021.html#a68728e2b6347b49bae942a9360f40988", null ],
+    [ "writeTxBuffer", "class_l_r2021.html#a24b66049a0d2a6da541cf58e77509cb5", null ],
     [ "fastCad", "group__module__config__vars.html#ga24b3a41d84fc6a0ebc214479f163eb71", null ],
     [ "irqDioNum", "group__module__config__vars.html#ga66b9703e39e95dc14e72328aee9becd0", null ],
     [ "tcxoVoltage", "group__module__config__vars.html#gafa0ddfa02dd6b2c107e46dcbb8ed13e1", null ]

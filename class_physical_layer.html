@@ -334,6 +334,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqActio
 <tr class="memitem:a5c5977bc9f54f21665b022a99e6c87cc" id="r_a5c5977bc9f54f21665b022a99e6c87cc"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5c5977bc9f54f21665b022a99e6c87cc">launchMode</a> ()</td></tr>
 <tr class="memdesc:a5c5977bc9f54f21665b022a99e6c87cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.  <br /></td></tr>
 <tr class="separator:a5c5977bc9f54f21665b022a99e6c87cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bda3635c558544681d9f6a6c32d366c" id="r_a5bda3635c558544681d9f6a6c32d366c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5bda3635c558544681d9f6a6c32d366c">writeTxBuffer</a> (const uint8_t *data, size_t len)</td></tr>
+<tr class="memdesc:a5bda3635c558544681d9f6a6c32d366c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a payload into the transmit buffer without staging or starting a transmission. This allows the payload write, which is the slowest part of starting a transmission, to be done while the radio is busy with something else - during a channel scan, for example. The transmission is staged afterwards by calling stageMode with RADIOLIB_RADIO_MODE_TX and RadioModeConfig_t::transmit.data set to NULL, which sets the packet parameters and the IRQ mapping for the payload already in the buffer; transmit.len must still be set to its length. The buffer holds exactly this payload after the call, whether or not one was written before.  <br /></td></tr>
+<tr class="separator:a5bda3635c558544681d9f6a6c32d366c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b6af2da05a4a8b8df2be051b88f42a" id="r_a57b6af2da05a4a8b8df2be051b88f42a"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a57b6af2da05a4a8b8df2be051b88f42a">clearTxBuffer</a> ()</td></tr>
+<tr class="memdesc:a57b6af2da05a4a8b8df2be051b88f42a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Discard a payload previously written by writeTxBuffer. On radios whose transmit buffer is simply overwritten by the next write there is nothing to discard, and this reports success without touching the radio.  <br /></td></tr>
+<tr class="separator:a57b6af2da05a4a8b8df2be051b88f42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d83458a1ead113b4c224ce8265ce8e4" id="r_a0d83458a1ead113b4c224ce8265ce8e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a0d83458a1ead113b4c224ce8265ce8e4">calculateRxDutyCycle</a> (size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, <a class="el" href="union_data_rate__t.html">DataRate_t</a> *dr, uint32_t *wakePeriod, uint32_t *sleepPeriod)</td></tr>
 <tr class="memdesc:a0d83458a1ead113b4c224ce8265ce8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems.  <br /></td></tr>
 <tr class="separator:a0d83458a1ead113b4c224ce8265ce8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -851,6 +857,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <p>Clears interrupt service routine to call when a packet is sent. </p>
 
 <p>Reimplemented in <a class="el" href="class_c_c1101.html#a2791ebc7fe71626407278de5852b492f">CC1101</a>, <a class="el" href="class_l_rxxxx.html#acae142248e9c14ba978b937c84b4eb5a">LRxxxx</a>, <a class="el" href="classn_r_f24.html#a41499cf2c1a6c83a04ff89dd59e3fa56">nRF24</a>, <a class="el" href="class_r_f69.html#ac4ada0c4243b092ffb4c9812519fe947">RF69</a>, <a class="el" href="class_si443x.html#a4fdc84341b1ec602f89ad00c7ca20f26">Si443x</a>, <a class="el" href="class_s_t_m32_w_lx.html#ac11d53d29bf5a845e3797ba6bb875930">STM32WLx</a>, <a class="el" href="class_s_x126x.html#af38ba3d27ab2ac10c703eefa1c428913">SX126x</a>, <a class="el" href="class_s_x127x.html#a2ec32a52b13752d75f3076a5868c312d">SX127x</a>, and <a class="el" href="class_s_x128x.html#ab2335d91c7899291312e3cd6576446e5">SX128x</a>.</p>
+
+</div>
+</div>
+<a id="a57b6af2da05a4a8b8df2be051b88f42a" name="a57b6af2da05a4a8b8df2be051b88f42a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57b6af2da05a4a8b8df2be051b88f42a">&#9670;&#160;</a></span>clearTxBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::clearTxBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Discard a payload previously written by writeTxBuffer. On radios whose transmit buffer is simply overwritten by the next write there is nothing to discard, and this reports success without touching the radio. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#a3ab6665411adac3bad0c58816f2dae3e">LR11x0</a>, <a class="el" href="class_l_r2021.html#accb8d61618b3063edd8d678600492a10">LR2021</a>, <a class="el" href="class_s_x126x.html#a76c3408a048e64089dd1c07b3038c1b5">SX126x</a>, <a class="el" href="class_s_x127x.html#a492649e7556e4aa79c230160beba7440">SX127x</a>, and <a class="el" href="class_s_x128x.html#ac3ac95c65e58180cb42bdc5b669163a7">SX128x</a>.</p>
 
 </div>
 </div>
@@ -2818,6 +2854,54 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46">CC1101</a>, <a class="el" href="class_l_r11x0.html#ae077957969f6274a53f63b314b6f1359">LR11x0</a>, <a class="el" href="class_l_r2021.html#a670691f6a40a82f2e6b25e90c4200f57">LR2021</a>, <a class="el" href="classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303">nRF24</a>, <a class="el" href="class_r_f69.html#a222682569338abb49d6952430b6eebdd">RF69</a>, <a class="el" href="class_si443x.html#a5a86a2032c4b876c1c8e4a7cf4730c99">Si443x</a>, <a class="el" href="class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b">SX126x</a>, <a class="el" href="class_s_x127x.html#aefeeb9f7192e11a75b5dfb1ab8488e84">SX127x</a>, <a class="el" href="class_s_x128x.html#a53892566b0259d348158efe3c3c3601a">SX128x</a>, and <a class="el" href="class_external_radio.html#a25be77aea48cfbdcae05ed32b660daef">ExternalRadio</a>.</p>
+
+</div>
+</div>
+<a id="a5bda3635c558544681d9f6a6c32d366c" name="a5bda3635c558544681d9f6a6c32d366c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bda3635c558544681d9f6a6c32d366c">&#9670;&#160;</a></span>writeTxBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::writeTxBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a payload into the transmit buffer without staging or starting a transmission. This allows the payload write, which is the slowest part of starting a transmission, to be done while the radio is busy with something else - during a channel scan, for example. The transmission is staged afterwards by calling stageMode with RADIOLIB_RADIO_MODE_TX and RadioModeConfig_t::transmit.data set to NULL, which sets the packet parameters and the IRQ mapping for the payload already in the buffer; transmit.len must still be set to its length. The buffer holds exactly this payload after the call, whether or not one was written before. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Payload to write into the transmit buffer. </td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#a5040569a00401e4c3456af8c18dad6bb">LR11x0</a>, <a class="el" href="class_l_r2021.html#a24b66049a0d2a6da541cf58e77509cb5">LR2021</a>, <a class="el" href="class_s_x126x.html#a3a074f8d24453ad6a6ccceddbc83a982">SX126x</a>, <a class="el" href="class_s_x127x.html#a41d14a32ea0f01d5ce5e72d95810b192">SX127x</a>, and <a class="el" href="class_s_x128x.html#aaf5580cb3d5662f50abd9832aa38d4fd">SX128x</a>.</p>
 
 </div>
 </div>

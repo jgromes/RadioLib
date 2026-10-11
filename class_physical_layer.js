@@ -15,6 +15,7 @@ var class_physical_layer =
     [ "clearIrqFlags", "class_physical_layer.html#ac282bb78da4f4da4661dce191cbd6d87", null ],
     [ "clearPacketReceivedAction", "class_physical_layer.html#a7edf27f03600b96f72f011fc82fa4ef9", null ],
     [ "clearPacketSentAction", "class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce", null ],
+    [ "clearTxBuffer", "class_physical_layer.html#a57b6af2da05a4a8b8df2be051b88f42a", null ],
     [ "dropSync", "class_physical_layer.html#a429796eb2e7ea86781a2e8ca42af43f3", null ],
     [ "finishReceive", "class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4", null ],
     [ "finishTransmit", "class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18", null ],
@@ -70,6 +71,7 @@ var class_physical_layer =
     [ "transmit", "class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "class_physical_layer.html#ada508497ee2e70170da3afe078e2fe0e", null ],
     [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ],
+    [ "writeTxBuffer", "class_physical_layer.html#a5bda3635c558544681d9f6a6c32d366c", null ],
     [ "freqStep", "class_physical_layer.html#aa949616080a463a82bb6ad5075a9e16e", null ],
     [ "maxPacketLength", "class_physical_layer.html#a1c04f8fba5eef96e59972004e8abc623", null ],
     [ "resetOnStartup", "group__module__config__vars.html#ga63e5835884b277627e888244503f625c", null ]

@@ -1,5 +1,17 @@
 var NAVTREEINDEX7 =
 {
+"group__status__codes.html#ga5529b54dc67d5ccdc2a29989ebf43711":[3,7,49],
+"group__status__codes.html#ga5584a219fcb1a8e1789142b18a3a511e":[3,7,66],
+"group__status__codes.html#ga55da4b2ee0661872a37f1c57fc61c666":[3,7,48],
+"group__status__codes.html#ga58ff08f4dba334cf8e26474ec2d3facd":[3,7,112],
+"group__status__codes.html#ga5ba391b8d6c13610c941ca9a42119d3d":[3,7,91],
+"group__status__codes.html#ga5d11e8ce64fb412c2169d0f30b9e9c62":[3,7,6],
+"group__status__codes.html#ga5d57c9ea944fdad3760fa54ed033ace5":[3,7,63],
+"group__status__codes.html#ga633e2f826e44d4575ca67459fda5d660":[3,7,114],
+"group__status__codes.html#ga684497ce1c94442b5fe0396ea4ec930d":[3,7,53],
+"group__status__codes.html#ga68c7f7b8c699dbd6524da685be476fca":[3,7,69],
+"group__status__codes.html#ga691e968e9f057a6cecb37a5dd5d8bd68":[3,7,67],
+"group__status__codes.html#ga6b70881b5be84138ef558e832fbb254c":[3,7,76],
 "group__status__codes.html#ga6b75df06d8c18366f85848331c49a1af":[3,7,57],
 "group__status__codes.html#ga72766507100035da092be0c0719c103c":[3,7,73],
 "group__status__codes.html#ga72b849c71b8fdf112d318518a3b1ac7d":[3,7,89],
@@ -237,17 +249,5 @@ var NAVTREEINDEX7 =
 "struct_l_r11x0_gnss_satellite__t.html#a1ca3d11db7b677955b7f1f3c4f85157f":[4,0,51,0],
 "struct_l_r11x0_gnss_satellite__t.html#a670c9e916637b5fede43c5fbb26cbfd8":[4,0,51,1],
 "struct_l_r11x0_version_info__t.html":[4,0,52],
-"struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc":[4,0,52,3],
-"struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f":[4,0,52,6],
-"struct_l_r11x0_version_info__t.html#a6686a59a55b567b11b325b7087d682b2":[4,0,52,1],
-"struct_l_r11x0_version_info__t.html#a8c572580b8dba18d46ae50b4a4dd5a8d":[4,0,52,7],
-"struct_l_r11x0_version_info__t.html#a93ffc624cb2545411a409e7879a6d597":[4,0,52,5],
-"struct_l_r11x0_version_info__t.html#aba5ac25e1acff5678991483d3a56084a":[4,0,52,2],
-"struct_l_r11x0_version_info__t.html#ad1839f1cb6a067cc21651d95908cff67":[4,0,52,0],
-"struct_l_r11x0_version_info__t.html#add0c362641afcfff4a2ef3563e5f1c36":[4,0,52,4],
-"struct_l_r11x0_wifi_result__t.html":[4,0,53],
-"struct_l_r11x0_wifi_result__t.html#a18a5615328bfc7b549a7ef1a5514c087":[4,0,53,0],
-"struct_l_r11x0_wifi_result__t.html#a520382420ad088ac1ace3754192cbfeb":[4,0,53,1],
-"struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a":[4,0,53,6],
-"struct_l_r11x0_wifi_result__t.html#a9fb28ba0ff8e6625322b081a4bda5628":[4,0,53,3]
+"struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc":[4,0,52,3]
 };

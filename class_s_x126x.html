@@ -381,6 +381,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Acti
 <tr class="memitem:aadc732e47fb44acf5d6e0ede7b00b4d2" id="r_aadc732e47fb44acf5d6e0ede7b00b4d2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aadc732e47fb44acf5d6e0ede7b00b4d2">launchMode</a> () override</td></tr>
 <tr class="memdesc:aadc732e47fb44acf5d6e0ede7b00b4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.    <br /></td></tr>
 <tr class="separator:aadc732e47fb44acf5d6e0ede7b00b4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a074f8d24453ad6a6ccceddbc83a982" id="r_a3a074f8d24453ad6a6ccceddbc83a982"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a3a074f8d24453ad6a6ccceddbc83a982">writeTxBuffer</a> (const uint8_t *data, size_t len) override</td></tr>
+<tr class="memdesc:a3a074f8d24453ad6a6ccceddbc83a982"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a payload into the transmit buffer without staging or starting a transmission. This allows the payload write, which is the slowest part of starting a transmission, to be done while the radio is busy with something else - during a channel scan, for example. The transmission is staged afterwards by calling stageMode with RADIOLIB_RADIO_MODE_TX and RadioModeConfig_t::transmit.data set to NULL, which sets the packet parameters and the IRQ mapping for the payload already in the buffer; transmit.len must still be set to its length. The buffer holds exactly this payload after the call, whether or not one was written before.    <br /></td></tr>
+<tr class="separator:a3a074f8d24453ad6a6ccceddbc83a982"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76c3408a048e64089dd1c07b3038c1b5" id="r_a76c3408a048e64089dd1c07b3038c1b5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a76c3408a048e64089dd1c07b3038c1b5">clearTxBuffer</a> () override</td></tr>
+<tr class="memdesc:a76c3408a048e64089dd1c07b3038c1b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Discard a payload previously written by writeTxBuffer. On radios whose transmit buffer is simply overwritten by the next write there is nothing to discard, and this reports success without touching the radio.    <br /></td></tr>
+<tr class="separator:a76c3408a048e64089dd1c07b3038c1b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f514b341b8982650526c6d8e20fd1a4" id="r_a4f514b341b8982650526c6d8e20fd1a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a4f514b341b8982650526c6d8e20fd1a4">setDirectAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:a4f514b341b8982650526c6d8e20fd1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is received in direct mode.  <br /></td></tr>
 <tr class="separator:a4f514b341b8982650526c6d8e20fd1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1135,6 +1141,36 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Clears interrupt service routine to call when a packet is sent. </p>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a76c3408a048e64089dd1c07b3038c1b5" name="a76c3408a048e64089dd1c07b3038c1b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76c3408a048e64089dd1c07b3038c1b5">&#9670;&#160;</a></span>clearTxBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::clearTxBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Discard a payload previously written by writeTxBuffer. On radios whose transmit buffer is simply overwritten by the next write there is nothing to discard, and this reports success without touching the radio.   </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>   </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a57b6af2da05a4a8b8df2be051b88f42a">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -4421,6 +4457,54 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3a074f8d24453ad6a6ccceddbc83a982" name="a3a074f8d24453ad6a6ccceddbc83a982"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a074f8d24453ad6a6ccceddbc83a982">&#9670;&#160;</a></span>writeTxBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::writeTxBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a payload into the transmit buffer without staging or starting a transmission. This allows the payload write, which is the slowest part of starting a transmission, to be done while the radio is busy with something else - during a channel scan, for example. The transmission is staged afterwards by calling stageMode with RADIOLIB_RADIO_MODE_TX and RadioModeConfig_t::transmit.data set to NULL, which sets the packet parameters and the IRQ mapping for the payload already in the buffer; transmit.len must still be set to its length. The buffer holds exactly this payload after the call, whether or not one was written before.   </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Payload to write into the transmit buffer. </td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>   </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a5bda3635c558544681d9f6a6c32d366c">PhysicalLayer</a>.</p>
 
 </div>
 </div>
