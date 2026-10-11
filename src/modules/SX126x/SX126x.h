@@ -578,7 +578,7 @@ class SX126x: public PhysicalLayer {
 
       \returns Frequency error in Hz.
     */
-    float getFrequencyError();
+    int32_t getFrequencyError();
 
     /*!
       \brief Query modem for the packet length of received payload.
