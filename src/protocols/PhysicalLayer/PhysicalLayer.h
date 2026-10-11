@@ -960,6 +960,28 @@ class PhysicalLayer {
     */
     virtual int16_t launchMode();
 
+    /*!
+      \brief Write a payload into the transmit buffer without staging or starting a transmission.
+      This allows the payload write, which is the slowest part of starting a transmission, to be done
+      while the radio is busy with something else - during a channel scan, for example. The
+      transmission is staged afterwards by calling stageMode with RADIOLIB_RADIO_MODE_TX and
+      RadioModeConfig_t::transmit.data set to NULL, which sets the packet parameters and the IRQ
+      mapping for the payload already in the buffer; transmit.len must still be set to its length.
+      The buffer holds exactly this payload after the call, whether or not one was written before.
+      \param data Payload to write into the transmit buffer.
+      \param len Payload length in bytes.
+      \returns \ref status_codes
+    */
+    virtual int16_t writeTxBuffer(const uint8_t* data, size_t len);
+
+    /*!
+      \brief Discard a payload previously written by writeTxBuffer. On radios whose transmit buffer
+      is simply overwritten by the next write there is nothing to discard, and this reports success
+      without touching the radio.
+      \returns \ref status_codes
+    */
+    virtual int16_t clearTxBuffer();
+
     #if RADIOLIB_INTERRUPT_TIMING
 
     /*!

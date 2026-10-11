@@ -1041,11 +1041,17 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = setBufferBaseAddress();
       RADIOLIB_ASSERT(state);
 
-      // write packet to buffer
+      // write packet to buffer - unless the caller already did that with writeTxBuffer,
+      // which it signals by leaving the payload pointer empty
       if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
-        state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+        state = (cfg->transmit.data != NULL) ? writeBuffer(cfg->transmit.data, cfg->transmit.len) : RADIOLIB_ERR_NONE;
       
       } else {
+        // an LR-FHSS frame is built from the payload in this step, so it cannot be written ahead
+        if(cfg->transmit.data == NULL) {
+          return(RADIOLIB_ERR_UNSUPPORTED);
+        }
+
         // first, reset the LR-FHSS state machine
         state = resetLRFHSS();
         RADIOLIB_ASSERT(state);
@@ -1102,6 +1108,26 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   this->stagedMode = mode;
   return(state);
+}
+
+int16_t SX126x::writeTxBuffer(const uint8_t* data, size_t len) {
+  if(data == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // set buffer pointers
+  int16_t state = setBufferBaseAddress();
+  RADIOLIB_ASSERT(state);
+
+  return(writeBuffer(data, (uint8_t)len));
+}
+
+int16_t SX126x::clearTxBuffer() {
+  // the data buffer is overwritten by the next write, so there is nothing to discard
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX126x::launchMode() {

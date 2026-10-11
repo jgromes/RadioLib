@@ -368,6 +368,8 @@ setModem	KEYWORD2
 getModem	KEYWORD2
 stageMode	KEYWORD2
 launchMode	KEYWORD2
+writeTxBuffer	KEYWORD2
+clearTxBuffer	KEYWORD2
 
 # LoRaWAN
 getBufferNonces	KEYWORD2
