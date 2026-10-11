@@ -725,19 +725,14 @@ int32_t SX127x::getFrequencyError(bool autoCorrect) {
       // frequency error is negative
       raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
-      error = ((int64_t)raw*(int64_t)256*(int64_t)this->bandwidth)/((int64_t)-244140625);
+      error = (float)raw * ((float)((uint32_t)2 << 23)*(-1.0f/32000000.0f/500000.0f)) * (float)this->bandwidth;
     } else {
-      error = ((int64_t)raw*(int64_t)256*(int64_t)this->bandwidth)/((int64_t)244140625);
+      error = (float)raw * ((float)((uint32_t)2 << 23)*(1.0f/32000000.0f/500000.0f)) * (float)this->bandwidth;
     }
 
     if(autoCorrect) {
       // adjust LoRa modem data rate
-      // scaled up to PPB, because in typical usage this will only be a few PPM
-      int32_t ppbError = ((int64_t)error * (int64_t)1000000000)/(int64_t)this->frequency;
-      int32_t ppbOffset = (950 * ppbError) / 1000;
-
-      // convert back to PPM with rounding
-      int32_t ppmOffset = (ppbOffset > 0) ? (ppbOffset + 500)/1000 : (ppbOffset - 500)/1000;
+      int32_t ppmOffset = error * (0.95f*1000000.0f) / this->frequency;
       this->mod->SPIwriteRegister(0x27, (uint8_t)ppmOffset);
     }
 
@@ -754,9 +749,9 @@ int32_t SX127x::getFrequencyError(bool autoCorrect) {
       // frequency error is negative
       raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
-      error = ((int64_t)raw * (int64_t)31250) / (int64_t)-512;
+      error = (float)raw * RADIOLIB_SX127X_FREQUENCY_STEP_SIZE * -1.0f;
     } else {
-      error = ((int64_t)raw * (int64_t)31250) / (int64_t)512;
+      error = (float)raw * RADIOLIB_SX127X_FREQUENCY_STEP_SIZE;
     }
 
     return(error);
