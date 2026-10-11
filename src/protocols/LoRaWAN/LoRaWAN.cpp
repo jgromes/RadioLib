@@ -3927,6 +3927,13 @@ RadioLibTime_t LoRaWANNode::timeUntilUplink(bool seconds) {
   return(nextUplink - mod->hal->millis() + 1);
 }
 
+void LoRaWANNode::syncClock() {
+  Module* mod = this->phyLayer->getMod();
+  this->tUplinkEnd = mod->hal->millis();
+  this->tUplink = mod->hal->millis();
+  this->tDone = mod->hal->millis();
+}
+
 uint8_t LoRaWANNode::getMaxPayloadLen() {
   uint8_t minLen = 0;
   uint8_t maxLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];

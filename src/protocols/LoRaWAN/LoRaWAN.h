@@ -973,6 +973,11 @@ class LoRaWANNode {
     RadioLibTime_t timeUntilUplink(bool seconds = false);
 
     /*!
+      \brief Reset the internal timestamps after a clock synchronization
+    */
+    void syncClock();
+    
+    /*!
       \brief Get the length of the pending MAC uplink payload
       \returns Number of bytes of MAC uplink payload
     */
