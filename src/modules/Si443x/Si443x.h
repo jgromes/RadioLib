@@ -12,6 +12,12 @@
 // Si443x physical layer properties
 #define RADIOLIB_SI443X_FREQUENCY_STEP_SIZE                     156.25
 #define RADIOLIB_SI443X_MAX_PACKET_LENGTH                       64
+#define RADIOLIB_SI4430_POUT_MIN                                -8
+#define RADIOLIB_SI4430_POUT_MAX                                13
+#define RADIOLIB_SI4431_POUT_MIN                                -8
+#define RADIOLIB_SI4431_POUT_MAX                                13
+#define RADIOLIB_SI4432_POUT_MIN                                -1
+#define RADIOLIB_SI4432_POUT_MAX                                20
 
 // Si443x series common registers
 #define RADIOLIB_SI443X_REG_DEVICE_TYPE                         0x00

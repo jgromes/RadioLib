@@ -15,6 +15,14 @@
 #define RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK                   64 // as per datasheet Rev. 7, page 66, the FSK FIFO is just 64 bytes
 #define RADIOLIB_SX127X_CRYSTAL_FREQ                            32.0f
 #define RADIOLIB_SX127X_DIV_EXPONENT                            19
+#define RADIOLIB_SX1272_RFO_POUT_MIN                            -1
+#define RADIOLIB_SX1272_RFO_POUT_MAX                            14
+#define RADIOLIB_SX1272_PA_BOOST_POUT_MIN                       2
+#define RADIOLIB_SX1272_PA_BOOST_POUT_MAX                       20
+#define RADIOLIB_SX1278_RFO_POUT_MIN                            -4
+#define RADIOLIB_SX1278_RFO_POUT_MAX                            15
+#define RADIOLIB_SX1278_PA_BOOST_POUT_MIN                       2
+#define RADIOLIB_SX1278_PA_BOOST_POUT_MAX                       20
 
 // SX127x series common LoRa registers
 #define RADIOLIB_SX127X_REG_FIFO                                0x00
@@ -1111,6 +1119,15 @@ class SX127x: public PhysicalLayer {
       \returns Timeout value in a unit that is specific for the used module
     */
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
+
+    /*!
+      \brief Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will
+      abort reception if no valid preamble/header is detected within this many LoRa symbols.
+      Only available in LoRa mode.
+      \param numSymbols Number of LoRa symbols to wait for (0 - 1023). Set to 0 to disable the timeout.
+      \returns \ref status_codes
+    */
+    int16_t setLoRaSymbNumTimeout(uint16_t numSymbols);
 
     /*!
       \brief Read currently active IRQ flags.

@@ -16,7 +16,11 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
   #include "stm32wlxx_hal.h"
 #endif
 
-STM32WLx::STM32WLx(Module* mod) : SX1262(mod) { }
+STM32WLx::STM32WLx(Module* mod) : SX1262(mod) {
+  this->powerMin = RADIOLIB_STM32WLX_LP_POUT_MIN;
+  this->powerMax = RADIOLIB_STM32WLX_HP_POUT_MAX;
+  this->paSteps = this->powerMax - this->powerMin + 1;
+}
 
 int16_t STM32WLx::begin(const ConfigLoRa_t& cfg) {
   // Execute common part
@@ -75,16 +79,21 @@ int16_t STM32WLx::beginFSK(float freq, float br, float freqDev, float rxBw, int8
 }
 
 int16_t STM32WLx::setOutputPower(int8_t power) {
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_STM32WLX_LP_POUT_MIN, &power, &pwr);
+  RADIOLIB_ASSERT(state);
+
   // get current OCP configuration
   uint8_t ocp = 0;
-  int16_t state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
   RADIOLIB_ASSERT(state);
 
   // check the user did not request power output that is not possible
   const Module* mod = this->getMod();
   bool hp_supported = mod->findRfSwitchMode(MODE_TX_HP);
   bool lp_supported = mod->findRfSwitchMode(MODE_TX_LP);
-  if((!lp_supported && (power < -9)) || (!hp_supported && (power > 14))) {
+  if((!lp_supported && (power < RADIOLIB_STM32WLX_HP_POUT_MIN)) || (!hp_supported && (power > RADIOLIB_STM32WLX_LP_POUT_MAX))) {
     // LP not supported but requested power is below HP low bound or
     // HP not supported but requested power is above LP high bound
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
@@ -94,26 +103,26 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   bool use_hp = false;
   if(hp_supported && lp_supported) {
     // both PAs supported, use HP when above 14 dBm
-    if(power > 14) {
-      RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    if(power > RADIOLIB_STM32WLX_LP_POUT_MAX) {
+      RADIOLIB_CHECK_RANGE(power, RADIOLIB_STM32WLX_HP_POUT_MIN, RADIOLIB_STM32WLX_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
       state = SX126x::setPaConfig(0x04, 0x00, 0x07); // HP output up to 22dBm
       this->txMode = MODE_TX_HP;
       use_hp = true;
     } else {
-      RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+      RADIOLIB_CHECK_RANGE(power, RADIOLIB_STM32WLX_LP_POUT_MIN, RADIOLIB_STM32WLX_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
       state = SX126x::setPaConfig(0x04, 0x01, 0x00); // LP output up to 14dBm
       this->txMode = MODE_TX_LP;
     }
   
   } else if(!hp_supported && lp_supported) {
     // only LP supported
-    RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(power, RADIOLIB_STM32WLX_LP_POUT_MIN, RADIOLIB_STM32WLX_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
     state = SX126x::setPaConfig(0x04, 0x01, 0x00);
     this->txMode = MODE_TX_LP;
 
   } else if(hp_supported && !lp_supported) {
     // only HP supported
-    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    RADIOLIB_CHECK_RANGE(power, RADIOLIB_STM32WLX_HP_POUT_MIN, RADIOLIB_STM32WLX_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
     state = SX126x::setPaConfig(0x04, 0x00, 0x07);
     this->txMode = MODE_TX_HP;
     use_hp = true;
@@ -135,38 +144,6 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
 
   // restore OCP configuration
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
-}
-
-int16_t STM32WLx::checkOutputPower(int8_t power, int8_t* clipped) {
-  // check the user did not request power output that is not possible
-  const Module* mod = this->getMod();
-  bool hp_supported = mod->findRfSwitchMode(MODE_TX_HP);
-  bool lp_supported = mod->findRfSwitchMode(MODE_TX_LP);
-
-  // set PA config based on which PAs are supported
-  if(hp_supported && lp_supported) {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(22, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -17, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else if(!hp_supported && lp_supported) {
-    // only LP supported
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else if(hp_supported && !lp_supported) {
-    // only HP supported
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    // neither PA is supported
-    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
-
-  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {

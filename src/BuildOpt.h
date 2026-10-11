@@ -541,11 +541,8 @@
 #endif
 
 // if verbose assert is enabled, enable basic debug too
-#if RADIOLIB_VERBOSE_ASSERT
-  #if defined(RADIOLIB_DEBUG_BASIC)
-  #undef RADIOLIB_DEBUG_BASIC
-  #endif
-  #define RADIOLIB_DEBUG_BASIC (1)
+#if RADIOLIB_VERBOSE_ASSERT && !defined(RADIOLIB_DEBUG_BASIC)
+  #define RADIOLIB_DEBUG_BASIC  (1)
 #endif
 
 // set the global debug mode flag

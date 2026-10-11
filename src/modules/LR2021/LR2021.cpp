@@ -19,6 +19,7 @@ LR2021::LR2021(Module* mod) : LRxxxx(mod) {
   this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_LR2021_IRQ_CAD_DONE;
   this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_LR2021_IRQ_CAD_DETECTED;
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR2021_IRQ_TIMEOUT;
+  this->updatePowerLimits(false);
 }
 
 int16_t LR2021::begin(const ConfigLoRa_t& cfg) {
@@ -529,6 +530,7 @@ int16_t LR2021::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   RadioModeConfig_t cfg = {
     .receive = {
       .timeout = RADIOLIB_LR2021_RX_TIMEOUT_INF,
+      .syncSymbols = 0,
       .irqFlags = irqFlags,
       .irqMask = irqMask,
       .len = 0,
@@ -880,6 +882,17 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t 
   return(setLoRaCad());
 }
 
+void LR2021::updatePowerLimits(bool highFreq) {
+  if(highFreq) {
+    this->powerMin = RADIOLIB_LR2021_HF_POUT_MIN;
+    this->powerMax = RADIOLIB_LR2021_HF_POUT_MAX;
+  } else {
+    this->powerMin = RADIOLIB_LR2021_LF_POUT_MIN;
+    this->powerMax = RADIOLIB_LR2021_LF_POUT_MAX;
+  }
+  this->paSteps = this->powerMax - this->powerMin + 1;
+}
+
 RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -992,9 +1005,12 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
       // restore maximum allowed received packet length (may have been changed by previous Tx)
       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
-        state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
-          (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, 
+        state = setLoRaPacketParams(this->preambleLengthLoRa, this->headerType,
+          (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH,
           this->crcTypeLoRa, this->invertIQEnabled);
+        RADIOLIB_ASSERT(state);
+
+        state = setLoRaSynchTimeout(cfg->receive.syncSymbols);
 
       } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
         state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType,

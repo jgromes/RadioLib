@@ -39,7 +39,7 @@ int16_t Si4430::setFrequency(float freq) {
 }
 
 int16_t Si4430::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -8, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(power, RADIOLIB_SI4430_POUT_MIN, RADIOLIB_SI4430_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set output power
   Module* mod = this->getMod();
