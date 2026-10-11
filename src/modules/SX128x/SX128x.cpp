@@ -1232,7 +1232,7 @@ float SX128x::getSNR() {
   }
 }
 
-float SX128x::getFrequencyError() {
+int32_t SX128x::getFrequencyError() {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING))) {
@@ -1247,19 +1247,18 @@ float SX128x::getFrequencyError() {
   RADIOLIB_ASSERT(state);
   state = readRegister(RADIOLIB_SX128X_REG_FEI_LSB, &efeRaw[2], 1);
   RADIOLIB_ASSERT(state);
-  uint32_t efe = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
-  efe &= 0x0FFFFF;
-
-  float error = 0;
+  uint32_t raw = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
+  raw &= 0x0FFFFF;
 
   // check the first bit
-  if (efe & 0x80000) {
+  int32_t error = 0;
+  if (raw & 0x80000) {
     // frequency error is negative
-    efe |= (uint32_t) 0xFFF00000;
-    efe = ~efe + 1;
-    error = 1.55f * (float) efe / (1600000.0f / this->bandwidthHz) * -1.0f;
+    raw |= (uint32_t) 0xFFF00000;
+    raw = ~raw + 1;
+    error = raw * this->bandwidthHz * (155.0f / -160000000.0f);
   } else {
-    error = 1.55f * (float) efe / (1600000.0f / this->bandwidthHz);
+    error = raw * this->bandwidthHz * (155.0f / 160000000.0f);
   }
 
   return(error);
