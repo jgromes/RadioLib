@@ -220,17 +220,16 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
   // calculate timeout based on the configured modem
   RadioLibTime_t timeoutInternal = timeout;
-  uint32_t timeoutValue = 0;
   if(!timeoutInternal) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
     if(len == 0) { maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH; }
     timeoutInternal = ((getTimeOnAir(maxLen) * 5) >> 10);    // convert us to ms
   }
-
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
+  uint32_t timeoutValue = (timeoutInternal << 10);   // convert ms to us
   state = startReceive(timeoutValue, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
   RADIOLIB_ASSERT(state);
 
