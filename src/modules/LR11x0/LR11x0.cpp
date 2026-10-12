@@ -1485,6 +1485,36 @@ int16_t LR11x0::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t LR11x0::getMode(RadioModeType_t* mode) {
+  RADIOLIB_ASSERT_PTR(mode);
+
+  uint8_t stat2 = 0;
+  int16_t state = getStatus(NULL, &stat2, NULL);
+  RADIOLIB_ASSERT(state);
+
+  switch(stat2 & 0b00001110) {
+    case(RADIOLIB_LR11X0_STAT_2_MODE_SLEEP):
+      *mode = RADIOLIB_RADIO_MODE_SLEEP;
+      break;
+    case(RADIOLIB_LR11X0_STAT_2_MODE_STBY_RC):
+    case(RADIOLIB_LR11X0_STAT_2_MODE_STBY_OSC):
+      *mode = RADIOLIB_RADIO_MODE_STANDBY;
+      break;
+    case(RADIOLIB_LR11X0_STAT_2_MODE_RX):
+      *mode = RADIOLIB_RADIO_MODE_RX;
+      break;
+    case(RADIOLIB_LR11X0_STAT_2_MODE_TX):
+      *mode = RADIOLIB_RADIO_MODE_TX;
+      break;
+    default:
+      // frequency synthesis, or WiFi/GNSS geolocation
+      *mode = RADIOLIB_RADIO_MODE_NONE;
+      break;
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LR11x0::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   int16_t state;
 
