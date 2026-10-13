@@ -801,7 +801,7 @@ class LR11x0: public LRxxxx {
       \param freqMax Frequency band upper bound.
       \returns \ref status_codes
     */
-    int16_t calibrateImageRejection(float freqMin, float freqMax);
+    int16_t calibrateImageRejection(uint32_t freqMin, uint32_t freqMax);
     
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
