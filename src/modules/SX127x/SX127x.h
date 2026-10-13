@@ -1088,15 +1088,6 @@ class SX127x: public PhysicalLayer {
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
 
     /*!
-      \brief Convert from bytes to LoRa symbols.
-      \param len Payload length in bytes.
-      \param dr Data rate.
-      \param pc Packet configuration.
-      \returns The total number of LoRa symbols, including preamble, sync and possible header.
-    */
-    float getNumSymbols(size_t len, DataRate_t dr, PacketConfig_t pc);
-
-    /*!
       \brief Get expected time-on-air for a given size of payload.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
