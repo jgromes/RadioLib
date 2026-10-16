@@ -100,16 +100,16 @@ int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, 
   if(crc) { *crc = (buff[0] & 0x10) >> 4; }
   if(cr) { *cr = buff[0] & 0x0F; }
   if(packetLen) { *packetLen = buff[1]; }
-  if(snrPacket) { *snrPacket = (float)((int8_t)buff[2]) / 4.0f; }
+  if(snrPacket) { *snrPacket = (float)((int8_t)buff[2]) * 0.25f; }
   if(rssiPacket) {
     raw = (uint16_t)buff[3] << 1;
     raw |= (buff[5] & 0x02) >> 1;
-    *rssiPacket = (float)raw / -2.0f;
+    *rssiPacket = (float)raw * -0.5f;
   }
   if(rssiSignalPacket) {
     raw = (uint16_t)buff[4] << 1;
     raw |= buff[5] & 0x01;
-    *rssiSignalPacket = (float)raw / -2.0f;
+    *rssiSignalPacket = (float)raw * -0.5f;
   }
   if(detector) {
     uint8_t det = (buff[5] >> 2) & 0x0F;

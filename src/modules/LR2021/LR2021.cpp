@@ -290,7 +290,7 @@ int16_t LR2021::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 30.52f);
+  uint32_t timeoutValue = (uint32_t)((float)timeoutInternal * (1000.0f / 30.52f));
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -454,8 +454,8 @@ int16_t LR2021::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   // divide by 30.517 microseconds (RTC period, 1/32.768 kHz)
   // the datasheet claims the RTC frequency is 32 kHz; however, using that makes the timing inaccurate
   // so it looks like the actual value is the 32.768 kHz used on the previous LR11xx chips
-  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 512UL) / 15625UL);
-  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 512UL) / 15625UL);
+  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 34360) >> 20);
+  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod ** 34360) >> 20);
 
   // check 24 bit limit and zero value (likely not intended)
   if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
@@ -816,7 +816,7 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t 
     mode = RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK;
   }
 
-  uint32_t timeout_raw = (float)timeout / 30.52f;
+  uint32_t timeout_raw = (uint32_t)((float)timeout * (1.0f / 30.52f));
 
   // set LoRa CAD parameters
   // preamble only mode is intentionally disabled, as it is unreliable according to the datasheet
@@ -870,10 +870,10 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
           break;
         case(RADIOLIB_LR2021_FLRC_CR_3_4):
           n_coded_bits += 6;
-          n_coded_bits_flt = ((float)n_coded_bits*4.0f)/3.0f;
+          n_coded_bits_flt = ((float)n_coded_bits*(4.0f/3.0f);
           break;
         case(RADIOLIB_LR2021_FLRC_CR_2_3):
-          n_coded_bits_flt = ((float)n_coded_bits*3.0f)/2.0f;
+          n_coded_bits_flt = ((float)n_coded_bits*(3.0f/2.0f);
           break;
       }
       n_coded_bits = n_coded_bits_flt + 0.5f;
@@ -1082,7 +1082,7 @@ float LR2021::getVoltage(uint8_t bits) {
     return(0);
   }
   
-  return((float)val / 1000.0f);
+  return((float)val * (1.0f / 1000.0f));
 }
 
 float LR2021::getTemperature(uint8_t source, uint8_t bits) {

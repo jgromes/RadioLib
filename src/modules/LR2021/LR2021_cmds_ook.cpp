@@ -76,12 +76,12 @@ int16_t LR2021::getOokPacketStatus(uint16_t* packetLen, float* rssiAvg, float* r
   if(rssiAvg) {
     raw = (uint16_t)buff[2] << 1;
     raw |= (buff[4] & 0x04) >> 2;
-    *rssiAvg = (float)raw / -2.0f;
+    *rssiAvg = (float)raw * -0.5f;
   }
   if(rssiHigh) {
     raw = (uint16_t)buff[3] << 1;
     raw |= (buff[4] & 0x01);
-    *rssiHigh = (float)raw / -2.0f;
+    *rssiHigh = (float)raw * -0.5f;
   }
   if(addrMatchNode) { *addrMatchNode = (buff[4] & 0x10); }
   if(addrMatchBroadcast) { *addrMatchBroadcast = (buff[4] & 0x20); }
