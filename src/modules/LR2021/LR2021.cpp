@@ -455,7 +455,7 @@ int16_t LR2021::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   // the datasheet claims the RTC frequency is 32 kHz; however, using that makes the timing inaccurate
   // so it looks like the actual value is the 32.768 kHz used on the previous LR11xx chips
   uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 34360) >> 20);
-  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod ** 34360) >> 20);
+  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 34360) >> 20);
 
   // check 24 bit limit and zero value (likely not intended)
   if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
