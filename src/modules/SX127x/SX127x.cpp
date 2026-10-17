@@ -165,13 +165,6 @@ int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, uint3
 }
 
 int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
-
-  // Make sure the FIFO is empty to avoid spurious re-transmissions of received data
-  // courtesy of Nick Bonniere: the FIFO can be cleared by setting the FIFO-overun bit
-  int16_t modem = getActiveModem();
-  if(modem == RADIOLIB_SX127X_FSK_OOK)
-    this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2, RADIOLIB_SX127X_FLAG_FIFO_OVERRUN);
-
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
@@ -182,13 +175,11 @@ int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   RadioLibTime_t toa = getTimeOnAir(len);
   if(modem == RADIOLIB_SX127X_LORA) {
     // calculate timeout in ms (about 150 % of expected time-on-air)
-    //timeout = (toa * 1500) / 1000;  // should be / 1000000 ?
-    timeout = ((toa * 3) >> 11);
+    timeout = (toa * 1500) / 1000000;
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // calculate timeout in ms (5ms + about 500 % of expected time-on-air)
-    //timeout = 5 + (toa * 5) / 1000;
-    timeout = 5 + ((toa * 5) >> 10);
+    timeout = 5 + (toa * 5) / 1000;
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -224,12 +215,12 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
     if(len == 0) { maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH; }
-    timeoutInternal = ((getTimeOnAir(maxLen) * 5) >> 10);    // convert us to ms
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (timeoutInternal << 10);   // convert ms to us
+  uint32_t timeoutValue = calculateRxTimeout(timeoutInternal * 1000UL);
   state = startReceive(timeoutValue, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
   RADIOLIB_ASSERT(state);
 
@@ -577,10 +568,6 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   // clear interrupt flags
   clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
-  // abort if nothing was received (possible when CRC is invalid?) */
-  if (length == 0)
-    return RADIOLIB_ERR_PACKET_TOO_SHORT;
-
   return(state);
 }
 
@@ -778,7 +765,7 @@ float SX127x::getAFCError() {
   int16_t raw = (uint16_t)this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_AFC_MSB) << 8;
   raw |= this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_AFC_LSB);
 
-  return raw * (32000000.0f / (float)(1 << 19));
+  return(raw * RADIOLIB_SX127X_FREQUENCY_STEP_SIZE);
 }
 
 float SX127x::getSNR() {
@@ -1922,7 +1909,10 @@ int16_t SX127x::writeTxBuffer(const uint8_t* data, size_t len) {
 }
 
 int16_t SX127x::clearTxBuffer() {
-  // the FIFO contents are overwritten by the next write, so there is nothing to discard
+  int16_t modem = getActiveModem();
+  if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2, RADIOLIB_SX127X_FLAG_FIFO_OVERRUN);
+  }
   return(RADIOLIB_ERR_NONE);
 }
 
