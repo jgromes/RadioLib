@@ -22,7 +22,7 @@ int16_t SX126x::resetAGC() {
   RADIOLIB_ASSERT(state);
 
   // re-calibrate image rejection for the operating frequency
-  state = calibrateImage(this->freqMHz);
+  state = calibrateImage(this->freqHz);
   RADIOLIB_ASSERT(state);
 
   // re-apply DIO2 RF switch if it was configured
@@ -245,8 +245,8 @@ int16_t SX126x::setTxParams(uint8_t pwr, uint8_t rampTime) {
 int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    if(symbolLength >= 16.0f) {
+    uint64_t symbolLengthUs = ((uint64_t)1000000 * ((uint64_t)1 << this->spreadingFactor)) / (uint64_t)this->bandwidthHz;
+    if(symbolLengthUs >= 16000) {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON;
     } else {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_OFF;

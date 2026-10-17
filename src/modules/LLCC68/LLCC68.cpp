@@ -35,20 +35,6 @@ int16_t LLCC68::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(begin(cfg));
-}
-
 int16_t LLCC68::beginFSK(const ConfigFSK_t& cfg) {
   // execute common part
   int16_t state = SX126x::beginFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
@@ -72,19 +58,6 @@ int16_t LLCC68::beginFSK(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   return(state);
-}
-
-int16_t LLCC68::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginFSK(cfg));
 }
 
 int16_t LLCC68::beginBPSK(const ConfigBPSK_t& cfg) {
@@ -112,16 +85,6 @@ int16_t LLCC68::beginBPSK(const ConfigBPSK_t& cfg) {
   return(state);
 }
 
-int16_t LLCC68::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigBPSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginBPSK(cfg));
-}
-
 int16_t LLCC68::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // execute common part
   int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
@@ -147,20 +110,8 @@ int16_t LLCC68::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   return(state);
 }
 
-int16_t LLCC68::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLRFHSS_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.codingRate = cr;
-  cfg.narrowGrid = narrowGrid;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginLRFHSS(cfg));
-}
-
-int16_t LLCC68::setBandwidth(float bw) {
-  RADIOLIB_CHECK_RANGE(bw, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+int16_t LLCC68::setBandwidth(uint32_t bw) {
+  RADIOLIB_CHECK_RANGE(bw, RADIOLIB_UNIT_KILO(125), RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_BANDWIDTH);
   return(SX1262::setBandwidth(bw));
 }
 
@@ -236,29 +187,27 @@ int16_t LLCC68::checkDataRate(DataRate_t dr, ModemType_t modem) {
 
   // select interpretation based on modem
   if(modem == RADIOLIB_MODEM_FSK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
-    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 600, RADIOLIB_UNIT_KILO(300), RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 600, RADIOLIB_UNIT_KILO(200), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_MODEM_LORA) {
-    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, RADIOLIB_UNIT_KILO(125), RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 4, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
-    uint8_t bw_div2 = dr.lora.bandwidth / 2 + 0.01f;
-    switch (bw_div2)  {
-      case 62: // 125.0:
+    switch(dr.lora.bandwidth)  {
+      case(RADIOLIB_UNIT_KILO(125)):
         RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 9, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
         break;
-      case 125: // 250.0
+      case(RADIOLIB_UNIT_KILO(250)):
         RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 10, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
         break;
-      case 250: // 500.0
+      case(RADIOLIB_UNIT_KILO(500)):
         RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 11, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
         break;
       default:
         return(RADIOLIB_ERR_INVALID_BANDWIDTH);
     }
     return(RADIOLIB_ERR_NONE);
-  
   }
 
   return(state);
@@ -267,13 +216,16 @@ int16_t LLCC68::checkDataRate(DataRate_t dr, ModemType_t modem) {
 int16_t LLCC68::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginFSK());
+      ConfigFSK_t cfg;
+      return(this->beginFSK(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
-      return(this->beginLRFHSS());
+      ConfigLRFHSS_t cfg;
+      return(this->beginLRFHSS(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

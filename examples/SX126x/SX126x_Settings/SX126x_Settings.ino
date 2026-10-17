@@ -55,12 +55,12 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // most SX126x have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio1.tcxoVoltage = 1.6;
+  radio1.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // initialize SX1262 at 434 MHz
   Serial.print(F("[SX1262] Initializing ... "));
   ConfigLoRa_t config1;
-  config1.frequency = 434;
+  config1.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -84,8 +84,8 @@ void setup() {
   // preamble length:             20 symbols
   #if (__cplusplus < 201402L)
     ConfigLoRa_t config2;
-    config2.frequency = 915.0;
-    config2.bandwidth = 500.0;
+    config2.frequency = RADIOLIB_UNIT_MEGA(915);
+    config2.bandwidth = RADIOLIB_UNIT_KILO(500);
     config2.spreadingFactor = 6;
     config2.codingRate = 5;
     config2.syncWord = 0x34;
@@ -95,8 +95,8 @@ void setup() {
   #else
     // with C++14 or newer, you can use named argument lists
     state = radio2.begin({
-      .frequency = 915.0,
-      .bandwidth = 500.0,
+      .frequency = RADIOLIB_UNIT_MEGA(915),
+      .bandwidth = RADIOLIB_UNIT_KILO(500),
       .spreadingFactor = 6,
       .codingRate = 5,
       .syncWord = 0x34,
@@ -116,13 +116,13 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433500000) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true) { delay(10); }
   }
 
   // set bandwidth to 250 kHz
-  if (radio1.setBandwidth(250.0) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(RADIOLIB_UNIT_KILO(250)) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true) { delay(10); }
   }
@@ -173,7 +173,7 @@ void setup() {
   // Some SX126x modules have TCXO (temperature compensated crystal
   // oscillator). To configure TCXO reference voltage,
   // the following method can be used.
-  if (radio1.setTCXO(2.4) == RADIOLIB_ERR_INVALID_TCXO_VOLTAGE) {
+  if (radio1.setTCXO(RadioLibTCXOVoltage_t::Voltage2V4) == RADIOLIB_ERR_INVALID_TCXO_VOLTAGE) {
     Serial.println(F("Selected TCXO voltage is invalid for this module!"));
     while (true) { delay(10); }
   }

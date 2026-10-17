@@ -48,12 +48,12 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // most SX126x have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio.tcxoVoltage = 1.6;
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // initialize SX1262 FSK modem at 434 MHz
   Serial.print(F("[SX1262] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.beginFSK(config);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -76,10 +76,10 @@ void setup() {
     while (true) { delay(10); }
   }
 
-  // configure scan bandwidth to 234.4 kHz
+  // configure scan bandwidth to 234.3 kHz
   // and disable the data shaping
   Serial.print(F("[SX1262] Setting scan parameters ... "));
-  state = radio.setRxBandwidth(234.3);
+  state = radio.setRxBandwidth(234300);
   state |= radio.setDataShaping(RADIOLIB_SHAPING_NONE);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

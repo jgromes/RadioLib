@@ -40,7 +40,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.beginFSK(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -57,11 +57,11 @@ void setup() {
 
   // the following settings can also
   // be modified at run-time
-  state = radio.setFrequency(433.5);
-  state = radio.setBitRate(100.0);
-  state = radio.setFrequencyDeviation(10.0);
-  state = radio.setRxBandwidth(250.0);
-  state = radio.setOutputPower(10.0);
+  state = radio.setFrequency(433500000);
+  state = radio.setBitRate(RADIOLIB_UNIT_KILO(100));
+  state = radio.setFrequencyDeviation(RADIOLIB_UNIT_KILO(10));
+  state = radio.setRxBandwidth(RADIOLIB_UNIT_KILO(250));
+  state = radio.setOutputPower(10);
   state = radio.setCurrentLimit(100);
   state = radio.setDataShaping(RADIOLIB_SHAPING_0_5);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
@@ -175,7 +175,7 @@ void loop() {
 
   // it is recommended to set data shaping to 0
   // (no shaping) when transmitting audio
-  state = radio.setDataShaping(0.0);
+  state = radio.setDataShaping(0);
   if (state != RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Unable to set data shaping, code "));
     Serial.println(state);

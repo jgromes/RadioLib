@@ -51,7 +51,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigLoRa_t config1;
-  config1.frequency = 434;
+  config1.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio1.begin(config1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -80,8 +80,8 @@ void setup() {
   // amplifier gain:              1 (maximum gain)
   #if (__cplusplus < 201402L)
     ConfigLoRa_t config2;
-    config2.frequency = 915.0;
-    config2.bandwidth = 500.0;
+    config2.frequency = RADIOLIB_UNIT_MEGA(915);
+    config2.bandwidth = RADIOLIB_UNIT_KILO(500);
     config2.spreadingFactor = 6;
     config2.codingRate = 5;
     config2.syncWord = 0x34;
@@ -93,8 +93,8 @@ void setup() {
     // with C++14 or newer, you can use named argument lists
     radio2.gain = 1;
     state = radio2.begin({
-      .frequency = 915.0,
-      .bandwidth = 500.0,
+      .frequency = RADIOLIB_UNIT_MEGA(915),
+      .bandwidth = RADIOLIB_UNIT_KILO(500),
       .spreadingFactor = 6,
       .codingRate = 5,
       .syncWord = 0x34,
@@ -114,13 +114,13 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433500000) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true) { delay(10); }
   }
 
   // set bandwidth to 250 kHz
-  if (radio1.setBandwidth(250.0) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(RADIOLIB_UNIT_KILO(250)) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true) { delay(10); }
   }

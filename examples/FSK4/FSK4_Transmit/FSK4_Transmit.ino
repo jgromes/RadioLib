@@ -67,7 +67,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.beginFSK(config);
 
   // when using one of the non-LoRa modules for RTTY
@@ -97,7 +97,7 @@ void setup() {
   // low ("space") frequency:     434.0 MHz
   // frequency shift:             270 Hz
   // baud rate:                   100 baud
-  state = fsk4.begin(434.0, 270, 100);
+  state = fsk4.begin(RADIOLIB_UNIT_MEGA(434), 270, 100);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
