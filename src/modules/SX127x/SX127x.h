@@ -1088,15 +1088,6 @@ class SX127x: public PhysicalLayer {
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
 
     /*!
-      \brief Convert from bytes to LoRa symbols.
-      \param len Payload length in bytes.
-      \param dr Data rate.
-      \param pc Packet configuration.
-      \returns The total number of LoRa symbols, including preamble, sync and possible header.
-    */
-    float getNumSymbols(size_t len, DataRate_t dr, PacketConfig_t pc);
-
-    /*!
       \brief Get expected time-on-air for a given size of payload.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
@@ -1235,6 +1226,17 @@ class SX127x: public PhysicalLayer {
 
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
+
+    /*!
+      \copydoc PhysicalLayer::writeTxBuffer
+      \note Only available for the LoRa modem. In FSK/OOK the FIFO is written as a stream, with the
+      length and the optional address byte ahead of the payload, so the payload cannot be written on
+      its own; this reports RADIOLIB_ERR_WRONG_MODEM there.
+    */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!

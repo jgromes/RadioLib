@@ -136,10 +136,10 @@ int16_t LR11x0::setRegMode(uint8_t mode) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_REG_MODE, true, &mode, 1));
 }
 
-int16_t LR11x0::calibrateImageRejection(float freqMin, float freqMax) {
+int16_t LR11x0::calibrateImageRejection(uint32_t freqMin, uint32_t freqMax) {
   uint8_t buff[2] = {
-    (uint8_t)floor((freqMin - 1.0f) / 4.0f),
-    (uint8_t)ceil((freqMax + 1.0f) / 4.0f)
+    (uint8_t)((freqMin - RADIOLIB_UNIT_MEGA(1)) / RADIOLIB_UNIT_MEGA(4)), // floor() is ensured by integer division
+    (uint8_t)((freqMax + RADIOLIB_UNIT_MEGA(1) - 1) / RADIOLIB_UNIT_MEGA(4) + 1) // ceil() is ensured by the -1/+1
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CALIB_IMAGE, true, buff, sizeof(buff)));
 }

@@ -801,13 +801,19 @@ class LR11x0: public LRxxxx {
       \param freqMax Frequency band upper bound.
       \returns \ref status_codes
     */
-    int16_t calibrateImageRejection(float freqMin, float freqMax);
+    int16_t calibrateImageRejection(uint32_t freqMin, uint32_t freqMax);
     
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
 
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
+
+    /*! \copydoc PhysicalLayer::writeTxBuffer */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:

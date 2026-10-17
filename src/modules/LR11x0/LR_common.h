@@ -143,7 +143,9 @@ class LRxxxx: public PhysicalLayer {
     */
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
+#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
+#endif
     Module* mod;
     
     // flag to determine whether we are in the sub-GHz or 2.4 GHz range
