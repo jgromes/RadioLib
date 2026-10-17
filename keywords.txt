@@ -366,6 +366,7 @@ setDataRate	KEYWORD2
 checkDataRate	KEYWORD2
 setModem	KEYWORD2
 getModem	KEYWORD2
+getMode	KEYWORD2
 stageMode	KEYWORD2
 launchMode	KEYWORD2
 writeTxBuffer	KEYWORD2

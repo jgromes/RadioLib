@@ -725,6 +725,9 @@ class SX128x: public PhysicalLayer {
     */
     int16_t getModem(ModemType_t* modem) override;
 
+    /*! \copydoc PhysicalLayer::getMode */
+    int16_t getMode(RadioModeType_t* mode) override;
+
     /*!
       \brief Sets preamble length for currently active modem. Allowed values range from 1 to 65535.
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK/BLE/FLRC).

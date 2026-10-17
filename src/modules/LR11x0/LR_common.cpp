@@ -195,7 +195,11 @@ int16_t LRxxxx::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
   // the status check command doesn't return status in the same place as other read commands
   // but only as the first byte (as with any other command), hence LRxxxx::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
+  // the status bytes are the thing being read here, so they must not be skipped as a reply prefix
+  Module::BitWidth_t statusWidth = this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS];
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
   int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = statusWidth;
 
   // pass the replies
   if(stat1) { *stat1 = buff[0]; }

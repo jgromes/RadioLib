@@ -951,6 +951,36 @@ int16_t LR2021::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t LR2021::getMode(RadioModeType_t* mode) {
+  RADIOLIB_ASSERT_PTR(mode);
+
+  uint8_t stat2 = 0;
+  int16_t state = getStatus(NULL, &stat2, NULL);
+  RADIOLIB_ASSERT(state);
+
+  switch(stat2 & 0b00000111) {
+    case(RADIOLIB_LR2021_STAT_2_MODE_SLEEP):
+      *mode = RADIOLIB_RADIO_MODE_SLEEP;
+      break;
+    case(RADIOLIB_LR2021_STAT_2_MODE_STBY_RC):
+    case(RADIOLIB_LR2021_STAT_2_MODE_STBY_XOSC):
+      *mode = RADIOLIB_RADIO_MODE_STANDBY;
+      break;
+    case(RADIOLIB_LR2021_STAT_2_MODE_RX):
+      *mode = RADIOLIB_RADIO_MODE_RX;
+      break;
+    case(RADIOLIB_LR2021_STAT_2_MODE_TX):
+      *mode = RADIOLIB_RADIO_MODE_TX;
+      break;
+    default:
+      // frequency synthesis, or a value this part does not assign
+      *mode = RADIOLIB_RADIO_MODE_NONE;
+      break;
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   int16_t state;
 
