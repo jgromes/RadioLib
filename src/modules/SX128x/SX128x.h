@@ -428,7 +428,7 @@ class SX128x: public PhysicalLayer {
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
-      \param timeout Reception timeout in microseconds. If set to 0,
+      \param timeout Reception timeout in milliseconds. If set to 0,
       timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
@@ -906,6 +906,12 @@ class SX128x: public PhysicalLayer {
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
 
+    /*! \copydoc PhysicalLayer::writeTxBuffer */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
+
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
@@ -939,8 +945,8 @@ class SX128x: public PhysicalLayer {
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t writeBuffer(const uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
-    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
-    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
+    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_4_MS);
+    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_4_MS);
     int16_t setCad(uint8_t symbolNum);
     uint8_t getPacketType();
     int16_t setRfFrequency(uint32_t frf);

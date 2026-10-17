@@ -272,27 +272,28 @@ int16_t SX128x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  // calculate timeout (1000% of expected time-on-air)
-  // for most other modules, it is 500%, however, the overall datarates of SX128x are higher
-  // so we use higher value for the default timeout
   RadioLibTime_t timeoutInternal = timeout;
   if(!timeoutInternal) {
-    timeoutInternal = getTimeOnAir(len) * 10;
+    // calculate timeout (500 % of expected time-one-air)
+    size_t maxLen = len;
+    if(len == 0) { maxLen = RADIOLIB_SX128X_MAX_PACKET_LENGTH; }
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
   }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", (uint32_t)((timeout + 999) / 1000));
+
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)((float)timeoutInternal / 15.625f);
+  uint32_t timeoutValue = timeoutInternal / 4UL;
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
   bool softTimeout = false;
-  RadioLibTime_t start = this->mod->hal->micros();
+  RadioLibTime_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeoutInternal) {
       softTimeout = true;
       break;
     }
@@ -1507,13 +1508,15 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       state = setBufferBaseAddress();
       RADIOLIB_ASSERT(state);
 
-      // write packet to buffer
-      if(modem == RADIOLIB_SX128X_PACKET_TYPE_BLE) {
-        // first 2 bytes of BLE payload are PDU header
-        state = writeBuffer(cfg->transmit.data, cfg->transmit.len, 2);
-        RADIOLIB_ASSERT(state);
-      } else {
-        state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+      // write packet to buffer - unless the caller already did that with writeTxBuffer,
+      // which it signals by leaving the payload pointer empty
+      if(cfg->transmit.data != NULL) {
+        if(modem == RADIOLIB_SX128X_PACKET_TYPE_BLE) {
+          // first 2 bytes of BLE payload are PDU header
+          state = writeBuffer(cfg->transmit.data, cfg->transmit.len, 2);
+        } else {
+          state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
+        }
         RADIOLIB_ASSERT(state);
       }
 
@@ -1532,6 +1535,28 @@ int16_t SX128x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   this->stagedMode = mode;
   return(state);
+}
+
+int16_t SX128x::writeTxBuffer(const uint8_t* data, size_t len) {
+  if(data == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(len > RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // set buffer pointers
+  int16_t state = setBufferBaseAddress();
+  RADIOLIB_ASSERT(state);
+
+  // first 2 bytes of BLE payload are PDU header
+  const uint8_t offset = (getPacketType() == RADIOLIB_SX128X_PACKET_TYPE_BLE) ? 2 : 0;
+  return(writeBuffer(data, (uint8_t)len, offset));
+}
+
+int16_t SX128x::clearTxBuffer() {
+  // the data buffer is overwritten by the next write, so there is nothing to discard
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX128x::launchMode() {
