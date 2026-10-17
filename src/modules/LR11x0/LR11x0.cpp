@@ -237,7 +237,8 @@ int16_t LR11x0::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 30.52f);
+  uint32_t timeoutValue = (uint32_t)((float)timeoutInternal * (1000.0f / 30.52f));
+  // or can be: timeoutValue = (uint32_t) (((uint64_t) timeoutInternal * 34360) >> 20);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -388,8 +389,8 @@ int16_t LR11x0::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   sleepPeriod -= transitionTime;
 
   // divide by 30.517 microseconds (RTC period, 1/32.768 kHz)
-  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 512UL) / 15625UL);
-  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 512UL) / 15625UL);
+  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 34360) >> 20);
+  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 34360) >> 20);
 
   // check 24 bit limit and zero value (likely not intended)
   if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
@@ -733,7 +734,7 @@ int16_t LR11x0::setRxBandwidth(uint32_t rxBw) {
   }
 
   // check modulation parameters
-  /*if(2 * this->frequencyDev + this->bitRate > rxBw * 1000.0) {
+  /*if(2 * this->frequencyDev + this->bitRate > rxBw * 1000.0f) {
     return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
   }*/
 
@@ -1068,7 +1069,7 @@ int16_t LR11x0::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
 
   // calculate delay value
   this->tcxoDelay = delay;
-  uint32_t delayValue = (uint32_t)((float)delay / 30.52f);
+  uint32_t delayValue = (uint32_t)((float)delay * (1.0f / 30.52f));
   if(delayValue == 0) {
     delayValue = 1;
   }
@@ -1851,7 +1852,7 @@ int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
     mode = RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC;
   }
 
-  uint32_t timeout_raw = (float)timeout / 30.52f;
+  uint32_t timeout_raw = (uint32_t)((float)timeout * (1.0f / 30.52f));
 
   // set CAD parameters
   // TODO add configurable exit mode and timeout

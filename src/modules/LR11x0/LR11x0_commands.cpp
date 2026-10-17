@@ -186,7 +186,7 @@ int16_t LR11x0::getVbat(float* vbat) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_VBAT, false, buff, sizeof(buff));
 
   // pass the replies
-  if(vbat) { *vbat = (((float)buff[0]/51.0f) - 1.0f)*1.35f; }
+  if(vbat) { *vbat = ((float)buff[0]*(1.35f/51.0f)) - 1.35f; }
 
   return(state);
 }
@@ -199,7 +199,7 @@ int16_t LR11x0::getTemp(float* temp) {
   if(temp) {
     uint16_t raw = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1];
     raw = raw & 0x07FF; //According LR1121 datasheet we need [0..10] bits
-    *temp = 25.0f - (1000.0f/1.7f)*(((float)raw/2047.0f)*1.35f - 0.7295f); //According LR1121 datasheet 1.35
+    *temp = (25.0f - ((1000.0f/1.7f)*0.7295f)) - ((1000.0f/1.7f)*(1.35f/2047.0f))*(float)raw; //According LR1121 datasheet 1.35
   }
 
   return(state);
@@ -378,8 +378,8 @@ int16_t LR11x0::getPacketStatusLoRa(float* rssiPkt, float* snrPkt, float* signal
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_PACKET_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(rssiPkt) { *rssiPkt = (float)buff[0] / -2.0f; }
-  if(snrPkt) { *snrPkt = (float)((int8_t)buff[1]) / 4.0f; }
+  if(rssiPkt) { *rssiPkt = (float)buff[0] * -0.5f; }
+  if(snrPkt) { *snrPkt = (float)((int8_t)buff[1]) * 0.25; }
   if(signalRssiPkt) { *signalRssiPkt = buff[2]; }
 
   return(state);
@@ -390,8 +390,8 @@ int16_t LR11x0::getPacketStatusGFSK(float* rssiSync, float* rssiAvg, uint8_t* rx
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_PACKET_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(rssiSync) { *rssiSync = (float)buff[0] / -2.0f; }
-  if(rssiAvg) { *rssiAvg = (float)buff[1] / -2.0f; }
+  if(rssiSync) { *rssiSync = (float)buff[0] * -0.5f; }
+  if(rssiAvg)  { *rssiAvg  = (float)buff[1] * -0.5f; }
   if(rxLen) { *rxLen = buff[2]; }
   if(stat) { *stat = buff[3]; }
 
@@ -403,7 +403,7 @@ int16_t LR11x0::getRssiInst(float* rssi) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_RSSI_INST, false, buff, sizeof(buff));
 
   // pass the replies
-  if(rssi) { *rssi = (float)buff[0] / -2.0f; }
+  if(rssi) { *rssi = (float)buff[0] * -0.5f; }
 
   return(state);
 }
@@ -613,9 +613,9 @@ int16_t LR11x0::getRangingResult(uint8_t type, float* res) {
   if(res) { 
     if(type == RADIOLIB_LR11X0_RANGING_RESULT_DISTANCE) {
       uint32_t raw = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3];
-      *res = ((float)(raw*3e8))/((float)(4096*this->bandwidthHz));
+      *res = ((float)raw*(3e8f/4096.0f))/(float)this->bandwidthHz;
     } else {
-      *res = (float)rplBuff[3]/2.0f;
+      *res = (float)rplBuff[3] * 0.5f;
     }
   }
 

@@ -144,7 +144,8 @@ RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
 RadioLibTime_t LRxxxx::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the timeout value is given in units of 30.52 microseconds
   // the calling function should provide some extra width, as this number of units is truncated to integer
-  RadioLibTime_t timeout = timeoutUs / 30.52;
+  RadioLibTime_t timeout = (RadioLibTime_t) ((float) timeoutUs * (1.0f / 30.52f));
+  // or can be: RadioLibTime_t timeout = (RadioLibTime_t) (((uint64_t) timeoutUs * 34360) >> 20);
   return(timeout);
 }
 
