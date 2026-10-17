@@ -1,5 +1,11 @@
 var NAVTREEINDEX8 =
 {
+"struct_l_r11x0_gnss_satellite__t.html":[4,0,51],
+"struct_l_r11x0_gnss_satellite__t.html#a0513395fd04c052b862c443dfbe75e84":[4,0,51,2],
+"struct_l_r11x0_gnss_satellite__t.html#a1ca3d11db7b677955b7f1f3c4f85157f":[4,0,51,0],
+"struct_l_r11x0_gnss_satellite__t.html#a670c9e916637b5fede43c5fbb26cbfd8":[4,0,51,1],
+"struct_l_r11x0_version_info__t.html":[4,0,52],
+"struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc":[4,0,52,3],
 "struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f":[4,0,52,6],
 "struct_l_r11x0_version_info__t.html#a6686a59a55b567b11b325b7087d682b2":[4,0,52,1],
 "struct_l_r11x0_version_info__t.html#a8c572580b8dba18d46ae50b4a4dd5a8d":[4,0,52,7],

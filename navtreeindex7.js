@@ -1,5 +1,11 @@
 var NAVTREEINDEX7 =
 {
+"group__status__codes.html#ga4c1dd3c7f2b37c973a047c58506729f5":[3,7,80],
+"group__status__codes.html#ga4e420f330a72079b504e0ca8109e6973":[3,7,93],
+"group__status__codes.html#ga4e64d3ed035b21bfb81cf2bca35b2ecb":[3,7,24],
+"group__status__codes.html#ga508806c18663156b0d00d1a21c957468":[3,7,18],
+"group__status__codes.html#ga5133c0c17301cfc39ac6121c5851292f":[3,7,23],
+"group__status__codes.html#ga54a2fc9441c25b56979c6edab097ff12":[3,7,72],
 "group__status__codes.html#ga5529b54dc67d5ccdc2a29989ebf43711":[3,7,49],
 "group__status__codes.html#ga5584a219fcb1a8e1789142b18a3a511e":[3,7,66],
 "group__status__codes.html#ga55da4b2ee0661872a37f1c57fc61c666":[3,7,48],
@@ -83,8 +89,8 @@ var NAVTREEINDEX7 =
 "group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd":[3,8,1],
 "group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77":[3,8,0],
 "hierarchy.html":[4,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "lr1110__transceiver__0303_8h_source.html":[5,0,0,1,2,0,0],
 "lr1110__transceiver__0304_8h_source.html":[5,0,0,1,2,0,1],
 "lr1110__transceiver__0305_8h.html":[5,0,0,1,2,0,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX7 =
 "struct_l_r11x0_gnss_result__t.html":[4,0,50],
 "struct_l_r11x0_gnss_result__t.html#a2fcd901f5815f3e4760f61d2bc7a7a9b":[4,0,50,2],
 "struct_l_r11x0_gnss_result__t.html#a6142622b9fb790108546b4d09b063b6c":[4,0,50,0],
-"struct_l_r11x0_gnss_result__t.html#a9e3cdbdf86357bfd0226926d7c5d97e3":[4,0,50,1],
-"struct_l_r11x0_gnss_satellite__t.html":[4,0,51],
-"struct_l_r11x0_gnss_satellite__t.html#a0513395fd04c052b862c443dfbe75e84":[4,0,51,2],
-"struct_l_r11x0_gnss_satellite__t.html#a1ca3d11db7b677955b7f1f3c4f85157f":[4,0,51,0],
-"struct_l_r11x0_gnss_satellite__t.html#a670c9e916637b5fede43c5fbb26cbfd8":[4,0,51,1],
-"struct_l_r11x0_version_info__t.html":[4,0,52],
-"struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc":[4,0,52,3]
+"struct_l_r11x0_gnss_result__t.html#a9e3cdbdf86357bfd0226926d7c5d97e3":[4,0,50,1]
 };

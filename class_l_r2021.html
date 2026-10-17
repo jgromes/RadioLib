@@ -342,6 +342,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8d7069e59abecae1e4b48de5920da4b3" id="r_a8d7069e59abecae1e4b48de5920da4b3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a8d7069e59abecae1e4b48de5920da4b3">getModem</a> (ModemType_t *modem) override</td></tr>
 <tr class="memdesc:a8d7069e59abecae1e4b48de5920da4b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <br /></td></tr>
 <tr class="separator:a8d7069e59abecae1e4b48de5920da4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7176d05e7ee72b56f814373dbdb1ff36" id="r_a7176d05e7ee72b56f814373dbdb1ff36"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#a7176d05e7ee72b56f814373dbdb1ff36">getMode</a> (RadioModeType_t *mode) override</td></tr>
+<tr class="memdesc:a7176d05e7ee72b56f814373dbdb1ff36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the operating mode the radio is in, as the chip reports it. Unlike PhysicalLayer::stagedMode, which is what was last asked of the radio, this reads the hardware, so a caller can tell a radio that has left a mode on its own - a receive that did not survive a frame, or a chip that lost its state - from one that is still in it.    <br /></td></tr>
+<tr class="separator:a7176d05e7ee72b56f814373dbdb1ff36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf7fa49b2245a3dfc3613bfcac4a249e" id="r_adf7fa49b2245a3dfc3613bfcac4a249e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r2021.html#adf7fa49b2245a3dfc3613bfcac4a249e">stageMode</a> (RadioModeType_t mode, <a class="el" href="union_radio_mode_config__t.html">RadioModeConfig_t</a> *cfg) override</td></tr>
 <tr class="memdesc:adf7fa49b2245a3dfc3613bfcac4a249e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stage mode of the radio to be launched later using launchMode.    <br /></td></tr>
 <tr class="separator:adf7fa49b2245a3dfc3613bfcac4a249e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1834,6 +1837,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7176d05e7ee72b56f814373dbdb1ff36" name="a7176d05e7ee72b56f814373dbdb1ff36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7176d05e7ee72b56f814373dbdb1ff36">&#9670;&#160;</a></span>getMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getMode </td>
+          <td>(</td>
+          <td class="paramtype">RadioModeType_t *&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read the operating mode the radio is in, as the chip reports it. Unlike PhysicalLayer::stagedMode, which is what was last asked of the radio, this reads the hardware, so a caller can tell a radio that has left a mode on its own - a receive that did not survive a frame, or a chip that lost its state - from one that is still in it.   </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Pointer to the variable to save the mode into. A mode the chip reports that has no RadioModeType_t equivalent, frequency synthesis for example, is reported as RADIOLIB_RADIO_MODE_NONE. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>   </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a2eb1c4f1cf4c7989f5c06b1d7085273c">PhysicalLayer</a>.</p>
 
 </div>
 </div>

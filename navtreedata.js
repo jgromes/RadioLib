@@ -57,13 +57,13 @@ var NAVTREEINDEX =
 [
 "_a_d_s_b_8h_source.html",
 "class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e",
-"class_l_r2021.html#abfe825d8bf2bf526058914bf99b71a92",
-"class_pi_hal.html",
-"class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1",
-"class_s_x127x.html#a2cc53b9f9d90647c5709cb974779cf53",
-"class_si443x.html#ae188dec3175a3aec96844a613e911500",
-"group__status__codes.html#ga5529b54dc67d5ccdc2a29989ebf43711",
-"struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f"
+"class_l_r2021.html#abc703d439acc814a69b14cbd16468e80",
+"class_physical_layer.html#af88dcb54dc8e9a1edaf9f1c3e5ee2b74",
+"class_s_x1262.html#a0da317728ec8ef23c5032d550c9acb8d",
+"class_s_x127x.html#a1ff85ee7979da08b4e66316f1ba2c6a9",
+"class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e",
+"group__status__codes.html#ga4c1dd3c7f2b37c973a047c58506729f5",
+"struct_l_r11x0_gnss_satellite__t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

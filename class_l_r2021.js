@@ -38,6 +38,7 @@ var class_l_r2021 =
     [ "getLoRaPacketStatus", "class_l_r2021.html#a127d986eb3e735849c81b80f70ab8a39", null ],
     [ "getLoRaRxHeaderInfo", "class_l_r2021.html#a1f88f57889841379423aef67aaf8a7e0", null ],
     [ "getLoRaRxStats", "class_l_r2021.html#a9a8dae340e83135d69cc07517b2bfe2d", null ],
+    [ "getMode", "class_l_r2021.html#a7176d05e7ee72b56f814373dbdb1ff36", null ],
     [ "getModem", "class_l_r2021.html#a8d7069e59abecae1e4b48de5920da4b3", null ],
     [ "getOokRxStats", "class_l_r2021.html#a582e323e3bf6c3ae8d4a9eafe263a9bc", null ],
     [ "getOqpskRxStats", "class_l_r2021.html#a9972069127aaefe808d92c4bafc391ec", null ],

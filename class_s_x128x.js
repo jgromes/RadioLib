@@ -27,6 +27,7 @@ var class_s_x128x =
     [ "getIrqFlags", "class_s_x128x.html#aa17ffcb939f6b2eb0712e63b6ee7a71f", null ],
     [ "getIrqStatus", "class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22", null ],
     [ "getLoRaRxHeaderInfo", "class_s_x128x.html#a94261294f3d5ee501cf9580522e51087", null ],
+    [ "getMode", "class_s_x128x.html#aa9bb3e346a3f8b30366fb716886bcb07", null ],
     [ "getModem", "class_s_x128x.html#ad7bb0f4aa60a600d24d6268b430e719d", null ],
     [ "getPacketLength", "class_s_x128x.html#a67ab0acd97f81e509af80a31f1fa7dc4", null ],
     [ "getPacketLength", "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735", null ],

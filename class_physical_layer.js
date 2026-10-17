@@ -22,6 +22,7 @@ var class_physical_layer =
     [ "getChannelScanResult", "class_physical_layer.html#a63979795a7b53557560bb95b65480906", null ],
     [ "getIrqFlags", "class_physical_layer.html#af1caeed34b2e2ff0355467507106a1a2", null ],
     [ "getIrqMapped", "class_physical_layer.html#ae602ebd46d60da8670c9f353cef695d9", null ],
+    [ "getMode", "class_physical_layer.html#a2eb1c4f1cf4c7989f5c06b1d7085273c", null ],
     [ "getModem", "class_physical_layer.html#af061879bf694735297593c048d04a196", null ],
     [ "getPacketLength", "class_physical_layer.html#a2fe95169b5cdc8cabe1f2af66cad6ef6", null ],
     [ "getRSSI", "class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b", null ],
