@@ -870,10 +870,10 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
           break;
         case(RADIOLIB_LR2021_FLRC_CR_3_4):
           n_coded_bits += 6;
-          n_coded_bits_flt = ((float)n_coded_bits*(4.0f/3.0f);
+          n_coded_bits_flt = (float)n_coded_bits*(4.0f/3.0f);
           break;
         case(RADIOLIB_LR2021_FLRC_CR_2_3):
-          n_coded_bits_flt = ((float)n_coded_bits*(3.0f/2.0f);
+          n_coded_bits_flt = (float)n_coded_bits*(3.0f/2.0f);
           break;
       }
       n_coded_bits = n_coded_bits_flt + 0.5f;
