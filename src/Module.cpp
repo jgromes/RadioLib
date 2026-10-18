@@ -362,9 +362,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
 
-        // this timeout check triggers a false positive from cppcheck
-        // cppcheck-suppress unsignedLessThanZero
-        if(this->hal->millis() - start >= this->spiConfig.timeout) {
+        if(this->hal->millis() >= start + this->spiConfig.timeout) {
           RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO pre-transfer timeout, is it connected?");
           #if !RADIOLIB_STATIC_ONLY
             delete[] buffOut;
@@ -400,9 +398,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
         
-        // this timeout check triggers a false positive from cppcheck
-        // cppcheck-suppress unsignedLessThanZero
-        if(this->hal->millis() - start >= this->spiConfig.timeout) {
+        if(this->hal->millis() >= start + this->spiConfig.timeout) {
           RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO post-transfer timeout, is it connected?");
 
           // do not return yet to display the debug output
