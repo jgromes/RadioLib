@@ -457,7 +457,7 @@ int16_t LR2021::setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay) {
   }
 
   // calculate delay value
-  uint32_t delayValue = (uint32_t)((float)delay / 30.52f);
+  uint32_t delayValue = (uint32_t)((float)delay * (1.0f / 30.52f));
   if(delayValue == 0) {
     delayValue = 1;
   }

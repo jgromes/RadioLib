@@ -173,7 +173,7 @@ int16_t LR2021::getTemp(uint8_t source, uint8_t resolution, float* temp) {
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_TEMP, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(temp) { 
     uint16_t raw = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1];
-    *temp = 25.0f + (0.7295f - 1.35f * raw / 8192.0f) * (1000.0f / 1.7f);
+    *temp = (25.0f + (0.7295f * (1000.0f / 1.7f))) - raw * ((1.35f / 8192.0f) * (1000.0f / 1.7f));
   }
   return(state);
 }
