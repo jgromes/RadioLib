@@ -389,8 +389,8 @@ int16_t LR11x0::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   sleepPeriod -= transitionTime;
 
   // divide by 30.517 microseconds (RTC period, 1/32.768 kHz)
-  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 34360) >> 20);
-  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 34360) >> 20);
+  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 512UL) / 15625UL);
+  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 512UL) / 15625UL);
 
   // check 24 bit limit and zero value (likely not intended)
   if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
