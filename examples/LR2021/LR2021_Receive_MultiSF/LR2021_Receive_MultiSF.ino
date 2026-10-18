@@ -67,7 +67,7 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // some LR2021 have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio.tcxoVoltage = 1.6;
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // LR2021 allows to use any DIO pin as the interrupt
   // as an example, we set DIO10 to be the IRQ
@@ -77,7 +77,7 @@ void setup() {
   // initialize LR2021 at 434 MHz
   Serial.print(F("[LR2021] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));

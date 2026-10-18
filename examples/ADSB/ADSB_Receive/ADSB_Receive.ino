@@ -59,16 +59,16 @@ void setup() {
   // 2 Mbps bit rate and receiver bandwidth 3076 kHz
   Serial.print(F("[LR2021] Initializing ... "));
   ConfigOOK_t config;
-  config.frequency = 1090.0;
-  config.bitRate = 2000.0;
-  config.receiverBandwidth = 3076.0;
+  config.frequency = RADIOLIB_UNIT_KILO(1090);
+  config.bitRate = RADIOLIB_UNIT_MEGA(2);
+  config.receiverBandwidth = RADIOLIB_UNIT_KILO(3076);
   int state = radio.beginOOK(config);
   // for C++14 and newer, you can use initializer lists
   /*
   int state = radio.beginOOK({
-    .frequency = 1090.0, 
-    .bitRate = 2000.0, 
-    .receiverBandwidth = 3076.0
+    .frequency = RADIOLIB_UNIT_KILO(1090), 
+    .bitRate = RADIOLIB_UNIT_MEGA(2), 
+    .receiverBandwidth = RADIOLIB_UNIT_KILO(3076)
   });
   */
 

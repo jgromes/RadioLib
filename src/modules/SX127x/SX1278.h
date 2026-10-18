@@ -110,7 +110,7 @@ class SX1278: public SX127x {
 
     /*!
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
-      \param mod Instance of Module that will be used to communicate with the %LoRa chip.
+      \param mod Instance of Module that will be used to communicate with the LoRa chip.
     */
     SX1278(Module* mod); // cppcheck-suppress noExplicitConstructor
 
@@ -126,24 +126,6 @@ class SX1278: public SX127x {
     virtual int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
-      \brief LoRa modem initialization method.
-      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      \param bw %LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
-      \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
-      \param cr %LoRa link coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
-      is undocumented and not recommended without your own FEC.
-      \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
-      \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
-      \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
-      Allowed values range from 6 to 65535.
-      \param gain Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
-      Set to 0 to enable automatic gain control (recommended).
-      \returns \ref status_codes
-    */
-    virtual int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
-
-    /*!
       \brief Initialization method for FSK modem.
       \param config Initialization configuration.
       \details This method initializes the FSK modem with the specified configuration.
@@ -153,21 +135,6 @@ class SX1278: public SX127x {
     virtual int16_t beginFSK(const ConfigFSK_t& config);
 
     /*!
-      \deprecated Use \ref beginFSK(const ConfigFSK_t& config) instead.
-      \brief FSK modem initialization method.
-      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
-      \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz.
-      Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 <= 250 kHz is always met.
-      \param rxBw Receiver bandwidth in kHz. Allowed values range from 2.6 to 250.0 kHz.
-      \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
-      \param preambleLength Length of FSK preamble in bits.
-      \param enableOOK Use OOK modulation instead of FSK.
-      \returns \ref status_codes
-    */
-    virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
-
-    /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
     */
     void reset() override;
@@ -175,40 +142,42 @@ class SX1278: public SX127x {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values range from 137.0 MHz to 175.0 MHz and 395.0 to 525.0 MHz (datasheet minimum is 410.0 MHz, hardware works lower).
-      \param freq Carrier frequency to be set in MHz.
+      \brief Sets carrier frequency. Allowed values range from 137 MHz to 175 MHz and 395 to 525 MHz 
+      (datasheet minimum is 410 MHz, hardware works lower).
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq) override;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
-      \brief Sets %LoRa link bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in %LoRa mode.
-      \param bw %LoRa link bandwidth to be set in kHz.
+      \brief Sets LoRa link bandwidth. Allowed values are 7800, 10400, 15600, 20800, 31250, 41700, 
+      62500, 125000, 250000 and 500000 Hz. Only available in LoRa mode.
+      \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(uint32_t bw);
 
     /*!
-      \brief Sets %LoRa link spreading factor. Allowed values range from 6 to 12. Only available in %LoRa mode.
-      \param sf %LoRa link spreading factor to be set.
+      \brief Sets LoRa link spreading factor. Allowed values range from 6 to 12. Only available in LoRa mode.
+      \param sf LoRa link spreading factor to be set.
       \returns \ref status_codes
     */
     virtual int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
-      \brief Sets %LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in %LoRa mode.
+      \brief Sets LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in LoRa mode.
       Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. 
-      \param cr %LoRa link coding rate denominator to be set.
+      \param cr LoRa link coding rate denominator to be set.
       \returns \ref status_codes
     */
     int16_t setCodingRate(uint8_t cr);
 
     /*!
-      \brief Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.
-      \param br Bit rate to be set (in kbps).
+      \brief Sets FSK bit rate. Allowed values range from 500 bps to 300 kbps. Only available in FSK mode.
+      \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) override;
         
     /*!
       \brief Set data rate.

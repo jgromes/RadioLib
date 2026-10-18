@@ -54,22 +54,9 @@ int16_t LR2021::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t LR2021::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(begin(cfg));
-}
-
 int16_t LR2021::beginGFSK(const ConfigFSK_t& cfg) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
-  this->frequencyDev = cfg.frequencyDeviation * 1000.0f;
+  this->frequencyDev = cfg.frequencyDeviation;
 
   // set module properties and perform initial setup
   int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_GFSK);
@@ -109,18 +96,6 @@ int16_t LR2021::beginGFSK(const ConfigFSK_t& cfg) {
   return(state);
 }
 
-int16_t LR2021::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginGFSK(cfg));
-}
-
 int16_t LR2021::beginOOK(const ConfigOOK_t& cfg) {
   this->rxBandwidth = RADIOLIB_LR2021_GFSK_OOK_RX_BW_153_8;
 
@@ -158,17 +133,6 @@ int16_t LR2021::beginOOK(const ConfigOOK_t& cfg) {
   state = setCRC(2);
   return(state);
 }
-    
-int16_t LR2021::beginOOK(float freq, float br, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigOOK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginOOK(cfg));
-}
 
 int16_t LR2021::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // set module properties and perform initial setup
@@ -188,17 +152,6 @@ int16_t LR2021::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   uint8_t syncWord[] = { 0x12, 0xAD, 0x10, 0x1B };
   state = setSyncWord(syncWord, 4);
   return(state);
-}
-    
-int16_t LR2021::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-  ConfigLRFHSS_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.codingRate = cr;
-  cfg.narrowGrid = narrowGrid;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginLRFHSS(cfg));
 }
 
 int16_t LR2021::beginFLRC(const ConfigFLRC_t& cfg) {
@@ -241,18 +194,6 @@ int16_t LR2021::beginFLRC(const ConfigFLRC_t& cfg) {
 
   state = setCRC(2);
   return(state);
-}
-
-int16_t LR2021::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t pwr, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage) {
-  ConfigFLRC_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.codingRate = cr;
-  cfg.power = pwr;
-  cfg.preambleLength = preambleLength;
-  cfg.dataShaping = dataShaping;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginFLRC(cfg));
 }
 
 int16_t LR2021::transmit(const uint8_t* data, size_t len, uint8_t addr) {
@@ -349,7 +290,7 @@ int16_t LR2021::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 30.52f);
+  uint32_t timeoutValue = (uint32_t)((float)timeoutInternal * (1000.0f / 30.52f));
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -513,8 +454,8 @@ int16_t LR2021::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, R
   // divide by 30.517 microseconds (RTC period, 1/32.768 kHz)
   // the datasheet claims the RTC frequency is 32 kHz; however, using that makes the timing inaccurate
   // so it looks like the actual value is the 32.768 kHz used on the previous LR11xx chips
-  uint32_t rxPeriodRaw = (rxPeriod * 32768UL) / 1000000UL;
-  uint32_t sleepPeriodRaw = (sleepPeriod * 32768UL) / 1000000UL;
+  uint32_t rxPeriodRaw = (uint32_t)(((uint64_t)rxPeriod * 34360) >> 20);
+  uint32_t sleepPeriodRaw = (uint32_t)(((uint64_t)sleepPeriod * 34360) >> 20);
 
   // check 24 bit limit and zero value (likely not intended)
   if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
@@ -550,7 +491,7 @@ int16_t LR2021::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   DataRate_t dr = {
     .lora = {
       .spreadingFactor = this->spreadingFactor,
-      .bandwidth = this->bandwidthKhz,
+      .bandwidth = this->bandwidthHz,
       .codingRate = this->codingRate,
     }
   };
@@ -709,24 +650,28 @@ int16_t LR2021::clearIrqFlags(uint32_t irq) {
 int16_t LR2021::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginGFSK());
+      ConfigFSK_t cfg;
+      return(this->beginGFSK(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
-      return(this->beginLRFHSS());
+      ConfigLRFHSS_t cfg;
+      return(this->beginLRFHSS(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 Module* LR2021::getMod() {
   return(this->mod);
 }
 
-int16_t LR2021::modSetup(float freq, uint8_t modem) {
+int16_t LR2021::modSetup(uint32_t freq, uint8_t modem) {
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
@@ -751,7 +696,7 @@ int16_t LR2021::modSetup(float freq, uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(this->tcxoVoltage > 0.0f) {
+  if(this->tcxoVoltage != RadioLibTCXOVoltage_t::VoltageNone) {
     state = setTCXO(this->tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
@@ -871,7 +816,7 @@ int16_t LR2021::startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t 
     mode = RADIOLIB_LR2021_LORA_CAD_EXIT_MODE_FALLBACK;
   }
 
-  uint32_t timeout_raw = (float)timeout / 30.52f;
+  uint32_t timeout_raw = (uint32_t)((float)timeout * (1.0f / 30.52f));
 
   // set LoRa CAD parameters
   // preamble only mode is intentionally disabled, as it is unreliable according to the datasheet
@@ -925,16 +870,16 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
           break;
         case(RADIOLIB_LR2021_FLRC_CR_3_4):
           n_coded_bits += 6;
-          n_coded_bits_flt = ((float)n_coded_bits*4.0f)/3.0f;
+          n_coded_bits_flt = (float)n_coded_bits*(4.0f/3.0f);
           break;
         case(RADIOLIB_LR2021_FLRC_CR_2_3):
-          n_coded_bits_flt = ((float)n_coded_bits*3.0f)/2.0f;
+          n_coded_bits_flt = (float)n_coded_bits*(3.0f/2.0f);
           break;
       }
       n_coded_bits = n_coded_bits_flt + 0.5f;
 
       // now calculate the real time on air
-      return((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate / 1000.0f));
+      return((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate));
     } 
   }
 
@@ -1075,13 +1020,19 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       RADIOLIB_ASSERT(state);
 
       if(modem == RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS) {
+        // an LR-FHSS frame is built from the payload in this step, so it cannot be written ahead
+        if(cfg->transmit.data == NULL) {
+          return(RADIOLIB_ERR_UNSUPPORTED);
+        }
+
         // in LR-FHSS mode, the packet is built by the device
         //! \todo [LR2021] add configurable LR-FHSS device offset
         state = LRxxxx::lrFhssBuildFrame(RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME, this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
-      } else {
-        // write packet to buffer
+      } else if(cfg->transmit.data != NULL) {
+        // write packet to buffer - unless the caller already did that with writeTxBuffer,
+        // which it signals by leaving the payload pointer empty
         state = writeRadioTxFifo(cfg->transmit.data, cfg->transmit.len);
         RADIOLIB_ASSERT(state);
 
@@ -1098,6 +1049,25 @@ int16_t LR2021::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
 
   this->stagedMode = mode;
   return(state);
+}
+
+int16_t LR2021::writeTxBuffer(const uint8_t* data, size_t len) {
+  if(data == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+  if(len > RADIOLIB_LR2021_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // the transmit FIFO appends, so anything left in it has to go first
+  int16_t state = clearTxFifo();
+  RADIOLIB_ASSERT(state);
+
+  return(writeRadioTxFifo(data, len));
+}
+
+int16_t LR2021::clearTxBuffer() {
+  return(clearTxFifo());
 }
 
 int16_t LR2021::launchMode() {
@@ -1137,7 +1107,7 @@ float LR2021::getVoltage(uint8_t bits) {
     return(0);
   }
   
-  return((float)val / 1000.0f);
+  return((float)val * (1.0f / 1000.0f));
 }
 
 float LR2021::getTemperature(uint8_t source, uint8_t bits) {

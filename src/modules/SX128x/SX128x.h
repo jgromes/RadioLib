@@ -379,21 +379,6 @@ class SX128x: public PhysicalLayer {
     int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
-      \brief Initialization method for LoRa modem.
-      \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
-      \param bw LoRa bandwidth in kHz. Defaults to 812.5 kHz.
-      \param sf LoRa spreading factor. Defaults to 9.
-      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
-      is undocumented and not recommended without your own FEC.
-      \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX128X_SYNC_WORD_PRIVATE (0x12).
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength LoRa preamble length in symbols. Defaults to 12 symbols.
-      \returns \ref status_codes
-    */
-    int16_t begin(float freq = 2400.0, float bw = 812.5, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX128X_SYNC_WORD_PRIVATE, int8_t pwr = 10, uint16_t preambleLength = 12);
-
-    /*!
       \brief Initialization method for GFSK modem.
       \details This method initializes the GFSK modem with the specified configuration.
       Supports designated initializers when using C++14 or above.
@@ -401,18 +386,6 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginGFSK(const ConfigFSK_t& config);
-
-    /*!
-      \deprecated Use \ref beginGFSK(const ConfigFSK_t& config) instead.
-      \brief Initialization method for GFSK modem.
-      \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
-      \param br FSK bit rate in kbps. Defaults to 800 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 400.0 kHz.
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
-      \returns \ref status_codes
-    */
-    int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t pwr = 10, uint16_t preambleLength = 16);
 
     /*!
       \brief Initialization method for BLE modem.
@@ -424,18 +397,6 @@ class SX128x: public PhysicalLayer {
     int16_t beginBLE(const ConfigBLE_t& config);
 
     /*!
-      \deprecated Use \ref beginBLE(const ConfigBLE_t& config) instead.
-      \brief Initialization method for BLE modem.
-      \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
-      \param br BLE bit rate in kbps. Defaults to 800 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 400.0 kHz.
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
-      \returns \ref status_codes
-    */
-    int16_t beginBLE(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t pwr = 10, uint8_t dataShaping = RADIOLIB_SHAPING_0_5);
-
-    /*!
       \brief Initialization method for FLRC modem.
       \details This method initializes the FLRC modem with the specified configuration.
       Supports designated initializers when using C++14 or above.
@@ -443,19 +404,6 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginFLRC(const ConfigFLRC_t& config);
-
-    /*!
-      \deprecated Use \ref beginFLRC(const ConfigFLRC_t& config) instead.
-      \brief Initialization method for FLRC modem.
-      \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
-      \param br FLRC bit rate in kbps. Defaults to 650 kbps.
-      \param cr FLRC coding rate. Defaults to 3 (coding rate 3/4).
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength FLRC preamble length in bits. Defaults to 16 bits.
-      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
-      \returns \ref status_codes
-    */
-    int16_t beginFLRC(float freq = 2400.0, uint16_t br = 650, uint8_t cr = 3, int8_t pwr = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -480,7 +428,7 @@ class SX128x: public PhysicalLayer {
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
-      \param timeout Reception timeout in microseconds. If set to 0,
+      \param timeout Reception timeout in milliseconds. If set to 0,
       timeout period will be calculated automatically based on the radio configuration.
       \returns \ref status_codes
     */
@@ -667,18 +615,18 @@ class SX128x: public PhysicalLayer {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in range from 2400.0 to 2500.0 MHz.
-      \param freq Carrier frequency to be set in MHz.
+      \brief Sets carrier frequency. Allowed values are in range from 2400 to 2500 MHz.
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq) override;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
-      \brief Sets LoRa bandwidth. Allowed values are 203.125, 406.25, 812.5 and 1625.0 kHz.
-      \param bw LoRa bandwidth to be set in kHz.
+      \brief Sets LoRa bandwidth. Allowed values are 203125, 406250, 812500 and 1625000 Hz.
+      \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(uint32_t bw);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
@@ -745,17 +693,17 @@ class SX128x: public PhysicalLayer {
     /*!
       \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000,
       1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).
-      \param br FSK/FLRC bit rate to be set in kbps.
+      \param br FSK/FLRC bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
-      \brief Sets FSK frequency deviation. Allowed values range from 0.0 to 3200.0 kHz.
-      \param freqDev FSK frequency deviation to be set in kHz.
+      \brief Sets FSK frequency deviation. Allowed values range from 0 to 3200 kHz.
+      \param freqDev FSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
@@ -842,7 +790,7 @@ class SX128x: public PhysicalLayer {
       \brief Gets frequency error of the latest received packet.
       \returns Frequency error in Hz.
     */
-    float getFrequencyError();
+    int32_t getFrequencyError();
 
     /*!
       \brief Query modem for the packet length of received payload.
@@ -958,6 +906,12 @@ class SX128x: public PhysicalLayer {
     /*! \copydoc PhysicalLayer::launchMode */
     int16_t launchMode() override;
 
+    /*! \copydoc PhysicalLayer::writeTxBuffer */
+    int16_t writeTxBuffer(const uint8_t* data, size_t len) override;
+
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
+
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
@@ -981,7 +935,7 @@ class SX128x: public PhysicalLayer {
     int16_t modSetup(uint8_t modem);
 
     // cached LoRa parameters
-    float bandwidthKhz = 0;
+    uint32_t bandwidthHz = 0;
     uint8_t bandwidth = 0, spreadingFactor = 0, codingRateLoRa = 0;
     uint8_t preambleLengthLoRa = 0, headerType = 0, payloadLen = 0, crcLoRa = 0;
 
@@ -991,8 +945,8 @@ class SX128x: public PhysicalLayer {
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t writeBuffer(const uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
-    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
-    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
+    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_4_MS);
+    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_4_MS);
     int16_t setCad(uint8_t symbolNum);
     uint8_t getPacketType();
     int16_t setRfFrequency(uint32_t frf);
@@ -1027,8 +981,9 @@ class SX128x: public PhysicalLayer {
     uint8_t invertIQEnabled = RADIOLIB_SX128X_LORA_IQ_STANDARD;
 
     // cached GFSK parameters
-    float modIndexReal = 0, frequencyDev = 0;
-    uint16_t bitRateKbps = 0;
+    float modIndexReal = 0;
+    uint32_t frequencyDev = 0;
+    uint32_t bitRateBps = 0;
     uint8_t bitRate = 0, modIndex = 0, shaping = 0;
     uint8_t preambleLengthGFSK = 0, syncWordLen = 0, syncWordMatch = 0, crcGFSK = 0, whitening = 0;
     uint8_t packetType = RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE;

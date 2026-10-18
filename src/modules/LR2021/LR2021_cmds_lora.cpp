@@ -10,11 +10,11 @@
 int16_t LR2021::setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
+    uint64_t symbolLengthUs = ((uint64_t)1000000 * ((uint64_t)1 << this->spreadingFactor)) / (uint64_t)this->bandwidthHz;
     // LDRO on SX128x seems to be working differently to sub-GHz LoRa, as it is always needed for SF > 10
     // if SX128x bandwidth is being used at 2.4 GHz, we use this approach instead of the symbol time to preserve compatibility
     bool sx128xLdro = this->highFreq && ((bw >= RADIOLIB_LR2021_LORA_BW_203) || (bw <= RADIOLIB_LR2021_LORA_BW_812)) && (sf > 10);
-    if((symbolLength >= 16.0f) || sx128xLdro) {
+    if((symbolLengthUs >= 16000) || sx128xLdro) {
       this->ldrOptimize = RADIOLIB_LR2021_LORA_LDRO_ENABLED;
     } else {
       this->ldrOptimize = RADIOLIB_LR2021_LORA_LDRO_DISABLED;
@@ -100,16 +100,16 @@ int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, 
   if(crc) { *crc = (buff[0] & 0x10) >> 4; }
   if(cr) { *cr = buff[0] & 0x0F; }
   if(packetLen) { *packetLen = buff[1]; }
-  if(snrPacket) { *snrPacket = (float)((int8_t)buff[2]) / 4.0f; }
+  if(snrPacket) { *snrPacket = (float)((int8_t)buff[2]) * 0.25f; }
   if(rssiPacket) {
     raw = (uint16_t)buff[3] << 1;
     raw |= (buff[5] & 0x02) >> 1;
-    *rssiPacket = (float)raw / -2.0f;
+    *rssiPacket = (float)raw * -0.5f;
   }
   if(rssiSignalPacket) {
     raw = (uint16_t)buff[4] << 1;
     raw |= buff[5] & 0x01;
-    *rssiSignalPacket = (float)raw / -2.0f;
+    *rssiSignalPacket = (float)raw * -0.5f;
   }
   if(detector) {
     uint8_t det = (buff[5] >> 2) & 0x0F;
