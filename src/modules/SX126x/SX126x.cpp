@@ -285,7 +285,6 @@ int16_t SX126x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     if(len == 0) { maxLen = RADIOLIB_SX126X_MAX_PACKET_LENGTH; }
     timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
   }
-
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
@@ -644,12 +643,12 @@ float SX126x::getRSSI(bool packet) {
     // get last packet RSSI from packet status
     uint32_t packetStatus = getPacketStatus();
     uint8_t rssiPkt = packetStatus & 0xFF;
-    return(-1.0 * rssiPkt/2.0);
+    return(-0.5f * (float)rssiPkt);
   } else {
     // get instantaneous RSSI value
     uint8_t rssiRaw = 0;
     this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, &rssiRaw, 1);
-    return((float)rssiRaw / (-2.0f));
+    return(-0.5f * (float)rssiRaw);
   }
 }
 
@@ -663,9 +662,9 @@ float SX126x::getSNR() {
   uint32_t packetStatus = getPacketStatus();
   uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
   if(snrPkt < 128) {
-    return(snrPkt/4.0);
+    return((float)snrPkt * 0.25f);
   } else {
-    return((snrPkt - 256)/4.0);
+    return((float)(snrPkt - 256) * 0.25f);
   }
 }
 
@@ -673,7 +672,7 @@ int32_t SX126x::getFrequencyError() {
   // check active modem
   uint8_t modem = getPacketType();
   if(modem != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    return(0.0);
+    return(0);
   }
 
   // read the raw frequency error register values
@@ -688,7 +687,7 @@ int32_t SX126x::getFrequencyError() {
   raw &= 0x0FFFFF;
 
   // check the first bit
-  int32_t error = 0;
+  int32_t error;
   if (raw & 0x80000) {
     // frequency error is negative
     raw |= (uint32_t) 0xFFF00000;
@@ -780,7 +779,7 @@ RadioLibTime_t SX126x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, Pack
 
       // add header bits
       uint16_t N_totalBits = (RADIOLIB_SX126X_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
-      return(((uint32_t)N_totalBits * 8 * 1000000UL) / 488.28215f);
+      return(((float)N_totalBits) * (8000000.0f / 488.28215f));
     }
 
     default:
@@ -868,7 +867,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
 RadioLibTime_t SX126x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the timeout value is given in units of 15.625 microseconds
   // the calling function should provide some extra width, as this number of units is truncated to integer
-  RadioLibTime_t timeout = timeoutUs / 15.625f;
+  RadioLibTime_t timeout = timeoutUs * (1.0f / 15.625f);
   return(timeout);
 }
 
