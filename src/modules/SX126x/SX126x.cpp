@@ -51,7 +51,6 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength) {
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
-
   state = setCurrentLimit(60.0);
   RADIOLIB_ASSERT(state);
 
@@ -98,7 +97,6 @@ int16_t SX126x::beginFSK(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint16_t 
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
-
   uint8_t sync[] = {0x12, 0xAD};
   state = setSyncWord(sync, 2);
   RADIOLIB_ASSERT(state);
@@ -235,19 +233,7 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // calculate timeout in ms (5ms + 500 % of expected time-on-air)
-  RadioLibTime_t timeout;
-  RadioLibTime_t toa = getTimeOnAir(len);
-  if(modem == RADIOLIB_SX127X_LORA) {
-    // calculate timeout in ms (about 150 % of expected time-on-air)
-    //timeout = (toa * 1500) / 1000;  // should be / 1000000 ?
-    timeout = ((toa * 3) >> 11);
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // calculate timeout in ms (5ms + about 500 % of expected time-on-air)
-    //timeout = 5 + (toa * 5) / 1000;
-    timeout = 5 + ((toa * 5) >> 10);
-  } else {
-    return(RADIOLIB_ERR_UNKNOWN);
-  }
+  RadioLibTime_t timeout = 5 + (getTimeOnAir(len) * 5) / 1000;
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
   // start transmission
@@ -297,13 +283,12 @@ int16_t SX126x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
     if(len == 0) { maxLen = RADIOLIB_SX126X_MAX_PACKET_LENGTH; }
-    timeoutInternal = ((getTimeOnAir(maxLen) * 5) >> 10);    // convert us to ms
+    timeoutInternal = (getTimeOnAir(maxLen) * 5) / 1000;
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeoutInternal);
 
   // start reception
-  //uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 15.625f);
-  uint32_t timeoutValue = (timeoutInternal << 10);   // convert ms to us
+  uint32_t timeoutValue = (uint32_t)(((float)timeoutInternal * 1000.0f) / 15.625f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -576,10 +561,6 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
     length = len;
   }
 
-  // abort if nothing was received
-  if (length == 0)
-    return RADIOLIB_ERR_PACKET_TOO_SHORT;
-
   // read packet data starting at offset
   state = readBuffer(data, length, offset);
   RADIOLIB_ASSERT(state);
@@ -681,10 +662,8 @@ float SX126x::getSNR() {
   uint32_t packetStatus = getPacketStatus();
   uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
   if(snrPkt < 128) {
-    //return(snrPkt/4.0);
     return((float)snrPkt * 0.25f);
   } else {
-    //return((snrPkt - 256)/4.0);
     return((float)(snrPkt - 256) * 0.25f);
   }
 }
@@ -707,9 +686,8 @@ int32_t SX126x::getFrequencyError() {
   uint32_t raw = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
   raw &= 0x0FFFFF;
 
-  int32_t error;
-
   // check the first bit
+  int32_t error;
   if (raw & 0x80000) {
     // frequency error is negative
     raw |= (uint32_t) 0xFFF00000;
