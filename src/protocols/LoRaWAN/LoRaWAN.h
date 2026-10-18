@@ -525,8 +525,8 @@ struct LoRaWANEvent_t {
   /*! \brief Datarate */
   uint8_t datarate;
   
-  /*! \brief Frequency in MHz */
-  float freq;
+  /*! \brief Frequency in Hz */
+  uint32_t freq;
   
   /*! \brief Transmit power in dBm for uplink, or RSSI for downlink */
   int16_t power;
@@ -602,7 +602,7 @@ class LoRaWANNode {
       \brief Trigger the registered buffer callbacks to restore persistence and session buffers.
       \returns \ref status_codes
     */
-    int16_t loadBuffers();
+    virtual int16_t loadBuffers();
 
     /*!
       \brief Set the device credentials and activation configuration

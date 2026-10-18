@@ -241,7 +241,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     eventUp->confirmed = isConfirmed;
     eventUp->confirming = (this->confFCntDown != RADIOLIB_LORAWAN_FCNT_NONE);
     eventUp->datarate = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
-    eventUp->freq = this->channels[RADIOLIB_LORAWAN_UPLINK].freq / 10000.0;
+    eventUp->freq = this->channels[RADIOLIB_LORAWAN_UPLINK].freq * 100UL;
     eventUp->power = this->txPowerMax - this->txPowerSteps * 2;
     eventUp->fCnt = this->fCntUp;
     eventUp->fPort = fPort;
@@ -1644,11 +1644,11 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   ModemType_t modem = this->band->dataRates[currentDr].modem;
   if(modem == RADIOLIB_MODEM_LORA) {
     const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
-    uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000) / dr->lora.bandwidth;
-    if(6 * tSymbUs > (minWidth + padding) * 1000) {
+    uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000000) / dr->lora.bandwidth;
+    if(6 * tSymbUs > (minWidth + padding) * 1000000) {
       modeCfg.receive.syncSymbols = 6;
     } else {
-      modeCfg.receive.syncSymbols = ((minWidth + padding) * 1000) / tSymbUs + 1;
+      modeCfg.receive.syncSymbols = ((minWidth + padding) * 1000000) / tSymbUs + 1;
     }
     modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs * 1.1);
   
@@ -2593,7 +2593,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         }
       }
       if(macRx2Freq >= this->band->freqMin && macRx2Freq <= this->band->freqMax) {
-        if(this->phyLayer->setFrequency(macRx2Freq / 10000.0) == RADIOLIB_ERR_NONE) {
+        if(this->phyLayer->setFrequency(macRx2Freq * 100UL) == RADIOLIB_ERR_NONE) {
           rx2FreqAck = 1;
         }
       }
@@ -2729,7 +2729,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       
       // check if the frequency is allowed possible
       if(macFreq >= this->band->freqMin && macFreq <= this->band->freqMax) { 
-        if(this->phyLayer->setFrequency(macFreq / 10000.0) == RADIOLIB_ERR_NONE) {
+        if(this->phyLayer->setFrequency(macFreq * 100UL) == RADIOLIB_ERR_NONE) {
           freqDlAck = 1;
         }
       }
@@ -3497,7 +3497,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN_NOTAG("");
 
-  RADIOLIB_DEBUG_PROTOCOL_PRINT("Frequency = %lu Hz, TX = %d dBm", (unsigned long)(chnl->freq * 100UL), pwr);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Frequency = %lu Hz, TX = %d dBm", (unsigned long)(chnl->freq * 100UL), pwr);
   state = this->phyLayer->setFrequency(chnl->freq * 100UL);
   RADIOLIB_ASSERT(state);
   
