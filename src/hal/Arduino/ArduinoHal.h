@@ -52,8 +52,8 @@ class ArduinoHal : public RadioLibHal {
     int16_t spiEnd() override;
 
     // implementations of virtual RadioLibHal methods
-    void init() override;
-    void term() override;
+    int16_t init() override;
+    int16_t term() override;
     void tone(uint32_t pin, unsigned int frequency, RadioLibTime_t duration = 0) override;
     void noTone(uint32_t pin) override;
     void yield() override;
