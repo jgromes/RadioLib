@@ -36,7 +36,7 @@ class TestHal : public RadioLibHal {
 
     TestHal() : RadioLibHal(TEST_HAL_INPUT, TEST_HAL_OUTPUT, TEST_HAL_LOW, TEST_HAL_HIGH, TEST_HAL_RISING, TEST_HAL_FALLING) { }
 
-    void init() override {
+    int16_t init() override {
       HAL_LOG("TestHal::init()");
 
       // save program start timestamp
@@ -52,10 +52,12 @@ class TestHal : public RadioLibHal {
 
       // wipe history log
       this->spiLogWipe();
+      return(RADIOLIB_ERR_NONE);
     }
 
-    void term() override {
+    int16_t term() override {
       HAL_LOG("TestHal::term()");
+      return(RADIOLIB_ERR_NONE);
     }
 
     void pinMode(uint32_t pin, uint32_t mode) override {
@@ -181,15 +183,16 @@ class TestHal : public RadioLibHal {
       return(0);
     }
 
-    void spiBegin() {
+    int16_t spiBegin() {
       HAL_LOG("TestHal::spiBegin()");
+      return(RADIOLIB_ERR_NONE);
     }
 
     void spiBeginTransaction() {
       HAL_LOG("TestHal::spiBeginTransaction()");
     }
 
-    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
+    int16_t spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
       HAL_LOG("TestHal::spiTransfer(len=" << len << ")");
       
       for(size_t i = 0; i < len; i++) {
@@ -209,14 +212,16 @@ class TestHal : public RadioLibHal {
         // output debug
         HAL_LOG(fmt::format("out={:#02x}, in={:#02x}", out[i], in[i]));
       }
+      return(RADIOLIB_ERR_NONE);
     }
 
     void spiEndTransaction() {
       HAL_LOG("TestHal::spiEndTransaction()");
     }
 
-    void spiEnd() {
+    int16_t spiEnd() {
       HAL_LOG("TestHal::spiEnd()");
+      return(RADIOLIB_ERR_NONE);
     }
 
     void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) {
