@@ -13,7 +13,8 @@ RF69::RF69(Module* module) : PhysicalLayer() {
 
 int16_t RF69::begin(const ConfigFSK_t& cfg) {
   // set module properties
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
 
   // try to find the RF69 chip
@@ -36,14 +37,15 @@ int16_t RF69::begin(const ConfigFSK_t& cfg) {
 
   if(!flagFound) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No RF69 found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_BASIC_PRINTLN("M\tRF69");
   }
 
   // configure settings not accessible by API
-  int16_t state = this->config();
+  state = this->config();
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings

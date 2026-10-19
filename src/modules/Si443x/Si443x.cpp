@@ -11,7 +11,8 @@ Si443x::Si443x(Module* mod) : PhysicalLayer() {
 
 int16_t Si443x::begin(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint8_t preambleLen) {
   // set module properties
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelLow);
@@ -19,7 +20,8 @@ int16_t Si443x::begin(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint8_t prea
   // try to find the Si443x chip
   if(!Si443x::findChip()) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No Si443x found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSi443x");
@@ -32,7 +34,7 @@ int16_t Si443x::begin(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint8_t prea
   clearIrqStatus();
 
   // configure settings not accessible by API
-  int16_t state = config();
+  state = config();
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings

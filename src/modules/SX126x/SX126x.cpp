@@ -1419,7 +1419,8 @@ Module* SX126x::getMod() {
 
 int16_t SX126x::modSetup(uint8_t modem) {
   // set module properties
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
@@ -1436,12 +1437,11 @@ int16_t SX126x::modSetup(uint8_t modem) {
   // find the SX126x chip - this will also reset the module and verify the module
   if(!SX126x::findChip(this->chipType)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
-
-  int16_t state = RADIOLIB_ERR_NONE;
 
   // set TCXO control, if requested
   if(this->tcxoVoltage != RadioLibTCXOVoltage_t::VoltageNone) {

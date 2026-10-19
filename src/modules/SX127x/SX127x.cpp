@@ -10,7 +10,8 @@ SX127x::SX127x(Module* mod) : PhysicalLayer() {
 
 int16_t SX127x::begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength) {
   // set module properties
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
 
@@ -29,13 +30,14 @@ int16_t SX127x::begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersions, numVersions)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX127x found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX127x");
 
   // set mode to standby
-  int16_t state = standby();
+  state = standby();
   RADIOLIB_ASSERT(state);
 
   // configure settings not accessible by API
@@ -70,7 +72,8 @@ int16_t SX127x::begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t 
 
 int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength) {
   // set module properties
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
 
@@ -89,13 +92,14 @@ int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, uint3
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersions, numVersions)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX127x found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX127x");
 
   // set mode to standby
-  int16_t state = standby();
+  state = standby();
   RADIOLIB_ASSERT(state);
 
   // check currently active modem

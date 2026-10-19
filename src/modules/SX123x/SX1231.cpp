@@ -8,7 +8,8 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 int16_t SX1231::begin(const ConfigFSK_t& cfg) {
   // set module properties
   Module* mod = this->getMod();
-  mod->init();
+  int16_t state = mod->init();
+  RADIOLIB_ASSERT(state);
   mod->hal->pinMode(mod->getIrq(), mod->hal->GpioModeInput);
   mod->hal->pinMode(mod->getRst(), mod->hal->GpioModeOutput);
 
@@ -32,13 +33,14 @@ int16_t SX1231::begin(const ConfigFSK_t& cfg) {
 
   if(!flagFound) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX1231 found!");
-    mod->term();
+    state = mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX1231");
 
   // configure settings not accessible by API
-  int16_t state = this->config();
+  state = this->config();
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tRF69");
 

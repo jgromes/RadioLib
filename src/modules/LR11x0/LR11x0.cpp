@@ -1671,7 +1671,8 @@ int16_t LR11x0::workaroundGFSK() {
 }
 
 int16_t LR11x0::modSetup(uint8_t modem) {
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR11X0_CMD_READ_REG_MEM;
@@ -1685,14 +1686,15 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   // try to find the LR11x0 chip - this will also reset the module at least once
   if(!LR11x0::findChip(this->chipType)) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No LR11x0 found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR11x0");
 
   // set mode to standby
   // force the device to use RC oscillator, as XOSC may not be ready yet
-  int16_t state = standby(RADIOLIB_LR11X0_STANDBY_RC);
+  state = standby(RADIOLIB_LR11X0_STANDBY_RC);
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested

@@ -672,7 +672,8 @@ Module* LR2021::getMod() {
 }
 
 int16_t LR2021::modSetup(uint32_t freq, uint8_t modem) {
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR2021_CMD_READ_REG_MEM_32;
@@ -685,14 +686,15 @@ int16_t LR2021::modSetup(uint32_t freq, uint8_t modem) {
   // try to find the chip - this will also reset the module at least once
   if(!this->findChip()) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No LR2021 found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR2021");
 
   // set mode to standby
   // force the device to use RC oscillator, as XOSC may not be ready yet
-  int16_t state = standby(RADIOLIB_LR2021_STANDBY_RC);
+  state = standby(RADIOLIB_LR2021_STANDBY_RC);
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested

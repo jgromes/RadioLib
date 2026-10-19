@@ -1021,7 +1021,8 @@ int16_t CC1101::beginCommon(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_CC1101_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_CC1101_CMD_WRITE;
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
 
   // try to find the CC1101 chip
@@ -1040,14 +1041,15 @@ int16_t CC1101::beginCommon(const ConfigFSK_t& cfg) {
 
   if(!flagFound) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No CC1101 found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_BASIC_PRINTLN("M\tCC1101");
   }
 
   // configure settings not accessible by API
-  int16_t state = this->config();
+  state = this->config();
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
