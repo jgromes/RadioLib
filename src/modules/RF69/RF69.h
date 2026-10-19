@@ -756,8 +756,9 @@ class RF69: public PhysicalLayer {
     int16_t setBitRate(uint32_t br) override;
 
     /*!
-      \brief Sets receiver bandwidth. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6,
-      20.8, 25.0, 31.3, 41.7, 50.0, 62.5, 83.3, 100.0, 125.0, 166.7, 200.0, 250.0, 333.3, 400.0 and 500.0 kHz.
+      \brief Sets FSK receiver bandwidth. Allowed values range from 5200 Hz to 1000 kHz. Only available in FSK mode.
+      NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios,
+      RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet.
       \param rxBw Receiver bandwidth to be set in Hz.
       \returns \ref status_codes
     */

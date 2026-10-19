@@ -604,11 +604,10 @@ int16_t RF69::setRxBandwidth(uint32_t rxBw) {
 
   // todo reuse from LRxxxx?
   const uint32_t rxBwAvg[] = {
-    2850, 3500, 4550, 5750, 7050,
-    9100, 11450, 14050, 18200, 22900,
-    28150, 36500, 45850, 56250, 72900,
-    91650, 112500, 145850, 183350, 225000,
-    291650, 366650, 450000,
+    5700, 7000, 9100, 11500, 14100, 18200, 22900, 28100,
+    36400, 45800, 56300, 73000, 91700, 112500, 145800,
+    183300, 225000, 291700, 366700, 450000,
+    583300, 733300, 900000,
   };
 
   // iterate through the table and find whether the user-provided value
@@ -628,7 +627,7 @@ int16_t RF69::setRxBandwidth(uint32_t rxBw) {
   }
 
   // if nothing matched up to here, match with the last value
-  if(rxBw <= RADIOLIB_UNIT_KILO(500)) {
+  if(rxBw <= RADIOLIB_UNIT_KILO(1000)) {
     state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, 0, 4, 0);
     if(state == RADIOLIB_ERR_NONE) {
       this->rxBandwidth = rxBw;
