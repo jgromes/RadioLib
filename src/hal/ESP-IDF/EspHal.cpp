@@ -150,7 +150,7 @@ long EspHal::pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) {
   return micros() - pulseStart;
 }
 
-void EspHal::spiBegin() {
+int16_t EspHal::spiBegin() {
   ESP_LOGD("EspHal",
            "Initializing SPI on host %d (SCK=%d, MISO=%d, MOSI=%d)", spiHost,
            spiSCK, spiMISO, spiMOSI);
