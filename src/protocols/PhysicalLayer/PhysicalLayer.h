@@ -976,6 +976,18 @@ class PhysicalLayer {
     virtual int16_t getModem(ModemType_t* modem);
 
     /*!
+      \brief Read the operating mode the radio is in, as the chip reports it.
+      Unlike PhysicalLayer::stagedMode, which is what was last asked of the radio, this reads the
+      hardware, so a caller can tell a radio that has left a mode on its own - a receive that did not
+      survive a frame, or a chip that lost its state - from one that is still in it.
+      \param mode Pointer to the variable to save the mode into. A mode the chip reports that has no
+      RadioModeType_t equivalent, frequency synthesis for example, is reported as
+      RADIOLIB_RADIO_MODE_NONE.
+      \returns \ref status_codes
+    */
+    virtual int16_t getMode(RadioModeType_t* mode);
+
+    /*!
       \brief Stage mode of the radio to be launched later using launchMode.
       \param mode Radio mode to prepare.
       \param cfg Configuration of this mode (mode-dependent).

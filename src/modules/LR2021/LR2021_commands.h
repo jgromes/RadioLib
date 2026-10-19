@@ -145,6 +145,14 @@
 #define RADIOLIB_LR2021_CMD_SET_OOK_WHITENING_PARAMS            (0x0289)
 #define RADIOLIB_LR2021_CMD_SET_TX_TEST_MODE                    (0x020E)
 
+// RADIOLIB_LR2021_CMD_GET_STATUS                                                   MSB   LSB   DESCRIPTION
+#define RADIOLIB_LR2021_STAT_2_MODE_SLEEP                       (0x00UL << 0)   //  2     0     chip mode: sleep
+#define RADIOLIB_LR2021_STAT_2_MODE_STBY_RC                     (0x01UL << 0)   //  2     0                standby with RC oscillator
+#define RADIOLIB_LR2021_STAT_2_MODE_STBY_XOSC                   (0x02UL << 0)   //  2     0                standby with external oscillator
+#define RADIOLIB_LR2021_STAT_2_MODE_FS                          (0x03UL << 0)   //  2     0                frequency synthesis
+#define RADIOLIB_LR2021_STAT_2_MODE_RX                          (0x04UL << 0)   //  2     0                receive
+#define RADIOLIB_LR2021_STAT_2_MODE_TX                          (0x05UL << 0)   //  2     0                transmit
+
 // RADIOLIB_LR2021_CMD_SET_DIO_IRQ_CONFIG
 #define RADIOLIB_LR2021_IRQ_RX_FIFO                             (0x01UL << 0)   //  31    0     interrupt: Rx FIFO threshold reached
 #define RADIOLIB_LR2021_IRQ_TX_FIFO                             (0x01UL << 1)   //  31    0                Tx FIFO threshold reached

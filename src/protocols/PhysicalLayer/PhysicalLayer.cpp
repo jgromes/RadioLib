@@ -594,6 +594,11 @@ int16_t PhysicalLayer::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::getMode(RadioModeType_t* mode) {
+  (void)mode;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   (void)mode;
   (void)cfg;

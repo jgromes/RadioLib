@@ -180,6 +180,10 @@ BOOST_FIXTURE_TEST_CASE(PhyComplete_AllRadios, ModuleFixture) {
     ModemType_t modem;
     state = radio.phy->getModem(&modem);
     BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
+
+    RadioModeType_t radioMode;
+    state = radio.phy->getMode(&radioMode);
+    BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
     
     RadioModeConfig_t cfg = { .receive = { .timeout = 0, .syncSymbols = 0, .irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS,
       .irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, .len = 0 }};

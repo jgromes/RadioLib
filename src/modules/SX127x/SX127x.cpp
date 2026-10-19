@@ -1726,6 +1726,41 @@ int16_t SX127x::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t SX127x::getMode(RadioModeType_t* mode) {
+  RADIOLIB_ASSERT_PTR(mode);
+
+  // the register value is the return here, so only a negative result is an error
+  const int16_t opMode = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_OP_MODE, 2, 0);
+  if(opMode < RADIOLIB_ERR_NONE) {
+    return(opMode);
+  }
+
+  switch(opMode) {
+    case(RADIOLIB_SX127X_SLEEP):
+      *mode = RADIOLIB_RADIO_MODE_SLEEP;
+      break;
+    case(RADIOLIB_SX127X_STANDBY):
+      *mode = RADIOLIB_RADIO_MODE_STANDBY;
+      break;
+    case(RADIOLIB_SX127X_TX):
+      *mode = RADIOLIB_RADIO_MODE_TX;
+      break;
+    case(RADIOLIB_SX127X_RXCONTINUOUS):
+    case(RADIOLIB_SX127X_RXSINGLE):
+      *mode = RADIOLIB_RADIO_MODE_RX;
+      break;
+    case(RADIOLIB_SX127X_CAD):
+      *mode = RADIOLIB_RADIO_MODE_SCAN;
+      break;
+    default:
+      // frequency synthesis for Tx or Rx, which the chip passes through on its way to either
+      *mode = RADIOLIB_RADIO_MODE_NONE;
+      break;
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   int16_t state;
 

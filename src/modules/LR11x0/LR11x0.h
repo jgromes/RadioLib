@@ -794,6 +794,9 @@ class LR11x0: public LRxxxx {
     */
     int16_t getModem(ModemType_t* modem) override;
 
+    /*! \copydoc PhysicalLayer::getMode */
+    int16_t getMode(RadioModeType_t* mode) override;
+
     /*!
       \brief Perform image rejection calibration for the specified frequency band.
       WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance

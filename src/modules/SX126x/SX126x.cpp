@@ -933,6 +933,35 @@ int16_t SX126x::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t SX126x::getMode(RadioModeType_t* mode) {
+  RADIOLIB_ASSERT_PTR(mode);
+
+  const uint8_t status = getStatus();
+  if(status == RADIOLIB_SX126X_STATUS_SPI_FAILED) {
+    return(RADIOLIB_ERR_SPI_CMD_FAILED);
+  }
+
+  // sleep is not among the modes this can report: the chip does not answer SPI while asleep
+  switch(status & 0b01110000) {
+    case(RADIOLIB_SX126X_STATUS_MODE_STDBY_RC):
+    case(RADIOLIB_SX126X_STATUS_MODE_STDBY_XOSC):
+      *mode = RADIOLIB_RADIO_MODE_STANDBY;
+      break;
+    case(RADIOLIB_SX126X_STATUS_MODE_RX):
+      *mode = RADIOLIB_RADIO_MODE_RX;
+      break;
+    case(RADIOLIB_SX126X_STATUS_MODE_TX):
+      *mode = RADIOLIB_RADIO_MODE_TX;
+      break;
+    default:
+      // frequency synthesis, or a value the datasheet leaves unassigned
+      *mode = RADIOLIB_RADIO_MODE_NONE;
+      break;
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   int16_t state;
 
