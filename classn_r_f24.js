@@ -11,9 +11,7 @@ var classn_r_f24 =
     [ "getPacketLength", "classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b", null ],
     [ "getStatus", "classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9", null ],
     [ "isCarrierDetected", "classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37", null ],
-    [ "readData", "classn_r_f24.html#a3563453988a83d22dd07d4691543a300", null ],
     [ "readData", "classn_r_f24.html#a410fb78acb4ed358818c132687b8857a", null ],
-    [ "receive", "classn_r_f24.html#ae608fabef91defa1e33e6a6787c68ce8", null ],
     [ "receive", "classn_r_f24.html#a3f9aebfaddbc4a8f531bdb09c49c7a9f", null ],
     [ "receiveDirect", "classn_r_f24.html#a415d86947742e981bfcf7f2371f8605c", null ],
     [ "setAddressWidth", "classn_r_f24.html#a5b01677f5ce6bee54da8fc7098c339f4", null ],
@@ -39,10 +37,8 @@ var classn_r_f24 =
     [ "startReceive", "classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514", null ],
     [ "startTransmit", "classn_r_f24.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "classn_r_f24.html#a8b2365ad11840d1d05b0e17b37ddacd2", null ],
-    [ "startTransmit", "classn_r_f24.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "transmit", "classn_r_f24.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "classn_r_f24.html#af7c4cf05b992d8a97331b9888e95fc2f", null ],
-    [ "transmit", "classn_r_f24.html#ada508497ee2e70170da3afe078e2fe0e", null ],
     [ "transmitDirect", "classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303", null ],
     [ "addressWidth", "group__module__config__vars.html#gaec5ac5df29c12231ee4266bebafdd604", null ]
 ];

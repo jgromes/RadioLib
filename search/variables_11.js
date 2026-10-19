@@ -10,7 +10,7 @@ var searchData=
   ['size_7',['size',['../class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a',1,'RadioLibCRC']]],
   ['sleep_8',['sleep',['../union_radio_mode_config__t.html#a31671be641a497341b32a8bd3cea6682',1,'RadioModeConfig_t']]],
   ['spiconfig_9',['spiConfig',['../class_module.html#a3a4fc4101fb3f134152b458c447b8ecb',1,'Module']]],
-  ['spreadingfactor_10',['spreadingfactor',['../struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076',1,'LoRaRate_t::spreadingFactor'],['../struct_config_lo_ra__t.html#a75ce4433b7eca7b67447202e333ce389',1,'ConfigLoRa_t::spreadingFactor']]],
+  ['spreadingfactor_10',['spreadingFactor',['../struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076',1,'LoRaRate_t::spreadingFactor'],['../struct_config_lo_ra__t.html#a75ce4433b7eca7b67447202e333ce389',1,'ConfigLoRa_t::spreadingFactor']]],
   ['srccallsign_11',['srcCallsign',['../class_a_x25_frame.html#a38f7fb6a4a6344b5892c3a3cdf26c585',1,'AX25Frame']]],
   ['srcssid_12',['srcSSID',['../class_a_x25_frame.html#a50c63276facf8126f0f8555b1fc6b2c9',1,'AX25Frame']]],
   ['ssid_13',['ssid',['../struct_l_r11x0_wifi_result_extended__t.html#a640fdd5b33e6ab2f6867cd63da567147',1,'LR11x0WifiResultExtended_t']]],
@@ -21,6 +21,6 @@ var searchData=
   ['stream_18',['stream',['../struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681',1,'Module::SPIConfig_t']]],
   ['svid_19',['svId',['../struct_l_r11x0_gnss_satellite__t.html#a0513395fd04c052b862c443dfbe75e84',1,'LR11x0GnssSatellite_t']]],
   ['symnum_20',['symNum',['../struct_c_a_d_scan_config__t.html#a5cb000f071f740c8cc81ea2f04dd9b60',1,'CADScanConfig_t']]],
-  ['syncword_21',['syncword',['../struct_l_r2021_lo_ra_side_detector__t.html#a4bd06c0f405e69e56743811b3ac3d46c',1,'LR2021LoRaSideDetector_t::syncWord'],['../struct_config_lo_ra__t.html#a607787adaf1cf2eb678828410ee6352d',1,'ConfigLoRa_t::syncWord']]],
+  ['syncword_21',['syncWord',['../struct_l_r2021_lo_ra_side_detector__t.html#a4bd06c0f405e69e56743811b3ac3d46c',1,'LR2021LoRaSideDetector_t::syncWord'],['../struct_config_lo_ra__t.html#a607787adaf1cf2eb678828410ee6352d',1,'ConfigLoRa_t::syncWord']]],
   ['syncwordlength_22',['syncWordLength',['../struct_f_s_k_packet_config__t.html#a57ba915ccd7c896fc7f9642868c4a33e',1,'FSKPacketConfig_t']]]
 ];

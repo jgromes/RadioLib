@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tcxovoltage_0',['tcxovoltage',['../group__module__config__vars.html#gafa0ddfa02dd6b2c107e46dcbb8ed13e1',1,'LR2021::tcxoVoltage'],['../group__module__config__vars.html#ga8f778ea6a60a20470dd9a4c7be25817c',1,'SX126x::tcxoVoltage'],['../group__module__config__vars.html#ga8eff22b47287190493da17e534ce6771',1,'LR11x0::tcxoVoltage']]],
+  ['tcxovoltage_0',['tcxoVoltage',['../group__module__config__vars.html#ga8eff22b47287190493da17e534ce6771',1,'LR11x0::tcxoVoltage'],['../group__module__config__vars.html#gafa0ddfa02dd6b2c107e46dcbb8ed13e1',1,'LR2021::tcxoVoltage'],['../group__module__config__vars.html#ga8f778ea6a60a20470dd9a4c7be25817c',1,'SX126x::tcxoVoltage']]],
   ['timeout_1',['timeout',['../struct_module_1_1_s_p_i_config__t.html#a56ecc0b9c1207d655c581e90faa77bb5',1,'Module::SPIConfig_t::timeout'],['../struct_c_a_d_scan_config__t.html#a44223617e2d046318e75f863c618e26c',1,'CADScanConfig_t::timeout'],['../struct_receive_config__t.html#a8a9ce1e992fda95d10e7c5de9de05dac',1,'ReceiveConfig_t::timeout']]],
   ['timestamp_2',['timestamp',['../struct_l_r11x0_wifi_result_full__t.html#a4fbd2bfd834c890da47ab94c6f688738',1,'LR11x0WifiResultFull_t']]],
   ['todistributionsystem_3',['toDistributionSystem',['../struct_l_r11x0_wifi_result_full__t.html#abe8e8b5e22a75ac988de6f98afa5fd61',1,'LR11x0WifiResultFull_t']]],
@@ -11,5 +11,5 @@ var searchData=
   ['txparamsupported_8',['txParamSupported',['../struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6',1,'LoRaWANBand_t']]],
   ['txspans_9',['txSpans',['../struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3',1,'LoRaWANBand_t']]],
   ['txwor_10',['txWoR',['../struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e',1,'LoRaWANBand_t']]],
-  ['type_11',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type'],['../struct_s_s_d_v_packet_info__t.html#a27cfaebe807a524c5acde38540e757a0',1,'SSDVPacketInfo_t::type'],['../structtone__t.html#aa9b09c150a2cce3fc3551b3f95d6ed6d',1,'tone_t::type']]]
+  ['type_11',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type'],['../struct_s_s_d_v_packet_info__t.html#a27cfaebe807a524c5acde38540e757a0',1,'SSDVPacketInfo_t::type'],['../structtone__t.html#a5f1299dcb82611161582ef1984309481',1,'tone_t::type']]]
 ];
