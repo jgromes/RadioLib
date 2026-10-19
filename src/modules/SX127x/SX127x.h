@@ -956,14 +956,18 @@ class SX127x: public PhysicalLayer {
     int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
-      \brief Sets FSK receiver bandwidth. Allowed values range from 2600 Hz to 250 kHz. Only available in FSK mode.
+      \brief Sets FSK receiver bandwidth. Allowed values range from 5200 Hz to 500 kHz. Only available in FSK mode.
+      NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios,
+      RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet.
       \param rxBw Receiver bandwidth to be set in Hz.
       \returns \ref status_codes
     */
     int16_t setRxBandwidth(uint32_t rxBw);
 
     /*!
-      \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 2600 to 250 kHz. Only available in FSK mode.
+      \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 5200 to 500 kHz. Only available in FSK mode.
+      NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios,
+      RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet.
       \param afcBw Receiver AFC bandwidth to be set (in Hz).
       \returns \ref status_codes
     */
