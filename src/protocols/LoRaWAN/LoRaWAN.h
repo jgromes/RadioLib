@@ -195,7 +195,7 @@
 #define RADIOLIB_LORAWAN_SESSION_ACTIVE                         (0x03)
 
 // threshold at which sleeping via user callback enabled, in ms
-#define RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD                  (50)
+#define RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD                  (10)
 
 /*!
   \struct LoRaWANMacCommand_t
@@ -1325,7 +1325,7 @@ class LoRaWANNode {
     int16_t addPackage(uint8_t fPort, bool isApp);
 
     // function that allows sleeping via user-provided callback
-    void sleepDelay(RadioLibTime_t ms, bool radioOff = true);
+    void smartDelayUntil(RadioLibTime_t waitEnd, bool wfi);
 
     // checksum over a byte array, XOR-ing sizeof(T)-byte big-endian words
     template<typename T>

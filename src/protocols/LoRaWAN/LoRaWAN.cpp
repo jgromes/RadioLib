@@ -26,6 +26,17 @@ constexpr LoRaWANMacCommand_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS] = {
   { RADIOLIB_LORAWAN_MAC_PROPRIETARY,         5, 0, false, true  },
 };
 
+// flag to indicate whether an interrupt triggered during Rx mode (timeout or downlink)
+static volatile bool interrupted = false;
+
+// interrupt service routine to handle downlinks automatically
+#if defined(ESP8266) || defined(ESP32)
+  IRAM_ATTR
+#endif
+static void LoRaWANNodeOnInterrupt(void) {
+  interrupted = true;
+}
+
 LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand) {
   this->phyLayer = phy;
   this->band = band;
@@ -230,7 +241,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Retransmit timeout");
       int min = RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MIN_MS;
       int max = RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MAX_MS;
-      this->sleepDelay(min + rand() % (max - min));
+      this->smartDelayUntil(mod->hal->millis() + min + rand() % (max - min), false);
     }
 
   } // end of transmission & reception
@@ -1557,13 +1568,17 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
     tNow = mod->hal->millis();
     if(this->tUplink > tNow + this->launchDuration) {
-      this->sleepDelay(this->tUplink - tNow - this->launchDuration);
+      this->smartDelayUntil(this->tUplink - this->launchDuration, false);
     }
   }
 
   if(this->ledPins[0] != RADIOLIB_NC) {
     mod->hal->digitalWrite(this->ledPins[0], mod->hal->GpioLevelHigh);
   }
+
+  // setup interrupt so that the wait for TxDone can end early
+  this->phyLayer->setIrqAction(LoRaWANNodeOnInterrupt);
+  interrupted = false;
 
   // start transmission, and time the duration of launchMode() to offset window timing
   RadioLibTime_t spiStart = mod->hal->millis();
@@ -1572,23 +1587,21 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   this->launchDuration = spiEnd - spiStart;
   RADIOLIB_ASSERT(state);
 
-  // sleep for the duration of the transmission
-  this->sleepDelay(toa, false);
-  RadioLibTime_t txEnd = mod->hal->millis();
+  // wait until transmission completes
+  this->smartDelayUntil(spiStart + toa * 2, true);
 
-  // wait for an additional transmission duration as Tx timeout period
-  while(!mod->hal->digitalRead(mod->getIrq())) {
-    // yield for multi-threaded platforms
-    mod->hal->yield();
-
-    if(mod->hal->millis() > txEnd + toa) {
-      return(RADIOLIB_ERR_TX_TIMEOUT);
-    }
-  }
-  state = this->phyLayer->finishTransmit();
+  // did transmission actually complete?
+  bool done = this->phyLayer->checkIrq(RADIOLIB_IRQ_TX_DONE) == 1;
 
   // set the timestamp so that we can measure when to start receiving
   this->tUplinkEnd = mod->hal->millis();
+
+  this->phyLayer->clearIrqAction();
+  interrupted = false;
+
+  // clear IRQs, revert to standby regardless of done/timeout
+  state = this->phyLayer->finishTransmit();
+  RADIOLIB_ASSERT(state);
 
   if(this->ledPins[0] != RADIOLIB_NC) {
     mod->hal->digitalWrite(this->ledPins[0], mod->hal->GpioLevelLow);
@@ -1599,18 +1612,10 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   // increase Time on Air of the uplink sequence
   this->lastToA += toa;
 
+  if(!done) {
+    return(RADIOLIB_ERR_TX_TIMEOUT);
+  }
   return(state);
-}
-
-// flag to indicate whether there was some action during Rx mode (timeout or downlink)
-static volatile bool downlinkAction = false;
-
-// interrupt service routine to handle downlinks automatically
-#if defined(ESP8266) || defined(ESP32)
-  IRAM_ATTR
-#endif
-static void LoRaWANNodeOnDownlinkAction(void) {
-  downlinkAction = true;
 }
 
 int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChannel, uint8_t window, const RadioLibTime_t dlDelay, RadioLibTime_t tReference) {
@@ -1645,10 +1650,10 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(modem == RADIOLIB_MODEM_LORA) {
     const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
     uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000000) / dr->lora.bandwidth;
-    if(6 * tSymbUs > (minWidth + padding) * 1000000) {
+    if(6 * tSymbUs > (minWidth + padding) * 1000) {
       modeCfg.receive.syncSymbols = 6;
     } else {
-      modeCfg.receive.syncSymbols = ((minWidth + padding) * 1000000) / tSymbUs + 1;
+      modeCfg.receive.syncSymbols = ((minWidth + padding) * 1000) / tSymbUs + 1;
     }
     modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs * 1.1);
   
@@ -1662,8 +1667,8 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   RADIOLIB_ASSERT(state);
 
   // setup interrupt
-  this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
-  downlinkAction = false;
+  this->phyLayer->setIrqAction(LoRaWANNodeOnInterrupt);
+  interrupted = false;
 
   // calculate time at which the window should open
   // - the launch of Rx window takes a few milliseconds, so compensate for that (launchDuration)
@@ -1678,7 +1683,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   }
   
   // wait until the Rx window must open minus launchDuration
-  this->sleepDelay(tWindowOpen - tNow);
+  this->smartDelayUntil(tWindowOpen, false);
   
   // open Rx window by starting receive
   state = this->phyLayer->launchMode();
@@ -1702,38 +1707,33 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
   // apply 2ms padding in case the RxTimeout interrupt is slow to fire
-  while(!downlinkAction && mod->hal->millis() <= tWindowClose + 2) {
-    mod->hal->yield();
-  }
+  this->smartDelayUntil(tWindowClose + 2, true);
 
   // get the actual window close timestamp
   tWindowClose = mod->hal->millis();
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window closed", window);
 
-  this->phyLayer->clearPacketReceivedAction();
-  this->phyLayer->standby();
   if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
     mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelLow);
   }
 
-  // check IRQ bit for RxTimeout
-  int16_t timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
-  if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
-    return(timedOut);
-  }
-  
-  // if the IRQ bit for RxTimeout is set, put chip in standby and return
-  if(timedOut) {  
-    this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
-    return(0);  // no downlink
-  }
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window closed", window);
+
+  bool done = this->phyLayer->checkIrq(RADIOLIB_IRQ_RX_DONE) == 1;
+
+  this->phyLayer->clearIrqAction();
+  interrupted = false;
+
+  // set radio to standby
+  // this returns -705 on the first call but we can safely ignore that
+  (void)this->phyLayer->standby();
+  state = this->phyLayer->finishReceive();
+  RADIOLIB_ASSERT(state);
 
   // if we didn't get an IRQ, return 0 for no downlink
-  if(!downlinkAction) {
+  if(!done) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No downlink!");
     return(0);
   }
-  downlinkAction = false;
 
   // Any frame received by an end-device containing a MACPayload greater than 
   // the specified maximum length M over the data rate used to receive the frame 
@@ -1776,8 +1776,8 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
   RADIOLIB_ASSERT(state);
 
   // setup interrupt
-  this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
-  downlinkAction = false;
+  this->phyLayer->setIrqAction(LoRaWANNodeOnInterrupt);
+  interrupted = false;
   
   // configure radio
   RadioModeConfig_t modeCfg;
@@ -1801,35 +1801,32 @@ int16_t LoRaWANNode::receiveClassC(RadioLibTime_t tWindowEnd) {
 
   if(tWindowEnd) {
     // wait for the DIO interrupt to fire (RxDone or RxTimeout)
-    while(!downlinkAction && mod->hal->millis() < tWindowEnd) {
-      mod->hal->yield();
-    }
-    RadioLibTime_t tClose = mod->hal->millis();
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window closed");
+    this->smartDelayUntil(tWindowEnd, true);
 
-    this->phyLayer->clearPacketReceivedAction();
-    this->phyLayer->standby();
+    RadioLibTime_t tClose = mod->hal->millis();
+
     if(this->ledPins[RADIOLIB_LORAWAN_RX_BC] != RADIOLIB_NC) {
       mod->hal->digitalWrite(this->ledPins[RADIOLIB_LORAWAN_RX_BC], mod->hal->GpioLevelLow);
     }
 
-    // check IRQ bit for RxTimeout
-    int16_t timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
-    if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
-      return(timedOut);
-    }
-    
-    // if the IRQ bit for RxTimeout is set, put chip in standby and return
-    if(timedOut) {
-      this->phyLayer->clearIrq(1UL << RADIOLIB_IRQ_TIMEOUT);
-      return(0);  // no downlink
-    }
-    
-    // if all windows passed without receiving anything, return 0 for no window
-    if(!downlinkAction) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RxC window closed");
+
+    bool done = this->phyLayer->checkIrq(RADIOLIB_IRQ_RX_DONE) == 1;
+
+    this->phyLayer->clearIrqAction();
+    interrupted = false;
+
+    // set radio to standby
+    // this returns -705 on the first call but we can safely ignore that
+    (void)this->phyLayer->standby();
+    state = this->phyLayer->finishReceive();
+    RADIOLIB_ASSERT(state);
+
+    // if we didn't get an IRQ, return 0 for no downlink
+    if(!done) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("No downlink!");
       return(0);
     }
-    downlinkAction = false;
 
     // update time of downlink reception
     this->tDownlink = tClose;
@@ -2351,12 +2348,12 @@ int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaW
 
   int16_t state = RADIOLIB_ERR_NONE;
 
-  if(downlinkAction) {
+  if(interrupted) {
     state = this->parseDownlink(dataDown, lenDown, RADIOLIB_LORAWAN_RX_BC, eventDown);
 
     // re-latch the IRQ interrupt just to be sure
-    this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
-    downlinkAction = false;
+    this->phyLayer->setIrqAction(LoRaWANNodeOnInterrupt);
+    interrupted = false;
 
     // if downlink parsed successfully, set state to RxC window
     if(state == RADIOLIB_ERR_NONE) {
@@ -3894,8 +3891,7 @@ RadioLibTime_t LoRaWANNode::dutyCycleInterval(RadioLibTime_t msPerHour, RadioLib
     return(0);
   }
   RadioLibTime_t oneHourInMs = (RadioLibTime_t)60 * (RadioLibTime_t)60 * (RadioLibTime_t)1000;
-  float numPackets = msPerHour / airtime;
-  RadioLibTime_t delayMs = 2 + oneHourInMs / numPackets - airtime;  // + 2 to prevent rounding problems
+  RadioLibTime_t delayMs = 2 + (RadioLibTime_t)(((uint64_t)oneHourInMs * airtime) / msPerHour) - airtime;  // + 2 to prevent rounding problems
   return(delayMs);
 }
 
@@ -4060,30 +4056,40 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
   }
 }
 
-void LoRaWANNode::sleepDelay(RadioLibTime_t ms, bool radioOff) {
-  // if the duration is short, just call delay
-  if(ms <= 2 || ms <= RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD) {
-    Module* mod = this->phyLayer->getMod();
-    mod->hal->delay(ms);
+void LoRaWANNode::smartDelayUntil(RadioLibTime_t waitEnd, bool wfi) {
+  Module* mod = this->phyLayer->getMod();
+  RadioLibTime_t waitStart = mod->hal->millis();
+  if(waitEnd <= waitStart) {
     return;
   }
 
-  // if radioOff is requested, put the radio to sleep
-  if(radioOff) {
+  RadioLibTime_t waitMs = waitEnd - waitStart;
+  // if the duration is short or there is no sleep callback, do an active spin delay
+  if(waitMs <= 2 || waitMs <= RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD || this->sleepCb == NULL) {
+
+    // await end of delay
+    while(mod->hal->millis() - waitStart < waitMs) {
+      // yield for multi-threaded platforms
+      mod->hal->yield();
+
+      // if waiting for interrupt and interrupt has fired, return early
+      if(wfi && interrupted) {
+        break;
+      }
+    }
+    return;
+  }
+
+  // if we don't need to wait for interrupt, put the radio to sleep
+  if(!wfi) {
+    waitMs -= 2;
     this->phyLayer->sleep();
-    ms -= 2;
   }
 
-  // call the user-provided callback if provided
-  if(this->sleepCb) {
-    this->sleepCb(ms);
-  } else {
-    // if no callback is provided, just delay
-    Module* mod = this->phyLayer->getMod();
-    mod->hal->delay(ms);
-  }
+  // call custom delay function
+  this->sleepCb(waitMs);
 
-  if(radioOff) {
+  if(!wfi) {
     this->phyLayer->standby();
   }
 }
