@@ -186,7 +186,7 @@ void EspHal::spiBegin() {
   } else {
     ESP_LOGE("EspHal", "Failed to initialize SPI bus: %s",
              esp_err_to_name(ret));
-    return;
+    return(RADIOLIB_ERR_HAL_ESP_SPI_INIT_FAILED);
   }
 
   // Add the device. CS is left to RadioLib (software-driven via
@@ -211,11 +211,12 @@ void EspHal::spiBegin() {
   ret = spi_bus_add_device(spiHost, &dev_config, &spiDevice);
   if (ret != ESP_OK) {
     ESP_LOGE("EspHal", "Failed to add SPI device: %s", esp_err_to_name(ret));
-    return;
+    return(RADIOLIB_ERR_HAL_ESP_SPI_DEVICE_ADD_FAILED);
   }
   deviceAdded = true;
   ESP_LOGD("EspHal", "SPI device added (clock=%" PRIu32 " Hz, software CS)",
            spiClockHz);
+  return(RADIOLIB_ERR_NONE);
 }
 
 void EspHal::spiBeginTransaction() {
@@ -225,14 +226,14 @@ void EspHal::spiBeginTransaction() {
   }
 }
 
-void EspHal::spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
+int16_t EspHal::spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
   if (spiDevice == nullptr) {
     ESP_LOGE("EspHal", "SPI device not initialized!");
-    return;
+    return(RADIOLIB_ERR_HAL_ESP_SPI_DEVICE_UNINITIALIZED);
   }
 
   if (len == 0) {
-    return;
+    return(RADIOLIB_ERR_NONE);
   }
 
   spi_transaction_t trans = {};
@@ -243,7 +244,9 @@ void EspHal::spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
   esp_err_t ret = spi_device_polling_transmit(spiDevice, &trans);
   if (ret != ESP_OK) {
     ESP_LOGE("EspHal", "SPI transfer failed: %s", esp_err_to_name(ret));
+    return(RADIOLIB_ERR_HAL_ESP_SPI_XFER_FAILED);
   }
+  return(RADIOLIB_ERR_NONE);
 }
 
 void EspHal::spiEndTransaction() {
@@ -253,7 +256,7 @@ void EspHal::spiEndTransaction() {
   }
 }
 
-void EspHal::spiEnd() {
+int16_t EspHal::spiEnd() {
   // Remove device from bus
   if (deviceAdded && spiDevice != nullptr) {
     spi_bus_remove_device(spiDevice);
@@ -268,29 +271,37 @@ void EspHal::spiEnd() {
     busInitialized = false;
     ESP_LOGD("EspHal", "SPI bus freed");
   }
+  return(RADIOLIB_ERR_NONE);
 }
 
 // implementations of virtual RadioLibHal methods
 
-void EspHal::init() {
+int16_t EspHal::init() {
+  int16_t state = RADIOLIB_ERR_NONE;
   if (!halInitialized) {
-    spiBegin();
+    state = spiBegin();
+    RADIOLIB_ASSERT(state);
+
     // Install the application-wide GPIO ISR service once.
     // Loosely accept duplicate installations (ESP_ERR_INVALID_STATE)
     esp_err_t ret = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
     if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
       ESP_LOGE("EspHal", "Failed to install GPIO ISR service: %s",
                esp_err_to_name(ret));
+      return(RADIOLIB_ERR_HAL_ESP_ISR_INSTALL_FAILED);
     }
     halInitialized = true;
   }
+  return(state);
 }
 
-void EspHal::term() {
+int16_t EspHal::term() {
+  int16_t state = RADIOLIB_ERR_NONE;
   if (halInitialized) {
-    spiEnd();
+    state = spiEnd();
     halInitialized = false;
   }
+  return(state);
 }
 
 void EspHal::tone(uint32_t pin, unsigned int frequency,

@@ -751,6 +751,13 @@
 #define RADIOLIB_ERR_SSDV_BUFFER_IN_USE                         (-1514)
 
 /*!
+  \brief Offset for custom HAL error codes.
+*/
+#define RADIOLIB_ERR_HAL_OFFSET                                 (-10000)
+#define RADIOLIB_ERR_HAL(X)                                     (RADIOLIB_ERR_HAL_OFFSET + (X))
+#define RADIOLIB_GET_HAL_ERROR(X)                               ((X) - RADIOLIB_ERR_HAL_OFFSET)
+
+/*!
   \}
 */
 

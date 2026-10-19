@@ -45,11 +45,11 @@ class ArduinoHal : public RadioLibHal {
     RadioLibTime_t millis() override;
     RadioLibTime_t micros() override;
     long pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) override;
-    void spiBegin() override;
+    int16_t spiBegin() override;
     void spiBeginTransaction() override;
-    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) override;
+    int16_t spiTransfer(uint8_t* out, size_t len, uint8_t* in) override;
     void spiEndTransaction() override;
-    void spiEnd() override;
+    int16_t spiEnd() override;
 
     // implementations of virtual RadioLibHal methods
     void init() override;
