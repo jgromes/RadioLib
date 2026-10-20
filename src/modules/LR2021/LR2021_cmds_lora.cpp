@@ -75,7 +75,7 @@ int16_t LR2021::getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint
   if(pktRxTotal) { *pktRxTotal = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1]; }
   if(pktCrcError) { *pktCrcError = ((uint16_t)(buff[2]) << 8) | (uint16_t)buff[3]; }
   if(headerCrcError) { *headerCrcError = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5]; }
-  if(falseSynch) { *falseSynch = ((uint16_t)(buff[7]) << 8) | (uint16_t)buff[6]; }
+  if(falseSynch) { *falseSynch = ((uint16_t)(buff[6]) << 8) | (uint16_t)buff[7]; }
   return(state);
 }
 
