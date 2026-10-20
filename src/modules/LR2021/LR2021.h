@@ -684,6 +684,12 @@ class LR2021: public LRxxxx {
     float getSNR() override;
 
     /*!
+      \brief Gets frequency error of the latest received packet.
+      \returns Frequency error in Hz.
+    */
+    int32_t getFrequencyError();
+
+    /*!
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.
     */
@@ -755,9 +761,10 @@ class LR2021: public LRxxxx {
       \param rssiPacket RSSI of the last received packet in dBm
       \param rssiSignalPacket Estimation of the RSSI of LoRa signal after despreading in dBm
       \param detector Index of the detector that received the packet: 0 = main, 1 = side 1, 2 = side 2, 3 = side 3
+      \param freqError Frequency error in Hz
       \returns \ref status_codes
     */
-    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL, uint8_t* detector = NULL);
+    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL, uint8_t* detector = NULL, int32_t* freqError = NULL);
 
     /*!
       \brief Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.
@@ -988,7 +995,7 @@ class LR2021: public LRxxxx {
     // FLRC commands
     int16_t setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape);
     int16_t setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, bool fixedLength, uint8_t crc, uint16_t payloadLen);
-    int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum);
+    int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum, int32_t* freqError);
     int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);
 
     // LR-FHSS commands

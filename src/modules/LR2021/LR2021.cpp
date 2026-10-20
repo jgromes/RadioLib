@@ -1182,7 +1182,7 @@ float LR2021::getRSSI(bool packet, bool skipReceive) {
   } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     state = this->getOokPacketStatus(NULL, NULL, &rssi, NULL, NULL, NULL);
   } else if (modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
-    state = this->getFlrcPacketStatus(NULL, &rssi, NULL, NULL);
+    state = this->getFlrcPacketStatus(NULL, &rssi, NULL, NULL, NULL);
   } else {
     return(0);
   }
@@ -1199,7 +1199,23 @@ float LR2021::getSNR() {
   if(modem != RADIOLIB_LR2021_PACKET_TYPE_LORA) { return(0); }
   state = this->getLoRaPacketStatus(NULL, NULL, NULL, &snr, NULL, NULL);
   if(state != RADIOLIB_ERR_NONE) { return(0); }
-  return(snr);  
+  return(snr);
+}
+
+int32_t LR2021::getFrequencyError() {
+  int32_t freqErr;
+  uint8_t modem = RADIOLIB_LR2021_PACKET_TYPE_NONE;
+  int16_t state = this->getPacketType(&modem);
+  if(state != RADIOLIB_ERR_NONE) { return(0); }
+  if(modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
+    state = this->getLoRaPacketStatus(NULL, NULL, NULL, NULL, NULL, NULL, NULL, &freqErr);
+  } else if(modem == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
+    state = this->getFlrcPacketStatus(NULL, NULL, NULL, NULL, &freqErr);
+  } else {
+    state = RADIOLIB_ERR_WRONG_MODEM;
+  }
+  if(state != RADIOLIB_ERR_NONE) { return(0); }
+  return(freqErr);
 }
 
 uint8_t LR2021::randomByte() {

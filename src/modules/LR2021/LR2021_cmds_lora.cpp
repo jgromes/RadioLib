@@ -93,10 +93,10 @@ int16_t LR2021::getLoRaRxStats(uint16_t* pktRxTotal, uint16_t* pktCrcError, uint
   return(state);
 }
 
-int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket, uint8_t* detector) {
-  uint8_t buff[6] = { 0 };
+int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, float* snrPacket, float* rssiPacket, float* rssiSignalPacket, uint8_t* detector, int32_t* freqError) {
+  uint8_t buff[9] = { 0 };
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_LORA_PACKET_STATUS, false, buff, sizeof(buff));
-  uint16_t raw;
+  uint32_t raw;
   if(crc) { *crc = (buff[0] & 0x10) >> 4; }
   if(cr) { *cr = buff[0] & 0x0F; }
   if(packetLen) { *packetLen = buff[1]; }
@@ -117,6 +117,13 @@ int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, 
     else if(det == 0x02) { *detector = 1; }
     else if(det == 0x04) { *detector = 2; }
     else if(det == 0x08) { *detector = 3; }
+  }
+  if(freqError) {
+    raw = (uint32_t)buff[6] << 16;
+    raw |= (uint32_t)buff[7] << 8;
+    raw |= buff[8];
+    printf("raw = %06x\n", raw);
+    *freqError = (int32_t)((raw ^ 0x800000UL) - 0x800000UL);
   }
   return(state);
 }
