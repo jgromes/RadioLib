@@ -79,7 +79,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setDio1Action(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start listening for LoRa packets
   Serial.print(F("[STM32WL] Starting to listen ... "));

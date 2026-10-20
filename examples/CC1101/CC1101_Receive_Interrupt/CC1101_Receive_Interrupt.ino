@@ -70,7 +70,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setPacketReceivedAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start listening for packets
   Serial.print(F("[CC1101] Starting to listen ... "));

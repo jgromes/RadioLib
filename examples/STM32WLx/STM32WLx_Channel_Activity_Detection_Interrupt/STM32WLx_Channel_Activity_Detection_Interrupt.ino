@@ -69,7 +69,7 @@ void setup() {
 
   // set the function that will be called
   // when LoRa packet or timeout is detected
-  radio.setDio1Action(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start scanning the channel
   Serial.print(F("[STM32WLx] Starting scan for LoRa preamble ... "));

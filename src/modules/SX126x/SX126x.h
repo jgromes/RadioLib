@@ -266,39 +266,6 @@ class SX126x: public PhysicalLayer {
     virtual void clearDio1Action();
 
     /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a channel scan is finished.
-      \param func ISR to call.
-    */
-    void setChannelScanAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a channel scan is finished.
-    */
-    void clearChannelScanAction() override;
-
-    /*!
       \brief Clean up after transmission is done.
       \returns \ref status_codes
     */

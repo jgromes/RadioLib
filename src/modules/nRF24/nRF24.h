@@ -272,28 +272,6 @@ class nRF24: public PhysicalLayer {
     // interrupt methods
 
     /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
       \brief Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.

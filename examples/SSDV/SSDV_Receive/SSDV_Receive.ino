@@ -111,7 +111,7 @@ void setup() {
   Serial.println(F("Radio OK"));
 
   // attach the receive interrupt
-  radio.setPacketReceivedAction(setFlag);
+  radio.setIrqAction(setFlag);
   // startReceive() puts the radio into continuous receive mode.
   state = radio.startReceive();
   if(state != RADIOLIB_ERR_NONE) {

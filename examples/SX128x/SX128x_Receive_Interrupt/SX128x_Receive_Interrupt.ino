@@ -73,7 +73,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setPacketReceivedAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start listening for LoRa packets
   Serial.print(F("[SX1280] Starting to listen ... "));

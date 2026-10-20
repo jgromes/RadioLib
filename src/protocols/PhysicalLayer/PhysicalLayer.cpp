@@ -560,30 +560,6 @@ void PhysicalLayer::clearIrqAction() {
   mod->hal->detachInterrupt(mod->hal->pinToInterrupt(mod->getIrq()));
 }
 
-void PhysicalLayer::setPacketReceivedAction(void (*func)(void)) {
-  (void)func;
-}
-
-void PhysicalLayer::clearPacketReceivedAction() {
-  
-}
-
-void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
-  (void)func;
-}
-
-void PhysicalLayer::clearPacketSentAction() {
-  
-}
-
-void PhysicalLayer::setChannelScanAction(void (*func)(void)) {
-  (void)func;
-}
-
-void PhysicalLayer::clearChannelScanAction() {
-  
-}
-
 int16_t PhysicalLayer::setModem(ModemType_t modem) {
   (void)modem;
   return(RADIOLIB_ERR_UNSUPPORTED);

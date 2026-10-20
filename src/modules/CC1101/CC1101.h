@@ -668,28 +668,6 @@ class CC1101: public PhysicalLayer {
     void clearGdo2Action();
 
     /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
       \brief Interrupt-driven binary transmit method for packets less than 64 bytes.
       Method blocks for packets longer than 64 bytes up to a 255 byte limit, until 
       the last bytes are placed in the FIFO. Some limitations and issues apply; see discussion: 

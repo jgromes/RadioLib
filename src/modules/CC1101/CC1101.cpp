@@ -199,22 +199,6 @@ void CC1101::clearGdo0Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
-void CC1101::setPacketReceivedAction(void (*func)(void)) {
-  this->setGdo0Action(func, this->mod->hal->GpioInterruptRising);
-}
-
-void CC1101::clearPacketReceivedAction() {
-  this->clearGdo0Action();
-}
-
-void CC1101::setPacketSentAction(void (*func)(void)) {
-  this->setGdo2Action(func, this->mod->hal->GpioInterruptFalling);
-}
-
-void CC1101::clearPacketSentAction() {
-  this->clearGdo2Action();
-}
-
 void CC1101::setGdo2Action(void (*func)(void), uint32_t dir) {
   if(this->mod->getGpio() == RADIOLIB_NC) {
     return;

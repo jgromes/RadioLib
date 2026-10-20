@@ -928,39 +928,6 @@ class PhysicalLayer {
     virtual void clearIrqAction();
 
     /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    virtual void setPacketReceivedAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    virtual void clearPacketReceivedAction();
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    virtual void setPacketSentAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    virtual void clearPacketSentAction();
-    
-    /*!
-      \brief Sets interrupt service routine to call when a channel scan is finished.
-      \param func ISR to call.
-    */
-    virtual void setChannelScanAction(void (*func)(void));
-
-    /*!
-      \brief Clears interrupt service routine to call when a channel scan is finished.
-    */
-    virtual void clearChannelScanAction();
-
-    /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
       using its default parameters.
       \param modem Modem type to set. Not all modems are implemented by all radio modules!

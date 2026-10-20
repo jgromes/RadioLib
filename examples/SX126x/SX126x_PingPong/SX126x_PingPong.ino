@@ -77,7 +77,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setDio1Action(setFlag);
+  radio.setIrqAction(setFlag);
 
   #if defined(INITIATING_NODE)
     // send the first packet on this node

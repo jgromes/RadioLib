@@ -212,22 +212,6 @@ int16_t Si443x::packetMode() {
   return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_MODULATION_MODE_CONTROL_2, RADIOLIB_SI443X_TX_DATA_SOURCE_FIFO, 5, 4));
 }
 
-void Si443x::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func, false);
-}
-
-void Si443x::clearPacketReceivedAction() {
-  this->clearIrqAction();
-}
-
-void Si443x::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func, false);
-}
-
-void Si443x::clearPacketSentAction() {
-  this->clearIrqAction();
-}
-
 int16_t Si443x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {

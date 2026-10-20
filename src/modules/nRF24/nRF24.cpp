@@ -163,22 +163,6 @@ int16_t nRF24::receiveDirect() {
   return(RADIOLIB_ERR_NONE);
 }
 
-void nRF24::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func, false);
-}
-
-void nRF24::clearPacketReceivedAction() {
-  this->clearIrqAction();
-}
-
-void nRF24::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func, false);
-}
-
-void nRF24::clearPacketSentAction() {
-  this->clearIrqAction();
-}
-
 int16_t nRF24::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;

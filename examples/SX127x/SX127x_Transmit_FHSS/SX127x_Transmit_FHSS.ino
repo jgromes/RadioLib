@@ -115,6 +115,8 @@ void setup() {
   }
 
   // set the function to call when transmission is finished
+  // NOTE: these are not using "setIrqAction()" because we need to specify
+  //       different DIOx pins for different actions
   radio.setDio0Action(setTxFlag, RISING);
 
   // set the function to call when we need to change frequency

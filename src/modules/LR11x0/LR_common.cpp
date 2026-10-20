@@ -11,22 +11,6 @@ LRxxxx::LRxxxx(Module* mod) : PhysicalLayer() {
   this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
 }
 
-void LRxxxx::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func);
-}
-
-void LRxxxx::clearPacketReceivedAction() {
-  this->clearIrqAction();
-}
-
-void LRxxxx::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func);
-}
-
-void LRxxxx::clearPacketSentAction() {
-  this->clearIrqAction();
-}
-
 uint32_t LRxxxx::getIrqStatus() {
   // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
   uint8_t buff[6] = { 0 };

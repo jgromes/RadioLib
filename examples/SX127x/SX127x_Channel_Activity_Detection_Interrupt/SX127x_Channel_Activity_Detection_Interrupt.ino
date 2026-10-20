@@ -83,6 +83,8 @@ void setup() {
 
   // set the function that will be called
   // when LoRa preamble is not detected within CAD timeout period
+  // NOTE: these are not using "setIrqAction()" because we need to specify
+  //       different DIOx pins for different actions
   radio.setDio0Action(setFlagTimeout, RISING);
 
   // set the function that will be called

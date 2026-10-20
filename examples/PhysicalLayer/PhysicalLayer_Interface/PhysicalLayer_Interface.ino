@@ -97,15 +97,13 @@ void setup() {
 
   // interrupt-driven versions of Rx/Tx are supported as well
   // for these to work, you have to configure the interrupt actions
-  phy->setPacketReceivedAction(dummyISR);
-  phy->setPacketSentAction(dummyISR);
+  phy->setIrqAction(dummyISR);
 
   // now you can use methods like startTransmit(), startReceive(),
   // readData() etc.
 
   // interrupt actions can be cleared as well
-  phy->clearPacketReceivedAction();
-  phy->clearPacketSentAction();
+  phy->clearIrqAction();
 
   // PhysicalLayer supports basic mode changes like sleep ...
   Serial.print(F("[PHY] Going to sleep ... "));

@@ -17,30 +17,6 @@ void SX126x::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
-void SX126x::setPacketReceivedAction(void (*func)(void)) {
-  this->setDio1Action(func);
-}
-
-void SX126x::clearPacketReceivedAction() {
-  this->clearDio1Action();
-}
-
-void SX126x::setPacketSentAction(void (*func)(void)) {
-  this->setDio1Action(func);
-}
-
-void SX126x::clearPacketSentAction() {
-  this->clearDio1Action();
-}
-
-void SX126x::setChannelScanAction(void (*func)(void)) {
-  this->setDio1Action(func);
-}
-
-void SX126x::clearChannelScanAction() {
-  this->clearDio1Action();
-}
-
 int16_t SX126x::setBandwidth(uint32_t bw) {
   RADIOLIB_CHECK_RANGE(bw, 7800, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_BANDWIDTH);
 
