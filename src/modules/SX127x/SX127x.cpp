@@ -831,38 +831,17 @@ int16_t SX127x::setAFCBandwidth(uint32_t rxBw) {
   return(this->setRxBw(rxBw, true));
 }
 
-int16_t SX127x::findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {
-  // lookup tables to avoid comparing a whole bunch of floats
-  const uint32_t rxBwAvg[] = {
-    5700, 7000, 9100, 11500, 14100, 18200, 22900, 28100,
-    36400, 45800, 56300, 73000, 91700, 112500, 145800,
-    183300, 225000, 291700, 366700, 450000,
-  };
-
-  // iterate through the table and find whether the user-provided value
-  // is lower than the pre-computed average of the adjacent bandwidth values
-  // if it is, we consider that to be a match even though the actual value is not precise
-  for(size_t i = 0; i < (lutSize - 1); i++) {
-    if(rxBw < rxBwAvg[i]) {
-      *val = lut[i];
-      return(RADIOLIB_ERR_NONE);
-    }
-  }
-
-  // if nothing matched up to here, match with the last value
-  if(rxBw <= rxBwMax) {
-    *val = lut[lutSize - 1];
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-}
-
 int16_t SX127x::setRxBw(uint32_t rxBw, bool afc) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK){
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
+
+  const uint32_t rxBwAvg[] = {
+    5700, 7000, 9100, 11500, 14100, 18200, 22900, 28100,
+    36400, 45800, 56300, 73000, 91700, 112500, 145800,
+    183300, 225000, 291700, 366700, 450000,
+  };
 
   // the values in the lookup table are named consistently with SX127x datasheets,
   // however, the value they represent is SSB, while the value configured in RadioLib is DSB
@@ -892,7 +871,7 @@ int16_t SX127x::setRxBw(uint32_t rxBw, bool afc) {
   };
 
   uint8_t rxBwRaw = 0;
-  int16_t state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(500), &rxBwRaw);
+  int16_t state = findRxBw(rxBw, rxBwAvg, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(500), &rxBwRaw);
   RADIOLIB_ASSERT(state);
 
   // set mode to STANDBY

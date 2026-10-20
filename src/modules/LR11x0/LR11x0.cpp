@@ -738,6 +738,13 @@ int16_t LR11x0::setRxBandwidth(uint32_t rxBw) {
     return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
   }*/
 
+  const uint32_t rxBwAvg[] = {
+    5300, 6600, 8500, 10800, 13400, 17000, 21100, 26400,
+    34100, 42400, 52900, 68200, 84700, 105800, 136400,
+    169500, 211600, 272900, 339000, 423300, 515900,
+    611100, 717900, 940100, 1666500, 2444000, 2871000,
+  };
+
   const uint8_t rxBwLut[] = {
     RADIOLIB_LR11X0_GFSK_RX_BW_4_8,
     RADIOLIB_LR11X0_GFSK_RX_BW_5_8,
@@ -762,7 +769,7 @@ int16_t LR11x0::setRxBandwidth(uint32_t rxBw) {
     RADIOLIB_LR11X0_GFSK_RX_BW_467_0,
   };
 
-  state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(467), &this->rxBandwidth);
+  state = findRxBw(rxBw, rxBwAvg, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(467), &this->rxBandwidth);
   RADIOLIB_ASSERT(state);
 
   // update modulation parameters

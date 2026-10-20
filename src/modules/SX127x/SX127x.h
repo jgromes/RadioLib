@@ -1326,7 +1326,6 @@ class SX127x: public PhysicalLayer {
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
-    int16_t findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
     int16_t setRxBw(uint32_t rxBw, bool afc);
 
     virtual void errataFix(bool rx); // should be implemented in derived class

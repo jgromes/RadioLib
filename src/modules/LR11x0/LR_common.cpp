@@ -262,34 +262,6 @@ uint8_t LRxxxx::roundRampTime(uint32_t rampTimeUs) {
   return regVal;
 }
 
-int16_t LRxxxx::findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {
-  // lookup tables to avoid comparing a whole bunch of floats
-  const uint32_t rxBwAvg[] = {
-    5300, 6600, 8500, 10800, 13400, 17000, 21100, 26400,
-    34100, 42400, 52900, 68200, 84700, 105800, 136400,
-    169500, 211600, 272900, 339000, 423300, 515900,
-    611100, 717900, 940100, 1666500, 2444000, 2871000,
-  };
-
-  // iterate through the table and find whether the user-provided value
-  // is lower than the pre-computed average of the adjacent bandwidth values
-  // if it is, we consider that to be a match even though the actual value is not precise
-  for(size_t i = 0; i < (lutSize - 1); i++) {
-    if(rxBw < rxBwAvg[i]) {
-      *val = lut[i];
-      return(RADIOLIB_ERR_NONE);
-    }
-  }
-
-  // if nothing matched up to here, match with the last value
-  if(rxBw <= rxBwMax) {
-    *val = lut[lutSize - 1];
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-}
-
 int16_t LRxxxx::setU32(uint16_t cmd, uint32_t u32) {
   uint8_t buff[] = { 
     (uint8_t)((u32 >> 24) & 0xFF), (uint8_t)((u32 >> 16) & 0xFF),

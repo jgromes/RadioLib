@@ -944,7 +944,6 @@ class SX126x: public PhysicalLayer {
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
     int16_t directMode();
     int16_t packetMode();
-    int16_t findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
 
     // fixes to errata
     int16_t fixSensitivity();

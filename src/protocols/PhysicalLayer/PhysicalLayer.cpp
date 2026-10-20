@@ -685,3 +685,23 @@ int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, 
   this->powerMax = base + this->paSteps - 1 + this->paOffsetLut[this->paSteps];
   return(RADIOLIB_ERR_NONE);
 }
+
+int16_t PhysicalLayer::findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {
+  // iterate through the table and find whether the user-provided value
+  // is lower than the pre-computed average of the adjacent bandwidth values
+  // if it is, we consider that to be a match even though the actual value is not precise
+  for(size_t i = 0; i < (lutSize - 1); i++) {
+    if(rxBw < rxBwAvg[i]) {
+      *val = lut[i];
+      return(RADIOLIB_ERR_NONE);
+    }
+  }
+
+  // if nothing matched up to here, match with the last value
+  if(rxBw <= rxBwMax) {
+    *val = lut[lutSize - 1];
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+}

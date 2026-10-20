@@ -299,39 +299,17 @@ int16_t SX126x::checkDataRate(DataRate_t dr, ModemType_t modem) {
   return(state);
 }
 
-// TODO move to PHY and reuse from other modules
-int16_t SX126x::findRxBw(uint32_t rxBw, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {
-  // lookup tables to avoid comparing a whole bunch of floats
-  const uint16_t rxBwAvg[] = {
-    53, 66, 85, 107, 132, 171, 215, 264,
-    342, 430, 528, 684, 860, 1056, 1368,
-    1717, 2108, 2732, 3428, 4203,
-  };
-
-  // iterate through the table and find whether the user-provided value
-  // is lower than the pre-computed average of the adjacent bandwidth values
-  // if it is, we consider that to be a match even though the actual value is not precise
-  for(size_t i = 0; i < (lutSize - 1); i++) {
-    if(rxBw < rxBwAvg[i]) {
-      *val = lut[i];
-      return(RADIOLIB_ERR_NONE);
-    }
-  }
-
-  // if nothing matched up to here, match with the last value
-  if(rxBw <= rxBwMax) {
-    *val = lut[lutSize - 1];
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
-}
-
 int16_t SX126x::setRxBandwidth(uint32_t rxBw) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
+
+  const uint32_t rxBwAvg[] = {
+    5300, 6600, 8500, 10700, 13200, 17100, 21500, 26400,
+    34200, 43000, 52800, 68400, 86000, 105600, 136800,
+    171700, 210800, 273200, 342800, 420300,
+  };
 
   const uint8_t rxBwLut[] = {
     RADIOLIB_SX126X_GFSK_RX_BW_4_8,
@@ -357,7 +335,7 @@ int16_t SX126x::setRxBandwidth(uint32_t rxBw) {
     RADIOLIB_SX126X_GFSK_RX_BW_467_0,
   };
 
-  int16_t state = findRxBw(rxBw, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(467), &this->rxBandwidth);
+  int16_t state = findRxBw(rxBw, rxBwAvg, rxBwLut, sizeof(rxBwLut)/sizeof(rxBwLut[0]), RADIOLIB_UNIT_KILO(467), &this->rxBandwidth);
   RADIOLIB_ASSERT(state);
 
   // update modulation parameters
