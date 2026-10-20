@@ -122,7 +122,6 @@ int16_t LR2021::getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen, 
     raw = (uint32_t)buff[6] << 16;
     raw |= (uint32_t)buff[7] << 8;
     raw |= buff[8];
-    printf("raw = %06x\n", raw);
     *freqError = (int32_t)((raw ^ 0x800000UL) - 0x800000UL);
   }
   return(state);
