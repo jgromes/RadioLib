@@ -1750,7 +1750,7 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         }
 
         // for non-zero timeout value, set mode to Rx single and set the timeout
-        if(cfg->receive.timeout != 0) {
+        if(symbNum != 0) {
           this->rxMode = RADIOLIB_SX127X_RXSINGLE;
         }
 
