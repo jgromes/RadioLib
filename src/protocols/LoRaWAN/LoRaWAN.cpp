@@ -1588,7 +1588,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   RADIOLIB_ASSERT(state);
 
   // wait until transmission completes
-  this->smartDelayUntil(spiStart + toa * 2, true);
+  this->smartDelayUntil(spiEnd + toa * 2, true);
 
   // did transmission actually complete?
   bool done = this->phyLayer->checkIrq(RADIOLIB_IRQ_TX_DONE) == 1;
@@ -1640,7 +1640,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // set the radio Rx parameters
   RadioModeConfig_t modeCfg;
   modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
-  modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
+  modeCfg.receive.irqMask = (1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_TIMEOUT);
   modeCfg.receive.len = 0;
   modeCfg.receive.syncSymbols = 0;
   modeCfg.receive.timeout = 0;
@@ -1649,7 +1649,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   ModemType_t modem = this->band->dataRates[currentDr].modem;
   if(modem == RADIOLIB_MODEM_LORA) {
     const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
-    uint32_t tSymbUs = ((1UL << dr->lora.spreadingFactor) * 1000000) / dr->lora.bandwidth;
+    uint32_t tSymbUs = (RADIOLIB_UNIT_MEGA(1) << dr->lora.spreadingFactor) / dr->lora.bandwidth;
     if(6 * tSymbUs > (minWidth + padding) * 1000) {
       modeCfg.receive.syncSymbols = 6;
     } else {
@@ -2427,6 +2427,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       chMaskAck = true;
       // if an RFU bit is set in ChMaskCntl, do not Ack
       if(macChMaskNack == 0x07) {
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkAdr command has RFU bit set");
         chMaskAck = false;
       }
       // only apply channel mask if present and 'valid' (i.e. not RFU)
@@ -2442,6 +2443,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
           
           if(diff) {
             chMaskAck = false;
+            RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkAdr requesting undefined channel be enabled");
             break; // found one, no need to check further
           }
           
@@ -2927,7 +2929,7 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
 
               // for banks 0 to 7, also add the corresponding 500 kHz channel (fixed bands only)
               if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && bank < 8) {
-                adrMasks[5] |= 0x0001 << bank;
+                adrMasks[4] |= 0x0001 << bank;
               }
             }
           }
