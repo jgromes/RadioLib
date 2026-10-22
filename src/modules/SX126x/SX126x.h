@@ -19,6 +19,7 @@
 #define RADIOLIB_SX126X_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_SX126X_CRYSTAL_FREQ                            32.0f
 #define RADIOLIB_SX126X_DIV_EXPONENT                            25
+
 #define RADIOLIB_SX1261_POUT_MIN                                -17
 #define RADIOLIB_SX1261_POUT_MAX                                15
 #define RADIOLIB_SX1262_POUT_MIN                                -9
@@ -38,6 +39,9 @@
 #define RADIOLIB_SX126X_LR_FHSS_FRAG_BITS                       (48)
 #define RADIOLIB_SX126X_LR_FHSS_BLOCK_PREAMBLE_BITS             (2)
 #define RADIOLIB_SX126X_LR_FHSS_BLOCK_BITS                      (RADIOLIB_SX126X_LR_FHSS_FRAG_BITS + RADIOLIB_SX126X_LR_FHSS_BLOCK_PREAMBLE_BITS)
+
+// convert a GFSK/BPSK bit rate in bps to the raw value used by the radio
+#define RADIOLIB_SX126X_BIT_RATE_RAW(BR)                        ((uint32_t)((RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / (BR)))
 
 /*!
   \class SX126x
@@ -900,7 +904,7 @@ class SX126x: public PhysicalLayer {
     bool ldroAuto = true;
     bool standbyXOSC = false;
 
-    uint32_t bitRate = 0, frequencyDev = 0;
+    uint32_t bitRateRaw = 0, frequencyDev = 0;
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, whitening = 0, packetType = 0;
     uint16_t preambleLengthFSK = 0;
     uint32_t rxBandwidthHz = 0;

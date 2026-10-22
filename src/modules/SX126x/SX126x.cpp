@@ -68,7 +68,7 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength) {
 
 int16_t SX126x::beginFSK(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength) {
   // initialize configuration variables (will be overwritten during public settings configuration)
-  this->bitRate = 21333;                                  // 48.0 kbps
+  this->bitRateRaw = RADIOLIB_SX126X_BIT_RATE_RAW(48000);
   this->frequencyDev = 52428;                             // 50.0 kHz
   this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_156_2;
   this->rxBandwidthHz = 156200;
@@ -816,7 +816,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     modem = RADIOLIB_MODEM_FSK;
 
-    dataRate.fsk.bitRate = (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / this->bitRate;
+    dataRate.fsk.bitRate = (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / this->bitRateRaw;
     dataRate.fsk.freqDev = (float)this->frequencyDev;
 
     uint8_t crcLen = 0;
@@ -848,7 +848,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     // so just reuse FSK
     modem = RADIOLIB_MODEM_FSK;
 
-    dataRate.fsk.bitRate = (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / this->bitRate;
+    dataRate.fsk.bitRate = (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / this->bitRateRaw;
     dataRate.fsk.freqDev = 0;
 
     packetConfig.fsk.preambleLength = 0;
@@ -1037,7 +1037,7 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
       } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_BPSK) {
         uint16_t rampUp = RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_600_BPS;
         uint16_t rampDown = RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_600_BPS;
-        if(this->bitRate == 100) {
+        if(this->bitRateRaw == RADIOLIB_SX126X_BIT_RATE_RAW(100)) {
           rampUp = RADIOLIB_SX126X_BPSK_RAMP_UP_TIME_100_BPS;
           rampDown = RADIOLIB_SX126X_BPSK_RAMP_DOWN_TIME_100_BPS;
         }
@@ -1412,11 +1412,11 @@ int16_t SX126x::fixGFSK() {
 
   // next, decide what to change based on modulation properties
   int16_t state = RADIOLIB_ERR_UNKNOWN;
-  if(this->bitRate == 1200) {
+  if(this->bitRateRaw == RADIOLIB_SX126X_BIT_RATE_RAW(1200)) {
     // workaround for 1.2 kbps
     state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_3, 0x00, 4, 4);
 
-  } else if(this->bitRate == 600)  {
+  } else if(this->bitRateRaw == RADIOLIB_SX126X_BIT_RATE_RAW(600))  {
     // workaround for 0.6 kbps
     state = this->mod->SPIsetRegValue(RADIOLIB_SX126X_REG_GFSK_FIX_1, 0x18, 4, 3);
     RADIOLIB_ASSERT(state);
