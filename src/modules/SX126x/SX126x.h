@@ -125,13 +125,14 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Sets LR-FHSS configuration.
-      \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values.
-      \param cr LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LR_FHSS_CR_* values.
+      \param narrowGrid True for narrow (non-FCC) hopping grid; false for wide (FCC) grid.
       \param hdrCount Header packet count, 1 - 4. Defaults to 3.
-      \param hopSeqId 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
+      \param hopSeed 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
       \returns \ref status_codes
     */
-    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeqId = 0x100);
+    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A) override;
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -357,14 +358,14 @@ class SX126x: public PhysicalLayer {
       \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    virtual int16_t setBandwidth(uint32_t bw);
+    int16_t setBandwidth(uint32_t bw) override;
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
       \param sf LoRa spreading factor to be set.
       \returns \ref status_codes
     */
-    virtual int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
       \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
@@ -375,7 +376,7 @@ class SX126x: public PhysicalLayer {
       and it is not compatible with SX127x radios.
       \returns \ref status_codes
     */
-    int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
+    int16_t setCodingRate(uint8_t cr, bool longInterleave = false) override;
 
     /*!
       \brief Sets LoRa sync word.
@@ -422,15 +423,6 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setBitRate(uint32_t br) override;
-
-    /*!
-      \brief Set data rate.
-      \param dr Data rate struct.
-      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
-      Defaults to currently active modem if not supplied.
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Check the data rate can be configured by this module.

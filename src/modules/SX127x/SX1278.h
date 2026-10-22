@@ -155,22 +155,23 @@ class SX1278: public SX127x {
       \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(uint32_t bw);
+    int16_t setBandwidth(uint32_t bw) override;
 
     /*!
       \brief Sets LoRa link spreading factor. Allowed values range from 6 to 12. Only available in LoRa mode.
       \param sf LoRa link spreading factor to be set.
       \returns \ref status_codes
     */
-    virtual int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
       \brief Sets LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in LoRa mode.
       Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. 
       \param cr LoRa link coding rate denominator to be set.
+      \param longInterleave Only for PhysicalLayer compatibility, unsuported by SX127x.
       \returns \ref status_codes
     */
-    int16_t setCodingRate(uint8_t cr);
+    int16_t setCodingRate(uint8_t cr, bool longInterleave = false) override;
 
     /*!
       \brief Sets FSK bit rate. Allowed values range from 500 bps to 300 kbps. Only available in FSK mode.
@@ -178,15 +179,6 @@ class SX1278: public SX127x {
       \returns \ref status_codes
     */
     int16_t setBitRate(uint32_t br) override;
-        
-    /*!
-      \brief Set data rate.
-      \param dr Data rate struct.
-      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
-      Defaults to currently active modem if not supplied.
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Check the data rate can be configured by this module.

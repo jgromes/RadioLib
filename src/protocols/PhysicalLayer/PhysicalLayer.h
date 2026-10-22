@@ -614,6 +614,43 @@ class PhysicalLayer {
     virtual int16_t setFrequencyDeviation(uint32_t freqDev);
 
     /*!
+      \brief Sets LoRa spreading factor. Must be implemented in module class.
+      \param sf LoRa spreading factor to be set.
+      \returns \ref status_codes
+    */
+    virtual int16_t setSpreadingFactor(uint8_t sf);
+
+    /*!
+      \brief Sets LoRa bandwidth. Must be implemented in module class.
+      \param bw LoRa bandwidth to be set in Hz.
+      \returns \ref status_codes
+    */
+    virtual int16_t setBandwidth(uint32_t bw);
+
+    /*!
+      \brief Sets LoRa coding rate denominator. Must be implemented in module class.
+      \param cr LoRa coding rate denominator to be set. Allowed values range from 4 to 8.
+       Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.
+      \param longInterleave Enable long interleaver when set to true.
+      Note that with long interleaver enabled, CR 4/7 is not possible, 
+      there are packet length restrictions,
+      and it is not compatible with SX127x radios!
+      \returns \ref status_codes
+    */
+    virtual int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
+
+    /*!
+      \brief Sets LR-FHSS configuration. Must be implemented in module class.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LR_FHSS_CR_* values.
+      \param narrowGrid True for narrow (non-FCC) hopping grid; false for wide (FCC) grid.
+      \param hdrCount Header packet count, 1 - 4. Defaults to 3.
+      \param hopSeed 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
+      \returns \ref status_codes
+    */
+    virtual int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
+
+    /*!
       \brief Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.
       \param sh Shaping to be set. See \ref config_shaping for possible values.
       \returns \ref status_codes

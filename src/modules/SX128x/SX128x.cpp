@@ -800,37 +800,6 @@ int16_t SX128x::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t SX128x::setDataRate(DataRate_t dr, ModemType_t modem) {
-    // get the current modem
-  ModemType_t currentModem;
-  int16_t state = this->getModem(&currentModem);
-  RADIOLIB_ASSERT(state);
-
-  // switch over if the requested modem is different
-  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
-    state = this->standby();
-    RADIOLIB_ASSERT(state);
-    state = this->setModem(modem);
-    RADIOLIB_ASSERT(state);
-  }
-  
-  if(modem == RADIOLIB_MODEM_NONE) {
-    modem = currentModem;
-  }
-
-  // select interpretation based on modem
-  if (modem == RADIOLIB_MODEM_LORA) {
-      state = this->setBandwidth(dr.lora.bandwidth);
-      RADIOLIB_ASSERT(state);
-      state = this->setSpreadingFactor(dr.lora.spreadingFactor);
-      RADIOLIB_ASSERT(state);
-      state = this->setCodingRate(dr.lora.codingRate);
-  } else {
-      return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-  return(state);
-}
-
 int16_t SX128x::checkDataRate(DataRate_t dr, ModemType_t modem) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
 

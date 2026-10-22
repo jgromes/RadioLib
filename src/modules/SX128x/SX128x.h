@@ -604,14 +604,14 @@ class SX128x: public PhysicalLayer {
       \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(uint32_t bw);
+    int16_t setBandwidth(uint32_t bw) override;
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
       \param sf LoRa spreading factor to be set.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
       \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4
@@ -621,7 +621,7 @@ class SX128x: public PhysicalLayer {
       defaults to false.
       \returns \ref status_codes
     */
-    int16_t setCodingRate(uint8_t cr, bool longInterleaving = false);
+    int16_t setCodingRate(uint8_t cr, bool longInterleaving = false) override;
 
     /*!
       \brief Sets output power. Allowed values are in range from -18 to 13 dBm.
@@ -654,13 +654,6 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setPreambleLength(size_t preambleLength) override;
-
-    /*!
-      \brief Set data rate.
-      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
 
     /*!
       \brief Check the data rate can be configured by this module.

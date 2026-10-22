@@ -136,8 +136,6 @@ int16_t SX126x::beginBPSK(uint32_t br) {
 }
 
 int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid) {
-  this->lrFhssGridNonFcc = narrowGrid;
-  
   // set module properties and perform initial setup
   int16_t state = this->modSetup(RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
@@ -160,11 +158,12 @@ int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid) {
   state = setBitRate(488);
   RADIOLIB_ASSERT(state);
 
-  return(setLrFhssConfig(bw, cr));
+  return(setLrFhssConfig(bw, cr, narrowGrid));
 }
 
-int16_t SX126x::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeqId) {
+int16_t SX126x::setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount, uint16_t hopSeqId) {
   // check and cache all parameters
+  this->lrFhssGridNonFcc = narrowGrid;
   RADIOLIB_CHECK_RANGE((int8_t)cr, (int8_t)RADIOLIB_SX126X_LR_FHSS_CR_5_6, (int8_t)RADIOLIB_SX126X_LR_FHSS_CR_1_3, RADIOLIB_ERR_INVALID_CODING_RATE);
   this->lrFhssCr = cr;
   RADIOLIB_CHECK_RANGE((int8_t)bw, (int8_t)RADIOLIB_SX126X_LR_FHSS_BW_39_06, (int8_t)RADIOLIB_SX126X_LR_FHSS_BW_1574_2, RADIOLIB_ERR_INVALID_BANDWIDTH);

@@ -75,15 +75,6 @@ class LLCC68: public SX1262 {
       \returns \ref status_codes
     */
     int16_t setSpreadingFactor(uint8_t sf) override;
-
-    /*!
-      \brief Set data rate.
-      \param dr Data rate struct.
-      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
-      Defaults to currently active modem if not supplied.
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
     
     /*!
       \brief Check the data rate can be configured by this module.

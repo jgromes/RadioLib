@@ -139,11 +139,8 @@ int16_t LR2021::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   int16_t state = this->modSetup(cfg.frequency, RADIOLIB_LR2021_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
-  // set grid spacing
-  this->lrFhssGrid = cfg.narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
-
   // configure publicly accessible settings
-  state = setLrFhssConfig(cfg.bandwidth, cfg.codingRate);
+  state = setLrFhssConfig(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(cfg.power);

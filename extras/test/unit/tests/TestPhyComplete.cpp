@@ -95,6 +95,15 @@ BOOST_FIXTURE_TEST_CASE(PhyComplete_AllRadios, ModuleFixture) {
     state = radio.phy->setFrequency(0);
     BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
 
+    state = radio.phy->setBandwidth(0);
+    BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
+
+    state = radio.phy->setSpreadingFactor(0);
+    BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
+
+    state = radio.phy->setCodingRate(0);
+    BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
+
     state = radio.phy->setBitRate(0);
     BOOST_TEST(state != RADIOLIB_ERR_UNSUPPORTED);
 

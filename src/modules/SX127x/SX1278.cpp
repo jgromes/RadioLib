@@ -219,7 +219,9 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
   return(state);
 }
 
-int16_t SX1278::setCodingRate(uint8_t cr) {
+int16_t SX1278::setCodingRate(uint8_t cr, bool longInterleave) {
+  (void)longInterleave;
+
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -258,49 +260,6 @@ int16_t SX1278::setCodingRate(uint8_t cr) {
 
 int16_t SX1278::setBitRate(uint32_t br) {
   return(SX127x::setBitRateCommon(br, RADIOLIB_SX1278_REG_BIT_RATE_FRAC));
-}
-
-int16_t SX1278::setDataRate(DataRate_t dr, ModemType_t modem) {
-  // get the current modem
-  ModemType_t currentModem;
-  int16_t state = this->getModem(&currentModem);
-  RADIOLIB_ASSERT(state);
-
-  // switch over if the requested modem is different
-  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
-    state = this->standby();
-    RADIOLIB_ASSERT(state);
-    state = this->setModem(modem);
-    RADIOLIB_ASSERT(state);
-  }
-  
-  if(modem == RADIOLIB_MODEM_NONE) {
-    modem = currentModem;
-  }
-
-  // select interpretation based on modem
-  if(modem == RADIOLIB_MODEM_FSK) {
-    // set the bit rate
-    state = this->setBitRate(dr.fsk.bitRate);
-    RADIOLIB_ASSERT(state);
-
-    // set the frequency deviation
-    state = this->setFrequencyDeviation(dr.fsk.freqDev);
-
-  } else if(modem == RADIOLIB_MODEM_LORA) {
-    // set the spreading factor
-    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
-    RADIOLIB_ASSERT(state);
-
-    // set the bandwidth
-    state = this->setBandwidth(dr.lora.bandwidth);
-    RADIOLIB_ASSERT(state);
-
-    // set the coding rate
-    state = this->setCodingRate(dr.lora.codingRate);
-  }
-
-  return(state);
 }
 
 int16_t SX1278::checkDataRate(DataRate_t dr, ModemType_t modem) {

@@ -253,6 +253,31 @@ int16_t PhysicalLayer::setFrequencyDeviation(uint32_t freqDev) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::setSpreadingFactor(uint8_t sf) {
+  (void)sf;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setBandwidth(uint32_t bw) {
+  (void)bw;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setCodingRate(uint8_t cr, bool longInterleave) {
+  (void)cr;
+  (void)longInterleave;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount, uint16_t hopSeed) {
+  (void)bw;
+  (void)cr;
+  (void)narrowGrid;
+  (void)hdrCount;
+  (void)hopSeed;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::setDataShaping(uint8_t sh) {
   (void)sh;
   return(RADIOLIB_ERR_UNSUPPORTED);
@@ -285,9 +310,50 @@ int16_t PhysicalLayer::setPreambleLength(size_t len) {
 }
 
 int16_t PhysicalLayer::setDataRate(DataRate_t dr, ModemType_t modem) {
-  (void)dr;
-  (void)modem;
-  return(RADIOLIB_ERR_UNSUPPORTED);
+  // get the current modem
+  ModemType_t currentModem;
+  int16_t state = this->getModem(&currentModem);
+  RADIOLIB_ASSERT(state);
+
+  // switch over if the requested modem is different
+  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
+    state = this->standby();
+    RADIOLIB_ASSERT(state);
+    state = this->setModem(modem);
+    RADIOLIB_ASSERT(state);
+  }
+  
+  if(modem == RADIOLIB_MODEM_NONE) {
+    modem = currentModem;
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
+    // set the bit rate
+    state = this->setBitRate(dr.fsk.bitRate);
+    RADIOLIB_ASSERT(state);
+
+    // set the frequency deviation
+    state = this->setFrequencyDeviation(dr.fsk.freqDev);
+
+  } else if(modem == RADIOLIB_MODEM_LORA) {
+    // set the spreading factor
+    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+    RADIOLIB_ASSERT(state);
+
+    // set the bandwidth
+    state = this->setBandwidth(dr.lora.bandwidth);
+    RADIOLIB_ASSERT(state);
+
+    // set the coding rate
+    state = this->setCodingRate(dr.lora.codingRate);
+  
+  } else if(modem == RADIOLIB_MODEM_LRFHSS) {
+    // set the basic config
+    state = this->setLrFhssConfig(dr.lrFhss.bw, dr.lrFhss.cr, dr.lrFhss.narrowGrid);
+  }
+
+  return(state);
 }
 
 int16_t PhysicalLayer::checkDataRate(DataRate_t dr, ModemType_t modem) {

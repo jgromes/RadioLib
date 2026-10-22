@@ -101,11 +101,8 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid) {
   int16_t state = this->modSetup(RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
-  // set grid spacing
-  this->lrFhssGrid = narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
-
   // configure publicly accessible settings
-  state = setLrFhssConfig(bw, cr);
+  state = setLrFhssConfig(bw, cr, narrowGrid);
   RADIOLIB_ASSERT(state);
 
   uint8_t syncWord[] = { 0x12, 0xAD, 0x10, 0x1B };
@@ -562,6 +559,10 @@ int16_t LR11x0::getChannelScanResult() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
+int16_t LR11x0::setBandwidth(uint32_t bw) {
+  return(this->setBandwidth(bw, false));
+}
+
 int16_t LR11x0::setBandwidth(uint32_t bw, bool high) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -609,6 +610,10 @@ int16_t LR11x0::setBandwidth(uint32_t bw, bool high) {
   // update modulation parameters
   this->bandwidthHz = bw;
   return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
+}
+
+int16_t LR11x0::setSpreadingFactor(uint8_t sf) {
+  return(this->setSpreadingFactor(sf, false));
 }
 
 int16_t LR11x0::setSpreadingFactor(uint8_t sf, bool legacy) {
@@ -946,58 +951,6 @@ int16_t LR11x0::setWhitening(bool enabled, uint16_t initial) {
 
   return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 
     (this->packetType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) ? this->implicitLen : RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
-}
-
-int16_t LR11x0::setDataRate(DataRate_t dr, ModemType_t modem) {
-  // get the current modem
-  ModemType_t currentModem;
-  int16_t state = this->getModem(&currentModem);
-  RADIOLIB_ASSERT(state);
-
-  // switch over if the requested modem is different
-  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
-    state = this->standby();
-    RADIOLIB_ASSERT(state);
-    state = this->setModem(modem);
-    RADIOLIB_ASSERT(state);
-  }
-  
-  if(modem == RADIOLIB_MODEM_NONE) {
-    modem = currentModem;
-  }
-
-  // select interpretation based on modem
-  if(modem == RADIOLIB_MODEM_FSK) {
-    // set the bit rate
-    state = this->setBitRate(dr.fsk.bitRate);
-    RADIOLIB_ASSERT(state);
-
-    // set the frequency deviation
-    state = this->setFrequencyDeviation(dr.fsk.freqDev);
-
-  } else if(modem == RADIOLIB_MODEM_LORA) {
-    // set the spreading factor
-    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
-    RADIOLIB_ASSERT(state);
-
-    // set the bandwidth
-    state = this->setBandwidth(dr.lora.bandwidth);
-    RADIOLIB_ASSERT(state);
-
-    // set the coding rate
-    state = this->setCodingRate(dr.lora.codingRate);
-  
-  } else if(modem == RADIOLIB_MODEM_LRFHSS) {
-    // set the basic config
-    state = this->setLrFhssConfig(dr.lrFhss.bw, dr.lrFhss.cr);
-    RADIOLIB_ASSERT(state);
-
-    // set hopping grid
-    this->lrFhssGrid = dr.lrFhss.narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
-  
-  }
-
-  return(state);
 }
 
 int16_t LR11x0::checkDataRate(DataRate_t dr, ModemType_t modem) {
@@ -1352,7 +1305,7 @@ int16_t LR11x0::autoLDRO() {
   return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
-int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {
+int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount, uint16_t hopSeed) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -1362,6 +1315,7 @@ int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16
   }
 
   // check and cache all parameters
+  this->lrFhssGrid = narrowGrid ? RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LRXXXX_LR_FHSS_GRID_STEP_FCC;
   RADIOLIB_CHECK_RANGE((int8_t)cr, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_CR_5_6, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_CR_1_3, RADIOLIB_ERR_INVALID_CODING_RATE);
   this->lrFhssCr = cr;
   RADIOLIB_CHECK_RANGE((int8_t)bw, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_BW_39_06, (int8_t)RADIOLIB_LRXXXX_LR_FHSS_BW_1574_2, RADIOLIB_ERR_INVALID_BANDWIDTH);
