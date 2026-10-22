@@ -205,10 +205,10 @@ struct LoRaWANMacCommand_t {
   /*! \brief Command ID */
   const uint8_t cid;
   
-  /*! \brief Uplink message length */
+  /*! \brief Downlink payload length */
   const uint8_t lenDn;
   
-  /*! \brief Downlink message length */
+  /*! \brief Uplink payload length */
   const uint8_t lenUp;
 
   /*! \brief Some commands must be resent until Class A downlink received */
