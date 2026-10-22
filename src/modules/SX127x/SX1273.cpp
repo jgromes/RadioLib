@@ -134,12 +134,15 @@ int16_t SX1273::checkDataRate(DataRate_t dr, ModemType_t modem) {
 
 int16_t SX1273::setModem(ModemType_t modem) {
   switch(modem) {
+    // the default 434 MHz is out of range for SX1273, so keep the current frequency
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
       ConfigLoRa_t cfg;
+      cfg.frequency = this->frequency;
       return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
       ConfigFSK_t cfg;
+      cfg.frequency = this->frequency;
       return(this->beginFSK(cfg));
     } break;
     default:

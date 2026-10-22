@@ -588,12 +588,15 @@ void SX1272::errataFix(bool rx) {
 
 int16_t SX1272::setModem(ModemType_t modem) {
   switch(modem) {
+    // the default 434 MHz is out of range for SX1272, so keep the current frequency
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
       ConfigLoRa_t cfg;
+      cfg.frequency = this->frequency;
       return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
       ConfigFSK_t cfg;
+      cfg.frequency = this->frequency;
       return(this->beginFSK(cfg));
     } break;
     default:
