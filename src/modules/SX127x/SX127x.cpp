@@ -1197,7 +1197,7 @@ RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   
   } else {
     // for FSK, the timeout is in units of 16x bit time
-    timeout = (timeoutUs * this->bitRate) / 16;
+    timeout = (timeoutUs * this->bitRate) / RADIOLIB_UNIT_MEGA(16);
   
   }
 
