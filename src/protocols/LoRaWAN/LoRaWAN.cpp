@@ -3191,28 +3191,30 @@ int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, uint8_t* inOut, uint8_t* lenI
 
 void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t dir) {
   size_t i = 0;
-  uint8_t numDeleted = 0;
   while(i < *lenInOut) {
     uint8_t id = inOut[i];
     uint8_t fLen = 0;
     // include CID byte, so if command fails, we still move one byte forward
     (void)this->getMacLen(id, &fLen, dir, true, &inOut[i+1]);
 
+    // if the MAC command should persist, move pointer forwards
+    if(this->isPersistentMacCommand(id, dir)) { 
+      // move on to next MAC command
+      i += fLen;
+    }
     // only clear MAC command if it should not persist until a downlink is received
-    if(!this->isPersistentMacCommand(id, dir)) {
+    else {
       // remove it by moving the rest of the payload forward
       memmove(&inOut[i], &inOut[i + fLen], *lenInOut - i - fLen);
 
       // set the remainder of the queue to 0
-      memset(&inOut[i + fLen], 0, *lenInOut - i - fLen);
+      memset(&inOut[*lenInOut - fLen], 0, fLen);
 
-      numDeleted += fLen;
+      // decrease length of queue
+      *lenInOut -= fLen;
     }
 
-    // move on to next MAC command
-    i += fLen;
   }
-  *lenInOut -= numDeleted;
 }
 
 int16_t LoRaWANNode::setBand(const LoRaWANBand_t* band, uint8_t subBand) {
