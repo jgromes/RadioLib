@@ -129,6 +129,9 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   if(this->tUplink < tNow) {
     this->tUplink = tNow;
   }
+  // set tDone to tNow so that any early-return does not result in a hang
+  // tDone is re-set at the appropriate moment after Rx windows if applicable
+  this->tDone = tNow;
 
   // check if dutycycle must be enforced
   if(this->timeUntilUplink() > this->tUplink - tNow) {
