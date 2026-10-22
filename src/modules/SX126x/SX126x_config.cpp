@@ -175,7 +175,7 @@ int16_t SX126x::setFrequencyDeviation(uint32_t freqDev) {
   RADIOLIB_CHECK_RANGE(newFreqDev, 600, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint32_t freqDevRaw = (uint32_t)((newFreqDev * (1UL << 25)) / (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ)));
+  uint32_t freqDevRaw = (uint32_t)(((uint64_t)newFreqDev * (1UL << 25)) / (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ)));
 
   // check modulation parameters
   this->frequencyDev = freqDevRaw;
