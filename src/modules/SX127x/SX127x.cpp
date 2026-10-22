@@ -817,7 +817,7 @@ int16_t SX127x::setFrequencyDeviation(uint32_t freqDev) {
   RADIOLIB_ASSERT(state);
 
   // set allowed frequency deviation
-  uint32_t fdev = (newFreqDev * (1UL << 19)) / 32000;
+  uint32_t fdev = (uint32_t)(((uint64_t)newFreqDev * (1UL << 19)) / RADIOLIB_UNIT_MEGA(32));
   state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FDEV_MSB, (fdev & 0xFF00) >> 8, 5, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FDEV_LSB, fdev & 0x00FF, 7, 0);
   return(state);
