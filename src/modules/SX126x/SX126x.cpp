@@ -817,7 +817,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
   } else if(type == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     modem = RADIOLIB_MODEM_FSK;
 
-    dataRate.fsk.bitRate = RADIOLIB_SX126X_CRYSTAL_FREQ * 32.0f * 1000.0f / (float)this->bitRate;
+    dataRate.fsk.bitRate = (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / this->bitRate;
     dataRate.fsk.freqDev = (float)this->frequencyDev;
 
     uint8_t crcLen = 0;
@@ -849,7 +849,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     // so just reuse FSK
     modem = RADIOLIB_MODEM_FSK;
 
-    dataRate.fsk.bitRate = RADIOLIB_SX126X_CRYSTAL_FREQ * 32.0f * 1000.0f / (float)this->bitRate;
+    dataRate.fsk.bitRate = (RADIOLIB_UNIT_MEGA(RADIOLIB_SX126X_CRYSTAL_FREQ) * 32UL) / this->bitRate;
     dataRate.fsk.freqDev = 0;
 
     packetConfig.fsk.preambleLength = 0;
