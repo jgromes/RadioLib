@@ -851,34 +851,34 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   mod->hal->aes128->encryptECB(&joinAcceptMsgEnc[1], RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - 1, &joinAcceptMsg[1]);
 
   // get current joinNonce from downlink
-  uint32_t joinNonceNew = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
+  uint32_t jaJoinNonce = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
   
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept (JoinNonce = %lu, previously %lu):", (unsigned long)joinNonceNew, (unsigned long)this->joinNonce);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept (JoinNonce = %lu, previously %lu):", (unsigned long)jaJoinNonce, (unsigned long)this->joinNonce);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(joinAcceptMsg, lenRx);
 
   if(this->rev == 1) {
     // for v1.1, the JoinNonce received must be greater than the last joinNonce heard, else error
-    if((this->joinNonce > 0) && (joinNonceNew <= this->joinNonce)) {
+    if((this->joinNonce > 0) && (jaJoinNonce <= this->joinNonce)) {
       return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
     }
   } else {
     // for v1.0.4, the JoinNonce is simply a non-repeating value (we only check the last value)
-    if((this->joinNonce > 0) && (joinNonceNew == this->joinNonce)) {
+    if((this->joinNonce > 0) && (jaJoinNonce == this->joinNonce)) {
       return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
     }
   }
-  this->joinNonce = joinNonceNew;
-
-  uint32_t homeNetId = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], 3);
-  this->devAddr = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS]);
 
   // check LoRaWAN revision (the MIC verification depends on this)
-  uint8_t dlSettings = joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DL_SETTINGS_POS];
-  this->rev = (dlSettings & RADIOLIB_LORAWAN_JOIN_ACCEPT_R_1_1) >> 7;
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LoRaWAN revision: 1.%d", this->rev);
+  uint8_t jaDlSettings = joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DL_SETTINGS_POS];
+  uint8_t jaRev = (jaDlSettings & RADIOLIB_LORAWAN_JOIN_ACCEPT_R_1_1) >> 7;
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LoRaWAN revision: 1.%d", jaRev);
 
   // verify MIC
-  if(this->rev == 1) {
+  if(jaRev == 1) {  
+    // only accept 1.1 if user requested 1.1, otherwise this looks like a bit error
+    if(this->rev == 0) {
+      return(RADIOLIB_ERR_CRC_MISMATCH);
+    }
     // 1.1 version, first we need to derive the join accept integrity key
     uint8_t keyDerivationBuff[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_JS_INT_KEY;
@@ -902,14 +902,19 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
     if(!verifyMIC(joinAcceptMsg, lenRx, this->appKey)) {
       return(RADIOLIB_ERR_MIC_MISMATCH);
     }
-
   }
+
+  // all checks passed, apply settings
+  this->joinNonce = jaJoinNonce;
+  this->devAddr = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS]);
+  this->rev = jaRev;
+  uint32_t homeNetId = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], 3);
 
   uint8_t cOcts[5];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP;
   uint8_t cLen = 0;
   (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
-  cOcts[0] = dlSettings & 0x7F;
+  cOcts[0] = jaDlSettings & 0x7F;
   LoRaWANNode::hton<uint32_t>(&cOcts[1], this->channels[RADIOLIB_LORAWAN_RX2].freq, 3);
   (void)execMacCommand(cid, cOcts, cLen);
 
@@ -1042,6 +1047,9 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   // build the JoinRequest message
   uint8_t joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_LEN];
   this->composeJoinRequest(joinRequestMsg);
+
+  // reset Time-on-Air as we are sending a new JoinRequest
+  this->lastToA = 0;
 
   // select a random pair of Tx/Rx channels
   int16_t state = this->selectChannels();
@@ -2790,7 +2798,8 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
     case(RADIOLIB_LORAWAN_MAC_TX_PARAM_SETUP): {
       // TxParamSetupReq is only supported on a subset of bands
       // in other bands, silently ignore without response
-      if(!this->band->txParamSupported) {
+      // HOWEVER, accept it while setting up / restoring a session
+      if(this->isActivated() && !this->band->txParamSupported) {
         return(false);
       }
       uint8_t dlDwell = (optIn[0] & 0x20) >> 5;
@@ -3947,6 +3956,10 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
 
   // if not limited by dwell-time, just return maximum
   if(!this->dwellTimeUp) {
+    // check if there can be any application payload at all
+    if(maxLen < 13 + this->fOptsUpLen) {
+      return(0);
+    }
     // subtract FHDR (13 bytes) as well as any FOpts
     return(maxLen - 13 - this->fOptsUpLen);
   }
@@ -3972,6 +3985,12 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
     }
     curLen = (minLen + maxLen) / 2;
   }
+
+  // check if there can be any application payload at all
+  if(curLen < 13 + this->fOptsUpLen) {
+    return(0);
+  }
+
   // subtract FHDR (13 bytes) as well as any FOpts
   return(curLen - 13 - this->fOptsUpLen);
 }
