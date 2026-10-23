@@ -822,11 +822,14 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   state = this->phyLayer->readData(joinAcceptMsgEnc, lenRx);
   // downlink frames are sent without CRC, which will raise error on SX127x
   // we can ignore that error
-  if(state != RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
-    RADIOLIB_ASSERT(state);
-  } else {
+  if(state == RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
     state = RADIOLIB_ERR_NONE;
   }
+  RADIOLIB_ASSERT(state);
+  
+  // wrap up reception (clears IRQ flags)
+  state = this->phyLayer->finishReceive();
+  RADIOLIB_ASSERT(state);
 
   // check reply message type
   if((joinAcceptMsgEnc[0] & RADIOLIB_LORAWAN_MHDR_MTYPE_MASK) != RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_ACCEPT) {
@@ -1394,7 +1397,7 @@ void LoRaWANNode::adrBackoff() {
       const ModemType_t modem = this->band->dataRates[currentDr - 1].modem;
       const DataRate_t* dr = &this->band->dataRates[currentDr - 1].dr;
       const PacketConfig_t* pc = &this->band->dataRates[currentDr - 1].pc;
-      if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 13) / 1000 > this->dwellTimeUp) {
+      if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 13) / 1000 >= this->dwellTimeUp) {
         return;
       }
     } 
@@ -1410,14 +1413,23 @@ void LoRaWANNode::adrBackoff() {
 
   // re-enabling default channels may have enabled channels that do support
   // the next required datarate; if datarate can be decreased, try it
-  if(currentDr > 0) {
+  while(currentDr > 0) {
 
-    // dwelltime check is already done a few lines ago
+    // check if dwelltime limitation allows a lower datarate
+    if(this->dwellTimeUp) {
+      const ModemType_t modem = this->band->dataRates[currentDr - 1].modem;
+      const DataRate_t* dr = &this->band->dataRates[currentDr - 1].dr;
+      const PacketConfig_t* pc = &this->band->dataRates[currentDr - 1].pc;
+      if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, 13) / 1000 >= this->dwellTimeUp) {
+        break;
+      }
+    } 
 
     // try to decrease datarate (given channelplan and radio)
     if(this->setDatarate(currentDr - 1) == RADIOLIB_ERR_NONE) {
-      return;
+      break;
     }
+    currentDr -= 1;
   }
 
   this->nbTrans = 1;
@@ -1636,9 +1648,9 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   uint8_t maxPayLen = this->band->payloadLenMax[currentDr];
   RadioLibTime_t toaMaxUs = this->phyLayer->getTimeOnAir(maxPayLen + 13);
 
-  RadioLibTime_t minWidth = 10;
   // pad the Rx window with a 1ms drift per 1s delay, plus user-applied offset
   RadioLibTime_t padding = 1 + dlDelay / 1000 + this->scanGuardA;
+  RadioLibTime_t minWidth = 10 + padding;
 
   // set the radio Rx parameters
   RadioModeConfig_t modeCfg;
@@ -1653,17 +1665,13 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(modem == RADIOLIB_MODEM_LORA) {
     const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
     uint32_t tSymbUs = (RADIOLIB_UNIT_MEGA(1) << dr->lora.spreadingFactor) / dr->lora.bandwidth;
-    if(6 * tSymbUs > (minWidth + padding) * 1000) {
+    if(6 * tSymbUs > minWidth * 1000) {
       modeCfg.receive.syncSymbols = 6;
     } else {
-      modeCfg.receive.syncSymbols = ((minWidth + padding) * 1000) / tSymbUs + 1;
+      modeCfg.receive.syncSymbols = (minWidth * 1000) / tSymbUs + 1;
     }
-    modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs * 1.1);
+    modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs + padding * 1000);
   
-  // for FSK, there is no timeout register, so we just use software timeout
-  // as FSK is bloody fast, apply some padding to make sure we are on time
-  } else if(modem == RADIOLIB_MODEM_FSK) {
-    padding += 4;
   }
 
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
@@ -1693,20 +1701,20 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   
   // get all window timings
   tWindowOpen = mod->hal->millis(); // this should be exactly `launchDuration` later than the calculated value
-  
+    
+  // use a software window length of minimum 16ms (regardless of modulation) up to max time-on-air
+  // add an 11% padding to the maximum time on air to give some slack for the interrupt
+  RadioLibTime_t windowLength = RADIOLIB_MAX(minWidth, toaMaxUs / 900);
+  RadioLibTime_t tWindowClose = tWindowOpen + windowLength + padding;
+
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols / %lu ticks + %dms)", 
-                                  window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, padding);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Rx%d window open (timeout: %lu symbols / %lu ticks + %dms / %dms)", 
+                                  window, modeCfg.receive.syncSymbols, modeCfg.receive.timeout, padding, windowLength + padding);
   
   // enable the LED if used
   if(window < 4 && this->ledPins[window] != RADIOLIB_NC) {
     mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelHigh);
   }
-  
-  // use a software window length of minimum 16ms (regardless of modulation) up to max time-on-air
-  // add an 11% padding to the maximum time on air to give some slack for the interrupt
-  RadioLibTime_t windowLength = RADIOLIB_MAX(16, toaMaxUs / 900);
-  RadioLibTime_t tWindowClose = tWindowOpen + windowLength + padding;
 
   // wait for the DIO interrupt to fire (RxDone or RxTimeout)
   // apply 2ms padding in case the RxTimeout interrupt is slow to fire
@@ -1729,8 +1737,6 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // set radio to standby
   // this returns -705 on the first call but we can safely ignore that
   (void)this->phyLayer->standby();
-  state = this->phyLayer->finishReceive();
-  RADIOLIB_ASSERT(state);
 
   // if we didn't get an IRQ, return 0 for no downlink
   if(!done) {
@@ -1741,14 +1747,16 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // Any frame received by an end-device containing a MACPayload greater than 
   // the specified maximum length M over the data rate used to receive the frame 
   // SHALL be silently discarded.
-  if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
+  size_t packetLength = this->phyLayer->getPacketLength();
+  if(packetLength > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Dropping oversized package of length %d", packetLength);
     return(0);  // act as if no downlink was received
   }
   
   // update time of downlink reception
   this->tDownlink = tWindowClose;
 #if RADIOLIB_DEBUG_PROTOCOL
-  RadioLibTime_t packetToaMs = this->phyLayer->getTimeOnAir(this->phyLayer->getPacketLength()) / 1000;
+  RadioLibTime_t packetToaMs = this->phyLayer->getTimeOnAir(packetLength) / 1000;
   RadioLibTime_t tHeaderStart = this->tDownlink - packetToaMs;
   int diff = tHeaderStart - tWindowOpen;
   RadioLibTime_t diffAbs = RADIOLIB_ABS(diff);
@@ -1917,6 +1925,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   if(state == RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
     state = RADIOLIB_ERR_NONE;
   }
+  RADIOLIB_ASSERT(state);
+
+  // wrap up reception (clears IRQ flags)
+  state = this->phyLayer->finishReceive();
+  RADIOLIB_ASSERT(state);
   
   if(state != RADIOLIB_ERR_NONE) {
     #if !RADIOLIB_STATIC_ONLY
