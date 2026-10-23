@@ -1925,11 +1925,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   if(state == RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
     state = RADIOLIB_ERR_NONE;
   }
-  RADIOLIB_ASSERT(state);
 
-  // wrap up reception (clears IRQ flags)
-  state = this->phyLayer->finishReceive();
-  RADIOLIB_ASSERT(state);
+  if(state == RADIOLIB_ERR_NONE) {
+    // wrap up reception (clears IRQ flags)
+    state = this->phyLayer->finishReceive();
+  }
   
   if(state != RADIOLIB_ERR_NONE) {
     #if !RADIOLIB_STATIC_ONLY
