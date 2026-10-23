@@ -1789,6 +1789,9 @@ int16_t SX127x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         // clear interrupt flags
         clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
+        // FIFO is emptied so drop the cached length
+        this->packetLengthQueried = false;
+
         // FSK modem does not actually distinguish between Rx single and continuous mode,
         // Rx single is emulated using timeout
         this->rxMode = RADIOLIB_SX127X_RX;
