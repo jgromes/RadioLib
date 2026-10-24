@@ -54,6 +54,8 @@
 #define RADIOLIB_LR2021_CMD_SET_TCXO_MODE                       (0x0120)
 #define RADIOLIB_LR2021_CMD_ACTIVATE_PRAM                       (0x012D)
 #define RADIOLIB_LR2021_CMD_SET_XOSC_CP_TRIM                    (0x0131)
+#define RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG                   (0x0132)
+#define RADIOLIB_LR2021_CMD_SET_NTC_PARAMS                      (0x0133)
 #define RADIOLIB_LR2021_CMD_SET_RF_FREQUENCY                    (0x0200)
 #define RADIOLIB_LR2021_CMD_SET_RX_PATH                         (0x0201)
 #define RADIOLIB_LR2021_CMD_GET_RSSI_INST                       (0x020B)
@@ -324,6 +326,12 @@
 // RADIOLIB_LR2021_CMD_CONFIG_LF_CLOCK
 #define RADIOLIB_LR2021_LF_CLOCK_INTERNAL_RC                    (0x00UL << 0)   //  7     0     low-frequency source: internal 32 kHz RC oscillator
 #define RADIOLIB_LR2021_LF_CLOCK_EXTERNAL                       (0x02UL << 0)   //  7     0                           external 32.768 kHz signal on DIO11
+
+// RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG
+#define RADIOLIB_LR2021_TEMP_COMP_DISABLED                      (0x00UL << 0)   //  1     0     crystal temperature compensation: disabled
+#define RADIOLIB_LR2021_TEMP_COMP_RELATIVE                      (0x01UL << 0)   //  1     0                                       relative (packet start to end)
+#define RADIOLIB_LR2021_TEMP_COMP_ABSOLUTE                      (0x02UL << 0)   //  1     0                                       absolute
+#define RADIOLIB_LR2021_TEMP_COMP_NTC_ENABLED                   (0x01UL << 2)   //  2     2     external NTC sensor: enabled
 
 // RADIOLIB_LR2021_CMD_SET_RX_PATH
 #define RADIOLIB_LR2021_RX_PATH_LF                              (0x00UL << 0)   //  7     0     Rx path: low-frequency

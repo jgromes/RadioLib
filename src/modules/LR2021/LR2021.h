@@ -753,6 +753,18 @@ class LR2021: public LRxxxx {
     int16_t setGain(uint8_t gain);
 
     /*!
+      \brief Enable compensation of crystal self-heating drift during transmission. Crystal (non-TCXO) only,
+      must be called after begin().
+      \param mode One of RADIOLIB_LR2021_TEMP_COMP_* macros, RELATIVE is recommended.
+      \param useNtc Whether to use external NTC thermistor in addition to the internal sensor.
+      \param rRatio Ratio of bias resistor to NTC resistance at 25 C. Ignored if useNtc is false.
+      \param betaK NTC beta constant in Kelvin. Ignored if useNtc is false.
+      \param delay NTC thermal lag filter coefficient, PCB-specific. Ignored if useNtc is false.
+      \returns \ref status_codes
+    */
+    int16_t setTempCompensation(uint8_t mode, bool useNtc = false, float rRatio = 1.0f, uint16_t betaK = 4250, uint8_t delay = 5);
+
+    /*!
       \brief Read status of the last received packet.
       Each parameter can be set to NULL if the caller is not intending to process it.
       \param cr Coding rate of the last received packet

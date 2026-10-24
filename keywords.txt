@@ -296,6 +296,7 @@ getGnssSatellites	KEYWORD2
 # LR2021
 beginOOK	KEYWORD2
 setSideDetector	KEYWORD2
+setTempCompensation	KEYWORD2
 
 # RTTY
 idle	KEYWORD2
