@@ -52,8 +52,8 @@ void setup() {
   // initialize SX1280 at 2400 MHz
   Serial.print(F("[SX1280] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 2400;
-  config.bandwidth = 812.5;
+  config.frequency = RADIOLIB_UNIT_MEGA(2400);
+  config.bandwidth = 812500;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -65,7 +65,7 @@ void setup() {
 
   // set the function that will be called
   // when LoRa packet or timeout is detected
-  radio.setDio1Action(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start scanning the channel
   Serial.print(F("[SX1280] Starting scan for LoRa preamble ... "));

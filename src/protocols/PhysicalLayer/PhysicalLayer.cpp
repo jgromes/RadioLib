@@ -136,6 +136,7 @@ int16_t PhysicalLayer::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlag
   RadioModeConfig_t cfg = {
     .receive = {
       .timeout = timeout,
+      .syncSymbols = 0,
       .irqFlags = irqFlags,
       .irqMask = irqMask,
       .len = len,
@@ -237,18 +238,43 @@ int16_t PhysicalLayer::receiveDirect() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setFrequency(float freq) {
+int16_t PhysicalLayer::setFrequency(uint32_t freq) {
   (void)freq;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setBitRate(float br) {
+int16_t PhysicalLayer::setBitRate(uint32_t br) {
   (void)br;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setFrequencyDeviation(float freqDev) {
+int16_t PhysicalLayer::setFrequencyDeviation(uint32_t freqDev) {
   (void)freqDev;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setSpreadingFactor(uint8_t sf) {
+  (void)sf;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setBandwidth(uint32_t bw) {
+  (void)bw;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setCodingRate(uint8_t cr, bool longInterleave) {
+  (void)cr;
+  (void)longInterleave;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount, uint16_t hopSeed) {
+  (void)bw;
+  (void)cr;
+  (void)narrowGrid;
+  (void)hdrCount;
+  (void)hopSeed;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -272,12 +298,6 @@ int16_t PhysicalLayer::setOutputPower(int8_t power) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::checkOutputPower(int8_t power, int8_t* clipped) {
-  (void)power;
-  (void)clipped;
-  return(RADIOLIB_ERR_UNSUPPORTED);
-}
-
 int16_t PhysicalLayer::setSyncWord(uint8_t* sync, size_t len) {
   (void)sync;
   (void)len;
@@ -290,9 +310,50 @@ int16_t PhysicalLayer::setPreambleLength(size_t len) {
 }
 
 int16_t PhysicalLayer::setDataRate(DataRate_t dr, ModemType_t modem) {
-  (void)dr;
-  (void)modem;
-  return(RADIOLIB_ERR_UNSUPPORTED);
+  // get the current modem
+  ModemType_t currentModem;
+  int16_t state = this->getModem(&currentModem);
+  RADIOLIB_ASSERT(state);
+
+  // switch over if the requested modem is different
+  if(modem != RADIOLIB_MODEM_NONE && modem != currentModem) {
+    state = this->standby();
+    RADIOLIB_ASSERT(state);
+    state = this->setModem(modem);
+    RADIOLIB_ASSERT(state);
+  }
+  
+  if(modem == RADIOLIB_MODEM_NONE) {
+    modem = currentModem;
+  }
+
+  // select interpretation based on modem
+  if(modem == RADIOLIB_MODEM_FSK) {
+    // set the bit rate
+    state = this->setBitRate(dr.fsk.bitRate);
+    RADIOLIB_ASSERT(state);
+
+    // set the frequency deviation
+    state = this->setFrequencyDeviation(dr.fsk.freqDev);
+
+  } else if(modem == RADIOLIB_MODEM_LORA) {
+    // set the spreading factor
+    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+    RADIOLIB_ASSERT(state);
+
+    // set the bandwidth
+    state = this->setBandwidth(dr.lora.bandwidth);
+    RADIOLIB_ASSERT(state);
+
+    // set the coding rate
+    state = this->setCodingRate(dr.lora.codingRate);
+  
+  } else if(modem == RADIOLIB_MODEM_LRFHSS) {
+    // set the basic config
+    state = this->setLrFhssConfig(dr.lrFhss.bw, dr.lrFhss.cr, dr.lrFhss.narrowGrid);
+  }
+
+  return(state);
 }
 
 int16_t PhysicalLayer::checkDataRate(DataRate_t dr, ModemType_t modem) {
@@ -316,6 +377,34 @@ float PhysicalLayer::getRSSI() {
 
 float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+float PhysicalLayer::getNumSymbols(DataRate_t dr, PacketConfig_t pc, size_t len) {
+  uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
+  uint8_t sfCoeff2 = 8;
+  if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
+    sfCoeff1_x4 = 25; // 6.25 * 4
+    sfCoeff2 = 0;
+  }
+  uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
+  if(pc.lora.ldrOptimize) {
+    sfDivisor = 4*(dr.lora.spreadingFactor - 2);
+  }
+  const int8_t bitsPerCrc = 16;
+  const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
+
+  // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
+  int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
+  if(bitCount < 0) {
+    bitCount = 0;
+  }
+
+  // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
+  uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
+
+  // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
+  uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
+  return((float)nSymbol_x4 / 4.0f);
 }
 
 RadioLibTime_t PhysicalLayer::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
@@ -441,7 +530,7 @@ int16_t PhysicalLayer::startDirect() {
   RADIOLIB_ASSERT(state);
 
   // set frequency deviation to the lowest possible value
-  state = setFrequencyDeviation(-1);
+  state = setFrequencyDeviation(0);
   return(state);
 }
 
@@ -535,30 +624,6 @@ void PhysicalLayer::setIrqAction(void (*func)(void), bool rising) {
 void PhysicalLayer::clearIrqAction() {
   Module* mod = getMod();
   mod->hal->detachInterrupt(mod->hal->pinToInterrupt(mod->getIrq()));
-}
-
-void PhysicalLayer::setPacketReceivedAction(void (*func)(void)) {
-  (void)func;
-}
-
-void PhysicalLayer::clearPacketReceivedAction() {
-  
-}
-
-void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
-  (void)func;
-}
-
-void PhysicalLayer::clearPacketSentAction() {
-  
-}
-
-void PhysicalLayer::setChannelScanAction(void (*func)(void)) {
-  (void)func;
-}
-
-void PhysicalLayer::clearChannelScanAction() {
-  
 }
 
 int16_t PhysicalLayer::setModem(ModemType_t modem) {
@@ -656,4 +721,53 @@ int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, ui
   RADIOLIB_DEBUG_BASIC_PRINTLN("Auto wake period: %lu", (long unsigned int)*wakePeriod);
 
   return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::setOutputPowerOffset(int8_t offset) {
+  memset(this->paOffsetLut, offset, sizeof(this->paOffsetLut));
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::setOutputPowerOffset(const int8_t* lut, size_t steps) {
+  RADIOLIB_ASSERT_PTR(lut);
+  if(steps > sizeof(this->paOffsetLut)) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  memcpy(this->paOffsetLut, lut, steps);
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut) {
+  RADIOLIB_ASSERT_PTR(pwrIn);
+  RADIOLIB_ASSERT_PTR(pwrOut);
+  const int idx = (int)*pwrIn - (int)base;
+  if((idx < 0) || (idx >= (int)this->paSteps)) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  *pwrOut = *pwrIn - this->paOffsetLut[idx];
+
+  // update the minimum and maximum supported power
+  this->powerMin = base + this->paOffsetLut[0];
+  this->powerMax = base + this->paSteps - 1 + this->paOffsetLut[this->paSteps];
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PhysicalLayer::findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {
+  // iterate through the table and find whether the user-provided value
+  // is lower than the pre-computed average of the adjacent bandwidth values
+  // if it is, we consider that to be a match even though the actual value is not precise
+  for(size_t i = 0; i < (lutSize - 1); i++) {
+    if(rxBw < rxBwAvg[i]) {
+      *val = lut[i];
+      return(RADIOLIB_ERR_NONE);
+    }
+  }
+
+  // if nothing matched up to here, match with the last value
+  if(rxBw <= rxBwMax) {
+    *val = lut[lutSize - 1];
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 }

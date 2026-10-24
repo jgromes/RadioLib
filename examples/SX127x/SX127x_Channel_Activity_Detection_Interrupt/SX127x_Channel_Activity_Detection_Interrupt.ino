@@ -71,7 +71,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -83,6 +83,8 @@ void setup() {
 
   // set the function that will be called
   // when LoRa preamble is not detected within CAD timeout period
+  // NOTE: these are not using "setIrqAction()" because we need to specify
+  //       different DIOx pins for different actions
   radio.setDio0Action(setFlagTimeout, RISING);
 
   // set the function that will be called

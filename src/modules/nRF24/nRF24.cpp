@@ -6,13 +6,17 @@ nRF24::nRF24(Module* mod) : PhysicalLayer() {
   this->freqStep = RADIOLIB_NRF24_FREQUENCY_STEP_SIZE;
   this->maxPacketLength = RADIOLIB_NRF24_MAX_PACKET_LENGTH;
   this->mod = mod;
+  this->powerMin = RADIOLIB_NRF24_POUT_MIN;
+  this->powerMax = RADIOLIB_NRF24_POUT_MAX;
+  this->paSteps = 4;
 }
 
 int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   // set module properties
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_NRF24_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_NRF24_CMD_WRITE;
-  this->mod->init();
+  int16_t state = this->mod->init();
+  RADIOLIB_ASSERT(state);
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
 
   // set pin mode on RST (connected to nRF24 CE pin)
@@ -26,13 +30,14 @@ int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   int16_t val = this->mod->SPIgetRegValue(RADIOLIB_NRF24_REG_SETUP_AW);
   if(!((val >= 0) && (val <= 3))) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No nRF24 found!");
-    this->mod->term();
+    state = this->mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tnRF24");
 
   // configure settings inaccessible by public API
-  int16_t state = this->config();
+  state = this->config();
   RADIOLIB_ASSERT(state);
 
   // set mode to standby
@@ -64,15 +69,6 @@ int16_t nRF24::begin(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   return(state);
-}
-
-int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = dr;
-  cfg.power = pwr;
-  this->addressWidth = addrWidth;
-  return(this->begin(cfg));
 }
 
 int16_t nRF24::sleep() {
@@ -165,22 +161,6 @@ int16_t nRF24::receiveDirect() {
   // nRF24 is unable to directly output demodulated data
   // this method is implemented only for PhysicalLayer compatibility
   return(RADIOLIB_ERR_NONE);
-}
-
-void nRF24::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func, false);
-}
-
-void nRF24::clearPacketReceivedAction() {
-  this->clearIrqAction();
-}
-
-void nRF24::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func, false);
-}
-
-void nRF24::clearPacketSentAction() {
-  this->clearIrqAction();
 }
 
 int16_t nRF24::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
@@ -291,13 +271,12 @@ int16_t nRF24::finishReceive() {
   return(standby());
 }
 
-int16_t nRF24::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE((uint16_t)freq, 2400, 2525, RADIOLIB_ERR_INVALID_FREQUENCY);
+int16_t nRF24::setFrequency(uint32_t freq) {
+  RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(2400), RADIOLIB_UNIT_MEGA(2525), RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency
-  uint8_t freqRaw = (uint16_t)freq - 2400;
+  uint8_t freqRaw = (freq - RADIOLIB_UNIT_MEGA(2400))/(RADIOLIB_UNIT_MEGA(1000));
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0);
-
   if(state == RADIOLIB_ERR_NONE) {
     this->frequency = freq;
   }
@@ -305,13 +284,13 @@ int16_t nRF24::setFrequency(float freq) {
   return(state);
 }
 
-int16_t nRF24::setBitRate(float br) {
+int16_t nRF24::setBitRate(uint32_t br) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
   // set data rate
-  uint16_t bitRate = (uint16_t)br;
+  uint16_t bitRate = br / RADIOLIB_UNIT_KILO(1);
   if(bitRate == 250) {
     state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_250_KBPS, 5, 5);
     state |= this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_250_KBPS, 3, 3);
@@ -328,7 +307,6 @@ int16_t nRF24::setBitRate(float br) {
   if(state == RADIOLIB_ERR_NONE) {
     this->dataRate = bitRate;
   }
-
 
   return(state);
 }
@@ -506,7 +484,7 @@ bool nRF24::isCarrierDetected() {
   return(this->mod->SPIgetRegValue(RADIOLIB_NRF24_REG_RPD, 0, 0) == 1);
 }
 
-int16_t nRF24::setFrequencyDeviation(float freqDev) {
+int16_t nRF24::setFrequencyDeviation(uint32_t freqDev) {
   // nRF24 is unable to set frequency deviation
   // this method is implemented only for PhysicalLayer compatibility
   (void)freqDev;

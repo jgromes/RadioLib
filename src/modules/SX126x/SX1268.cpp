@@ -43,6 +43,9 @@ static const SX126x::paTableEntry_t paOptimizedTable[RADIOLIB_SX126X_PA_TABLE_LE
 
 SX1268::SX1268(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1268_CHIP_TYPE;
+  this->powerMin = RADIOLIB_SX1268_POUT_MIN;
+  this->powerMax = RADIOLIB_SX1268_POUT_MAX;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t SX1268::begin(const ConfigLoRa_t& cfg) {
@@ -68,20 +71,6 @@ int16_t SX1268::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(begin(cfg));
-}
-
 int16_t SX1268::beginFSK(const ConfigFSK_t& cfg) {
   // execute common part
   int16_t state = SX126x::beginFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
@@ -98,19 +87,6 @@ int16_t SX1268::beginFSK(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   return(state);
-}
-
-int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginFSK(cfg));
 }
 
 int16_t SX1268::beginBPSK(const ConfigBPSK_t& cfg) {
@@ -131,16 +107,6 @@ int16_t SX1268::beginBPSK(const ConfigBPSK_t& cfg) {
   return(state);
 }
 
-int16_t SX1268::beginBPSK(float freq, float br, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigBPSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginBPSK(cfg));
-}
-
 int16_t SX1268::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   // execute common part
   int16_t state = SX126x::beginLRFHSS(cfg.bandwidth, cfg.codingRate, cfg.narrowGrid);
@@ -159,28 +125,15 @@ int16_t SX1268::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   return(state);
 }
 
-int16_t SX1268::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage, bool useRegulatorLDO) {
-  ConfigLRFHSS_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.codingRate = cr;
-  cfg.narrowGrid = narrowGrid;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  this->useRegulatorLDO = useRegulatorLDO;
-  return(beginLRFHSS(cfg));
-}
-
-int16_t SX1268::setFrequency(float freq) {
+int16_t SX1268::setFrequency(uint32_t freq) {
   return(setFrequency(freq, false));
 }
 
-/// \todo integers only (all modules - frequency, data rate, bandwidth etc.)
-int16_t SX1268::setFrequency(float freq, bool skipCalibration) {
-  RADIOLIB_CHECK_RANGE(freq, 410.0f, 810.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
+int16_t SX1268::setFrequency(uint32_t freq, bool skipCalibration) {
+  RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(410), RADIOLIB_UNIT_MEGA(810), RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // check if we need to recalibrate image
-  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
+  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
     int16_t state = this->calibrateImage(freq);
     RADIOLIB_ASSERT(state);
   }
@@ -194,36 +147,35 @@ int16_t SX1268::setOutputPower(int8_t power) {
 }
 
 int16_t SX1268::setOutputPower(int8_t power, bool optimize) {
-  // check if power value is configurable
-  int16_t state = checkOutputPower(power, NULL);
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1268_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
+
+  // check if power value is configurable
+  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1268_POUT_MIN, RADIOLIB_SX1268_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set PA config
   SX126x::paTableEntry_t* paTable = this->paOptTable ? this->paOptTable : const_cast<SX126x::paTableEntry_t*>(paOptimizedTable);
-  int8_t paVal = optimize ? paTable[power + 9].paVal : power;
-  uint8_t paDutyCycle = optimize ? paTable[power + 9].paDutyCycle : 0x04;
-  uint8_t hpMax = optimize ? paTable[power + 9].hpMax : 0x07;
+  int8_t paVal = optimize ? paTable[pwr - RADIOLIB_SX1268_POUT_MIN].paVal : pwr;
+  uint8_t paDutyCycle = optimize ? paTable[pwr - RADIOLIB_SX1268_POUT_MIN].paDutyCycle : 0x04;
+  uint8_t hpMax = optimize ? paTable[pwr - RADIOLIB_SX1268_POUT_MIN].hpMax : 0x07;
   return(SX126x::setOutputPower(paVal, paDutyCycle, hpMax, RADIOLIB_SX126X_PA_CONFIG_SX1268));
-}
-
-int16_t SX1268::checkOutputPower(int8_t power, int8_t* clipped) {
-  if(clipped) {
-    *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
-  }
-  RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX1268::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginFSK());
+      ConfigFSK_t cfg;
+      return(this->beginFSK(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
-      return(this->beginLRFHSS());
+      ConfigLRFHSS_t cfg;
+      return(this->beginLRFHSS(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

@@ -17,6 +17,10 @@
 #define RADIOLIB_LR2021_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_LR2021_CRYSTAL_FREQ                            32.0
 #define RADIOLIB_LR2021_DIV_EXPONENT                            25
+#define RADIOLIB_LR2021_LF_POUT_MIN                             -9
+#define RADIOLIB_LR2021_LF_POUT_MAX                             22
+#define RADIOLIB_LR2021_HF_POUT_MIN                             -19
+#define RADIOLIB_LR2021_HF_POUT_MAX                             12
 
 /*!
   \class LR2021
@@ -73,10 +77,10 @@ class LR2021: public LRxxxx {
     /*!
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, set this value to 0.
+      To use XTAL, set this value to RadioLibTCXOVoltage_t::VoltageNone.
       \ingroup module_config_vars
     */
-    float tcxoVoltage = 1.6;
+    RadioLibTCXOVoltage_t tcxoVoltage = Voltage1V6;
 
     // basic methods
 
@@ -90,24 +94,6 @@ class LR2021: public LRxxxx {
     int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
-      \brief Initialization method for LoRa modem.
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
-      \param sf LoRa spreading factor. Defaults to 9.
-      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). Allowed values range from 4 to 8. Note that a value of 4 means no coding,
-      is undocumented and not recommended without your own FEC.
-      \param syncWord 1-byte LoRa sync word. Defaults to RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE (0x12).
-      \param power Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
-      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
-      \returns \ref status_codes
-    */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_LR2021_LORA_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
-
-    /*!
       \brief Initialization method for FSK modem.
       \details This method initializes the LoRa modem with the specified configuration.
       Supports designated initializers when using C++14 or above.
@@ -116,22 +102,6 @@ class LR2021: public LRxxxx {
     */
     int16_t beginGFSK(const ConfigFSK_t& config);
 
-    /*!
-      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
-      \brief Initialization method for FSK modem.
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 5.0 kHz.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 153.8 kHz.
-      \param power Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
-      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
-      \returns \ref status_codes
-    */
-    int16_t beginGFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 153.8, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
-    
     /*!
       \brief Initialization method for OOK modem.
       \details This method initializes the LoRa modem with the specified configuration.
@@ -142,21 +112,6 @@ class LR2021: public LRxxxx {
     int16_t beginOOK(const ConfigOOK_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigOOK_t& config) instead.
-      \brief Initialization method for OOK modem.
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param br OOK bit rate in kbps. Defaults to 4.8 kbps.
-      \param rxBw Receiver bandwidth in kHz. Defaults to 153.8 kHz.
-      \param power Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength OOK preamble length in bits. Defaults to 16 bits.
-      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
-      \returns \ref status_codes
-    */
-    int16_t beginOOK(float freq = 434.0, float br = 4.8, float rxBw = 153.8, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6);
- 
-    /*!
       \brief Initialization method for LR-FHSS modem.
       \details This method initializes the LoRa modem with the specified configuration.
       Supports designated initializers when using C++14 or above.
@@ -166,21 +121,6 @@ class LR2021: public LRxxxx {
     int16_t beginLRFHSS(const ConfigLRFHSS_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigLRFHSS_t& config) instead.
-      \brief Initialization method for LR-FHSS modem.
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values. Defaults to 722.66 kHz.
-      \param cr LR-FHSS coding rate, one of RADIOLIB_LRXXXX_LR_FHSS_CR_* values. Defaults to 2/3 coding rate.
-      \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid.
-      \param power Output power in dBm. Defaults to 10 dBm.
-      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
-      \returns \ref status_codes
-    */
-    int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_LRXXXX_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_LRXXXX_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6);
- 
-    /*!
       \brief Initialization method for FLRC modem.
       \details This method initializes the LoRa modem with the specified configuration.
       Supports designated initializers when using C++14 or above.
@@ -188,22 +128,6 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t beginFLRC(const ConfigFLRC_t& config);
-
-    /*!
-      \deprecated Use \ref begin(const ConfigFLRC_t& config) instead.
-      \brief Initialization method for FLRC modem.
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
-      \param br FLRC bit rate in kbps. Defaults to 650 kbps.
-      \param cr FLRC coding rate. Defaults to RADIOLIB_LR2021_FLRC_CR_2_3 (coding rate 2/3).
-      \param pwr Output power in dBm. Defaults to 10 dBm.
-      \param preambleLength FLRC preamble length in bits. Defaults to 16 bits.
-      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
-      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
-      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, either set this value to 0, or set LR2021::XTAL to true.
-      \returns \ref status_codes
-    */
-    int16_t beginFLRC(float freq = 434.0, uint16_t br = 650, uint8_t cr = RADIOLIB_LR2021_FLRC_CR_2_3, int8_t pwr = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5, float tcxoVoltage = 1.6);
 
     /*!
       \brief Blocking binary transmit method.
@@ -421,29 +345,27 @@ class LR2021: public LRxxxx {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz,
+      \brief Sets carrier frequency. Allowed values are in range from 150 to 1090 MHz,
       1900 - 2200 MHz and 2400 - 2500 MHz.
       Will automatically perform image calibration if the frequency changes by
       more than RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG MHz.
       NOTE: When switching between sub-GHz and high-frequency bands, after changing the frequency,
       setOutputPower() must be called in order to set the correct power amplifier!
-      \param freq Carrier frequency to be set in MHz.
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq) override;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz,
+      \brief Sets carrier frequency. Allowed values are in range from 150 to 1090 MHz,
       1900 - 2200 MHz and 2400 - 2500 MHz.
       Will automatically perform image calibration if the frequency changes by
-      more than RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG MHz.
-      NOTE: When switching between sub-GHz and high-frequency bands, after changing the frequency,
-      setOutputPower() must be called in order to set the correct power amplifier!
-      \param freq Carrier frequency to be set in MHz.
+      more than RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG Hz.
+      \param freq Carrier frequency to be set in Hz.
       \param skipCalibration Skip automated image calibration.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq, bool skipCalibration);
+    int16_t setFrequency(uint32_t freq, bool skipCalibration);
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (sub-GHz PA) or -19 to 12 dBm (high-frequency PA).
@@ -479,15 +401,6 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t setStandbyXOSC(bool enable);
-
-    /*!
-      \brief Check if output power is configurable.
-      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
-      \param power Output power in dBm, PA will be determined automatically.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
     
     /*! \copydoc Module::setRfSwitchTable */
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
@@ -510,10 +423,10 @@ class LR2021: public LRxxxx {
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
       101.56, 203.13, 250.0, 406.25, 500.0 kHz, 812.5 kHz and 1000.0 kHz.
-      \param bw LoRa bandwidth to be set in kHz.
+      \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(uint32_t bw) override;
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
@@ -521,8 +434,15 @@ class LR2021: public LRxxxx {
       \param legacy Enable legacy mode for SF6 - this allows to communicate with SX127x at SF6.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf, bool legacy = false);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
+    /*!
+      \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
+      \param sf LoRa spreading factor to be set.
+      \param legacy Enable legacy mode for SF6 - this allows to communicate with SX127x at SF6.
+      \returns \ref status_codes
+    */
+    int16_t setSpreadingFactor(uint8_t sf, bool legacy);
     /*!
       \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
       is undocumented and not recommended without your own FEC.
@@ -532,7 +452,7 @@ class LR2021: public LRxxxx {
       and it is not compatible with SX127x radios!
       \returns \ref status_codes
     */
-    int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
+    int16_t setCodingRate(uint8_t cr, bool longInterleave = false) override;
 
     /*!
       \brief Sets LoRa sync word.
@@ -550,14 +470,15 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
-      \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
-      Set to 0 to disable TCXO.
-      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
+      \param voltage TCXO reference voltage in volts, one of RadioLibTCXOVoltage_t values. 
+      Set to RadioLibTCXOVoltage_t::VoltageNone to disable TCXO.
+      NOTE: After setting this parameter to RadioLibTCXOVoltage_t::VoltageNone,
+      the module will be reset (since there's no other way to disable TCXO).
       \param delay TCXO timeout in us. Defaults to 1000000 (1 second), because especially on the first startup,
       this delay may be measured very inaccurately.
       \returns \ref status_codes
     */
-    int16_t setTCXO(float voltage, uint32_t delay = 1000000);
+    int16_t setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay = 1000000);
 
     /*!
       \brief Sets CRC configuration.
@@ -577,26 +498,27 @@ class LR2021: public LRxxxx {
     int16_t invertIQ(bool enable) override;
 
     /*!
-      \brief Sets GFSK bit rate. Allowed values range from 0.5 to 2000.0 kbps.
-      \param br FSK bit rate to be set in kbps.
+      \brief Sets GFSK bit rate. Allowed values range from 500 bps to 2 Mbps.
+      \param br FSK bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
-      \brief Sets GFSK frequency deviation. Allowed values range from 0.6 to 500.0 kHz.
-      \param freqDev GFSK frequency deviation to be set in kHz.
+      \brief Sets GFSK frequency deviation. Allowed values range from 600 Hz to 500 kHz.
+      \param freqDev GFSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
       23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
-      \param rxBw GFSK receiver bandwidth to be set in kHz.
+      \param rxBw GFSK receiver bandwidth to be set in Hz. In case the provided value is not an exact match
+      with the supported values, the closest match will be selected.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
     
     /*!
       \brief Sets GFSK sync word in the form of array of up to 8 bytes.
@@ -667,15 +589,6 @@ class LR2021: public LRxxxx {
     int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
 
     /*!
-      \brief Set data rate.
-      \param dr Data rate struct.
-      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
-      Defaults to currently active modem if not supplied.
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
-
-    /*!
       \brief Check the data rate can be configured by this module.
       \param dr Data rate struct.
       \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
@@ -686,13 +599,14 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Sets LR-FHSS configuration.
-      \param bw LR-FHSS bandwidth, one of RADIOLIB_LRXXXX_LR_FHSS_BW_* values.
-      \param cr LR-FHSS coding rate, one of RADIOLIB_LRXXXX_LR_FHSS_CR_* values.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LR_FHSS_CR_* values.
+      \param narrowGrid True for narrow (non-FCC) hopping grid; false for wide (FCC) grid.
       \param hdrCount Header packet count, 1 - 4. Defaults to 3.
       \param hopSeed 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
       \returns \ref status_codes
     */
-    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
+    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A) override;
 
     /*!
       \brief Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption).
@@ -769,6 +683,12 @@ class LR2021: public LRxxxx {
     float getSNR() override;
 
     /*!
+      \brief Gets frequency error of the latest received packet.
+      \returns Frequency error in Hz.
+    */
+    int32_t getFrequencyError();
+
+    /*!
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.
     */
@@ -840,9 +760,10 @@ class LR2021: public LRxxxx {
       \param rssiPacket RSSI of the last received packet in dBm
       \param rssiSignalPacket Estimation of the RSSI of LoRa signal after despreading in dBm
       \param detector Index of the detector that received the packet: 0 = main, 1 = side 1, 2 = side 2, 3 = side 3
+      \param freqError Frequency error in Hz
       \returns \ref status_codes
     */
-    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL, uint8_t* detector = NULL);
+    int16_t getLoRaPacketStatus(uint8_t* cr, bool* crc, uint8_t* packetLen = NULL, float* snrPacket = NULL, float* rssiPacket = NULL, float* rssiSignalPacket = NULL, uint8_t* detector = NULL, int32_t* freqError = NULL);
 
     /*!
       \brief Get LoRa header information from last received packet. Implementation based on getLoRaPacketStatus.
@@ -957,11 +878,12 @@ class LR2021: public LRxxxx {
     // pointers to PA lookup tables - may be overridden by the user
     LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
 
-    int16_t modSetup(float freq, uint8_t modem);
+    int16_t modSetup(uint32_t freq, uint8_t modem);
     bool findChip(void);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t exitMode, RadioLibTime_t timeout);
+    void updatePowerLimits(bool highFreq);
 
     // chip control commands
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
@@ -1031,7 +953,7 @@ class LR2021: public LRxxxx {
     // LoRa commands
     int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ);
-    int16_t setLoRaSynchTimeout(uint8_t numSymbols, bool format);
+    int16_t setLoRaSynchTimeout(uint16_t numSymbols);
     int16_t setLoRaSyncword(uint8_t syncword);
     int16_t setLoRaSideDetConfig(uint8_t* configs, size_t numSideDets);
     int16_t setLoRaSideDetSyncword(uint8_t* syncwords, size_t numSideDets);
@@ -1072,7 +994,7 @@ class LR2021: public LRxxxx {
     // FLRC commands
     int16_t setFlrcModulationParams(uint8_t brBw, uint8_t cr, uint8_t pulseShape);
     int16_t setFlrcPacketParams(uint8_t agcPreambleLen, uint8_t syncWordLen, uint8_t syncWordTx, uint8_t syncMatch, bool fixedLength, uint8_t crc, uint16_t payloadLen);
-    int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum);
+    int16_t getFlrcPacketStatus(uint16_t* packetLen, float* rssiAvg, float* rssiSync, uint8_t* syncWordNum, int32_t* freqError);
     int16_t setFlrcSyncWord(uint8_t syncWordNum, uint32_t syncWord);
 
     // LR-FHSS commands

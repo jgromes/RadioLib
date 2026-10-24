@@ -116,7 +116,7 @@
 #define RADIOLIB_SX126X_CAL_IMG_863_MHZ_2                       0xDB
 #define RADIOLIB_SX126X_CAL_IMG_902_MHZ_1                       0xE1
 #define RADIOLIB_SX126X_CAL_IMG_902_MHZ_2                       0xE9
-#define RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ                   (20.0f)
+#define RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ                   RADIOLIB_UNIT_MEGA(20)
 
 //RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_TABLE_LEN                            (32)
@@ -301,6 +301,9 @@
 #define RADIOLIB_SX126X_SCAN_INTERVAL_7_68_US                   10          //  7     0   RSSI reading interval: 7.68 us
 #define RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US                   11          //  7     0                          8.20 us
 #define RADIOLIB_SX126X_SCAN_INTERVAL_8_68_US                   12          //  7     0                          8.68 us
+
+//RADIOLIB_SX126X_CMD_SET_LORA_SYMB_NUM_TIMEOUT
+#define RADIOLIB_SX126X_MAX_LORA_SYMB_NUM_TIMEOUT               248         //  7     0   maximum supported LoRa symbol number timeout
 
 #endif
 

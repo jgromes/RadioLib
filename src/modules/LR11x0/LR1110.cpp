@@ -5,6 +5,9 @@
 
 LR1110::LR1110(Module* mod) : LR11x0(mod) {
   chipType = RADIOLIB_LR11X0_DEVICE_LR1110;
+  this->powerMin = RADIOLIB_LR1110_LP_POUT_MIN;
+  this->powerMax = RADIOLIB_LR1110_HP_POUT_MAX;
+  this->paSteps = this->powerMax - this->powerMin + 1;
 }
 
 int16_t LR1110::begin(const ConfigLoRa_t& cfg) {
@@ -20,19 +23,6 @@ int16_t LR1110::begin(const ConfigLoRa_t& cfg) {
   return(state);
 }
 
-int16_t LR1110::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigLoRa_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.spreadingFactor = sf;
-  cfg.codingRate = cr;
-  cfg.syncWord = syncWord;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(begin(cfg));
-}
-
 int16_t LR1110::beginGFSK(const ConfigFSK_t& cfg) {
   // execute common part
   int16_t state = LR11x0::beginGFSK(cfg.bitRate, cfg.frequencyDeviation, cfg.receiverBandwidth, cfg.preambleLength);
@@ -44,18 +34,6 @@ int16_t LR1110::beginGFSK(const ConfigFSK_t& cfg) {
 
   state = setOutputPower(cfg.power);
   return(state);
-}
-
-int16_t LR1110::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLength;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginGFSK(cfg));
 }
 
 int16_t LR1110::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
@@ -71,35 +49,24 @@ int16_t LR1110::beginLRFHSS(const ConfigLRFHSS_t& cfg) {
   return(state);
 }
 
-int16_t LR1110::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid, int8_t power, float tcxoVoltage) {
-  ConfigLRFHSS_t cfg;
-  cfg.frequency = freq;
-  cfg.bandwidth = bw;
-  cfg.codingRate = cr;
-  cfg.narrowGrid = narrowGrid;
-  cfg.power = power;
-  this->tcxoVoltage = tcxoVoltage;
-  return(beginLRFHSS(cfg));
-}
-
-int16_t LR1110::setFrequency(float freq) {
+int16_t LR1110::setFrequency(uint32_t freq) {
   return(this->setFrequency(freq, false));
 }
 
-int16_t LR1110::setFrequency(float freq, bool skipCalibration, float band) {
-  RADIOLIB_CHECK_RANGE(freq, 150.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
+int16_t LR1110::setFrequency(uint32_t freq, bool skipCalibration, uint32_t band) {
+  RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(150), RADIOLIB_UNIT_MEGA(960), RADIOLIB_ERR_INVALID_FREQUENCY);
   
   // check if we need to recalibrate image
   int16_t state;
-  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ)) {
+  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_UNIT_MEGA(RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ))) {
     state = LR11x0::calibrateImageRejection(freq - band, freq + band);
     RADIOLIB_ASSERT(state);
   }
 
   // set frequency
-  state = LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f));
+  state = LR11x0::setRfFrequency(freq);
   RADIOLIB_ASSERT(state);
-  this->freqMHz = freq;
+  this->freqHz = freq;
   return(state);
 }
 
@@ -108,53 +75,41 @@ int16_t LR1110::setOutputPower(int8_t power) {
 }
 
 int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs) {
-  // check if power value is configurable
-  int16_t state = this->checkOutputPower(power, NULL, forceHighPower);
+  // apply offset for external PA
+  int8_t pwr = power;
+  int16_t state = this->applyOutputPowerOffset(RADIOLIB_LR1110_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   // determine whether to use HP or LP PA and check range accordingly
-  bool useHp = forceHighPower || (power > 14);
-  this->txMode = useHp ? LR11x0::MODE_TX_HP : LR11x0::MODE_TX;
+  bool useHp = forceHighPower || (pwr > RADIOLIB_LR1110_LP_POUT_MAX);
+  if(useHp) {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR1110_HP_POUT_MIN, RADIOLIB_LR1110_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR1110_LP_POUT_MIN, RADIOLIB_LR1110_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
   
   // TODO how and when to configure OCP?
 
   // update PA config and set output power - always use VBAT for high-power PA
   // the value returned by LRxxxx class is offset by 3 for LR11x0
-  state = LR11x0::setOutputPower(power, (uint8_t)useHp, (uint8_t)useHp, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
+  this->txMode = useHp ? LR11x0::MODE_TX_HP : LR11x0::MODE_TX;
+  state = LR11x0::setOutputPower(pwr, (uint8_t)useHp, (uint8_t)useHp, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
   return(state);
-}
-
-int16_t LR1110::checkOutputPower(int8_t power, int8_t* clipped) {
-  return(checkOutputPower(power, clipped, false));
-}
-
-int16_t LR1110::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) {
-  if(forceHighPower || (power > 14)) {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
-  } else {
-    if(clipped) {
-      *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
-    }
-    RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  
-  }
-  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LR1110::setModem(ModemType_t modem) {
   switch(modem) {
     case(ModemType_t::RADIOLIB_MODEM_LORA): {
-      return(this->begin());
+      ConfigLoRa_t cfg;
+      return(this->begin(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_FSK): {
-      return(this->beginGFSK());
+      ConfigFSK_t cfg;
+      return(this->beginGFSK(cfg));
     } break;
     case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
-      return(this->beginLRFHSS());
+      ConfigLRFHSS_t cfg;
+      return(this->beginLRFHSS(cfg));
     } break;
     default:
       return(RADIOLIB_ERR_WRONG_MODEM);

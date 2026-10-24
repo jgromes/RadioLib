@@ -8,7 +8,8 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 int16_t SX1231::begin(const ConfigFSK_t& cfg) {
   // set module properties
   Module* mod = this->getMod();
-  mod->init();
+  int16_t state = mod->init();
+  RADIOLIB_ASSERT(state);
   mod->hal->pinMode(mod->getIrq(), mod->hal->GpioModeInput);
   mod->hal->pinMode(mod->getRst(), mod->hal->GpioModeOutput);
 
@@ -32,13 +33,14 @@ int16_t SX1231::begin(const ConfigFSK_t& cfg) {
 
   if(!flagFound) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No SX1231 found!");
-    mod->term();
+    state = mod->term();
+    RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX1231");
 
   // configure settings not accessible by API
-  int16_t state = this->config();
+  state = this->config();
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tRF69");
 
@@ -47,7 +49,7 @@ int16_t SX1231::begin(const ConfigFSK_t& cfg) {
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
-  this->rxBandwidth = 125.0;
+  this->rxBandwidth = RADIOLIB_RF69_DEFAULT_RXBW;
   state = setBitRate(cfg.bitRate);
   RADIOLIB_ASSERT(state);
 
@@ -67,9 +69,9 @@ int16_t SX1231::begin(const ConfigFSK_t& cfg) {
   state = setPreambleLength(cfg.preambleLength);
   RADIOLIB_ASSERT(state);
 
-  // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
-  uint8_t syncWord[] = {0x2D, 0x01};
-  state = setSyncWord(syncWord, 2);
+  // set default sync word
+  uint8_t syncWord[] = RADIOLIB_RF69_DEFAULT_SW;
+  state = setSyncWord(syncWord, sizeof(syncWord));
   RADIOLIB_ASSERT(state);
 
   // set default packet length mode
@@ -88,17 +90,6 @@ int16_t SX1231::begin(const ConfigFSK_t& cfg) {
   }
 
   return(RADIOLIB_ERR_NONE);
-}
-
-int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
-  ConfigFSK_t cfg;
-  cfg.frequency = freq;
-  cfg.bitRate = br;
-  cfg.frequencyDeviation = freqDev;
-  cfg.receiverBandwidth = rxBw;
-  cfg.power = power;
-  cfg.preambleLength = preambleLen;
-  return(this->begin(cfg));
 }
 
 #endif

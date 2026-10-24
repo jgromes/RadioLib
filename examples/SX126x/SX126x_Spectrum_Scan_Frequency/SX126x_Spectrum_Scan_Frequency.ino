@@ -43,8 +43,8 @@ Radio radio = new RadioModule();
 */
 
 // frequency range in MHz to scan
-const float freqStart = 431;
-const float freqEnd = 435;
+const uint32_t freqStart = RADIOLIB_UNIT_MEGA(431);
+const uint32_t freqEnd = RADIOLIB_UNIT_MEGA(435);
 
 void setup() {
   Serial.begin(115200);
@@ -52,7 +52,7 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // most SX126x have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio.tcxoVoltage = 1.6;
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // initialize SX1262 FSK modem at the initial frequency
   Serial.print(F("[SX1262] Initializing ... "));
@@ -83,7 +83,7 @@ void setup() {
   // configure scan bandwidth to 234.4 kHz
   // and disable the data shaping
   Serial.print(F("[SX1262] Setting scan parameters ... "));
-  state = radio.setRxBandwidth(234.3);
+  state = radio.setRxBandwidth(234300);
   state |= radio.setDataShaping(RADIOLIB_SHAPING_NONE);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -99,7 +99,7 @@ void loop() {
   float freq = freqStart;
   while(freq <= freqEnd) {
     Serial.print("FREQ ");
-    Serial.println(freq, 2);
+    Serial.println(freq);
 
     // start spectral scan
     // number of samples: 2048 (fewer samples = better temporal resolution)
@@ -137,7 +137,7 @@ void loop() {
     // set the next frequency
     // the frequency step should be slightly smaller
     // or the same as the Rx bandwidth set in setup
-    freq += 0.2;
+    freq += RADIOLIB_UNIT_KILO(200);
     radio.setFrequency(freq);
   }
   

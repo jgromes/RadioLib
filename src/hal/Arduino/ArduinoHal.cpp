@@ -6,19 +6,23 @@ ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING)
 
 ArduinoHal::ArduinoHal(SPIClass& spi, SPISettings spiSettings): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&spi), spiSettings(spiSettings) {}
 
-void ArduinoHal::init() {
+int16_t ArduinoHal::init() {
+  int16_t state = RADIOLIB_ERR_NONE;
   if(initInterface) {
-    spiBegin();
+    state = spiBegin();
   }
   #if defined(ARDUINO_ARCH_STM32) && defined(DWT_BASE)
     dwt_init();
   #endif
+  return(state);
 }
 
-void ArduinoHal::term() {
+int16_t ArduinoHal::term() {
+  int16_t state = RADIOLIB_ERR_NONE;
   if(initInterface) {
-    spiEnd();
+    state = spiEnd();
   }
+  return(state);
 }
 
 void inline ArduinoHal::pinMode(uint32_t pin, uint32_t mode) {
@@ -95,26 +99,35 @@ long inline ArduinoHal::pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t tim
   return(::pulseIn(pin, state, timeout));
 }
 
-void inline ArduinoHal::spiBegin() {
+int16_t inline ArduinoHal::spiBegin() {
   spi->begin();
+
+  // Arduino API has no way of reporting SPI initialization failure
+  return(RADIOLIB_ERR_NONE);
 }
 
 void inline ArduinoHal::spiBeginTransaction() {
   spi->beginTransaction(spiSettings);
 }
 
-void ArduinoHal::spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
+int16_t ArduinoHal::spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
   for(size_t i = 0; i < len; i++) {
     in[i] = spi->transfer(out[i]);
   }
+
+  // Arduino API has no way of reporting SPI transfer failure
+  return(RADIOLIB_ERR_NONE);
 }
 
 void inline ArduinoHal::spiEndTransaction() {
   spi->endTransaction();
 }
 
-void inline ArduinoHal::spiEnd() {
+int16_t inline ArduinoHal::spiEnd() {
   spi->end();
+
+  // Arduino API has no way of reporting SPI de-initialization failure
+  return(RADIOLIB_ERR_NONE);
 }
 
 void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, RadioLibTime_t duration) {

@@ -157,8 +157,9 @@ class RadioLibHal {
 
     /*!
       \brief SPI initialization method.
+      \returns \ref status_codes
     */
-    virtual void spiBegin() = 0;
+    virtual int16_t spiBegin() = 0;
 
     /*!
       \brief Method to start SPI transaction.
@@ -170,8 +171,9 @@ class RadioLibHal {
       \param out Buffer to send.
       \param len Number of data to send or receive.
       \param in Buffer to save received data into.
+      \returns \ref status_codes
     */
-    virtual void spiTransfer(uint8_t* out, size_t len, uint8_t* in) = 0;
+    virtual int16_t spiTransfer(uint8_t* out, size_t len, uint8_t* in) = 0;
 
     /*!
       \brief Method to end SPI transaction.
@@ -180,8 +182,9 @@ class RadioLibHal {
 
     /*!
       \brief SPI termination method.
+      \returns \ref status_codes
     */
-    virtual void spiEnd() = 0;
+    virtual int16_t spiEnd() = 0;
 
     // virtual methods - these may or may not exists on a given platform
     // they exist in this implementation, but do nothing
@@ -190,15 +193,17 @@ class RadioLibHal {
       \brief Module initialization method.
       This will be called by all radio modules at the beginning of startup.
       Can be used to e.g., initialize SPI interface.
+      \returns \ref status_codes
     */
-    virtual void init();
+    virtual int16_t init();
 
     /*!
       \brief Module termination method.
       This will be called by all radio modules when the destructor is called.
       Can be used to e.g., stop SPI interface.
+      \returns \ref status_codes
     */
-    virtual void term();
+    virtual int16_t term();
 
     /*!
       \brief Method to produce a square-wave with 50% duty cycle ("tone") of a given frequency at some pin.

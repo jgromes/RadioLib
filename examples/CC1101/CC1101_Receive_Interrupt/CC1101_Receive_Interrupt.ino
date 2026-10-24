@@ -58,7 +58,7 @@ void setup() {
   // initialize CC1101 at 434 MHz
   Serial.print(F("[CC1101] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -70,7 +70,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setPacketReceivedAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start listening for packets
   Serial.print(F("[CC1101] Starting to listen ... "));

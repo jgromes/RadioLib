@@ -17,6 +17,11 @@
 #define PI_OUTPUT         (1)
 #define PI_MAX_USER_GPIO  (31)
 
+// custom error codes
+#define RADIOLIB_ERR_HAL_PI_GPIO_HANDLE_FAILED          RADIOLIB_ERR_HAL(-1)
+#define RADIOLIB_ERR_HAL_PI_SPI_HANDLE_FAILED           RADIOLIB_ERR_HAL(-2)
+#define RADIOLIB_ERR_HAL_PI_SPI_XFER_FAILED             RADIOLIB_ERR_HAL(-3)
+
 // forward declaration of alert handler that will be used to emulate interrupts
 static void lgpioAlertHandler(int num_alerts, lgGpioAlert_p alerts, void *userdata);
 
@@ -35,28 +40,30 @@ class PiHal : public RadioLibHal {
       _spiChannel(spiChannel) {
     }
 
-    void init() override {
+    int16_t init() override {
       if(_gpioHandle != -1) {
-        return;
+        // initialized already
+        return(RADIOLIB_ERR_NONE);
       }
 
       // first initialise lgpio library
       if((_gpioHandle = lgGpiochipOpen(_gpioDevice)) < 0) {
         fprintf(stderr, "Could not open GPIO chip: %s\n", lguErrorText(_gpioHandle));
-        return;
+        return(RADIOLIB_ERR_HAL_PI_GPIO_HANDLE_FAILED);
       }
 
       // now the SPI
-      spiBegin();
+      return(spiBegin());
     }
 
-    void term() override {
+    int16_t term() override {
       // stop the SPI
-      spiEnd();
+      int16_t state = spiEnd();
 
       // finally, stop the lgpio library
       lgGpiochipClose(_gpioHandle);
       _gpioHandle = -1;
+      return(state);
     }
 
     // GPIO-related methods (pinMode, digitalWrite etc.) should check
@@ -195,30 +202,36 @@ class PiHal : public RadioLibHal {
       return(this->micros() - start);
     }
 
-    void spiBegin() {
+    int16_t spiBegin() {
       if(_spiHandle < 0) {
         if((_spiHandle = lgSpiOpen(_spiDevice, _spiChannel, _spiSpeed, 0)) < 0) {
           fprintf(stderr, "Could not open SPI handle on 0: %s\n", lguErrorText(_spiHandle));
+          return(RADIOLIB_ERR_HAL_PI_SPI_HANDLE_FAILED);
         }
       }
+
+      return(RADIOLIB_ERR_NONE);
     }
 
     void spiBeginTransaction() {}
 
-    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
+    int16_t spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
       int result = lgSpiXfer(_spiHandle, (char *)out, (char*)in, len);
       if(result < 0) {
         fprintf(stderr, "Could not perform SPI transfer: %s\n", lguErrorText(result));
+        return(RADIOLIB_ERR_HAL_PI_SPI_XFER_FAILED);
       }
+      return(RADIOLIB_ERR_NONE);
     }
 
     void spiEndTransaction() {}
 
-    void spiEnd() {
+    int16_t spiEnd() {
       if(_spiHandle >= 0) {
         lgSpiClose(_spiHandle);
         _spiHandle = -1;
       }
+      return(RADIOLIB_ERR_NONE);
     }
 
     void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) {

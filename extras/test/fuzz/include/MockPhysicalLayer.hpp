@@ -18,11 +18,11 @@ class FuzzHal : public RadioLibHal {
     RadioLibTime_t millis() override { return(0); }
     RadioLibTime_t micros() override { micros_ctr+=1000; return(micros_ctr); }
     long pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) override { (void)pin; (void)state; (void)timeout; return(0); }
-    void spiBegin() override {}
+    int16_t spiBegin() override { return(RADIOLIB_ERR_NONE); }
     void spiBeginTransaction() override {}
-    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) override { (void)out; if(in) { memset(in, 0xFF, len); } }
+    int16_t spiTransfer(uint8_t* out, size_t len, uint8_t* in) override { (void)out; if(in) { memset(in, 0xFF, len); } return(RADIOLIB_ERR_NONE); }
     void spiEndTransaction() override {}
-    void spiEnd() override {}
+    int16_t spiEnd() override { return(RADIOLIB_ERR_NONE); }
   
   private:
     RadioLibTime_t micros_ctr = 0;

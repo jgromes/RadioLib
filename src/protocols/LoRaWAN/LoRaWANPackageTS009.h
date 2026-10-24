@@ -20,7 +20,8 @@
 #define RADIOLIB_LORAWAN_TS009_RX_APP_CNT_RESET       (0x0A)
 #define RADIOLIB_LORAWAN_TS009_LINK_CHECK             (0x20)
 #define RADIOLIB_LORAWAN_TS009_DEVICE_TIME            (0x21)
-#define RADIOLIB_LORAWAN_TS009_PING_SLOT_INFO         (0x22)
+#define RADIOLIB_LORAWAN_TS009_FRAG_SESSION_CNT       (0x52)
+#define RADIOLIB_LORAWAN_TS009_RELAY_MODE_CTRL        (0x53)
 #define RADIOLIB_LORAWAN_TS009_TX_CW                  (0x7D)
 #define RADIOLIB_LORAWAN_TS009_DUT_FPORT224_DISABLE   (0x7E)
 #define RADIOLIB_LORAWAN_TS009_DUT_VERSIONS           (0x7F)
@@ -34,6 +35,7 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
 
     typedef void (*DelaySecondsCb_t)(RadioLibTime_t seconds);
     typedef void (*UplinkIntervalCb_t)(RadioLibTime_t intervalSeconds);
+    typedef void (*ConfirmedCb_t)(bool confirmed);
     typedef void (*RebootCb_t)();
 
     // copy constructor is removed to prevent users from creating copies of this class
@@ -55,32 +57,32 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
     void setUplinkIntervalCallback(UplinkIntervalCb_t intervalCb);
 
     /*!
+      \brief Set confirmed callback (for TX_FRAMES_CTRL command)
+    */
+    void setConfirmedCallback(ConfirmedCb_t confirmedCb);
+
+    /*!
       \brief Set reboot callback (for DUT_RESET command)
     */
     void setRebootCallback(RebootCb_t rebootCb);
 
     /*!
-      \brief Check whether subsequent uplinks should be confirmed
-      \returns true if uplinks should be confirmed, false otherwise
-    */
-    bool getConfirmed();
-
-    /*!
       \brief Process downlink data for TS009 LCTT package
       \param dataDown Pointer to received downlink data
       \param lenDown Length of downlink data
-      \returns Number of bytes consumed
+      \param eventDown Pointer to downlink event data
+      \returns Number of bytes processed
     */
-    size_t processData(const uint8_t* dataDown, size_t lenDown, LoRaWANEvent_t* event) override;
+    size_t processData(const uint8_t* dataDown, size_t lenDown, uint8_t* dataOut, size_t* lenOut, LoRaWANEvent_t* event) override;
 
 #if !RADIOLIB_GODMODE
   protected:
 #endif
 
-    PhysicalLayer* radioModule;
-    bool confirmed = false;
+    PhysicalLayer* radio;
     DelaySecondsCb_t delaySecondsCallback;
     UplinkIntervalCb_t uplinkIntervalCallback;
+    ConfirmedCb_t confirmedCallback;
     RebootCb_t rebootCallback;
 
     void reboot() {
@@ -100,7 +102,7 @@ class LoRaWANPackageTS009 : public LoRaWANPackage {
       \param node Pointer to the LoRaWAN node
       \param secondsCb Pointer to getSeconds() function
     */
-    LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, LoRaWANNode* node, GetSecondsCb_t secondsCb);
+    LoRaWANPackageTS009(LoRaWANPackageManager* pacMan, RadioLibHal* hal, LoRaWANNode* node, GetSecondsCb_t secondsCb);
 
     uint8_t enabled = false;
     

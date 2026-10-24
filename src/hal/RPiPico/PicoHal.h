@@ -55,13 +55,13 @@ public:
     _mosiPin(mosiPin),
     _sckPin(sckPin){}
 
-  void init() override {
+  int16_t init() override {
     stdio_init_all();
-    spiBegin();
+    return(spiBegin());
   }
 
-  void term() override {
-    spiEnd();
+  int16_t term() override {
+    return(spiEnd());
   }
 
   // GPIO-related methods (pinMode, digitalWrite etc.) should check
@@ -174,19 +174,21 @@ public:
     multicore_reset_core1();
   }
 
-  void spiBegin() {
+  int16_t spiBegin() {
     spi_init(_spiChannel, _spiSpeed);
     spi_set_format(_spiChannel, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
 
     gpio_set_function(_sckPin, GPIO_FUNC_SPI);
     gpio_set_function(_mosiPin, GPIO_FUNC_SPI);
     gpio_set_function(_misoPin, GPIO_FUNC_SPI);
+    return(RADIOLIB_ERR_NONE);
   }
 
   void spiBeginTransaction() {}
 
-  void spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
+  int16_t spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
     spi_write_read_blocking(_spiChannel, out, in, len);
+    return(RADIOLIB_ERR_NONE);
   }
 
   void yield() override {
@@ -195,8 +197,9 @@ public:
 
   void spiEndTransaction() {}
 
-  void spiEnd() {
+  int16_t spiEnd() {
     spi_deinit(_spiChannel);
+    return(RADIOLIB_ERR_NONE);
   }
 
 private:

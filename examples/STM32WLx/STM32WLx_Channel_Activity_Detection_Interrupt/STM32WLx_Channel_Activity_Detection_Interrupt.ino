@@ -56,8 +56,8 @@ void setup() {
   // except frequency and TCXO voltage suitable for Nucleo WL55JC1
   Serial.print(F("[STM32WL] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 868.0;
-  radio.tcxoVoltage = 1.7;
+  config.frequency = RADIOLIB_UNIT_MEGA(868);
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V7;
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -69,7 +69,7 @@ void setup() {
 
   // set the function that will be called
   // when LoRa packet or timeout is detected
-  radio.setDio1Action(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start scanning the channel
   Serial.print(F("[STM32WLx] Starting scan for LoRa preamble ... "));

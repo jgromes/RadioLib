@@ -16,7 +16,7 @@ FSK4Client::FSK4Client(PhysicalLayer* phy) {
  }
 #endif
 
-int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
+int16_t FSK4Client::begin(uint32_t base, uint32_t shift, uint16_t rate) {
   // save configuration
   baseFreqHz = base;
   shiftFreqHz = shift;
@@ -34,7 +34,7 @@ int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
   }
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
+  baseFreq = base / phyLayer->freqStep;
 
   // configure for direct mode
   return(phyLayer->startDirect());

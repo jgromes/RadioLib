@@ -99,28 +99,6 @@ class LRxxxx: public PhysicalLayer {
     int16_t reset();
 
     /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
       \brief Reads the current IRQ status.
       \returns IRQ status bits
     */
@@ -143,21 +121,24 @@ class LRxxxx: public PhysicalLayer {
     */
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
+#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
+#endif
     Module* mod;
     
     // flag to determine whether we are in the sub-GHz or 2.4 GHz range
     // this is needed to automatically detect which PA to use
     bool highFreq = false;
     
-    float freqMHz = 0;
+    uint32_t freqHz = 0;
+
     uint32_t rxTimeout = 0;
     uint32_t tcxoDelay = 0;
 
     // cached LoRa parameters
     uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
     uint16_t preambleLengthLoRa = 0;
-    float bandwidthKhz = 0;
+    uint32_t bandwidthHz = 0;
     bool ldroAuto = true;
     size_t implicitLen = 0;
     bool invertIQEnabled = false;
@@ -178,7 +159,6 @@ class LRxxxx: public PhysicalLayer {
     int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);
     int16_t lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uint8_t grid, uint8_t hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len);
     uint8_t roundRampTime(uint32_t rampTimeUs);
-    int16_t findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val);
     RadioLibTime_t getToA(size_t len, ModemType_t modem);
 
     // several commands just send unsigned 32-bit number

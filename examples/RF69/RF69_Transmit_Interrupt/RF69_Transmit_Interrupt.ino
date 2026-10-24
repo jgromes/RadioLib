@@ -56,7 +56,7 @@ void setup() {
   // initialize RF69 at 434 MHz
   Serial.print(F("[RF69] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -68,7 +68,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setPacketSentAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // NOTE: some RF69 modules use high power output,
   //       those are usually marked RF69H(C/CW).
