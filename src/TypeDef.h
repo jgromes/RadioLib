@@ -454,6 +454,11 @@
 */
 #define RADIOLIB_ERR_INVALID_RX_PERIOD                         (-709)
 
+/*!
+  \brief The supplied external NTC thermistor parameters are invalid.
+*/
+#define RADIOLIB_ERR_INVALID_NTC_PARAMETERS                    (-710)
+
 // AX.25-specific status codes
 
 /*!

@@ -1148,7 +1148,34 @@ int16_t LR2021::setGain(uint8_t gain) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_AGC_GAIN_MANUAL, true, &gain, sizeof(gain)));
 }
 
-int16_t LR2021::setTempCompensation(uint8_t mode, bool useNtc, float rRatio, uint16_t betaK, uint8_t delay) {
+int16_t LR2021::setTempCompensation(uint8_t mode) {
+  int16_t state = this->checkTempCompensation(mode);
+  RADIOLIB_ASSERT(state);
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG, true, &mode, sizeof(mode)));
+}
+
+int16_t LR2021::setTempCompensation(uint8_t mode, float rRatio, uint16_t betaK, uint8_t delay) {
+  int16_t state = this->checkTempCompensation(mode);
+  RADIOLIB_ASSERT(state);
+
+  // ratio is 10 bits with 9 fractional bits, beta is 12 bits in 2 K steps
+  if(!(rRatio > 0.0f) || (rRatio * 512.0f + 0.5f >= 1024.0f) || (betaK < 2) || (betaK > 8190)) {
+    return(RADIOLIB_ERR_INVALID_NTC_PARAMETERS);
+  }
+  uint16_t ratio = (uint16_t)(rRatio * 512.0f + 0.5f);
+  if(ratio == 0) {
+    return(RADIOLIB_ERR_INVALID_NTC_PARAMETERS);
+  }
+  uint16_t beta = (betaK + 1) / 2;
+  uint8_t buff[] = { (uint8_t)((ratio >> 8) & 0x03), (uint8_t)(ratio & 0xFF), (uint8_t)((beta >> 8) & 0x0F), (uint8_t)(beta & 0xFF), delay };
+  state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_NTC_PARAMS, true, buff, sizeof(buff));
+  RADIOLIB_ASSERT(state);
+
+  uint8_t cfg = mode | RADIOLIB_LR2021_TEMP_COMP_NTC_ENABLED;
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG, true, &cfg, sizeof(cfg)));
+}
+
+int16_t LR2021::checkTempCompensation(uint8_t mode) {
   // the chip rejects temperature compensation when TCXO is used
   if(this->tcxoVoltage != RadioLibTCXOVoltage_t::VoltageNone) {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
@@ -1156,18 +1183,7 @@ int16_t LR2021::setTempCompensation(uint8_t mode, bool useNtc, float rRatio, uin
   if(mode > RADIOLIB_LR2021_TEMP_COMP_ABSOLUTE) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
-
-  if(useNtc) {
-    // ratio is 10 bits with 9 fractional bits, beta is 12 bits in 2 K steps
-    uint16_t ratio = (uint16_t)RADIOLIB_MIN(rRatio * 512.0f + 0.5f, 1023.0f);
-    uint16_t beta = RADIOLIB_MIN(betaK / 2, 4095);
-    uint8_t buff[] = { (uint8_t)((ratio >> 8) & 0x03), (uint8_t)(ratio & 0xFF), (uint8_t)((beta >> 8) & 0x0F), (uint8_t)(beta & 0xFF), delay };
-    int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_SET_NTC_PARAMS, true, buff, sizeof(buff));
-    RADIOLIB_ASSERT(state);
-  }
-
-  uint8_t cfg = mode | (useNtc ? RADIOLIB_LR2021_TEMP_COMP_NTC_ENABLED : 0);
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG, true, &cfg, sizeof(cfg)));
+  return(RADIOLIB_ERR_NONE);
 }
 
 #endif

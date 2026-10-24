@@ -753,16 +753,27 @@ class LR2021: public LRxxxx {
     int16_t setGain(uint8_t gain);
 
     /*!
-      \brief Enable compensation of crystal self-heating drift during transmission. Crystal (non-TCXO) only,
-      must be called after begin().
+      \brief Enable compensation of crystal self-heating drift during transmission, using the internal
+      temperature sensor only. Crystal (non-TCXO) only, must be called after begin().
       \param mode One of RADIOLIB_LR2021_TEMP_COMP_* macros, RELATIVE is recommended.
-      \param useNtc Whether to use external NTC thermistor in addition to the internal sensor.
-      \param rRatio Ratio of bias resistor to NTC resistance at 25 C. Ignored if useNtc is false.
-      \param betaK NTC beta constant in Kelvin. Ignored if useNtc is false.
-      \param delay NTC thermal lag filter coefficient, PCB-specific. Ignored if useNtc is false.
       \returns \ref status_codes
     */
-    int16_t setTempCompensation(uint8_t mode, bool useNtc = false, float rRatio = 1.0f, uint16_t betaK = 4250, uint8_t delay = 5);
+    int16_t setTempCompensation(uint8_t mode);
+
+    /*!
+      \brief Enable compensation of crystal self-heating drift during transmission, using an external NTC
+      thermistor at the crystal in addition to the internal sensor. Crystal (non-TCXO) only, must be called
+      after begin(). The NTC parameters depend on the board, so there are no defaults: the chip accepts any
+      value, and a wrong one makes it compensate for the wrong temperature.
+      \param mode One of RADIOLIB_LR2021_TEMP_COMP_* macros, RELATIVE is recommended.
+      \param rRatio Ratio of the bias resistor to the NTC resistance at 25 C, from the board's schematic.
+      Sent in steps of 1/512, so 1/512 to 1023/512 (about 1.998).
+      \param betaK NTC beta constant in Kelvin, from the thermistor's datasheet (e.g. B25/50). 2 to 8190
+      (sent in steps of 2 K).
+      \param delay Filter coefficient for the NTC's thermal lag behind the crystal, depends on the PCB.
+      \returns \ref status_codes
+    */
+    int16_t setTempCompensation(uint8_t mode, float rRatio, uint16_t betaK, uint8_t delay);
 
     /*!
       \brief Read status of the last received packet.
@@ -951,6 +962,7 @@ class LR2021: public LRxxxx {
     LR2021PaTableEntry_t* paOptTable[2] = { nullptr, nullptr };
 
     int16_t modSetup(uint32_t freq, uint8_t modem);
+    int16_t checkTempCompensation(uint8_t mode);
     bool findChip(void);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
