@@ -568,9 +568,10 @@ void LoRaWANNode::saveSessionBuffer() {
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_MAC_QUEUE], this->fOptsUp, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN], &this->fOptsUpLen, 1);
 
-  // store the channel masks and unused channel flags
+  // store the channel masks, unused channel flags and nbTrans (could have changed during adrBackOff)
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR] + 1, this->channelMasks, sizeof(this->channelMasks));
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS], this->channelFlags, sizeof(this->channelFlags));
+  this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR + 13] = this->nbTrans;
 
   // store the session status
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_STATUS], this->sessionStatus);
