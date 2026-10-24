@@ -821,11 +821,6 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
 
   // read the packet
   state = this->phyLayer->readData(joinAcceptMsgEnc, lenRx);
-  // downlink frames are sent without CRC, which will raise error on SX127x
-  // we can ignore that error
-  if(state == RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
-    state = RADIOLIB_ERR_NONE;
-  }
   RADIOLIB_ASSERT(state);
   
   // wrap up reception (clears IRQ flags)
@@ -1929,11 +1924,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
   // read the data
   state = this->phyLayer->readData(&downlinkMsg[RADIOLIB_AES128_BLOCK_SIZE], downlinkMsgLen);
-  // downlink frames are sent without CRC, which will raise error on SX127x
-  // we can ignore that error
-  if(state == RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
-    state = RADIOLIB_ERR_NONE;
-  }
 
   if(state == RADIOLIB_ERR_NONE) {
     // wrap up reception (clears IRQ flags)
