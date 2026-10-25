@@ -396,4 +396,52 @@ int16_t LR2021::resetDCDCworkaround() {
   return(state);
 }
 
+int16_t LR2021::setFifoSize(bool rx, size_t size) {
+  // set the base
+  uint32_t fifo_base = rx ? RADIOLIB_LR2021_RX_FIFO_BASE_ADDR : RADIOLIB_LR2021_TX_FIFO_BASE_ADDR;
+  int16_t state = this->writeRegMem32(rx ? RADIOLIB_LR2021_REG_RX_FIFO_BASE : RADIOLIB_LR2021_REG_TX_FIFO_BASE, &fifo_base, 1);
+  RADIOLIB_ASSERT(state);
+
+  // set the size
+  // Rx and Tx FIFO sizes are "coded" differently in the official driver,
+  // and seem to suggest different size limits
+  uint32_t fifo_size;
+  if(rx) {
+    if((size < 24) || (size > 1024)) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }
+    fifo_size = size - 24; 
+  } else {
+    if((size < 4) || (size > 1024)) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }
+    fifo_size = size - 4; 
+  }
+  state = this->writeRegMem32(rx ? RADIOLIB_LR2021_REG_RX_FIFO_SIZE : RADIOLIB_LR2021_REG_TX_FIFO_SIZE, &fifo_size, 1);
+
+  //! \todo [LR2021] Implement FIFO config retention through sleep mode
+  return(state);
+}
+
+int16_t LR2021::setIQStream(float rate, bool fifo) {
+  // rate is configred via LoRa bandwidth
+  int16_t state = this->setBandwidth(rate/4.0f);
+  RADIOLIB_ASSERT(state);
+
+  // if the destination is FIFO, enable 1024-byte RX FIFO size
+  if(fifo) {
+    state = this->setFifoSize(true, 1024);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // route source 2 using some magic numbers
+  uint8_t buff[] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x92, 0x00, 0x00, 0x00, 0xFF, 0x00 };
+  if(fifo) {
+    buff[5] = 0x0A;
+    buff[9] = 0x00;
+    buff[10] = 0x01;
+  }
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_SOURCE2, true, buff, sizeof(buff)));
+}
+
 #endif

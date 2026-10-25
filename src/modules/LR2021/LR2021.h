@@ -852,8 +852,66 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t setRegulatorDCDC();
-   
+
+    /*!
+      \brief Set the size of Rx/Tx FIFO.
+      \param rx Whether to modify Rx (true) or Tx (false) FIFO.
+      \param size Size to set in bytes, maximum of 1024.
+      \returns \ref status_codes
+    */
+    int16_t setFifoSize(bool rx, size_t size);
+
+    /*!
+      \brief Enable streaming of raw I/Q samples.
+      After calling, the radio has to be reset in order to return to normal configuration.
+      NOTE: This functionality is undocumented and experimental!
+      Credit to https://github.com/SAMS0N1TE/lr2021-sdr
+      \param rate Sampling rate in samples per second. Supported values are 125, 250, 500 and 1000 kSps.
+      \param fifo Whether the IQ samples are to be stored in FIFO (true) or SRAM (false).
+      \returns \ref status_codes
+    */
+    int16_t setIQStream(float rate, bool fifo);
+
+    /*!
+      \brief Read tx FIFO level.
+      \param level Pointer to variable where Tx FIFO fill level will be saved.
+      \returns \ref status_codes
+    */
+    int16_t getFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);
     
+    /*!
+      \brief Clear FIFO IRQ flags.
+      \param rxFifoFlags Rx FIFO interrupt flags to clear.
+      \param txFifoFlags Tx FIFO interrupt flags to clear.
+      \returns \ref status_codes
+    */
+    int16_t clearFifoIrqFlags(uint8_t rxFifoFlags, uint8_t txFifoFlags);
+    
+    /*!
+      \brief Read Rx FIFO level.
+      \param level Pointer to variable where Rx FIFO fill level will be saved.
+      \returns \ref status_codes
+    */
+    int16_t getRxFifoLevel(uint16_t* level);
+    
+    /*!
+      \brief Read Tx FIFO level.
+      \param level Pointer to variable where Tx FIFO fill level will be saved.
+      \returns \ref status_codes
+    */
+    int16_t getTxFifoLevel(uint16_t* level);
+
+    /*!
+      \brief Directly read contents of the Rx FIFO.
+      WARNING: This method accesses the FIFO directly and is meant for advanced use cases only!
+      For common packet processing, use the readData method.
+      \param data Pointer to variable where FIFO contents will be stored. It is up to the caller to allocate
+      buffer of sufficient size.
+      \param len Number of bytes to read.
+      \returns \ref status_codes
+    */
+    int16_t readRadioRxFifo(uint8_t* data, size_t len);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -886,7 +944,6 @@ class LR2021: public LRxxxx {
     void updatePowerLimits(bool highFreq);
 
     // chip control commands
-    int16_t readRadioRxFifo(uint8_t* data, size_t len);
     int16_t writeRadioTxFifo(const uint8_t* data, size_t len);
     int16_t writeRegMem32(uint32_t addr, const uint32_t* data, size_t len);
     int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);
@@ -916,11 +973,7 @@ class LR2021: public LRxxxx {
     int16_t clearIrqState(uint32_t irq);
     int16_t getAndClearIrqStatus(uint32_t* irq);
     int16_t configFifoIrq(uint8_t rxFifoIrq, uint8_t txFifoIrq, uint16_t rxHighThreshold, uint16_t txLowThreshold, uint16_t rxLowThreshold, uint16_t txHighThreshold);
-    int16_t getFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);
-    int16_t clearFifoIrqFlags(uint8_t rxFifoFlags, uint8_t txFifoFlags);
     int16_t getAndClearFifoIrqFlags(uint8_t* rxFifoFlags, uint8_t* txFifoFlags);
-    int16_t getRxFifoLevel(uint16_t* level);
-    int16_t getTxFifoLevel(uint16_t* level);
     int16_t clearRxFifo(void);
     int16_t clearTxFifo(void);
     int16_t configLfClock(uint8_t cfg);
