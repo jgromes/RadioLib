@@ -8,6 +8,11 @@
 // LR2021 SPI registers
 #define RADIOLIB_LR2021_REG_DCDC_FREQ_LF                        (0x80004C)
 #define RADIOLIB_LR2021_REG_DCDC_SWITCHER                       (0xF20024)
+#define RADIOLIB_LR2021_REG_RX_FIFO_BASE                        (0xF30028)
+#define RADIOLIB_LR2021_REG_TX_FIFO_BASE                        (0xF3002C)
+#define RADIOLIB_LR2021_REG_RX_FIFO_SIZE                        (0xF30030)
+#define RADIOLIB_LR2021_REG_TX_FIFO_SIZE                        (0xF30034)
+#define RADIOLIB_LR2021_REG_SRAM_STATUS                         (0xF30054)
 #define RADIOLIB_LR2021_REG_RTTOF_RSSI_POWER_OFFSET             (0xF30128)
 #define RADIOLIB_LR2021_REG_RESULT_DEVIATION_CHANNEL_FILTER     (0xF3013C)
 #define RADIOLIB_LR2021_REG_RESULT_DEVIATION_DCC                (0xF30134)
@@ -24,11 +29,16 @@
 #define RADIOLIB_LR2021_REG_OCP_THRESHOLDS                      (0xF40300)
 #define RADIOLIB_LR2021_REG_DCDC_RX_PATH                        (0xF40430)
 
-// PRAM addresses and magic values
+// RAM addresses and magic values
 #define RADIOLIB_LR2021_PRAM_BASE                               (0x801000)
 #define RADIOLIB_LR2021_PRAM_ADDR_LOADED                        (0x800FF8)
 #define RADIOLIB_LR2021_PRAM_LOADED_MAGIC                       (0x600DB002)
 #define RADIOLIB_LR2021_PRAM_ADDR_VERSION                       (0x800FFC)
+#define RADIOLIB_LR2021_SRAM_BASE                               (0x802000)
+
+// FIFO base addresses
+#define RADIOLIB_LR2021_RX_FIFO_BASE_ADDR                       (0x00804400)
+#define RADIOLIB_LR2021_TX_FIFO_BASE_ADDR                       (0x00804000)
 
 #endif
 
