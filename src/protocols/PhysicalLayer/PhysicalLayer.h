@@ -280,6 +280,12 @@ enum RadioModeType_t {
 #define RADIOLIB_FLRC_CR_1_0                                    (0x02UL << 0)   //  7     0                  1 (un-coded)
 #define RADIOLIB_FLRC_CR_2_3                                    (0x03UL << 0)   //  7     0                  2/3
 
+#define RADIOLIB_LR_FHSS_BIT_RATE                               (488.28215f)    //  31    0     LR FHSS bit rate: 488.28215 bps
+#define RADIOLIB_LR_FHSS_HEADER_BITS                            (114)           //  7     0     LR FHSS packet bit widths: header
+#define RADIOLIB_LR_FHSS_FRAG_BITS                              (48)            //  7     0                                payload fragment
+#define RADIOLIB_LR_FHSS_BLOCK_PREAMBLE_BITS                    (2)             //  7     0                                block preamble
+#define RADIOLIB_LR_FHSS_BLOCK_BITS                             (RADIOLIB_LR_FHSS_FRAG_BITS + RADIOLIB_LR_FHSS_BLOCK_PREAMBLE_BITS)
+
 struct ConfigLoRa_t {
   /*! \brief Carrier frequency in MHz. Defaults to 434.0 MHz. */
   uint32_t frequency = RADIOLIB_UNIT_MEGA(434);

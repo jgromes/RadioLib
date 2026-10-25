@@ -37,10 +37,6 @@
 #define RADIOLIB_LRXXXX_LR_FHSS_BW_773_44                       (0x07UL << 0)   //  7     0                        773.44 kHz
 #define RADIOLIB_LRXXXX_LR_FHSS_BW_1523_4                       (0x08UL << 0)   //  7     0                        1523.4 kHz
 #define RADIOLIB_LRXXXX_LR_FHSS_BW_1574_2                       (0x09UL << 0)   //  7     0                        1574.2 kHz
-#define RADIOLIB_LRXXXX_LR_FHSS_HEADER_BITS                     (114)           //  7     0     LR FHSS packet bit widths: header
-#define RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS                       (48)            //  7     0                                payload fragment
-#define RADIOLIB_LRXXXX_LR_FHSS_BLOCK_PREAMBLE_BITS             (2)             //  7     0                                block preamble
-#define RADIOLIB_LRXXXX_LR_FHSS_BLOCK_BITS                      (RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS + RADIOLIB_LRXXXX_LR_FHSS_BLOCK_PREAMBLE_BITS)
 
 // RADIOLIB_LR11X0_CMD_SET_TCXO_MODE
 // RADIOLIB_LR2021_CMD_SET_TCXO_MODE
@@ -81,8 +77,7 @@
 #define RADIOLIB_LRXXXX_DIOx_VAL(X)                             ((X) & ~RFSWITCH_PIN_FLAG)
 
 // common configuration values
-#define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE                        (488.28215f)    //  31    0     LR FHSS bit rate: 488.28215 bps
-#define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE_RAW                    (0x8001E848UL)  //  31    0                       488.28215 bps in raw
+#define RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE_RAW                    (0x8001E848UL)  //  31    0     LR FHSS bit rate: 488.28215 bps in raw
 #define RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT                    (0x00UL << 0)   //  7     0     LoRa header mode: explicit
 #define RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT                    (0x01UL << 0)   //  7     0                       implicit
 #define RADIOLIB_LRXXXX_LORA_CRC_ENABLED                        (0x01UL << 0)   //  7     0     CRC: enabled
@@ -103,16 +98,6 @@ class LRxxxx: public PhysicalLayer {
       \returns IRQ status bits
     */
     uint32_t getIrqStatus();
-
-    /*!
-      \brief Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.
-      \param modem Modem type.
-      \param dr Data rate.
-      \param pc Packet cfg.
-      \param len Payload length in bytes.
-      \returns Expected time-on-air in microseconds.
-    */
-    RadioLibTime_t calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) override;
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)

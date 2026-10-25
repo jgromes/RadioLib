@@ -1290,29 +1290,25 @@ int16_t SX128x::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 RadioLibTime_t SX128x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
-  switch(modem) {
-    case (ModemType_t::RADIOLIB_MODEM_LORA): {
-      uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
-      
-      // as per SX1280 datasheet rev 3.3 section 7.4.4
-      // it looks like SF>10 has the same effect on number of symbols as LDRO has on sub-GHz LoRa (different SF denominator)
-      // force LDRO in that case so that the number of symbols is correct
-      if(dr.lora.spreadingFactor > 10) {
-        pc.lora.ldrOptimize = true;
-      }
-
-      size_t nSymbol_x4 = PhysicalLayer::getNumSymbols(dr, pc, len) * 4;
-      return((symbolLength_us * nSymbol_x4) / 4);
-    }
-    case (ModemType_t::RADIOLIB_MODEM_FSK): {
-      size_t num_bits = ((uint32_t)pc.fsk.crcLength * 8UL) + (uint32_t)pc.fsk.syncWordLength + (uint32_t)pc.fsk.preambleLength + ((uint32_t)len * 8UL);
-      return((num_bits * RADIOLIB_UNIT_MEGA(1)) / dr.fsk.bitRate);
-    }
-
-    default:
-      return(RADIOLIB_ERR_WRONG_MODEM);
+  if((modem != ModemType_t::RADIOLIB_MODEM_LORA) && (modem != ModemType_t::RADIOLIB_MODEM_FSK)) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
-  
+
+  if(modem == ModemType_t::RADIOLIB_MODEM_LORA) {
+    uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
+      
+    // as per SX1280 datasheet rev 3.3 section 7.4.4
+    // it looks like SF>10 has the same effect on number of symbols as LDRO has on sub-GHz LoRa (different SF denominator)
+    // force LDRO in that case so that the number of symbols is correct
+    if(dr.lora.spreadingFactor > 10) {
+      pc.lora.ldrOptimize = true;
+    }
+
+    size_t nSymbol_x4 = PhysicalLayer::getNumSymbols(dr, pc, len) * 4;
+    return((symbolLength_us * nSymbol_x4) / 4);
+  }
+
+  return(PhysicalLayer::calculateTimeOnAir(modem, dr, pc, len));
 }
 
 RadioLibTime_t SX128x::getTimeOnAir(size_t len) {

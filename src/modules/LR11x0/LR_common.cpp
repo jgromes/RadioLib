@@ -76,55 +76,6 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
   return(this->calculateTimeOnAir(modem, dr, pc, packetLen));
 }
 
-RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
-  // check active modem
-  if(modem == ModemType_t::RADIOLIB_MODEM_LORA) {
-    uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
-    size_t nSymbol_x4 = PhysicalLayer::getNumSymbols(dr, pc, len) * 4;
-    return((symbolLength_us * nSymbol_x4) / 4);
-
-  } else if(modem == ModemType_t::RADIOLIB_MODEM_FSK) {
-    size_t num_bits = ((uint32_t)pc.fsk.crcLength * 8UL) + (uint32_t)pc.fsk.syncWordLength + (uint32_t)pc.fsk.preambleLength + ((uint32_t)len * 8UL);
-    return((num_bits * RADIOLIB_UNIT_MEGA(1)) / dr.fsk.bitRate);
-
-  } else if(modem == ModemType_t::RADIOLIB_MODEM_LRFHSS) {
-    // calculate the number of bits based on coding rate
-    uint16_t N_bits;
-    switch(dr.lrFhss.cr) {
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_5_6:
-        N_bits = ((len * 6) + 4) / 5; // this is from the official LR11xx driver, but why the extra +4?
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_2_3:
-        N_bits = (len * 3) / 2;
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_2:
-        N_bits = len * 2;
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_3:
-        N_bits = len * 3;
-        break;
-      default:
-        return(RADIOLIB_ERR_INVALID_CODING_RATE);
-    }
-
-    // calculate number of bits when accounting for unaligned last block
-    uint16_t N_payBits = (N_bits / RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS) * RADIOLIB_LRXXXX_LR_FHSS_BLOCK_BITS;
-    uint16_t N_lastBlockBits = N_bits % RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS;
-    if(N_lastBlockBits) {
-      N_payBits += N_lastBlockBits + 2;
-    }
-
-    // add header bits
-    uint16_t N_totalBits = (RADIOLIB_LRXXXX_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
-    return(((uint32_t)N_totalBits * 8 * 1000000UL) / RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE);
-  
-  } else {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  return(0);
-}
-
 RadioLibTime_t LRxxxx::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the timeout value is given in units of 30.52 microseconds
   // the calling function should provide some extra width, as this number of units is truncated to integer
@@ -184,7 +135,7 @@ int16_t LRxxxx::lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uin
     { 112, 105,  99,  92, },
     {  74,  69,  65,  60, },
   };
-  if((cr > RADIOLIB_LRXXXX_LR_FHSS_CR_1_3) || ((hdrCount - 1) > (int)sizeof(maxLen[0])) || (len > maxLen[cr][hdrCount - 1])) {
+  if((cr > RADIOLIB_LR_FHSS_CR_1_3) || ((hdrCount - 1) > (int)sizeof(maxLen[0])) || (len > maxLen[cr][hdrCount - 1])) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
 

@@ -1129,18 +1129,11 @@ int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 RadioLibTime_t SX127x::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
-  if(modem == RADIOLIB_MODEM_LORA) {
-    uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr.lora.spreadingFactor) / dr.lora.bandwidth;
-    size_t nSymbol_x4 = PhysicalLayer::getNumSymbols(dr, pc, len) * 4;
-    return((symbolLength_us * nSymbol_x4) / 4);
-
-  } else if(modem == RADIOLIB_MODEM_FSK) {
-    size_t num_bits = ((uint32_t)pc.fsk.crcLength * 8UL) + (uint32_t)pc.fsk.syncWordLength + (uint32_t)pc.fsk.preambleLength + ((uint32_t)len * 8UL);
-    return((num_bits * RADIOLIB_UNIT_MEGA(1)) / dr.fsk.bitRate);
-  
+  if((modem != ModemType_t::RADIOLIB_MODEM_LORA) && (modem != ModemType_t::RADIOLIB_MODEM_FSK)) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  return(RADIOLIB_ERR_WRONG_MODEM);
+  return(PhysicalLayer::calculateTimeOnAir(modem, dr, pc, len));
 }
 
 RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
