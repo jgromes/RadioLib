@@ -423,9 +423,9 @@ int16_t LR2021::setFifoSize(bool rx, size_t size) {
   return(state);
 }
 
-int16_t LR2021::setIQStream(float rate, bool fifo) {
-  // rate is configred via LoRa bandwidth
-  int16_t state = this->setBandwidth(rate/4.0f);
+int16_t LR2021::setIQStream(uint32_t rate, bool fifo) {
+  // rate is configured via LoRa bandwidth
+  int16_t state = this->setBandwidth(rate/4);
   RADIOLIB_ASSERT(state);
 
   // if the destination is FIFO, enable 1024-byte RX FIFO size

@@ -870,7 +870,7 @@ class LR2021: public LRxxxx {
       \param fifo Whether the IQ samples are to be stored in FIFO (true) or SRAM (false).
       \returns \ref status_codes
     */
-    int16_t setIQStream(float rate, bool fifo);
+    int16_t setIQStream(uint32_t rate, bool fifo);
 
     /*!
       \brief Read tx FIFO level.
