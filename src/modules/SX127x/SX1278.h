@@ -250,8 +250,11 @@ class SX1278: public SX127x {
     /*!
       \brief Enables/disables CRC check of received packets.
       \param enable Enable (true) or disable (false) CRC.
-      \param mode Set CRC mode to SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false)
-      or SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode.
+      \param mode False to set CRC mode to RADIOLIB_SX127X_CRC_WHITENING_TYPE_CCITT for CCITT CRC16
+      (polynomial 0x1021, initial 0x1D0F, final XOR 0xFFFF, no RefIn, no RefOut) 
+      or true to set RADIOLIB_SX127X_CRC_WHITENING_TYPE_IBM for IBM CRC16
+      (polynomial 0x8005, initial 0xFFFF, final XOR 0x0000, no RefIn, no RefOut) 
+      Only valid in FSK mode.
       \returns \ref status_codes
     */
     int16_t setCRC(bool enable, bool mode = false);
