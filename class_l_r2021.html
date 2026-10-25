@@ -319,6 +319,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad66dd14be3ec403dbd4ed388e631cfee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set regulator mode to LDO.  <br /></td></tr>
 <tr class="memitem:acbcd9acd62cd92c7379c337a14b77ad2" id="r_acbcd9acd62cd92c7379c337a14b77ad2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbcd9acd62cd92c7379c337a14b77ad2">setRegulatorDCDC</a> ()</td></tr>
 <tr class="memdesc:acbcd9acd62cd92c7379c337a14b77ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set regulator mode to DC-DC.  <br /></td></tr>
+<tr class="memitem:a0ca42ffa010191e4d25d8d8f4017ea39" id="r_a0ca42ffa010191e4d25d8d8f4017ea39"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ca42ffa010191e4d25d8d8f4017ea39">setFifoSize</a> (bool rx, size_t size)</td></tr>
+<tr class="memdesc:a0ca42ffa010191e4d25d8d8f4017ea39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the size of Rx/Tx FIFO.  <br /></td></tr>
+<tr class="memitem:a81660aa8655354c1eb8eecd266604a1e" id="r_a81660aa8655354c1eb8eecd266604a1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81660aa8655354c1eb8eecd266604a1e">setIQStream</a> (float rate, bool fifo)</td></tr>
+<tr class="memdesc:a81660aa8655354c1eb8eecd266604a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable streaming of raw I/Q samples. After calling, the radio has to be reset in order to return to normal configuration. NOTE: This functionality is undocumented and experimental! Credit to <a href="https://github.com/SAMS0N1TE/lr2021-sdr">https://github.com/SAMS0N1TE/lr2021-sdr</a>.  <br /></td></tr>
+<tr class="memitem:a5eba357ae93573915b7cc3c76acbb5fa" id="r_a5eba357ae93573915b7cc3c76acbb5fa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5eba357ae93573915b7cc3c76acbb5fa">getFifoIrqFlags</a> (uint8_t *rxFifoFlags, uint8_t *txFifoFlags)</td></tr>
+<tr class="memdesc:a5eba357ae93573915b7cc3c76acbb5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read tx FIFO level.  <br /></td></tr>
+<tr class="memitem:a2c1129b82960142fdc52d3333b659324" id="r_a2c1129b82960142fdc52d3333b659324"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c1129b82960142fdc52d3333b659324">clearFifoIrqFlags</a> (uint8_t rxFifoFlags, uint8_t txFifoFlags)</td></tr>
+<tr class="memdesc:a2c1129b82960142fdc52d3333b659324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear FIFO IRQ flags.  <br /></td></tr>
+<tr class="memitem:a60474508e5c78c8fd93904d6baec34ec" id="r_a60474508e5c78c8fd93904d6baec34ec"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60474508e5c78c8fd93904d6baec34ec">getRxFifoLevel</a> (uint16_t *level)</td></tr>
+<tr class="memdesc:a60474508e5c78c8fd93904d6baec34ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Rx FIFO level.  <br /></td></tr>
+<tr class="memitem:a8c8810789e318ed7e8bd18366667873a" id="r_a8c8810789e318ed7e8bd18366667873a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c8810789e318ed7e8bd18366667873a">getTxFifoLevel</a> (uint16_t *level)</td></tr>
+<tr class="memdesc:a8c8810789e318ed7e8bd18366667873a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Tx FIFO level.  <br /></td></tr>
+<tr class="memitem:aee630437f4f93bc70f0a29dc8e0b0443" id="r_aee630437f4f93bc70f0a29dc8e0b0443"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee630437f4f93bc70f0a29dc8e0b0443">readRadioRxFifo</a> (uint8_t *data, size_t len)</td></tr>
+<tr class="memdesc:aee630437f4f93bc70f0a29dc8e0b0443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directly read contents of the Rx FIFO. WARNING: This method accesses the FIFO directly and is meant for advanced use cases only! For common packet processing, use the readData method.  <br /></td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
@@ -1012,6 +1026,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a2c1129b82960142fdc52d3333b659324" name="a2c1129b82960142fdc52d3333b659324"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c1129b82960142fdc52d3333b659324">&#9670;&#160;</a></span>clearFifoIrqFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::clearFifoIrqFlags </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>rxFifoFlags</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>txFifoFlags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clear FIFO IRQ flags. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rxFifoFlags</td><td>Rx FIFO interrupt flags to clear. </td></tr>
+    <tr><td class="paramname">txFifoFlags</td><td>Tx FIFO interrupt flags to clear. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a21cee48cac6a64d518353aa2389f8074" name="a21cee48cac6a64d518353aa2389f8074"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21cee48cac6a64d518353aa2389f8074">&#9670;&#160;</a></span>clearIrqFlags()</h2>
 
@@ -1279,6 +1324,36 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">err</td><td>Pointer to variable to store the error bits. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5eba357ae93573915b7cc3c76acbb5fa" name="a5eba357ae93573915b7cc3c76acbb5fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eba357ae93573915b7cc3c76acbb5fa">&#9670;&#160;</a></span>getFifoIrqFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getFifoIrqFlags </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>rxFifoFlags</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>txFifoFlags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read tx FIFO level. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>Pointer to variable where Tx FIFO fill level will be saved. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1841,6 +1916,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a60474508e5c78c8fd93904d6baec34ec" name="a60474508e5c78c8fd93904d6baec34ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60474508e5c78c8fd93904d6baec34ec">&#9670;&#160;</a></span>getRxFifoLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getRxFifoLevel </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *</td>          <td class="paramname"><span class="paramname"><em>level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read Rx FIFO level. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>Pointer to variable where Rx FIFO fill level will be saved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="addaf960d942fbff38c12ccb38b137122" name="addaf960d942fbff38c12ccb38b137122"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addaf960d942fbff38c12ccb38b137122">&#9670;&#160;</a></span>getSNR()</h2>
 
@@ -1936,6 +2037,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo</a></b></dt><dd>[<a class="el" href="class_l_r2021.html">LR2021</a>] Add FLRC to the modems supported in ModemType_t </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a50e730a894f60b58034507ad7730dd3c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a8c8810789e318ed7e8bd18366667873a" name="a8c8810789e318ed7e8bd18366667873a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c8810789e318ed7e8bd18366667873a">&#9670;&#160;</a></span>getTxFifoLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::getTxFifoLevel </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *</td>          <td class="paramname"><span class="paramname"><em>level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read Tx FIFO level. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>Pointer to variable where Tx FIFO fill level will be saved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -2180,6 +2307,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a3563453988a83d22dd07d4691543a300">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aee630437f4f93bc70f0a29dc8e0b0443" name="aee630437f4f93bc70f0a29dc8e0b0443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee630437f4f93bc70f0a29dc8e0b0443">&#9670;&#160;</a></span>readRadioRxFifo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::readRadioRxFifo </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Directly read contents of the Rx FIFO. WARNING: This method accesses the FIFO directly and is meant for advanced use cases only! For common packet processing, use the readData method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Pointer to variable where FIFO contents will be stored. It is up to the caller to allocate buffer of sufficient size. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to read. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -2605,6 +2763,38 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
+<a id="a0ca42ffa010191e4d25d8d8f4017ea39" name="a0ca42ffa010191e4d25d8d8f4017ea39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ca42ffa010191e4d25d8d8f4017ea39">&#9670;&#160;</a></span>setFifoSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setFifoSize </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>rx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the size of Rx/Tx FIFO. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rx</td><td>Whether to modify Rx (true) or Tx (false) FIFO. </td></tr>
+    <tr><td class="paramname">size</td><td>Size to set in bytes, maximum of 1024. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo</a></b></dt><dd>[<a class="el" href="class_l_r2021.html">LR2021</a>] Implement FIFO config retention through sleep mode </dd></dl>
+
+</div>
+</div>
 <a id="a602ba1f6b66b263f84ccd0a73f15381c" name="a602ba1f6b66b263f84ccd0a73f15381c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a602ba1f6b66b263f84ccd0a73f15381c">&#9670;&#160;</a></span>setFrequency() <span class="overload">[1/2]</span></h2>
 
@@ -2727,6 +2917,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier) to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a81660aa8655354c1eb8eecd266604a1e" name="a81660aa8655354c1eb8eecd266604a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81660aa8655354c1eb8eecd266604a1e">&#9670;&#160;</a></span>setIQStream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setIQStream </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rate</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>fifo</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable streaming of raw I/Q samples. After calling, the radio has to be reset in order to return to normal configuration. NOTE: This functionality is undocumented and experimental! Credit to <a href="https://github.com/SAMS0N1TE/lr2021-sdr">https://github.com/SAMS0N1TE/lr2021-sdr</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rate</td><td>Sampling rate in samples per second. Supported values are 125, 250, 500 and 1000 kSps. </td></tr>
+    <tr><td class="paramname">fifo</td><td>Whether the IQ samples are to be stored in FIFO (true) or SRAM (false). </td></tr>
   </table>
   </dd>
 </dl>
@@ -3212,7 +3433,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo</a></b></dt><dd>[<a class="el" href="class_l_r2021.html">LR2021</a>] implement multi-SF for CAD (main SF must be smallest!) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo</a></b></dt><dd>[<a class="el" href="class_l_r2021.html">LR2021</a>] implement multi-SF for CAD (main SF must be smallest!) </dd></dl>
 
 </div>
 </div>
