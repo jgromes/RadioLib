@@ -11,39 +11,43 @@
 // maximum number of allowed frontend calibration attempts
 #define RADIOLIB_LR2021_MAX_CAL_ATTEMPTS    (10)
 
+// LF PA, from the measurements in radiolib-org/power-tests (logs/measure_lr2021): each entry is the
+// lowest-current setting within 0.3 dB of the datasheet's +22 dBm setting (duty cycle 7, 6 slices)
+// at tx_power = 2 * power. tx_power rises with every step and duty cycle and slices never decrease,
+// so the output rises on any board, whichever of the three its matching network responds to most.
 static const LR2021PaTableEntry_t paOptTableLf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 8 },
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 1 },
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 3 },
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 5 },
-  { .paDutyCycle = 1, .paSlices = 2, .paVal = 13 },
-  { .paDutyCycle = 2, .paSlices = 1, .paVal = 13 },
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 11 },
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 13 },
-  { .paDutyCycle = 3, .paSlices = 1, .paVal = 12 },
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 18 },
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 20 },
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 23 },
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 27 },
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 33 },
-  { .paDutyCycle = 1, .paSlices = 2, .paVal = 26 },
-  { .paDutyCycle = 1, .paSlices = 2, .paVal = 31 },
-  { .paDutyCycle = 1, .paSlices = 3, .paVal = 27 },
-  { .paDutyCycle = 1, .paSlices = 1, .paVal = 37 },
-  { .paDutyCycle = 1, .paSlices = 2, .paVal = 40 },
-  { .paDutyCycle = 2, .paSlices = 1, .paVal = 38 },
-  { .paDutyCycle = 2, .paSlices = 2, .paVal = 39 },
-  { .paDutyCycle = 2, .paSlices = 4, .paVal = 40 },
-  { .paDutyCycle = 2, .paSlices = 7, .paVal = 41 },
-  { .paDutyCycle = 3, .paSlices = 2, .paVal = 39 },
-  { .paDutyCycle = 3, .paSlices = 3, .paVal = 39 },
-  { .paDutyCycle = 3, .paSlices = 6, .paVal = 38 },
-  { .paDutyCycle = 4, .paSlices = 3, .paVal = 37 },
-  { .paDutyCycle = 4, .paSlices = 5, .paVal = 37 },
-  { .paDutyCycle = 4, .paSlices = 7, .paVal = 38 },
-  { .paDutyCycle = 5, .paSlices = 3, .paVal = 37 },
-  { .paDutyCycle = 5, .paSlices = 6, .paVal = 37 },
-  { .paDutyCycle = 6, .paSlices = 7, .paVal = 35 },
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -15 }, // -9
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -13 }, // -8
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -11 }, // -7
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -9 },  // -6
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -7 },  // -5
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -5 },  // -4
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -3 },  // -3
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = -1 },  // -2
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 1 },   // -1
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 3 },   // 0
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 5 },   // 1
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 7 },   // 2
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 9 },   // 3
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 11 },  // 4
+  { .paDutyCycle = 7, .paSlices = 2, .paVal = 13 },  // 5
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 14 },  // 6
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 15 },  // 7
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 18 },  // 8
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 20 },  // 9
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 22 },  // 10
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 24 },  // 11
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 26 },  // 12
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 28 },  // 13
+  { .paDutyCycle = 7, .paSlices = 3, .paVal = 30 },  // 14
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 31 },  // 15
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 33 },  // 16
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 35 },  // 17
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 37 },  // 18
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 39 },  // 19
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 41 },  // 20
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 43 },  // 21
+  { .paDutyCycle = 7, .paSlices = 4, .paVal = 44 },  // 22
 };
 
 static const LR2021PaTableEntry_t paOptTableHf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
