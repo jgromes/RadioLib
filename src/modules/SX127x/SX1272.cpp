@@ -420,10 +420,9 @@ float SX1272::getRSSI(bool packet, bool skipReceive) {
 }
 
 int16_t SX1272::setCRC(bool enable, bool mode) {
+  SX127x::crcEnabled = enable;
   Module* mod = this->getMod();
   if(getActiveModem() == RADIOLIB_SX127X_LORA) {
-    // set LoRa CRC
-    SX127x::crcEnabled = enable;
     if(enable) {
       return(mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_RX_CRC_MODE_ON, 1, 1));
     } else {
