@@ -557,7 +557,15 @@ int16_t SX127x::finishReceive() {
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  return(clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL));
+  uint32_t mask = RADIOLIB_SX127X_FLAGS_ALL;
+  if(getActiveModem() == RADIOLIB_SX127X_FSK_OOK) {
+    // in FSK mode, when the FIFO overrun flag is cleared, FIFO is dumped
+    // so only clear the flag if it is actually set
+    if(this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_IRQ_FLAGS_2, 4, 4) != RADIOLIB_SX127X_FLAG_FIFO_OVERRUN) {
+      mask &= ~(RADIOLIB_SX127X_FLAG_FIFO_OVERRUN << 8);
+    }
+  }
+  return(clearIrqFlags(mask));
 }
 
 int16_t SX127x::startChannelScan() {
