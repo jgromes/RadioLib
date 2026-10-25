@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">23</td>
-            <td class="headerCovTableEntry">230</td>
-            <td class="headerCovTableEntryLo">10.0 %</td>
+            <td class="headerCovTableEntry">255</td>
+            <td class="headerCovTableEntryLo">9.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-10-20 14:02:14</td>
+            <td class="headerValue">2026-10-25 18:54:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntry">49</td>
-            <td class="headerCovTableEntryLo">12.2 %</td>
+            <td class="headerCovTableEntry">51</td>
+            <td class="headerCovTableEntryLo">11.8 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -458,7 +458,55 @@
 <a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="397"><span class="lineNum">     397 </span>            : }</a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
-<a name="399"><span class="lineNum">     399 </span>            : #endif</a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 : int16_t LR2021::setFifoSize(bool rx, size_t size) {</span></a>
+<a name="400"><span class="lineNum">     400 </span>            :   // set the base</a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :   uint32_t fifo_base = rx ? RADIOLIB_LR2021_RX_FIFO_BASE_ADDR : RADIOLIB_LR2021_TX_FIFO_BASE_ADDR;</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;writeRegMem32(rx ? RADIOLIB_LR2021_REG_RX_FIFO_BASE : RADIOLIB_LR2021_REG_TX_FIFO_BASE, &amp;fifo_base, 1);</span></a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="404"><span class="lineNum">     404 </span>            : </a>
+<a name="405"><span class="lineNum">     405 </span>            :   // set the size</a>
+<a name="406"><span class="lineNum">     406 </span>            :   // Rx and Tx FIFO sizes are &quot;coded&quot; differently in the official driver,</a>
+<a name="407"><span class="lineNum">     407 </span>            :   // and seem to suggest different size limits</a>
+<a name="408"><span class="lineNum">     408 </span>            :   uint32_t fifo_size;</a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :   if(rx) {</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 :     if((size &lt; 24) || (size &gt; 1024)) {</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_PACKET_TOO_LONG);</span></a>
+<a name="412"><span class="lineNum">     412 </span>            :     }</a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :     fifo_size = size - 24; </span></a>
+<a name="414"><span class="lineNum">     414 </span>            :   } else {</a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :     if((size &lt; 4) || (size &gt; 1024)) {</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :       return(RADIOLIB_ERR_PACKET_TOO_LONG);</span></a>
+<a name="417"><span class="lineNum">     417 </span>            :     }</a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :     fifo_size = size - 4; </span></a>
+<a name="419"><span class="lineNum">     419 </span>            :   }</a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :   state = this-&gt;writeRegMem32(rx ? RADIOLIB_LR2021_REG_RX_FIFO_SIZE : RADIOLIB_LR2021_REG_TX_FIFO_SIZE, &amp;fifo_size, 1);</span></a>
+<a name="421"><span class="lineNum">     421 </span>            : </a>
+<a name="422"><span class="lineNum">     422 </span>            :   //! \todo [LR2021] Implement FIFO config retention through sleep mode</a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="424"><span class="lineNum">     424 </span>            : }</a>
+<a name="425"><span class="lineNum">     425 </span>            : </a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 : int16_t LR2021::setIQStream(float rate, bool fifo) {</span></a>
+<a name="427"><span class="lineNum">     427 </span>            :   // rate is configred via LoRa bandwidth</a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;setBandwidth(rate/4.0f);</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :   RADIOLIB_ASSERT(state);</span></a>
+<a name="430"><span class="lineNum">     430 </span>            : </a>
+<a name="431"><span class="lineNum">     431 </span>            :   // if the destination is FIFO, enable 1024-byte RX FIFO size</a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :   if(fifo) {</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :     state = this-&gt;setFifoSize(true, 1024);</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :     RADIOLIB_ASSERT(state);</span></a>
+<a name="435"><span class="lineNum">     435 </span>            :   }</a>
+<a name="436"><span class="lineNum">     436 </span>            : </a>
+<a name="437"><span class="lineNum">     437 </span>            :   // route source 2 using some magic numbers</a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :   uint8_t buff[] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x92, 0x00, 0x00, 0x00, 0xFF, 0x00 };</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :   if(fifo) {</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :     buff[5] = 0x0A;</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :     buff[9] = 0x00;</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :     buff[10] = 0x01;</span></a>
+<a name="443"><span class="lineNum">     443 </span>            :   }</a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_SOURCE2, true, buff, sizeof(buff)));</span></a>
+<a name="445"><span class="lineNum">     445 </span>            : }</a>
+<a name="446"><span class="lineNum">     446 </span>            : </a>
+<a name="447"><span class="lineNum">     447 </span>            : #endif</a>
 </pre>
       </td>
     </tr>
