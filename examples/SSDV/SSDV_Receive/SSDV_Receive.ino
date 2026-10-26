@@ -104,9 +104,7 @@ void setup() {
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Radio init failed: "));
     Serial.println(state);
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
   Serial.println(F("Radio OK"));
 
@@ -117,9 +115,7 @@ void setup() {
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("startReceive() failed: "));
     Serial.println(state);
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
 
   // optionally initialise JPEG decoder
@@ -128,9 +124,7 @@ void setup() {
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("beginDecoder() failed (not enough RAM?): "));
     Serial.println(state);
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
   Serial.println(F("JPEG decoder initialised."));
 #endif
@@ -140,11 +134,11 @@ void setup() {
 }
 
 void loop() {
-
   // check if the flag is set
   if(!receivedFlag) {
     return;
   }
+  
   Serial.println(F("Received a packet"));
   receivedFlag = false;
 
