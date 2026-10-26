@@ -133,7 +133,7 @@ int16_t SX1268::setFrequency(uint32_t freq, bool skipCalibration) {
   RADIOLIB_CHECK_RANGE(freq, RADIOLIB_UNIT_MEGA(410), RADIOLIB_UNIT_MEGA(810), RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // check if we need to recalibrate image
-  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
+  if(!skipCalibration && (RADIOLIB_ABS_UNSIGNED(freq, this->freqHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
     int16_t state = this->calibrateImage(freq);
     RADIOLIB_ASSERT(state);
   }
