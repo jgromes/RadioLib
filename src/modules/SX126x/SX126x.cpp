@@ -641,7 +641,8 @@ float SX126x::getRSSI(bool packet) {
   if(packet) { 
     // get last packet RSSI from packet status
     uint32_t packetStatus = getPacketStatus();
-    uint8_t rssiPkt = packetStatus & 0xFF;
+    uint8_t rssiPkt = (getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) ?
++                      (uint8_t)((packetStatus >> 16) & 0xFF) : (uint8_t)(packetStatus & 0xFF);
     return(-0.5f * (float)rssiPkt);
   } else {
     // get instantaneous RSSI value
