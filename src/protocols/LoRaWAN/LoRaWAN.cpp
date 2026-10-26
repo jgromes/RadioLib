@@ -1353,10 +1353,8 @@ int16_t LoRaWANNode::isValidUplink(size_t len, uint8_t fPort) {
   }
 
   // throw an error if the packet is too long
-  if(len > this->getMaxPayloadLen()) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("%d bytes payload exceeding limit of %d bytes", len, this->getMaxPayloadLen());
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
-  }
+  int16_t state = this->testPayloadLength(len);
+  RADIOLIB_ASSERT(state);
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -3988,6 +3986,19 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
 
   // subtract FHDR (13 bytes) as well as any FOpts
   return(curLen - 13 - this->fOptsUpLen);
+}
+
+int16_t LoRaWANNode::testPayloadLength(uint8_t len) {
+  uint8_t maxLen = this->getMaxPayloadLen();
+  if(len <= maxLen) {
+    return(RADIOLIB_ERR_NONE);
+  } else if(len <= maxLen + this->fOptsUpLen) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Length %d temporarily exceeding limit of %d bytes (%d FOpts)", len, maxLen, this->fOptsUpLen);
+    return(RADIOLIB_ERR_MAC_ANSWERS_PENDING);
+  }
+
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Length %d exceeding datarate/dwelltime limit of %d bytes", len, maxLen);
+  return(RADIOLIB_ERR_PACKET_TOO_LONG);
 }
 
 void LoRaWANNode::setSleepFunction(SleepCb_t cb) {

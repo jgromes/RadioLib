@@ -998,6 +998,13 @@ class LoRaWANNode {
     */
     virtual uint8_t getMaxPayloadLen();
 
+    /*!
+      \brief Test whether a certain payload length can be transmitted.
+      Three options: NONE (ok), MAC_ANSWERS_PENDING (send MAC-only uplink first) or PACKET_TOO_LONG.
+      \returns \ref status_codes
+    */
+    virtual int16_t testPayloadLength(uint8_t len);
+
     /*! \brief Callback to a user-provided sleep function. */
     typedef void (*SleepCb_t)(RadioLibTime_t ms);
 

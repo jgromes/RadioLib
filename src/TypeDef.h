@@ -618,6 +618,12 @@
 */
 #define RADIOLIB_ERR_INVALID_SUBBAND                            (-1123)
 
+/*!
+  \brief MAC answers (FOpts) currently prevent the requested uplink size. 
+  Transmit an empty frame first to clear the internal FOpts queue.
+*/
+#define RADIOLIB_ERR_MAC_ANSWERS_PENDING                        (-1124)
+
 // LR11x0-specific status codes
 
 /*!
