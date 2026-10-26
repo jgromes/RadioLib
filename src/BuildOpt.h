@@ -681,9 +681,10 @@
 #endif
 
 // these macros are usually defined by Arduino, but some platforms undef them, so its safer to use our own
-#define RADIOLIB_MIN(a,b)				((a)<(b)?(a):(b))
-#define RADIOLIB_MAX(a,b)				((a)>(b)?(a):(b))
-#define RADIOLIB_ABS(x)         ((x)>0?(x):-(x))
+#define RADIOLIB_MIN(a,b)				    ((a)<(b)?(a):(b))
+#define RADIOLIB_MAX(a,b)				    ((a)>(b)?(a):(b))
+#define RADIOLIB_ABS(x)             ((x)>0?(x):-(x))
+#define RADIOLIB_ABS_UNSIGNED(a,b)  ((a)>(b)?((a)-(b)):((b)-(a)))
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  7
