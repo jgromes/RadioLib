@@ -151,28 +151,4 @@ void STM32WLx::clearDio1Action() {
 }
 #endif  // ARDUINO_ARCH_STM32
 
-void STM32WLx::setPacketReceivedAction(void (*func)(void)) {
-  this->setDio1Action(func);
-}
-
-void STM32WLx::clearPacketReceivedAction() {
-  this->clearDio1Action();
-}
-
-void STM32WLx::setPacketSentAction(void (*func)(void)) {
-  this->setDio1Action(func);
-}
-
-void STM32WLx::clearPacketSentAction() {
-  this->clearDio1Action();
-}
-
-void STM32WLx::setChannelScanAction(void (*func)(void)) {
-  this->setDio1Action(func);
-}
-
-void STM32WLx::clearChannelScanAction() {
-  this->clearDio1Action();
-}
-
 #endif

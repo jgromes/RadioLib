@@ -125,39 +125,6 @@ class STM32WLx : public SX1262 {
     void clearDio1Action() override;
   #endif  // ARDUINO_ARCH_STM32
 
-    /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a channel scan is finished.
-      \param func ISR to call.
-    */
-    void setChannelScanAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a channel scan is finished.
-    */
-    void clearChannelScanAction() override;
-
 #if !RADIOLIB_GODMODE
   protected:
 #endif
