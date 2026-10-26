@@ -1657,9 +1657,9 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
   RadioLibTime_t minWidth = 10 + padding;
 
   // set the radio Rx parameters
-  RadioModeConfig_t modeCfg;
-  modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
-  modeCfg.receive.irqMask = (1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_TIMEOUT);
+  RadioModeConfig_t modeCfg;  // there is no PHY CRC on downlinks, so no need to set its IRQ
+  modeCfg.receive.irqFlags = (1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_HEADER_ERR) | (1UL << RADIOLIB_IRQ_TIMEOUT);
+  modeCfg.receive.irqMask = (1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_HEADER_ERR) | (1UL << RADIOLIB_IRQ_TIMEOUT);
   modeCfg.receive.len = 0;
   modeCfg.receive.syncSymbols = 0;
   modeCfg.receive.timeout = 0;
@@ -1720,7 +1720,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
     mod->hal->digitalWrite(this->ledPins[window], mod->hal->GpioLevelHigh);
   }
 
-  // wait for the DIO interrupt to fire (RxDone or RxTimeout)
+  // wait for the DIO interrupt to fire (RxDone, HeaderErr or RxTimeout)
   // apply 2ms padding in case the RxTimeout interrupt is slow to fire
   this->smartDelayUntil(tWindowClose + 2, true);
 
