@@ -58,7 +58,7 @@ int16_t LR1110::setFrequency(uint32_t freq, bool skipCalibration, uint32_t band)
   
   // check if we need to recalibrate image
   int16_t state;
-  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_UNIT_MEGA(RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ))) {
+  if(!skipCalibration && (RADIOLIB_ABS_UNSIGNED(freq, this->freqHz) >= RADIOLIB_UNIT_MEGA(RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ))) {
     state = LR11x0::calibrateImageRejection(freq - band, freq + band);
     RADIOLIB_ASSERT(state);
   }
