@@ -96,7 +96,7 @@ int16_t LR2021::setFrequency(uint32_t freq, bool skipCalibration) {
 
   // check if we need to recalibrate image
   int16_t state;
-  if(!skipCalibration && (RADIOLIB_ABS(freq - this->freqHz) >= RADIOLIB_UNIT_MEGA(RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG_MHZ))) {
+  if(!skipCalibration && (RADIOLIB_ABS_UNSIGNED(freq, this->freqHz) >= RADIOLIB_LR2021_CAL_IMG_FREQ_TRIG_MHZ)) {
     // calibration can fail if there is a strong interfering source
     // run it several times until it passes
     int i = 0;
