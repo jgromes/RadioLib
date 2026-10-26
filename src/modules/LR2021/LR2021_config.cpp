@@ -152,7 +152,7 @@ int16_t LR2021::setOutputPower(int8_t power) {
 int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   // apply offset for external PA
   int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(this->highFreq ? RADIOLIB_LR2021_LF_POUT_MIN : RADIOLIB_LR2021_HF_POUT_MIN, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(this->highFreq ? RADIOLIB_LR2021_HF_POUT_MIN : RADIOLIB_LR2021_LF_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
   // check if power value is configurable
