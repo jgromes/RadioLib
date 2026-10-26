@@ -313,8 +313,8 @@ const LoRaWANBand_t AU915 = {
     { .idx = 1, .freq = 9215000, .drMin = 10, .drMax = 10, .dr = 10 }
   },
   .dataRates = {
-    { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = {12, 125000, 5}}, .pc = {.lora = {8, false, true, false}}},
-    { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = {11, 125000, 5}}, .pc = {.lora = {8, false, true, false}}},
+    { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = {12, 125000, 5}}, .pc = {.lora = {8, false, true, true}}},
+    { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = {11, 125000, 5}}, .pc = {.lora = {8, false, true, true}}},
     { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = {10, 125000, 5}}, .pc = {.lora = {8, false, true, false}}},
     { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = { 9, 125000, 5}}, .pc = {.lora = {8, false, true, false}}},
     { .modem = RADIOLIB_MODEM_LORA,   .dr = {.lora = { 8, 125000, 5}}, .pc = {.lora = {8, false, true, false}}},
