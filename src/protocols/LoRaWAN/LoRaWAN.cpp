@@ -1677,7 +1677,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
       modeCfg.receive.syncSymbols = minWidthUs / tSymbUs + 1;
     }
     // include preamble search period in the maximum time-on-air
-    toaMaxUs += modeCfg.receive.syncSymbols * tSymbUs;
+    toaMaxUs += (RadioLibTime_t)modeCfg.receive.syncSymbols * tSymbUs;
 
     // get the radio-specific value corresponding to maximum time-on-air
     modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs + padding * 1000);
