@@ -1679,9 +1679,12 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 
     // get the radio-specific value corresponding to maximum time-on-air
     modeCfg.receive.timeout = this->phyLayer->calculateRxTimeout(toaMaxUs + padding * 1000);
-  }
+
   // for FSK, there is no syncSymbols / timeout field to trigger on
-  //          we just use software delay up to max time-on-air (which isn't very long on FSK)
+  //          we just use software delay up to max time-on-air + 5ms margin
+  } else if(modem == RADIOLIB_MODEM_FSK) {
+    toaMaxUs += 5000;
+  }
 
   state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
   RADIOLIB_ASSERT(state);
