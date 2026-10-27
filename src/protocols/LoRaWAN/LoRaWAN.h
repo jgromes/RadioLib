@@ -188,6 +188,9 @@
 
 #define RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE                      (242)
 
+// maximum PHYPayload size (MHDR + MACPayload + MIC)
+#define RADIOLIB_LORAWAN_MAX_PHY_PAYLOAD_SIZE                  (255)
+
 // session states
 #define RADIOLIB_LORAWAN_SESSION_NONE                           (0x00)
 #define RADIOLIB_LORAWAN_SESSION_ACTIVATING                     (0x01)
@@ -1068,6 +1071,10 @@ class LoRaWANNode {
     // a buffer that holds all LW session parameters that preferably persist, but can be afforded to get lost
     uint8_t bufferSession[RADIOLIB_LORAWAN_SESSION_BUF_SIZE] = { 0 };
 
+    // a buffer shared by all uplink, downlink and join frames
+    // the first 16 bytes are reserved for MIC calculation blocks
+    uint8_t bufferFrame[RADIOLIB_AES128_BLOCK_SIZE + RADIOLIB_LORAWAN_MAX_PHY_PAYLOAD_SIZE] = { 0 };
+
     uint8_t fOptsUp[RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN] = { 0 };
     uint8_t fOptsDown[RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN] = { 0 };
     uint8_t fOptsUpLen = 0;
@@ -1233,7 +1240,8 @@ class LoRaWANNode {
     void adrBackoff();
 
     // create an encrypted uplink buffer, composing metadata, user data and MAC data
-    void composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed);
+    // the plaintext frame payload must already be at its final position in the buffer, and is encrypted in-place
+    void composeUplink(uint8_t* out, uint8_t lenIn, uint8_t fPort, bool isConfirmed);
 
     // generate and set the MIC of an uplink buffer (depends on selected channels)
     void micUplink(uint8_t* inOut, size_t lenInOut);

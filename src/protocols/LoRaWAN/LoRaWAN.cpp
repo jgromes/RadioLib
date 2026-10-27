@@ -151,21 +151,15 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
   memset(this->fOptsDown, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
   this->fOptsDownLen = 0;
 
+  // the uplink is built in the shared frame buffer
   // the first 16 bytes are reserved for MIC calculation blocks
-  size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(lenUp, this->fOptsUpLen);
-  #if RADIOLIB_STATIC_ONLY
-  uint8_t uplinkMsg[RADIOLIB_AES128_BLOCK_SIZE + RADIOLIB_STATIC_ARRAY_SIZE];
-  uint8_t frmPayload[RADIOLIB_AES128_BLOCK_SIZE + RADIOLIB_STATIC_ARRAY_SIZE];
-  #else
-  uint8_t* uplinkMsg = new uint8_t[uplinkMsgLen];
-  uint8_t* frmPayload = new uint8_t[lenUp + this->fOptsUpLen];
-  #endif
+  uint8_t* uplinkMsg = this->bufferFrame;
 
   uint8_t frmLen = 0;
 
   // if the payload consists of piggybacked MAC only, move this to the FRMPayload
   if(this->isMACPayload && lenUp == 0) {
-    memcpy(frmPayload, this->fOptsUp, this->fOptsUpLen);
+    memcpy(&uplinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(0)], this->fOptsUp, this->fOptsUpLen);
     frmLen = this->fOptsUpLen;
 
     memset(this->fOptsUp, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
@@ -175,12 +169,13 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 
   // if there is user payload, move this to the FRMPayload
   } else {
-    memcpy(frmPayload, dataUp, lenUp);
+    memcpy(&uplinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)], dataUp, lenUp);
     frmLen = lenUp;
   }
-  
+  size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(frmLen, this->fOptsUpLen);
+
   // build the encrypted uplink message
-  this->composeUplink(frmPayload, frmLen, uplinkMsg, fPort, isConfirmed);
+  this->composeUplink(uplinkMsg, frmLen, fPort, isConfirmed);
 
   // reset Time-on-Air as we are starting new uplink sequence
   this->lastToA = 0;
@@ -218,10 +213,6 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
       this->fCntUp += 1;
       this->saveSessionBuffer();
 
-      #if !RADIOLIB_STATIC_ONLY
-      delete[] uplinkMsg;
-      delete[] frmPayload;
-      #endif
       this->tDone = mod->hal->millis();
       return(state);
     }
@@ -272,11 +263,6 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 
   // the downlink confirmation was acknowledged, so clear the counter value
   this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
-
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] uplinkMsg;
-    delete[] frmPayload;
-  #endif
 
   // if a hardware error occurred, return
   if(state < RADIOLIB_ERR_NONE) {
@@ -809,8 +795,10 @@ void LoRaWANNode::composeJoinRequest(uint8_t* out) {
 int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
 
-  // build the buffer for the reply data
-  uint8_t joinAcceptMsgEnc[RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN];
+  // use the shared frame buffer for the reply data, the decrypted message is stored right behind it
+  // (the encrypted and decrypted messages must not overlap, as in-place AES is not guaranteed for all implementations)
+  uint8_t* joinAcceptMsgEnc = this->bufferFrame;
+  uint8_t* joinAcceptMsg = &this->bufferFrame[RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN];
 
   // check received length
   size_t lenRx = this->phyLayer->getPacketLength(true);
@@ -837,7 +825,6 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   // this is done by encrypting again in ECB mode
   // the first byte is the MAC header which is not encrypted
   Module* mod = this->phyLayer->getMod();
-  uint8_t joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN];
   joinAcceptMsg[0] = joinAcceptMsgEnc[0];
   if(this->rev == 1) {
     mod->hal->aes128->init(this->nwkKey);
@@ -1040,8 +1027,8 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
     joinEvent->joinNonce = this->joinNonce;
   }
 
-  // build the JoinRequest message
-  uint8_t joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_LEN];
+  // build the JoinRequest message in the shared frame buffer
+  uint8_t* joinRequestMsg = this->bufferFrame;
   this->composeJoinRequest(joinRequestMsg);
 
   // reset Time-on-Air as we are sending a new JoinRequest
@@ -1353,6 +1340,11 @@ int16_t LoRaWANNode::isValidUplink(size_t len, uint8_t fPort) {
   }
 
   // throw an error if the packet is too long
+  // (check the absolute maximum first, as testPayloadLength() truncates the length to 8 bits)
+  if(len > RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Length %lu exceeding absolute limit of %d bytes", (unsigned long)len, RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE);
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
   int16_t state = this->testPayloadLength(len);
   RADIOLIB_ASSERT(state);
 
@@ -1442,7 +1434,7 @@ void LoRaWANNode::adrBackoff() {
   return;
 }
 
-void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed) {
+void LoRaWANNode::composeUplink(uint8_t* out, uint8_t lenIn, uint8_t fPort, bool isConfirmed) {
   // set the packet fields
   if(isConfirmed) {
     out[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] = RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_UP;
@@ -1498,11 +1490,8 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
     }
   }
 
-#if RADIOLIB_DEBUG_PROTOCOL
-  memcpy(&out[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)], in, lenIn);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %lu) plain:", (unsigned long)this->fCntUp);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(&out[RADIOLIB_AES128_BLOCK_SIZE], 13 + lenIn + this->fOptsUpLen);
-#endif
 
   // select encryption key based on the target fPort
   uint8_t* encKey = this->appSKey;
@@ -1513,8 +1502,9 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
     encKey = this->packages[fPort - RADIOLIB_LORAWAN_FPORT_RESERVED].isAppPack ? this->appSKey : this->nwkSEncKey;
   }
 
-  // encrypt the frame payload
-  processAES(in, lenIn, encKey, &out[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)], this->devAddr, this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x00, true);
+  // encrypt the frame payload (in-place)
+  uint8_t* payloadPtr = &out[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(this->fOptsUpLen)];
+  processAES(payloadPtr, lenIn, encKey, payloadPtr, this->devAddr, this->fCntUp, RADIOLIB_LORAWAN_UPLINK, 0x00, true);
 }
 
 void LoRaWANNode::micUplink(uint8_t* inOut, size_t lenInOut) {
@@ -1919,13 +1909,15 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
-  // build the buffer for the downlink message
+  // check the maximum frame length (anything longer would not fit in the frame buffer)
+  if(downlinkMsgLen > RADIOLIB_LORAWAN_MAX_PHY_PAYLOAD_SIZE) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink message too long (%lu bytes)", (unsigned long)downlinkMsgLen);
+    return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
+  }
+
+  // the downlink is read into the shared frame buffer
   // the first 16 bytes are reserved for MIC calculation block
-  #if !RADIOLIB_STATIC_ONLY
-    uint8_t* downlinkMsg = new uint8_t[RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen];
-  #else
-    uint8_t downlinkMsg[RADIOLIB_AES128_BLOCK_SIZE + RADIOLIB_STATIC_ARRAY_SIZE];
-  #endif
+  uint8_t* downlinkMsg = this->bufferFrame;
 
   // read the data
   state = this->phyLayer->readData(&downlinkMsg[RADIOLIB_AES128_BLOCK_SIZE], downlinkMsgLen);
@@ -1936,9 +1928,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   }
   
   if(state != RADIOLIB_ERR_NONE) {
-    #if !RADIOLIB_STATIC_ONLY
-      delete[] downlinkMsg;
-    #endif
     return(state);
   }
 
@@ -1952,9 +1941,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     multicast = true;
   } else {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Unexpected device address 0x%08lX", (unsigned long)addr);
-    #if !RADIOLIB_STATIC_ONLY
-      delete[] downlinkMsg;
-    #endif
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -1968,9 +1954,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // guard against integer underflow when downlinkMsgLen is too short
   uint8_t minLen = 1 + 4 + 1 + 2 + fOptsLen + 4;
   if(downlinkMsgLen < minLen) {
-    #if !RADIOLIB_STATIC_ONLY
-      delete[] downlinkMsg;
-    #endif
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
   uint8_t payLen = downlinkMsgLen - minLen;
@@ -2021,9 +2004,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
     if(!ok) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Received downlink at FPort %d - rejected!", fPort);
-      #if !RADIOLIB_STATIC_ONLY
-        delete[] downlinkMsg;
-      #endif
       return(RADIOLIB_ERR_INVALID_PORT);
     }
   }
@@ -2039,9 +2019,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // However, we also enforce this for LoRaWAN v1.1 (TTS does not allow this anyway).
   // Note: we check Device Class == A because Relay also uses a third Rx window
   if(fOptsLen > 0 && this->getUnicastClass() != RADIOLIB_LORAWAN_CLASS_A && window == RADIOLIB_LORAWAN_RX_BC) {
-    #if !RADIOLIB_STATIC_ONLY
-      delete[] downlinkMsg;
-    #endif
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
   
@@ -2075,9 +2052,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // for multicast, a maximum FCnt value is defined in TS005
   if(multicast) {
     if(devFCnt32 > this->mcGroups[mcGroupId].mcFCntMax) {
-      #if !RADIOLIB_STATIC_ONLY
-        delete[] downlinkMsg;
-      #endif
       return(RADIOLIB_ERR_MULTICAST_FCNT_INVALID);
     }
   }
@@ -2086,9 +2060,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   // check if this is a confirmed downlink and if that is even allowed
   if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xE0) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
     if(multicast) {
-      #if !RADIOLIB_STATIC_ONLY
-        delete[] downlinkMsg;
-      #endif
       return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
     }
     isConfirmedDown = true;
@@ -2099,6 +2070,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
   if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_ACK)) {
     isConfirmingUp = true;
   }
+
+  // check if the FPending bit is set (stored now, as the frame buffer may be overwritten by a MAC-only uplink)
+  bool isFramePending = (downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_FRAME_PENDING) != 0;
 
   // set the MIC calculation blocks
   memset(downlinkMsg, 0x00, RADIOLIB_AES128_BLOCK_SIZE);
@@ -2120,9 +2094,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     micKey = this->mcGroups[mcGroupId].mcNwkSKey;
   }
   if(!verifyMIC(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen, micKey)) {
-    #if !RADIOLIB_STATIC_ONLY
-      delete[] downlinkMsg;
-    #endif
     return(RADIOLIB_ERR_MIC_MISMATCH);
   }
 
@@ -2324,6 +2295,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(fOptsRe, fOptsReLen);
 
       // temporarily lift dutyCycle restrictions to allow immediate MAC response
+      // note: this overwrites the shared frame buffer, so downlinkMsg must not be accessed after this point
       bool prevDC = this->dutyCycleEnabled;
       this->dutyCycleEnabled = false;
       this->sendReceive(fOptsRe, fOptsReLen, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
@@ -2343,7 +2315,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     event->dir = RADIOLIB_LORAWAN_DOWNLINK;
     event->confirmed = isConfirmedDown;
     event->confirming = isConfirmingUp;
-    event->frmPending = (downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_FRAME_PENDING) != 0;
+    event->frmPending = isFramePending;
     event->datarate = this->channels[window].dr;
     event->freq = this->channels[window].freq / 10000.0;
     event->power = this->txPowerMax - this->txPowerSteps * 2;
@@ -2352,10 +2324,6 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     event->multicast = multicast;
     event->mcGroupId = mcGroupId;
   }
-
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] downlinkMsg;
-  #endif
 
   return(RADIOLIB_ERR_NONE);
 }
