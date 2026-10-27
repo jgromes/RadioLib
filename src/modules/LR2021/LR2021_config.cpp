@@ -11,10 +11,11 @@
 // maximum number of allowed frontend calibration attempts
 #define RADIOLIB_LR2021_MAX_CAL_ATTEMPTS    (10)
 
-// LF PA, from the measurements in radiolib-org/power-tests (logs/measure_lr2021): each entry is the
-// lowest-current setting within 0.3 dB of the datasheet's +22 dBm setting (duty cycle 7, 6 slices)
-// at tx_power = 2 * power. tx_power rises with every step and duty cycle and slices never decrease,
-// so the output rises on any board, whichever of the three its matching network responds to most.
+// LF PA. Below +10, from the measurements in radiolib-org/power-tests (logs/measure_lr2021): each
+// entry is the lowest-current setting within 0.3 dB of the datasheet's +22 dBm setting (duty cycle 7,
+// 6 slices) at tx_power = 2 * power. From +10 up, the datasheet's table 7-16 (optimal values for
+// Semtech's 915 MHz reference design), with tx_power in its half-dB steps. The output rises at every
+// step, across the join too.
 static const LR2021PaTableEntry_t paOptTableLf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
   { .paDutyCycle = 7, .paSlices = 2, .paVal = -15 }, // -9
   { .paDutyCycle = 7, .paSlices = 2, .paVal = -13 }, // -8
@@ -35,19 +36,19 @@ static const LR2021PaTableEntry_t paOptTableLf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
   { .paDutyCycle = 7, .paSlices = 3, .paVal = 15 },  // 7
   { .paDutyCycle = 7, .paSlices = 3, .paVal = 18 },  // 8
   { .paDutyCycle = 7, .paSlices = 3, .paVal = 20 },  // 9
-  { .paDutyCycle = 7, .paSlices = 3, .paVal = 22 },  // 10
-  { .paDutyCycle = 7, .paSlices = 3, .paVal = 24 },  // 11
-  { .paDutyCycle = 7, .paSlices = 3, .paVal = 26 },  // 12
-  { .paDutyCycle = 7, .paSlices = 3, .paVal = 28 },  // 13
-  { .paDutyCycle = 7, .paSlices = 3, .paVal = 30 },  // 14
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 31 },  // 15
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 33 },  // 16
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 35 },  // 17
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 37 },  // 18
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 39 },  // 19
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 41 },  // 20
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 43 },  // 21
-  { .paDutyCycle = 7, .paSlices = 4, .paVal = 44 },  // 22
+  { .paDutyCycle = 2, .paSlices = 1, .paVal = 32 },  // 10
+  { .paDutyCycle = 2, .paSlices = 2, .paVal = 32 },  // 11
+  { .paDutyCycle = 5, .paSlices = 1, .paVal = 30 },  // 12
+  { .paDutyCycle = 4, .paSlices = 3, .paVal = 31 },  // 13
+  { .paDutyCycle = 4, .paSlices = 2, .paVal = 34 },  // 14
+  { .paDutyCycle = 5, .paSlices = 4, .paVal = 33 },  // 15
+  { .paDutyCycle = 4, .paSlices = 4, .paVal = 36 },  // 16
+  { .paDutyCycle = 5, .paSlices = 6, .paVal = 36 },  // 17
+  { .paDutyCycle = 5, .paSlices = 6, .paVal = 38 },  // 18
+  { .paDutyCycle = 6, .paSlices = 6, .paVal = 39 },  // 19
+  { .paDutyCycle = 6, .paSlices = 6, .paVal = 41 },  // 20
+  { .paDutyCycle = 7, .paSlices = 7, .paVal = 42 },  // 21
+  { .paDutyCycle = 7, .paSlices = 6, .paVal = 44 },  // 22
 };
 
 static const LR2021PaTableEntry_t paOptTableHf[RADIOLIB_LR2021_PA_TABLE_LEN] = {
