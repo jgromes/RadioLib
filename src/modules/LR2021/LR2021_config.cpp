@@ -491,6 +491,7 @@ int16_t LR2021::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
       this->crcTypeGFSK += 0x08;
     }
 
+    this->crcLenGFSK = len;
     state = setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
       (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
     RADIOLIB_ASSERT(state);
@@ -693,10 +694,13 @@ int16_t LR2021::setSyncWord(uint8_t* syncWord, size_t len) {
   uint32_t sync = 0;
   switch(type) {
     case(RADIOLIB_LR2021_PACKET_TYPE_GFSK):
+      // update sync word length
+      this->syncWordLength = len*8;
+
       // default to MSB-first
       return(setGfskSyncword(const_cast<const uint8_t*>(syncWord), len, true));
     
-      case(RADIOLIB_LR2021_PACKET_TYPE_OOK):
+    case(RADIOLIB_LR2021_PACKET_TYPE_OOK):
       // default to MSB-first
       return(setOokSyncword(const_cast<const uint8_t*>(syncWord), len, true));
     
