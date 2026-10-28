@@ -605,7 +605,7 @@ class LoRaWANNode {
       \brief Trigger the registered buffer callbacks to restore persistence and session buffers.
       \returns \ref status_codes
     */
-    virtual int16_t loadBuffers();
+    int16_t loadBuffers();
 
     /*!
       \brief Set the device credentials and activation configuration
@@ -634,14 +634,14 @@ class LoRaWANNode {
       the device will perform an exchange with the network server and set all necessary configuration. 
       \returns \ref status_codes
     */
-    virtual int16_t activateOTAA(LoRaWANJoinEvent_t *joinEvent = NULL);
+    int16_t activateOTAA(LoRaWANJoinEvent_t *joinEvent = NULL);
 
     /*!
       \brief Join network by restoring ABP session or performing over-the-air activation. 
       In this procedure, all necessary configuration must be provided by the user.
       \returns \ref status_codes
     */
-    virtual int16_t activateABP();
+    int16_t activateABP();
 
     /*! \brief Whether there is an ongoing session active */
     bool isActivated();
