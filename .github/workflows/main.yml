@@ -279,6 +279,29 @@ jobs:
           idf.py build
           ../../../extras/test/ci/version.sh build/esp-sx1261.bin
 
+  tock-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y gcc-arm-none-eabi gcc-riscv64-unknown-elf
+          cargo install elf2tab
+
+      - name: Build the example
+        run: |
+          cd $PWD/examples/NonArduino/Tock
+          git clone https://github.com/tock/libtock-c.git
+          cd libtock-c; git checkout c0202f9ab78da4a6e95f136cf5250701e3778f63; cd ../
+          LIBTOCK_C_DIRECTORY="$(pwd)/libtock-c" ./build.sh
+
   rpi-build:
     if: false # self-hosted runner temporarily disabled
     runs-on: [self-hosted, ARM64]
