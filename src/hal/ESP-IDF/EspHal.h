@@ -20,6 +20,13 @@
 #define RADIOLIB_TONE_ESP32_CHANNEL (LEDC_CHANNEL_0)
 #endif
 
+// custom error codes
+#define RADIOLIB_ERR_HAL_ESP_ISR_INSTALL_FAILED          RADIOLIB_ERR_HAL(-1)
+#define RADIOLIB_ERR_HAL_ESP_SPI_INIT_FAILED             RADIOLIB_ERR_HAL(-2)
+#define RADIOLIB_ERR_HAL_ESP_SPI_DEVICE_ADD_FAILED       RADIOLIB_ERR_HAL(-3)
+#define RADIOLIB_ERR_HAL_ESP_SPI_DEVICE_UNINITIALIZED    RADIOLIB_ERR_HAL(-4)
+#define RADIOLIB_ERR_HAL_ESP_SPI_XFER_FAILED             RADIOLIB_ERR_HAL(-5)
+
 /**
  * @brief ESP-IDF HAL for RadioLib using spi_master driver
  * This implementation properly handles SPI transactions and works with shared
@@ -54,15 +61,15 @@ public:
   unsigned long millis() override;
   unsigned long micros() override;
   long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override;
-  void spiBegin();
+  int16_t spiBegin();
   void spiBeginTransaction();
-  void spiTransfer(uint8_t *out, size_t len, uint8_t *in);
+  int16_t spiTransfer(uint8_t *out, size_t len, uint8_t *in);
   void spiEndTransaction();
-  void spiEnd();
+  int16_t spiEnd();
 
   // implementations of virtual RadioLibHal methods
-  void init() override;
-  void term() override;
+  int16_t init() override;
+  int16_t term() override;
   void tone(uint32_t pin, unsigned int frequency,
             RadioLibTime_t duration = 0) override;
   void noTone(uint32_t pin) override;

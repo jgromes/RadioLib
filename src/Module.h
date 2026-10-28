@@ -247,13 +247,15 @@ class Module {
 
     /*!
       \brief Initialize low-level module control.
+      \returns \ref status_codes
     */
-    void init();
+    int16_t init();
 
     /*!
       \brief Terminate low-level module control.
+      \returns \ref status_codes
     */
-    void term();
+    int16_t term();
 
     // SPI methods
 

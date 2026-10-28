@@ -60,7 +60,7 @@ void setup() {
   // initialize SX1278 at 434 MHz
   Serial.print(F("[SX1278] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -72,7 +72,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setDio0Action(setFlag, RISING);
+  radio.setIrqAction(setFlag, RISING);
 
   #if defined(INITIATING_NODE)
     // send the first packet on this node

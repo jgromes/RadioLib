@@ -57,7 +57,7 @@ void setup() {
   // initialize nRF24 at 2400 MHz
   Serial.print(F("[nRF24] Initializing ... "));
   ConfigFSK_t config;
-  config.frequency = 2400;
+  config.frequency = RADIOLIB_UNIT_MEGA(2400);
   int state = radio.begin(config);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -84,7 +84,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setPacketSentAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[nRF24] Sending first packet ... "));

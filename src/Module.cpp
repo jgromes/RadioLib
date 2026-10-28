@@ -45,17 +45,19 @@ Module& Module::operator=(const Module& mod) {
 }
 
 static volatile const char rlb_info[] = RADIOLIB_INFO;
-void Module::init() {
-  this->hal->init();
+int16_t Module::init() {
+  int16_t state = this->hal->init();
+  RADIOLIB_ASSERT(state);
+
   this->hal->pinMode(csPin, this->hal->GpioModeOutput);
   this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
   RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO);
   RADIOLIB_VALUE_USED(rlb_info);
+  return(state);
 }
 
-void Module::term() {
-  // stop hardware interfaces (if they were initialized by the library)
-  this->hal->term();
+int16_t Module::term() {
+  return(this->hal->term());
 }
 
 int16_t Module::SPIgetRegValue(uint32_t reg, uint8_t msb, uint8_t lsb) {
@@ -217,9 +219,15 @@ void Module::SPItransfer(uint16_t cmd, uint32_t reg, const uint8_t* dataOut, uin
   // do the transfer
   this->hal->spiBeginTransaction();
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
-  this->hal->spiTransfer(buffOut, buffLen, buffIn);
+  int16_t state = this->hal->spiTransfer(buffOut, buffLen, buffIn);
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
   this->hal->spiEndTransaction();
+
+  // value is reported via debug only
+  if(state != RADIOLIB_ERR_NONE) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("SPI Transaction failed, code %d\n", state);
+    return;
+  }
   
   // copy the data
   if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ]) {

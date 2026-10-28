@@ -136,10 +136,10 @@ int16_t LR11x0::setRegMode(uint8_t mode) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_REG_MODE, true, &mode, 1));
 }
 
-int16_t LR11x0::calibrateImageRejection(float freqMin, float freqMax) {
+int16_t LR11x0::calibrateImageRejection(uint32_t freqMin, uint32_t freqMax) {
   uint8_t buff[2] = {
-    (uint8_t)floor((freqMin - 1.0f) / 4.0f),
-    (uint8_t)ceil((freqMax + 1.0f) / 4.0f)
+    (uint8_t)((freqMin - RADIOLIB_UNIT_MEGA(1)) / RADIOLIB_UNIT_MEGA(4)), // floor() is ensured by integer division
+    (uint8_t)((freqMax + RADIOLIB_UNIT_MEGA(1) - 1) / RADIOLIB_UNIT_MEGA(4) + 1) // ceil() is ensured by the -1/+1
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CALIB_IMAGE, true, buff, sizeof(buff)));
 }
@@ -186,7 +186,7 @@ int16_t LR11x0::getVbat(float* vbat) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_VBAT, false, buff, sizeof(buff));
 
   // pass the replies
-  if(vbat) { *vbat = (((float)buff[0]/51.0f) - 1.0f)*1.35f; }
+  if(vbat) { *vbat = ((float)buff[0]*(1.35f/51.0f)) - 1.35f; }
 
   return(state);
 }
@@ -199,7 +199,7 @@ int16_t LR11x0::getTemp(float* temp) {
   if(temp) {
     uint16_t raw = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1];
     raw = raw & 0x07FF; //According LR1121 datasheet we need [0..10] bits
-    *temp = 25.0f - (1000.0f/1.7f)*(((float)raw/2047.0f)*1.35f - 0.7295f); //According LR1121 datasheet 1.35
+    *temp = (25.0f - ((1000.0f/1.7f)*0.7295f)) - ((1000.0f/1.7f)*(1.35f/2047.0f))*(float)raw; //According LR1121 datasheet 1.35
   }
 
   return(state);
@@ -378,8 +378,8 @@ int16_t LR11x0::getPacketStatusLoRa(float* rssiPkt, float* snrPkt, float* signal
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_PACKET_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(rssiPkt) { *rssiPkt = (float)buff[0] / -2.0f; }
-  if(snrPkt) { *snrPkt = (float)((int8_t)buff[1]) / 4.0f; }
+  if(rssiPkt) { *rssiPkt = (float)buff[0] * -0.5f; }
+  if(snrPkt) { *snrPkt = (float)((int8_t)buff[1]) * 0.25f; }
   if(signalRssiPkt) { *signalRssiPkt = buff[2]; }
 
   return(state);
@@ -390,8 +390,8 @@ int16_t LR11x0::getPacketStatusGFSK(float* rssiSync, float* rssiAvg, uint8_t* rx
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_PACKET_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  if(rssiSync) { *rssiSync = (float)buff[0] / -2.0f; }
-  if(rssiAvg) { *rssiAvg = (float)buff[1] / -2.0f; }
+  if(rssiSync) { *rssiSync = (float)buff[0] * -0.5f; }
+  if(rssiAvg)  { *rssiAvg  = (float)buff[1] * -0.5f; }
   if(rxLen) { *rxLen = buff[2]; }
   if(stat) { *stat = buff[3]; }
 
@@ -403,7 +403,7 @@ int16_t LR11x0::getRssiInst(float* rssi) {
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_RSSI_INST, false, buff, sizeof(buff));
 
   // pass the replies
-  if(rssi) { *rssi = (float)buff[0] / -2.0f; }
+  if(rssi) { *rssi = (float)buff[0] * -0.5f; }
 
   return(state);
 }
@@ -460,11 +460,11 @@ int16_t LR11x0::setPacketType(uint8_t type) {
 int16_t LR11x0::setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
+    uint64_t symbolLengthUs = ((uint64_t)1000000 * ((uint64_t)1 << this->spreadingFactor)) / (uint64_t)this->bandwidthHz;
     // LDRO on SX128x seems to be working differently to sub-GHz LoRa, as it is always needed for SF > 10
     // if SX128x bandwidth is being used, we use this approach instead of the symbol time to preserve compatibility
     bool sx128xLdro = this->highFreq && ((bw >= RADIOLIB_LR11X0_LORA_BW_203_125) || (bw <= RADIOLIB_LR11X0_LORA_BW_812_50)) && (sf > 10);
-    if((symbolLength >= 16.0f) || sx128xLdro) {
+    if((symbolLengthUs >= 16000) || sx128xLdro) {
       this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_ENABLED;
     } else {
       this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_DISABLED;
@@ -571,8 +571,24 @@ int16_t LR11x0::setTxInfinitePreamble(void) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_TX_INFINITE_PREAMBLE, true, NULL, 0));
 }
 
-int16_t LR11x0::setLoRaSynchTimeout(uint8_t symbolNum) {
-  uint8_t buff[1] = { symbolNum };
+// this implementation is not documented in the datasheet, but taken from SWL2001
+// https://github.com/Lora-net/SWL2001/blob/a8ddc544043e72807cf7db532478e1dda734ae7c/lbm_lib/smtc_modem_core/radio_drivers/lr11xx_driver/src/lr11xx_radio.c#L95
+int16_t LR11x0::setLoRaSynchTimeout(uint16_t numSymbols) {
+  bool mantissa = false;
+  uint8_t val = 0;
+  if(numSymbols <= 0xFF) {
+    val = numSymbols;
+  } else {
+    uint16_t mant = numSymbols >> 1;
+    uint8_t exp = 0;
+    while(mant > 31) {
+      mant = (mant + 3) >> 2;
+      exp++;
+    }
+    mantissa = true;
+    val = (mant << 3) + exp;
+  }
+  uint8_t buff[2] = { val, (uint8_t)mantissa };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_LORA_SYNCH_TIMEOUT, true, buff, sizeof(buff)));
 }
 
@@ -597,9 +613,9 @@ int16_t LR11x0::getRangingResult(uint8_t type, float* res) {
   if(res) { 
     if(type == RADIOLIB_LR11X0_RANGING_RESULT_DISTANCE) {
       uint32_t raw = ((uint32_t)(rplBuff[0]) << 24) | ((uint32_t)(rplBuff[1]) << 16) | ((uint32_t)(rplBuff[2]) << 8) | (uint32_t)rplBuff[3];
-      *res = ((float)(raw*3e8))/((float)(4096*this->bandwidthKhz*1000));
+      *res = ((float)raw*(3e8f/4096.0f))/(float)this->bandwidthHz;
     } else {
-      *res = (float)rplBuff[3]/2.0f;
+      *res = (float)rplBuff[3] * 0.5f;
     }
   }
 

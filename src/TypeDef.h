@@ -613,6 +613,17 @@
 */
 #define RADIOLIB_ERR_INVALID_MULTICAST_GROUP                    (-1122)
 
+/*!
+  \brief The requested subband is invalid for this band (or there is no subband).
+*/
+#define RADIOLIB_ERR_INVALID_SUBBAND                            (-1123)
+
+/*!
+  \brief MAC answers (FOpts) currently prevent the requested uplink size. 
+  Transmit an empty frame first to clear the internal FOpts queue.
+*/
+#define RADIOLIB_ERR_MAC_ANSWERS_PENDING                        (-1124)
+
 // LR11x0-specific status codes
 
 /*!
@@ -746,6 +757,13 @@
 #define RADIOLIB_ERR_SSDV_BUFFER_IN_USE                         (-1514)
 
 /*!
+  \brief Offset for custom HAL error codes.
+*/
+#define RADIOLIB_ERR_HAL_OFFSET                                 (-10000)
+#define RADIOLIB_ERR_HAL(X)                                     (RADIOLIB_ERR_HAL_OFFSET + (X))
+#define RADIOLIB_GET_HAL_ERROR(X)                               ((X) - RADIOLIB_ERR_HAL_OFFSET)
+
+/*!
   \}
 */
 
@@ -769,5 +787,26 @@ typedef uint32_t RadioLibIrqFlags_t;
 /*!
   \}
 */
+
+// unit prefix macros
+#define RADIOLIB_UNIT_KILO(X)             ((uint32_t)(X) * (uint32_t)1000)
+#define RADIOLIB_UNIT_KILO_FLT(X)         ((uint32_t)((float)(X) * 1000.0f))
+#define RADIOLIB_UNIT_MEGA(X)             ((uint32_t)(X) * (uint32_t)1000000)
+#define RADIOLIB_UNIT_MEGA_FLT(X)         ((uint32_t)((float)(X) * 1000000.0f))
+
+/*!
+  \brief Type used for TCXO reference voltage levels.
+*/
+enum RadioLibTCXOVoltage_t {
+  VoltageNone = -1,
+  Voltage1V6,
+  Voltage1V7,
+  Voltage1V8,
+  Voltage2V2,
+  Voltage2V4,
+  Voltage2V7,
+  Voltage3V0,
+  Voltage3V3,
+};
 
 #endif

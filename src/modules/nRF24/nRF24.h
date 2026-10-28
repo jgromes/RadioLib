@@ -9,6 +9,8 @@
 // nRF24 physical layer properties
 #define RADIOLIB_NRF24_FREQUENCY_STEP_SIZE                      1000000.0
 #define RADIOLIB_NRF24_MAX_PACKET_LENGTH                        32
+#define RADIOLIB_NRF24_POUT_MIN                                 -18
+#define RADIOLIB_NRF24_POUT_MAX                                 0
 
 // nRF24 SPI commands
 #define RADIOLIB_NRF24_CMD_READ                                 0b00000000
@@ -215,21 +217,6 @@ class nRF24: public PhysicalLayer {
     int16_t begin(const ConfigFSK_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigFSK_t& config) instead.
-      \brief Initialization method.
-      \param freq Carrier frequency in MHz. Defaults to 2400 MHz.
-      \param dr Data rate to be used in kbps. Defaults to 1000 kbps.
-      \param pwr Output power in dBm. Defaults to -12 dBm.
-      \param addrWidth Address width in bytes. Defaults to 5 bytes.
-      \returns \ref status_codes
-    */
-      int16_t begin(
-        int16_t freq = RADIOLIB_NRF24_DEFAULT_FREQ,
-        int16_t dr = RADIOLIB_NRF24_DEFAULT_DR,
-        int8_t pwr = RADIOLIB_NRF24_DEFAULT_POWER,
-        uint8_t addrWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH);
-
-    /*!
       \brief Sets the module to sleep mode.
       \returns \ref status_codes
     */
@@ -285,28 +272,6 @@ class nRF24: public PhysicalLayer {
     // interrupt methods
 
     /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
       \brief Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
@@ -357,17 +322,17 @@ class nRF24: public PhysicalLayer {
 
     /*!
       \brief Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.
-      \param freq Carrier frequency to be set in MHz.
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq) override;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
       \brief Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.
-      \param br Bit rate to be set in kbps.
+      \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
       \brief Sets output power. Allowed values are -18, -12, -6 or 0 dBm.
@@ -435,7 +400,7 @@ class nRF24: public PhysicalLayer {
       \param freqDev Dummy frequency deviation parameter, no configuration will be changed.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
      /*!
       \brief Query modem for the packet length of received payload.

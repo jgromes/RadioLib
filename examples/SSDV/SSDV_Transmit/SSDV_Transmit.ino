@@ -45,8 +45,8 @@ void setup() {
 
   // initialise the radio
   ConfigLoRa_t config;
-  config.frequency = 434.250;
-  config.bandwidth = 62.5;
+  config.frequency = RADIOLIB_UNIT_KILO(434250);
+  config.bandwidth = 62500;
   int16_t state = radio.begin(config);
 
   if(state != RADIOLIB_ERR_NONE) {
@@ -70,7 +70,6 @@ void setup() {
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("setImage() failed: "));
     Serial.println(state);
-
     while(true) { delay(1000); }
   }
 
@@ -84,9 +83,7 @@ void loop() {
     // frame here, or alternate SSDV with other telemetry strings.
     Serial.println(F("All packets sent. Stopping..."));
     ssdv.clearImage();      // or load a new image
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
 
   uint16_t packetId = 0;

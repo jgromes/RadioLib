@@ -72,19 +72,9 @@ class STM32WLx : public SX1262 {
     int16_t begin(const ConfigLoRa_t& config) override;
 
     /*!
-      \copydoc SX1262::begin
-    */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false) override;
-    
-    /*!
       \copydoc SX1262::beginFSK
     */
     int16_t beginFSK(const ConfigFSK_t& config) override;
-
-    /*!
-      \copydoc SX1262::beginFSK
-    */
-    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false) override;
 
     // configuration methods
 
@@ -103,14 +93,6 @@ class STM32WLx : public SX1262 {
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power) override;
-
-    /*!
-      \brief Check if output power is configurable.
-      \param power Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
 
     /*!
       \copybrief Module::setRfSwitchTable
@@ -142,39 +124,6 @@ class STM32WLx : public SX1262 {
     */
     void clearDio1Action() override;
   #endif  // ARDUINO_ARCH_STM32
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is received.
-      \param func ISR to call.
-    */
-    void setPacketReceivedAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is received.
-    */
-    void clearPacketReceivedAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a packet is sent.
-      \param func ISR to call.
-    */
-    void setPacketSentAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a packet is sent.
-    */
-    void clearPacketSentAction() override;
-
-    /*!
-      \brief Sets interrupt service routine to call when a channel scan is finished.
-      \param func ISR to call.
-    */
-    void setChannelScanAction(void (*func)(void)) override;
-
-    /*!
-      \brief Clears interrupt service routine to call when a channel scan is finished.
-    */
-    void clearChannelScanAction() override;
 
 #if !RADIOLIB_GODMODE
   protected:

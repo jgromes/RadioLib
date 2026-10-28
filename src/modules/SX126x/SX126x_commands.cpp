@@ -22,7 +22,7 @@ int16_t SX126x::resetAGC() {
   RADIOLIB_ASSERT(state);
 
   // re-calibrate image rejection for the operating frequency
-  state = calibrateImage(this->freqMHz);
+  state = calibrateImage(this->freqHz);
   RADIOLIB_ASSERT(state);
 
   // re-apply DIO2 RF switch if it was configured
@@ -99,6 +99,31 @@ int16_t SX126x::setTx(uint32_t timeout) {
 int16_t SX126x::setRx(uint32_t timeout) {
   const uint8_t data[] = { (uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF) };
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
+}
+
+// this implementation is not documented in the datasheet, but taken from LoRaMac-node
+// https://github.com/Lora-net/LoRaMac-node/blob/dcbcfb329b4a343ab007bc19ac43a8dc952b3354/src/radio/sx126x/sx126x.c#L367
+int16_t SX126x::setLoRaSymbNumTimeout(uint8_t symbolNum) {
+  // the symbol number timeout is encoded as a mantissa-exponent pair
+  // before being passed to the command
+  uint8_t mant = (symbolNum > RADIOLIB_SX126X_MAX_LORA_SYMB_NUM_TIMEOUT ? RADIOLIB_SX126X_MAX_LORA_SYMB_NUM_TIMEOUT : symbolNum) >> 1;
+  uint8_t exp = 0;
+  while(mant > 31) {
+    mant = (mant + 3) >> 2;
+    exp++;
+  }
+
+  // pass the encoded value to the command
+  uint8_t reg = mant << (2*exp + 1);
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_LORA_SYMB_NUM_TIMEOUT, &reg, 1);
+  RADIOLIB_ASSERT(state);
+
+  // for non-zero timeouts, the mantissa-exponent value must also be written to a register
+  if(symbolNum != 0) {
+    reg = exp + (mant << 3);
+    state = this->writeRegister(RADIOLIB_SX126X_REG_LORA_SYNC_TIMEOUT, &reg, 1);
+  }
+  return(state);
 }
 
 int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
@@ -220,8 +245,8 @@ int16_t SX126x::setTxParams(uint8_t pwr, uint8_t rampTime) {
 int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
-    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    if(symbolLength >= 16.0f) {
+    uint64_t symbolLengthUs = ((uint64_t)1000000 * ((uint64_t)1 << this->spreadingFactor)) / (uint64_t)this->bandwidthHz;
+    if(symbolLengthUs >= 16000) {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON;
     } else {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_OFF;

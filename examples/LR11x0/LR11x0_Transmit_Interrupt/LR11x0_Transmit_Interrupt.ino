@@ -83,12 +83,12 @@ void setup() {
   // before calling begin(), correct crystal has to be selected
   // some LR11x0 have a TCXO which needs 1.6V reference
   // set to 0 if your radio has an XTAL
-  radio.tcxoVoltage = 1.6;
+  radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
   // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
   ConfigLoRa_t config;
-  config.frequency = 434;
+  config.frequency = RADIOLIB_UNIT_MEGA(434);
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -103,7 +103,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setPacketSentAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[LR1110] Sending first packet ... "));

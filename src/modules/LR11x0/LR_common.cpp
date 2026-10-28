@@ -11,22 +11,6 @@ LRxxxx::LRxxxx(Module* mod) : PhysicalLayer() {
   this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
 }
 
-void LRxxxx::setPacketReceivedAction(void (*func)(void)) {
-  this->setIrqAction(func);
-}
-
-void LRxxxx::clearPacketReceivedAction() {
-  this->clearIrqAction();
-}
-
-void LRxxxx::setPacketSentAction(void (*func)(void)) {
-  this->setIrqAction(func);
-}
-
-void LRxxxx::clearPacketSentAction() {
-  this->clearIrqAction();
-}
-
 uint32_t LRxxxx::getIrqStatus() {
   // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
   uint8_t buff[6] = { 0 };
@@ -41,6 +25,7 @@ uint32_t LRxxxx::getIrqStatus() {
 RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
   DataRate_t dr = {};
   PacketConfig_t pc = {};
+  size_t packetLen = len;
   switch(modem) {
     case ModemType_t::RADIOLIB_MODEM_LORA: {
       uint8_t cr = this->codingRate;
@@ -52,7 +37,7 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
       }
 
       dr.lora.spreadingFactor = this->spreadingFactor;
-      dr.lora.bandwidth = this->bandwidthKhz;
+      dr.lora.bandwidth = this->bandwidthHz;
       dr.lora.codingRate = cr;
 
       pc.lora.preambleLength = this->preambleLengthLoRa;
@@ -63,11 +48,15 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
     }
 
     case ModemType_t::RADIOLIB_MODEM_FSK: {
-      dr.fsk.bitRate = (float)this->bitRate / 1000.0f;
-      dr.fsk.freqDev = (float)this->frequencyDev;
+      dr.fsk.bitRate = this->bitRate;
+      dr.fsk.freqDev = this->frequencyDev;
       pc.fsk.preambleLength = this->preambleLengthGFSK;
       pc.fsk.syncWordLength = this->syncWordLength; 
       pc.fsk.crcLength = this->crcLenGFSK;
+      if(this->packetType != 0) {
+        //! \todo [LRxxxx] Implement ToA calculation for extended GFSK modes (9/15-bit packet lengths)
+        packetLen++;
+      }
       break;
     }
 
@@ -84,85 +73,14 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  return(this->calculateTimeOnAir(modem, dr, pc, len));
-}
-
-RadioLibTime_t LRxxxx::calculateTimeOnAir(ModemType_t modem, DataRate_t dr, PacketConfig_t pc, size_t len) {
-  // check active modem
-  if (modem == ModemType_t::RADIOLIB_MODEM_LORA) {  
-    uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << dr.lora.spreadingFactor) / (dr.lora.bandwidth * 10) ;
-    uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
-    uint8_t sfCoeff2 = 8;
-    if(dr.lora.spreadingFactor == 5 || dr.lora.spreadingFactor == 6) {
-      sfCoeff1_x4 = 25; // 6.25 * 4
-      sfCoeff2 = 0;
-    }
-    uint8_t sfDivisor = 4*dr.lora.spreadingFactor;
-    if(pc.lora.ldrOptimize) {
-      sfDivisor = 4*(dr.lora.spreadingFactor - 2);
-    }
-    const int8_t bitsPerCrc = 16;
-    const int8_t N_symbol_header = pc.lora.implicitHeader ? 0 : 20;
-
-    // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
-    int16_t bitCount = (int16_t) 8 * len + pc.lora.crcEnabled * bitsPerCrc - 4 * dr.lora.spreadingFactor  + sfCoeff2 + N_symbol_header;
-    if(bitCount < 0) {
-      bitCount = 0;
-    }
-    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
-    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
-
-    // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
-    uint32_t nSymbol_x4 = (pc.lora.preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * dr.lora.codingRate * 4;
-
-    // get time-on-air in us
-    return((symbolLength_us * nSymbol_x4) / 4);
-
-  } else if(modem == ModemType_t::RADIOLIB_MODEM_FSK) {
-    return((((float)(pc.fsk.crcLength * 8) + pc.fsk.syncWordLength + pc.fsk.preambleLength + (uint32_t)len * 8) / (dr.fsk.bitRate / 1000.0f)));
-
-  } else if(modem == ModemType_t::RADIOLIB_MODEM_LRFHSS) {
-    // calculate the number of bits based on coding rate
-    uint16_t N_bits;
-    switch(dr.lrFhss.cr) {
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_5_6:
-        N_bits = ((len * 6) + 4) / 5; // this is from the official LR11xx driver, but why the extra +4?
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_2_3:
-        N_bits = (len * 3) / 2;
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_2:
-        N_bits = len * 2;
-        break;
-      case RADIOLIB_LRXXXX_LR_FHSS_CR_1_3:
-        N_bits = len * 3;
-        break;
-      default:
-        return(RADIOLIB_ERR_INVALID_CODING_RATE);
-    }
-
-    // calculate number of bits when accounting for unaligned last block
-    uint16_t N_payBits = (N_bits / RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS) * RADIOLIB_LRXXXX_LR_FHSS_BLOCK_BITS;
-    uint16_t N_lastBlockBits = N_bits % RADIOLIB_LRXXXX_LR_FHSS_FRAG_BITS;
-    if(N_lastBlockBits) {
-      N_payBits += N_lastBlockBits + 2;
-    }
-
-    // add header bits
-    uint16_t N_totalBits = (RADIOLIB_LRXXXX_LR_FHSS_HEADER_BITS * pc.lrFhss.hdrCount) + N_payBits;
-    return(((uint32_t)N_totalBits * 8 * 1000000UL) / RADIOLIB_LRXXXX_LR_FHSS_BIT_RATE);
-  
-  } else {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  return(0);
+  return(this->calculateTimeOnAir(modem, dr, pc, packetLen));
 }
 
 RadioLibTime_t LRxxxx::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the timeout value is given in units of 30.52 microseconds
   // the calling function should provide some extra width, as this number of units is truncated to integer
-  RadioLibTime_t timeout = timeoutUs / 30.52;
+  RadioLibTime_t timeout = (RadioLibTime_t) ((float) timeoutUs * (1.0f / 30.52f));
+  // or can be: RadioLibTime_t timeout = (RadioLibTime_t) (((uint64_t) timeoutUs * 34360) >> 20);
   return(timeout);
 }
 
@@ -217,7 +135,7 @@ int16_t LRxxxx::lrFhssBuildFrame(uint16_t cmd, uint8_t hdrCount, uint8_t cr, uin
     { 112, 105,  99,  92, },
     {  74,  69,  65,  60, },
   };
-  if((cr > RADIOLIB_LRXXXX_LR_FHSS_CR_1_3) || ((hdrCount - 1) > (int)sizeof(maxLen[0])) || (len > maxLen[cr][hdrCount - 1])) {
+  if((cr > RADIOLIB_LR_FHSS_CR_1_3) || ((hdrCount - 1) > (int)sizeof(maxLen[0])) || (len > maxLen[cr][hdrCount - 1])) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
 
@@ -293,35 +211,6 @@ uint8_t LRxxxx::roundRampTime(uint32_t rampTimeUs) {
   }
 
   return regVal;
-}
-
-int16_t LRxxxx::findRxBw(float rxBw, const uint8_t* lut, size_t lutSize, float rxBwMax, uint8_t* val) {
-  // lookup tables to avoid comparing a whole bunch of floats
-  const uint16_t rxBwAvg[] = {
-    53, 66, 85, 108, 134, 170, 211, 264,
-    341, 424, 529, 682, 847, 1058, 1364,
-    1695, 2116, 2729, 3390, 4233, 5159,
-    6111, 7179, 9401, 16665, 24440, 28710,
-  };
-
-  // iterate through the table and find whether the user-provided value
-  // is lower than the pre-computed average of the adjacent bandwidth values
-  // if it is, we consider that to be a match even though the actual value is not precise
-  uint16_t rxBwInt = rxBw*10.0f;
-  for(size_t i = 0; i < (lutSize - 1); i++) {
-    if(rxBwInt < rxBwAvg[i]) {
-      *val = lut[i];
-      return(RADIOLIB_ERR_NONE);
-    }
-  }
-
-  // if nothing matched up to here, match with the last value
-  if(rxBwInt <= rxBwMax*10) {
-    *val = lut[lutSize - 1];
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 }
 
 int16_t LRxxxx::setU32(uint16_t cmd, uint32_t u32) {

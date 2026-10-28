@@ -173,7 +173,7 @@ int16_t LR2021::getTemp(uint8_t source, uint8_t resolution, float* temp) {
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_TEMP, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
   if(temp) { 
     uint16_t raw = ((uint16_t)(rplBuff[0]) << 8) | (uint16_t)rplBuff[1];
-    *temp = 25.0f + (0.7295f - 1.35f * raw / 8192.0f) * (1000.0f / 1.7f);
+    *temp = (25.0f + (0.7295f * (1000.0f / 1.7f))) - raw * ((1.35f / 8192.0f) * (1000.0f / 1.7f));
   }
   return(state);
 }
@@ -345,7 +345,7 @@ int16_t LR2021::setRegulatorDCDC() {
   return(this->setRegMode(RADIOLIB_LR2021_REG_MODE_SIMO_NORMAL));
 }
 
-// workaround: port of semtech's code altered to use local freqMHz/highFreq - magic numbers are theirs
+// workaround: port of semtech's code altered to use local freq/highFreq - magic numbers are theirs
 // https://github.com/Lora-net/usp/blob/351b20153506/smtc_rac_lib/radio_drivers/lr20xx_driver/src/lr20xx_workarounds.c
 int16_t LR2021::setDCDCworkaround() {
   uint32_t adcCtrlRaw = 0;
@@ -374,7 +374,7 @@ int16_t LR2021::setDCDCworkaround() {
   state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, 1);
   RADIOLIB_ASSERT(state);
   
-  state = this->setFrequency(this->freqMHz, true);
+  state = this->setFrequency(this->freqHz, true);
   return(state);
 }
 
@@ -390,8 +390,8 @@ int16_t LR2021::resetDCDCworkaround() {
   state = this->writeRegMem32(RADIOLIB_LR2021_REG_DCDC_FREQ_LF, &freq_lf, 1);
   RADIOLIB_ASSERT(state);
 
-  if(this->freqMHz) {
-    state = this->setFrequency(this->freqMHz, true);
+  if(this->freqHz) {
+    state = this->setFrequency(this->freqHz, true);
   }
   return(state);
 }
@@ -423,9 +423,9 @@ int16_t LR2021::setFifoSize(bool rx, size_t size) {
   return(state);
 }
 
-int16_t LR2021::setIQStream(float rate, bool fifo) {
-  // rate is configred via LoRa bandwidth
-  int16_t state = this->setBandwidth(rate/4.0f);
+int16_t LR2021::setIQStream(uint32_t rate, bool fifo) {
+  // rate is configured via LoRa bandwidth
+  int16_t state = this->setBandwidth(rate/4);
   RADIOLIB_ASSERT(state);
 
   // if the destination is FIFO, enable 1024-byte RX FIFO size

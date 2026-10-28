@@ -91,10 +91,10 @@ MorseClient::MorseClient(AFSKClient* audio) {
 }
 #endif
 
-int16_t MorseClient::begin(float base, uint8_t speed) {
+int16_t MorseClient::begin(uint32_t base, uint8_t speed) {
   // calculate 24-bit frequency
   baseFreqHz = base;
-  baseFreq = (base * 1000000.0f) / phyLayer->freqStep;
+  baseFreq = base / phyLayer->freqStep;
 
   // calculate tone period for decoding
   basePeriod = (1000000.0f/base)/2.0f;

@@ -110,7 +110,7 @@ class SX1278: public SX127x {
 
     /*!
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
-      \param mod Instance of Module that will be used to communicate with the %LoRa chip.
+      \param mod Instance of Module that will be used to communicate with the LoRa chip.
     */
     SX1278(Module* mod); // cppcheck-suppress noExplicitConstructor
 
@@ -126,24 +126,6 @@ class SX1278: public SX127x {
     virtual int16_t begin(const ConfigLoRa_t& config);
 
     /*!
-      \deprecated Use \ref begin(const ConfigLoRa_t& config) instead.
-      \brief LoRa modem initialization method.
-      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      \param bw %LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
-      \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
-      \param cr %LoRa link coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
-      is undocumented and not recommended without your own FEC.
-      \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
-      \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
-      \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
-      Allowed values range from 6 to 65535.
-      \param gain Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
-      Set to 0 to enable automatic gain control (recommended).
-      \returns \ref status_codes
-    */
-    virtual int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
-
-    /*!
       \brief Initialization method for FSK modem.
       \param config Initialization configuration.
       \details This method initializes the FSK modem with the specified configuration.
@@ -153,21 +135,6 @@ class SX1278: public SX127x {
     virtual int16_t beginFSK(const ConfigFSK_t& config);
 
     /*!
-      \deprecated Use \ref beginFSK(const ConfigFSK_t& config) instead.
-      \brief FSK modem initialization method.
-      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
-      \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz.
-      Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 <= 250 kHz is always met.
-      \param rxBw Receiver bandwidth in kHz. Allowed values range from 2.6 to 250.0 kHz.
-      \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
-      \param preambleLength Length of FSK preamble in bits.
-      \param enableOOK Use OOK modulation instead of FSK.
-      \returns \ref status_codes
-    */
-    virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
-
-    /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
     */
     void reset() override;
@@ -175,49 +142,43 @@ class SX1278: public SX127x {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values range from 137.0 MHz to 175.0 MHz and 395.0 to 525.0 MHz (datasheet minimum is 410.0 MHz, hardware works lower).
-      \param freq Carrier frequency to be set in MHz.
+      \brief Sets carrier frequency. Allowed values range from 137 MHz to 175 MHz and 395 to 525 MHz 
+      (datasheet minimum is 410 MHz, hardware works lower).
+      \param freq Carrier frequency to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq) override;
+    int16_t setFrequency(uint32_t freq) override;
 
     /*!
-      \brief Sets %LoRa link bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in %LoRa mode.
-      \param bw %LoRa link bandwidth to be set in kHz.
+      \brief Sets LoRa link bandwidth. Allowed values are 7800, 10400, 15600, 20800, 31250, 41700, 
+      62500, 125000, 250000 and 500000 Hz. Only available in LoRa mode.
+      \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(uint32_t bw) override;
 
     /*!
-      \brief Sets %LoRa link spreading factor. Allowed values range from 6 to 12. Only available in %LoRa mode.
-      \param sf %LoRa link spreading factor to be set.
+      \brief Sets LoRa link spreading factor. Allowed values range from 6 to 12. Only available in LoRa mode.
+      \param sf LoRa link spreading factor to be set.
       \returns \ref status_codes
     */
-    virtual int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
-      \brief Sets %LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in %LoRa mode.
+      \brief Sets LoRa link coding rate denominator. Allowed values range from 4 to 8. Only available in LoRa mode.
       Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC. 
-      \param cr %LoRa link coding rate denominator to be set.
+      \param cr LoRa link coding rate denominator to be set.
+      \param longInterleave Only for PhysicalLayer compatibility, unsuported by SX127x.
       \returns \ref status_codes
     */
-    int16_t setCodingRate(uint8_t cr);
+    int16_t setCodingRate(uint8_t cr, bool longInterleave = false) override;
 
     /*!
-      \brief Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.
-      \param br Bit rate to be set (in kbps).
+      \brief Sets FSK bit rate. Allowed values range from 500 bps to 300 kbps. Only available in FSK mode.
+      \param br Bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
-        
-    /*!
-      \brief Set data rate.
-      \param dr Data rate struct.
-      \param modem The modem corresponding to the requested datarate (FSK or LoRa). 
-      Defaults to currently active modem if not supplied.
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
+    int16_t setBitRate(uint32_t br) override;
     
     /*!
       \brief Check the data rate can be configured by this module.
@@ -245,24 +206,6 @@ class SX1278: public SX127x {
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power, bool forceRfo);
-
-    /*!
-      \brief Check if output power is configurable.
-      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
-      \param power Output power in dBm, assumes PA_BOOST pin.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-
-    /*!
-      \brief Check if output power is configurable.
-      \param power Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool useRfo);
 
     /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
@@ -307,8 +250,11 @@ class SX1278: public SX127x {
     /*!
       \brief Enables/disables CRC check of received packets.
       \param enable Enable (true) or disable (false) CRC.
-      \param mode Set CRC mode to SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false)
-      or SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode.
+      \param mode False to set CRC mode to RADIOLIB_SX127X_CRC_WHITENING_TYPE_CCITT for CCITT CRC16
+      (polynomial 0x1021, initial 0x1D0F, final XOR 0xFFFF, no RefIn, no RefOut) 
+      or true to set RADIOLIB_SX127X_CRC_WHITENING_TYPE_IBM for IBM CRC16
+      (polynomial 0x8005, initial 0xFFFF, final XOR 0x0000, no RefIn, no RefOut) 
+      Only valid in FSK mode.
       \returns \ref status_codes
     */
     int16_t setCRC(bool enable, bool mode = false);

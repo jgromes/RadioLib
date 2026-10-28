@@ -541,11 +541,8 @@
 #endif
 
 // if verbose assert is enabled, enable basic debug too
-#if RADIOLIB_VERBOSE_ASSERT
-  #if defined(RADIOLIB_DEBUG_BASIC)
-  #undef RADIOLIB_DEBUG_BASIC
-  #endif
-  #define RADIOLIB_DEBUG_BASIC (1)
+#if RADIOLIB_VERBOSE_ASSERT && !defined(RADIOLIB_DEBUG_BASIC)
+  #define RADIOLIB_DEBUG_BASIC  (1)
 #endif
 
 // set the global debug mode flag
@@ -684,9 +681,10 @@
 #endif
 
 // these macros are usually defined by Arduino, but some platforms undef them, so its safer to use our own
-#define RADIOLIB_MIN(a,b)				((a)<(b)?(a):(b))
-#define RADIOLIB_MAX(a,b)				((a)>(b)?(a):(b))
-#define RADIOLIB_ABS(x)         ((x)>0?(x):-(x))
+#define RADIOLIB_MIN(a,b)				    ((a)<(b)?(a):(b))
+#define RADIOLIB_MAX(a,b)				    ((a)>(b)?(a):(b))
+#define RADIOLIB_ABS(x)             ((x)>0?(x):-(x))
+#define RADIOLIB_ABS_UNSIGNED(a,b)  ((a)>(b)?((a)-(b)):((b)-(a)))
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  7

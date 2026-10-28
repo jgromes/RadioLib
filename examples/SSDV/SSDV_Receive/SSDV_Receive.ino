@@ -98,28 +98,24 @@ void setup() {
 
   // radio
   ConfigLoRa_t config;
-  config.frequency      = 434.250;
-  config.bandwidth      = 62.5;
+  config.frequency = RADIOLIB_UNIT_KILO(434250);
+  config.bandwidth = 62500;
   int16_t state = radio.begin(config);
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Radio init failed: "));
     Serial.println(state);
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
   Serial.println(F("Radio OK"));
 
   // attach the receive interrupt
-  radio.setPacketReceivedAction(setFlag);
+  radio.setIrqAction(setFlag);
   // startReceive() puts the radio into continuous receive mode.
   state = radio.startReceive();
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("startReceive() failed: "));
     Serial.println(state);
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
 
   // optionally initialise JPEG decoder
@@ -128,9 +124,7 @@ void setup() {
   if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("beginDecoder() failed (not enough RAM?): "));
     Serial.println(state);
-    while(1) {
-      yield();
-    }
+    while(true) { delay(1000); }
   }
   Serial.println(F("JPEG decoder initialised."));
 #endif
@@ -140,11 +134,11 @@ void setup() {
 }
 
 void loop() {
-
   // check if the flag is set
   if(!receivedFlag) {
     return;
   }
+  
   Serial.println(F("Received a packet"));
   receivedFlag = false;
 

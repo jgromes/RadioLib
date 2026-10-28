@@ -14,12 +14,14 @@ RadioLibHal::RadioLibHal(const uint32_t input, const uint32_t output, const uint
         }
       }
 
-void RadioLibHal::init() {
-
+int16_t RadioLibHal::init() {
+  // the default implementation has no failure mode
+  return(RADIOLIB_ERR_NONE);
 }
 
-void RadioLibHal::term() {
-
+int16_t RadioLibHal::term() {
+  // the default implementation has no failure mode
+  return(RADIOLIB_ERR_NONE);
 }
 
 void RadioLibHal::tone(uint32_t pin, unsigned int frequency, RadioLibTime_t duration) {

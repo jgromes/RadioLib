@@ -25,7 +25,7 @@ int16_t LR2021::getRssiInst(float* rssi) {
   int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_RSSI_INST, false, buff, sizeof(buff));
   if(rssi) {
     uint16_t raw = ((uint16_t)(buff[0]) << 1) | (uint16_t)((buff[1] >> 7) & 0x01);
-    *rssi = (float)raw/-2.0f;
+    *rssi = (float)raw * -0.5f;
   }
   return(state);
 }
@@ -67,15 +67,15 @@ int16_t LR2021::getCcaResult(float* rssiMin, float* rssiMax, float* rssiAvg) {
   uint16_t raw;
   if(rssiMin) {
     raw = ((uint16_t)(buff[0]) << 1) | (uint16_t)((buff[3] >> 2) & 0x01);
-    *rssiMin = (float)raw/-2.0f;
+    *rssiMin = (float)raw * -0.5f;
   }
   if(rssiMax) {
     raw = ((uint16_t)(buff[1]) << 1) | (uint16_t)((buff[3] >> 1) & 0x01);
-    *rssiMax = (float)raw/-2.0f;
+    *rssiMax = (float)raw * -0.5f;
   }
   if(rssiAvg) {
     raw = ((uint16_t)(buff[2]) << 1) | (uint16_t)((buff[3] >> 0) & 0x01);
-    *rssiAvg = (float)raw/-2.0f;
+    *rssiAvg = (float)raw * -0.5f;
   }
   return(state);
 }

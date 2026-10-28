@@ -21,6 +21,16 @@
 #define RADIOLIB_LR11X0_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_LR11X0_CRYSTAL_FREQ                            32.0
 #define RADIOLIB_LR11X0_DIV_EXPONENT                            25
+#define RADIOLIB_LR1110_LP_POUT_MIN                             -17
+#define RADIOLIB_LR1110_LP_POUT_MAX                             14
+#define RADIOLIB_LR1110_HP_POUT_MIN                             -9
+#define RADIOLIB_LR1110_HP_POUT_MAX                             22
+#define RADIOLIB_LR112X_LP_POUT_MIN                             -17
+#define RADIOLIB_LR112X_LP_POUT_MAX                             14
+#define RADIOLIB_LR112X_HP_POUT_MIN                             -9
+#define RADIOLIB_LR112X_HP_POUT_MAX                             22
+#define RADIOLIB_LR112X_HF_POUT_MIN                             -18
+#define RADIOLIB_LR112X_HF_POUT_MAX                             13
 
 /*!
   \class LR11x0
@@ -69,33 +79,33 @@ class LR11x0: public LRxxxx {
     /*!
       \brief TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
-      To use XTAL, set this value to 0.
+      To use XTAL, set this value to RadioLibTCXOVoltage_t::VoltageNone.
       \ingroup module_config_vars
     */
-    float tcxoVoltage = 1.6;
+    RadioLibTCXOVoltage_t tcxoVoltage = Voltage1V6;
     
     /*!
       \brief Initialization method for LoRa modem.
-      \param bw LoRa bandwidth in kHz.
+      \param bw LoRa bandwidth in Hz.
       \param sf LoRa spreading factor.
       \param cr LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding,
       is undocumented and not recommended without your own FEC.
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
-      \param high defaults to false for Sub-GHz band, true for frequencies above 1GHz
+      \param high defaults to false for Sub-GHz band, true for frequencies above 1 GHz
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high = false);
+    int16_t begin(uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, bool high = false);
 
     /*!
       \brief Initialization method for FSK modem.
-      \param br FSK bit rate in kbps.
-      \param freqDev Frequency deviation from carrier frequency in kHz.
-      \param rxBw Receiver bandwidth in kHz.
+      \param br FSK bit rate in bps.
+      \param freqDev Frequency deviation from carrier frequency in Hz.
+      \param rxBw Receiver bandwidth in Hz.
       \param preambleLength FSK preamble length in bits.
       \returns \ref status_codes
     */
-    int16_t beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength);
+    int16_t beginGFSK(uint32_t br, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength);
 
     /*!
       \brief Initialization method for LR-FHSS modem.
@@ -291,12 +301,26 @@ class LR11x0: public LRxxxx {
     // configuration methods
 
     /*!
-      \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz. (default, high = false)
-      \param bw LoRa bandwidth to be set in kHz.
+      \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz.
+      \param bw LoRa bandwidth to be set in Hz.
+      \returns \ref status_codes
+    */
+    int16_t setBandwidth(uint32_t bw) override;
+
+    /*!
+      \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz.
+      \param bw LoRa bandwidth to be set in Hz.
       \param high if set to true, allowed bandwidth is 203.125, 406.25 and 812.5 kHz, frequency must be above 1GHz
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw, bool high = false);
+    int16_t setBandwidth(uint32_t bw, bool high);
+
+    /*!
+      \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
+      \param sf LoRa spreading factor to be set.
+      \returns \ref status_codes
+    */
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
@@ -304,7 +328,7 @@ class LR11x0: public LRxxxx {
       \param legacy Enable legacy mode for SF6 - this allows to communicate with SX127x at SF6.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf, bool legacy = false);
+    int16_t setSpreadingFactor(uint8_t sf, bool legacy);
 
     /*!
       \brief Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, 
@@ -315,7 +339,7 @@ class LR11x0: public LRxxxx {
       and it is not compatible with SX127x radios!
       \returns \ref status_codes
     */
-    int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
+    int16_t setCodingRate(uint8_t cr, bool longInterleave = false) override;
 
     /*!
       \brief Sets LoRa sync word.
@@ -325,26 +349,27 @@ class LR11x0: public LRxxxx {
     int16_t setSyncWord(uint8_t syncWord);
 
     /*!
-      \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
-      \param br FSK bit rate to be set in kbps.
+      \brief Sets GFSK bit rate. Allowed values range from 600 bps to 300 kbps.
+      \param br FSK bit rate to be set in bps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br) override;
+    int16_t setBitRate(uint32_t br) override;
 
     /*!
-      \brief Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
-      \param freqDev GFSK frequency deviation to be set in kHz.
+      \brief Sets GFSK frequency deviation. Allowed values range from 0 to 200 kHz.
+      \param freqDev GFSK frequency deviation to be set in Hz.
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev) override;
+    int16_t setFrequencyDeviation(uint32_t freqDev) override;
 
     /*!
       \brief Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
       23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
-      \param rxBw GFSK receiver bandwidth to be set in kHz.
+      \param rxBw GFSK receiver bandwidth to be set in Hz. In case the provided value is not an exact match
+      with the supported values, the closest match will be selected.
       \returns \ref status_codes
     */
-    int16_t setRxBandwidth(float rxBw);
+    int16_t setRxBandwidth(uint32_t rxBw);
     
     /*!
       \brief Sets GFSK sync word in the form of array of up to 8 bytes.
@@ -415,15 +440,6 @@ class LR11x0: public LRxxxx {
     int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
 
     /*!
-      \brief Set data rate.
-      \param dr Data rate struct.
-      \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
-      Defaults to currently active modem if not supplied.
-      \returns \ref status_codes
-    */
-    int16_t setDataRate(DataRate_t dr, ModemType_t modem = RADIOLIB_MODEM_NONE) override;
-
-    /*!
       \brief Check the data rate can be configured by this module.
       \param dr Data rate struct.
       \param modem The modem corresponding to the requested datarate (FSK, LoRa or LR-FHSS). 
@@ -441,13 +457,14 @@ class LR11x0: public LRxxxx {
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
-      \param voltage TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V.
-      Set to 0 to disable TCXO.
-      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
+      \param voltage TCXO reference voltage, one of RadioLibTCXOVoltage_t values.
+      Set to RadioLibTCXOVoltage_t::VoltageNone to disable TCXO.
+      NOTE: After setting this parameter to RadioLibTCXOVoltage_t::VoltageNone,
+      the module will be reset (since there's no other way to disable TCXO).
       \param delay TCXO timeout in us. Defaults to 5000 us.
       \returns \ref status_codes
     */
-    int16_t setTCXO(float voltage, uint32_t delay = 5000);
+    int16_t setTCXO(RadioLibTCXOVoltage_t voltage, uint32_t delay = 5000);
 
     /*!
       \brief Sets CRC configuration.
@@ -628,13 +645,14 @@ class LR11x0: public LRxxxx {
 
     /*!
       \brief Sets LR-FHSS configuration.
-      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
-      \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LR_FHSS_CR_* values.
+      \param narrowGrid True for narrow (non-FCC) hopping grid; false for wide (FCC) grid.
       \param hdrCount Header packet count, 1 - 4. Defaults to 3.
       \param hopSeed 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
       \returns \ref status_codes
     */
-    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
+    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A) override;
     
     /*!
       \brief Start passive WiFi scan. BUSY pin will be de-activated when the scan is finished.
@@ -792,7 +810,7 @@ class LR11x0: public LRxxxx {
       \param freqMax Frequency band upper bound.
       \returns \ref status_codes
     */
-    int16_t calibrateImageRejection(float freqMin, float freqMax);
+    int16_t calibrateImageRejection(uint32_t freqMin, uint32_t freqMax);
     
     /*! \copydoc PhysicalLayer::stageMode */
     int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
@@ -879,7 +897,7 @@ class LR11x0: public LRxxxx {
     int16_t setCad(void);
     int16_t setTxCw(void);
     int16_t setTxInfinitePreamble(void);
-    int16_t setLoRaSynchTimeout(uint8_t symbolNum);
+    int16_t setLoRaSynchTimeout(uint16_t numSymbols);
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
     int16_t setRangingReqAddr(uint32_t addr);
     int16_t getRangingResult(uint8_t type, float* res);

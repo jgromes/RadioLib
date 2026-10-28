@@ -68,7 +68,7 @@ void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t of
   #if RADIOLIB_DEBUG
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
-    char str[120];
+    char str[80];
     sprintf(str, "%08" PRIx32 ": ", (uint32_t)i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
@@ -94,25 +94,27 @@ void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t of
     }
     str[58] = ' ';
 
-    // at this point we need to start escaping "%" characters
-    char* strPtr = &str[59];
     for(size_t j = 0; j < line_len; j++) {
       char c = data[i+j];
       if((c < ' ') || (c > '~')) {
         c = '.';
-      } else if(c == '%') {
-        *strPtr++ = '%';
       }
-      sprintf(strPtr++, "%c", c);
-      
+      sprintf(&str[58 + j], "%c", c);
     }
     for(size_t j = line_len; j < 16; j++) {
-      sprintf(strPtr++, "   ");
+      sprintf(&str[58 + j], "   ");
     }
     if(level) {
       RADIOLIB_DEBUG_PRINT_LVL("", "%s", level);
     }
-    RADIOLIB_DEBUG_PRINT("%s", str);
+    
+    // to print the string-ified value, use write instead of the print macro
+    // this will prevent accidentally interpreting '%' characters as control sequences
+    #if defined(RADIOLIB_BUILD_ARDUINO)
+    (void)RADIOLIB_DEBUG_PORT.write(reinterpret_cast<const uint8_t*>(str), strlen(str));
+    #else
+    (void)fwrite(str, sizeof(str[0]), strlen(str), RADIOLIB_DEBUG_PORT);
+    #endif
     RADIOLIB_DEBUG_PRINTLN();
     rem_len -= 16;
   }
