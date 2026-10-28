@@ -723,7 +723,7 @@ class PhysicalLayer {
       \param detLen Minimum detected preamble length during reception. Allowed values depend on the module used.
       \returns \ref status_codes
     */
-    virtual int16_t setPreambleLength(size_t len, size_t detLen);
+    virtual int16_t setPreambleLength(size_t len, size_t detLen = 0);
     
     /*!
       \brief Set data rate. Must be implemented in module class if the module supports it.
