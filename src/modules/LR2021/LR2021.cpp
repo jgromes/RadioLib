@@ -682,12 +682,12 @@ int16_t LR2021::modSetup(uint32_t freq, uint8_t modem) {
 
   // try to find the chip - this will also reset the module at least once
   if(!this->findChip()) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR2021 found!");
+    RADIOLIB_DEBUG_BASIC_PRINTLN("No %s found!", this->chipName());
     state = this->mod->term();
     RADIOLIB_ASSERT(state);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR2021");
+  RADIOLIB_DEBUG_BASIC_PRINTLN("M\t%s", this->chipName());
 
   // set mode to standby
   // force the device to use RC oscillator, as XOSC may not be ready yet
@@ -708,10 +708,27 @@ int16_t LR2021::modSetup(uint32_t freq, uint8_t modem) {
   return(state);
 }
 
+const char* LR2021::chipName(void) const {
+  switch(this->chipType) {
+    case(RADIOLIB_LR2021_DEVICE_LR2022):
+      return("LR2022");
+    case(RADIOLIB_LR2021_DEVICE_LR2012):
+      return("LR2012");
+    default:
+      return("LR2021");
+  }
+}
+
+bool LR2021::subGhzOnly(void) const {
+  // the LR2012 has no high-frequency front end at all - no HF PA, no HF LNA, no HF mixer
+  return(this->chipType == RADIOLIB_LR2021_DEVICE_LR2012);
+}
+
 bool LR2021::findChip(void) {
-  // this is the only version mentioned in datasheet
-  const uint8_t expMajor = 0x01;
-  const uint8_t expMinor = 0x18;
+  // the LR2021 reports 1.24, the LR2022 and LR2012 both report 2.0
+  const uint16_t expVersion = (this->chipType == RADIOLIB_LR2021_DEVICE_LR2021) ? RADIOLIB_LR2021_FW_LR2021 : RADIOLIB_LR2021_FW_LR20X2;
+  const uint8_t expMajor = (uint8_t)(expVersion >> 8);
+  const uint8_t expMinor = (uint8_t)(expVersion & 0xFF);
 
   uint8_t i = 0;
   bool flagFound = false;
@@ -725,11 +742,11 @@ bool LR2021::findChip(void) {
     RADIOLIB_ASSERT(state);
 
     if((fwMajor == expMajor) && (fwMinor == expMinor)) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR2021");
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Found %s", this->chipName());
       RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)fwMajor, (int)fwMinor);
       flagFound = true;
     } else {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("LR2021 not found! (%d of 10 tries) FW version: = %d.%d", (int)i, (int)fwMajor, (int)fwMinor);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("%s not found! (%d of 10 tries) FW version: = %d.%d", this->chipName(), (int)i, (int)fwMajor, (int)fwMinor);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Expected: %d.%d", (int)expMajor, (int)expMinor);
       this->mod->hal->delay(10);
       i++;
