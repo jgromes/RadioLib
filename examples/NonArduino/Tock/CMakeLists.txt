@@ -47,84 +47,61 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CUR
 add_executable(${PROJECT_NAME} main.cpp)
 
 # link with RadioLib and libtock-c
-# The build system for libtock-c is a bit odd and the version of libraries
-# built changes based on compiler version.
+# libtock-c downloads prebuilt newlib/libstdc++/libgcc archives (built with
+# the Tock PIC model). The versions are sometimes updated, let's try
+# to find the latest version
+file(GLOB TOCK_NEWLIB_DIRS LIST_DIRECTORIES true
+    "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-*")
+list(FILTER TOCK_NEWLIB_DIRS INCLUDE REGEX "[0-9]$")
+list(SORT TOCK_NEWLIB_DIRS)
+list(POP_BACK TOCK_NEWLIB_DIRS TOCK_NEWLIB_DIR)
+
+file(GLOB TOCK_LIBCXX_DIRS LIST_DIRECTORIES true
+    "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-*")
+list(FILTER TOCK_LIBCXX_DIRS INCLUDE REGEX "[0-9]$")
+list(SORT TOCK_LIBCXX_DIRS)
+list(POP_BACK TOCK_LIBCXX_DIRS TOCK_LIBCXX_DIR)
+
+if (NOT TOCK_NEWLIB_DIR OR NOT TOCK_LIBCXX_DIR)
+    message(FATAL_ERROR
+        "No prebuilt libraries found in $ENV{LIBTOCK_C_DIRECTORY}/lib; "
+        "build a libtock-c example (e.g. via build.sh) first to fetch them")
+endif()
+
+string(REGEX REPLACE ".*/libtock-libc\\+\\+-" "" TOCK_LIBCXX_GCC_VERSION "${TOCK_LIBCXX_DIR}")
+message("libtock-c prebuilt libraries: ${TOCK_NEWLIB_DIR}, ${TOCK_LIBCXX_DIR}")
+
 if (RISCV_BUILD)
-    if(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0")
-        target_link_libraries(${PROJECT_NAME} PUBLIC
-            RadioLib
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/riscv/lib/gcc/riscv64-unknown-elf/14.1.0/rv32i/ilp32/libgcc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
-        )
+    target_include_directories(RadioLib AFTER PUBLIC
+        ${TOCK_NEWLIB_DIR}/riscv/riscv64-unknown-elf/include/
+    )
 
-        target_include_directories(RadioLib AFTER PUBLIC
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/include/
-        )
-    elseif(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
-        target_link_libraries(${PROJECT_NAME} PUBLIC
-            RadioLib
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/riscv/lib/gcc/riscv64-unknown-elf/13.2.0/rv32i/ilp32/libgcc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
-        )
-
-        target_include_directories(RadioLib AFTER PUBLIC
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/include/
-        )
-    else()
-        target_link_libraries(${PROJECT_NAME} PUBLIC
-            RadioLib
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/riscv/lib/gcc/riscv64-unknown-elf/10.5.0/rv32i/ilp32/libgcc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
-        )
-
-        target_include_directories(RadioLib AFTER PUBLIC
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/include/
-        )
-    endif()
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        RadioLib
+        -Wl,--start-group
+        $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
+        $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
+        ${TOCK_LIBCXX_DIR}/riscv/lib/gcc/riscv64-unknown-elf/${TOCK_LIBCXX_GCC_VERSION}/rv32i/ilp32/libgcc.a
+        ${TOCK_LIBCXX_DIR}/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
+        ${TOCK_NEWLIB_DIR}/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
+        ${TOCK_NEWLIB_DIR}/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
+        -Wl,--end-group
+    )
 else()
-    if (EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0")
-        target_link_libraries(${PROJECT_NAME} PUBLIC
-            RadioLib
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/arm/lib/gcc/arm-none-eabi/14.1.0/libgcc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/arm/arm-none-eabi/lib/libstdc++.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/arm/arm-none-eabi/lib/libc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/arm/arm-none-eabi/lib/libm.a
-        )
-    elseif(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
-        target_link_libraries(${PROJECT_NAME} PUBLIC
-            RadioLib
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/arm/lib/gcc/arm-none-eabi/13.2.0/libgcc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/arm/arm-none-eabi/lib/libstdc++.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libm.a
-        )
-    else()
-        target_link_libraries(${PROJECT_NAME} PUBLIC
-            RadioLib
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
-            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/arm/lib/gcc/arm-none-eabi/10.5.0/libgcc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/arm/arm-none-eabi/lib/libstdc++.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libc.a
-            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libm.a
-        )
-    endif()
+    target_link_options(${PROJECT_NAME} PUBLIC
+        -B${TOCK_NEWLIB_DIR}/arm/arm-none-eabi/lib/
+        -B${TOCK_LIBCXX_DIR}/arm/arm-none-eabi/lib/
+        -B${TOCK_LIBCXX_DIR}/arm/lib/gcc/arm-none-eabi/${TOCK_LIBCXX_GCC_VERSION}/
+    )
+
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        RadioLib
+        -Wl,--start-group
+        $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
+        $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
+        -lstdc++ -lc -lm -lgcc
+        -Wl,--end-group
+    )
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
