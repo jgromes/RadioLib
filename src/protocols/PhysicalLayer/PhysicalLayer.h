@@ -719,10 +719,11 @@ class PhysicalLayer {
 
     /*!
       \brief Set preamble length. Must be implemented in module class if the module supports it.
-      \param len Preamble length in bytes. Maximum length depends on the module used.
+      \param len Preamble length in symbols (LoRa) or bits (FSK). Maximum length depends on the module used.
+      \param detLen Minimum detected preamble length during reception. Allowed values depend on the module used.
       \returns \ref status_codes
     */
-    virtual int16_t setPreambleLength(size_t len);
+    virtual int16_t setPreambleLength(size_t len, size_t detLen);
     
     /*!
       \brief Set data rate. Must be implemented in module class if the module supports it.

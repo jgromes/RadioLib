@@ -794,10 +794,11 @@ class RF69: public PhysicalLayer {
 
     /*!
       \brief Sets preamble length.
-      \param preambleLen Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
+      \param len Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
+      \param detLen Unsupported by RF69.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t preambleLen) override;
+    int16_t setPreambleLength(size_t len, size_t detLen) override;
 
     /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.

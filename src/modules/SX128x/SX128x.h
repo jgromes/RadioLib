@@ -650,10 +650,11 @@ class SX128x: public PhysicalLayer {
 
     /*!
       \brief Sets preamble length for currently active modem. Allowed values range from 1 to 65535.
-      \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK/BLE/FLRC).
+      \param len Preamble length to be set in symbols (LoRa) or bits (FSK/BLE/FLRC).
+      \param detLen Not supported by SX128x.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t preambleLength) override;
+    int16_t setPreambleLength(size_t len, size_t detLen) override;
 
     /*!
       \brief Check the data rate can be configured by this module.

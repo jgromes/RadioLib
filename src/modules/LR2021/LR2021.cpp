@@ -524,12 +524,12 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
   }
 
-  // for LoRa modem and explicit header mode, check also also header valid flag
-  if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) &&
-     (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT) && 
-     (!(irq & RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {
-    crcState = RADIOLIB_ERR_LORA_HEADER_DAMAGED;
-  }
+  // // for LoRa modem and explicit header mode, check also also header valid flag
+  // if((modem == RADIOLIB_LR2021_PACKET_TYPE_LORA) &&
+  //    (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_EXPLICIT) && 
+  //    (!(irq & RADIOLIB_LR2021_IRQ_LORA_HEADER_VALID))) {
+  //   crcState = RADIOLIB_ERR_LORA_HEADER_DAMAGED;
+  // }
 
   // get packet length
   size_t length = getPacketLength();

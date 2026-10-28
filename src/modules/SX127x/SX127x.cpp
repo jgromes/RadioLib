@@ -645,7 +645,9 @@ int16_t SX127x::setCurrentLimit(uint8_t currentLimit) {
   return(state);
 }
 
-int16_t SX127x::setPreambleLength(size_t preambleLength) {
+int16_t SX127x::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
+  (void)preambleDetLength;
+  
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);

@@ -812,18 +812,11 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Sets preamble length.
-      \param len Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
-      \returns \ref status_codes
-    */
-    int16_t setPreambleLength(size_t len) override;
-
-    /*!
-      \brief Sets preamble length.
       \param preambleLength Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
       \param qualityThreshold Preamble quality threshold (PQT) to set.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold);
+    int16_t setPreambleLength(size_t preambleLength, size_t qualityThreshold = 0) override;
 
     /*!
       \brief Enables/disables automatic switch to reception after transmission. Uses the TXOFF_RX mode of CC1101

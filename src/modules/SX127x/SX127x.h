@@ -884,10 +884,11 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.
-      \param preambleLength Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode).
+      \param len Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode).
+      \param detLen Not supported by SX127x.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t preambleLength) override;
+    int16_t setPreambleLength(size_t len, size_t detLen) override;
 
     /*!
       \brief Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.

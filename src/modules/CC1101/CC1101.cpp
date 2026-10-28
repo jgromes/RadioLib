@@ -685,10 +685,7 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bo
   return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense, repeatSync));
 }
 
-int16_t CC1101::setPreambleLength(size_t len) {
-  return this->setPreambleLength(len, len-4);
-}
-int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold) {
+int16_t CC1101::setPreambleLength(size_t preambleLength, size_t qualityThreshold) {
   // check allowed values
   uint8_t value;
   switch(preambleLength) {
@@ -720,8 +717,8 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThresho
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
   }
 
-  // set preabmble quality threshold and the actual length
-  uint8_t pqt = qualityThreshold/4;
+  // set preamble quality threshold and the actual length
+  uint8_t pqt = qualityThreshold ? qualityThreshold : (preambleLength-4)/4;
   if(pqt > 7) {
     pqt = 7;
   }

@@ -456,20 +456,22 @@ int16_t Si443x::setSyncWord(uint8_t* syncWord, size_t len) {
   return(state);
 }
 
-int16_t Si443x::setPreambleLength(size_t preambleLen) {
+int16_t Si443x::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
   // Si443x configures preamble length in 4-bit nibbles
-  if(preambleLen % 4 != 0) {
+  if(preambleLength % 4 != 0 || preambleDetLength % 4 != 0) {
     return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
   }
 
   // set default preamble length
-  uint8_t preLenNibbles = preambleLen / 4;
+  uint8_t preLenNibbles = preambleLength / 4;
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_PREAMBLE_LENGTH, preLenNibbles);
   RADIOLIB_ASSERT(state);
 
-  // set default preamble detection threshold to 5/8 of preamble length (in units of 4 bits)
-  uint8_t preThreshold = 5*preLenNibbles / 8;
-  return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 3, 7, 3));
+  if(preambleDetLength == 0) {
+    // set default preamble detection threshold to 5/8 of preamble length (in units of 4 bits)
+    preambleDetLength = 5*preLenNibbles / 8;
+  }
+  return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_PREAMBLE_DET_CONTROL, preambleDetLength << 3, 7, 3));
 }
 
 size_t Si443x::getPacketLength(bool update) {

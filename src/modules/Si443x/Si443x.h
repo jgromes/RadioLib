@@ -731,10 +731,11 @@ class Si443x: public PhysicalLayer {
 
     /*!
       \brief Sets preamble length.
-      \param preambleLen Preamble length to be set (in bits).
+      \param len Preamble length to be set (in bits).
+      \param detLen Minimum detected preamble length during reception.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t preambleLen) override;
+    int16_t setPreambleLength(size_t len, size_t detLen = 0) override;
 
      /*!
       \brief Query modem for the packet length of received payload.

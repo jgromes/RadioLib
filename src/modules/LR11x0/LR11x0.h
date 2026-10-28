@@ -450,10 +450,12 @@ class LR11x0: public LRxxxx {
 
     /*!
       \brief Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.
-      \param preambleLength Preamble length to be set in symbols (LoRa) or bits (GFSK).
+      \param len Preamble length to be set in symbols (LoRa) or bits (GFSK).
+      \param detLen Minimum detected preamble length during reception. Defaults to 'len'.
+      Only used for FSK modem.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t preambleLength) override;
+    int16_t setPreambleLength(size_t len, size_t detLen) override;
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.

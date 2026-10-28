@@ -979,7 +979,7 @@ int16_t LR11x0::checkDataRate(DataRate_t dr, ModemType_t modem) {
   return(state);
 }
 
-int16_t LR11x0::setPreambleLength(size_t preambleLength) {
+int16_t LR11x0::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -989,8 +989,8 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
     return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType,  this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     this->preambleLengthGFSK = preambleLength;
-    //! \TODO: [LR11x0] this can probably be simplified with a simple calculation
-    this->preambleDetLength = preambleLength >= 32 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_32_BITS :
+    this->preambleDetLength = preambleDetLength ? preambleDetLength : 
+                              preambleLength >= 32 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_32_BITS :
                               preambleLength >= 24 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_24_BITS :
                               preambleLength >= 16 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_16_BITS :
                               preambleLength >   0 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_8_BITS :

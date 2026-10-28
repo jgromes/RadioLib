@@ -401,7 +401,7 @@ int16_t LR2021::setSyncWord(uint8_t syncWord) {
   return(setLoRaSyncword(syncWord));
 }
 
-int16_t LR2021::setPreambleLength(size_t preambleLength) {
+int16_t LR2021::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -413,13 +413,13 @@ int16_t LR2021::setPreambleLength(size_t preambleLength) {
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
     this->preambleLengthGFSK = preambleLength;
-    this->preambleDetLength = (preambleLength / 8) << 3;
+    this->preambleDetLength = preambleDetLength ? preambleDetLength : (preambleLength / 8) << 3;
     return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
       (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
     this->preambleLengthGFSK = preambleLength;
-    this->preambleDetLength = (preambleLength / 8) << 3;
+    this->preambleDetLength = preambleDetLength ? preambleDetLength : (preambleLength / 8) << 3;
     return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
       (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
     
