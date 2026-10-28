@@ -738,10 +738,10 @@ int16_t RF69::setPreambleLength(size_t preambleLength, size_t preambleDetLength)
     return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
   }
 
-  uint8_t preLenBytes = preambleLength / 8;
-  this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_PREAMBLE_MSB, 0x00);
-
-  return (this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, preLenBytes));
+  uint16_t numBytes = preambleLength / 8;
+  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_MSB, (uint8_t)((numBytes >> 8) & 0xFF));
+  state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, (uint8_t)(numBytes & 0xFF));
+  return(state);
 }
 
 int16_t RF69::setNodeAddress(uint8_t nodeAddr) {
