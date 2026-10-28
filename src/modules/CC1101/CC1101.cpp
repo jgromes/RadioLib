@@ -30,29 +30,38 @@ void CC1101::reset() {
 
 int16_t CC1101::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
-  RadioLibTime_t timeout = 5 + (RadioLibTime_t)((((float)(len * 8)) / this->bitRate) * 5);
+  DataRate_t dr = { .fsk = { .bitRate = this->bitRate, .freqDev = 0 } };
+  PacketConfig_t pc = { 
+    .fsk = {
+      .preambleLength = 16,
+      .syncWordLength = 16, // sync word is always enabled
+      .crcLength = (uint8_t)(this->crcOn * 2), // when present, CRC is 2 bytes
+    },
+  };
+  RadioLibTime_t timeout = 5000UL + 5UL*calculateTimeOnAir(RADIOLIB_MODEM_FSK, dr, pc, len);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu us", timeout);
 
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start or timeout
-  RadioLibTime_t start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->micros();
   while(!this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->micros() - start > timeout) {
       (void)finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
   // wait for transmission end or timeout
-  start = this->mod->hal->millis();
+  start = this->mod->hal->micros();
   while(this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->micros() - start > timeout) {
       (void)finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -718,6 +727,8 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength, uint8_t qualityThresho
   }
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, pqt << 5, 7, 5);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
+  RADIOLIB_ASSERT(state);
+  this->preambleLen = preambleLength;
   return(state);
 }
 

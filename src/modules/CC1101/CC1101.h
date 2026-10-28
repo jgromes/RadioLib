@@ -1016,6 +1016,7 @@ class CC1101: public PhysicalLayer {
     bool promiscuous = false;
     bool crcOn = true;
     bool directModeEnabled = false;
+    uint8_t preambleLen = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN;
 
     int8_t power = RADIOLIB_CC1101_DEFAULT_POWER;
 
