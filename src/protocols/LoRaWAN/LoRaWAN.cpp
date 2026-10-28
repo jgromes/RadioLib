@@ -2290,7 +2290,10 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       // note: this overwrites the shared frame buffer, so downlinkMsg must not be accessed after this point
       bool prevDC = this->dutyCycleEnabled;
       this->dutyCycleEnabled = false;
+      // the nested uplink resets lastToA, so keep the air time of this exchange
+      RadioLibTime_t prevToA = this->lastToA;
       this->sendReceive(fOptsRe, fOptsReLen, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
+      this->lastToA += prevToA;
       this->dutyCycleEnabled = prevDC;
 
     } else { // fOptsReLen <= 15
