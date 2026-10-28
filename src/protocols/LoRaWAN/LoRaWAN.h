@@ -1074,6 +1074,7 @@ class LoRaWANNode {
     // a buffer shared by all uplink, downlink and join frames
     // the first 16 bytes are reserved for MIC calculation blocks
     uint8_t bufferFrame[RADIOLIB_AES128_BLOCK_SIZE + RADIOLIB_LORAWAN_MAX_PHY_PAYLOAD_SIZE] = { 0 };
+    uint8_t frameLength = 0;
 
     uint8_t fOptsUp[RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN] = { 0 };
     uint8_t fOptsDown[RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN] = { 0 };
@@ -1257,6 +1258,9 @@ class LoRaWANNode {
 
     // open a series of Class A (and C) downlinks
     virtual int16_t receiveDownlink();
+
+    // read the downlink and check its length and DevAddr
+    int16_t checkDownlink(uint8_t window, uint8_t dr);
 
     // extract downlink payload and process MAC commands
     int16_t parseDownlink(uint8_t* data, size_t* len, uint8_t window, LoRaWANEvent_t* event = NULL);
