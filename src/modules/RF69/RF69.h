@@ -798,7 +798,7 @@ class RF69: public PhysicalLayer {
       \param detLen Unsupported by RF69.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen) override;
+    int16_t setPreambleLength(size_t len, size_t detLen = 0) override;
 
     /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.

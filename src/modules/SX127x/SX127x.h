@@ -888,7 +888,7 @@ class SX127x: public PhysicalLayer {
       \param detLen Not supported by SX127x.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen) override;
+    int16_t setPreambleLength(size_t len, size_t detLen = 0) override;
 
     /*!
       \brief Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.

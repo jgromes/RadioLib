@@ -455,7 +455,7 @@ class LR11x0: public LRxxxx {
       Only used for FSK modem.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen) override;
+    int16_t setPreambleLength(size_t len, size_t detLen = 0) override;
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
