@@ -126,15 +126,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackStoreSessi
 <tr class="memitem:abdbca28868c9fc2e95735c5abdf7e50b" id="r_abdbca28868c9fc2e95735c5abdf7e50b"><td class="memItemLeft" align="right" valign="top"><a id="abdbca28868c9fc2e95735c5abdf7e50b" name="abdbca28868c9fc2e95735c5abdf7e50b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackRestoreSession</b> (<a class="el" href="#aa03f9966637ddfe74fd6dc0f735c6b00">BufferCb_t</a> cb)</td></tr>
 <tr class="memdesc:abdbca28868c9fc2e95735c5abdf7e50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback invoked by the library when the session buffer needs to be loaded. The callback receives a pointer to the buffer and its length; the user should fill it with data previously saved by the savePersistenceBuffer callback. <br /></td></tr>
-<tr class="memitem:a501899c7233c3887537ec55b5f662dc9" id="r_a501899c7233c3887537ec55b5f662dc9"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a501899c7233c3887537ec55b5f662dc9">loadBuffers</a> ()</td></tr>
+<tr class="memitem:a501899c7233c3887537ec55b5f662dc9" id="r_a501899c7233c3887537ec55b5f662dc9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a501899c7233c3887537ec55b5f662dc9">loadBuffers</a> ()</td></tr>
 <tr class="memdesc:a501899c7233c3887537ec55b5f662dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger the registered buffer callbacks to restore persistence and session buffers.  <br /></td></tr>
 <tr class="memitem:ab2df20a240812f184786dda5ace171ef" id="r_ab2df20a240812f184786dda5ace171ef"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2df20a240812f184786dda5ace171ef">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, const uint8_t *nwkKey, const uint8_t *appKey)</td></tr>
 <tr class="memdesc:ab2df20a240812f184786dda5ace171ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <br /></td></tr>
 <tr class="memitem:a43b259fd8804ef8d9d4922962e9ecae5" id="r_a43b259fd8804ef8d9d4922962e9ecae5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43b259fd8804ef8d9d4922962e9ecae5">beginABP</a> (uint32_t addr, const uint8_t *fNwkSIntKey, const uint8_t *sNwkSIntKey, const uint8_t *nwkSEncKey, const uint8_t *appSKey)</td></tr>
 <tr class="memdesc:a43b259fd8804ef8d9d4922962e9ecae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <br /></td></tr>
-<tr class="memitem:a7d07b71509db47d0baea75b2710436aa" id="r_a7d07b71509db47d0baea75b2710436aa"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d07b71509db47d0baea75b2710436aa">activateOTAA</a> (<a class="el" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent=NULL)</td></tr>
+<tr class="memitem:a7d07b71509db47d0baea75b2710436aa" id="r_a7d07b71509db47d0baea75b2710436aa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d07b71509db47d0baea75b2710436aa">activateOTAA</a> (<a class="el" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent=NULL)</td></tr>
 <tr class="memdesc:a7d07b71509db47d0baea75b2710436aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring OTAA session or performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <br /></td></tr>
-<tr class="memitem:abc5672878d0d406cd17db1955c9006fa" id="r_abc5672878d0d406cd17db1955c9006fa"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc5672878d0d406cd17db1955c9006fa">activateABP</a> ()</td></tr>
+<tr class="memitem:abc5672878d0d406cd17db1955c9006fa" id="r_abc5672878d0d406cd17db1955c9006fa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc5672878d0d406cd17db1955c9006fa">activateABP</a> ()</td></tr>
 <tr class="memdesc:abc5672878d0d406cd17db1955c9006fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user.  <br /></td></tr>
 <tr class="memitem:a9a44677a1ef7db1216bc482139d6be8d" id="r_a9a44677a1ef7db1216bc482139d6be8d"><td class="memItemLeft" align="right" valign="top"><a id="a9a44677a1ef7db1216bc482139d6be8d" name="a9a44677a1ef7db1216bc482139d6be8d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActivated</b> ()</td></tr>
@@ -301,9 +301,6 @@ Public Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t LoRaWANNode::activateABP </td>
@@ -312,11 +309,6 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user. </p>
@@ -329,9 +321,6 @@ Public Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t LoRaWANNode::activateOTAA </td>
@@ -340,11 +329,6 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Join network by restoring OTAA session or performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration. </p>
@@ -823,9 +807,6 @@ Public Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t LoRaWANNode::loadBuffers </td>
@@ -834,11 +815,6 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Trigger the registered buffer callbacks to restore persistence and session buffers. </p>
