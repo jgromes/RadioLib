@@ -187,8 +187,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:ac5c7f4584352a12390594395d9c29bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word. Only available in LoRa mode.  <br /></td></tr>
 <tr class="memitem:a400575e3d83977bd250c5cb382fc7002" id="r_a400575e3d83977bd250c5cb382fc7002"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a400575e3d83977bd250c5cb382fc7002">setCurrentLimit</a> (uint8_t currentLimit)</td></tr>
 <tr class="memdesc:a400575e3d83977bd250c5cb382fc7002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets current limit for over current protection at transmitter amplifier. Allowed values range from 45 to 120 mA in 5 mA steps and 120 to 240 mA in 10 mA steps.  <br /></td></tr>
-<tr class="memitem:a7653f82a9716b58973cf5d52b1c52e9a" id="r_a7653f82a9716b58973cf5d52b1c52e9a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7653f82a9716b58973cf5d52b1c52e9a">setPreambleLength</a> (size_t len, size_t detLen) override</td></tr>
-<tr class="memdesc:a7653f82a9716b58973cf5d52b1c52e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <br /></td></tr>
+<tr class="memitem:afe7fa66a1b972acc91a4ab439834c3b4" id="r_afe7fa66a1b972acc91a4ab439834c3b4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe7fa66a1b972acc91a4ab439834c3b4">setPreambleLength</a> (size_t len, size_t detLen=0) override</td></tr>
+<tr class="memdesc:afe7fa66a1b972acc91a4ab439834c3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <br /></td></tr>
 <tr class="memitem:a5b79dae55315cdf25e530db77eeb140f" id="r_a5b79dae55315cdf25e530db77eeb140f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b79dae55315cdf25e530db77eeb140f">invertPreamble</a> (bool enable)</td></tr>
 <tr class="memdesc:a5b79dae55315cdf25e530db77eeb140f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.  <br /></td></tr>
 <tr class="memitem:a77a8f1703d5fe2f50dc0c0692fb92189" id="r_a77a8f1703d5fe2f50dc0c0692fb92189"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77a8f1703d5fe2f50dc0c0692fb92189">getFrequencyError</a> (bool autoCorrect=false)</td></tr>
@@ -2468,8 +2468,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a7653f82a9716b58973cf5d52b1c52e9a" name="a7653f82a9716b58973cf5d52b1c52e9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7653f82a9716b58973cf5d52b1c52e9a">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="afe7fa66a1b972acc91a4ab439834c3b4" name="afe7fa66a1b972acc91a4ab439834c3b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe7fa66a1b972acc91a4ab439834c3b4">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2485,7 +2485,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>

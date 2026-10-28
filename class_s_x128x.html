@@ -189,8 +189,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memdesc:ad7bb0f4aa60a600d24d6268b430e719d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <br /></td></tr>
 <tr class="memitem:aa9bb3e346a3f8b30366fb716886bcb07" id="r_aa9bb3e346a3f8b30366fb716886bcb07"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9bb3e346a3f8b30366fb716886bcb07">getMode</a> (RadioModeType_t *mode) override</td></tr>
 <tr class="memdesc:aa9bb3e346a3f8b30366fb716886bcb07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the operating mode the radio is in, as the chip reports it. Unlike PhysicalLayer::stagedMode, which is what was last asked of the radio, this reads the hardware, so a caller can tell a radio that has left a mode on its own - a receive that did not survive a frame, or a chip that lost its state - from one that is still in it.     <br /></td></tr>
-<tr class="memitem:aac8cc587df5deae970034b3ab97a0b3b" id="r_aac8cc587df5deae970034b3ab97a0b3b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac8cc587df5deae970034b3ab97a0b3b">setPreambleLength</a> (size_t len, size_t detLen) override</td></tr>
-<tr class="memdesc:aac8cc587df5deae970034b3ab97a0b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for currently active modem. Allowed values range from 1 to 65535.  <br /></td></tr>
+<tr class="memitem:af48b9a6f33b1ea5ca5106fbb30b29340" id="r_af48b9a6f33b1ea5ca5106fbb30b29340"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af48b9a6f33b1ea5ca5106fbb30b29340">setPreambleLength</a> (size_t len, size_t detLen=0) override</td></tr>
+<tr class="memdesc:af48b9a6f33b1ea5ca5106fbb30b29340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for currently active modem. Allowed values range from 1 to 65535.  <br /></td></tr>
 <tr class="memitem:a1e2a2d40acc497a61a4785de6afd7a5f" id="r_a1e2a2d40acc497a61a4785de6afd7a5f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e2a2d40acc497a61a4785de6afd7a5f">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE) override</td></tr>
 <tr class="memdesc:a1e2a2d40acc497a61a4785de6afd7a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module.  <br /></td></tr>
 <tr class="memitem:afb5f294946a219da04ac04b52f46f7d3" id="r_afb5f294946a219da04ac04b52f46f7d3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb5f294946a219da04ac04b52f46f7d3">setBitRate</a> (uint32_t br) override</td></tr>
@@ -2085,8 +2085,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="aac8cc587df5deae970034b3ab97a0b3b" name="aac8cc587df5deae970034b3ab97a0b3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac8cc587df5deae970034b3ab97a0b3b">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="af48b9a6f33b1ea5ca5106fbb30b29340" name="af48b9a6f33b1ea5ca5106fbb30b29340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af48b9a6f33b1ea5ca5106fbb30b29340">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2102,7 +2102,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>

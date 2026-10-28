@@ -55,7 +55,7 @@ var class_r_f69 =
     [ "setOokThresholdType", "class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a", null ],
     [ "setOutputPower", "class_r_f69.html#a44617b7d35451e082ba4d95e89b2061b", null ],
     [ "setOutputPower", "class_r_f69.html#a6007c61cf9e39a9340f05db7712a8036", null ],
-    [ "setPreambleLength", "class_r_f69.html#aa2de2c63269e7c4a2aa553e8969e852f", null ],
+    [ "setPreambleLength", "class_r_f69.html#a0e1341ad2e63bf9bd80fda2451162d6c", null ],
     [ "setPromiscuousMode", "class_r_f69.html#ae004326d663a9d6a9c30e792aa368b49", null ],
     [ "setRfSwitchPins", "class_r_f69.html#ac341945538a84430c61f80f610a94411", null ],
     [ "setRfSwitchTable", "class_r_f69.html#afff64ceef5f496ce035ff6d12d6bcc3c", null ],
