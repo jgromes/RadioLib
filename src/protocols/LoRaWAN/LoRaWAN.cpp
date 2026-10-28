@@ -3507,7 +3507,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       RADIOLIB_ASSERT(state);
       state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
       RADIOLIB_ASSERT(state);
-      state = this->phyLayer->setPreambleLength(pre ? pre : 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN);
+      state = this->phyLayer->setPreambleLength(pre ? pre : 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN, 16);
       RADIOLIB_ASSERT(state);
 
       syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 16);
