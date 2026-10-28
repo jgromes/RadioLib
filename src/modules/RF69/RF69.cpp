@@ -739,7 +739,7 @@ int16_t RF69::setPreambleLength(size_t preambleLength, size_t preambleDetLength)
   }
 
   uint16_t numBytes = preambleLength / 8;
-  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_MSB, (uint8_t)((numBytes >> 8) & 0xFF));
+  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_MSB, (uint8_t)((numBytes >> 8) & 0xFF));
   state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, (uint8_t)(numBytes & 0xFF));
   return(state);
 }
