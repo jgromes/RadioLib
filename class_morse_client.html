@@ -113,8 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aeade3a433da40e6a9f28688f2e6e3b5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for 2-FSK mode.  <br /></td></tr>
 <tr class="memitem:aa5c8ec6823388877b7acfa0deab689a2" id="r_aa5c8ec6823388877b7acfa0deab689a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5c8ec6823388877b7acfa0deab689a2">MorseClient</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *audio)</td></tr>
 <tr class="memdesc:aa5c8ec6823388877b7acfa0deab689a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <br /></td></tr>
-<tr class="memitem:a516f19bb51b87ead7f7ed149f2ca92cf" id="r_a516f19bb51b87ead7f7ed149f2ca92cf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a516f19bb51b87ead7f7ed149f2ca92cf">begin</a> (float base, uint8_t speed=20)</td></tr>
-<tr class="memdesc:a516f19bb51b87ead7f7ed149f2ca92cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
+<tr class="memitem:a961ba57ac1dcae3ba2f5099883c7e381" id="r_a961ba57ac1dcae3ba2f5099883c7e381"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a961ba57ac1dcae3ba2f5099883c7e381">begin</a> (uint32_t base, uint8_t speed=20)</td></tr>
+<tr class="memdesc:a961ba57ac1dcae3ba2f5099883c7e381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="memitem:a3c718208786f8fe55f30eee990ec28e3" id="r_a3c718208786f8fe55f30eee990ec28e3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c718208786f8fe55f30eee990ec28e3">startSignal</a> ()</td></tr>
 <tr class="memdesc:a3c718208786f8fe55f30eee990ec28e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send start signal.  <br /></td></tr>
 <tr class="memitem:a77eab03be04ef2d693348d9580ee5d3c" id="r_a77eab03be04ef2d693348d9580ee5d3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77eab03be04ef2d693348d9580ee5d3c">read</a> (uint8_t *symbol, uint8_t *len, float low=0.75f, float high=1.25f)</td></tr>
@@ -242,8 +242,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a516f19bb51b87ead7f7ed149f2ca92cf" name="a516f19bb51b87ead7f7ed149f2ca92cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a516f19bb51b87ead7f7ed149f2ca92cf">&#9670;&#160;</a></span>begin()</h2>
+<a id="a961ba57ac1dcae3ba2f5099883c7e381" name="a961ba57ac1dcae3ba2f5099883c7e381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a961ba57ac1dcae3ba2f5099883c7e381">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -251,7 +251,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">int16_t MorseClient::begin </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -264,7 +264,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">base</td><td>Base RF frequency to be used in MHz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode) </td></tr>
+    <tr><td class="paramname">base</td><td>Base RF frequency to be used in Hz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode) </td></tr>
     <tr><td class="paramname">speed</td><td>Coding speed in words per minute. </td></tr>
   </table>
   </dd>

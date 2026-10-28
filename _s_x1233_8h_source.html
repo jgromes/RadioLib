@@ -117,26 +117,24 @@ $(function(){initNavTree('_s_x1233_8h_source.html','',''); });
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    int16_t <a class="code hl_function" href="class_s_x1233.html#ad70c40d546f40267d12c7fca10454d10">begin</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_config_f_s_k__t.html">ConfigFSK_t</a>&amp; config) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    int16_t <a class="code hl_function" href="class_s_x1233.html#ad70c40d546f40267d12c7fca10454d10">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    int16_t <a class="code hl_function" href="class_s_x1233.html#a98e0248cfcca7158261f7ebb31e0aa9f">setBitRate</a>(<span class="keywordtype">float</span> br) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>};</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    int16_t <a class="code hl_function" href="class_s_x1233.html#ab17408744211980476246cdfb7502692">setBitRate</a>(uint32_t br) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
 </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition</b> Module.h:74</div></div>
 <div class="ttc" id="aclass_s_x1231_html_a9f39cd41fa0c934fe871b6cbfa7ce269"><div class="ttname"><a href="class_s_x1231.html#a9f39cd41fa0c934fe871b6cbfa7ce269">SX1231::SX1231</a></div><div class="ttdeci">SX1231(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> SX1231.cpp:4</div></div>
 <div class="ttc" id="aclass_s_x1233_html_a23d2fbf2473e48d46e341e6afe31f82f"><div class="ttname"><a href="class_s_x1233.html#a23d2fbf2473e48d46e341e6afe31f82f">SX1233::SX1233</a></div><div class="ttdeci">SX1233(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> SX1233.cpp:5</div></div>
-<div class="ttc" id="aclass_s_x1233_html_a98e0248cfcca7158261f7ebb31e0aa9f"><div class="ttname"><a href="class_s_x1233.html#a98e0248cfcca7158261f7ebb31e0aa9f">SX1233::setBitRate</a></div><div class="ttdeci">int16_t setBitRate(float br) override</div><div class="ttdoc">Sets bit rate. Allowed values range from 0.5 to 300.0 kbps. SX1233 also allows 500 kbps and 600 kbps ...</div><div class="ttdef"><b>Definition</b> SX1233.cpp:105</div></div>
+<div class="ttc" id="aclass_s_x1233_html_ab17408744211980476246cdfb7502692"><div class="ttname"><a href="class_s_x1233.html#ab17408744211980476246cdfb7502692">SX1233::setBitRate</a></div><div class="ttdeci">int16_t setBitRate(uint32_t br) override</div><div class="ttdoc">Sets bit rate. Allowed values range from 500 bps to 300 kbps. SX1233 also allows 500 kbps and 600 kbp...</div><div class="ttdef"><b>Definition</b> SX1233.cpp:96</div></div>
 <div class="ttc" id="aclass_s_x1233_html_ad70c40d546f40267d12c7fca10454d10"><div class="ttname"><a href="class_s_x1233.html#ad70c40d546f40267d12c7fca10454d10">SX1233::begin</a></div><div class="ttdeci">int16_t begin(const ConfigFSK_t &amp;config) override</div><div class="ttdoc">Initialization method for FSK modem.</div><div class="ttdef"><b>Definition</b> SX1233.cpp:9</div></div>
-<div class="ttc" id="astruct_config_f_s_k__t_html"><div class="ttname"><a href="struct_config_f_s_k__t.html">ConfigFSK_t</a></div><div class="ttdef"><b>Definition</b> PhysicalLayer.h:298</div></div>
+<div class="ttc" id="astruct_config_f_s_k__t_html"><div class="ttname"><a href="struct_config_f_s_k__t.html">ConfigFSK_t</a></div><div class="ttdef"><b>Definition</b> PhysicalLayer.h:307</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

@@ -16,7 +16,7 @@ var class_module =
     [ "getGpio", "class_module.html#a4ec27f0ba5e0009ea9661a5110526b52", null ],
     [ "getIrq", "class_module.html#ab61bc5066c356e2d0d79f08a2bd0fbc9", null ],
     [ "getRst", "class_module.html#ad6cddbf3aebec9717a1a381dd81ad398", null ],
-    [ "init", "class_module.html#ad1956ac81429ec1f61f83dbc081cf18c", null ],
+    [ "init", "class_module.html#ac70b40e32d536419a9057645b846a270", null ],
     [ "operator=", "class_module.html#a4ea888758b4a7784082d513a1e7849a4", null ],
     [ "setRfSwitchPins", "class_module.html#a7d3adea64acab11c47c804afc74bd4f3", null ],
     [ "setRfSwitchState", "class_module.html#afbed643f082286012bf44bba22381ae6", null ],
@@ -34,7 +34,7 @@ var class_module =
     [ "SPIwriteRegisterBurst", "class_module.html#a10809e942c686b4e605269e58bd637b9", null ],
     [ "SPIwriteStream", "class_module.html#af5594e8024d34d2d168413ae5c28e73b", null ],
     [ "SPIwriteStream", "class_module.html#a47e6e0c4e792a5ef7b3bb040947666a6", null ],
-    [ "term", "class_module.html#a45bd514a1f2859d9a867c8f9b13eb332", null ],
+    [ "term", "class_module.html#a01eae6d277a84b401c9c46219822d861", null ],
     [ "waitForMicroseconds", "class_module.html#a7df4c687249c07af2594a5f7ad0a946f", null ],
     [ "hal", "class_module.html#a4483f0a39a523dd1b37b467d81418f7d", null ],
     [ "spiConfig", "class_module.html#a3a4fc4101fb3f134152b458c447b8ecb", null ]

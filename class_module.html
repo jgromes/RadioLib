@@ -137,12 +137,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a919baf2e46c357ebfcdbc1025b6c551e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
 <tr class="memitem:a4ea888758b4a7784082d513a1e7849a4" id="r_a4ea888758b4a7784082d513a1e7849a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_module.html">Module</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ea888758b4a7784082d513a1e7849a4">operator=</a> (const <a class="el" href="class_module.html">Module</a> &amp;mod)</td></tr>
 <tr class="memdesc:a4ea888758b4a7784082d513a1e7849a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload for assignment operator.  <br /></td></tr>
-<tr class="memitem:ad1956ac81429ec1f61f83dbc081cf18c" id="r_ad1956ac81429ec1f61f83dbc081cf18c"><td class="memItemLeft" align="right" valign="top"><a id="ad1956ac81429ec1f61f83dbc081cf18c" name="ad1956ac81429ec1f61f83dbc081cf18c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
-<tr class="memdesc:ad1956ac81429ec1f61f83dbc081cf18c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize low-level module control. <br /></td></tr>
-<tr class="memitem:a45bd514a1f2859d9a867c8f9b13eb332" id="r_a45bd514a1f2859d9a867c8f9b13eb332"><td class="memItemLeft" align="right" valign="top"><a id="a45bd514a1f2859d9a867c8f9b13eb332" name="a45bd514a1f2859d9a867c8f9b13eb332"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>term</b> ()</td></tr>
-<tr class="memdesc:a45bd514a1f2859d9a867c8f9b13eb332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminate low-level module control. <br /></td></tr>
+<tr class="memitem:ac70b40e32d536419a9057645b846a270" id="r_ac70b40e32d536419a9057645b846a270"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac70b40e32d536419a9057645b846a270">init</a> ()</td></tr>
+<tr class="memdesc:ac70b40e32d536419a9057645b846a270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize low-level module control.  <br /></td></tr>
+<tr class="memitem:a01eae6d277a84b401c9c46219822d861" id="r_a01eae6d277a84b401c9c46219822d861"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01eae6d277a84b401c9c46219822d861">term</a> ()</td></tr>
+<tr class="memdesc:a01eae6d277a84b401c9c46219822d861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminate low-level module control.  <br /></td></tr>
 <tr class="memitem:a369e916626c821ecec85f25d5b46d752" id="r_a369e916626c821ecec85f25d5b46d752"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a369e916626c821ecec85f25d5b46d752">SPIgetRegValue</a> (uint32_t reg, uint8_t msb=7, uint8_t lsb=0)</td></tr>
 <tr class="memdesc:a369e916626c821ecec85f25d5b46d752"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI read method that automatically masks unused bits. This method is the preferred SPI read mechanism.  <br /></td></tr>
 <tr class="memitem:aed95fba2ee72d7a2a21f98dd63ae4ad1" id="r_aed95fba2ee72d7a2a21f98dd63ae4ad1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed95fba2ee72d7a2a21f98dd63ae4ad1">SPIsetRegValue</a> (uint32_t reg, uint8_t value, uint8_t msb=7, uint8_t lsb=0, uint8_t checkInterval=2, uint8_t checkMask=0xFF, bool force=false)</td></tr>
@@ -412,6 +410,26 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>RFSWIT
 
 <p>Access method to get the pin number of hardware reset pin. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pin number of hardware reset pin configured in the constructor. </dd></dl>
+
+</div>
+</div>
+<a id="ac70b40e32d536419a9057645b846a270" name="ac70b40e32d536419a9057645b846a270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac70b40e32d536419a9057645b846a270">&#9670;&#160;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Module::init </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize low-level module control. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -1113,6 +1131,26 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>RFSWIT
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a01eae6d277a84b401c9c46219822d861" name="a01eae6d277a84b401c9c46219822d861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01eae6d277a84b401c9c46219822d861">&#9670;&#160;</a></span>term()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Module::term </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Terminate low-level module control. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>

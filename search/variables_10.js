@@ -4,7 +4,7 @@ var searchData=
   ['rate_1',['rate',['../struct_l_r11x0_wifi_result_extended__t.html#a16a6732a8af0332f64c0f6bcc0d5257f',1,'LR11x0WifiResultExtended_t']]],
   ['rcvseqnumber_2',['rcvSeqNumber',['../class_a_x25_frame.html#adce5294af25f09df752997d33ac0e87f',1,'AX25Frame']]],
   ['receive_3',['receive',['../union_radio_mode_config__t.html#adaee7f220247e27d14e45701ff723ad0',1,'RadioModeConfig_t']]],
-  ['receiverbandwidth_4',['receiverBandwidth',['../struct_config_f_s_k__t.html#a4dada4cae203a03057c2f319ab3f27e1',1,'ConfigFSK_t::receiverBandwidth'],['../struct_config_o_o_k__t.html#af4d508e914c6de8fd0686e00986c5ed8',1,'ConfigOOK_t::receiverBandwidth']]],
+  ['receiverbandwidth_4',['receiverBandwidth',['../struct_config_f_s_k__t.html#ae88b0ae94e0ec8d3e8754843d525d86b',1,'ConfigFSK_t::receiverBandwidth'],['../struct_config_o_o_k__t.html#a0be620f4bd5b4b38dbb8e2f7c02bfd47',1,'ConfigOOK_t::receiverBandwidth']]],
   ['refin_5',['refIn',['../class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04',1,'RadioLibCRC']]],
   ['refout_6',['refOut',['../class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087',1,'RadioLibCRC']]],
   ['repeatercallsigns_7',['repeaterCallsigns',['../class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94',1,'AX25Frame']]],

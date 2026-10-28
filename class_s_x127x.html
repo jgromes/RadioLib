@@ -121,8 +121,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7ddbde7fd8eb06d38abfb658eee29bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.  <br /></td></tr>
 <tr class="memitem:a15f510359be44fd633037810587f1ea2" id="r_a15f510359be44fd633037810587f1ea2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15f510359be44fd633037810587f1ea2">reset</a> ()</td></tr>
 <tr class="memdesc:a15f510359be44fd633037810587f1ea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. Should be implemented in derived class since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ.  <br /></td></tr>
-<tr class="memitem:aaaf5973754b63454a598ff7cb02ad14a" id="r_aaaf5973754b63454a598ff7cb02ad14a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaaf5973754b63454a598ff7cb02ad14a">beginFSK</a> (const uint8_t *chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength)</td></tr>
-<tr class="memdesc:aaaf5973754b63454a598ff7cb02ad14a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <br /></td></tr>
+<tr class="memitem:a2952f427570b3ed6f3f7654198b74194" id="r_a2952f427570b3ed6f3f7654198b74194"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2952f427570b3ed6f3f7654198b74194">beginFSK</a> (const uint8_t *chipVersions, uint8_t numVersions, uint32_t freqDev, uint32_t rxBw, uint16_t preambleLength)</td></tr>
+<tr class="memdesc:a2952f427570b3ed6f3f7654198b74194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <br /></td></tr>
 <tr class="memitem:a75cb0d8810a5ce025d3bf5b51ca263d6" id="r_a75cb0d8810a5ce025d3bf5b51ca263d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75cb0d8810a5ce025d3bf5b51ca263d6">transmit</a> (const uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a75cb0d8810a5ce025d3bf5b51ca263d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. For overloads to transmit Arduino String or C-string, see <a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534" title="C-string transmit method.">PhysicalLayer::transmit</a>.  <br /></td></tr>
 <tr class="memitem:a53d6b2d3cb8ce3ebb50adb35430dfd3c" id="r_a53d6b2d3cb8ce3ebb50adb35430dfd3c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53d6b2d3cb8ce3ebb50adb35430dfd3c">receive</a> (uint8_t *data, size_t len, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout=0) override</td></tr>
@@ -153,18 +153,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio0Action</b> (
 <tr class="memitem:a9b6532a25e1730973ac08146008adca5" id="r_a9b6532a25e1730973ac08146008adca5"><td class="memItemLeft" align="right" valign="top"><a id="a9b6532a25e1730973ac08146008adca5" name="a9b6532a25e1730973ac08146008adca5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> ()</td></tr>
 <tr class="memdesc:a9b6532a25e1730973ac08146008adca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
-<tr class="memitem:ae236a467095fb5364d0fc4a98d85f96e" id="r_ae236a467095fb5364d0fc4a98d85f96e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae236a467095fb5364d0fc4a98d85f96e">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
-<tr class="memdesc:ae236a467095fb5364d0fc4a98d85f96e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
-<tr class="memitem:a6cbc4c256d37f9cdabf9e5f2ef16aa92" id="r_a6cbc4c256d37f9cdabf9e5f2ef16aa92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cbc4c256d37f9cdabf9e5f2ef16aa92">clearPacketReceivedAction</a> () override</td></tr>
-<tr class="memdesc:a6cbc4c256d37f9cdabf9e5f2ef16aa92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received.  <br /></td></tr>
-<tr class="memitem:a3530e8e19cfe4d96fe49ca4e6386b099" id="r_a3530e8e19cfe4d96fe49ca4e6386b099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3530e8e19cfe4d96fe49ca4e6386b099">setPacketSentAction</a> (void(*func)(void)) override</td></tr>
-<tr class="memdesc:a3530e8e19cfe4d96fe49ca4e6386b099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <br /></td></tr>
-<tr class="memitem:a2ec32a52b13752d75f3076a5868c312d" id="r_a2ec32a52b13752d75f3076a5868c312d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ec32a52b13752d75f3076a5868c312d">clearPacketSentAction</a> () override</td></tr>
-<tr class="memdesc:a2ec32a52b13752d75f3076a5868c312d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent.  <br /></td></tr>
-<tr class="memitem:ac23c2b384ae8611d59e10ef6a14fe7e4" id="r_ac23c2b384ae8611d59e10ef6a14fe7e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac23c2b384ae8611d59e10ef6a14fe7e4">setChannelScanAction</a> (void(*func)(void)) override</td></tr>
-<tr class="memdesc:ac23c2b384ae8611d59e10ef6a14fe7e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a channel scan is finished.  <br /></td></tr>
-<tr class="memitem:a0ce9beca21406e3556b3518370947ee2" id="r_a0ce9beca21406e3556b3518370947ee2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ce9beca21406e3556b3518370947ee2">clearChannelScanAction</a> () override</td></tr>
-<tr class="memdesc:a0ce9beca21406e3556b3518370947ee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished.  <br /></td></tr>
 <tr class="memitem:a6fbdfd8e2a2ad1eb7e59a73385847acb" id="r_a6fbdfd8e2a2ad1eb7e59a73385847acb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fbdfd8e2a2ad1eb7e59a73385847acb">setFifoEmptyAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a6fbdfd8e2a2ad1eb7e59a73385847acb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is empty.  <br /></td></tr>
 <tr class="memitem:aaa6eb4363badc1c3450ad7a4d11af4b1" id="r_aaa6eb4363badc1c3450ad7a4d11af4b1"><td class="memItemLeft" align="right" valign="top"><a id="aaa6eb4363badc1c3450ad7a4d11af4b1" name="aaa6eb4363badc1c3450ad7a4d11af4b1"></a>
@@ -203,18 +191,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:a844499bace6ae001446d71bee2877656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <br /></td></tr>
 <tr class="memitem:a5b79dae55315cdf25e530db77eeb140f" id="r_a5b79dae55315cdf25e530db77eeb140f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b79dae55315cdf25e530db77eeb140f">invertPreamble</a> (bool enable)</td></tr>
 <tr class="memdesc:a5b79dae55315cdf25e530db77eeb140f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.  <br /></td></tr>
-<tr class="memitem:af6aa854a2668d70f4d3a374a49440362" id="r_af6aa854a2668d70f4d3a374a49440362"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6aa854a2668d70f4d3a374a49440362">getFrequencyError</a> (bool autoCorrect=false)</td></tr>
-<tr class="memdesc:af6aa854a2668d70f4d3a374a49440362"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency error of the latest received packet.  <br /></td></tr>
+<tr class="memitem:a77a8f1703d5fe2f50dc0c0692fb92189" id="r_a77a8f1703d5fe2f50dc0c0692fb92189"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77a8f1703d5fe2f50dc0c0692fb92189">getFrequencyError</a> (bool autoCorrect=false)</td></tr>
+<tr class="memdesc:a77a8f1703d5fe2f50dc0c0692fb92189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency error of the latest received packet.  <br /></td></tr>
 <tr class="memitem:a5094ba2d9268340b7aba99afe5da0544" id="r_a5094ba2d9268340b7aba99afe5da0544"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5094ba2d9268340b7aba99afe5da0544">getAFCError</a> ()</td></tr>
 <tr class="memdesc:a5094ba2d9268340b7aba99afe5da0544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets current AFC error.  <br /></td></tr>
 <tr class="memitem:a47b3f7464303085d34191dd334c1976f" id="r_a47b3f7464303085d34191dd334c1976f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47b3f7464303085d34191dd334c1976f">getSNR</a> () override</td></tr>
 <tr class="memdesc:a47b3f7464303085d34191dd334c1976f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets signal-to-noise ratio of the latest received packet. Only available in LoRa mode.  <br /></td></tr>
-<tr class="memitem:a448ea8a6a6011a9cdddd4e09bd6c9679" id="r_a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a448ea8a6a6011a9cdddd4e09bd6c9679">setFrequencyDeviation</a> (float freqDev) override</td></tr>
-<tr class="memdesc:a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.  <br /></td></tr>
-<tr class="memitem:a2cc53b9f9d90647c5709cb974779cf53" id="r_a2cc53b9f9d90647c5709cb974779cf53"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cc53b9f9d90647c5709cb974779cf53">setRxBandwidth</a> (float rxBw)</td></tr>
-<tr class="memdesc:a2cc53b9f9d90647c5709cb974779cf53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK receiver bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.  <br /></td></tr>
-<tr class="memitem:a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef" id="r_a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef">setAFCBandwidth</a> (float afcBw)</td></tr>
-<tr class="memdesc:a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.  <br /></td></tr>
+<tr class="memitem:a8c8d276e6b98ae48b5e7eae6acfb0279" id="r_a8c8d276e6b98ae48b5e7eae6acfb0279"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c8d276e6b98ae48b5e7eae6acfb0279">setFrequencyDeviation</a> (uint32_t freqDev) override</td></tr>
+<tr class="memdesc:a8c8d276e6b98ae48b5e7eae6acfb0279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.  <br /></td></tr>
+<tr class="memitem:a0495bfa0db8d92535926cc0a388f6ad9" id="r_a0495bfa0db8d92535926cc0a388f6ad9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0495bfa0db8d92535926cc0a388f6ad9">setRxBandwidth</a> (uint32_t rxBw)</td></tr>
+<tr class="memdesc:a0495bfa0db8d92535926cc0a388f6ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK receiver bandwidth. Allowed values range from 5200 Hz to 500 kHz. Only available in FSK mode. NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios, RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet.  <br /></td></tr>
+<tr class="memitem:a15c18b29d4bb99244212f582a054b279" id="r_a15c18b29d4bb99244212f582a054b279"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15c18b29d4bb99244212f582a054b279">setAFCBandwidth</a> (uint32_t afcBw)</td></tr>
+<tr class="memdesc:a15c18b29d4bb99244212f582a054b279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK automatic frequency correction bandwidth. Allowed values range from 5200 to 500 kHz. Only available in FSK mode. NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios, RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet.  <br /></td></tr>
 <tr class="memitem:a41f8cfcc2cdeb25a8e5a03f1ba4edd1e" id="r_a41f8cfcc2cdeb25a8e5a03f1ba4edd1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e">setAFC</a> (bool isEnabled)</td></tr>
 <tr class="memdesc:a41f8cfcc2cdeb25a8e5a03f1ba4edd1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables FSK automatic frequency correction(AFC).  <br /></td></tr>
 <tr class="memitem:ab0f67330124cefc07a462e77922453d0" id="r_ab0f67330124cefc07a462e77922453d0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0f67330124cefc07a462e77922453d0">setAFCAGCTrigger</a> (uint8_t trigger)</td></tr>
@@ -249,14 +237,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:a6fb42d9cd518e9f6408a40753c0be359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in fixed packet length mode. Available in FSK mode only.  <br /></td></tr>
 <tr class="memitem:a1d39296b40e7282ef44d8f376065e92c" id="r_a1d39296b40e7282ef44d8f376065e92c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d39296b40e7282ef44d8f376065e92c">variablePacketLengthMode</a> (uint8_t maxLen=RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)</td></tr>
 <tr class="memdesc:a1d39296b40e7282ef44d8f376065e92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in variable packet length mode. Available in FSK mode only.  <br /></td></tr>
-<tr class="memitem:a655ce24df39a164498977b0f532752f6" id="r_a655ce24df39a164498977b0f532752f6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a655ce24df39a164498977b0f532752f6">getNumSymbols</a> (size_t len, <a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, <a class="el" href="union_packet_config__t.html">PacketConfig_t</a> pc)</td></tr>
-<tr class="memdesc:a655ce24df39a164498977b0f532752f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from bytes to LoRa symbols.  <br /></td></tr>
 <tr class="memitem:a9e7ecbc92c9d70f93211d21399d237d0" id="r_a9e7ecbc92c9d70f93211d21399d237d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e7ecbc92c9d70f93211d21399d237d0">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:a9e7ecbc92c9d70f93211d21399d237d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <br /></td></tr>
 <tr class="memitem:a99cb7d326f6d7effb6301d730a24def1" id="r_a99cb7d326f6d7effb6301d730a24def1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99cb7d326f6d7effb6301d730a24def1">calculateTimeOnAir</a> (ModemType_t modem, <a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, <a class="el" href="union_packet_config__t.html">PacketConfig_t</a> pc, size_t len) override</td></tr>
 <tr class="memdesc:a99cb7d326f6d7effb6301d730a24def1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the expected time-on-air for a given modem, data rate, packet configuration and payload size.  <br /></td></tr>
 <tr class="memitem:adbc4021380dc557114625dc51262cf90" id="r_adbc4021380dc557114625dc51262cf90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbc4021380dc557114625dc51262cf90">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
 <tr class="memdesc:adbc4021380dc557114625dc51262cf90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time).  <br /></td></tr>
+<tr class="memitem:a01b14edcf2eecef2a238bc98b6e38121" id="r_a01b14edcf2eecef2a238bc98b6e38121"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01b14edcf2eecef2a238bc98b6e38121">setLoRaSymbNumTimeout</a> (uint16_t numSymbols)</td></tr>
+<tr class="memdesc:a01b14edcf2eecef2a238bc98b6e38121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will abort reception if no valid preamble/header is detected within this many LoRa symbols. Only available in LoRa mode.  <br /></td></tr>
 <tr class="memitem:a22de05835dda9ed287ec48f60ef91f55" id="r_a22de05835dda9ed287ec48f60ef91f55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22de05835dda9ed287ec48f60ef91f55">getIrqFlags</a> () override</td></tr>
 <tr class="memdesc:a22de05835dda9ed287ec48f60ef91f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read currently active IRQ flags.  <br /></td></tr>
 <tr class="memitem:aae42b94ab2ecf729f29f101222e97666" id="r_aae42b94ab2ecf729f29f101222e97666"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae42b94ab2ecf729f29f101222e97666">setIrqFlags</a> (uint32_t irq) override</td></tr>
@@ -337,16 +325,26 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
-<tr class="memitem:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer" id="r_a8a194b0fbb66b1a953288bf3b9478d6e"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8a194b0fbb66b1a953288bf3b9478d6e">setFrequency</a> (float freq)</td></tr>
-<tr class="memdesc:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <br /></td></tr>
-<tr class="memitem:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer" id="r_aedd39ad84b45c6392087b12d59192d8c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">setBitRate</a> (float br)</td></tr>
-<tr class="memdesc:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <br /></td></tr>
+<tr class="memitem:accb7023250751f2a79f61ff0de5b40f8 inherit pub_methods_class_physical_layer" id="r_accb7023250751f2a79f61ff0de5b40f8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#accb7023250751f2a79f61ff0de5b40f8">setFrequency</a> (uint32_t freq)</td></tr>
+<tr class="memdesc:accb7023250751f2a79f61ff0de5b40f8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <br /></td></tr>
+<tr class="memitem:a83e1213e3553b00a3261572c53af6492 inherit pub_methods_class_physical_layer" id="r_a83e1213e3553b00a3261572c53af6492"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a83e1213e3553b00a3261572c53af6492">setBitRate</a> (uint32_t br)</td></tr>
+<tr class="memdesc:a83e1213e3553b00a3261572c53af6492 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <br /></td></tr>
+<tr class="memitem:a907472cb180263007e080b1ae6c07e8c inherit pub_methods_class_physical_layer" id="r_a907472cb180263007e080b1ae6c07e8c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a907472cb180263007e080b1ae6c07e8c">setSpreadingFactor</a> (uint8_t sf)</td></tr>
+<tr class="memdesc:a907472cb180263007e080b1ae6c07e8c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Must be implemented in module class.  <br /></td></tr>
+<tr class="memitem:ae48f79a11fee8f600601a13e78cdca95 inherit pub_methods_class_physical_layer" id="r_ae48f79a11fee8f600601a13e78cdca95"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae48f79a11fee8f600601a13e78cdca95">setBandwidth</a> (uint32_t bw)</td></tr>
+<tr class="memdesc:ae48f79a11fee8f600601a13e78cdca95 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa bandwidth. Must be implemented in module class.  <br /></td></tr>
+<tr class="memitem:af8dd2e8b41f7b23d5b407e197d3a8889 inherit pub_methods_class_physical_layer" id="r_af8dd2e8b41f7b23d5b407e197d3a8889"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af8dd2e8b41f7b23d5b407e197d3a8889">setCodingRate</a> (uint8_t cr, bool longInterleave=false)</td></tr>
+<tr class="memdesc:af8dd2e8b41f7b23d5b407e197d3a8889 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Must be implemented in module class.  <br /></td></tr>
+<tr class="memitem:a4653baad41c2808c4ffd1c5c31b3cccb inherit pub_methods_class_physical_layer" id="r_a4653baad41c2808c4ffd1c5c31b3cccb"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4653baad41c2808c4ffd1c5c31b3cccb">setLrFhssConfig</a> (uint8_t bw, uint8_t cr, bool narrowGrid, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</td></tr>
+<tr class="memdesc:a4653baad41c2808c4ffd1c5c31b3cccb inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LR-FHSS configuration. Must be implemented in module class.  <br /></td></tr>
 <tr class="memitem:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer" id="r_aeba04366a0cf05ff3d8227c4f7c8e1e9"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">setDataShaping</a> (uint8_t sh)</td></tr>
 <tr class="memdesc:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.  <br /></td></tr>
 <tr class="memitem:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer" id="r_ad2286dc78dbf8e3084f38e9159b99ae5"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output power. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="memitem:a1784cb227d04b3f2846625fda6797536 inherit pub_methods_class_physical_layer" id="r_a1784cb227d04b3f2846625fda6797536"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">checkOutputPower</a> (int8_t power, int8_t *clipped)</td></tr>
-<tr class="memdesc:a1784cb227d04b3f2846625fda6797536 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. Must be implemented in module class if the module supports it.  <br /></td></tr>
+<tr class="memitem:a9652a9962eccc4d7790dc1a79cf8f212 inherit pub_methods_class_physical_layer" id="r_a9652a9962eccc4d7790dc1a79cf8f212"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212">setOutputPowerOffset</a> (int8_t offset)</td></tr>
+<tr class="memdesc:a9652a9962eccc4d7790dc1a79cf8f212 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets offset of the output power. Useful for devices where the radio has an external power amplifier, or of the RF system has a known loss between the radio and the antenna. NOTE: This method must be called BEFORE any calls to radio.begin() or radio.setOutputPower() for the offset to be applied!  <br /></td></tr>
+<tr class="memitem:a9fded145c4805d930fbf04624a48e9e7 inherit pub_methods_class_physical_layer" id="r_a9fded145c4805d930fbf04624a48e9e7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a9fded145c4805d930fbf04624a48e9e7">setOutputPowerOffset</a> (const int8_t *lut, size_t steps)</td></tr>
+<tr class="memdesc:a9fded145c4805d930fbf04624a48e9e7 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets offset of the output power. Useful for devices where the radio has an external power amplifier, or of the RF system has a known loss between the radio and the antenna. This overload allows to compensate a non-linear PA gain, dependant on the radio power output via a lookup table. NOTE: This method must be called BEFORE any calls to radio.begin() or radio.setOutputPower() for the offset to be applied!  <br /></td></tr>
 <tr class="memitem:ac5f1e0c24d8bf878f2c9fe729b6e1610 inherit pub_methods_class_physical_layer" id="r_ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ac5f1e0c24d8bf878f2c9fe729b6e1610">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
 <tr class="memdesc:ac5f1e0c24d8bf878f2c9fe729b6e1610 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="memitem:a9c5c902d9f8ffe9866b7f178b14d34f6 inherit pub_methods_class_physical_layer" id="r_a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a9c5c902d9f8ffe9866b7f178b14d34f6">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
@@ -385,6 +383,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqActio
 <tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <br /></td></tr>
 <tr class="memitem:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer" id="r_a0d83458a1ead113b4c224ce8265ce8e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a0d83458a1ead113b4c224ce8265ce8e4">calculateRxDutyCycle</a> (size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, <a class="el" href="union_data_rate__t.html">DataRate_t</a> *dr, uint32_t *wakePeriod, uint32_t *sleepPeriod)</td></tr>
 <tr class="memdesc:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems.  <br /></td></tr>
+<tr class="memitem:af17bc2be109e9c7701110fc8e609bf6a inherit pub_methods_class_physical_layer" id="r_af17bc2be109e9c7701110fc8e609bf6a"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af17bc2be109e9c7701110fc8e609bf6a">getOutputPowerMin</a> () const</td></tr>
+<tr class="memdesc:af17bc2be109e9c7701110fc8e609bf6a inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the minimum output power supported by the radio. This includes any previously configured PA offset.  <br /></td></tr>
+<tr class="memitem:a32232696fb4db81d01d2c20f4bee19c5 inherit pub_methods_class_physical_layer" id="r_a32232696fb4db81d01d2c20f4bee19c5"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a32232696fb4db81d01d2c20f4bee19c5">getOutputPowerMax</a> () const</td></tr>
+<tr class="memdesc:a32232696fb4db81d01d2c20f4bee19c5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum output power supported by the radio. This includes any previously configured PA offset.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -404,6 +406,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>maxPacketLength</b>
 <tr class="memitem:ga63e5835884b277627e888244503f625c inherit pub_attribs_class_physical_layer" id="r_ga63e5835884b277627e888244503f625c"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = true</td></tr>
 <tr class="memdesc:ga63e5835884b277627e888244503f625c inherit pub_attribs_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to reset the module on startup. Setting to false allows to restore radio operation by calling begin after deep sleep mode on some platforms (like ESP32). <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_class_physical_layer"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_class_physical_layer')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Static Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
+<tr class="memitem:a5dda482111d93d21a4d464d9fea4c7bd inherit pub_static_methods_class_physical_layer" id="r_a5dda482111d93d21a4d464d9fea4c7bd"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5dda482111d93d21a4d464d9fea4c7bd">getNumSymbols</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, <a class="el" href="union_packet_config__t.html">PacketConfig_t</a> pc, size_t len)</td></tr>
+<tr class="memdesc:a5dda482111d93d21a4d464d9fea4c7bd inherit pub_static_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from bytes to LoRa symbols.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> series. All derived classes for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> (e.g. <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> or <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a>) inherit from this base class. This class should not be instantiated directly from Arduino sketch, only from its derived classes. </p>
@@ -485,8 +493,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="aaaf5973754b63454a598ff7cb02ad14a" name="aaaf5973754b63454a598ff7cb02ad14a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaf5973754b63454a598ff7cb02ad14a">&#9670;&#160;</a></span>beginFSK()</h2>
+<a id="a2952f427570b3ed6f3f7654198b74194" name="a2952f427570b3ed6f3f7654198b74194"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2952f427570b3ed6f3f7654198b74194">&#9670;&#160;</a></span>beginFSK()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,12 +512,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>freqDev</em></span>, </td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>freqDev</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rxBw</em></span>, </td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>rxBw</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -623,35 +631,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a0ce9beca21406e3556b3518370947ee2" name="a0ce9beca21406e3556b3518370947ee2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ce9beca21406e3556b3518370947ee2">&#9670;&#160;</a></span>clearChannelScanAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::clearChannelScanAction </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clears interrupt service routine to call when a channel scan is finished. </p>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">PhysicalLayer</a>.</p>
-
-</div>
-</div>
 <a id="aa3eae13a7f0558c1bc881abebd958242" name="aa3eae13a7f0558c1bc881abebd958242"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3eae13a7f0558c1bc881abebd958242">&#9670;&#160;</a></span>clearIrqFlags()</h2>
 
@@ -685,64 +664,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ac282bb78da4f4da4661dce191cbd6d87">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a6cbc4c256d37f9cdabf9e5f2ef16aa92" name="a6cbc4c256d37f9cdabf9e5f2ef16aa92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cbc4c256d37f9cdabf9e5f2ef16aa92">&#9670;&#160;</a></span>clearPacketReceivedAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::clearPacketReceivedAction </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clears interrupt service routine to call when a packet is received. </p>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a7edf27f03600b96f72f011fc82fa4ef9">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a2ec32a52b13752d75f3076a5868c312d" name="a2ec32a52b13752d75f3076a5868c312d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ec32a52b13752d75f3076a5868c312d">&#9670;&#160;</a></span>clearPacketSentAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::clearPacketSentAction </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clears interrupt service routine to call when a packet is sent. </p>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1106,14 +1027,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="af6aa854a2668d70f4d3a374a49440362" name="af6aa854a2668d70f4d3a374a49440362"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6aa854a2668d70f4d3a374a49440362">&#9670;&#160;</a></span>getFrequencyError()</h2>
+<a id="a77a8f1703d5fe2f50dc0c0692fb92189" name="a77a8f1703d5fe2f50dc0c0692fb92189"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77a8f1703d5fe2f50dc0c0692fb92189">&#9670;&#160;</a></span>getFrequencyError()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float SX127x::getFrequencyError </td>
+          <td class="memname">int32_t SX127x::getFrequencyError </td>
           <td>(</td>
           <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>autoCorrect</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span></td><td>)</td>
           <td></td>
@@ -1302,43 +1223,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 <p>Reads modem status. Only available in LoRa mode. </p>
 <dl class="section return"><dt>Returns</dt><dd>Modem status. </dd></dl>
-
-</div>
-</div>
-<a id="a655ce24df39a164498977b0f532752f6" name="a655ce24df39a164498977b0f532752f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a655ce24df39a164498977b0f532752f6">&#9670;&#160;</a></span>getNumSymbols()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float SX127x::getNumSymbols </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a></td>          <td class="paramname"><span class="paramname"><em>dr</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="union_packet_config__t.html">PacketConfig_t</a></td>          <td class="paramname"><span class="paramname"><em>pc</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert from bytes to LoRa symbols. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
-    <tr><td class="paramname">dr</td><td>Data rate. </td></tr>
-    <tr><td class="paramname">pc</td><td>Packet configuration. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The total number of LoRa symbols, including preamble, sync and possible header. </dd></dl>
 
 </div>
 </div>
@@ -1906,8 +1790,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef" name="a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef">&#9670;&#160;</a></span>setAFCBandwidth()</h2>
+<a id="a15c18b29d4bb99244212f582a054b279" name="a15c18b29d4bb99244212f582a054b279"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15c18b29d4bb99244212f582a054b279">&#9670;&#160;</a></span>setAFCBandwidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1915,16 +1799,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="memname">int16_t SX127x::setAFCBandwidth </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>afcBw</em></span></td><td>)</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>afcBw</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode. </p>
+<p>Sets FSK automatic frequency correction bandwidth. Allowed values range from 5200 to 500 kHz. Only available in FSK mode. NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios, RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">afcBw</td><td>Receiver AFC bandwidth to be set (in kHz). </td></tr>
+    <tr><td class="paramname">afcBw</td><td>Receiver AFC bandwidth to be set (in Hz). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1955,41 +1839,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="ac23c2b384ae8611d59e10ef6a14fe7e4" name="ac23c2b384ae8611d59e10ef6a14fe7e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac23c2b384ae8611d59e10ef6a14fe7e4">&#9670;&#160;</a></span>setChannelScanAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::setChannelScanAction </td>
-          <td>(</td>
-          <td class="paramtype">void(*</td>          <td class="paramname"><span class="paramname"><em>func&#160;</em></span>)(void)</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when a channel scan is finished. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2334,8 +2183,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a448ea8a6a6011a9cdddd4e09bd6c9679" name="a448ea8a6a6011a9cdddd4e09bd6c9679"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a448ea8a6a6011a9cdddd4e09bd6c9679">&#9670;&#160;</a></span>setFrequencyDeviation()</h2>
+<a id="a8c8d276e6b98ae48b5e7eae6acfb0279" name="a8c8d276e6b98ae48b5e7eae6acfb0279"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c8d276e6b98ae48b5e7eae6acfb0279">&#9670;&#160;</a></span>setFrequencyDeviation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2346,7 +2195,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="memname">int16_t SX127x::setFrequencyDeviation </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>freqDev</em></span></td><td>)</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>freqDev</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2360,13 +2209,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz). </td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set in Hz. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6928bc73fc2740031df54434c9aac7ed">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2403,6 +2252,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af88dcb54dc8e9a1edaf9f1c3e5ee2b74">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a01b14edcf2eecef2a238bc98b6e38121" name="a01b14edcf2eecef2a238bc98b6e38121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01b14edcf2eecef2a238bc98b6e38121">&#9670;&#160;</a></span>setLoRaSymbNumTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::setLoRaSymbNumTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>numSymbols</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the LoRa sync (symbol-number) timeout. In single reception mode, the radio will abort reception if no valid preamble/header is detected within this many LoRa symbols. Only available in LoRa mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numSymbols</td><td>Number of LoRa symbols to wait for (0 - 1023). Set to 0 to disable the timeout. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -2593,76 +2468,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="ae236a467095fb5364d0fc4a98d85f96e" name="ae236a467095fb5364d0fc4a98d85f96e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae236a467095fb5364d0fc4a98d85f96e">&#9670;&#160;</a></span>setPacketReceivedAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::setPacketReceivedAction </td>
-          <td>(</td>
-          <td class="paramtype">void(*</td>          <td class="paramname"><span class="paramname"><em>func&#160;</em></span>)(void)</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when a packet is received. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#aec928bb26f65752aa20cd236fbabb95c">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a3530e8e19cfe4d96fe49ca4e6386b099" name="a3530e8e19cfe4d96fe49ca4e6386b099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3530e8e19cfe4d96fe49ca4e6386b099">&#9670;&#160;</a></span>setPacketSentAction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::setPacketSentAction </td>
-          <td>(</td>
-          <td class="paramtype">void(*</td>          <td class="paramname"><span class="paramname"><em>func&#160;</em></span>)(void)</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when a packet is sent. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">PhysicalLayer</a>.</p>
-
-</div>
-</div>
 <a id="a844499bace6ae001446d71bee2877656" name="a844499bace6ae001446d71bee2877656"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a844499bace6ae001446d71bee2877656">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
@@ -2845,8 +2650,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a2cc53b9f9d90647c5709cb974779cf53" name="a2cc53b9f9d90647c5709cb974779cf53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cc53b9f9d90647c5709cb974779cf53">&#9670;&#160;</a></span>setRxBandwidth()</h2>
+<a id="a0495bfa0db8d92535926cc0a388f6ad9" name="a0495bfa0db8d92535926cc0a388f6ad9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0495bfa0db8d92535926cc0a388f6ad9">&#9670;&#160;</a></span>setRxBandwidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2854,16 +2659,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="memname">int16_t SX127x::setRxBandwidth </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rxBw</em></span></td><td>)</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>rxBw</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets FSK receiver bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode. </p>
+<p>Sets FSK receiver bandwidth. Allowed values range from 5200 Hz to 500 kHz. Only available in FSK mode. NOTE: The values in datasheet (2.6 kHz etc.) are single-sideband (SSB)! For consistency with other radios, RadioLib uses dual-sideband (DSB) values, which are double than what is listed in the datasheet. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set (in kHz). </td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set in Hz. </td></tr>
   </table>
   </dd>
 </dl>

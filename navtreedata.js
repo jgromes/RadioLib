@@ -26,7 +26,6 @@ var NAVTREE =
 [
   [ "RadioLib", "index.html", [
     [ "RadioLib Documentation", "index.html", null ],
-    [ "Deprecated List", "deprecated.html", null ],
     [ "Todo List", "todo.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Classes", "annotated.html", [
@@ -56,14 +55,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_d_s_b_8h_source.html",
-"class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5",
-"class_l_r2021.html#aca2d2d22e793e32c50efd5f01881979e",
-"class_pi_hal.html#a162b953dbc7bb96be6d7ec037c4d465e",
-"class_s_x1262.html#aa455a7f0e69abdcca55cf35388d9dc52",
-"class_s_x127x.html#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e",
-"classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514",
-"group__status__codes.html#ga8b424bb8992a6ac80e2ba46667bf9c6e",
-"struct_l_r11x0_wifi_result_extended__t.html#ae689651117f96ba356caea064cdeb191"
+"class_l_l_c_c68.html#aec65cb4a7a577c46573c9b0757dc52f4",
+"class_l_rxxxx.html#a7a11e112ff2749eeaa9d04294bc2c80c",
+"class_r_f69.html#a0d7b67499462777f7909860405ca6b62",
+"class_s_x126x.html#a423c69b84a17ee7ff5bbc0effc03733b",
+"class_s_x1281.html",
+"functions_i.html",
+"lr1120__transceiver__0102_8h_source.html",
+"struct_multicast_group__t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

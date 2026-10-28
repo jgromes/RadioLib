@@ -6,7 +6,7 @@ var struct_lo_ra_w_a_n_event__t =
     [ "dir", "struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805", null ],
     [ "fCnt", "struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846", null ],
     [ "fPort", "struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513", null ],
-    [ "freq", "struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33", null ],
+    [ "freq", "struct_lo_ra_w_a_n_event__t.html#a3159eb2f3b084e28fbc5bc1cd130ce63", null ],
     [ "frmPending", "struct_lo_ra_w_a_n_event__t.html#afe256fb2ed02e2ffdf0ae85f92951778", null ],
     [ "mcGroupId", "struct_lo_ra_w_a_n_event__t.html#ae736b2264c2727af7eb6a2ff47a491e9", null ],
     [ "multicast", "struct_lo_ra_w_a_n_event__t.html#aa33f78c5a3133dc16a3f692e9d473fc8", null ],

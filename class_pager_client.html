@@ -102,8 +102,8 @@ $(function(){initNavTree('class_pager_client.html','','class_pager_client-member
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f978120467b13104fb356e9b7d855ec" id="r_a9f978120467b13104fb356e9b7d855ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f978120467b13104fb356e9b7d855ec">PagerClient</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy)</td></tr>
 <tr class="memdesc:a9f978120467b13104fb356e9b7d855ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="memitem:a1a1dc569f9b60b0ddd6ead7af5a8244f" id="r_a1a1dc569f9b60b0ddd6ead7af5a8244f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a1dc569f9b60b0ddd6ead7af5a8244f">begin</a> (float base, uint16_t speed, bool invert=false, uint16_t shift=RADIOLIB_PAGER_FREQ_SHIFT_HZ)</td></tr>
-<tr class="memdesc:a1a1dc569f9b60b0ddd6ead7af5a8244f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
+<tr class="memitem:a8c8dd82947525492e53bc03415efc97c" id="r_a8c8dd82947525492e53bc03415efc97c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c8dd82947525492e53bc03415efc97c">begin</a> (uint32_t base, uint16_t speed, bool invert=false, uint16_t shift=RADIOLIB_PAGER_FREQ_SHIFT_HZ)</td></tr>
+<tr class="memdesc:a8c8dd82947525492e53bc03415efc97c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="memitem:a8f9af4c0a5c2e9de7cdfa1a907479111" id="r_a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f9af4c0a5c2e9de7cdfa1a907479111">sendTone</a> (uint32_t addr)</td></tr>
 <tr class="memdesc:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to send a tone-only alert to a destination pager.  <br /></td></tr>
 <tr class="memitem:adbab4e162a5719bd4407a42a85d26ff6" id="r_adbab4e162a5719bd4407a42a85d26ff6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbab4e162a5719bd4407a42a85d26ff6">transmit</a> (const char *str, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD, uint8_t function=RADIOLIB_PAGER_FUNC_AUTO)</td></tr>
@@ -176,8 +176,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1a1dc569f9b60b0ddd6ead7af5a8244f" name="a1a1dc569f9b60b0ddd6ead7af5a8244f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a1dc569f9b60b0ddd6ead7af5a8244f">&#9670;&#160;</a></span>begin()</h2>
+<a id="a8c8dd82947525492e53bc03415efc97c" name="a8c8dd82947525492e53bc03415efc97c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c8dd82947525492e53bc03415efc97c">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,7 +185,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">int16_t PagerClient::begin </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -208,7 +208,7 @@ Public Member Functions</h2></td></tr>
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">base</td><td>Base (center) frequency to be used in MHz. </td></tr>
+    <tr><td class="paramname">base</td><td>Base (center) RF frequency to be used in Hz. </td></tr>
     <tr><td class="paramname">speed</td><td>Bit rate to use in bps. Common POCSAG decoders can receive 512, 1200 and 2400 bps. </td></tr>
     <tr><td class="paramname">invert</td><td>Enable frequency inversion. Disabled by default (high frequency is digital 0). </td></tr>
     <tr><td class="paramname">shift</td><td>Set custom frequency shift, defaults to 4500 Hz. </td></tr>

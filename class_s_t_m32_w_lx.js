@@ -9,16 +9,7 @@ var class_s_t_m32_w_lx =
     ] ],
     [ "STM32WLx", "class_s_t_m32_w_lx.html#ace55504c02a5b4d8ccf879f015f36daf", null ],
     [ "begin", "class_s_t_m32_w_lx.html#abb970198959a03b3e66f2e8398a8b5ca", null ],
-    [ "begin", "class_s_t_m32_w_lx.html#a8a326d469313286aa165730cf41d4994", null ],
     [ "beginFSK", "class_s_t_m32_w_lx.html#ab15b7a3bb0f9c7498395806c0f86cd6a", null ],
-    [ "beginFSK", "class_s_t_m32_w_lx.html#ae7f54bfff828901c4effbcc38ca8edc8", null ],
-    [ "checkOutputPower", "class_s_t_m32_w_lx.html#a9e11cfc715bbc14620022adce2ea55a3", null ],
-    [ "clearChannelScanAction", "class_s_t_m32_w_lx.html#a366a83d5f5ed02859717a83c21768378", null ],
-    [ "clearPacketReceivedAction", "class_s_t_m32_w_lx.html#aad377b018cf65ceb6b23cac523ba96b4", null ],
-    [ "clearPacketSentAction", "class_s_t_m32_w_lx.html#ac11d53d29bf5a845e3797ba6bb875930", null ],
-    [ "setChannelScanAction", "class_s_t_m32_w_lx.html#a119ad225f9eba91e7c38f82cf0f1c89d", null ],
     [ "setOutputPower", "class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b", null ],
-    [ "setPacketReceivedAction", "class_s_t_m32_w_lx.html#ad23dafdeb21b97165be74ef8f093866c", null ],
-    [ "setPacketSentAction", "class_s_t_m32_w_lx.html#a7c0e3aef03f0b6834d0465d8f8568c32", null ],
     [ "setRfSwitchTable", "class_s_t_m32_w_lx.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7", null ]
 ];

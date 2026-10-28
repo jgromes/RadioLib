@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tcxovoltage_0',['tcxoVoltage',['../group__module__config__vars.html#ga8eff22b47287190493da17e534ce6771',1,'LR11x0::tcxoVoltage'],['../group__module__config__vars.html#gafa0ddfa02dd6b2c107e46dcbb8ed13e1',1,'LR2021::tcxoVoltage'],['../group__module__config__vars.html#ga8f778ea6a60a20470dd9a4c7be25817c',1,'SX126x::tcxoVoltage']]],
+  ['tcxovoltage_0',['tcxoVoltage',['../group__module__config__vars.html#ga3054f6622929f29fdbce2b701b623f2c',1,'LR11x0::tcxoVoltage'],['../group__module__config__vars.html#gaa07f2b37f975f4b9eacf5b49425eb62f',1,'LR2021::tcxoVoltage'],['../group__module__config__vars.html#ga20ae13922076d85c17e9ffda727fe3e7',1,'SX126x::tcxoVoltage']]],
   ['timeout_1',['timeout',['../struct_module_1_1_s_p_i_config__t.html#a56ecc0b9c1207d655c581e90faa77bb5',1,'Module::SPIConfig_t::timeout'],['../struct_c_a_d_scan_config__t.html#a44223617e2d046318e75f863c618e26c',1,'CADScanConfig_t::timeout'],['../struct_receive_config__t.html#a8a9ce1e992fda95d10e7c5de9de05dac',1,'ReceiveConfig_t::timeout']]],
   ['timestamp_2',['timestamp',['../struct_l_r11x0_wifi_result_full__t.html#a4fbd2bfd834c890da47ab94c6f688738',1,'LR11x0WifiResultFull_t']]],
   ['todistributionsystem_3',['toDistributionSystem',['../struct_l_r11x0_wifi_result_full__t.html#abe8e8b5e22a75ac988de6f98afa5fd61',1,'LR11x0WifiResultFull_t']]],

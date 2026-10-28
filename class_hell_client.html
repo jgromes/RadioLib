@@ -113,8 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6e3ed5db1904f3f9602e20c3c0d0cbd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for 2-FSK mode.  <br /></td></tr>
 <tr class="memitem:afeb347f04148700427ad40614fd057c3" id="r_afeb347f04148700427ad40614fd057c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afeb347f04148700427ad40614fd057c3">HellClient</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *audio)</td></tr>
 <tr class="memdesc:afeb347f04148700427ad40614fd057c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <br /></td></tr>
-<tr class="memitem:a225775fe87f9ed3c3a04142697641242" id="r_a225775fe87f9ed3c3a04142697641242"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a225775fe87f9ed3c3a04142697641242">begin</a> (float base, float rate=122.5)</td></tr>
-<tr class="memdesc:a225775fe87f9ed3c3a04142697641242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
+<tr class="memitem:a3d42f11736f76133550821ff6dba8a9e" id="r_a3d42f11736f76133550821ff6dba8a9e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d42f11736f76133550821ff6dba8a9e">begin</a> (uint32_t base, float rate=122.5)</td></tr>
+<tr class="memdesc:a3d42f11736f76133550821ff6dba8a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
 <tr class="memitem:a68c4a74910756ad251e626a0b4c8c267" id="r_a68c4a74910756ad251e626a0b4c8c267"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68c4a74910756ad251e626a0b4c8c267">printGlyph</a> (const uint8_t *buff)</td></tr>
 <tr class="memdesc:a68c4a74910756ad251e626a0b4c8c267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to "print" a buffer of pixels, this is exposed to allow users to send custom characters.  <br /></td></tr>
 <tr class="memitem:ae43025b9d55ee21a322bb5d7ee1065b0" id="r_ae43025b9d55ee21a322bb5d7ee1065b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae43025b9d55ee21a322bb5d7ee1065b0">setInversion</a> (bool inv)</td></tr>
@@ -237,8 +237,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (void)<
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a225775fe87f9ed3c3a04142697641242" name="a225775fe87f9ed3c3a04142697641242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a225775fe87f9ed3c3a04142697641242">&#9670;&#160;</a></span>begin()</h2>
+<a id="a3d42f11736f76133550821ff6dba8a9e" name="a3d42f11736f76133550821ff6dba8a9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d42f11736f76133550821ff6dba8a9e">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +246,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (void)<
         <tr>
           <td class="memname">int16_t HellClient::begin </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -259,7 +259,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (void)<
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">base</td><td>Base RF frequency to be used in MHz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode). </td></tr>
+    <tr><td class="paramname">base</td><td>Base RF frequency to be used in Hz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode). </td></tr>
     <tr><td class="paramname">rate</td><td>Baud rate to be used during transmission. Defaults to 122.5 ("Feld Hell") </td></tr>
   </table>
   </dd>

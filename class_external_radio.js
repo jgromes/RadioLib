@@ -7,6 +7,6 @@ var class_external_radio =
     [ "operator=", "class_external_radio.html#aee6ca3af0849aed193e96cb0691e89e0", null ],
     [ "setDataShaping", "class_external_radio.html#abe0bfb0f178783eff28bdc867e9324fd", null ],
     [ "setEncoding", "class_external_radio.html#ae619f011daea49a97098d2897e5a3c2c", null ],
-    [ "setFrequencyDeviation", "class_external_radio.html#a02928a19eab0eab615c02180cedda3eb", null ],
+    [ "setFrequencyDeviation", "class_external_radio.html#a950358630ff6d7ac6fc799e7fb006013", null ],
     [ "transmitDirect", "class_external_radio.html#a25be77aea48cfbdcae05ed32b660daef", null ]
 ];

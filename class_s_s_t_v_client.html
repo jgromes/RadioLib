@@ -104,8 +104,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af15cf501c00172270d2d2c43d7a7100a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for 2-FSK mode.  <br /></td></tr>
 <tr class="memitem:a99e46bec8403dfc36b9e5b102b1f7cf1" id="r_a99e46bec8403dfc36b9e5b102b1f7cf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99e46bec8403dfc36b9e5b102b1f7cf1">SSTVClient</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *audio)</td></tr>
 <tr class="memdesc:a99e46bec8403dfc36b9e5b102b1f7cf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <br /></td></tr>
-<tr class="memitem:a3769dcdebf8b1fa01eb2d8bd2bb3815a" id="r_a3769dcdebf8b1fa01eb2d8bd2bb3815a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3769dcdebf8b1fa01eb2d8bd2bb3815a">begin</a> (float base, const <a class="el" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> &amp;mode)</td></tr>
-<tr class="memdesc:a3769dcdebf8b1fa01eb2d8bd2bb3815a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for 2-FSK.  <br /></td></tr>
+<tr class="memitem:a5a337ae887264a7b692d127b7ae93eeb" id="r_a5a337ae887264a7b692d127b7ae93eeb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a337ae887264a7b692d127b7ae93eeb">begin</a> (uint32_t base, const <a class="el" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> &amp;mode)</td></tr>
+<tr class="memdesc:a5a337ae887264a7b692d127b7ae93eeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for 2-FSK.  <br /></td></tr>
 <tr class="memitem:afd4257e858a88e5847854a46f166a9b0" id="r_afd4257e858a88e5847854a46f166a9b0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd4257e858a88e5847854a46f166a9b0">begin</a> (const <a class="el" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> &amp;mode)</td></tr>
 <tr class="memdesc:afd4257e858a88e5847854a46f166a9b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for AFSK.  <br /></td></tr>
 <tr class="memitem:a0e9cc17123f26d1e7ae2a2b93546515e" id="r_a0e9cc17123f26d1e7ae2a2b93546515e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e9cc17123f26d1e7ae2a2b93546515e">setCorrection</a> (float correction)</td></tr>
@@ -217,8 +217,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendHeader</b> ()</td
 
 </div>
 </div>
-<a id="a3769dcdebf8b1fa01eb2d8bd2bb3815a" name="a3769dcdebf8b1fa01eb2d8bd2bb3815a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3769dcdebf8b1fa01eb2d8bd2bb3815a">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
+<a id="a5a337ae887264a7b692d127b7ae93eeb" name="a5a337ae887264a7b692d127b7ae93eeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a337ae887264a7b692d127b7ae93eeb">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,7 +226,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendHeader</b> ()</td
         <tr>
           <td class="memname">int16_t SSTVClient::begin </td>
           <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>base</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -239,7 +239,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendHeader</b> ()</td
 <p>Initialization method for 2-FSK. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">base</td><td>Base "0 Hz tone" RF frequency to be used in MHz. </td></tr>
+    <tr><td class="paramname">base</td><td>Base "0 Hz tone" RF frequency to be used in Hz. </td></tr>
     <tr><td class="paramname">mode</td><td>SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7, Robot36 and Robot37. </td></tr>
   </table>
   </dd>

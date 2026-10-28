@@ -119,21 +119,19 @@ typedef <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5b
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2a9c8765195ba2fd0803c15dc17e80dc" id="r_a2a9c8765195ba2fd0803c15dc17e80dc"><td class="memItemLeft" align="right" valign="top"><a id="a2a9c8765195ba2fd0803c15dc17e80dc" name="a2a9c8765195ba2fd0803c15dc17e80dc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANPackageTS003</b> (const <a class="el" href="class_lo_ra_w_a_n_package_t_s003.html">LoRaWANPackageTS003</a> &amp;obj)=delete</td></tr>
-<tr class="memitem:aaafa4c16b2583cf8e957460367babbad" id="r_aaafa4c16b2583cf8e957460367babbad"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaafa4c16b2583cf8e957460367babbad">processData</a> (const uint8_t *dataDown, size_t lenDown, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event) override</td></tr>
-<tr class="memdesc:aaafa4c16b2583cf8e957460367babbad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process downlink data for the TS003 application time package.  <br /></td></tr>
+<tr class="memitem:af6ec2a1ec155db197e8038f812437cdf" id="r_af6ec2a1ec155db197e8038f812437cdf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ec2a1ec155db197e8038f812437cdf">processData</a> (const uint8_t *dataDown, size_t lenDown, uint8_t *dataOut, size_t *lenOut, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event) override</td></tr>
+<tr class="memdesc:af6ec2a1ec155db197e8038f812437cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a single TS003 command, writing any answer into the provided buffer.  <br /></td></tr>
 <tr class="memitem:a8700269c282ea1d584eaa5622f0cbc61" id="r_a8700269c282ea1d584eaa5622f0cbc61"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8700269c282ea1d584eaa5622f0cbc61">requestAppTime</a> (bool force=false)</td></tr>
-<tr class="memdesc:a8700269c282ea1d584eaa5622f0cbc61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send an application time request.  <br /></td></tr>
+<tr class="memdesc:a8700269c282ea1d584eaa5622f0cbc61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule an application time request to be sent at the next opportunity.  <br /></td></tr>
 <tr class="memitem:aa64de5a44191e6423f3ea8ae43e66c5d" id="r_aa64de5a44191e6423f3ea8ae43e66c5d"><td class="memItemLeft" align="right" valign="top"><a id="aa64de5a44191e6423f3ea8ae43e66c5d" name="aa64de5a44191e6423f3ea8ae43e66c5d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a class="el" href="#a49b5567a23241a2321c0b7a554ec8adf">SetSecondsCb_t</a> setSecondsCb)</td></tr>
-<tr class="memitem:afc925bf0156862200a51ce3a703cd146" id="r_afc925bf0156862200a51ce3a703cd146"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_lo_ra_w_a_n_task_info.html">LoRaWANTaskInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc925bf0156862200a51ce3a703cd146">hasTask</a> () override</td></tr>
-<tr class="memdesc:afc925bf0156862200a51ce3a703cd146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find out what the next task is and when it occurs.  <br /></td></tr>
-<tr class="memitem:a3d042c4be811a6238bc849bb25cf4708" id="r_a3d042c4be811a6238bc849bb25cf4708"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d042c4be811a6238bc849bb25cf4708">doAction</a> () override</td></tr>
-<tr class="memdesc:a3d042c4be811a6238bc849bb25cf4708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform an ACTION task (if any).  <br /></td></tr>
+<tr class="memitem:a81daa89df80590651dc3ad3cb20f7fd2" id="r_a81daa89df80590651dc3ad3cb20f7fd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81daa89df80590651dc3ad3cb20f7fd2">handleTask</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> *tNext, bool *uplinkDue) override</td></tr>
+<tr class="memdesc:a81daa89df80590651dc3ad3cb20f7fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report when the next AppTimeReq is due and whether one is due now. Does not build the payload (see buildUplink).  <br /></td></tr>
+<tr class="memitem:adcab662198273f3624cad70314038196" id="r_adcab662198273f3624cad70314038196"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcab662198273f3624cad70314038196">buildUplink</a> (uint8_t *dataOut) override</td></tr>
+<tr class="memdesc:adcab662198273f3624cad70314038196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the due AppTimeReq with the current time and advance the schedule. Called at the moment of transmission so the timestamp stays fresh.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_lo_ra_w_a_n_package"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_lo_ra_w_a_n_package')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_lo_ra_w_a_n_package.html">LoRaWANPackage</a></td></tr>
 <tr class="memitem:a1dfb3be7440176051eb64a86300892a8 inherit pub_methods_class_lo_ra_w_a_n_package" id="r_a1dfb3be7440176051eb64a86300892a8"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANPackage</b> (const <a class="el" href="class_lo_ra_w_a_n_package.html">LoRaWANPackage</a> &amp;obj)=delete</td></tr>
-<tr class="memitem:a80054133311044376f4c0baf3f2ce60b inherit pub_methods_class_lo_ra_w_a_n_package" id="r_a80054133311044376f4c0baf3f2ce60b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#a80054133311044376f4c0baf3f2ce60b">getUplinkData</a> (uint8_t *dataOut, size_t *lenOut)</td></tr>
-<tr class="memdesc:a80054133311044376f4c0baf3f2ce60b inherit pub_methods_class_lo_ra_w_a_n_package"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get uplink data for UPLINK tasks. Returns internal buffer.  <br /></td></tr>
 <tr class="memitem:af07a4abbab1c95879703e5b137763528 inherit pub_methods_class_lo_ra_w_a_n_package" id="r_af07a4abbab1c95879703e5b137763528"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_package.html#af07a4abbab1c95879703e5b137763528">getSeconds</a> ()</td></tr>
 <tr class="memdesc:af07a4abbab1c95879703e5b137763528 inherit pub_methods_class_lo_ra_w_a_n_package"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current time via the stored callback.  <br /></td></tr>
 </table>
@@ -163,8 +161,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a3d042c4be811a6238bc849bb25cf4708" name="a3d042c4be811a6238bc849bb25cf4708"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d042c4be811a6238bc849bb25cf4708">&#9670;&#160;</a></span>doAction()</h2>
+<a id="adcab662198273f3624cad70314038196" name="adcab662198273f3624cad70314038196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcab662198273f3624cad70314038196">&#9670;&#160;</a></span>buildUplink()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,9 +171,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void LoRaWANPackageTS003::doAction </td>
+          <td class="memname">size_t LoRaWANPackageTS003::buildUplink </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>dataOut</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -186,14 +184,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
 </table>
 </div><div class="memdoc">
 
-<p>Perform an ACTION task (if any). </p>
+<p>Build the due AppTimeReq with the current time and advance the schedule. Called at the moment of transmission so the timestamp stays fresh. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataOut</td><td>Pointer to the manager's answer buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of uplink bytes written </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#a194ba6a5c1d60d47d9020a184660fae2">LoRaWANPackage</a>.</p>
+<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#a91fd6cee48b05e87fdbcf5be46d3ff3d">LoRaWANPackage</a>.</p>
 
 </div>
 </div>
-<a id="afc925bf0156862200a51ce3a703cd146" name="afc925bf0156862200a51ce3a703cd146"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc925bf0156862200a51ce3a703cd146">&#9670;&#160;</a></span>hasTask()</h2>
+<a id="a81daa89df80590651dc3ad3cb20f7fd2" name="a81daa89df80590651dc3ad3cb20f7fd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81daa89df80590651dc3ad3cb20f7fd2">&#9670;&#160;</a></span>handleTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,10 +207,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_lo_ra_w_a_n_task_info.html">LoRaWANTaskInfo</a> LoRaWANPackageTS003::hasTask </td>
+          <td class="memname">bool LoRaWANPackageTS003::handleTask </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> *</td>          <td class="paramname"><span class="paramname"><em>tNext</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool *</td>          <td class="paramname"><span class="paramname"><em>uplinkDue</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -215,15 +224,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
 </table>
 </div><div class="memdoc">
 
-<p>Find out what the next task is and when it occurs. </p>
-<dl class="section return"><dt>Returns</dt><dd><span class="tt"><a class="el" href="struct_lo_ra_w_a_n_task_info.html" title="Structure displaying pending LoRaWAN task information.">LoRaWANTaskInfo</a></span> containing task type and time </dd></dl>
+<p>Report when the next AppTimeReq is due and whether one is due now. Does not build the payload (see buildUplink). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tNext</td><td>Pointer that receives the time of the next task </td></tr>
+    <tr><td class="paramname">uplinkDue</td><td>Pointer set to true if an AppTimeReq uplink is due now </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if a task is pending or scheduled, false otherwise </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#ae5d4ca004a29f0266b8c3a3c7b977c5e">LoRaWANPackage</a>.</p>
+<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#ab73d90463dd443d5245b316e61f681bc">LoRaWANPackage</a>.</p>
 
 </div>
 </div>
-<a id="aaafa4c16b2583cf8e957460367babbad" name="aaafa4c16b2583cf8e957460367babbad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaafa4c16b2583cf8e957460367babbad">&#9670;&#160;</a></span>processData()</h2>
+<a id="af6ec2a1ec155db197e8038f812437cdf" name="af6ec2a1ec155db197e8038f812437cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6ec2a1ec155db197e8038f812437cdf">&#9670;&#160;</a></span>processData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,6 +260,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>dataOut</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *</td>          <td class="paramname"><span class="paramname"><em>lenOut</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *</td>          <td class="paramname"><span class="paramname"><em>event</em></span>&#160;)</td>
         </tr>
       </table>
@@ -254,16 +280,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
 </table>
 </div><div class="memdoc">
 
-<p>Process downlink data for the TS003 application time package. </p>
+<p>Process a single TS003 command, writing any answer into the provided buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dataDown</td><td>Pointer to received downlink data </td></tr>
-    <tr><td class="paramname">lenDown</td><td>Length of downlink data </td></tr>
+    <tr><td class="paramname">dataDown</td><td>Pointer to received command data </td></tr>
+    <tr><td class="paramname">lenDown</td><td>Length of command data </td></tr>
+    <tr><td class="paramname">dataOut</td><td>Pointer to the manager's answer buffer </td></tr>
+    <tr><td class="paramname">lenOut</td><td>Pointer that receives the number of answer bytes written </td></tr>
+    <tr><td class="paramname">event</td><td>Pointer to downlink event data </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of bytes consumed </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#ad297696485bae8cdd0da957a840c01bd">LoRaWANPackage</a>.</p>
+<p>Reimplemented from <a class="el" href="class_lo_ra_w_a_n_package.html#a00ae2d65f6484698156d455e3bf6ceb9">LoRaWANPackage</a>.</p>
 
 </div>
 </div>
@@ -282,7 +312,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSecondsCb</b> (<a 
       </table>
 </div><div class="memdoc">
 
-<p>Send an application time request. </p>
+<p>Schedule an application time request to be sent at the next opportunity. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>Require a response, even if the clock is already in sync </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>

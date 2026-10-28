@@ -134,20 +134,20 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~RadioLibHal</b> (
 <tr class="memdesc:a64d98b48668ced5ba1014f272606f370"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of microseconds since start. Must be implemented by the platform-specific hardware abstraction!  <br /></td></tr>
 <tr class="memitem:a3f38db9475dcd0967d6dfe240b8695c9" id="r_a3f38db9475dcd0967d6dfe240b8695c9"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f38db9475dcd0967d6dfe240b8695c9">pulseIn</a> (uint32_t pin, uint32_t state, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout)=0</td></tr>
 <tr class="memdesc:a3f38db9475dcd0967d6dfe240b8695c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the length of incoming digital pulse in microseconds. Must be implemented by the platform-specific hardware abstraction!  <br /></td></tr>
-<tr class="memitem:aa1f8e5cd323e53ef9fa977734a05d030" id="r_aa1f8e5cd323e53ef9fa977734a05d030"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1f8e5cd323e53ef9fa977734a05d030">spiBegin</a> ()=0</td></tr>
-<tr class="memdesc:aa1f8e5cd323e53ef9fa977734a05d030"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI initialization method.  <br /></td></tr>
+<tr class="memitem:aca02eeb50b9037203ff685a32afe86cb" id="r_aca02eeb50b9037203ff685a32afe86cb"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca02eeb50b9037203ff685a32afe86cb">spiBegin</a> ()=0</td></tr>
+<tr class="memdesc:aca02eeb50b9037203ff685a32afe86cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI initialization method.  <br /></td></tr>
 <tr class="memitem:abe787d5e556190eef2c63e1581235460" id="r_abe787d5e556190eef2c63e1581235460"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe787d5e556190eef2c63e1581235460">spiBeginTransaction</a> ()=0</td></tr>
 <tr class="memdesc:abe787d5e556190eef2c63e1581235460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to start SPI transaction.  <br /></td></tr>
-<tr class="memitem:aebcaaf0cefdaaf5b572d4261e472ac8a" id="r_aebcaaf0cefdaaf5b572d4261e472ac8a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebcaaf0cefdaaf5b572d4261e472ac8a">spiTransfer</a> (uint8_t *out, size_t len, uint8_t *in)=0</td></tr>
-<tr class="memdesc:aebcaaf0cefdaaf5b572d4261e472ac8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to transfer buffer over SPI.  <br /></td></tr>
+<tr class="memitem:a0bdb2564448bdb13203508ae90cce07c" id="r_a0bdb2564448bdb13203508ae90cce07c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bdb2564448bdb13203508ae90cce07c">spiTransfer</a> (uint8_t *out, size_t len, uint8_t *in)=0</td></tr>
+<tr class="memdesc:a0bdb2564448bdb13203508ae90cce07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to transfer buffer over SPI.  <br /></td></tr>
 <tr class="memitem:a68d9271c76f8c96afb734a4634bf92e9" id="r_a68d9271c76f8c96afb734a4634bf92e9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68d9271c76f8c96afb734a4634bf92e9">spiEndTransaction</a> ()=0</td></tr>
 <tr class="memdesc:a68d9271c76f8c96afb734a4634bf92e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to end SPI transaction.  <br /></td></tr>
-<tr class="memitem:a41c85e560155d644f5b4ce8444dd8b64" id="r_a41c85e560155d644f5b4ce8444dd8b64"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41c85e560155d644f5b4ce8444dd8b64">spiEnd</a> ()=0</td></tr>
-<tr class="memdesc:a41c85e560155d644f5b4ce8444dd8b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI termination method.  <br /></td></tr>
-<tr class="memitem:a450037acdfeb4e87413674ac90feb4d2" id="r_a450037acdfeb4e87413674ac90feb4d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a450037acdfeb4e87413674ac90feb4d2">init</a> ()</td></tr>
-<tr class="memdesc:a450037acdfeb4e87413674ac90feb4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> initialization method. This will be called by all radio modules at the beginning of startup. Can be used to e.g., initialize SPI interface.  <br /></td></tr>
-<tr class="memitem:aa4f2bd49aea5a19aa9f85c720b4a883e" id="r_aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4f2bd49aea5a19aa9f85c720b4a883e">term</a> ()</td></tr>
-<tr class="memdesc:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> termination method. This will be called by all radio modules when the destructor is called. Can be used to e.g., stop SPI interface.  <br /></td></tr>
+<tr class="memitem:a13940e7f2f11867245e490d2305793e0" id="r_a13940e7f2f11867245e490d2305793e0"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13940e7f2f11867245e490d2305793e0">spiEnd</a> ()=0</td></tr>
+<tr class="memdesc:a13940e7f2f11867245e490d2305793e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI termination method.  <br /></td></tr>
+<tr class="memitem:a7b811717d46f552b4ead89c698c5cf97" id="r_a7b811717d46f552b4ead89c698c5cf97"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b811717d46f552b4ead89c698c5cf97">init</a> ()</td></tr>
+<tr class="memdesc:a7b811717d46f552b4ead89c698c5cf97"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> initialization method. This will be called by all radio modules at the beginning of startup. Can be used to e.g., initialize SPI interface.  <br /></td></tr>
+<tr class="memitem:aa15b62e3ababbfdbad2ca10de44747e8" id="r_aa15b62e3ababbfdbad2ca10de44747e8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa15b62e3ababbfdbad2ca10de44747e8">term</a> ()</td></tr>
+<tr class="memdesc:aa15b62e3ababbfdbad2ca10de44747e8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> termination method. This will be called by all radio modules when the destructor is called. Can be used to e.g., stop SPI interface.  <br /></td></tr>
 <tr class="memitem:a62c9032e834ba420d81dc3e69df64e17" id="r_a62c9032e834ba420d81dc3e69df64e17"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62c9032e834ba420d81dc3e69df64e17">tone</a> (uint32_t pin, unsigned int frequency, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> duration=0)</td></tr>
 <tr class="memdesc:a62c9032e834ba420d81dc3e69df64e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to produce a square-wave with 50% duty cycle ("tone") of a given frequency at some pin.  <br /></td></tr>
 <tr class="memitem:a6b5341c59728a1932e33216feee04ea5" id="r_a6b5341c59728a1932e33216feee04ea5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b5341c59728a1932e33216feee04ea5">noTone</a> (uint32_t pin)</td></tr>
@@ -468,8 +468,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 
 </div>
 </div>
-<a id="a450037acdfeb4e87413674ac90feb4d2" name="a450037acdfeb4e87413674ac90feb4d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a450037acdfeb4e87413674ac90feb4d2">&#9670;&#160;</a></span>init()</h2>
+<a id="a7b811717d46f552b4ead89c698c5cf97" name="a7b811717d46f552b4ead89c698c5cf97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b811717d46f552b4ead89c698c5cf97">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,7 +478,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void RadioLibHal::init </td>
+          <td class="memname">int16_t RadioLibHal::init </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -492,8 +492,9 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 </div><div class="memdoc">
 
 <p><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> initialization method. This will be called by all radio modules at the beginning of startup. Can be used to e.g., initialize SPI interface. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_pi_hal.html#a78593321f098c53fbac81b8d0d423b7f">PiHal</a>.</p>
+<p>Reimplemented in <a class="el" href="class_pi_hal.html#a5c3f66d4a103ca71e248c4218c951d2b">PiHal</a>.</p>
 
 </div>
 </div>
@@ -757,8 +758,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 
 </div>
 </div>
-<a id="aa1f8e5cd323e53ef9fa977734a05d030" name="aa1f8e5cd323e53ef9fa977734a05d030"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1f8e5cd323e53ef9fa977734a05d030">&#9670;&#160;</a></span>spiBegin()</h2>
+<a id="aca02eeb50b9037203ff685a32afe86cb" name="aca02eeb50b9037203ff685a32afe86cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca02eeb50b9037203ff685a32afe86cb">&#9670;&#160;</a></span>spiBegin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -767,7 +768,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void RadioLibHal::spiBegin </td>
+          <td class="memname">virtual int16_t RadioLibHal::spiBegin </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -781,8 +782,9 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 </div><div class="memdoc">
 
 <p>SPI initialization method. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_pi_hal.html#a40d237c2f5f4ead26c39f33481b4d7e3">PiHal</a>.</p>
+<p>Implemented in <a class="el" href="class_pi_hal.html#a927205f52d9b5dc1001ecc7852f87741">PiHal</a>.</p>
 
 </div>
 </div>
@@ -815,8 +817,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 
 </div>
 </div>
-<a id="a41c85e560155d644f5b4ce8444dd8b64" name="a41c85e560155d644f5b4ce8444dd8b64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41c85e560155d644f5b4ce8444dd8b64">&#9670;&#160;</a></span>spiEnd()</h2>
+<a id="a13940e7f2f11867245e490d2305793e0" name="a13940e7f2f11867245e490d2305793e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13940e7f2f11867245e490d2305793e0">&#9670;&#160;</a></span>spiEnd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -825,7 +827,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void RadioLibHal::spiEnd </td>
+          <td class="memname">virtual int16_t RadioLibHal::spiEnd </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -839,8 +841,9 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 </div><div class="memdoc">
 
 <p>SPI termination method. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_pi_hal.html#a6b0d64ed834b91f67b3344ce8c573d7b">PiHal</a>.</p>
+<p>Implemented in <a class="el" href="class_pi_hal.html#a8c53643bd5e8ab0c1c3ddcab764cf297">PiHal</a>.</p>
 
 </div>
 </div>
@@ -873,8 +876,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 
 </div>
 </div>
-<a id="aebcaaf0cefdaaf5b572d4261e472ac8a" name="aebcaaf0cefdaaf5b572d4261e472ac8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebcaaf0cefdaaf5b572d4261e472ac8a">&#9670;&#160;</a></span>spiTransfer()</h2>
+<a id="a0bdb2564448bdb13203508ae90cce07c" name="a0bdb2564448bdb13203508ae90cce07c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bdb2564448bdb13203508ae90cce07c">&#9670;&#160;</a></span>spiTransfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -883,7 +886,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void RadioLibHal::spiTransfer </td>
+          <td class="memname">virtual int16_t RadioLibHal::spiTransfer </td>
           <td>(</td>
           <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>out</em></span>, </td>
         </tr>
@@ -914,13 +917,14 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_pi_hal.html#a96a0f36efd8e23893add3242bdef8be4">PiHal</a>.</p>
+<p>Implemented in <a class="el" href="class_pi_hal.html#a75fc3ccf6a4fa7523009de71cee0c9e0">PiHal</a>.</p>
 
 </div>
 </div>
-<a id="aa4f2bd49aea5a19aa9f85c720b4a883e" name="aa4f2bd49aea5a19aa9f85c720b4a883e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4f2bd49aea5a19aa9f85c720b4a883e">&#9670;&#160;</a></span>term()</h2>
+<a id="aa15b62e3ababbfdbad2ca10de44747e8" name="aa15b62e3ababbfdbad2ca10de44747e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa15b62e3ababbfdbad2ca10de44747e8">&#9670;&#160;</a></span>term()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -929,7 +933,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void RadioLibHal::term </td>
+          <td class="memname">int16_t RadioLibHal::term </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -943,8 +947,9 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GpioInterru
 </div><div class="memdoc">
 
 <p><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> termination method. This will be called by all radio modules when the destructor is called. Can be used to e.g., stop SPI interface. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_pi_hal.html#ae5821694030ae6364012be3a34ef584d">PiHal</a>.</p>
+<p>Reimplemented in <a class="el" href="class_pi_hal.html#a17809f03efb3998489e51da564047d84">PiHal</a>.</p>
 
 </div>
 </div>

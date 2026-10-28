@@ -369,6 +369,12 @@ Macros</h2></td></tr>
 <tr class="memitem:gad806c72e8eb8d1333c82d8268f928155" id="r_gad806c72e8eb8d1333c82d8268f928155"><td class="memItemLeft" align="right" valign="top"><a id="gad806c72e8eb8d1333c82d8268f928155" name="gad806c72e8eb8d1333c82d8268f928155"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_MULTICAST_GROUP</b>&#160;&#160;&#160;(-1122)</td></tr>
 <tr class="memdesc:gad806c72e8eb8d1333c82d8268f928155"><td class="mdescLeft">&#160;</td><td class="mdescRight">The requested multicast group is invalid (higher than maximum). <br /></td></tr>
+<tr class="memitem:ga2b5ee7713a67db40378628d4455c6c7b" id="r_ga2b5ee7713a67db40378628d4455c6c7b"><td class="memItemLeft" align="right" valign="top"><a id="ga2b5ee7713a67db40378628d4455c6c7b" name="ga2b5ee7713a67db40378628d4455c6c7b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_SUBBAND</b>&#160;&#160;&#160;(-1123)</td></tr>
+<tr class="memdesc:ga2b5ee7713a67db40378628d4455c6c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The requested subband is invalid for this band (or there is no subband). <br /></td></tr>
+<tr class="memitem:ga045519e41489bb3715250c36c7a7e59e" id="r_ga045519e41489bb3715250c36c7a7e59e"><td class="memItemLeft" align="right" valign="top"><a id="ga045519e41489bb3715250c36c7a7e59e" name="ga045519e41489bb3715250c36c7a7e59e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_MAC_ANSWERS_PENDING</b>&#160;&#160;&#160;(-1124)</td></tr>
+<tr class="memdesc:ga045519e41489bb3715250c36c7a7e59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC answers (FOpts) currently prevent the requested uplink size. Transmit an empty frame first to clear the internal FOpts queue. <br /></td></tr>
 <tr class="memitem:gac0673e69b893d8f23e339f218d376a52" id="r_gac0673e69b893d8f23e339f218d376a52"><td class="memItemLeft" align="right" valign="top"><a id="gac0673e69b893d8f23e339f218d376a52" name="gac0673e69b893d8f23e339f218d376a52"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_WIFI_TYPE</b>&#160;&#160;&#160;(-1200)</td></tr>
 <tr class="memdesc:gac0673e69b893d8f23e339f218d376a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected 802.11 WiFi type is invalid. <br /></td></tr>
@@ -442,6 +448,11 @@ Macros</h2></td></tr>
 <tr class="memitem:ga953b10ed9dc2cbbc12f5a8add10dbd62" id="r_ga953b10ed9dc2cbbc12f5a8add10dbd62"><td class="memItemLeft" align="right" valign="top"><a id="ga953b10ed9dc2cbbc12f5a8add10dbd62" name="ga953b10ed9dc2cbbc12f5a8add10dbd62"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_SSDV_BUFFER_IN_USE</b>&#160;&#160;&#160;(-1514)</td></tr>
 <tr class="memdesc:ga953b10ed9dc2cbbc12f5a8add10dbd62"><td class="mdescLeft">&#160;</td><td class="mdescRight">The static packet buffer is in use by another <a class="el" href="class_s_s_d_v_client.html" title="Client for SSDV image transmission and reception. Encodes a baseline JPEG into 256-byte SSDV packets ...">SSDVClient</a> instance. Only one instance can hold an image when RADIOLIB_STATIC_ONLY is enabled. <br /></td></tr>
+<tr class="memitem:ga7b656a825b1b1808cd196799dded2827" id="r_ga7b656a825b1b1808cd196799dded2827"><td class="memItemLeft" align="right" valign="top"><a id="ga7b656a825b1b1808cd196799dded2827" name="ga7b656a825b1b1808cd196799dded2827"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_HAL_OFFSET</b>&#160;&#160;&#160;(-10000)</td></tr>
+<tr class="memdesc:ga7b656a825b1b1808cd196799dded2827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset for custom HAL error codes. <br /></td></tr>
+<tr class="memitem:gad8b9b3004551f3baa2d354ec08c40c81" id="r_gad8b9b3004551f3baa2d354ec08c40c81"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad8b9b3004551f3baa2d354ec08c40c81">RADIOLIB_ERR_HAL</a>(X)</td></tr>
+<tr class="memitem:gad4e4ad27347b1829fa58ab27b65310f2" id="r_gad4e4ad27347b1829fa58ab27b65310f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad4e4ad27347b1829fa58ab27b65310f2">RADIOLIB_GET_HAL_ERROR</a>(X)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
@@ -460,7 +471,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a> + (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga95f44b9fd5db8220158e8dad73506cd9"><div class="ttname"><a href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET</div><div class="ttdoc">Offset of GNSS demodulator errors. See LR11x0 datasheet for details on the actual demodulator error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:632</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga95f44b9fd5db8220158e8dad73506cd9"><div class="ttname"><a href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET</div><div class="ttdoc">Offset of GNSS demodulator errors. See LR11x0 datasheet for details on the actual demodulator error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:643</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -479,7 +490,26 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a> - (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga25700f55a8dfaa3aa8076b51528d74f9"><div class="ttname"><a href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET</div><div class="ttdoc">GNSS solver errors. See LR11x0 datasheet for details on the actual solver error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:640</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga25700f55a8dfaa3aa8076b51528d74f9"><div class="ttname"><a href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET</div><div class="ttdoc">GNSS solver errors. See LR11x0 datasheet for details on the actual solver error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:651</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gad8b9b3004551f3baa2d354ec08c40c81" name="gad8b9b3004551f3baa2d354ec08c40c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad8b9b3004551f3baa2d354ec08c40c81">&#9670;&#160;</a></span>RADIOLIB_ERR_HAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIOLIB_ERR_HAL</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>X</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a> + (X))</div>
+<div class="ttc" id="agroup__status__codes_html_ga7b656a825b1b1808cd196799dded2827"><div class="ttname"><a href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_HAL_OFFSET</div><div class="ttdoc">Offset for custom HAL error codes.</div><div class="ttdef"><b>Definition</b> TypeDef.h:762</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -601,6 +631,24 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(-((X) - <a class="code hl_define" href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a>))</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gad4e4ad27347b1829fa58ab27b65310f2" name="gad4e4ad27347b1829fa58ab27b65310f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad4e4ad27347b1829fa58ab27b65310f2">&#9670;&#160;</a></span>RADIOLIB_GET_HAL_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIOLIB_GET_HAL_ERROR</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>X</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">((X) - <a class="code hl_define" href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a>)</div>
 </div><!-- fragment -->
 </div>
 </div>
