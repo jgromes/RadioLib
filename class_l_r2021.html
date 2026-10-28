@@ -209,8 +209,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad0b72a0f1251e2e423aeeb43e8361026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 4 to 8. Note that a value of 4 means no coding, is undocumented and not recommended without your own FEC.  <br /></td></tr>
 <tr class="memitem:a0792e44750e268eb38c3c2f28b13455a" id="r_a0792e44750e268eb38c3c2f28b13455a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0792e44750e268eb38c3c2f28b13455a">setSyncWord</a> (uint8_t syncWord)</td></tr>
 <tr class="memdesc:a0792e44750e268eb38c3c2f28b13455a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <br /></td></tr>
-<tr class="memitem:abfe825d8bf2bf526058914bf99b71a92" id="r_abfe825d8bf2bf526058914bf99b71a92"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abfe825d8bf2bf526058914bf99b71a92">setPreambleLength</a> (size_t preambleLength) override</td></tr>
-<tr class="memdesc:abfe825d8bf2bf526058914bf99b71a92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.  <br /></td></tr>
+<tr class="memitem:ae6d8e4887fbdbbb529ef57f045ca8755" id="r_ae6d8e4887fbdbbb529ef57f045ca8755"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6d8e4887fbdbbb529ef57f045ca8755">setPreambleLength</a> (size_t len, size_t detLen=0) override</td></tr>
+<tr class="memdesc:ae6d8e4887fbdbbb529ef57f045ca8755"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.  <br /></td></tr>
 <tr class="memitem:a6a0d035d07550c989ad1a21f26e67afc" id="r_a6a0d035d07550c989ad1a21f26e67afc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a0d035d07550c989ad1a21f26e67afc">setTCXO</a> (RadioLibTCXOVoltage_t voltage, uint32_t delay=1000000)</td></tr>
 <tr class="memdesc:a6a0d035d07550c989ad1a21f26e67afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.  <br /></td></tr>
 <tr class="memitem:a508d4b44df2968fee363102c3fa528fc" id="r_a508d4b44df2968fee363102c3fa528fc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a508d4b44df2968fee363102c3fa528fc">setCRC</a> (uint8_t len, uint32_t initial=0x00001D0FUL, uint32_t polynomial=0x00001021UL, bool inverted=true)</td></tr>
@@ -2890,8 +2890,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="abfe825d8bf2bf526058914bf99b71a92" name="abfe825d8bf2bf526058914bf99b71a92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfe825d8bf2bf526058914bf99b71a92">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="ae6d8e4887fbdbbb529ef57f045ca8755" name="ae6d8e4887fbdbbb529ef57f045ca8755"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6d8e4887fbdbbb529ef57f045ca8755">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2902,8 +2902,12 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">int16_t LR2021::setPreambleLength </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>preambleLength</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -2916,13 +2920,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set in symbols (LoRa) or bits (GFSK). </td></tr>
+    <tr><td class="paramname">len</td><td>Preamble length to be set in symbols (LoRa) or bits (GFSK). </td></tr>
+    <tr><td class="paramname">detLen</td><td>Minimum detected preamble length during reception. Defaults to 'len'. Only used for FSK modem. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6bc0dc85cd4d785e80d8375949cfbf76">PhysicalLayer</a>.</p>
 
 </div>
 </div>

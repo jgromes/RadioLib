@@ -193,8 +193,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Acti
 <tr class="memdesc:a8f971dca834be7e0470a9a9f0c01854e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets current protection limit. Can be set in 2.5 mA steps.  <br /></td></tr>
 <tr class="memitem:aa668babb0bd129b2facee9fd280525ab" id="r_aa668babb0bd129b2facee9fd280525ab"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa668babb0bd129b2facee9fd280525ab">getCurrentLimit</a> ()</td></tr>
 <tr class="memdesc:aa668babb0bd129b2facee9fd280525ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads current protection limit.  <br /></td></tr>
-<tr class="memitem:ad6274222ccf534e98e3cd17dfa1520d4" id="r_ad6274222ccf534e98e3cd17dfa1520d4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6274222ccf534e98e3cd17dfa1520d4">setPreambleLength</a> (size_t preambleLength) override</td></tr>
-<tr class="memdesc:ad6274222ccf534e98e3cd17dfa1520d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.  <br /></td></tr>
+<tr class="memitem:ae54c821bfb2ea054a1b7abb1d89b001f" id="r_ae54c821bfb2ea054a1b7abb1d89b001f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae54c821bfb2ea054a1b7abb1d89b001f">setPreambleLength</a> (size_t len, size_t detLen=0) override</td></tr>
+<tr class="memdesc:ae54c821bfb2ea054a1b7abb1d89b001f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.  <br /></td></tr>
 <tr class="memitem:a3247db8fcabe1b895f075f13abde5b04" id="r_a3247db8fcabe1b895f075f13abde5b04"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3247db8fcabe1b895f075f13abde5b04">setFrequencyDeviation</a> (uint32_t freqDev) override</td></tr>
 <tr class="memdesc:a3247db8fcabe1b895f075f13abde5b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation. Allowed values range from 0 to 200 kHz.  <br /></td></tr>
 <tr class="memitem:a7c0192968ccc12299b0a4b5d7d2ebedc" id="r_a7c0192968ccc12299b0a4b5d7d2ebedc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c0192968ccc12299b0a4b5d7d2ebedc">setBitRate</a> (uint32_t br) override</td></tr>
@@ -2398,8 +2398,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ad6274222ccf534e98e3cd17dfa1520d4" name="ad6274222ccf534e98e3cd17dfa1520d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6274222ccf534e98e3cd17dfa1520d4">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="ae54c821bfb2ea054a1b7abb1d89b001f" name="ae54c821bfb2ea054a1b7abb1d89b001f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae54c821bfb2ea054a1b7abb1d89b001f">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2410,8 +2410,12 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">int16_t SX126x::setPreambleLength </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>preambleLength</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -2424,13 +2428,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set in symbols (LoRa) or bits (FSK). NOTE: In FSK mode, sync word length limits the preamble detector length (the number of preamble bits that must be detected to start receiving packet). For details, see the note in <a class="el" href="class_s_x1261.html" title="Derived class for SX1261 modules.">SX1261</a> datasheet, Rev 2.1, section 6.2.2.1, page 45. Preamble detector length is adjusted automatically each time this method is called. </td></tr>
+    <tr><td class="paramname">len</td><td>Preamble length to be set in symbols (LoRa) or bits (FSK). </td></tr>
+    <tr><td class="paramname">detLen</td><td>Minimum detected preamble length during reception. Allowed values are 8/16/24/32. Defaults to largest allowed value within 'len'. Only used for FSK modem. NOTE: In FSK mode, sync word length limits the preamble detector length. For details, see the note in <a class="el" href="class_s_x1261.html" title="Derived class for SX1261 modules.">SX1261</a> datasheet, Rev 2.1, section 6.2.2.1, page 45. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6bc0dc85cd4d785e80d8375949cfbf76">PhysicalLayer</a>.</p>
 
 </div>
 </div>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"class_s_x1281.html":[3,0,115],
 "class_s_x1281.html#a0dd7678cdf7fad9ecfc9139c5092f998":[3,0,115,0],
 "class_s_x1282.html":[3,0,116],
 "class_s_x1282.html#ae90b7dcd7167c4cbe20e33ced04e4232":[3,0,116,0],
@@ -25,7 +24,6 @@ var NAVTREEINDEX5 =
 "class_s_x128x.html#a30ce92d381006888fc46c19553bd805c":[3,0,117,14],
 "class_s_x128x.html#a3837662441a9eb3f0a71f4f667db9e91":[3,0,117,50],
 "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735":[3,0,117,23],
-"class_s_x128x.html#a3c82ee4e0b86b83f48e36d8017bcf7ec":[3,0,117,55],
 "class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4":[3,0,117,13],
 "class_s_x128x.html#a45f4ac293d869a35ad737032efa8e884":[3,0,117,76],
 "class_s_x128x.html#a46e7979288205689ea97f1c26d1da07e":[3,0,117,29],
@@ -61,6 +59,7 @@ var NAVTREEINDEX5 =
 "class_s_x128x.html#aa17ffcb939f6b2eb0712e63b6ee7a71f":[3,0,117,17],
 "class_s_x128x.html#aa4b1e0b96347011522e053f30202c0fe":[3,0,117,43],
 "class_s_x128x.html#aa9bb3e346a3f8b30366fb716886bcb07":[3,0,117,20],
+"class_s_x128x.html#aac8cc587df5deae970034b3ab97a0b3b":[3,0,117,55],
 "class_s_x128x.html#aad92d76d8a41091b20444f4866eb3702":[3,0,117,42],
 "class_s_x128x.html#aaf5580cb3d5662f50abd9832aa38d4fd":[3,0,117,79],
 "class_s_x128x.html#ab0c26aebd432d36974b3066055df6b01":[3,0,117,63],
@@ -117,12 +116,12 @@ var NAVTREEINDEX5 =
 "class_si443x.html#a616eb24c4b11c5d39caaade160be8092":[3,0,92,9],
 "class_si443x.html#a63e632595e968202190396e92cb70897":[3,0,92,3],
 "class_si443x.html#a6792f13441a1bbb3340d2ba3d9abbec3":[3,0,92,4],
-"class_si443x.html#a6f8a1d33d222ed7d56772d9f1c5afa64":[3,0,92,22],
 "class_si443x.html#a8898f11cf9dabd9a5ad717376fdbffa6":[3,0,92,24],
 "class_si443x.html#a8c8b65dd06a07efe7bb8043be8d6e132":[3,0,92,16],
 "class_si443x.html#a8cfe8e70f1d675bf9ad8617769e05030":[3,0,92,21],
 "class_si443x.html#a923654706eff5118ef6e84214e837f27":[3,0,92,32],
 "class_si443x.html#ab0cc51d6b4264acf8e3e49a3a490dee9":[3,0,92,27],
+"class_si443x.html#ab48b4af84ea41f11429ee8ae7c29148c":[3,0,92,22],
 "class_si443x.html#ab8d517e3f768207dd87a925e3a2b5e1e":[3,0,92,25],
 "class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a":[3,0,92,37],
 "class_si443x.html#abe95dc71478e90c5fdf3473a84f89149":[3,0,92,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "functions_func_y.html":[3,3,1,20],
 "functions_func_~.html":[3,3,1,21],
 "functions_g.html":[3,3,0,6],
-"functions_h.html":[3,3,0,7]
+"functions_h.html":[3,3,0,7],
+"functions_i.html":[3,3,0,8]
 };

@@ -183,10 +183,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearGdo2Action</b> (
 <tr class="memdesc:a3cd89952e0f6c4e463ec550ab226a428"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 16-bit sync word as a two byte value.  <br /></td></tr>
 <tr class="memitem:aa41a718b6165c6d3561ab0cd46bf17cc" id="r_aa41a718b6165c6d3561ab0cd46bf17cc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa41a718b6165c6d3561ab0cd46bf17cc">setSyncWord</a> (const uint8_t *syncWord, uint8_t len, uint8_t maxErrBits=0, bool requireCarrierSense=false, bool repeatSync=false)</td></tr>
 <tr class="memdesc:aa41a718b6165c6d3561ab0cd46bf17cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 1 or 2 bytes of sync word.  <br /></td></tr>
-<tr class="memitem:ae535dc268518c51d03c12defbaebe93e" id="r_ae535dc268518c51d03c12defbaebe93e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae535dc268518c51d03c12defbaebe93e">setPreambleLength</a> (size_t len) override</td></tr>
-<tr class="memdesc:ae535dc268518c51d03c12defbaebe93e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
-<tr class="memitem:ae77c828c9c7cc12012fe011e8c4d3570" id="r_ae77c828c9c7cc12012fe011e8c4d3570"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae77c828c9c7cc12012fe011e8c4d3570">setPreambleLength</a> (uint8_t preambleLength, uint8_t qualityThreshold)</td></tr>
-<tr class="memdesc:ae77c828c9c7cc12012fe011e8c4d3570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
+<tr class="memitem:ad9e91702b00034420ba790e28020dee4" id="r_ad9e91702b00034420ba790e28020dee4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9e91702b00034420ba790e28020dee4">setPreambleLength</a> (size_t preambleLength, size_t qualityThreshold=0) override</td></tr>
+<tr class="memdesc:ad9e91702b00034420ba790e28020dee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
 <tr class="memitem:acb64c1c0ae7f129f25b967ca4a4d7ffc" id="r_acb64c1c0ae7f129f25b967ca4a4d7ffc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb64c1c0ae7f129f25b967ca4a4d7ffc">enableRxAfterTx</a> (bool enable=true)</td></tr>
 <tr class="memdesc:acb64c1c0ae7f129f25b967ca4a4d7ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables automatic switch to reception after transmission. Uses the TXOFF_RX mode of <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a>.  <br /></td></tr>
 <tr class="memitem:a6e62914790f132816134fc68c2bb5eb8" id="r_a6e62914790f132816134fc68c2bb5eb8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e62914790f132816134fc68c2bb5eb8">setNodeAddress</a> (uint8_t nodeAddr, uint8_t numBroadcastAddrs=0)</td></tr>
@@ -1457,8 +1455,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="ae535dc268518c51d03c12defbaebe93e" name="ae535dc268518c51d03c12defbaebe93e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae535dc268518c51d03c12defbaebe93e">&#9670;&#160;</a></span>setPreambleLength() <span class="overload">[1/2]</span></h2>
+<a id="ad9e91702b00034420ba790e28020dee4" name="ad9e91702b00034420ba790e28020dee4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9e91702b00034420ba790e28020dee4">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1469,8 +1467,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="memname">int16_t CC1101::setPreambleLength </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>preambleLength</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>qualityThreshold</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1483,44 +1485,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Sets preamble length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="ae77c828c9c7cc12012fe011e8c4d3570" name="ae77c828c9c7cc12012fe011e8c4d3570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae77c828c9c7cc12012fe011e8c4d3570">&#9670;&#160;</a></span>setPreambleLength() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t CC1101::setPreambleLength </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>preambleLength</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>qualityThreshold</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets preamble length. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
     <tr><td class="paramname">preambleLength</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192. </td></tr>
     <tr><td class="paramname">qualityThreshold</td><td>Preamble quality threshold (PQT) to set. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6bc0dc85cd4d785e80d8375949cfbf76">PhysicalLayer</a>.</p>
 
 </div>
 </div>

@@ -81,7 +81,7 @@ var class_l_r2021 =
     [ "setOutputPower", "class_l_r2021.html#aca2599a31c088a5e8c59317ae132d4d0", null ],
     [ "setOutputPower", "class_l_r2021.html#a2d38e9fa1f3250d78482c8fb755f22a2", null ],
     [ "setPaTable", "class_l_r2021.html#a12f0e8db918e6eb860265bfeb6518ac4", null ],
-    [ "setPreambleLength", "class_l_r2021.html#abfe825d8bf2bf526058914bf99b71a92", null ],
+    [ "setPreambleLength", "class_l_r2021.html#ae6d8e4887fbdbbb529ef57f045ca8755", null ],
     [ "setRegulatorDCDC", "class_l_r2021.html#acbcd9acd62cd92c7379c337a14b77ad2", null ],
     [ "setRegulatorLDO", "class_l_r2021.html#ad66dd14be3ec403dbd4ed388e631cfee", null ],
     [ "setRfSwitchTable", "class_l_r2021.html#ab2cb23b1f2dbdcd53a140b8a53d7e776", null ],

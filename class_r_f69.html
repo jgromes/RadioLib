@@ -199,8 +199,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:abac36a862c95b2c88e63fbce78953c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets sync word. Up to 8 bytes can be set as sync word. Override for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, with maximum error bits set to 0.  <br /></td></tr>
 <tr class="memitem:a53cfd97f9d8d365d76d0b4aa03b96a1e" id="r_a53cfd97f9d8d365d76d0b4aa03b96a1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53cfd97f9d8d365d76d0b4aa03b96a1e">setSyncWord</a> (uint8_t *syncWord, size_t len, uint8_t maxErrBits)</td></tr>
 <tr class="memdesc:a53cfd97f9d8d365d76d0b4aa03b96a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets sync word. Up to 8 bytes can be set as sync word.  <br /></td></tr>
-<tr class="memitem:a529dd8d3fad97c10b9319391eb2a7ad1" id="r_a529dd8d3fad97c10b9319391eb2a7ad1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a529dd8d3fad97c10b9319391eb2a7ad1">setPreambleLength</a> (size_t preambleLen) override</td></tr>
-<tr class="memdesc:a529dd8d3fad97c10b9319391eb2a7ad1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
+<tr class="memitem:aa2de2c63269e7c4a2aa553e8969e852f" id="r_aa2de2c63269e7c4a2aa553e8969e852f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2de2c63269e7c4a2aa553e8969e852f">setPreambleLength</a> (size_t len, size_t detLen) override</td></tr>
+<tr class="memdesc:aa2de2c63269e7c4a2aa553e8969e852f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
 <tr class="memitem:ab9c217d5ece259950780a05c6e41f75c" id="r_ab9c217d5ece259950780a05c6e41f75c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9c217d5ece259950780a05c6e41f75c">setNodeAddress</a> (uint8_t nodeAddr)</td></tr>
 <tr class="memdesc:ab9c217d5ece259950780a05c6e41f75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets node address. Calling this method will also enable address filtering for node address only.  <br /></td></tr>
 <tr class="memitem:a1b7598b87ffaabdbe733c47317fa91d8" id="r_a1b7598b87ffaabdbe733c47317fa91d8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b7598b87ffaabdbe733c47317fa91d8">setBroadcastAddress</a> (uint8_t broadAddr)</td></tr>
@@ -1783,8 +1783,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="a529dd8d3fad97c10b9319391eb2a7ad1" name="a529dd8d3fad97c10b9319391eb2a7ad1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a529dd8d3fad97c10b9319391eb2a7ad1">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="aa2de2c63269e7c4a2aa553e8969e852f" name="aa2de2c63269e7c4a2aa553e8969e852f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2de2c63269e7c4a2aa553e8969e852f">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1795,8 +1795,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="memname">int16_t RF69::setPreambleLength </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>preambleLen</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1809,13 +1813,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Sets preamble length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLen</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192. </td></tr>
+    <tr><td class="paramname">len</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192. </td></tr>
+    <tr><td class="paramname">detLen</td><td>Unsupported by <a class="el" href="class_r_f69.html" title="Control class for RF69 module. Also serves as base class for SX1231.">RF69</a>. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6bc0dc85cd4d785e80d8375949cfbf76">PhysicalLayer</a>.</p>
 
 </div>
 </div>

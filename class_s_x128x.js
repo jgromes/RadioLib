@@ -55,7 +55,7 @@ var class_s_x128x =
     [ "setIrqFlags", "class_s_x128x.html#a6a2ec5d316975f390f20b4e0a2e11e98", null ],
     [ "setModem", "class_s_x128x.html#a209d69e710a785da2c69474f94fdccf3", null ],
     [ "setOutputPower", "class_s_x128x.html#a205949b9cec981af3b1d6cc7cdfcb1be", null ],
-    [ "setPreambleLength", "class_s_x128x.html#a3c82ee4e0b86b83f48e36d8017bcf7ec", null ],
+    [ "setPreambleLength", "class_s_x128x.html#aac8cc587df5deae970034b3ab97a0b3b", null ],
     [ "setRfSwitchPins", "class_s_x128x.html#a5ba683fbc4a46418ce3736f224fb55f2", null ],
     [ "setRfSwitchTable", "class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958", null ],
     [ "setSpreadingFactor", "class_s_x128x.html#a6cef3c5f46b97c2ff2037dd6b92a0cf4", null ],

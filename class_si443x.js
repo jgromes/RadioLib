@@ -22,7 +22,7 @@ var class_si443x =
     [ "setDirectAction", "class_si443x.html#a48a59ff1ddc7c8ec820328174955de43", null ],
     [ "setEncoding", "class_si443x.html#a1382fc3b68f447e381613e6670747128", null ],
     [ "setFrequencyDeviation", "class_si443x.html#a8cfe8e70f1d675bf9ad8617769e05030", null ],
-    [ "setPreambleLength", "class_si443x.html#a6f8a1d33d222ed7d56772d9f1c5afa64", null ],
+    [ "setPreambleLength", "class_si443x.html#ab48b4af84ea41f11429ee8ae7c29148c", null ],
     [ "setRfSwitchPins", "class_si443x.html#a43e7ceeff9114b35ab89f1d69916b375", null ],
     [ "setRfSwitchTable", "class_si443x.html#a8898f11cf9dabd9a5ad717376fdbffa6", null ],
     [ "setRxBandwidth", "class_si443x.html#ab8d517e3f768207dd87a925e3a2b5e1e", null ],
