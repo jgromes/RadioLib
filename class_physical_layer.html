@@ -181,8 +181,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memdesc:a9fded145c4805d930fbf04624a48e9e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets offset of the output power. Useful for devices where the radio has an external power amplifier, or of the RF system has a known loss between the radio and the antenna. This overload allows to compensate a non-linear PA gain, dependant on the radio power output via a lookup table. NOTE: This method must be called BEFORE any calls to radio.begin() or radio.setOutputPower() for the offset to be applied!  <br /></td></tr>
 <tr class="memitem:a6c71cdc1238e1368274670758431a977" id="r_a6c71cdc1238e1368274670758431a977"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
 <tr class="memdesc:a6c71cdc1238e1368274670758431a977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="memitem:a6bc0dc85cd4d785e80d8375949cfbf76" id="r_a6bc0dc85cd4d785e80d8375949cfbf76"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bc0dc85cd4d785e80d8375949cfbf76">setPreambleLength</a> (size_t len, size_t detLen)</td></tr>
-<tr class="memdesc:a6bc0dc85cd4d785e80d8375949cfbf76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
+<tr class="memitem:a93175940f8f1c0675a509251d4a1a0bb" id="r_a93175940f8f1c0675a509251d4a1a0bb"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93175940f8f1c0675a509251d4a1a0bb">setPreambleLength</a> (size_t len, size_t detLen=0)</td></tr>
+<tr class="memdesc:a93175940f8f1c0675a509251d4a1a0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="memitem:ac5f1e0c24d8bf878f2c9fe729b6e1610" id="r_ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5f1e0c24d8bf878f2c9fe729b6e1610">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
 <tr class="memdesc:ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="memitem:a9c5c902d9f8ffe9866b7f178b14d34f6" id="r_a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c5c902d9f8ffe9866b7f178b14d34f6">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
@@ -2139,8 +2139,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 </div>
 </div>
-<a id="a6bc0dc85cd4d785e80d8375949cfbf76" name="a6bc0dc85cd4d785e80d8375949cfbf76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bc0dc85cd4d785e80d8375949cfbf76">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="a93175940f8f1c0675a509251d4a1a0bb" name="a93175940f8f1c0675a509251d4a1a0bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93175940f8f1c0675a509251d4a1a0bb">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2156,7 +2156,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
