@@ -3406,6 +3406,10 @@ void LoRaWANNode::setPersistencePackage(uint8_t pIndex, const uint8_t* buff) {
 }
 
 void LoRaWANNode::scheduleTransmission(RadioLibTime_t tUplink) {
+  // a time more than ~24 days ahead looks like a time in the past
+  if((long)(tUplink - this->phyLayer->getMod()->hal->millis()) < 0) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Scheduled time is in the past or more than ~24 days ahead, sending right away");
+  }
   this->tUplink = tUplink;
   this->uplinkScheduled = true;
 }
