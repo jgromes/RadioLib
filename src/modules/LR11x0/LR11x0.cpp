@@ -1675,11 +1675,18 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   this->gnss = false;
 
   // try to find the LR11x0 chip - this will also reset the module at least once
+  bool unsupportedFw = false;
   if(!LR11x0::findChip(this->chipType)) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR11x0 found!");
-    state = this->mod->term();
-    RADIOLIB_ASSERT(state);
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+    // 0x00 and 0xFF typically mean a failed SPI bus,
+    // any other device value is considered unsupported firmware
+    if((this->versionDevice == 0x00) || (this->versionDevice == 0xFF)) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("No LR11x0 found!");
+      state = this->mod->term();
+      RADIOLIB_ASSERT(state);
+      return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+    }
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Unsupported LR11x0 firmware detected, only firmware update is possible!");
+    unsupportedFw = true;
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR11x0");
 
@@ -1692,6 +1699,11 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   if(this->tcxoVoltage != RadioLibTCXOVoltage_t::VoltageNone) {
     state = setTCXO(this->tcxoVoltage);
     RADIOLIB_ASSERT(state);
+  }
+
+  // with unsupported firmware, stop here and leave the device ready for firmware update
+  if(unsupportedFw) {
+    return(RADIOLIB_ERR_UNSUPPORTED_FIRMWARE);
   }
 
   // configure settings not accessible by API
@@ -1725,6 +1737,7 @@ bool LR11x0::findChip(uint8_t ver) {
     } else {
       RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, versionInfo.device);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Expected: 0x%02x", ver);
+      this->versionDevice = versionInfo.device;
       this->mod->hal->delay(10);
       i++;
     }

@@ -74,6 +74,10 @@ void setup() {
   int state = radio.begin(config);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
+  } else if (state == RADIOLIB_ERR_UNSUPPORTED_FIRMWARE) {
+    // the device runs an unsupported firmware,
+    // it can still be updated to the official one
+    Serial.println(F("unsupported firmware, update is possible"));
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
