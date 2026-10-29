@@ -61,8 +61,8 @@ var NAVTREEINDEX =
 "class_s_x126x.html#a44cd61126a92193d8dde86bcb836f269",
 "class_s_x1281.html#a0dd7678cdf7fad9ecfc9139c5092f998",
 "functions_j.html",
-"lr1120__transceiver__0201_8h.html",
-"struct_multicast_group__t.html#a219a26cfe0b720d2c9d4d2583804bead"
+"lr1120__transceiver__0102_8h_source.html",
+"struct_multicast_group__t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
