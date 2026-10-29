@@ -584,12 +584,7 @@ int16_t CC1101::getFrequencyDeviation(uint32_t *freqDev) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t CC1101::setOutputPower(int8_t power) {
-  // apply offset for external PA
-  int8_t pwr = power;
-  int16_t state = this->applyOutputPowerOffset(RADIOLIB_CC1101_POUT_MIN, &power, &pwr);
-  RADIOLIB_ASSERT(state);
-  
+int16_t CC1101::setOutputPower(int8_t pwr) {
   // check if power value is configurable
   const int8_t allowedPwrs[8] = { -30, -20, -15, -10, 0, 5, 7, 10 };
   bool found = false;
