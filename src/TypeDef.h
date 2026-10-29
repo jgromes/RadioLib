@@ -637,6 +637,11 @@
 #define RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE                (-1201)
 
 /*!
+  \brief The device is running an unsupported firmware. Only firmware update is possible.
+*/
+#define RADIOLIB_ERR_UNSUPPORTED_FIRMWARE                       (-1202)
+
+/*!
   \brief Offset of GNSS demodulator errors.
   See LR11x0 datasheet for details on the actual demodulator error
 */
