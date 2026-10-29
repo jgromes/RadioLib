@@ -125,8 +125,8 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
 
   Module *mod = this->phyLayer->getMod();
   RadioLibTime_t tNow = mod->hal->millis();
-  // if scheduled uplink time is in the past, reschedule to now
-  if(this->tUplink < tNow) {
+  // send now, unless an uplink was scheduled for later
+  if(!this->uplinkScheduled || (long)(this->tUplink - tNow) < 0) {
     this->tUplink = tNow;
   }
   // set tDone to tNow so that any early-return does not result in a hang
@@ -975,8 +975,8 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
 
   Module *mod = this->phyLayer->getMod();
   RadioLibTime_t tNow = mod->hal->millis();
-  // if scheduled uplink time is in the past, reschedule to now
-  if(this->tUplink < tNow) {
+  // send now, unless an uplink was scheduled for later
+  if(!this->uplinkScheduled || (long)(this->tUplink - tNow) < 0) {
     this->tUplink = tNow;
   }
 
@@ -1537,10 +1537,10 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   
   // if requested, wait until transmitting uplink
   RadioLibTime_t tNow = mod->hal->millis();
-  if(this->tUplink > tNow + this->launchDuration) {
+  if((long)(this->tUplink - tNow - this->launchDuration) > 0) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow - this->launchDuration));
     tNow = mod->hal->millis();
-    if(this->tUplink > tNow + this->launchDuration) {
+    if((long)(this->tUplink - tNow - this->launchDuration) > 0) {
       this->smartDelayUntil(this->tUplink - this->launchDuration, false);
     }
   }
@@ -1568,6 +1568,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
 
   // set the timestamp so that we can measure when to start receiving
   this->tUplinkEnd = mod->hal->millis();
+  this->uplinkScheduled = false;
 
   this->phyLayer->clearIrqAction();
   interrupted = false;
@@ -1656,7 +1657,7 @@ int16_t LoRaWANNode::receiveClassA(uint8_t dir, const LoRaWANChannel_t* dlChanne
 
   Module* mod = this->phyLayer->getMod();
   RadioLibTime_t tNow = mod->hal->millis();
-  if(tNow + this->launchDuration > tWindowOpen) {
+  if((long)(tNow + this->launchDuration - tWindowOpen) > 0) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Window too late by %d ms", tNow + this->launchDuration - tWindowOpen);
     return(RADIOLIB_ERR_NO_RX_WINDOW);
   }
@@ -3406,6 +3407,7 @@ void LoRaWANNode::setPersistencePackage(uint8_t pIndex, const uint8_t* buff) {
 
 void LoRaWANNode::scheduleTransmission(RadioLibTime_t tUplink) {
   this->tUplink = tUplink;
+  this->uplinkScheduled = true;
 }
 
 const LoRaWANBand_t* LoRaWANNode::getBand() {
@@ -3895,15 +3897,16 @@ RadioLibTime_t LoRaWANNode::timeUntilUplink(bool seconds) {
   }
 
   Module* mod = this->phyLayer->getMod();
-  RadioLibTime_t nextUplink = this->tUplinkEnd + dutyCycleInterval(this->dutyCycle, this->lastToA);
-  if(mod->hal->millis() >= nextUplink){
+  RadioLibTime_t interval = dutyCycleInterval(this->dutyCycle, this->lastToA);
+  RadioLibTime_t elapsed = mod->hal->millis() - this->tUplinkEnd;
+  if(elapsed >= interval) {
     return(0);
   }
 
   if(seconds) {
-    return((nextUplink - mod->hal->millis()) / 1000 + 1);
+    return((interval - elapsed) / 1000 + 1);
   }
-  return(nextUplink - mod->hal->millis() + 1);
+  return(interval - elapsed + 1);
 }
 
 void LoRaWANNode::syncClock() {
@@ -4076,7 +4079,7 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
 void LoRaWANNode::smartDelayUntil(RadioLibTime_t waitEnd, bool wfi) {
   Module* mod = this->phyLayer->getMod();
   RadioLibTime_t waitStart = mod->hal->millis();
-  if(waitEnd <= waitStart) {
+  if((long)(waitEnd - waitStart) <= 0) {
     return;
   }
 
