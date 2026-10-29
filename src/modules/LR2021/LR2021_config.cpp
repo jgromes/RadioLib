@@ -1159,7 +1159,7 @@ int16_t LR2021::setTempCompensationInternal(uint8_t mode) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG, true, &mode, sizeof(mode)));
 }
 
-int16_t LR2021::setTempCompensationNTC(uint8_t mode, float rRatio, uint16_t betaK, uint8_t delay) {
+int16_t LR2021::setTempCompensationNTC(uint8_t mode, uint16_t rRatio, uint16_t betaK, uint8_t delay) {
   // the chip rejects temperature compensation when TCXO is used
   if(this->tcxoVoltage != RadioLibTCXOVoltage_t::VoltageNone) {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
@@ -1169,12 +1169,9 @@ int16_t LR2021::setTempCompensationNTC(uint8_t mode, float rRatio, uint16_t beta
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
 
-  // ratio is 10 bits with 9 fractional bits, beta is 12 bits in 2 K steps
-  if(!(rRatio > 0.0f) || (rRatio * 512.0f + 0.5f >= 1024.0f) || (betaK < 2) || (betaK > 8190)) {
-    return(RADIOLIB_ERR_INVALID_NTC_PARAMETERS);
-  }
-  uint16_t ratio = (uint16_t)(rRatio * 512.0f + 0.5f);
-  if(ratio == 0) {
+  // ratio is 10 bits with 9 fractional bits, rounded from thousandths, beta is 12 bits in 2 K steps
+  uint32_t ratio = ((uint32_t)rRatio * 512UL + 500UL) / 1000UL;
+  if((ratio == 0) || (ratio > 1023) || (betaK < 2) || (betaK > 8190)) {
     return(RADIOLIB_ERR_INVALID_NTC_PARAMETERS);
   }
   uint16_t beta = (betaK + 1) / 2;
