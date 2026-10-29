@@ -370,7 +370,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
 
-        // wrap-safe duration check; signed cast instead of "millis() - start >= timeout" to avoid the cppcheck false positive from 9825002
+        // wrap-safe duration check; signed cast avoids a cppcheck false positive
         if((long)(this->hal->millis() - start - this->spiConfig.timeout) >= 0) {
           RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO pre-transfer timeout, is it connected?");
           #if !RADIOLIB_STATIC_ONLY
@@ -407,7 +407,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
         
-        // wrap-safe duration check; signed cast instead of "millis() - start >= timeout" to avoid the cppcheck false positive from 9825002
+        // wrap-safe duration check; signed cast avoids a cppcheck false positive
         if((long)(this->hal->millis() - start - this->spiConfig.timeout) >= 0) {
           RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO post-transfer timeout, is it connected?");
 
