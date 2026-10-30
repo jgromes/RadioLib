@@ -421,7 +421,7 @@ class LR2021: public LRxxxx {
     int16_t autoLDRO();
 
     /*!
-      \brief Sets LoRa bandwidth. Allowed values are 31.25, 41.67, 62.5, 83.34, 125.0, 
+      \brief Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.67, 62.5, 83.34, 125.0, 
       101.56, 203.13, 250.0, 406.25, 500.0 kHz, 812.5 kHz and 1000.0 kHz.
       \param bw LoRa bandwidth to be set in Hz.
       \returns \ref status_codes

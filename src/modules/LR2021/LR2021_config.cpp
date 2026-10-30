@@ -269,6 +269,18 @@ int16_t LR2021::setBandwidth(uint32_t bw) {
 
   // check allowed bandwidth values
   switch(bw)  {
+    case(7800):
+      this->bandwidth = RADIOLIB_LR2021_LORA_BW_8;
+      break;
+    case(10400):
+      this->bandwidth = RADIOLIB_LR2021_LORA_BW_10;
+      break;
+    case(15600):
+      this->bandwidth = RADIOLIB_LR2021_LORA_BW_16;
+      break;
+    case(20800):
+      this->bandwidth = RADIOLIB_LR2021_LORA_BW_21;
+      break;
     case(31250):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_31;
       break;

@@ -379,6 +379,10 @@
 #define RADIOLIB_LR2021_PACKET_TYPE_NONE                        (0xFFUL << 0)   //  2     0                  none
 
 // RADIOLIB_LR2021_CMD_SET_LORA_MODULATION_PARAMS
+#define RADIOLIB_LR2021_LORA_BW_8                               (0x00UL << 0)   //  3     0
+#define RADIOLIB_LR2021_LORA_BW_10                              (0x08UL << 0)   //  3     0
+#define RADIOLIB_LR2021_LORA_BW_16                              (0x01UL << 0)   //  3     0
+#define RADIOLIB_LR2021_LORA_BW_21                              (0x09UL << 0)   //  3     0
 #define RADIOLIB_LR2021_LORA_BW_31                              (0x02UL << 0)   //  3     0     LoRa bandwidth: 31.25 kHz
 #define RADIOLIB_LR2021_LORA_BW_41                              (0x0AUL << 0)   //  3     0                     41.67 kHz
 #define RADIOLIB_LR2021_LORA_BW_83                              (0x0BUL << 0)   //  3     0                     83.34 kHz
