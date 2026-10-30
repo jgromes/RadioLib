@@ -152,9 +152,6 @@ int16_t SX1262::setOutputPower(int8_t power, bool optimize) {
   int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1262_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-  // check if power value is configurable
-  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1262_POUT_MIN, RADIOLIB_SX1262_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-
   // set PA config
   SX126x::paTableEntry_t* paTable = this->paOptTable ? this->paOptTable : const_cast<SX126x::paTableEntry_t*>(paOptimizedTable);
   int8_t paVal = optimize ? paTable[pwr - RADIOLIB_SX1262_POUT_MIN].paVal : pwr;

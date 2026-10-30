@@ -14,9 +14,6 @@ int16_t SX1261::setOutputPower(int8_t power) {
   int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1261_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-  // check if power value is configurable
-  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1261_POUT_MIN, RADIOLIB_SX1261_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-
   // get current OCP configuration
   uint8_t ocp = 0;
   state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
