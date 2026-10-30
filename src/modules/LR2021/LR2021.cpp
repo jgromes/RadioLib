@@ -704,6 +704,14 @@ int16_t LR2021::modSetup(uint32_t freq, uint8_t modem) {
   state = config(modem);
   RADIOLIB_ASSERT(state);
 
+  // restore RF switch configuration, if it exists
+  uint32_t pins[Module::RFSWITCH_MAX_PINS];
+  const Module::RfSwitchMode_t* table = nullptr;
+  this->mod->getRfSwitchTable(pins, &table);
+  if(table != nullptr) {
+    this->setRfSwitchTable(pins, table);
+  }
+
   state = setFrequency(freq);
   return(state);
 }

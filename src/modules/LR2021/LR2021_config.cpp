@@ -229,6 +229,10 @@ void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
     (void)this->setDioFunction(dioNum + 5, RADIOLIB_LR2021_DIO_FUNCTION_RF_SWITCH, pull);
     (void)this->setDioRfSwitchConfig(dioNum + 5, dioConfigs[dioNum]);
   }
+
+  // also call the Module::setRfSwitchTable to cache the RF switch table
+  // we may need to re-apply it after modem switch
+  this->mod->setRfSwitchTable(pins, table);
 }
 
 int16_t LR2021::forceLDRO(bool enable) {
