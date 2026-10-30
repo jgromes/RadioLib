@@ -169,7 +169,7 @@ int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t 
     window = stat->start + stat->beidou.timeUntilSubframe - 2300;
   }
   RadioLibTime_t now = this->mod->hal->millis();
-  if(now > window) {
+  if((long)(now - window) > 0) {
     // we missed the window
     return(RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE);
   }

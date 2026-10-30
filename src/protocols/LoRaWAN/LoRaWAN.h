@@ -887,6 +887,7 @@ class LoRaWANNode {
       On Arduino platforms, this is the usual time supplied by millis().
       If the supplied time is larger than the current time, sendReceive() or uplink() will delay
       until the scheduled time.
+      The scheduled time must be within ~24 days of the current time (half of the 32-bit millis() range).
       \param tUplink Transmission time in milliseconds, based on internal clock.
     */
     void scheduleTransmission(RadioLibTime_t tUplink);
@@ -1131,6 +1132,7 @@ class LoRaWANNode {
     uint16_t dwellTimeDn = 0;
 
     RadioLibTime_t tUplink = 0;   // scheduled uplink transmission time (internal clock)
+    bool uplinkScheduled = false; // set by scheduleTransmission(), cleared after the uplink
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
     RadioLibTime_t tDone = 0;     // track time spent during sendReceive
 
