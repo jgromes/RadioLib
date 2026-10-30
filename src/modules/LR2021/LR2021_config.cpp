@@ -154,13 +154,6 @@ int16_t LR2021::setOutputPower(int8_t power, uint32_t rampTimeUs) {
   int8_t pwr = power;
   int16_t state = this->applyOutputPowerOffset(this->highFreq ? RADIOLIB_LR2021_HF_POUT_MIN : RADIOLIB_LR2021_LF_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
-
-  // check if power value is configurable
-  if(this->highFreq) {
-    RADIOLIB_CHECK_RANGE(power, RADIOLIB_LR2021_HF_POUT_MIN, RADIOLIB_LR2021_HF_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    RADIOLIB_CHECK_RANGE(power, RADIOLIB_LR2021_LF_POUT_MIN, RADIOLIB_LR2021_LF_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
   
   //! \TODO: [LR2021] how and when to configure OCP?
 
