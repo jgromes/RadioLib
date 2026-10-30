@@ -1789,9 +1789,8 @@ int16_t LR11x0::config(uint8_t modem) {
     getErrors(&errors);
     RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
   }
-  #else
-  RADIOLIB_ASSERT(state);
   #endif
+  RADIOLIB_ASSERT(state);
 
   // enable driving DIOs in sleep mode
   // this prevents IRQ going high when the device goes to sleep

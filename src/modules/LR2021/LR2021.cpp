@@ -775,9 +775,8 @@ int16_t LR2021::config(uint8_t modem) {
     getErrors(&errors);
     RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
   }
-  #else
-  RADIOLIB_ASSERT(state);
   #endif
+  RADIOLIB_ASSERT(state);
 
   // set modem
   state = this->setPacketType(modem);
