@@ -685,9 +685,6 @@ int16_t SX128x::setOutputPower(int8_t power) {
   int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX128X_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-  // check if power value is configurable
-  RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX128X_POUT_MIN, RADIOLIB_SX128X_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-
   this->txPower = pwr - RADIOLIB_SX128X_POUT_MIN;
   return(setTxParams(this->txPower));
 }
