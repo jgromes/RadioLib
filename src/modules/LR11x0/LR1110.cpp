@@ -76,22 +76,16 @@ int16_t LR1110::setOutputPower(int8_t power) {
 
 int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs) {
   // apply offset for external PA
+  // use the minimum possible output as LUT base
   int8_t pwr = power;
   int16_t state = this->applyOutputPowerOffset(RADIOLIB_LR1110_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
-
-  // determine whether to use HP or LP PA and check range accordingly
-  bool useHp = forceHighPower || (pwr > RADIOLIB_LR1110_LP_POUT_MAX);
-  if(useHp) {
-    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR1110_HP_POUT_MIN, RADIOLIB_LR1110_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_LR1110_LP_POUT_MIN, RADIOLIB_LR1110_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
   
-  // TODO how and when to configure OCP?
+  //! \TODO: [LR1110] how and when to configure OCP?
 
   // update PA config and set output power - always use VBAT for high-power PA
   // the value returned by LRxxxx class is offset by 3 for LR11x0
+  bool useHp = forceHighPower || (pwr > RADIOLIB_LR1110_LP_POUT_MAX);
   this->txMode = useHp ? LR11x0::MODE_TX_HP : LR11x0::MODE_TX;
   state = LR11x0::setOutputPower(pwr, (uint8_t)useHp, (uint8_t)useHp, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
   return(state);

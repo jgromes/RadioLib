@@ -781,19 +781,30 @@ int16_t PhysicalLayer::setOutputPowerOffset(const int8_t* lut, size_t steps) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut) {
-  RADIOLIB_ASSERT_PTR(pwrIn);
-  RADIOLIB_ASSERT_PTR(pwrOut);
-  const int idx = (int)*pwrIn - (int)base;
-  if((idx < 0) || (idx >= (int)this->paSteps)) {
-    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
-  *pwrOut = *pwrIn - this->paOffsetLut[idx];
-
+int16_t PhysicalLayer::applyOutputPowerOffset(int8_t base, const int8_t* pwrReq, int8_t* pwrRadio) {
+  RADIOLIB_ASSERT_PTR(pwrReq);
+  RADIOLIB_ASSERT_PTR(pwrRadio);
+  
   // update the minimum and maximum supported power
   this->powerMin = base + this->paOffsetLut[0];
-  this->powerMax = base + this->paSteps - 1 + this->paOffsetLut[this->paSteps];
-  return(RADIOLIB_ERR_NONE);
+  this->powerMax = base + this->paSteps - 1 + this->paOffsetLut[this->paSteps - 1];
+
+  // check the range
+  RADIOLIB_CHECK_RANGE(*pwrReq, this->powerMin, this->powerMax, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+
+  // base is the minimum value that the radio can output on its own, pwrReq is the request from user
+  // find first entry in the LUT that achieves the target output
+  uint8_t idx = 0;
+  for(; idx < this->paSteps; idx++) {
+    if(base + idx + this->paOffsetLut[idx] >= *pwrReq) {
+      // output is the base of the table and the index we found 
+      *pwrRadio = base + idx;
+      return(RADIOLIB_ERR_NONE);
+    }
+  }
+
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Found no setting for PA offset to reach %d dBm!", *pwrReq);
+  return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 }
 
 int16_t PhysicalLayer::findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val) {

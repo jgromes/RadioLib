@@ -703,6 +703,8 @@ class PhysicalLayer {
       for the offset to be applied!
       \param lut Pointer to a lookup table to use - for each output power configuration, value from the lookup table
       will be applied as offset.
+      NOTE: The lookup table must be monotonically decreasing (values are always either lowering 
+      or remaining the same) and in 1 dB steps.
       \param steps Number of steps/entries in the lookup table - this depends on the range of output power
       by the radio module. Different radio modules support different output power ranges!
       \returns \ref status_codes
@@ -1093,7 +1095,16 @@ class PhysicalLayer {
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
     
-    int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut);
+    /*!
+      \brief Apply output power offset and check power configuration range is feasible for the radio.
+      \param base Base value of the PA lookup table.
+      NOTE: If the radio implements multiple power-devepended transmit paths,
+      the base needs to be the minimum!
+      \param pwrReq Pointer to variable holding power requested by the user.
+      \param pwrRadio Pointer to variable where resulting power with applied offset will be saved.
+      \returns \ref status_codes
+    */
+    int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrReq, int8_t* pwrRadio);
     int16_t findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE

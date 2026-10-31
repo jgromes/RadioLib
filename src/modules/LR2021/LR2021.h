@@ -376,6 +376,8 @@ class LR2021: public LRxxxx {
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (sub-GHz PA) or -19 to 12 dBm (high-frequency PA).
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Output power to be set in dBm.
       \param rampTimeUs PA power ramping time in microseconds. Provided value is rounded up to the
       nearest discrete ramp time supported by the PA.

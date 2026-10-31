@@ -89,6 +89,8 @@ class SX1262: public SX126x {
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
       This method is virtual to allow override from the SX1261 class.
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Output power to be set in dBm.
       \returns \ref status_codes
     */
@@ -96,6 +98,8 @@ class SX1262: public SX126x {
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Output power to be set in dBm.
       \param optimize Whether to use power-optimized PA configuration (true) or datasheet default (false).
       \returns \ref status_codes
