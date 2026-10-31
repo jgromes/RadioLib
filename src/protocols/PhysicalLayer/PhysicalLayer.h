@@ -1095,7 +1095,7 @@ class PhysicalLayer {
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
     
-    int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrIn, int8_t* pwrOut);
+    int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrReq, int8_t* pwrRadio);
     int16_t findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
