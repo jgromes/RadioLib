@@ -177,6 +177,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7d3adea64acab11c47c804afc74bd4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <span class="tt">txEn</span> pin will be HIGH, during RX the <span class="tt">rxPin</span> will be HIGH.  <br /></td></tr>
 <tr class="memitem:ac308fa817a5c36c5dc724a0d15cefd4d" id="r_ac308fa817a5c36c5dc724a0d15cefd4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac308fa817a5c36c5dc724a0d15cefd4d">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> table[])</td></tr>
 <tr class="memdesc:ac308fa817a5c36c5dc724a0d15cefd4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <br /></td></tr>
+<tr class="memitem:ac9a24090e846caeac2585aa15420d3d4" id="r_ac9a24090e846caeac2585aa15420d3d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9a24090e846caeac2585aa15420d3d4">getRfSwitchTable</a> (uint32_t *pins, const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> **table)</td></tr>
+<tr class="memdesc:ac9a24090e846caeac2585aa15420d3d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve previously configured RF switch table.  <br /></td></tr>
 <tr class="memitem:a5699a937b62ba41387567b4d679b9377" id="r_a5699a937b62ba41387567b4d679b9377"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5699a937b62ba41387567b4d679b9377">findRfSwitchMode</a> (uint8_t mode) const</td></tr>
 <tr class="memdesc:a5699a937b62ba41387567b4d679b9377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a mode in the RfSwitchTable.  <br /></td></tr>
 <tr class="memitem:afbed643f082286012bf44bba22381ae6" id="r_afbed643f082286012bf44bba22381ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbed643f082286012bf44bba22381ae6">setRfSwitchState</a> (uint8_t mode)</td></tr>
@@ -382,6 +384,36 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>RFSWIT
 
 <p>Access method to get the pin number of interrupt/GPIO. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pin number of interrupt/GPIO configured in the constructor. </dd></dl>
+
+</div>
+</div>
+<a id="ac9a24090e846caeac2585aa15420d3d4" name="ac9a24090e846caeac2585aa15420d3d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9a24090e846caeac2585aa15420d3d4">&#9670;&#160;</a></span>getRfSwitchTable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Module::getRfSwitchTable </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t *</td>          <td class="paramname"><span class="paramname"><em>pins</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> **</td>          <td class="paramname"><span class="paramname"><em>table</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieve previously configured RF switch table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pins</td><td>Pointer to array where pin numbers will be saved. NOTE: It is up to the caller to ensure the array is large enough to save all the pins! </td></tr>
+    <tr><td class="paramname">table</td><td>Pointer to variable which will end up pointing to the RF switch table. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

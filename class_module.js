@@ -15,6 +15,7 @@ var class_module =
     [ "findRfSwitchMode", "class_module.html#a5699a937b62ba41387567b4d679b9377", null ],
     [ "getGpio", "class_module.html#a4ec27f0ba5e0009ea9661a5110526b52", null ],
     [ "getIrq", "class_module.html#ab61bc5066c356e2d0d79f08a2bd0fbc9", null ],
+    [ "getRfSwitchTable", "class_module.html#ac9a24090e846caeac2585aa15420d3d4", null ],
     [ "getRst", "class_module.html#ad6cddbf3aebec9717a1a381dd81ad398", null ],
     [ "init", "class_module.html#ac70b40e32d536419a9057645b846a270", null ],
     [ "operator=", "class_module.html#a4ea888758b4a7784082d513a1e7849a4", null ],
