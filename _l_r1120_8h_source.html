@@ -121,27 +121,27 @@ $(function(){initNavTree('_l_r1120_8h_source.html','',''); });
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span></div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#ac91a716075d72e407bc0910659a7fca3">setFrequency</a>(uint32_t freq, <span class="keywordtype">bool</span> skipCalibration, uint32_t band = RADIOLIB_UNIT_MEGA(4));</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power, <span class="keywordtype">bool</span> forceHighPower, uint32_t rampTimeUs = 48);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">void</span> updatePowerLimits(<span class="keywordtype">bool</span> highFreq);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>};</div>
-</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a>(int8_t power, <span class="keywordtype">bool</span> forceHighPower, uint32_t rampTimeUs = 48);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    int16_t <a class="code hl_function" href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">void</span> updatePowerLimits(<span class="keywordtype">bool</span> highFreq);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>};</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_l_r1120_html_a01b0896ea0995c42ec08c0fba9b6e483"><div class="ttname"><a href="class_l_r1120.html#a01b0896ea0995c42ec08c0fba9b6e483">LR1120::beginLRFHSS</a></div><div class="ttdeci">int16_t beginLRFHSS(const ConfigLRFHSS_t &amp;config)</div><div class="ttdoc">Initialization method for LR-FHSS modem.</div><div class="ttdef"><b>Definition</b> LR1120.cpp:37</div></div>
 <div class="ttc" id="aclass_l_r1120_html_a11602dc07271b6135c550254edb5ff72"><div class="ttname"><a href="class_l_r1120.html#a11602dc07271b6135c550254edb5ff72">LR1120::begin</a></div><div class="ttdeci">int16_t begin(const ConfigLoRa_t &amp;config)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition</b> LR1120.cpp:11</div></div>
 <div class="ttc" id="aclass_l_r1120_html_a1b1321eb695e4a6b583074bb92c33193"><div class="ttname"><a href="class_l_r1120.html#a1b1321eb695e4a6b583074bb92c33193">LR1120::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power) override</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (lo...</div><div class="ttdef"><b>Definition</b> LR1120.cpp:84</div></div>
-<div class="ttc" id="aclass_l_r1120_html_a6cd250e0145ed19f2f91ed96a57a825e"><div class="ttname"><a href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">LR1120::setModem</a></div><div class="ttdeci">int16_t setModem(ModemType_t modem) override</div><div class="ttdoc">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default p...</div><div class="ttdef"><b>Definition</b> LR1120.cpp:126</div></div>
+<div class="ttc" id="aclass_l_r1120_html_a6cd250e0145ed19f2f91ed96a57a825e"><div class="ttname"><a href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">LR1120::setModem</a></div><div class="ttdeci">int16_t setModem(ModemType_t modem) override</div><div class="ttdoc">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default p...</div><div class="ttdef"><b>Definition</b> LR1120.cpp:116</div></div>
 <div class="ttc" id="aclass_l_r1120_html_ac3f850fb266e5c0162fd486e3438c42f"><div class="ttname"><a href="class_l_r1120.html#ac3f850fb266e5c0162fd486e3438c42f">LR1120::beginGFSK</a></div><div class="ttdeci">int16_t beginGFSK(const ConfigFSK_t &amp;config)</div><div class="ttdoc">Initialization method for GFSK modem.</div><div class="ttdef"><b>Definition</b> LR1120.cpp:24</div></div>
 <div class="ttc" id="aclass_l_r1120_html_ac91a716075d72e407bc0910659a7fca3"><div class="ttname"><a href="class_l_r1120.html#ac91a716075d72e407bc0910659a7fca3">LR1120::setFrequency</a></div><div class="ttdeci">int16_t setFrequency(uint32_t freq) override</div><div class="ttdoc">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz, 1900 - 2200 MHz and 2400...</div><div class="ttdef"><b>Definition</b> LR1120.cpp:50</div></div>
 <div class="ttc" id="aclass_l_r1120_html_ae652f10ebc1e4b8245eb5a0c97765257"><div class="ttname"><a href="class_l_r1120.html#ae652f10ebc1e4b8245eb5a0c97765257">LR1120::LR1120</a></div><div class="ttdeci">LR1120(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> LR1120.cpp:6</div></div>

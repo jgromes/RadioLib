@@ -125,9 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a635febeb21ae04662cbf5b6924497fb6" id="r_a635febeb21ae04662cbf5b6924497fb6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a635febeb21ae04662cbf5b6924497fb6">setFrequency</a> (uint32_t freq, bool skipCalibration, uint32_t band=RADIOLIB_UNIT_MEGA(4))</td></tr>
 <tr class="memdesc:a635febeb21ae04662cbf5b6924497fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz, 1900 - 2200 MHz and 2400 - 2500 MHz. Will automatically perform image calibration if the frequency changes by more than RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG Hz.  <br /></td></tr>
 <tr class="memitem:a1b1321eb695e4a6b583074bb92c33193" id="r_a1b1321eb695e4a6b583074bb92c33193"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b1321eb695e4a6b583074bb92c33193">setOutputPower</a> (int8_t power) override</td></tr>
-<tr class="memdesc:a1b1321eb695e4a6b583074bb92c33193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <br /></td></tr>
+<tr class="memdesc:a1b1321eb695e4a6b583074bb92c33193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA). When using an external PA, the output power offset may be handled by the library using <a class="el" href="class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212" title="Sets offset of the output power. Useful for devices where the radio has an external power amplifier,...">PhysicalLayer::setOutputPowerOffset</a>. See <a href="https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide">https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide</a> for details on its usage.  <br /></td></tr>
 <tr class="memitem:a92b22c4a9fed3a045da1bb1929e57294" id="r_a92b22c4a9fed3a045da1bb1929e57294"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92b22c4a9fed3a045da1bb1929e57294">setOutputPower</a> (int8_t power, bool forceHighPower, uint32_t rampTimeUs=48)</td></tr>
-<tr class="memdesc:a92b22c4a9fed3a045da1bb1929e57294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA) or -18 to 13 dBm (high-frequency PA).  <br /></td></tr>
+<tr class="memdesc:a92b22c4a9fed3a045da1bb1929e57294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA) or -18 to 13 dBm (high-frequency PA). When using an external PA, the output power offset may be handled by the library using <a class="el" href="class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212" title="Sets offset of the output power. Useful for devices where the radio has an external power amplifier,...">PhysicalLayer::setOutputPowerOffset</a>. See <a href="https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide">https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide</a> for details on its usage.  <br /></td></tr>
 <tr class="memitem:a6cd250e0145ed19f2f91ed96a57a825e" id="r_a6cd250e0145ed19f2f91ed96a57a825e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cd250e0145ed19f2f91ed96a57a825e">setModem</a> (ModemType_t modem) override</td></tr>
 <tr class="memdesc:a6cd250e0145ed19f2f91ed96a57a825e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_l_r11x0"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_l_r11x0')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_l_r11x0.html">LR11x0</a></td></tr>
@@ -668,7 +668,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 </table>
 </div><div class="memdoc">
 
-<p>Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA). </p>
+<p>Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA). When using an external PA, the output power offset may be handled by the library using <a class="el" href="class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212" title="Sets offset of the output power. Useful for devices where the radio has an external power amplifier,...">PhysicalLayer::setOutputPowerOffset</a>. See <a href="https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide">https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide</a> for details on its usage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">power</td><td>Output power to be set in dBm, output PA is determined automatically preferring the low-power PA. </td></tr>
@@ -705,7 +705,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
       </table>
 </div><div class="memdoc">
 
-<p>Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA) or -18 to 13 dBm (high-frequency PA). </p>
+<p>Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA) or -18 to 13 dBm (high-frequency PA). When using an external PA, the output power offset may be handled by the library using <a class="el" href="class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212" title="Sets offset of the output power. Useful for devices where the radio has an external power amplifier,...">PhysicalLayer::setOutputPowerOffset</a>. See <a href="https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide">https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide</a> for details on its usage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">power</td><td>Output power to be set in dBm. </td></tr>
@@ -715,6 +715,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<p>\TODO: [<a class="el" href="class_l_r1120.html" title="Derived class for LR1120 modules.">LR1120</a>] how and when to configure OCP?</p>
 
 </div>
 </div>
