@@ -88,12 +88,11 @@ int16_t LR1120::setOutputPower(int8_t power) {
 int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampTimeUs) {
   // apply offset for external PA
   int8_t pwr = power;
-  bool useHp = forceHighPower || (pwr > RADIOLIB_LR112X_LP_POUT_MAX);
-  int8_t lutBase = this->highFreq ? RADIOLIB_LR112X_HF_POUT_MIN : (useHp ? RADIOLIB_LR112X_HP_POUT_MIN : RADIOLIB_LR112X_LP_POUT_MIN);
-  int16_t state = this->applyOutputPowerOffset(lutBase, &power, &pwr);
+  int16_t state = this->applyOutputPowerOffset(this->highFreq ? RADIOLIB_LR112X_HF_POUT_MIN : RADIOLIB_LR112X_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-  // determine whether to use HP or LP PA and check range accordingly
+  // determine whether to use HP or LP PA
+  bool useHp = forceHighPower || (pwr > RADIOLIB_LR112X_LP_POUT_MAX);
   uint8_t paSel = 0;
   uint8_t paSupply = 0;
   this->txMode = LR11x0::MODE_TX;

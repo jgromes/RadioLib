@@ -77,6 +77,8 @@ class LR1120: public LR11x0 {
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Output power to be set in dBm, output PA is determined automatically preferring the low-power PA.
       \returns \ref status_codes
     */
@@ -85,6 +87,8 @@ class LR1120: public LR11x0 {
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA), -17 to 14 dBm (low-power PA)
       or -18 to 13 dBm (high-frequency PA).
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Output power to be set in dBm.
       \param forceHighPower Force using the high-power PA in sub-GHz bands, or high-frequency PA in 2.4 GHz band.
       If set to false, PA will be determined automatically based on configured output power and frequency,
