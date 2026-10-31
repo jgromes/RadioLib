@@ -703,7 +703,7 @@ class PhysicalLayer {
       for the offset to be applied!
       \param lut Pointer to a lookup table to use - for each output power configuration, value from the lookup table
       will be applied as offset.
-      NOTE: The lookup table must be monotonically non-decreasing (values are always either rising 
+      NOTE: The lookup table must be monotonically decreasing (values are always either lowering 
       or remaining the same) and in 1 dB steps.
       \param steps Number of steps/entries in the lookup table - this depends on the range of output power
       by the radio module. Different radio modules support different output power ranges!
