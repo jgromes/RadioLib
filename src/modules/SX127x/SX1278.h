@@ -192,6 +192,8 @@ class SX1278: public SX127x {
     /*!
       \brief Sets transmission output power. Allowed values range from -4 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
       High power +20 dBm operation is also supported, on the PA_BOOST pin. Defaults to PA_BOOST.
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Transmission output power in dBm.
       \returns \ref status_codes
     */
@@ -200,6 +202,8 @@ class SX1278: public SX127x {
     /*!
       \brief Sets transmission output power. Allowed values range from -4 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
       High power +20 dBm operation is also supported, on the PA_BOOST pin.
+      When using an external PA, the output power offset may be handled by the library using PhysicalLayer::setOutputPowerOffset.
+      See https://github.com/jgromes/RadioLib/wiki/High-power-Radio-Modules-Guide for details on its usage.
       \param power Transmission output power in dBm.
       \param forceRfo Whether to force using the RFO pin for the RF output (true)
       or to leave the selection up to user (false) based on power output.

@@ -296,22 +296,17 @@ int16_t SX1278::setOutputPower(int8_t power) {
 
 int16_t SX1278::setOutputPower(int8_t power, bool forceRfo) {
   // apply offset for external PA
+  // use the minimum possible output as LUT base
   int8_t pwr = power;
   int16_t state = this->applyOutputPowerOffset(RADIOLIB_SX1278_RFO_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
-
-  // check if power value is configurable
-  bool useRfo = (power < RADIOLIB_SX1278_PA_BOOST_POUT_MIN) || forceRfo;
-  if(useRfo) {
-    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1278_RFO_POUT_MIN, RADIOLIB_SX1278_RFO_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_SX1278_PA_BOOST_POUT_MIN, RADIOLIB_SX1278_PA_BOOST_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
 
   // set mode to standby
   state = SX127x::standby();
   Module* mod = this->getMod();
 
+  // the output path depends on the commanded value
+  bool useRfo = (power < RADIOLIB_SX1278_PA_BOOST_POUT_MIN) || forceRfo;
   if(useRfo) {
     uint8_t paCfg = 0;
     if(pwr < 0) {
