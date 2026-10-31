@@ -87,9 +87,11 @@ int16_t LR2021::setFrequency(uint32_t freq) {
 
 int16_t LR2021::setFrequency(uint32_t freq, bool skipCalibration) {
   #if RADIOLIB_CHECK_PARAMS
-  if(!(((freq >= RADIOLIB_UNIT_MEGA(150)) && (freq <= RADIOLIB_UNIT_MEGA(1090))) ||
-    ((freq >= RADIOLIB_UNIT_MEGA(1900)) && (freq <= RADIOLIB_UNIT_MEGA(2200))) ||
-    ((freq >= RADIOLIB_UNIT_MEGA(2400)) && (freq <= RADIOLIB_UNIT_MEGA(2500))))) {
+  const bool lowBand = (freq >= RADIOLIB_UNIT_MEGA(150)) && (freq <= RADIOLIB_UNIT_MEGA(1090));
+  // the sub-GHz-only parts have no high-frequency path, so only the low band is reachable there
+  if(!(lowBand || (!this->subGhzOnly() &&
+    (((freq >= RADIOLIB_UNIT_MEGA(1900)) && (freq <= RADIOLIB_UNIT_MEGA(2200))) ||
+     ((freq >= RADIOLIB_UNIT_MEGA(2400)) && (freq <= RADIOLIB_UNIT_MEGA(2500))))))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
   #endif
@@ -137,7 +139,8 @@ int16_t LR2021::setFrequency(uint32_t freq, bool skipCalibration) {
   state = setRfFrequency((uint32_t)(freq));
   RADIOLIB_ASSERT(state);
   this->freqHz = freq;
-  this->highFreq = (freq > RADIOLIB_LR2021_LF_CUTOFF_FREQ);
+  // a part with no high-frequency front end stays on the low path whatever it was handed
+  this->highFreq = !this->subGhzOnly() && (freq > RADIOLIB_LR2021_LF_CUTOFF_FREQ);
   
   // power limits depend on the frequency band
   this->updatePowerLimits(this->highFreq);

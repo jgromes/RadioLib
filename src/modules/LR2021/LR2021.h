@@ -22,6 +22,15 @@
 #define RADIOLIB_LR2021_HF_POUT_MIN                             -19
 #define RADIOLIB_LR2021_HF_POUT_MAX                             12
 
+// LR20xx device types - one driver serves the family, but the parts differ in what they support
+#define RADIOLIB_LR2021_DEVICE_LR2021                           (0x00)
+#define RADIOLIB_LR2021_DEVICE_LR2022                           (0x01)
+#define RADIOLIB_LR2021_DEVICE_LR2012                           (0x02)
+
+// GetVersion firmware versions, LR20xx datasheet Rev. 2.2 section 6.7.2 - LR2022 and LR2012 share one
+#define RADIOLIB_LR2021_FW_LR2021                               (0x0118)
+#define RADIOLIB_LR2021_FW_LR20X2                               (0x0200)
+
 /*!
   \class LR2021
   \brief 
@@ -924,6 +933,8 @@ class LR2021: public LRxxxx {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
+    /*! \brief Which part of the LR20xx family this instance drives, one of RADIOLIB_LR2021_DEVICE_*. */
+    uint8_t chipType = RADIOLIB_LR2021_DEVICE_LR2021;
 
 #if !RADIOLIB_GODMODE
   private:
@@ -942,6 +953,8 @@ class LR2021: public LRxxxx {
 
     int16_t modSetup(uint32_t freq, uint8_t modem);
     bool findChip(void);
+    const char* chipName(void) const;
+    bool subGhzOnly(void) const;
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, bool fast, uint8_t exitMode, RadioLibTime_t timeout);
