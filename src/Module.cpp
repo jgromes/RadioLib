@@ -531,8 +531,15 @@ void Module::setRfSwitchTable(const uint32_t (&pins)[RFSWITCH_MAX_PINS], const R
   memcpy(this->rfSwitchPins, pins, sizeof(this->rfSwitchPins));
   this->rfSwitchTable = table;
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
+    // skip pins not controlled by the MCU (NC or radio-controlled DIO pins)
+    if(pins[i] & RFSWITCH_PIN_FLAG) { continue; }
     this->hal->pinMode(pins[i], this->hal->GpioModeOutput);
   }
+}
+
+void Module::getRfSwitchTable(uint32_t* pins, const RfSwitchMode_t** table) {
+  if(pins) { memcpy(pins, this->rfSwitchPins, sizeof(this->rfSwitchPins)); }
+  if(table) { *table = this->rfSwitchTable; }
 }
 
 const Module::RfSwitchMode_t *Module::findRfSwitchMode(uint8_t mode) const {

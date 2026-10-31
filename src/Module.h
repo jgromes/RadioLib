@@ -488,8 +488,15 @@ class Module {
       }
       \endcode
     */
-
     void setRfSwitchTable(const uint32_t (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]);
+
+    /*!
+      \brief Retrieve previously configured RF switch table.
+      \param pins Pointer to array where pin numbers will be saved.
+      NOTE: It is up to the caller to ensure the array is large enough to save all the pins!
+      \param table Pointer to variable which will end up pointing to the RF switch table.
+    */
+    void getRfSwitchTable(uint32_t* pins, const RfSwitchMode_t** table);
 
     /*!
       \brief Find a mode in the RfSwitchTable.

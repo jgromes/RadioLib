@@ -1263,6 +1263,10 @@ void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
 
   // set it
   this->setDioAsRfSwitch(enable, modes[0], modes[1], modes[2], modes[3], modes[4], modes[5], modes[6]);
+
+  // also call the Module::setRfSwitchTable to cache the RF switch table
+  // we may need to re-apply it after modem switch
+  this->mod->setRfSwitchTable(pins, table);
 }
 
 int16_t LR11x0::setStandbyXOSC(bool enable) {
@@ -1707,7 +1711,18 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   }
 
   // configure settings not accessible by API
-  return(config(modem));
+  state = config(modem);
+  RADIOLIB_ASSERT(state);
+
+  // restore RF switch configuration, if it exists
+  uint32_t pins[Module::RFSWITCH_MAX_PINS];
+  const Module::RfSwitchMode_t* table = nullptr;
+  this->mod->getRfSwitchTable(pins, &table);
+  if(table != nullptr) {
+    this->setRfSwitchTable(pins, table);
+  }
+
+  return(state);
 }
 
 bool LR11x0::findChip(uint8_t ver) {
