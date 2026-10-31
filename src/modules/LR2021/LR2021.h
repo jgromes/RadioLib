@@ -753,6 +753,32 @@ class LR2021: public LRxxxx {
     int16_t setGain(uint8_t gain);
 
     /*!
+      \brief Enable compensation of crystal self-heating drift during transmission, using the internal
+      temperature sensor only. Crystal (non-TCXO) only, must be called after begin().
+      \param mode One of RADIOLIB_LR2021_TEMP_COMP_* macros, RELATIVE is recommended. DISABLED turns
+      compensation off, including the NTC if setTempCompensationNTC() enabled it.
+      \returns \ref status_codes
+    */
+    int16_t setTempCompensationInternal(uint8_t mode);
+
+    /*!
+      \brief Enable compensation of crystal self-heating drift during transmission, using an external NTC
+      thermistor at the crystal in addition to the internal sensor. Crystal (non-TCXO) only, must be called
+      after begin(). The NTC parameters depend on the board, so there are no defaults: the chip accepts any
+      value, and a wrong one makes it compensate for the wrong temperature.
+      \param mode RADIOLIB_LR2021_TEMP_COMP_RELATIVE (recommended) or RADIOLIB_LR2021_TEMP_COMP_ABSOLUTE.
+      The NTC has no effect with compensation disabled, so to turn it off, call
+      setTempCompensationInternal(RADIOLIB_LR2021_TEMP_COMP_DISABLED).
+      \param rRatio Ratio of the bias resistor to the NTC resistance at 25 C, from the board's schematic, in
+      thousandths (e.g. 1200 for a 120 kOhm bias resistor and a 100 kOhm NTC). 1 to 1999 (sent in steps of 1/512).
+      \param betaK NTC beta constant in Kelvin, from the thermistor's datasheet (e.g. B25/50). 2 to 8190
+      (sent in steps of 2 K).
+      \param delay Filter coefficient for the NTC's thermal lag behind the crystal, depends on the PCB.
+      \returns \ref status_codes
+    */
+    int16_t setTempCompensationNTC(uint8_t mode, uint16_t rRatio, uint16_t betaK, uint8_t delay);
+
+    /*!
       \brief Read status of the last received packet.
       Each parameter can be set to NULL if the caller is not intending to process it.
       \param cr Coding rate of the last received packet
