@@ -19,7 +19,7 @@ var searchData=
   ['getflrcrxstats_16',['getFlrcRxStats',['../class_l_r2021.html#adf24c447348c074027471525ddabafa9',1,'LR2021']]],
   ['getfrequency_17',['getFrequency',['../class_r_f69.html#a9dcfc774b32226bbd3a9319311dc0b20',1,'RF69']]],
   ['getfrequencydeviation_18',['getFrequencyDeviation',['../class_c_c1101.html#a6e3ff67eafcabf8fdf8bf9ed1ce6cf28',1,'CC1101::getFrequencyDeviation()'],['../class_r_f69.html#a75d51b91fe79aa9daf3e552923834364',1,'RF69::getFrequencyDeviation()']]],
-  ['getfrequencyerror_19',['getFrequencyError',['../class_l_r11x0.html#ad9046bccdb4ef60718e2e8ed2bd7f036',1,'LR11x0::getFrequencyError()'],['../class_l_r2021.html#a979a990d8694d34ee91616e9f509bb2f',1,'LR2021::getFrequencyError()'],['../class_s_x126x.html#a779dd9db67207cf2f8ee1fe9c9d6d99c',1,'SX126x::getFrequencyError()'],['../class_s_x127x.html#a77a8f1703d5fe2f50dc0c0692fb92189',1,'SX127x::getFrequencyError()'],['../class_s_x128x.html#a2f36cd1c71b7463a3cb0993c523559f3',1,'SX128x::getFrequencyError()']]],
+  ['getfrequencyerror_19',['getFrequencyError',['../class_l_r2021.html#a979a990d8694d34ee91616e9f509bb2f',1,'LR2021::getFrequencyError()'],['../class_s_x126x.html#a779dd9db67207cf2f8ee1fe9c9d6d99c',1,'SX126x::getFrequencyError()'],['../class_s_x127x.html#a77a8f1703d5fe2f50dc0c0692fb92189',1,'SX127x::getFrequencyError()'],['../class_s_x128x.html#a2f36cd1c71b7463a3cb0993c523559f3',1,'SX128x::getFrequencyError()']]],
   ['getgfskrxstats_20',['getGfskRxStats',['../class_l_r2021.html#aff93b160d3eb5eb6b2e4207d1dbc01f1',1,'LR2021']]],
   ['getgnssalmanacstatus_21',['getGnssAlmanacStatus',['../class_l_r11x0.html#a748d30cb7a0b419066f6361a966b306f',1,'LR11x0']]],
   ['getgnssposition_22',['getGnssPosition',['../class_l_r11x0.html#a19a4b4a138dbd0e5c8f980de0f6419e4',1,'LR11x0']]],

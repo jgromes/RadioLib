@@ -231,8 +231,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a34bf9148cd5c0f31de8daec226a6c0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Received Signal Strength Indicator).  <br /></td></tr>
 <tr class="memitem:a004782e6e5c6ad213c3b0c677bb8642d" id="r_a004782e6e5c6ad213c3b0c677bb8642d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a004782e6e5c6ad213c3b0c677bb8642d">getSNR</a> () override</td></tr>
 <tr class="memdesc:a004782e6e5c6ad213c3b0c677bb8642d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <br /></td></tr>
-<tr class="memitem:ad9046bccdb4ef60718e2e8ed2bd7f036" id="r_ad9046bccdb4ef60718e2e8ed2bd7f036"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9046bccdb4ef60718e2e8ed2bd7f036">getFrequencyError</a> ()</td></tr>
-<tr class="memdesc:ad9046bccdb4ef60718e2e8ed2bd7f036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency error of the latest received packet.  <br /></td></tr>
 <tr class="memitem:ac1f541bdee1d983126ceae47940b8f9d" id="r_ac1f541bdee1d983126ceae47940b8f9d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1f541bdee1d983126ceae47940b8f9d">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:ac1f541bdee1d983126ceae47940b8f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <br /></td></tr>
 <tr class="memitem:af96883b2ca7a36a8921ee1cd222adebf" id="r_af96883b2ca7a36a8921ee1cd222adebf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af96883b2ca7a36a8921ee1cd222adebf">getPacketLength</a> (bool update, uint8_t *offset)</td></tr>
@@ -989,26 +987,6 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a63979795a7b53557560bb95b65480906">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="ad9046bccdb4ef60718e2e8ed2bd7f036" name="ad9046bccdb4ef60718e2e8ed2bd7f036"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9046bccdb4ef60718e2e8ed2bd7f036">&#9670;&#160;</a></span>getFrequencyError()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float LR11x0::getFrequencyError </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets frequency error of the latest received packet. </p>
-<dl class="section return"><dt>Returns</dt><dd>Frequency error in Hz. </dd></dl>
 
 </div>
 </div>
