@@ -271,7 +271,7 @@ int16_t SX127x::scanChannel(const ChannelScanConfig_t &cfg) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->digitalRead(this->mod->getGpio())) {
-      return(RADIOLIB_PREAMBLE_DETECTED);
+      return(RADIOLIB_LORA_DETECTED);
     }
   }
 
@@ -603,7 +603,7 @@ int16_t SX127x::startChannelScan(const ChannelScanConfig_t &cfg) {
 
 int16_t SX127x::getChannelScanResult() {
   if((this->getIRQFlags() & RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED) == RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED) {
-    return(RADIOLIB_PREAMBLE_DETECTED);
+    return(RADIOLIB_LORA_DETECTED);
   }
   return(RADIOLIB_CHANNEL_FREE);
 }

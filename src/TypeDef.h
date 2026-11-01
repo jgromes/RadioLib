@@ -179,12 +179,6 @@
 #define RADIOLIB_ERR_INVALID_OUTPUT_POWER                      (-13)
 
 /*!
-  \brief LoRa preamble was detected during channel activity detection.
-  This means that there is some LoRa device currently transmitting in your channel.
-*/
-#define RADIOLIB_PREAMBLE_DETECTED                             (-14)
-
-/*!
   \brief No LoRa preambles were detected during channel activity detection. Your channel is free.
 */
 #define RADIOLIB_CHANNEL_FREE                                  (-15)

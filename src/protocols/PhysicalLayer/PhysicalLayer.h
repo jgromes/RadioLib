@@ -878,7 +878,7 @@ class PhysicalLayer {
       \brief Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules,
       or RSSI measurement for FSK modules.
       \returns RADIOLIB_CHANNEL_FREE when channel is free,
-      RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
+      RADIOLIB_LORA_DETECTED when occupied or other \ref status_codes.
     */
     virtual int16_t scanChannel();
 
@@ -887,7 +887,7 @@ class PhysicalLayer {
       or RSSI measurement for FSK modules.
       \param config Scan configuration structure. Interpretation depends on currently active modem.
       \returns RADIOLIB_CHANNEL_FREE when channel is free,
-      RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
+      RADIOLIB_LORA_DETECTED when occupied or other \ref status_codes.
     */
     virtual int16_t scanChannel(const ChannelScanConfig_t &config);
 

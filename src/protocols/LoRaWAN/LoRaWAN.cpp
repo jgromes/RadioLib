@@ -3590,7 +3590,7 @@ bool LoRaWANNode::csmaChannelClear(uint8_t difs, uint8_t numBackoff) {
 bool LoRaWANNode::cadChannelClear() {
   int16_t state = this->phyLayer->scanChannel();
   // if activity was detected, channel is not clear
-  if ((state == RADIOLIB_PREAMBLE_DETECTED) || (state == RADIOLIB_LORA_DETECTED)) {
+  if ((state == RADIOLIB_LORA_DETECTED)) {
     return(false);
   }
   return(true);

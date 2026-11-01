@@ -62,7 +62,7 @@ void loop() {
   // start scanning current channel
   int state = radio.scanChannel();
 
-  if (state == RADIOLIB_PREAMBLE_DETECTED) {
+  if (state == RADIOLIB_LORA_DETECTED) {
     // LoRa preamble was detected
     Serial.println(F("detected preamble!"));
 
