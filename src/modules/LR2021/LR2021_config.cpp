@@ -293,6 +293,7 @@ int16_t LR2021::setBandwidth(uint32_t bw) {
     case(RADIOLIB_UNIT_KILO(101)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_101;
       break;
+    case(203125):
     case(RADIOLIB_UNIT_KILO(203)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_203;
       break;
@@ -302,12 +303,14 @@ int16_t LR2021::setBandwidth(uint32_t bw) {
     case(RADIOLIB_UNIT_KILO(250)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_250;
       break;
+    case(406250):
     case(RADIOLIB_UNIT_KILO(406)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_406;
       break;
     case(RADIOLIB_UNIT_KILO(500)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_500;
       break;
+    case(812500):
     case(RADIOLIB_UNIT_KILO(812)):
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_812;
       break;
