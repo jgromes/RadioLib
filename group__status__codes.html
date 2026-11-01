@@ -137,9 +137,6 @@ Macros</h2></td></tr>
 <tr class="memitem:ga55da4b2ee0661872a37f1c57fc61c666" id="r_ga55da4b2ee0661872a37f1c57fc61c666"><td class="memItemLeft" align="right" valign="top"><a id="ga55da4b2ee0661872a37f1c57fc61c666" name="ga55da4b2ee0661872a37f1c57fc61c666"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_OUTPUT_POWER</b>&#160;&#160;&#160;(-13)</td></tr>
 <tr class="memdesc:ga55da4b2ee0661872a37f1c57fc61c666"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied output power value is invalid for this module. <br /></td></tr>
-<tr class="memitem:ga382dc113e93f196401914853ec176b18" id="r_ga382dc113e93f196401914853ec176b18"><td class="memItemLeft" align="right" valign="top"><a id="ga382dc113e93f196401914853ec176b18" name="ga382dc113e93f196401914853ec176b18"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_PREAMBLE_DETECTED</b>&#160;&#160;&#160;(-14)</td></tr>
-<tr class="memdesc:ga382dc113e93f196401914853ec176b18"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRa preamble was detected during channel activity detection. This means that there is some LoRa device currently transmitting in your channel. <br /></td></tr>
 <tr class="memitem:ga4673596b2cc7290be5ee0a2e9ee42718" id="r_ga4673596b2cc7290be5ee0a2e9ee42718"><td class="memItemLeft" align="right" valign="top"><a id="ga4673596b2cc7290be5ee0a2e9ee42718" name="ga4673596b2cc7290be5ee0a2e9ee42718"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_CHANNEL_FREE</b>&#160;&#160;&#160;(-15)</td></tr>
 <tr class="memdesc:ga4673596b2cc7290be5ee0a2e9ee42718"><td class="mdescLeft">&#160;</td><td class="mdescRight">No LoRa preambles were detected during channel activity detection. Your channel is free. <br /></td></tr>
@@ -474,7 +471,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a> + (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga95f44b9fd5db8220158e8dad73506cd9"><div class="ttname"><a href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET</div><div class="ttdoc">Offset of GNSS demodulator errors. See LR11x0 datasheet for details on the actual demodulator error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:648</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga95f44b9fd5db8220158e8dad73506cd9"><div class="ttname"><a href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET</div><div class="ttdoc">Offset of GNSS demodulator errors. See LR11x0 datasheet for details on the actual demodulator error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:642</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -493,7 +490,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a> - (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga25700f55a8dfaa3aa8076b51528d74f9"><div class="ttname"><a href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET</div><div class="ttdoc">GNSS solver errors. See LR11x0 datasheet for details on the actual solver error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:656</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga25700f55a8dfaa3aa8076b51528d74f9"><div class="ttname"><a href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET</div><div class="ttdoc">GNSS solver errors. See LR11x0 datasheet for details on the actual solver error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:650</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -512,7 +509,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a> + (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga7b656a825b1b1808cd196799dded2827"><div class="ttname"><a href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_HAL_OFFSET</div><div class="ttdoc">Offset for custom HAL error codes.</div><div class="ttdef"><b>Definition</b> TypeDef.h:767</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga7b656a825b1b1808cd196799dded2827"><div class="ttname"><a href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_HAL_OFFSET</div><div class="ttdoc">Offset for custom HAL error codes.</div><div class="ttdef"><b>Definition</b> TypeDef.h:761</div></div>
 </div><!-- fragment -->
 </div>
 </div>

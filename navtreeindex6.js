@@ -98,7 +98,6 @@ var NAVTREEINDEX6 =
 "group__status__codes.html#ga2b5ee7713a67db40378628d4455c6c7b":[2,7,65],
 "group__status__codes.html#ga2dfe33931bd569ad3619bf19032bd8cc":[2,7,103],
 "group__status__codes.html#ga31e0864281b5ea21c53206c49877b670":[2,7,93],
-"group__status__codes.html#ga382dc113e93f196401914853ec176b18":[2,7,119],
 "group__status__codes.html#ga3b954c1cd34a1d25bc6e31871dd2d26c":[2,7,61],
 "group__status__codes.html#ga3de55ebac1629efa9c64a9d6c201482a":[2,7,55],
 "group__status__codes.html#ga3ed4264643f97b76f9f3cf242338573d":[2,7,51],
@@ -249,5 +248,6 @@ var NAVTREEINDEX6 =
 "lr1120__transceiver__0102_8h.html#a41b3993acc55d29c9be76a82718c2ba4":[4,0,0,1,2,0,9,2],
 "lr1120__transceiver__0102_8h.html#aa6490d72623bacfc624619b3c378ac5d":[4,0,0,1,2,0,9,0],
 "lr1120__transceiver__0102_8h.html#ab7128d40353f9696d9357a5daaee017e":[4,0,0,1,2,0,9,3],
-"lr1120__transceiver__0102_8h.html#abc3d6c6ac5598d4ced54b6429770b305":[4,0,0,1,2,0,9,1]
+"lr1120__transceiver__0102_8h.html#abc3d6c6ac5598d4ced54b6429770b305":[4,0,0,1,2,0,9,1],
+"lr1120__transceiver__0102_8h_source.html":[4,0,0,1,2,0,9]
 };
