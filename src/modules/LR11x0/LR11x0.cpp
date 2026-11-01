@@ -1143,11 +1143,6 @@ float LR11x0::getSNR() {
   return(val);
 }
 
-float LR11x0::getFrequencyError() {
-  // TODO implement this
-  return(0);
-}
-
 size_t LR11x0::getPacketLength(bool update) {
   return(this->getPacketLength(update, NULL));
 }

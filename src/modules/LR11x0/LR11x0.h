@@ -507,12 +507,6 @@ class LR11x0: public LRxxxx {
     float getSNR() override;
 
     /*!
-      \brief Gets frequency error of the latest received packet.
-      \returns Frequency error in Hz.
-    */
-    float getFrequencyError();
-
-    /*!
       \brief Query modem for the packet length of received payload.
       \param update Update received packet length. Will return cached value when set to false.
       \returns Length of last received packet in bytes.
