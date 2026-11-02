@@ -44,6 +44,8 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0, LR
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0, LR2021 and SX128x
 * [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
+* [__SSDV__](https://ukhas.org.uk/doku.php?id=guides:ssdv) using LoRa or FSK for modules:  
+SX126x, LR11x0, LR2021, SX128x, SX127x (LoRa only) and RFM9x (LoRa only)
 * [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0, LR2021 and SX128x
 * [__APRS__](https://www.sigidwiki.com/wiki/APRS) using AFSK for modules:  
