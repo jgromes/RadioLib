@@ -14,6 +14,5 @@ var class_s_s_d_v_client =
     [ "read", "class_s_s_d_v_client.html#a71a87b806cd3da0480407f226f463d26", null ],
     [ "resetDecoder", "class_s_s_d_v_client.html#a72fa75602d837ff8681d4b60191a3e93", null ],
     [ "setImage", "class_s_s_d_v_client.html#abda0a20b64ef7b24b55abdd0bdc4e0b1", null ],
-    [ "transmit", "class_s_s_d_v_client.html#a005792c6492198ddecad3da6a61ee5e4", null ],
-    [ "transmitLoRa", "class_s_s_d_v_client.html#a8b80909d287b15886cfbb925cf18c991", null ]
+    [ "transmit", "class_s_s_d_v_client.html#a005792c6492198ddecad3da6a61ee5e4", null ]
 ];

@@ -15,14 +15,13 @@ var searchData=
   ['transmitconfig_5ft_12',['TransmitConfig_t',['../struct_transmit_config__t.html',1,'']]],
   ['transmitdirect_13',['transmitDirect',['../class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46',1,'CC1101::transmitDirect()'],['../class_l_r11x0.html#ae077957969f6274a53f63b314b6f1359',1,'LR11x0::transmitDirect()'],['../class_l_r2021.html#a670691f6a40a82f2e6b25e90c4200f57',1,'LR2021::transmitDirect()'],['../classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303',1,'nRF24::transmitDirect()'],['../class_r_f69.html#a222682569338abb49d6952430b6eebdd',1,'RF69::transmitDirect()'],['../class_si443x.html#a5a86a2032c4b876c1c8e4a7cf4730c99',1,'Si443x::transmitDirect()'],['../class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b',1,'SX126x::transmitDirect()'],['../class_s_x127x.html#aefeeb9f7192e11a75b5dfb1ab8488e84',1,'SX127x::transmitDirect()'],['../class_s_x128x.html#a53892566b0259d348158efe3c3c3601a',1,'SX128x::transmitDirect()'],['../class_external_radio.html#a25be77aea48cfbdcae05ed32b660daef',1,'ExternalRadio::transmitDirect()'],['../class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65',1,'PhysicalLayer::transmitDirect()']]],
   ['transmitdirectasync_14',['transmitDirectAsync',['../class_c_c1101.html#aef7c152858537a40e71cf133962cb893',1,'CC1101']]],
-  ['transmitlora_15',['transmitLoRa',['../class_s_s_d_v_client.html#a8b80909d287b15886cfbb925cf18c991',1,'SSDVClient']]],
-  ['txack_16',['txAck',['../struct_lo_ra_w_a_n_band__t.html#a709fdad617bd9138eef52bc7220c29f2',1,'LoRaWANBand_t']]],
-  ['txfreqs_17',['txFreqs',['../struct_lo_ra_w_a_n_band__t.html#a9bd952022473cb08e067c763325d689c',1,'LoRaWANBand_t']]],
-  ['txparamsupported_18',['txParamSupported',['../struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6',1,'LoRaWANBand_t']]],
-  ['txspans_19',['txSpans',['../struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3',1,'LoRaWANBand_t']]],
-  ['txwor_20',['txWoR',['../struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e',1,'LoRaWANBand_t']]],
-  ['type_21',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type'],['../struct_s_s_d_v_packet_info__t.html#a27cfaebe807a524c5acde38540e757a0',1,'SSDVPacketInfo_t::type'],['../structtone__t.html#a5f1299dcb82611161582ef1984309481',1,'tone_t::type']]],
-  ['type_20aliases_22',['type aliases',['../group__config__encoding.html',1,'Encoding type aliases.'],['../group__config__standby.html',1,'Standby mode type aliases.']]],
-  ['type_20aliases_20used_20by_20radiolib_23',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
-  ['types_24',['Mic-E message types.',['../group__mic__e__message__types.html',1,'']]]
+  ['txack_15',['txAck',['../struct_lo_ra_w_a_n_band__t.html#a709fdad617bd9138eef52bc7220c29f2',1,'LoRaWANBand_t']]],
+  ['txfreqs_16',['txFreqs',['../struct_lo_ra_w_a_n_band__t.html#a9bd952022473cb08e067c763325d689c',1,'LoRaWANBand_t']]],
+  ['txparamsupported_17',['txParamSupported',['../struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6',1,'LoRaWANBand_t']]],
+  ['txspans_18',['txSpans',['../struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3',1,'LoRaWANBand_t']]],
+  ['txwor_19',['txWoR',['../struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e',1,'LoRaWANBand_t']]],
+  ['type_20',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type'],['../struct_s_s_d_v_packet_info__t.html#a27cfaebe807a524c5acde38540e757a0',1,'SSDVPacketInfo_t::type'],['../structtone__t.html#a5f1299dcb82611161582ef1984309481',1,'tone_t::type']]],
+  ['type_20aliases_21',['type aliases',['../group__config__encoding.html',1,'Encoding type aliases.'],['../group__config__standby.html',1,'Standby mode type aliases.']]],
+  ['type_20aliases_20used_20by_20radiolib_22',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]],
+  ['types_23',['Mic-E message types.',['../group__mic__e__message__types.html',1,'']]]
 ];

@@ -116,14 +116,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a330bea65b1ddac7ccc38fdc4d1fc7c7d" id="r_a330bea65b1ddac7ccc38fdc4d1fc7c7d"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a330bea65b1ddac7ccc38fdc4d1fc7c7d">currentPacketIndex</a> ()</td></tr>
 <tr class="memdesc:a330bea65b1ddac7ccc38fdc4d1fc7c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the next packet to be transmitted.  <br /></td></tr>
 <tr class="memitem:a005792c6492198ddecad3da6a61ee5e4" id="r_a005792c6492198ddecad3da6a61ee5e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a005792c6492198ddecad3da6a61ee5e4">transmit</a> (uint16_t *packetId=NULL)</td></tr>
-<tr class="memdesc:a005792c6492198ddecad3da6a61ee5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit the next packet, all 256 bytes including sync word. Intended for RTTY/FSK.  <br /></td></tr>
-<tr class="memitem:a8b80909d287b15886cfbb925cf18c991" id="r_a8b80909d287b15886cfbb925cf18c991"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b80909d287b15886cfbb925cf18c991">transmitLoRa</a> (uint16_t *packetId=NULL)</td></tr>
-<tr class="memdesc:a8b80909d287b15886cfbb925cf18c991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit the next packet without the sync word (255 bytes), to fit the LoRa payload limit.  <br /></td></tr>
+<tr class="memdesc:a005792c6492198ddecad3da6a61ee5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit the next packet. The sync word is redundant with the radio's own packet framing, so it is not transmitted, leaving 255 bytes to fit the maximum packet length of the radio.  <br /></td></tr>
 <tr class="memitem:a64b352c65442f3b9d28c8da45b3ded98" id="r_a64b352c65442f3b9d28c8da45b3ded98"><td class="memItemLeft" align="right" valign="top"><a id="a64b352c65442f3b9d28c8da45b3ded98" name="a64b352c65442f3b9d28c8da45b3ded98"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clearImage</b> ()</td></tr>
 <tr class="memdesc:a64b352c65442f3b9d28c8da45b3ded98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Discard the current image and release the packet buffer. <br /></td></tr>
 <tr class="memitem:a71a87b806cd3da0480407f226f463d26" id="r_a71a87b806cd3da0480407f226f463d26"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71a87b806cd3da0480407f226f463d26">read</a> (uint8_t *packet)</td></tr>
-<tr class="memdesc:a71a87b806cd3da0480407f226f463d26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a received packet from the radio. The packet is not validated, call <a class="el" href="#a71a2e5fed19127b93a855d034a29f284" title="Validate a packet by its CRC. If that fails, Reed-Solomon correction is attempted (up to 16 symbol er...">isValidPacket()</a> on it.  <br /></td></tr>
+<tr class="memdesc:a71a87b806cd3da0480407f226f463d26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a received packet from the radio and restore its sync word. The packet is not validated, call <a class="el" href="#a71a2e5fed19127b93a855d034a29f284" title="Validate a packet by its CRC. If that fails, Reed-Solomon correction is attempted (up to 16 symbol er...">isValidPacket()</a> on it.  <br /></td></tr>
 <tr class="memitem:a1f7982e0a7ef490e13ed8e2e89f90434" id="r_a1f7982e0a7ef490e13ed8e2e89f90434"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f7982e0a7ef490e13ed8e2e89f90434">beginDecoder</a> (uint8_t *jpegBuf, size_t jpegBufLen)</td></tr>
 <tr class="memdesc:a1f7982e0a7ef490e13ed8e2e89f90434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the JPEG decoder. A safe output buffer size is (number of packets) * (payload length) + 2048 bytes, e.g. about 16 kB for 320 x 240 at quality 4.  <br /></td></tr>
 <tr class="memitem:a59cfd01417cb0716e56067b0c9d226a9" id="r_a59cfd01417cb0716e56067b0c9d226a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59cfd01417cb0716e56067b0c9d226a9">feedPacket</a> (const uint8_t *packet)</td></tr>
@@ -177,7 +175,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">phy</td><td>Pointer to the wireless module providing <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> communication. </td></tr>
-    <tr><td class="paramname">fec</td><td>Set to true for Normal mode (205-byte payload + Reed-Solomon FEC, e.g. for RTTY/FSK), or false for No-FEC mode (237-byte payload, e.g. for LoRa which has its own FEC). </td></tr>
+    <tr><td class="paramname">fec</td><td>Set to true for Normal mode (205-byte payload + Reed-Solomon FEC, e.g. for FSK), or false for No-FEC mode (237-byte payload, e.g. for LoRa which has its own FEC). </td></tr>
   </table>
   </dd>
 </dl>
@@ -451,7 +449,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read a received packet from the radio. The packet is not validated, call <a class="el" href="#a71a2e5fed19127b93a855d034a29f284" title="Validate a packet by its CRC. If that fails, Reed-Solomon correction is attempted (up to 16 symbol er...">isValidPacket()</a> on it. </p>
+<p>Read a received packet from the radio and restore its sync word. The packet is not validated, call <a class="el" href="#a71a2e5fed19127b93a855d034a29f284" title="Validate a packet by its CRC. If that fails, Reed-Solomon correction is attempted (up to 16 symbol er...">isValidPacket()</a> on it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">packet</td><td>Buffer of at least 256 bytes. </td></tr>
@@ -540,33 +538,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Transmit the next packet, all 256 bytes including sync word. Intended for RTTY/FSK. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">packetId</td><td>If not NULL, will be set to the index of the transmitted packet. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Number of packets transmitted so far, or a negative <a class="el" href="group__status__codes.html">Status Codes</a> on error. </dd></dl>
-
-</div>
-</div>
-<a id="a8b80909d287b15886cfbb925cf18c991" name="a8b80909d287b15886cfbb925cf18c991"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b80909d287b15886cfbb925cf18c991">&#9670;&#160;</a></span>transmitLoRa()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SSDVClient::transmitLoRa </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t *</td>          <td class="paramname"><span class="paramname"><em>packetId</em></span><span class="paramdefsep"> = </span><span class="paramdefval">NULL</span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Transmit the next packet without the sync word (255 bytes), to fit the LoRa payload limit. </p>
+<p>Transmit the next packet. The sync word is redundant with the radio's own packet framing, so it is not transmitted, leaving 255 bytes to fit the maximum packet length of the radio. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">packetId</td><td>If not NULL, will be set to the index of the transmitted packet. </td></tr>
