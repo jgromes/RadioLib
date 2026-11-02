@@ -139,8 +139,11 @@ struct CADScanConfig_t {
   /*! \brief Exit mode after signal detection is complete - module-specific value */
   uint8_t exitMode;
   
-  /*! \brief Timeout in microseconds */
-  RadioLibTime_t timeout;
+  /*! \brief Rx packet timeout in microseconds */
+  RadioLibTime_t rxTimeout;
+
+  /*! \brief Rx sync timeout in symbols */
+  RadioLibTime_t rxSymbols;
 
   /*! \brief Optional IRQ flags to set, bits offset by the value of RADIOLIB_IRQ_ */
   RadioLibIrqFlags_t irqFlags;

@@ -415,7 +415,8 @@ int16_t SX126x::scanChannel() {
       .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
-      .timeout = 0,
+      .rxTimeout = 0,
+      .rxSymbols = 0,
       .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
@@ -580,7 +581,8 @@ int16_t SX126x::startChannelScan() {
       .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
-      .timeout = 0,
+      .rxTimeout = 0,
+      .rxSymbols = 0,
       .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
@@ -609,8 +611,12 @@ int16_t SX126x::startChannelScan(const ChannelScanConfig_t &cfg) {
   state = clearIrqStatus();
   RADIOLIB_ASSERT(state);
 
+  // set LoRa symbol timeout
+  state = setLoRaSymbNumTimeout(cfg.cad.rxSymbols);
+  RADIOLIB_ASSERT(state);
+  
   // set mode to CAD
-  state = setCad(cfg.cad.symNum, cfg.cad.detPeak, cfg.cad.detMin, cfg.cad.exitMode, cfg.cad.timeout);
+  state = setCad(cfg.cad.symNum, cfg.cad.detPeak, cfg.cad.detMin, cfg.cad.exitMode, cfg.cad.rxTimeout);
   return(state);
 }
 
