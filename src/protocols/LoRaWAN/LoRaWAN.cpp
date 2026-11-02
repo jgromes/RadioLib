@@ -3019,6 +3019,12 @@ int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The maximum size of FOpts payload was reached");
     return(RADIOLIB_ERR_COMMAND_QUEUE_FULL);
   }
+  
+  // if it fits in FOpts but not due to dwell time, do not queue
+  if(this->getMaxPayloadLen() < 1) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The maximum dwell time of LoRaWAN frame was reached");
+    return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
+  }
 
   // if this MAC command is already in the queue, silently stop
   if(this->getMacPayload(cid, this->fOptsUp, this->fOptsUpLen, NULL, RADIOLIB_LORAWAN_UPLINK) == RADIOLIB_ERR_NONE) {
@@ -3921,36 +3927,29 @@ void LoRaWANNode::syncClock() {
 }
 
 uint8_t LoRaWANNode::getMaxPayloadLen() {
-  uint8_t minLen = 0;
-  uint8_t maxLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
-
-  maxLen += 13;                         // mandatory FHDR is 12/13 bytes
-
-  // if not limited by dwell-time, just return maximum
-  if(!this->dwellTimeUp) {
-    // check if there can be any application payload at all
-    if(maxLen < 13 + this->fOptsUpLen) {
-      return(0);
-    }
-    // subtract FHDR (13 bytes) as well as any FOpts
-    return(maxLen - 13 - this->fOptsUpLen);
-  }
-
   const uint8_t currentDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
   const ModemType_t modem = this->band->dataRates[currentDr].modem;
   const DataRate_t* dr = &this->band->dataRates[currentDr].dr;
   const PacketConfig_t* pc = &this->band->dataRates[currentDr].pc;
+  
+  uint8_t minLen = 0;
+  uint8_t maxLen = this->band->payloadLenMax[currentDr];
+  
+  // if not limited by dwell-time, just return maximum
+  if(!this->dwellTimeUp ||
+      this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, maxLen + 13) / 1000 <= this->dwellTimeUp) {
 
-  // fast exit in case upper limit is already good
-  if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, maxLen) / 1000 <= this->dwellTimeUp) {
-    // subtract FHDR (13 bytes) as well as any FOpts
-    return(maxLen - 13 - this->fOptsUpLen);
+    // check if there can be any application payload at all
+    if(maxLen < this->fOptsUpLen) {
+      return(0);
+    }
+    return(maxLen - this->fOptsUpLen);
   }
 
   // do some binary search to find maximum allowed length
   uint8_t curLen = (minLen + maxLen) / 2;
   while(curLen != minLen && curLen != maxLen) {
-    if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, curLen) / 1000 > this->dwellTimeUp) {
+    if(this->phyLayer->calculateTimeOnAir(modem, *dr, *pc, curLen + 13) / 1000 > this->dwellTimeUp) {
       maxLen = curLen;
     } else {
       minLen = curLen;
@@ -3959,12 +3958,10 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
   }
 
   // check if there can be any application payload at all
-  if(curLen < 13 + this->fOptsUpLen) {
+  if(curLen < this->fOptsUpLen) {
     return(0);
   }
-
-  // subtract FHDR (13 bytes) as well as any FOpts
-  return(curLen - 13 - this->fOptsUpLen);
+  return(curLen - this->fOptsUpLen);
 }
 
 int16_t LoRaWANNode::testPayloadLength(uint8_t len) {
