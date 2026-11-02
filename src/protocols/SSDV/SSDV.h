@@ -186,7 +186,7 @@ class SSDVClient {
     /*!
       \brief Default constructor.
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
-      \param fec Set to true for Normal mode (205-byte payload + Reed-Solomon FEC, e.g. for RTTY/FSK),
+      \param fec Set to true for Normal mode (205-byte payload + Reed-Solomon FEC, e.g. for FSK),
       or false for No-FEC mode (237-byte payload, e.g. for LoRa which has its own FEC).
     */
     explicit SSDVClient(PhysicalLayer* phy, bool fec = true);
@@ -238,18 +238,12 @@ class SSDVClient {
     uint16_t currentPacketIndex();
 
     /*!
-      \brief Transmit the next packet, all 256 bytes including sync word. Intended for RTTY/FSK.
+      \brief Transmit the next packet. The sync word is redundant with the radio's own packet framing,
+      so it is not transmitted, leaving 255 bytes to fit the maximum packet length of the radio.
       \param packetId If not NULL, will be set to the index of the transmitted packet.
       \returns Number of packets transmitted so far, or a negative \ref status_codes on error.
     */
     int16_t transmit(uint16_t* packetId = NULL);
-
-    /*!
-      \brief Transmit the next packet without the sync word (255 bytes), to fit the LoRa payload limit.
-      \param packetId If not NULL, will be set to the index of the transmitted packet.
-      \returns Number of packets transmitted so far, or a negative \ref status_codes on error.
-    */
-    int16_t transmitLoRa(uint16_t* packetId = NULL);
 
     /*!
       \brief Discard the current image and release the packet buffer.
@@ -259,7 +253,7 @@ class SSDVClient {
     // receive methods
 
     /*!
-      \brief Read a received packet from the radio.
+      \brief Read a received packet from the radio and restore its sync word.
       The packet is not validated, call isValidPacket() on it.
       \param packet Buffer of at least 256 bytes.
       \returns \ref status_codes
@@ -344,7 +338,6 @@ class SSDVClient {
     SSDVClient& operator=(const SSDVClient&);
 
     int32_t encode(const uint8_t* jpegData, size_t jpegLen, uint8_t quality, uint8_t* dst, uint16_t maxPackets);
-    int16_t transmitPacket(uint8_t offset, uint16_t* packetId);
 };
 
 #endif

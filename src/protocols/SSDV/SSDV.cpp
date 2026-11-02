@@ -1198,14 +1198,6 @@ uint16_t SSDVClient::currentPacketIndex() {
 }
 
 int16_t SSDVClient::transmit(uint16_t* packetId) {
-  return(this->transmitPacket(0, packetId));
-}
-
-int16_t SSDVClient::transmitLoRa(uint16_t* packetId) {
-  return(this->transmitPacket(1, packetId));
-}
-
-int16_t SSDVClient::transmitPacket(uint8_t offset, uint16_t* packetId) {
   if(!this->initialized) {
     return(RADIOLIB_ERR_SSDV_NOT_INITIALIZED);
   }
@@ -1216,8 +1208,9 @@ int16_t SSDVClient::transmitPacket(uint8_t offset, uint16_t* packetId) {
     return(RADIOLIB_ERR_SSDV_ALL_SENT);
   }
 
+  // skip the sync word, packet boundaries are already provided by the radio
   const uint8_t* pkt = &this->txBuf[(size_t)this->packetIndex * RADIOLIB_SSDV_PACKET_LEN];
-  int16_t state = this->phyLayer->transmit(pkt + offset, RADIOLIB_SSDV_PACKET_LEN - offset);
+  int16_t state = this->phyLayer->transmit(pkt + 1, RADIOLIB_SSDV_PACKET_LEN - 1);
   RADIOLIB_ASSERT(state);
 
   if(packetId != NULL) {
@@ -1246,16 +1239,14 @@ int16_t SSDVClient::read(uint8_t* packet) {
     return(RADIOLIB_ERR_NULL_POINTER);
   }
 
+  // the sync word is not transmitted, restore it to get a standard 256-byte packet
   size_t len = this->phyLayer->getPacketLength();
-  if(len == RADIOLIB_SSDV_PACKET_LEN - 1) {
-    // LoRa: sync word was not transmitted
-    packet[0] = RADIOLIB_SSDV_SYNC_WORD;
-    packet++;
-  } else if(len != RADIOLIB_SSDV_PACKET_LEN) {
+  if(len != RADIOLIB_SSDV_PACKET_LEN - 1) {
     return(RADIOLIB_ERR_SSDV_INVALID_PACKET);
   }
 
-  return(this->phyLayer->readData(packet, len));
+  packet[0] = RADIOLIB_SSDV_SYNC_WORD;
+  return(this->phyLayer->readData(packet + 1, len));
 }
 
 int16_t SSDVClient::isValidPacket(uint8_t* packet, int16_t* errors) {
