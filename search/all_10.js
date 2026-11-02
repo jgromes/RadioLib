@@ -193,5 +193,7 @@ var searchData=
   ['rttyclient_190',['RTTYClient',['../class_r_t_t_y_client.html',1,'RTTYClient'],['../class_r_t_t_y_client.html#ae6bc08fa88457ee00a992448be1d63ea',1,'RTTYClient::RTTYClient(PhysicalLayer *phy)'],['../class_r_t_t_y_client.html#ab0e11944c2f1e2c60fc45bcd2db18570',1,'RTTYClient::RTTYClient(AFSKClient *audio)']]],
   ['rx1span_191',['rx1Span',['../struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529',1,'LoRaWANBand_t']]],
   ['rx2_192',['rx2',['../struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f',1,'LoRaWANBand_t']]],
-  ['rxfcnt_193',['rxFCnt',['../struct_multicast_group__t.html#a9f76eeb0e6e95777ff2f5f87c23a7e01',1,'MulticastGroup_t']]]
+  ['rxfcnt_193',['rxFCnt',['../struct_multicast_group__t.html#a9f76eeb0e6e95777ff2f5f87c23a7e01',1,'MulticastGroup_t']]],
+  ['rxsymbols_194',['rxSymbols',['../struct_c_a_d_scan_config__t.html#a118cabdf22fff03368e08df5207bda28',1,'CADScanConfig_t']]],
+  ['rxtimeout_195',['rxTimeout',['../struct_c_a_d_scan_config__t.html#a91630fa582cb744026b2784221e0f7cb',1,'CADScanConfig_t']]]
 ];

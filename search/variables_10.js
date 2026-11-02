@@ -16,5 +16,7 @@ var searchData=
   ['rssi_13',['rssi',['../struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f',1,'LR11x0WifiResult_t::rssi'],['../union_channel_scan_config__t.html#ad728b1bd8f0410660f51df0b27f2797e',1,'ChannelScanConfig_t::rssi']]],
   ['rx1span_14',['rx1Span',['../struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529',1,'LoRaWANBand_t']]],
   ['rx2_15',['rx2',['../struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f',1,'LoRaWANBand_t']]],
-  ['rxfcnt_16',['rxFCnt',['../struct_multicast_group__t.html#a9f76eeb0e6e95777ff2f5f87c23a7e01',1,'MulticastGroup_t']]]
+  ['rxfcnt_16',['rxFCnt',['../struct_multicast_group__t.html#a9f76eeb0e6e95777ff2f5f87c23a7e01',1,'MulticastGroup_t']]],
+  ['rxsymbols_17',['rxSymbols',['../struct_c_a_d_scan_config__t.html#a118cabdf22fff03368e08df5207bda28',1,'CADScanConfig_t']]],
+  ['rxtimeout_18',['rxTimeout',['../struct_c_a_d_scan_config__t.html#a91630fa582cb744026b2784221e0f7cb',1,'CADScanConfig_t']]]
 ];
