@@ -287,6 +287,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aca2d2d22e793e32c50efd5f01881979e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure LoRa side detector, which enables to detect mutiple spreading factors and receive one of them. The following limitations apply: In Rx mode, all side-detector spreading factors must be higher than the primary one (configured via begin or setSpreadingFactor) For CAD mode, the above condition is inverted - all side-detector spreading factors must be smaller All packets to be detected must have the same header type (implicit or explicit) If bandwidth is higher than 500 kHz, at most 2 side detectors are allowed. If the primary spreading factor is 10, 11 or 12, at most 2 side detectors are allowed. All spreading factors must be different. The difference between maximum and minimum spreading factor used must be less than or equal to 4.  <br /></td></tr>
 <tr class="memitem:a874b2522d4b296505278d943df308a99" id="r_a874b2522d4b296505278d943df308a99"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a874b2522d4b296505278d943df308a99">setGain</a> (uint8_t gain)</td></tr>
 <tr class="memdesc:a874b2522d4b296505278d943df308a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 13, where 13 is the highest gain. Set to 0 to enable automatic gain control (recommended).  <br /></td></tr>
+<tr class="memitem:ace133fa5af25afa8d990fd608fe4bb7e" id="r_ace133fa5af25afa8d990fd608fe4bb7e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace133fa5af25afa8d990fd608fe4bb7e">setTempCompensationInternal</a> (uint8_t mode)</td></tr>
+<tr class="memdesc:ace133fa5af25afa8d990fd608fe4bb7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable compensation of crystal self-heating drift during transmission, using the internal temperature sensor only. Crystal (non-TCXO) only, must be called after <a class="el" href="#a164170ead873b7ed43b23b3a739d5ce9" title="Initialization method for LoRa modem.">begin()</a>.  <br /></td></tr>
+<tr class="memitem:ad883c1f0131ab8acf8111c19446a820f" id="r_ad883c1f0131ab8acf8111c19446a820f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad883c1f0131ab8acf8111c19446a820f">setTempCompensationNTC</a> (uint8_t mode, uint16_t rRatio, uint16_t betaK, uint8_t delay)</td></tr>
+<tr class="memdesc:ad883c1f0131ab8acf8111c19446a820f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable compensation of crystal self-heating drift during transmission, using an external NTC thermistor at the crystal in addition to the internal sensor. Crystal (non-TCXO) only, must be called after <a class="el" href="#a164170ead873b7ed43b23b3a739d5ce9" title="Initialization method for LoRa modem.">begin()</a>. The NTC parameters depend on the board, so there are no defaults: the chip accepts any value, and a wrong one makes it compensate for the wrong temperature. NOTE: This method should be considered experimental as testing has shown it can actually lead to worse results than just using setTempCompensationInternal. See <a href="https://github.com/jgromes/RadioLib/pull/1907">https://github.com/jgromes/RadioLib/pull/1907</a> for details.  <br /></td></tr>
 <tr class="memitem:a18893fd05f7f1568363cc95fd96d1640" id="r_a18893fd05f7f1568363cc95fd96d1640"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18893fd05f7f1568363cc95fd96d1640">getLoRaPacketStatus</a> (uint8_t *cr, bool *crc, uint8_t *packetLen=NULL, float *snrPacket=NULL, float *rssiPacket=NULL, float *rssiSignalPacket=NULL, uint8_t *detector=NULL, int32_t *freqError=NULL)</td></tr>
 <tr class="memdesc:a18893fd05f7f1568363cc95fd96d1640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read status of the last received packet. Each parameter can be set to NULL if the caller is not intending to process it.  <br /></td></tr>
 <tr class="memitem:a1f88f57889841379423aef67aaf8a7e0" id="r_a1f88f57889841379423aef67aaf8a7e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f88f57889841379423aef67aaf8a7e0">getLoRaRxHeaderInfo</a> (uint8_t *cr, bool *hasCRC)</td></tr>
@@ -3297,6 +3301,75 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">voltage</td><td>TCXO reference voltage in volts, one of RadioLibTCXOVoltage_t values. Set to RadioLibTCXOVoltage_t::VoltageNone to disable TCXO. NOTE: After setting this parameter to RadioLibTCXOVoltage_t::VoltageNone, the module will be reset (since there's no other way to disable TCXO). </td></tr>
     <tr><td class="paramname">delay</td><td>TCXO timeout in us. Defaults to 1000000 (1 second), because especially on the first startup, this delay may be measured very inaccurately. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ace133fa5af25afa8d990fd608fe4bb7e" name="ace133fa5af25afa8d990fd608fe4bb7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace133fa5af25afa8d990fd608fe4bb7e">&#9670;&#160;</a></span>setTempCompensationInternal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setTempCompensationInternal </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable compensation of crystal self-heating drift during transmission, using the internal temperature sensor only. Crystal (non-TCXO) only, must be called after <a class="el" href="#a164170ead873b7ed43b23b3a739d5ce9" title="Initialization method for LoRa modem.">begin()</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>One of RADIOLIB_LR2021_TEMP_COMP_* macros, RELATIVE is recommended. DISABLED turns compensation off, including the NTC if <a class="el" href="#ad883c1f0131ab8acf8111c19446a820f" title="Enable compensation of crystal self-heating drift during transmission, using an external NTC thermist...">setTempCompensationNTC()</a> enabled it. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad883c1f0131ab8acf8111c19446a820f" name="ad883c1f0131ab8acf8111c19446a820f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad883c1f0131ab8acf8111c19446a820f">&#9670;&#160;</a></span>setTempCompensationNTC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR2021::setTempCompensationNTC </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>mode</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>rRatio</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>betaK</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>delay</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable compensation of crystal self-heating drift during transmission, using an external NTC thermistor at the crystal in addition to the internal sensor. Crystal (non-TCXO) only, must be called after <a class="el" href="#a164170ead873b7ed43b23b3a739d5ce9" title="Initialization method for LoRa modem.">begin()</a>. The NTC parameters depend on the board, so there are no defaults: the chip accepts any value, and a wrong one makes it compensate for the wrong temperature. NOTE: This method should be considered experimental as testing has shown it can actually lead to worse results than just using setTempCompensationInternal. See <a href="https://github.com/jgromes/RadioLib/pull/1907">https://github.com/jgromes/RadioLib/pull/1907</a> for details. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>RADIOLIB_LR2021_TEMP_COMP_RELATIVE (recommended) or RADIOLIB_LR2021_TEMP_COMP_ABSOLUTE. The NTC has no effect with compensation disabled, so to turn it off, call setTempCompensationInternal(RADIOLIB_LR2021_TEMP_COMP_DISABLED). </td></tr>
+    <tr><td class="paramname">rRatio</td><td>Ratio of the bias resistor to the NTC resistance at 25 C, from the board's schematic, in thousandths (e.g. 1200 for a 120 kOhm bias resistor and a 100 kOhm NTC). 1 to 1999 (sent in steps of 1/512). </td></tr>
+    <tr><td class="paramname">betaK</td><td>NTC beta constant in Kelvin, from the thermistor's datasheet (e.g. B25/50). 2 to 8190 (sent in steps of 2 K). </td></tr>
+    <tr><td class="paramname">delay</td><td>Filter coefficient for the NTC's thermal lag behind the crystal, depends on the PCB. </td></tr>
   </table>
   </dd>
 </dl>

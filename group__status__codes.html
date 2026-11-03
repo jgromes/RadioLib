@@ -282,6 +282,9 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga0066a30650888853a622413a579d891c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied sleep period is invalid.  <br /></td></tr>
 <tr class="memitem:ga4b30b822814dc8d49d3f3229011c8aff" id="r_ga4b30b822814dc8d49d3f3229011c8aff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga4b30b822814dc8d49d3f3229011c8aff">RADIOLIB_ERR_INVALID_RX_PERIOD</a>&#160;&#160;&#160;(-709)</td></tr>
 <tr class="memdesc:ga4b30b822814dc8d49d3f3229011c8aff"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied Rx period is invalid.  <br /></td></tr>
+<tr class="memitem:gaacf80d9f0eb99389b7ead1a44eceb271" id="r_gaacf80d9f0eb99389b7ead1a44eceb271"><td class="memItemLeft" align="right" valign="top"><a id="gaacf80d9f0eb99389b7ead1a44eceb271" name="gaacf80d9f0eb99389b7ead1a44eceb271"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_INVALID_NTC_PARAMETERS</b>&#160;&#160;&#160;(-710)</td></tr>
+<tr class="memdesc:gaacf80d9f0eb99389b7ead1a44eceb271"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied external NTC thermistor parameters are invalid. <br /></td></tr>
 <tr class="memitem:gac1c27fd5a9ec38601a53c1c5ad428063" id="r_gac1c27fd5a9ec38601a53c1c5ad428063"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac1c27fd5a9ec38601a53c1c5ad428063">RADIOLIB_ERR_INVALID_CALLSIGN</a>&#160;&#160;&#160;(-801)</td></tr>
 <tr class="memdesc:gac1c27fd5a9ec38601a53c1c5ad428063"><td class="mdescLeft">&#160;</td><td class="mdescRight">The provided callsign is invalid.  <br /></td></tr>
 <tr class="memitem:ga47f1cc22b76c6b8685bd7e265ab78a1a" id="r_ga47f1cc22b76c6b8685bd7e265ab78a1a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga47f1cc22b76c6b8685bd7e265ab78a1a">RADIOLIB_ERR_INVALID_NUM_REPEATERS</a>&#160;&#160;&#160;(-802)</td></tr>
@@ -471,7 +474,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a> + (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga95f44b9fd5db8220158e8dad73506cd9"><div class="ttname"><a href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET</div><div class="ttdoc">Offset of GNSS demodulator errors. See LR11x0 datasheet for details on the actual demodulator error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:642</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga95f44b9fd5db8220158e8dad73506cd9"><div class="ttname"><a href="#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET</div><div class="ttdoc">Offset of GNSS demodulator errors. See LR11x0 datasheet for details on the actual demodulator error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:647</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -490,7 +493,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a> - (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga25700f55a8dfaa3aa8076b51528d74f9"><div class="ttname"><a href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET</div><div class="ttdoc">GNSS solver errors. See LR11x0 datasheet for details on the actual solver error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:650</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga25700f55a8dfaa3aa8076b51528d74f9"><div class="ttname"><a href="#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET</div><div class="ttdoc">GNSS solver errors. See LR11x0 datasheet for details on the actual solver error.</div><div class="ttdef"><b>Definition</b> TypeDef.h:655</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -509,7 +512,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a> + (X))</div>
-<div class="ttc" id="agroup__status__codes_html_ga7b656a825b1b1808cd196799dded2827"><div class="ttname"><a href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_HAL_OFFSET</div><div class="ttdoc">Offset for custom HAL error codes.</div><div class="ttdef"><b>Definition</b> TypeDef.h:761</div></div>
+<div class="ttc" id="agroup__status__codes_html_ga7b656a825b1b1808cd196799dded2827"><div class="ttname"><a href="#ga7b656a825b1b1808cd196799dded2827">RADIOLIB_ERR_HAL_OFFSET</a></div><div class="ttdeci">#define RADIOLIB_ERR_HAL_OFFSET</div><div class="ttdoc">Offset for custom HAL error codes.</div><div class="ttdef"><b>Definition</b> TypeDef.h:766</div></div>
 </div><!-- fragment -->
 </div>
 </div>

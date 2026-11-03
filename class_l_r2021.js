@@ -94,6 +94,8 @@ var class_l_r2021 =
     [ "setSyncWord", "class_l_r2021.html#ab67fef9d1e4719d51871100e058be93d", null ],
     [ "setSyncWord", "class_l_r2021.html#a0792e44750e268eb38c3c2f28b13455a", null ],
     [ "setTCXO", "class_l_r2021.html#a6a0d035d07550c989ad1a21f26e67afc", null ],
+    [ "setTempCompensationInternal", "class_l_r2021.html#ace133fa5af25afa8d990fd608fe4bb7e", null ],
+    [ "setTempCompensationNTC", "class_l_r2021.html#ad883c1f0131ab8acf8111c19446a820f", null ],
     [ "setWhitening", "class_l_r2021.html#a7d641cb6dc009ab1999fe4e68e2aea97", null ],
     [ "sleep", "class_l_r2021.html#a0e54c607b9c6e19406abc9f8ad29a817", null ],
     [ "sleep", "class_l_r2021.html#ade792fc1fdac2a5b68d76267cd24833f", null ],
