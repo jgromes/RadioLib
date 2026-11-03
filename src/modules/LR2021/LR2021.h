@@ -766,6 +766,8 @@ class LR2021: public LRxxxx {
       thermistor at the crystal in addition to the internal sensor. Crystal (non-TCXO) only, must be called
       after begin(). The NTC parameters depend on the board, so there are no defaults: the chip accepts any
       value, and a wrong one makes it compensate for the wrong temperature.
+      NOTE: This method should be considered experimental as testing has shown it can actually lead to worse results
+      than just using setTempCompensationInternal. See https://github.com/jgromes/RadioLib/pull/1907 for details.
       \param mode RADIOLIB_LR2021_TEMP_COMP_RELATIVE (recommended) or RADIOLIB_LR2021_TEMP_COMP_ABSOLUTE.
       The NTC has no effect with compensation disabled, so to turn it off, call
       setTempCompensationInternal(RADIOLIB_LR2021_TEMP_COMP_DISABLED).
