@@ -508,8 +508,8 @@ int16_t CC1101::setRxBandwidth(uint32_t rxBw) {
 
   const uint32_t rxBwAvg[] = {
     63000, 74500, 91500, 109000, 125500,
-    148500, 182500, 236500, 297500, 365500,
-    435000, 502500, 595000, 731000,
+    148500, 182500, 217500, 251500, 297500,
+    365500, 435000, 502500, 595000, 731000,
   };
 
   // iterate through the table and find whether the user-provided value
@@ -517,8 +517,8 @@ int16_t CC1101::setRxBandwidth(uint32_t rxBw) {
   // if it is, we consider that to be a match even though the actual value is not precise
   for(size_t i = 0; i < sizeof(rxBwAvg)/sizeof(rxBwAvg[0]); i++) {
     if(rxBw < rxBwAvg[i]) {
-      uint8_t e = 3 - i / 3;
-      uint8_t m = 3 - i % 3;
+      uint8_t e = 3 - i / 4;
+      uint8_t m = 3 - i % 4;
       return(SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
     }
   }
@@ -713,7 +713,7 @@ int16_t CC1101::setPreambleLength(size_t preambleLength, size_t qualityThreshold
   }
 
   // set preamble quality threshold and the actual length
-  uint8_t pqt = qualityThreshold ? qualityThreshold : (preambleLength-4)/4;
+  uint8_t pqt = qualityThreshold / 4;
   if(pqt > 7) {
     pqt = 7;
   }
