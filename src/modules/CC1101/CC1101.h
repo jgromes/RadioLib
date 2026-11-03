@@ -519,7 +519,7 @@
 #define RADIOLIB_CC1101_DEFAULT_FREQ                            RADIOLIB_UNIT_MEGA(434)
 #define RADIOLIB_CC1101_DEFAULT_BR                              4800
 #define RADIOLIB_CC1101_DEFAULT_FREQDEV                         5000
-#define RADIOLIB_CC1101_DEFAULT_RXBW                            RADIOLIB_UNIT_KILO(58)
+#define RADIOLIB_CC1101_DEFAULT_RXBW                            RADIOLIB_UNIT_KILO(125)
 #define RADIOLIB_CC1101_DEFAULT_POWER                           10
 #define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                     16
 #define RADIOLIB_CC1101_DEFAULT_SW                              {0x12, 0xAD}

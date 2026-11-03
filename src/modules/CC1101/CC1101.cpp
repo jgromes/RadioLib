@@ -601,13 +601,13 @@ int16_t CC1101::setOutputPower(int8_t pwr) {
 
   // round to the known frequency settings
   uint8_t f;
-  if(this->frequency < 374.0f) {
+  if(this->frequency < RADIOLIB_UNIT_KILO(374000)) {
     // 315 MHz
     f = 0;
-  } else if(this->frequency < 650.5f) {
+  } else if(this->frequency < RADIOLIB_UNIT_KILO(650500)) {
     // 434 MHz
     f = 1;
-  } else if(this->frequency < 891.5f) {
+  } else if(this->frequency < RADIOLIB_UNIT_KILO(891500)) {
     // 868 MHz
     f = 2;
   } else {
