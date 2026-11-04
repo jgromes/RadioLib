@@ -162,9 +162,10 @@ class PagerClient {
     /*!
       \brief Reads data that was received after calling startReceive method.
       \param data Pointer to array to save the received message.
-      \param len Pointer to variable holding the number of bytes that will be read. When set to 0, the packet length
-      will be retrieved automatically. When more bytes than received are requested, only the number of bytes
-      requested will be returned. Upon completion, the number of bytes received will be written to this variable.
+      \param len Pointer to variable holding the number of bytes that will be read. 
+      When set to 0, the packet length will be retrieved automatically.
+      When set to non-zero value, it is the maximum number of bytes that will be read.
+      Upon completion, the number of bytes actually received will be written to this variable.
       \param addr Pointer to variable holding the address of the received pager message.
       Set to NULL to not retrieve address.
       \returns \ref status_codes

@@ -347,10 +347,14 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
 #endif
 
 int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
+  RADIOLIB_ASSERT_PTR(data);
+  RADIOLIB_ASSERT_PTR(len);
+
   // find the correct address
   bool match = false;
   uint8_t framePos = 0;
   uint8_t symbolLength = 0;
+  size_t maxLen = *len;
   while(!match && phyLayer->available()) {
     uint32_t cw = read();
     framePos++;
@@ -436,6 +440,9 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
       if(symbolLength == 4) {
         symbol = decodeBCD(symbol);
       }
+
+      // check there is still some space left in the output buffer and if so, pass the data
+      if(decodedBytes >= maxLen) { break; }
       data[decodedBytes++] = symbol;
 
       // adjust the bit position of the next message symbol
@@ -454,6 +461,9 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
       if(symbolLength == 4) {
         symbol = decodeBCD(symbol);
       }
+      
+      // check there is still some space left in the output buffer and if so, pass the data
+      if(decodedBytes >= maxLen) { break; }
       data[decodedBytes++] = symbol;
 
       // now calculate if the next symbol is overflowing to the following code word
