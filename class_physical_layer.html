@@ -181,8 +181,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memdesc:a9fded145c4805d930fbf04624a48e9e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets offset of the output power. Useful for devices where the radio has an external power amplifier, or of the RF system has a known loss between the radio and the antenna. This overload allows to compensate a non-linear PA gain, dependant on the radio power output via a lookup table. NOTE: This method must be called BEFORE any calls to radio.begin() or radio.setOutputPower() for the offset to be applied!  <br /></td></tr>
 <tr class="memitem:a6c71cdc1238e1368274670758431a977" id="r_a6c71cdc1238e1368274670758431a977"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
 <tr class="memdesc:a6c71cdc1238e1368274670758431a977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <br /></td></tr>
-<tr class="memitem:a93175940f8f1c0675a509251d4a1a0bb" id="r_a93175940f8f1c0675a509251d4a1a0bb"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93175940f8f1c0675a509251d4a1a0bb">setPreambleLength</a> (size_t len, size_t detLen=0)</td></tr>
-<tr class="memdesc:a93175940f8f1c0675a509251d4a1a0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
+<tr class="memitem:ac058431906047acdf2f4a00e991ec6de" id="r_ac058431906047acdf2f4a00e991ec6de"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac058431906047acdf2f4a00e991ec6de">setPreambleLength</a> (size_t len, size_t detLen=0xFFFFFFFF)</td></tr>
+<tr class="memdesc:ac058431906047acdf2f4a00e991ec6de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set preamble length. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="memitem:ac5f1e0c24d8bf878f2c9fe729b6e1610" id="r_ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5f1e0c24d8bf878f2c9fe729b6e1610">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
 <tr class="memdesc:ac5f1e0c24d8bf878f2c9fe729b6e1610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data rate. Must be implemented in module class if the module supports it.  <br /></td></tr>
 <tr class="memitem:a9c5c902d9f8ffe9866b7f178b14d34f6" id="r_a9c5c902d9f8ffe9866b7f178b14d34f6"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c5c902d9f8ffe9866b7f178b14d34f6">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr, ModemType_t modem=RADIOLIB_MODEM_NONE)</td></tr>
@@ -2139,8 +2139,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 </div>
 </div>
-<a id="a93175940f8f1c0675a509251d4a1a0bb" name="a93175940f8f1c0675a509251d4a1a0bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93175940f8f1c0675a509251d4a1a0bb">&#9670;&#160;</a></span>setPreambleLength()</h2>
+<a id="ac058431906047acdf2f4a00e991ec6de" name="ac058431906047acdf2f4a00e991ec6de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac058431906047acdf2f4a00e991ec6de">&#9670;&#160;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2156,7 +2156,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>detLen</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0xFFFFFFFF</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -2176,7 +2176,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_c_c1101.html#ad9e91702b00034420ba790e28020dee4">CC1101</a>, <a class="el" href="class_l_r11x0.html#af2aba96feb573e39002bd90fffb4f19e">LR11x0</a>, <a class="el" href="class_l_r2021.html#ae6d8e4887fbdbbb529ef57f045ca8755">LR2021</a>, <a class="el" href="class_r_f69.html#a0e1341ad2e63bf9bd80fda2451162d6c">RF69</a>, <a class="el" href="class_si443x.html#ab48b4af84ea41f11429ee8ae7c29148c">Si443x</a>, <a class="el" href="class_s_x126x.html#ae54c821bfb2ea054a1b7abb1d89b001f">SX126x</a>, <a class="el" href="class_s_x127x.html#afe7fa66a1b972acc91a4ab439834c3b4">SX127x</a>, and <a class="el" href="class_s_x128x.html#af48b9a6f33b1ea5ca5106fbb30b29340">SX128x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_c_c1101.html#a8235fcabe305e3a2e92fc9a90886c4e0">CC1101</a>, <a class="el" href="class_l_r11x0.html#ab9ff7b7afe9d34f2157aea4d50e0add8">LR11x0</a>, <a class="el" href="class_l_r2021.html#ade823d7d549bece577202ae91e35fbde">LR2021</a>, <a class="el" href="class_r_f69.html#ad98f458907fa4690018460f0cb362780">RF69</a>, <a class="el" href="class_si443x.html#a03912ba22a3fd8ee0db6cf15321edc67">Si443x</a>, <a class="el" href="class_s_x126x.html#a8c6504b8a68b9b0e10c244ecd8382a43">SX126x</a>, <a class="el" href="class_s_x127x.html#a48a90a96970586b592f630247cb9c99c">SX127x</a>, and <a class="el" href="class_s_x128x.html#a6db3f186bffdc2ab3d7362740be4282b">SX128x</a>.</p>
 
 </div>
 </div>

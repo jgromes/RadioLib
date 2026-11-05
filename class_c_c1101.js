@@ -41,7 +41,7 @@ var class_c_c1101 =
     [ "setNodeAddress", "class_c_c1101.html#a6e62914790f132816134fc68c2bb5eb8", null ],
     [ "setOOK", "class_c_c1101.html#afa64d1ad4789d3146b38d14437234756", null ],
     [ "setOutputPower", "class_c_c1101.html#a5d6dce30fc7da668975b6da663784cdf", null ],
-    [ "setPreambleLength", "class_c_c1101.html#ad9e91702b00034420ba790e28020dee4", null ],
+    [ "setPreambleLength", "class_c_c1101.html#a8235fcabe305e3a2e92fc9a90886c4e0", null ],
     [ "setPromiscuousMode", "class_c_c1101.html#ac1155543b27e46fa27aa4c9180da18bb", null ],
     [ "setRfSwitchPins", "class_c_c1101.html#a5ef45183690bb1879f106af079b01140", null ],
     [ "setRfSwitchTable", "class_c_c1101.html#a7b401995be4bc136063a035ce1820634", null ],
