@@ -233,8 +233,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:a7e2201b5bc389a68765400b70439f3f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable Bit synchronization in continuous mode.  <br /></td></tr>
 <tr class="memitem:a97d3570f4f898dde47e3daf8043e7bad" id="r_a97d3570f4f898dde47e3daf8043e7bad"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97d3570f4f898dde47e3daf8043e7bad">disableContinuousModeBitSync</a> ()</td></tr>
 <tr class="memdesc:a97d3570f4f898dde47e3daf8043e7bad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable Bit synchronization in continuous mode.  <br /></td></tr>
-<tr class="memitem:ac205bc487833dc4eae4bb0069c0c4d1e" id="r_ac205bc487833dc4eae4bb0069c0c4d1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac205bc487833dc4eae4bb0069c0c4d1e">setCrcFiltering</a> (bool crcOn=true)</td></tr>
-<tr class="memdesc:ac205bc487833dc4eae4bb0069c0c4d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <br /></td></tr>
+<tr class="memitem:a0c5582e26d2febc3a2950964061a84f0" id="r_a0c5582e26d2febc3a2950964061a84f0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c5582e26d2febc3a2950964061a84f0">setCrcFiltering</a> (bool enable=true)</td></tr>
+<tr class="memdesc:a0c5582e26d2febc3a2950964061a84f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <br /></td></tr>
 <tr class="memitem:ae004326d663a9d6a9c30e792aa368b49" id="r_ae004326d663a9d6a9c30e792aa368b49"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae004326d663a9d6a9c30e792aa368b49">setPromiscuousMode</a> (bool enable=true)</td></tr>
 <tr class="memdesc:ae004326d663a9d6a9c30e792aa368b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <br /></td></tr>
 <tr class="memitem:a42b99e437454e92c6932c3b7acc1fc4a" id="r_a42b99e437454e92c6932c3b7acc1fc4a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42b99e437454e92c6932c3b7acc1fc4a">setDataShaping</a> (uint8_t sh) override</td></tr>
@@ -1199,8 +1199,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 
 </div>
 </div>
-<a id="ac205bc487833dc4eae4bb0069c0c4d1e" name="ac205bc487833dc4eae4bb0069c0c4d1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac205bc487833dc4eae4bb0069c0c4d1e">&#9670;&#160;</a></span>setCrcFiltering()</h2>
+<a id="a0c5582e26d2febc3a2950964061a84f0" name="a0c5582e26d2febc3a2950964061a84f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c5582e26d2febc3a2950964061a84f0">&#9670;&#160;</a></span>setCrcFiltering()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1208,7 +1208,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
         <tr>
           <td class="memname">int16_t RF69::setCrcFiltering </td>
           <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>crcOn</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span></td><td>)</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enable</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1217,7 +1217,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <p>Enable CRC filtering and generation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">crcOn</td><td>Set or unset CRC filtering. </td></tr>
+    <tr><td class="paramname">enable</td><td>Set or unset CRC filtering. </td></tr>
   </table>
   </dd>
 </dl>

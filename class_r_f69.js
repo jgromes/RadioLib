@@ -35,7 +35,7 @@ var class_r_f69 =
     [ "setAmbientTemperature", "class_r_f69.html#ac37d9ddee2adcc8876a182b8ebc3e703", null ],
     [ "setBitRate", "class_r_f69.html#a0a2c732108bf8d7e1728615ca12e8e5c", null ],
     [ "setBroadcastAddress", "class_r_f69.html#a1b7598b87ffaabdbe733c47317fa91d8", null ],
-    [ "setCrcFiltering", "class_r_f69.html#ac205bc487833dc4eae4bb0069c0c4d1e", null ],
+    [ "setCrcFiltering", "class_r_f69.html#a0c5582e26d2febc3a2950964061a84f0", null ],
     [ "setDataShaping", "class_r_f69.html#a42b99e437454e92c6932c3b7acc1fc4a", null ],
     [ "setDio0Action", "class_r_f69.html#a9e50a1183d13ff9984f8438a7e9e4a77", null ],
     [ "setDio1Action", "class_r_f69.html#aa72ad2ac5238bd87886684064b7494cf", null ],
