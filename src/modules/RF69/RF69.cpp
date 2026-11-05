@@ -639,7 +639,7 @@ int16_t RF69::setFrequencyDeviation(uint32_t freqDev) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set frequency deviation from carrier frequency
-  uint32_t fdev = (newFreqDev * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ);
+  uint32_t fdev = (uint32_t)(((uint64_t)newFreqDev * (1UL << RADIOLIB_RF69_DIV_EXPONENT)) / RADIOLIB_UNIT_MEGA(RADIOLIB_RF69_CRYSTAL_FREQ));
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FDEV_MSB, (fdev & 0xFF00) >> 8, 5, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FDEV_LSB, fdev & 0x00FF, 7, 0);
   return(state);
