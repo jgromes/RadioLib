@@ -914,10 +914,10 @@ class RF69: public PhysicalLayer {
 
      /*!
       \brief Enable CRC filtering and generation.
-      \param crcOn Set or unset CRC filtering.
+      \param enable Set or unset CRC filtering.
       \returns \ref status_codes
     */
-    int16_t setCrcFiltering(bool crcOn = true);
+    int16_t setCrcFiltering(bool enable = true);
 
      /*!
       \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
@@ -1033,6 +1033,9 @@ class RF69: public PhysicalLayer {
     bool promiscuous = false;
 
     bool bitSync = true;
+    bool crcOn = true;
+    uint16_t preambleLen = 0;
+    uint8_t syncWordLen = 0;
 
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);

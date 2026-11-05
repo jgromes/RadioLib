@@ -107,18 +107,27 @@ void RF69::reset() {
 
 int16_t RF69::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
-  RadioLibTime_t timeout = 5 + (RadioLibTime_t)((((float)(len * 8)) / this->bitRate) * 5);
+  DataRate_t dr = { .fsk = { .bitRate = this->bitRate, .freqDev = 0 } };
+  PacketConfig_t pc = { 
+    .fsk = {
+      .preambleLength = this->preambleLen,
+      .syncWordLength = (uint8_t)(this->syncWordLen * 8),
+      .crcLength = (uint8_t)(this->crcOn * 2), // when present, CRC is 2 bytes
+    },
+  };
+  RadioLibTime_t timeout = 5000UL + 5UL*calculateTimeOnAir(RADIOLIB_MODEM_FSK, dr, pc, len);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu us", timeout);
 
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  RadioLibTime_t start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->micros();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->millis() - start > timeout) {
+    if(this->mod->hal->micros() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -723,7 +732,8 @@ int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   RADIOLIB_ASSERT(state);
 
   // set the length
-  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, (len-1)<<3, 5, 3);
+  this->syncWordLen = len;
+  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, (len-1) << 3, 5, 3);
 
   // set sync word register
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_SYNC_VALUE_1, syncWord, len);
@@ -739,6 +749,7 @@ int16_t RF69::setPreambleLength(size_t preambleLength, size_t preambleDetLength)
   }
 
   uint16_t numBytes = preambleLength / 8;
+  this->preambleLen = preambleLength;
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_MSB, (uint8_t)((numBytes >> 8) & 0xFF));
   state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, (uint8_t)(numBytes & 0xFF));
   return(state);
@@ -849,12 +860,12 @@ int16_t RF69::disableContinuousModeBitSync() {
   return(state);
 }
 
-int16_t RF69::setCrcFiltering(bool crcOn) {
-  if (crcOn == true) {
-    return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PACKET_CONFIG_1, RADIOLIB_RF69_CRC_ON, 4, 4));
-  } else {
-    return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PACKET_CONFIG_1, RADIOLIB_RF69_CRC_OFF, 4, 4));
+int16_t RF69::setCrcFiltering(bool enable) {
+  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_PACKET_CONFIG_1, enable ? RADIOLIB_RF69_CRC_ON : RADIOLIB_RF69_CRC_OFF, 4, 4);
+  if(state == RADIOLIB_ERR_NONE) {
+    this->crcOn = enable;
   }
+  return(state);
 }
 
 int16_t RF69::setPromiscuousMode(bool enable) {
