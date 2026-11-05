@@ -467,7 +467,7 @@ int16_t Si443x::setPreambleLength(size_t preambleLength, size_t preambleDetLengt
   int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_PREAMBLE_LENGTH, preLenNibbles);
   RADIOLIB_ASSERT(state);
 
-  if(preambleDetLength == 0) {
+  if(preambleDetLength == 0xFFFFFFFF) {
     // set default preamble detection threshold to 5/8 of preamble length (in units of 4 bits)
     preambleDetLength = 5*preLenNibbles / 8;
   }

@@ -407,12 +407,12 @@ class SX126x: public PhysicalLayer {
       \brief Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.
       \param len Preamble length to be set in symbols (LoRa) or bits (FSK).
       \param detLen Minimum detected preamble length during reception. Allowed values are 8/16/24/32.
-      Defaults to largest allowed value within 'len'. Only used for FSK modem.
+      Defaults to largest supported value corresponding to 'len'. Only used for FSK modem.
       NOTE: In FSK mode, sync word length limits the preamble detector length.
       For details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen = 0) override;
+    int16_t setPreambleLength(size_t len, size_t detLen = 0xFFFFFFFF) override;
 
     /*!
       \brief Sets FSK frequency deviation. Allowed values range from 0 to 200 kHz.

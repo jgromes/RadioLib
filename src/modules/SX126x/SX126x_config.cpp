@@ -152,12 +152,16 @@ int16_t SX126x::setPreambleLength(size_t preambleLength, size_t preambleDetLengt
     // maximum preamble detector length is limited by sync word length
     // for details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45
     uint8_t maxDetLen = RADIOLIB_MIN(this->syncWordLength, this->preambleLengthFSK);
-    this->preambleDetLength = preambleDetLength ? RADIOLIB_MIN(maxDetLen, preambleDetLength) :
-                              maxDetLen >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
-                              maxDetLen >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
-                              maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
-                              maxDetLen >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
-                              RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
+    this->preambleDetLength = RADIOLIB_MIN(maxDetLen, preambleDetLength);
+
+    // if no value is specified for preambleDetLength, use the value best corresponding to preambleLength
+    if(preambleDetLength == 0xFFFFFFFF) {
+      this->preambleDetLength = maxDetLen >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
+                                maxDetLen >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
+                                maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
+                                maxDetLen >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
+                                RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
+    }
     return(setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening,
       this->packetType, (this->packetType == RADIOLIB_SX126X_GFSK_PACKET_FIXED) ? this->implicitLen : RADIOLIB_SX126X_MAX_PACKET_LENGTH));
   }

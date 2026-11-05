@@ -713,7 +713,7 @@ int16_t CC1101::setPreambleLength(size_t preambleLength, size_t qualityThreshold
   }
 
   // set preamble quality threshold and the actual length
-  uint8_t pqt = qualityThreshold / 4;
+  uint8_t pqt = qualityThreshold == 0xFFFFFFFF ? (preambleLength-4)/4 : qualityThreshold / 4;
   if(pqt > 7) {
     pqt = 7;
   }
