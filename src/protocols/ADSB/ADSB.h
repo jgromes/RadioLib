@@ -7,7 +7,7 @@
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 
-#define RADIOLIB_ADSB_CARRIER_FREQUENCY                         (1090.0f)
+#define RADIOLIB_ADSB_CARRIER_FREQUENCY                         (RADIOLIB_UNIT_MEGA(1090))
 
 // basic ADS-B frame structure
 #define RADIOLIB_ADSB_FRAME_LEN_BYTES                           (14)
