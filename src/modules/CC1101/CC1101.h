@@ -899,6 +899,7 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Enable CRC filtering and generation.
+      The CRC used by CC1101 is 16 bits long, uses polynomial 0x8005, initial value 0xFFFF and disabled inversion.
       \param enable Set or unset CRC generation and filtering.
       \returns \ref status_codes
     */
