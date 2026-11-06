@@ -225,6 +225,13 @@ int16_t SX127x::receive(uint8_t* data, size_t len, RadioLibTime_t timeout) {
 
   // start reception
   uint32_t timeoutValue = calculateRxTimeout(timeoutInternal * 1000UL);
+  int16_t modem = getActiveModem();
+  if((modem == RADIOLIB_SX127X_FSK_OOK) && (timeoutValue > 0xFFUL)) {
+    // FSK maximum timeout duration is 0xFF * 16 bit period, which is not much (853 ms for the default 4800 bps)
+    // if we need to delay more than that, rely just on the software timeout
+    // disable the hardware one so that it does not trigger too early
+    timeoutValue = 0;
+  }
   state = startReceive(timeoutValue, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, len);
   RADIOLIB_ASSERT(state);
 
@@ -1420,6 +1427,7 @@ uint16_t SX127x::getIRQFlags() {
     // FSK, the IRQ flags are 16 bits in total
     uint16_t flags = ((uint16_t)this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2)) << 8;
     flags |= (uint16_t)this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_1);
+    printf("IRQ = %04x\n", flags);
     return(flags);
   }
 
