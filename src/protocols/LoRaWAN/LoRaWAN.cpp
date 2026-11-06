@@ -2724,7 +2724,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       }
       
       // check if the corresponding uplink frequency is actually set
-      if(this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][macChIndex].freq > 0) {
+      if((macChIndex < RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS) && (this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][macChIndex].freq > 0)) {
         freqUlAck = 1;
       }
 
