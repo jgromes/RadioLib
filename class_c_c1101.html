@@ -208,7 +208,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearGdo2Action</b> (
 <tr class="memitem:a4f2dc4176b62a0636636088e31b8e85b" id="r_a4f2dc4176b62a0636636088e31b8e85b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f2dc4176b62a0636636088e31b8e85b">disableSyncWordFiltering</a> (bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:a4f2dc4176b62a0636636088e31b8e85b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable preamble and sync word filtering and generation.  <br /></td></tr>
 <tr class="memitem:a60695681fc74a37f2a31a9638552e877" id="r_a60695681fc74a37f2a31a9638552e877"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60695681fc74a37f2a31a9638552e877">setCrcFiltering</a> (bool enable=true)</td></tr>
-<tr class="memdesc:a60695681fc74a37f2a31a9638552e877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <br /></td></tr>
+<tr class="memdesc:a60695681fc74a37f2a31a9638552e877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation. The CRC used by <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> is 16 bits long, uses polynomial 0x8005, initial value 0xFFFF and disabled inversion.  <br /></td></tr>
 <tr class="memitem:ac1155543b27e46fa27aa4c9180da18bb" id="r_ac1155543b27e46fa27aa4c9180da18bb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1155543b27e46fa27aa4c9180da18bb">setPromiscuousMode</a> (bool enable=true, bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:ac1155543b27e46fa27aa4c9180da18bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <br /></td></tr>
 <tr class="memitem:aeea78919ec14d940cda0f213e4fdced6" id="r_aeea78919ec14d940cda0f213e4fdced6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeea78919ec14d940cda0f213e4fdced6">getPromiscuousMode</a> ()</td></tr>
@@ -1081,7 +1081,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
       </table>
 </div><div class="memdoc">
 
-<p>Enable CRC filtering and generation. </p>
+<p>Enable CRC filtering and generation. The CRC used by <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> is 16 bits long, uses polynomial 0x8005, initial value 0xFFFF and disabled inversion. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enable</td><td>Set or unset CRC generation and filtering. </td></tr>
