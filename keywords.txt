@@ -7,64 +7,182 @@
 #######################################
 
 RadioLib	KEYWORD1
-Module	KEYWORD1
+
+# RadioLib
 RadioLibHal	KEYWORD1
+Module	KEYWORD1
+RfSwitchMode_t	KEYWORD1
+OpMode_t	KEYWORD1
+BitWidth_t	KEYWORD1
+SPIConfig_t	KEYWORD1
+RadioLibTime_t	KEYWORD1
+RadioLibIrqFlags_t	KEYWORD1
+RadioLibTCXOVoltage_t	KEYWORD1
+
+# HAL Arduino
 ArduinoHal	KEYWORD1
 
-# modules
+# HAL ESP-IDF
+EspHal	KEYWORD1
+
+# HAL RPi
+PiHal	KEYWORD1
+
+# HAL RPiPico
+PicoHal	KEYWORD1
+
+# HAL Stm32duino
+STM32WLx_Module	KEYWORD1
+
+# CC1101
 CC1101	KEYWORD1
+
+# LLCC68
 LLCC68	KEYWORD1
+
+# LR11x0
 LR1110	KEYWORD1
 LR1120	KEYWORD1
 LR1121	KEYWORD1
+LR11x0	KEYWORD1
+LR11x0WifiResult_t	KEYWORD1
+LR11x0WifiResultFull_t	KEYWORD1
+LR11x0WifiResultExtended_t	KEYWORD1
+LR11x0VersionInfo_t	KEYWORD1
+LR11x0GnssResult_t	KEYWORD1
+LR11x0GnssPosition_t	KEYWORD1
+LR11x0GnssSatellite_t	KEYWORD1
+LR11x0GnssAlmanacStatusPart_t	KEYWORD1
+LR11x0GnssAlmanacStatus_t	KEYWORD1
+LRxxxx	KEYWORD1
+
+# LR2021
 LR2021	KEYWORD1
+LR2021LrFhssHopTableEntry_t	KEYWORD1
+LR2021LoRaSideDetector_t	KEYWORD1
+LR2021PaTableEntry_t	KEYWORD1
+
+# nRF24
 nRF24	KEYWORD1
+
+# RF69
 RF69	KEYWORD1
+
+# RFM2x
 RFM22	KEYWORD1
 RFM23	KEYWORD1
-RFM95	KEYWORD1
-RFM96	KEYWORD1
-RFM97	KEYWORD1
-RFM98	KEYWORD1
+
+# Si443x
 Si4430	KEYWORD1
 Si4431	KEYWORD1
 Si4432	KEYWORD1
-SIM800	KEYWORD1
+Si443x	KEYWORD1
+
+# SX123x
 SX1231	KEYWORD1
 SX1233	KEYWORD1
+
+# SX126x
+STM32WLx	KEYWORD1
 SX1261	KEYWORD1
 SX1262	KEYWORD1
 SX1268	KEYWORD1
+SX126x	KEYWORD1
+paTableEntry_t	KEYWORD1
+
+# SX127x
 SX1272	KEYWORD1
 SX1273	KEYWORD1
+RFM95	KEYWORD1
+RFM96	KEYWORD1
 SX1276	KEYWORD1
+RFM97	KEYWORD1
 SX1277	KEYWORD1
+RFM98	KEYWORD1
 SX1278	KEYWORD1
 SX1279	KEYWORD1
+SX127x	KEYWORD1
+
+# SX128x
 SX1280	KEYWORD1
 SX1281	KEYWORD1
 SX1282	KEYWORD1
-STM32WLx	KEYWORD1
-STM32WLx_Module	KEYWORD1
+SX128x	KEYWORD1
 
-# protocols
-RTTYClient	KEYWORD1
-MorseClient	KEYWORD1
-AX25Client	KEYWORD1
-AX25Frame	KEYWORD1
-SSTVClient	KEYWORD1
-HellClient	KEYWORD1
+# ADSB
+ADSBMessageType	KEYWORD1
+ADSBAircraftCategory	KEYWORD1
+ADSBFrame	KEYWORD1
+ADSBClient	KEYWORD1
+
+# AFSK
 AFSKClient	KEYWORD1
-FSK4Client	KEYWORD1
-APRSClient	KEYWORD1
-PagerClient	KEYWORD1
-ExternalRadio	KEYWORD1
-BellClient	KEYWORD1
-LoRaWANNode	KEYWORD1
-LoRaWANBand_t	KEYWORD1
-LoRaWANEvent_t	KEYWORD1
 
-# configuration structures
+# APRS
+APRSClient	KEYWORD1
+
+# AX25
+AX25Frame	KEYWORD1
+AX25Client	KEYWORD1
+
+# BellModem
+BellModem_t	KEYWORD1
+BellClient	KEYWORD1
+
+# ExternalRadio
+ExternalRadio	KEYWORD1
+
+# FSK4
+FSK4Client	KEYWORD1
+
+# Hellschreiber
+HellClient	KEYWORD1
+
+# LoRaWAN
+LoRaWANMacCommand_t	KEYWORD1
+MulticastGroup_t	KEYWORD1
+LoRaWANPackage_t	KEYWORD1
+LoRaWANSchemePersistence_t	KEYWORD1
+LoRaWANSchemeSession_t	KEYWORD1
+LoRaWANChannel_t	KEYWORD1
+LoRaWANChannelSpan_t	KEYWORD1
+LoRaWANDataRate_t	KEYWORD1
+LoRaWANBand_t	KEYWORD1
+LoRaWANBandNum_t	KEYWORD1
+LoRaWANJoinEvent_t	KEYWORD1
+LoRaWANEvent_t	KEYWORD1
+LoRaWANNode	KEYWORD1
+LoRaWANPackage	KEYWORD1
+LoRaWANPackageManager	KEYWORD1
+LoRaWANPackageTS003	KEYWORD1
+LoRaWANPackageTS009	KEYWORD1
+
+# Morse
+MorseClient	KEYWORD1
+
+# Pager
+PagerClient	KEYWORD1
+
+# PhysicalLayer
+RadioLibIrqType_t	KEYWORD1
+LoRaRate_t	KEYWORD1
+FSKRate_t	KEYWORD1
+LrFhssRate_t	KEYWORD1
+DataRate_t	KEYWORD1
+LoRaPacketConfig_t	KEYWORD1
+FSKPacketConfig_t	KEYWORD1
+LrFhssPacketConfig_t	KEYWORD1
+PacketConfig_t	KEYWORD1
+CADScanConfig_t	KEYWORD1
+RSSIScanConfig_t	KEYWORD1
+ChannelScanConfig_t	KEYWORD1
+StandbyConfig_t	KEYWORD1
+ReceiveConfig_t	KEYWORD1
+TransmitConfig_t	KEYWORD1
+SleepConfig_t	KEYWORD1
+RadioModeConfig_t	KEYWORD1
+ModemType_t	KEYWORD1
+RadioModeType_t	KEYWORD1
 ConfigLoRa_t	KEYWORD1
 ConfigFSK_t	KEYWORD1
 ConfigBPSK_t	KEYWORD1
@@ -72,8 +190,54 @@ ConfigOOK_t	KEYWORD1
 ConfigLRFHSS_t	KEYWORD1
 ConfigFLRC_t	KEYWORD1
 ConfigBLE_t	KEYWORD1
+PhysicalLayer	KEYWORD1
 
-# SSTV modes
+# Print
+ITA2String	KEYWORD1
+RadioLibPrint	KEYWORD1
+
+# RTTY
+RTTYClient	KEYWORD1
+
+# SSDV
+SSDVPacketInfo_t	KEYWORD1
+SSDVState_t	KEYWORD1
+SSDVClient	KEYWORD1
+
+# SSTV
+tone_t	KEYWORD1
+SSTVMode_t	KEYWORD1
+SSTVClient	KEYWORD1
+
+# utils
+RadioLibBCH	KEYWORD1
+RadioLibCRC	KEYWORD1
+RadioLibConvCode	KEYWORD1
+RadioLibCmacState	KEYWORD1
+state_t	KEYWORD1
+RadioLibAES128	KEYWORD1
+RadioLibSoftwareAES128	KEYWORD1
+
+# BellModem constants
+Bell101	KEYWORD1
+Bell103	KEYWORD1
+Bell202	KEYWORD1
+
+# LoRaWAN constants
+EU868	KEYWORD1
+US915	KEYWORD1
+EU433	KEYWORD1
+AU915	KEYWORD1
+CN470	KEYWORD1
+AS923	KEYWORD1
+AS923_2	KEYWORD1
+AS923_3	KEYWORD1
+AS923_4	KEYWORD1
+KR920	KEYWORD1
+IN865	KEYWORD1
+LoRaWANBands	KEYWORD1
+
+# SSTV constants
 Scottie1	KEYWORD1
 Scottie2	KEYWORD1
 ScottieDX	KEYWORD1
@@ -86,285 +250,116 @@ PasokonP7	KEYWORD1
 Robot36	KEYWORD1
 Robot72	KEYWORD1
 
-# Bell Modems
-Bell101	KEYWORD1
-Bell103	KEYWORD1
-Bell202	KEYWORD1
-
-# LoRaWAN bands
-EU868	KEYWORD1
-US915	KEYWORD1
-EU433	KEYWORD1
-AU915	KEYWORD1
-CN470	KEYWORD1
-AS923	KEYWORD1
-AS923_2	KEYWORD1
-AS923_3	KEYWORD1
-AS923_4	KEYWORD1
-KR920	KEYWORD1
-IN865	KEYWORD1
-
-# LR11x0 structures
-LR11x0WifiResult_t	KEYWORD1
-LR11x0WifiResultFull_t	KEYWORD1
-LR11x0WifiResultExtended_t	KEYWORD1
-LR11x0VersionInfo_t	KEYWORD1
-LR11x0GnssResult_t	KEYWORD1
-LR11x0GnssPosition_t	KEYWORD1
-LR11x0GnssSatellite_t	KEYWORD1
-LR11x0GnssAlmanacStatusPart_t	KEYWORD1
-LR11x0GnssAlmanacStatus_t	KEYWORD1
-
-# LR2021 structures
-LR2021LoRaSideDetector_t	KEYWORD1
+# utils constants
+RadioLibCRCInstance	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-# RadioLib
-ModuleA	KEYWORD2
-ModuleB	KEYWORD2
-setRfSwitchTable	KEYWORD2
+# RadioLibHal
+pinMode	KEYWORD2
+digitalWrite	KEYWORD2
+digitalRead	KEYWORD2
+attachInterrupt	KEYWORD2
+detachInterrupt	KEYWORD2
+delay	KEYWORD2
+delayMicroseconds	KEYWORD2
+millis	KEYWORD2
+micros	KEYWORD2
+pulseIn	KEYWORD2
+spiBegin	KEYWORD2
+spiBeginTransaction	KEYWORD2
+spiTransfer	KEYWORD2
+spiEndTransaction	KEYWORD2
+spiEnd	KEYWORD2
+init	KEYWORD2
+term	KEYWORD2
+tone	KEYWORD2
+noTone	KEYWORD2
+yield	KEYWORD2
+pinToInterrupt	KEYWORD2
+pullUpDown	KEYWORD2
 
-# SX127x/RFM9x + RF69 + CC1101
-begin	KEYWORD2
-beginFSK	KEYWORD2
+# Module
+SPIgetRegValue	KEYWORD2
+SPIsetRegValue	KEYWORD2
+SPIreadRegisterBurst	KEYWORD2
+SPIreadRegister	KEYWORD2
+SPIwriteRegisterBurst	KEYWORD2
+SPIwriteRegister	KEYWORD2
+SPItransfer	KEYWORD2
+SPIcheckStream	KEYWORD2
+SPIreadStream	KEYWORD2
+SPIwriteStream	KEYWORD2
+SPItransferStream	KEYWORD2
+getIrq	KEYWORD2
+getRst	KEYWORD2
+getGpio	KEYWORD2
+setRfSwitchPins	KEYWORD2
+setRfSwitchTable	KEYWORD2
+getRfSwitchTable	KEYWORD2
+findRfSwitchMode	KEYWORD2
+setRfSwitchState	KEYWORD2
+waitForMicroseconds	KEYWORD2
+regdump	KEYWORD2
+
+# PhysicalLayer
 transmit	KEYWORD2
 receive	KEYWORD2
-scanChannel	KEYWORD2
 sleep	KEYWORD2
 standby	KEYWORD2
-transmitDirect	KEYWORD2
-receiveDirect	KEYWORD2
-packetMode	KEYWORD2
-setDio0Action	KEYWORD2
-setDio1Action	KEYWORD2
-clearDio0Action	KEYWORD2
-clearDio1Action	KEYWORD2
+startReceive	KEYWORD2
 startTransmit	KEYWORD2
 finishTransmit	KEYWORD2
-startReceive	KEYWORD2
-readData	KEYWORD2
 finishReceive	KEYWORD2
+readData	KEYWORD2
+transmitDirect	KEYWORD2
+receiveDirect	KEYWORD2
+setFrequency	KEYWORD2
+setBitRate	KEYWORD2
+setFrequencyDeviation	KEYWORD2
+setSpreadingFactor	KEYWORD2
+setBandwidth	KEYWORD2
+setCodingRate	KEYWORD2
+setLrFhssConfig	KEYWORD2
+setDataShaping	KEYWORD2
+setEncoding	KEYWORD2
+invertIQ	KEYWORD2
+setOutputPower	KEYWORD2
+setOutputPowerOffset	KEYWORD2
+setSyncWord	KEYWORD2
+setPreambleLength	KEYWORD2
+setDataRate	KEYWORD2
+checkDataRate	KEYWORD2
+getPacketLength	KEYWORD2
+getRSSI	KEYWORD2
+getSNR	KEYWORD2
+getNumSymbols	KEYWORD2
+calculateTimeOnAir	KEYWORD2
+getTimeOnAir	KEYWORD2
+calculateRxTimeout	KEYWORD2
+getIrqMapped	KEYWORD2
+checkIrq	KEYWORD2
+setIrq	KEYWORD2
+clearIrq	KEYWORD2
+getIrqFlags	KEYWORD2
+setIrqFlags	KEYWORD2
+clearIrqFlags	KEYWORD2
 startChannelScan	KEYWORD2
 getChannelScanResult	KEYWORD2
-setBandwidth	KEYWORD2
-setSpreadingFactor	KEYWORD2
-setCodingRate	KEYWORD2
-setFrequency	KEYWORD2
-setSyncWord	KEYWORD2
-setOutputPower	KEYWORD2
-setCurrentLimit	KEYWORD2
-setPreambleLength	KEYWORD2
-setGain	KEYWORD2
-getFrequencyError	KEYWORD2
-getRSSI	KEYWORD2
-getAFCError	KEYWORD2
-getSNR	KEYWORD2
-getDataRate	KEYWORD2
-setBitRate	KEYWORD2
-setRxBandwidth	KEYWORD2
-autoSetRxBandwidth	KEYWORD2
-setAFCBandwidth	KEYWORD2
-setAFC		KEYWORD2
-setAFCAGCTrigger	KEYWORD2
-setFrequencyDeviation	KEYWORD2
-setNodeAddress	KEYWORD2
-setBroadcastAddress	KEYWORD2
-disableAddressFiltering	KEYWORD2
-setDataShaping	KEYWORD2
-setOOK	KEYWORD2
-setDataShapingOOK	KEYWORD2
-setCRC	KEYWORD2
-variablePacketLengthMode	KEYWORD2
-fixedPacketLengthMode	KEYWORD2
-setCrcFiltering	KEYWORD2
-enableSyncWordFiltering	KEYWORD2
-disableSyncWordFiltering	KEYWORD2
-setPromiscuous	KEYWORD2
-setRSSIConfig	KEYWORD2
-setEncoding	KEYWORD2
-getIRQFlags	KEYWORD2
-getModemStatus	KEYWORD2
-getTempRaw	KEYWORD2
-setRfSwitchPins	KEYWORD2
-forceLDRO	KEYWORD2
-autoLDRO	KEYWORD2
-getChipVersion	KEYWORD2
-invertIQ	KEYWORD2
-setOokThresholdType	KEYWORD2
-setOokPeakThresholdDecrement	KEYWORD2
-setOokFixedOrFloorThreshold	KEYWORD2
-setOokPeakThresholdStep	KEYWORD2
+scanChannel	KEYWORD2
+random	KEYWORD2
+randomByte	KEYWORD2
+startDirect	KEYWORD2
 setDirectSyncWord	KEYWORD2
 setDirectAction	KEYWORD2
 readBit	KEYWORD2
-enableBitSync	KEYWORD2
-disableBitSync	KEYWORD2
-setFHSSHoppingPeriod	KEYWORD2
-getFHSSHoppingPeriod	KEYWORD2
-getFHSSChannel	KEYWORD2
-clearFHSSInt	KEYWORD2
-randomByte	KEYWORD2
-getPacketLength	KEYWORD2
-getLoRaRxHeaderInfo	KEYWORD2
-setFifoEmptyAction	KEYWORD2
-clearFifoEmptyAction	KEYWORD2
-setFifoThreshold	KEYWORD2
-setFifoFullAction	KEYWORD2
-clearFifoFullAction	KEYWORD2
-fifoAdd	KEYWORD2
-fifoGet	KEYWORD2
-setLowBatteryThreshold	KEYWORD2
-
-# RF69-specific
-setAESKey	KEYWORD2
-enableAES	KEYWORD2
-disableAES	KEYWORD2
-getTemperature	KEYWORD2
-setAmbientTemperature	KEYWORD2
-setLnaTestBoost	KEYWORD2
-setOokFixedThreshold	KEYWORD2
-enableContinuousModeBitSync	KEYWORD2
-disableContinuousModeBitSync	KEYWORD2
-
-# CC1101-specific
-getLQI	KEYWORD2
-setGdo0Action	KEYWORD2
-setGdo2Action	KEYWORD2
-clearGdo0Action	KEYWORD2
-clearGdo2Action	KEYWORD2
-setCrcFiltering	KEYWORD2
-beginFSK4	KEYWORD2
-
-# SX126x-specific
-beginBPSK	KEYWORD2
-setTCXO	KEYWORD2
-setDio2AsRfSwitch	KEYWORD2
-getTimeOnAir	KEYWORD2
-calculateTimeOnAir KEYWORD2
-implicitHeader	KEYWORD2
-explicitHeader	KEYWORD2
-setWhitening	KEYWORD2
-startReceiveDutyCycle	KEYWORD2
-startReceiveDutyCycleAuto	KEYWORD2
-setRegulatorLDO	KEYWORD2
-setRegulatorDCDC	KEYWORD2
-getCurrentLimit	KEYWORD2
-getIrqStatus	KEYWORD2
-getLastError	KEYWORD2
-setRxBoostedGainMode	KEYWORD2
-uploadPatch	KEYWORD2
-spectralScanStart	KEYWORD2
-spectralScanAbort	KEYWORD2
-spectralScanGetStatus	KEYWORD2
-spectralScanGetResult	KEYWORD2
-setPaRampTime	KEYWORD2
-hopLRFHSS	KEYWORD2
-setStandbyXOSC	KEYWORD2
-
-# nRF24
-setIrqAction	KEYWORD2
-setAddressWidth	KEYWORD2
-setTransmitPipe	KEYWORD2
-setReceivePipe	KEYWORD2
-disablePipe	KEYWORD2
-getStatus	KEYWORD2
-setAutoAck	KEYWORD2
-
-# LR11x0
-beginLRFHSS	KEYWORD2
-setLrFhssConfig	KEYWORD2
-startWifiScan	KEYWORD2
-getWifiScanResultsCount	KEYWORD2
-getWifiScanResult	KEYWORD2
-wifiScan	KEYWORD2
-setWiFiScanAction	KEYWORD2
-clearWiFiScanAction	KEYWORD2
-getVersionInfo	KEYWORD2
-updateFirmware	KEYWORD2
-beginGNSS	KEYWORD2
-isGnssScanCapable	KEYWORD2
-gnssScan	KEYWORD2
-getGnssAlmanacStatus	KEYWORD2
-gnssDelayUntilSubframe	KEYWORD2
-updateGnssAlmanac	KEYWORD2
-getGnssPosition	KEYWORD2
-getGnssSatellites	KEYWORD2
-
-# LR2021
-beginOOK	KEYWORD2
-setSideDetector	KEYWORD2
-setTempCompensationInternal	KEYWORD2
-setTempCompensationNTC	KEYWORD2
-
-# RTTY
-idle	KEYWORD2
-byteArr	KEYWORD2
-
-# Morse
-startSignal	KEYWORD2
-
-# AX.25
-setRepeaters	KEYWORD2
-setRecvSequence	KEYWORD2
-setSendSequence	KEYWORD2
-sendFrame	KEYWORD2
-setCorrection	KEYWORD2
-
-# SSTV
-sendHeader	KEYWORD2
-sendLine	KEYWORD2
-getPictureHeight	KEYWORD2
-
-# SX128x
-beginGFSK	KEYWORD2
-beginFLRC	KEYWORD2
-beginBLE	KEYWORD2
-setAccessAddress	KEYWORD2
-range	KEYWORD2
-startRanging	KEYWORD2
-finishRanging	KEYWORD2
-getRangingResult	KEYWORD2
-getRangingResultRaw	KEYWORD2
-
-# Hellschreiber
-printGlyph	KEYWORD2
-setInversion	KEYWORD2
-
-# AFSK
-tone	KEYWORD2
-noTone	KEYWORD2
-
-# APRS
-sendPosition	KEYWORD2
-sendMicE	KEYWORD2
-useRepeaters	KEYWORD2
-dropRepeaters	KEYWORD2
-
-# Pager
-sendTone	KEYWORD2
-
-# PhysicalLayer
-RadioLibIrqType_t	KEYWORD1
-LoRaRate_t	KEYWORD1
-FSKRate_t	KEYWORD1
-LrFhssRate_t	KEYWORD1
-DataRate_t	KEYWORD1
-CADScanConfig_t	KEYWORD1
-RSSIScanConfig_t	KEYWORD1
-ChannelScanConfig_t	KEYWORD1
-ModemType_t	KEYWORD1
+available	KEYWORD2
 dropSync	KEYWORD2
-setTimerFlag	KEYWORD2
-setInterruptSetup	KEYWORD2
-setPacketReceivedAction	KEYWORD2
-clearPacketReceivedAction	KEYWORD2
-setPacketSentAction	KEYWORD2
-clearPacketSentAction	KEYWORD2
-setDataRate	KEYWORD2
-checkDataRate	KEYWORD2
+read	KEYWORD2
+setIrqAction	KEYWORD2
+clearIrqAction	KEYWORD2
 setModem	KEYWORD2
 getModem	KEYWORD2
 getMode	KEYWORD2
@@ -372,13 +367,246 @@ stageMode	KEYWORD2
 launchMode	KEYWORD2
 writeTxBuffer	KEYWORD2
 clearTxBuffer	KEYWORD2
+setInterruptSetup	KEYWORD2
+setTimerFlag	KEYWORD2
+calculateRxDutyCycle	KEYWORD2
+getOutputPowerMin	KEYWORD2
+getOutputPowerMax	KEYWORD2
 
-# LoRaWAN
-getBufferNonces	KEYWORD2
-setBufferNonces	KEYWORD2
+# CC1101
+begin	KEYWORD2
+beginFSK4	KEYWORD2
+reset	KEYWORD2
+transmitDirectAsync	KEYWORD2
+receiveDirectAsync	KEYWORD2
+packetMode	KEYWORD2
+setGdo0Action	KEYWORD2
+clearGdo0Action	KEYWORD2
+setGdo2Action	KEYWORD2
+clearGdo2Action	KEYWORD2
+setBitRateTolerance	KEYWORD2
+setRxBandwidth	KEYWORD2
+autoSetRxBandwidth	KEYWORD2
+getFrequencyDeviation	KEYWORD2
+enableRxAfterTx	KEYWORD2
+setNodeAddress	KEYWORD2
+disableAddressFiltering	KEYWORD2
+setOOK	KEYWORD2
+getLQI	KEYWORD2
+fixedPacketLengthMode	KEYWORD2
+variablePacketLengthMode	KEYWORD2
+enableSyncWordFiltering	KEYWORD2
+disableSyncWordFiltering	KEYWORD2
+setCrcFiltering	KEYWORD2
+setPromiscuousMode	KEYWORD2
+getPromiscuousMode	KEYWORD2
+getChipVersion	KEYWORD2
+setDIOMapping	KEYWORD2
+
+# LLCC68
+beginFSK	KEYWORD2
+beginBPSK	KEYWORD2
+beginLRFHSS	KEYWORD2
+
+# LR1110
+beginGFSK	KEYWORD2
+
+# LR11x0
+beginGNSS	KEYWORD2
+startReceiveDutyCycle	KEYWORD2
+startReceiveDutyCycleAuto	KEYWORD2
+setBroadcastAddress	KEYWORD2
+setWhitening	KEYWORD2
+setTCXO	KEYWORD2
+setCRC	KEYWORD2
+getLoRaRxHeaderInfo	KEYWORD2
+implicitHeader	KEYWORD2
+explicitHeader	KEYWORD2
+setRegulatorLDO	KEYWORD2
+setRegulatorDCDC	KEYWORD2
+setRxBoostedGainMode	KEYWORD2
+setStandbyXOSC	KEYWORD2
+forceLDRO	KEYWORD2
+autoLDRO	KEYWORD2
+startWifiScan	KEYWORD2
+setWiFiScanAction	KEYWORD2
+clearWiFiScanAction	KEYWORD2
+getWifiScanResultsCount	KEYWORD2
+getWifiScanResult	KEYWORD2
+wifiScan	KEYWORD2
+getVersionInfo	KEYWORD2
+updateFirmware	KEYWORD2
+isGnssScanCapable	KEYWORD2
+gnssScan	KEYWORD2
+getGnssAlmanacStatus	KEYWORD2
+gnssDelayUntilSubframe	KEYWORD2
+updateGnssAlmanac	KEYWORD2
+getGnssPosition	KEYWORD2
+getGnssSatellites	KEYWORD2
+calibrateImageRejection	KEYWORD2
+
+# LRxxxx
+getIrqStatus	KEYWORD2
+
+# LR2021
+beginOOK	KEYWORD2
+beginFLRC	KEYWORD2
+setPaTable	KEYWORD2
+getVoltage	KEYWORD2
+getTemperature	KEYWORD2
+getFrequencyError	KEYWORD2
+ookDetector	KEYWORD2
+setOokDetectionThreshold	KEYWORD2
+setSideDetector	KEYWORD2
+setGain	KEYWORD2
+setTempCompensationInternal	KEYWORD2
+setTempCompensationNTC	KEYWORD2
+getLoRaPacketStatus	KEYWORD2
+getErrors	KEYWORD2
+getLoRaRxStats	KEYWORD2
+getRangingStats	KEYWORD2
+getGfskRxStats	KEYWORD2
+getOqpskRxStats	KEYWORD2
+getFlrcRxStats	KEYWORD2
+getOokRxStats	KEYWORD2
+setFifoSize	KEYWORD2
+setIQStream	KEYWORD2
+getFifoIrqFlags	KEYWORD2
+clearFifoIrqFlags	KEYWORD2
+getRxFifoLevel	KEYWORD2
+getTxFifoLevel	KEYWORD2
+readRadioRxFifo	KEYWORD2
+
+# nRF24
+setAddressWidth	KEYWORD2
+setTransmitPipe	KEYWORD2
+setReceivePipe	KEYWORD2
+disablePipe	KEYWORD2
+getStatus	KEYWORD2
+isCarrierDetected	KEYWORD2
+setAutoAck	KEYWORD2
+setLNA	KEYWORD2
+
+# RF69
+setAESKey	KEYWORD2
+enableAES	KEYWORD2
+disableAES	KEYWORD2
+setDio0Action	KEYWORD2
+clearDio0Action	KEYWORD2
+setDio1Action	KEYWORD2
+clearDio1Action	KEYWORD2
+setFifoEmptyAction	KEYWORD2
+clearFifoEmptyAction	KEYWORD2
+setFifoThreshold	KEYWORD2
+setFifoFullAction	KEYWORD2
+clearFifoFullAction	KEYWORD2
+fifoAdd	KEYWORD2
+fifoGet	KEYWORD2
+getFrequency	KEYWORD2
+setAmbientTemperature	KEYWORD2
+setOokThresholdType	KEYWORD2
+setOokFixedThreshold	KEYWORD2
+setOokPeakThresholdDecrement	KEYWORD2
+enableContinuousModeBitSync	KEYWORD2
+disableContinuousModeBitSync	KEYWORD2
+setLnaTestBoost	KEYWORD2
+setRSSIThreshold	KEYWORD2
+
+# SX126x
+resetAGC	KEYWORD2
+calibrate	KEYWORD2
+hopLRFHSS	KEYWORD2
+setCurrentLimit	KEYWORD2
+getCurrentLimit	KEYWORD2
+setDio2AsRfSwitch	KEYWORD2
+uploadPatch	KEYWORD2
+spectralScanStart	KEYWORD2
+spectralScanAbort	KEYWORD2
+spectralScanGetStatus	KEYWORD2
+spectralScanGetResult	KEYWORD2
+setPaConfig	KEYWORD2
+calibrateImage	KEYWORD2
+setPaRampTime	KEYWORD2
+
+# SX1272
+setDataShapingOOK	KEYWORD2
+
+# SX127x
+invertPreamble	KEYWORD2
+getAFCError	KEYWORD2
+setAFCBandwidth	KEYWORD2
+setAFC	KEYWORD2
+setAFCAGCTrigger	KEYWORD2
+setOokFixedOrFloorThreshold	KEYWORD2
+setOokPeakThresholdStep	KEYWORD2
+enableBitSync	KEYWORD2
+disableBitSync	KEYWORD2
+setLoRaSymbNumTimeout	KEYWORD2
+setRSSIConfig	KEYWORD2
+getIRQFlags	KEYWORD2
+getModemStatus	KEYWORD2
+getTempRaw	KEYWORD2
+setFHSSHoppingPeriod	KEYWORD2
+getFHSSHoppingPeriod	KEYWORD2
+getFHSSChannel	KEYWORD2
+clearFHSSInt	KEYWORD2
+setDIOPreambleDetect	KEYWORD2
+setLowBatteryThreshold	KEYWORD2
+
+# SX1280
+range	KEYWORD2
+startRanging	KEYWORD2
+finishRanging	KEYWORD2
+getRangingResult	KEYWORD2
+getRangingResultRaw	KEYWORD2
+
+# SX128x
+beginBLE	KEYWORD2
+setAccessAddress	KEYWORD2
+setHighSensitivityMode	KEYWORD2
+setGainControl	KEYWORD2
+
+# ADSBClient
+decode	KEYWORD2
+parseHexId	KEYWORD2
+parseCallsign	KEYWORD2
+setReferencePosition	KEYWORD2
+parseAirbornePosition	KEYWORD2
+
+# APRSClient
+sendPosition	KEYWORD2
+sendMicE	KEYWORD2
+sendFrame	KEYWORD2
+useRepeaters	KEYWORD2
+dropRepeaters	KEYWORD2
+
+# AX25Frame
+setRepeaters	KEYWORD2
+setRecvSequence	KEYWORD2
+setSendSequence	KEYWORD2
+
+# AX25Client
+setCorrection	KEYWORD2
+setScrambler	KEYWORD2
+
+# BellClient
+write	KEYWORD2
+idle	KEYWORD2
+
+# ExternalRadio
+getMod	KEYWORD2
+
+# HellClient
+printGlyph	KEYWORD2
+setInversion	KEYWORD2
+
+# LoRaWANNode
 clearSession	KEYWORD2
-getBufferSession	KEYWORD2
-setBufferSession	KEYWORD2
+setCallbackStorePersistence	KEYWORD2
+setCallbackRestorePersistence	KEYWORD2
+setCallbackStoreSession	KEYWORD2
+setCallbackRestoreSession	KEYWORD2
+loadBuffers	KEYWORD2
 beginOTAA	KEYWORD2
 beginABP	KEYWORD2
 activateOTAA	KEYWORD2
@@ -388,9 +616,11 @@ setClass	KEYWORD2
 startMulticastSession	KEYWORD2
 stopMulticastSession	KEYWORD2
 sendReceive	KEYWORD2
+getDownlinkClassC	KEYWORD2
 sendMacCommandReq	KEYWORD2
 getMacLinkCheckAns	KEYWORD2
 getMacDeviceTimeAns	KEYWORD2
+setBand	KEYWORD2
 setDatarate	KEYWORD2
 setTxPower	KEYWORD2
 setRx2Dr	KEYWORD2
@@ -400,8 +630,12 @@ setDwellTime	KEYWORD2
 setCSMA	KEYWORD2
 setDeviceStatus	KEYWORD2
 setActivityLeds	KEYWORD2
+getPersistencePackage	KEYWORD2
+setPersistencePackage	KEYWORD2
 scheduleTransmission	KEYWORD2
 getBand	KEYWORD2
+getUnicastClass	KEYWORD2
+getMulticastClass	KEYWORD2
 getClass	KEYWORD2
 getVersionMajor	KEYWORD2
 getFCntUp	KEYWORD2
@@ -411,11 +645,90 @@ getRxFCnt	KEYWORD2
 getRxFCntMulticast	KEYWORD2
 getDevAddr	KEYWORD2
 getLastToA	KEYWORD2
+getLastDuration	KEYWORD2
+timeUntilUplink	KEYWORD2
+syncClock	KEYWORD2
 getMacUplinkLen	KEYWORD2
 dutyCycleInterval	KEYWORD2
-timeUntilUplink	KEYWORD2
 getMaxPayloadLen	KEYWORD2
+testPayloadLength	KEYWORD2
 setSleepFunction	KEYWORD2
+addAppPackage	KEYWORD2
+addNwkPackage	KEYWORD2
+removePackage	KEYWORD2
+
+# LoRaWANPackage
+processData	KEYWORD2
+handleTask	KEYWORD2
+buildUplink	KEYWORD2
+getSeconds	KEYWORD2
+
+# LoRaWANPackageManager
+enableTS003	KEYWORD2
+enableTS007	KEYWORD2
+enableTS009	KEYWORD2
+requestAppTime	KEYWORD2
+processDownlink	KEYWORD2
+getUplinkData	KEYWORD2
+isEnabledFPort	KEYWORD2
+
+# LoRaWANPackageTS003
+setSecondsCb	KEYWORD2
+
+# LoRaWANPackageTS009
+setPhysicalLayer	KEYWORD2
+setDelaySecondsCallback	KEYWORD2
+setUplinkIntervalCallback	KEYWORD2
+setConfirmedCallback	KEYWORD2
+setRebootCallback	KEYWORD2
+
+# MorseClient
+startSignal	KEYWORD2
+
+# PagerClient
+sendTone	KEYWORD2
+
+# ITA2String
+length	KEYWORD2
+byteArr	KEYWORD2
+
+# RadioLibPrint
+print	KEYWORD2
+println	KEYWORD2
+
+# SSDVClient
+setImage	KEYWORD2
+numPackets	KEYWORD2
+isDone	KEYWORD2
+currentPacketIndex	KEYWORD2
+clearImage	KEYWORD2
+isValidPacket	KEYWORD2
+parseHeader	KEYWORD2
+beginDecoder	KEYWORD2
+feedPacket	KEYWORD2
+getJpeg	KEYWORD2
+resetDecoder	KEYWORD2
+endDecoder	KEYWORD2
+
+# SSTVClient
+sendHeader	KEYWORD2
+sendLine	KEYWORD2
+getPictureHeight	KEYWORD2
+
+# RadioLibBCH
+encode	KEYWORD2
+
+# RadioLibCRC
+checksum	KEYWORD2
+
+# RadioLibAES128
+encryptECB	KEYWORD2
+decryptECB	KEYWORD2
+generateCMAC	KEYWORD2
+initCMAC	KEYWORD2
+updateCMAC	KEYWORD2
+finishCMAC	KEYWORD2
+verifyCMAC	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
