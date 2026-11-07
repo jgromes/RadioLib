@@ -159,6 +159,9 @@ void sendReceive() {
   if(node.getMacDeviceTimeAns(&timestamp, &fraction, false) == RADIOLIB_ERR_NONE) {
     setSeconds(timestamp);
     Serial.println(F("Set time using DeviceTime"));
+
+    // update internal timestamps as we updated the clock
+    node.syncClock();  
   }
 
   // Did it contain any application data?
