@@ -50,11 +50,11 @@ You are making your own device using a third party LoRaWAN stack so there will n
 
 Choose the Frequency plan appropriate for your region. Consider that almost all countries have laws relating to what frequencies you use so don't get creative. For Europe please use the recommended option. For other regions use the entry marked 'used by TTN'.
 
-Choose LoRaWAN 1.1.0 - the last one in the list - the latest specfication. RadioLib uses RP002 Regional Parameters 1.0.4.
+Choose LoRaWAN 1.0.4 - the latest specification (you would guess that 1.1.0 is newer, but no, it is not). RadioLib uses RP002 Regional Parameters 1.0.4.
 
 At this point you will be asked for your JoinEUI. As this is a DIY device and we are using RadioLib, you can use all zero's as recommended by The LoRa Alliance TR007 Technical Recommendations document. Once you've put in all zeros and clicked confirm you will be asked for a DevEUI, AppKey and NwkKey. It is preferable to have the console generate them so they are properly formatted.
 
-Your End device ID can be changed to make the device more identifiable. Something related to your hardware helps - like `devicename-01`. The you can click the blue 'Register device'.
+Your End device ID can be changed to make the device more identifiable. Something related to your hardware helps - like `devicename-01`. Choose something to recognize the device, not where you place it, as you cannot edit the device ID after registering your device. Then you can click the blue 'Register device'.
 
 When retail sensors are being deployed, a device is registered, batteries put in, it joins and gets on with sending data for the next few years. For development purposes however we need to turn off one of the security settings so that you can join & uplink out of the normal sequence that a device in the field would do.
 
@@ -116,26 +116,28 @@ See the hints & tips section on testing your device.
 
 In the `config.h` towards the top there are four lines thus:
 
+```cpp
 // replace-with-your-device-id
 uint64_t joinEUI =   0x0000000000000000;
 uint64_t devEUI  =   0x0000000000000000;
 uint8_t appKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t nwkKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+```
 
-On the TTN console on the device summary page, click the clipboard icon next to the DevEUI, highlight the 16 0's in the third line after the x and paste.
+On the TTN console on the device summary page, click the clipboard icon next to the DevEUI, highlight the 16 0's in the third line after the `0x` and paste.
 
-The devEUI must start with 0x and will end up looking something like 0x70B3D57ED006544E
+The devEUI must start with `0x` and will end up looking something like `0x70B3D57ED006544E`
 
-For the appKey we need TTN to format it correctly. Click the eye icon and an extra icon will appear <> - click this and the key will be formatted for you. Click the clipboard icon and then paste over the 32 0x00's in the config file. Then do the same for nwkKey.
+For the appKey we need TTN to format it correctly. Click the eye icon and an extra icon will appear `<>` - click this and the key will be formatted for you. Click the clipboard icon and then paste over the 32 0x00's in the config file. Then do the same for `nwkKey`.
 
-A key will end up something like 0x31, 0x16, 0x6A, 0x22, 0x97, 0x52, 0xB6, 0x34, 0x57, 0x45, 0x1B, 0xC3, 0xC9, 0xD8, 0x83, 0xE8
+A key will end up something like `0x31, 0x16, 0x6A, 0x22, 0x97, 0x52, 0xB6, 0x34, 0x57, 0x45, 0x1B, 0xC3, 0xC9, 0xD8, 0x83, 0xE8`
 
 
 ### Region
 
 The region value you use MUST match the one you selected on the console. 
 
-If you are using US915 or AU915 then you should change the subBand const to 2.
+If you are using US915 or AU915 then you should change the `subBand` to 2.
 
 ### The pinmap
 
@@ -164,15 +166,4 @@ You may see other starter sketches sending text. Apart from being massively inef
 
 Further reading on this can be found here, just ignore the pink message about v2, it's all still valid: https://www.thethingsnetwork.org/docs/devices/bytes/
 
-We've not assumed anything about any sensors you have, so we are just reading a digital & an analog pin. An analog reading is typically a two byte value - an integer - this is split using the Arduino highByte & lowByte function. You'll see how we put it back together in the TTN console below.
-
-
-## TTN Console Payload Decoder
-
-Coming soon
-
-## Hints & Tips
-
-### Device testing
-
-The LoRaWAN code base works to a specification and once you are happy your device is able to join & send a few dozen uplinks, continuing to sit around waiting for an uplink to test your sensor code & payload format is a waste of your time. The solution is to write everything else in a different sketch, output the array to the serial console and then you can copy & paste the hex array in to the TTN console Payload Formatters section to test the decoding.
+We've not assumed anything about any sensors you have, so we are just using some random numbers. This is where you add your own sensors, and off you go!
