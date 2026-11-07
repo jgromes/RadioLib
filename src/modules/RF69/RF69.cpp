@@ -396,14 +396,14 @@ int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   // set DIO mapping
   if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
+    // for packets that do not fit into the FIFO, enable also interrupt to refill it on the go
     state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO1_PACK_FIFO_NOT_EMPTY, 5, 4);
-  } else {
-    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO0_PACK_PACKET_SENT, 7, 6);
   }
+  state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO0_PACK_PACKET_SENT, 7, 6);
   RADIOLIB_ASSERT(state);
 
   // optionally write packet length
-  if (this->packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
+  if(this->packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
     this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, len);
   }
 
@@ -426,8 +426,12 @@ int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
     state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_OFF | 0x0F);
     state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_TEST_PA1, RADIOLIB_RF69_PA1_20_DBM);
     state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_TEST_PA2, RADIOLIB_RF69_PA2_20_DBM);
-    RADIOLIB_ASSERT(state);
+  } else {
+    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON, 7, 4);
+    state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_TEST_PA1, RADIOLIB_RF69_PA1_NORMAL);
+    state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_TEST_PA2, RADIOLIB_RF69_PA2_NORMAL);
   }
+  RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_TX);
