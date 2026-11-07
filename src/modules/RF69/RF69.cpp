@@ -586,16 +586,15 @@ int16_t RF69::setBitRate(uint32_t br) {
 }
 
 int16_t RF69::setRxBandwidth(uint32_t rxBw) {
-  RADIOLIB_CHECK_RANGE(rxBw, RADIOLIB_UNIT_KILO(58), RADIOLIB_UNIT_KILO(812), RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE(rxBw, 5200, RADIOLIB_UNIT_KILO(1000), RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
   // check bitrate-bandwidth ratio
-  if(!(this->bitRate < 2 * rxBw)) {
+  if(!(this->bitRate < rxBw)) {
     return(RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO);
   }
 
   // set mode to standby
   setMode(RADIOLIB_RF69_STANDBY);
 
-  // todo reuse from LRxxxx?
   const uint32_t rxBwAvg[] = {
     5700, 7000, 9100, 11500, 14100, 18200, 22900, 28100,
     36400, 45800, 56300, 73000, 91700, 112500, 145800,
