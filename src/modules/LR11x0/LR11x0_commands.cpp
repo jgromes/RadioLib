@@ -198,8 +198,8 @@ int16_t LR11x0::getTemp(float* temp) {
   // pass the replies
   if(temp) {
     uint16_t raw = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1];
-    raw = raw & 0x07FF; //According LR1121 datasheet we need [0..10] bits
-    *temp = (25.0f - ((1000.0f/1.7f)*0.7295f)) - ((1000.0f/1.7f)*(1.35f/2047.0f))*(float)raw; //According LR1121 datasheet 1.35
+    raw &= 0x07FF; // according to LR1121 datasheet we need [0..10] bits
+    *temp = 25.0f + ((1000.0f/1.7f)*0.7295f) - ((1000.0f/1.7f)*(1.35f/2047.0f))*(float)raw;
   }
 
   return(state);
