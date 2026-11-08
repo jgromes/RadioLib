@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-11-08 08:16:33</td>
+            <td class="headerValue">2026-11-08 15:33:21</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -283,13 +283,13 @@
 <a name="221"><span class="lineNum">     221 </span><span class="lineCov">         16 :   return(this-&gt;SPIcommand(cmd, true, buff, sizeof(buff)));</span></a>
 <a name="222"><span class="lineNum">     222 </span>            : }</a>
 <a name="223"><span class="lineNum">     223 </span>            : </a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">       3234 : int16_t LRxxxx::SPIparseStatus(uint8_t in) {</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">       3234 :   if((in &amp; 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_PERR) {</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">       3220 : int16_t LRxxxx::SPIparseStatus(uint8_t in) {</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">       3220 :   if((in &amp; 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_PERR) {</span></a>
 <a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_SPI_CMD_INVALID);</span></a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">       3234 :   } else if((in &amp; 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_FAIL) {</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">       3220 :   } else if((in &amp; 0b00001110) == RADIOLIB_LRXXXX_STAT_1_CMD_FAIL) {</span></a>
 <a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_SPI_CMD_FAILED);</span></a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">       3234 :   } else if((in == 0x00) || (in == 0xFF)) {</span></a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">       3234 :     return(RADIOLIB_ERR_CHIP_NOT_FOUND);</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">       3220 :   } else if((in == 0x00) || (in == 0xFF)) {</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">       3220 :     return(RADIOLIB_ERR_CHIP_NOT_FOUND);</span></a>
 <a name="231"><span class="lineNum">     231 </span>            :   }</a>
 <a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :   return(RADIOLIB_ERR_NONE);</span></a>
 <a name="233"><span class="lineNum">     233 </span>            : }</a>
@@ -351,9 +351,9 @@
 <a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="290"><span class="lineNum">     290 </span>            : }</a>
 <a name="291"><span class="lineNum">     291 </span>            : </a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineCov">        166 : int16_t LRxxxx::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out, size_t outLen) {</span></a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">        166 :   int16_t state = RADIOLIB_ERR_UNKNOWN;</span></a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineCov">        166 :   if(!write) {</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">        162 : int16_t LRxxxx::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out, size_t outLen) {</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">        162 :   int16_t state = RADIOLIB_ERR_UNKNOWN;</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">        162 :   if(!write) {</span></a>
 <a name="295"><span class="lineNum">     295 </span>            :     // the SPI interface of LR11x0 requires two separate transactions for reading</a>
 <a name="296"><span class="lineNum">     296 </span>            :     // send the 16-bit command</a>
 <a name="297"><span class="lineNum">     297 </span><span class="lineCov">        113 :     state = this-&gt;mod-&gt;SPIwriteStream(cmd, out, outLen, true, false);</span></a>
@@ -366,11 +366,11 @@
 <a name="304"><span class="lineNum">     304 </span>            : </a>
 <a name="305"><span class="lineNum">     305 </span>            :   } else {</a>
 <a name="306"><span class="lineNum">     306 </span>            :     // write is just a single transaction</a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">         53 :     state = this-&gt;mod-&gt;SPIwriteStream(cmd, data, len, true, true);</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">         49 :     state = this-&gt;mod-&gt;SPIwriteStream(cmd, data, len, true, true);</span></a>
 <a name="308"><span class="lineNum">     308 </span>            :   </a>
 <a name="309"><span class="lineNum">     309 </span>            :   }</a>
 <a name="310"><span class="lineNum">     310 </span>            :   </a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">         53 :   return(state);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">         49 :   return(state);</span></a>
 <a name="312"><span class="lineNum">     312 </span>            : }</a>
 </pre>
       </td>
