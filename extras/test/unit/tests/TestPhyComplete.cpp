@@ -18,6 +18,7 @@
 #include "modules/LR11x0/LR1120.h"
 #include "modules/LR11x0/LR1121.h"
 #include "modules/LR2021/LR2021.h"
+#include "modules/LR2021/LR2012.h"
 
 BOOST_FIXTURE_TEST_SUITE(suite_PhyComplete, ModuleFixture)
 
@@ -46,6 +47,7 @@ BOOST_FIXTURE_TEST_CASE(PhyComplete_AllRadios, ModuleFixture) {
     { "LR1120", new LR1120(mod) },
     { "LR1121", new LR1121(mod) },
     { "LR2021", new LR2021(mod) },
+    { "LR2012", new LR2012(mod) },
   };
 
   int state;
