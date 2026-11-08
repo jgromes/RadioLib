@@ -70,7 +70,9 @@ var hierarchy =
             [ "LR1121", "class_l_r1121.html", null ]
           ] ]
         ] ],
-        [ "LR2021", "class_l_r2021.html", null ]
+        [ "LR2021", "class_l_r2021.html", [
+          [ "LR2012", "class_l_r2012.html", null ]
+        ] ]
       ] ],
       [ "RF69", "class_r_f69.html", [
         [ "SX1231", "class_s_x1231.html", [

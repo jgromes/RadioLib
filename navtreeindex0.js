@@ -28,10 +28,11 @@ var NAVTREEINDEX0 =
 "_l_r11x0__firmware_8h_source.html":[4,0,0,1,2,6],
 "_l_r11x0__registers_8h_source.html":[4,0,0,1,2,7],
 "_l_r11x0__types_8h_source.html":[4,0,0,1,2,8],
-"_l_r2021_8h_source.html":[4,0,0,1,3,0],
-"_l_r2021__commands_8h_source.html":[4,0,0,1,3,1],
-"_l_r2021__registers_8h_source.html":[4,0,0,1,3,2],
-"_l_r2021__types_8h_source.html":[4,0,0,1,3,3],
+"_l_r2012_8h_source.html":[4,0,0,1,3,0],
+"_l_r2021_8h_source.html":[4,0,0,1,3,1],
+"_l_r2021__commands_8h_source.html":[4,0,0,1,3,2],
+"_l_r2021__registers_8h_source.html":[4,0,0,1,3,3],
+"_l_r2021__types_8h_source.html":[4,0,0,1,3,4],
 "_l_r__common_8h_source.html":[4,0,0,1,2,9],
 "_lo_ra_w_a_n_8h_source.html":[4,0,0,2,8,0],
 "_lo_ra_w_a_n_pac_man_8h_source.html":[4,0,0,2,8,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "class_l_l_c_c68.html#a6397a45706de41f8f6b3d04c5c71b068":[3,0,25,3],
 "class_l_l_c_c68.html#a6b51b394398ea47a630d9e14afe7c69e":[3,0,25,5],
 "class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261":[3,0,25,0],
-"class_l_l_c_c68.html#ad0949f483c273e001ab3edda7d4a1cd6":[3,0,25,6],
-"class_l_l_c_c68.html#aec65cb4a7a577c46573c9b0757dc52f4":[3,0,25,8]
+"class_l_l_c_c68.html#ad0949f483c273e001ab3edda7d4a1cd6":[3,0,25,6]
 };

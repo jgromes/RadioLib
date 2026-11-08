@@ -55,6 +55,7 @@ var annotated_dup =
     [ "LR11x0WifiResult_t", "struct_l_r11x0_wifi_result__t.html", "struct_l_r11x0_wifi_result__t" ],
     [ "LR11x0WifiResultExtended_t", "struct_l_r11x0_wifi_result_extended__t.html", "struct_l_r11x0_wifi_result_extended__t" ],
     [ "LR11x0WifiResultFull_t", "struct_l_r11x0_wifi_result_full__t.html", "struct_l_r11x0_wifi_result_full__t" ],
+    [ "LR2012", "class_l_r2012.html", "class_l_r2012" ],
     [ "LR2021", "class_l_r2021.html", "class_l_r2021" ],
     [ "LR2021LoRaSideDetector_t", "struct_l_r2021_lo_ra_side_detector__t.html", "struct_l_r2021_lo_ra_side_detector__t" ],
     [ "LR2021LrFhssHopTableEntry_t", "struct_l_r2021_lr_fhss_hop_table_entry__t.html", null ],

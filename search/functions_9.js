@@ -10,5 +10,6 @@ var searchData=
   ['lr1120_7',['LR1120',['../class_l_r1120.html#ae652f10ebc1e4b8245eb5a0c97765257',1,'LR1120']]],
   ['lr1121_8',['LR1121',['../class_l_r1121.html#a0015ed8c0fde10a072b5f1317779f59a',1,'LR1121']]],
   ['lr11x0_9',['LR11x0',['../class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421',1,'LR11x0']]],
-  ['lr2021_10',['LR2021',['../class_l_r2021.html#a0e61b0b25a43fb572e1bcd34fc02dda2',1,'LR2021']]]
+  ['lr2012_10',['LR2012',['../class_l_r2012.html#ac0f70189261f5c0485640ccad2daee74',1,'LR2012']]],
+  ['lr2021_11',['LR2021',['../class_l_r2021.html#a0e61b0b25a43fb572e1bcd34fc02dda2',1,'LR2021']]]
 ];
