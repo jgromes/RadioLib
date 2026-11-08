@@ -231,6 +231,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a34bf9148cd5c0f31de8daec226a6c0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Received Signal Strength Indicator).  <br /></td></tr>
 <tr class="memitem:a004782e6e5c6ad213c3b0c677bb8642d" id="r_a004782e6e5c6ad213c3b0c677bb8642d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a004782e6e5c6ad213c3b0c677bb8642d">getSNR</a> () override</td></tr>
 <tr class="memdesc:a004782e6e5c6ad213c3b0c677bb8642d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <br /></td></tr>
+<tr class="memitem:af9da260368be7c609a853164583aff6e" id="r_af9da260368be7c609a853164583aff6e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9da260368be7c609a853164583aff6e">getVoltage</a> ()</td></tr>
+<tr class="memdesc:af9da260368be7c609a853164583aff6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the supply voltage on the Vbat pin.  <br /></td></tr>
+<tr class="memitem:a85668bd2867956868422eaad0c8dbd26" id="r_a85668bd2867956868422eaad0c8dbd26"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85668bd2867956868422eaad0c8dbd26">getTemperature</a> ()</td></tr>
+<tr class="memdesc:a85668bd2867956868422eaad0c8dbd26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the temperature.  <br /></td></tr>
 <tr class="memitem:ac1f541bdee1d983126ceae47940b8f9d" id="r_ac1f541bdee1d983126ceae47940b8f9d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1f541bdee1d983126ceae47940b8f9d">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:ac1f541bdee1d983126ceae47940b8f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <br /></td></tr>
 <tr class="memitem:af96883b2ca7a36a8921ee1cd222adebf" id="r_af96883b2ca7a36a8921ee1cd222adebf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af96883b2ca7a36a8921ee1cd222adebf">getPacketLength</a> (bool update, uint8_t *offset)</td></tr>
@@ -1369,6 +1373,26 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a85668bd2867956868422eaad0c8dbd26" name="a85668bd2867956868422eaad0c8dbd26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85668bd2867956868422eaad0c8dbd26">&#9670;&#160;</a></span>getTemperature()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float LR11x0::getTemperature </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read the temperature. </p>
+<dl class="section return"><dt>Returns</dt><dd>Temperature in degrees Celsius. </dd></dl>
+
+</div>
+</div>
 <a id="abccf5dc80aab71090a5f19bfffa0201d" name="abccf5dc80aab71090a5f19bfffa0201d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abccf5dc80aab71090a5f19bfffa0201d">&#9670;&#160;</a></span>getTimeOnAir()</h2>
 
@@ -1428,6 +1452,26 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="af9da260368be7c609a853164583aff6e" name="af9da260368be7c609a853164583aff6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9da260368be7c609a853164583aff6e">&#9670;&#160;</a></span>getVoltage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float LR11x0::getVoltage </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read the supply voltage on the Vbat pin. </p>
+<dl class="section return"><dt>Returns</dt><dd>Supply voltage in volts. </dd></dl>
 
 </div>
 </div>
