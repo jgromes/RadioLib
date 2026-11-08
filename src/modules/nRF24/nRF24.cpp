@@ -203,14 +203,6 @@ int16_t nRF24::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(state);
 }
 
-int16_t nRF24::finishTransmit() {
-  // clear interrupt flags
-  clearIRQ();
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t nRF24::startReceive() {
   // set mode to standby
   int16_t state = standby();

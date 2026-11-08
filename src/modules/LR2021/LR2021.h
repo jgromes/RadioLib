@@ -230,12 +230,6 @@ class LR2021: public LRxxxx {
     // interrupt methods
 
     /*!
-      \brief Clean up after transmission is done.
-      \returns \ref status_codes
-    */
-    int16_t finishTransmit() override;
-
-    /*!
       \brief Interrupt-driven receive method with default parameters.
       Implemented for compatibility with PhysicalLayer.
 

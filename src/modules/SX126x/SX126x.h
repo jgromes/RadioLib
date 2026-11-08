@@ -271,12 +271,6 @@ class SX126x: public PhysicalLayer {
     virtual void clearDio1Action();
 
     /*!
-      \brief Clean up after transmission is done.
-      \returns \ref status_codes
-    */
-    int16_t finishTransmit() override;
-
-    /*!
       \brief Clean up after reception is done.
       \returns \ref status_codes
     */

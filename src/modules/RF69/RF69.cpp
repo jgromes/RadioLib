@@ -442,14 +442,6 @@ int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(state);
 }
 
-int16_t RF69::finishTransmit() {
-  // clear interrupt flags
-  clearIRQFlags();
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t RF69::readData(uint8_t* data, size_t len) {
   // set mode to standby
   int16_t state = standby();

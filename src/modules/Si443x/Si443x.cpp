@@ -253,14 +253,6 @@ int16_t Si443x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   return(state);
 }
 
-int16_t Si443x::finishTransmit() {
-  // clear interrupt flags
-  clearIrqStatus();
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t Si443x::startReceive() {
   // set mode to standby
   int16_t state = standby();

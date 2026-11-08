@@ -173,7 +173,16 @@ int16_t PhysicalLayer::startTransmit(const uint8_t* data, size_t len, uint8_t ad
 }
 
 int16_t PhysicalLayer::finishTransmit() {
-  return(RADIOLIB_ERR_UNSUPPORTED);
+  // clear all interrupt flags
+  int16_t state = clearIrqFlags(0xFFFFFFFFUL);
+  RADIOLIB_ASSERT(state);
+
+  // clear the Tx buffer
+  state = clearTxBuffer();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby to disable transmitter/RF switch
+  return(standby());
 }
 
 int16_t PhysicalLayer::finishReceive() {

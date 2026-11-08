@@ -662,12 +662,6 @@ class Si443x: public PhysicalLayer {
     int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
-      \brief Clean up after transmission is done.
-      \returns \ref status_codes
-    */
-    int16_t finishTransmit() override;
-
-    /*!
       \brief Interrupt-driven receive method. IRQ will be activated when full valid packet is received.
       \returns \ref status_codes
     */

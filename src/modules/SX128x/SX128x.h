@@ -512,12 +512,6 @@ class SX128x: public PhysicalLayer {
       \brief Clears interrupt service routine to call when DIO1 activates.
     */
     void clearDio1Action();
-
-    /*!
-      \brief Clean up after transmission is done.
-      \returns \ref status_codes
-    */
-    int16_t finishTransmit() override;
     
     /*!
       \brief Interrupt-driven receive method with default parameters.

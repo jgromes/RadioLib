@@ -448,15 +448,6 @@ int16_t SX126x::hopLRFHSS() {
   return(clearIrqStatus());
 }
 
-int16_t SX126x::finishTransmit() {
-  // clear interrupt flags
-  int16_t state = clearIrqStatus();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t SX126x::finishReceive() {
   // set mode to standby to disable RF switch
   int16_t state = standby();

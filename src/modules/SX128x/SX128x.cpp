@@ -420,14 +420,6 @@ void SX128x::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
-int16_t SX128x::finishTransmit() {
-  // clear interrupt flags
-  clearIrqStatus();
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t SX128x::startReceive() {
   return(this->startReceive(RADIOLIB_SX128X_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }

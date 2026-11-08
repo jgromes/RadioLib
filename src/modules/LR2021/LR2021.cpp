@@ -432,14 +432,6 @@ size_t LR2021::getPacketLength(bool update) {
   return((size_t)len);
 }
 
-int16_t LR2021::finishTransmit() {
-  // clear interrupt flags
-  clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t LR2021::startReceive() {
   return(this->startReceive(RADIOLIB_LR2021_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }

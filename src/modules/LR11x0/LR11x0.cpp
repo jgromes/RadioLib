@@ -369,14 +369,6 @@ int16_t LR11x0::sleep(bool retainConfig, uint32_t sleepTime) {
   return(state);
 }
 
-int16_t LR11x0::finishTransmit() {
-  // clear interrupt flags
-  clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
-
-  // set mode to standby to disable transmitter/RF switch
-  return(standby());
-}
-
 int16_t LR11x0::startReceive() {
   return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
