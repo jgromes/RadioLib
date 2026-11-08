@@ -169,8 +169,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:aa6886410230c654400c76ec7710d623c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is sufficiently full to read.  <br /></td></tr>
 <tr class="memitem:af645f6b5d37812f6bb9ec11788e12066" id="r_af645f6b5d37812f6bb9ec11788e12066"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af645f6b5d37812f6bb9ec11788e12066">startTransmit</a> (const uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:af645f6b5d37812f6bb9ec11788e12066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
-<tr class="memitem:a3e449fa06c9e76cf69585bfbeed1c46b" id="r_a3e449fa06c9e76cf69585bfbeed1c46b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e449fa06c9e76cf69585bfbeed1c46b">finishTransmit</a> () override</td></tr>
-<tr class="memdesc:a3e449fa06c9e76cf69585bfbeed1c46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:a3bece228d369dcc1aab6a5b29d0685a8" id="r_a3bece228d369dcc1aab6a5b29d0685a8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bece228d369dcc1aab6a5b29d0685a8">startReceive</a> () override</td></tr>
 <tr class="memdesc:a3bece228d369dcc1aab6a5b29d0685a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. GDO0 will be activated when full packet is received.  <br /></td></tr>
 <tr class="memitem:a21ae7524fe573f1a7e74dee342418222" id="r_a21ae7524fe573f1a7e74dee342418222"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21ae7524fe573f1a7e74dee342418222">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override</td></tr>
@@ -276,6 +274,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
+<tr class="memitem:a1de26f68b939f5af79ec29cc34c7be18 inherit pub_methods_class_physical_layer" id="r_a1de26f68b939f5af79ec29cc34c7be18"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">finishTransmit</a> ()</td></tr>
+<tr class="memdesc:a1de26f68b939f5af79ec29cc34c7be18 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:a907472cb180263007e080b1ae6c07e8c inherit pub_methods_class_physical_layer" id="r_a907472cb180263007e080b1ae6c07e8c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a907472cb180263007e080b1ae6c07e8c">setSpreadingFactor</a> (uint8_t sf)</td></tr>
 <tr class="memdesc:a907472cb180263007e080b1ae6c07e8c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Must be implemented in module class.  <br /></td></tr>
 <tr class="memitem:ae48f79a11fee8f600601a13e78cdca95 inherit pub_methods_class_physical_layer" id="r_ae48f79a11fee8f600601a13e78cdca95"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae48f79a11fee8f600601a13e78cdca95">setBandwidth</a> (uint32_t bw)</td></tr>
@@ -685,36 +685,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a3e449fa06c9e76cf69585bfbeed1c46b" name="a3e449fa06c9e76cf69585bfbeed1c46b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e449fa06c9e76cf69585bfbeed1c46b">&#9670;&#160;</a></span>finishTransmit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t RF69::finishTransmit </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clean up after transmission is done. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">PhysicalLayer</a>.</p>
 
 </div>
 </div>

@@ -22,7 +22,6 @@ var class_l_r2021 =
     [ "disableAddressFiltering", "class_l_r2021.html#a2f586b966393cd54bdd885ea70dd1709", null ],
     [ "explicitHeader", "class_l_r2021.html#a53cf216f8aee520a559b64cc03f61901", null ],
     [ "finishReceive", "class_l_r2021.html#aabaa4984504bdd10ae75e0163c0871db", null ],
-    [ "finishTransmit", "class_l_r2021.html#a80bfd550e471626da5e8c6bab1e3f415", null ],
     [ "fixedPacketLengthMode", "class_l_r2021.html#a934a871e6f92b290541fe975f6f32bae", null ],
     [ "forceLDRO", "class_l_r2021.html#a5b591243b7eba34ed7b808885232152b", null ],
     [ "getChannelScanResult", "class_l_r2021.html#a5c8560915043a2c21892b51bc576ea73", null ],

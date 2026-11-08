@@ -4,7 +4,6 @@ var classn_r_f24 =
     [ "begin", "classn_r_f24.html#a448cf012167ae2b81d50a0f2d544a74b", null ],
     [ "disablePipe", "classn_r_f24.html#a4dd39e5c0efee1f0c2a14f729eb4426a", null ],
     [ "finishReceive", "classn_r_f24.html#a0862e860c08e41c7dadf8a6675711fb8", null ],
-    [ "finishTransmit", "classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f", null ],
     [ "getPacketLength", "classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b", null ],
     [ "getStatus", "classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9", null ],
     [ "isCarrierDetected", "classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37", null ],

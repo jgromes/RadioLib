@@ -16,7 +16,6 @@ var class_r_f69 =
     [ "fifoAdd", "class_r_f69.html#ab6d98f3f2d964d1833e20da246a5be89", null ],
     [ "fifoGet", "class_r_f69.html#aa6886410230c654400c76ec7710d623c", null ],
     [ "finishReceive", "class_r_f69.html#a3682d05847394fe2a0758213ebb0347a", null ],
-    [ "finishTransmit", "class_r_f69.html#a3e449fa06c9e76cf69585bfbeed1c46b", null ],
     [ "fixedPacketLengthMode", "class_r_f69.html#a0de2a07f264839cda945faebf7319e0e", null ],
     [ "getChipVersion", "class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638", null ],
     [ "getFrequency", "class_r_f69.html#a9dcfc774b32226bbd3a9319311dc0b20", null ],

@@ -129,8 +129,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a415d86947742e981bfcf7f2371f8605c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy direct mode reception method, to ensure <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="memitem:a8b2365ad11840d1d05b0e17b37ddacd2" id="r_a8b2365ad11840d1d05b0e17b37ddacd2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b2365ad11840d1d05b0e17b37ddacd2">startTransmit</a> (const uint8_t *data, size_t len, uint8_t addr) override</td></tr>
 <tr class="memdesc:a8b2365ad11840d1d05b0e17b37ddacd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
-<tr class="memitem:af0c21ff66c011dfdc1ad12bc7dd11c2f" id="r_af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0c21ff66c011dfdc1ad12bc7dd11c2f">finishTransmit</a> () override</td></tr>
-<tr class="memdesc:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:a3c6aa3622c887118fb8d8cb2689fdff2" id="r_a3c6aa3622c887118fb8d8cb2689fdff2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c6aa3622c887118fb8d8cb2689fdff2">startReceive</a> () override</td></tr>
 <tr class="memdesc:a3c6aa3622c887118fb8d8cb2689fdff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ will be activated when full packet is received.  <br /></td></tr>
 <tr class="memitem:a38b0084ad11090f918f4f370b9df7514" id="r_a38b0084ad11090f918f4f370b9df7514"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38b0084ad11090f918f4f370b9df7514">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override</td></tr>
@@ -190,6 +188,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
+<tr class="memitem:a1de26f68b939f5af79ec29cc34c7be18 inherit pub_methods_class_physical_layer" id="r_a1de26f68b939f5af79ec29cc34c7be18"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">finishTransmit</a> ()</td></tr>
+<tr class="memdesc:a1de26f68b939f5af79ec29cc34c7be18 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:a907472cb180263007e080b1ae6c07e8c inherit pub_methods_class_physical_layer" id="r_a907472cb180263007e080b1ae6c07e8c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a907472cb180263007e080b1ae6c07e8c">setSpreadingFactor</a> (uint8_t sf)</td></tr>
 <tr class="memdesc:a907472cb180263007e080b1ae6c07e8c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Must be implemented in module class.  <br /></td></tr>
 <tr class="memitem:ae48f79a11fee8f600601a13e78cdca95 inherit pub_methods_class_physical_layer" id="r_ae48f79a11fee8f600601a13e78cdca95"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae48f79a11fee8f600601a13e78cdca95">setBandwidth</a> (uint32_t bw)</td></tr>
@@ -423,36 +423,6 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="af0c21ff66c011dfdc1ad12bc7dd11c2f" name="af0c21ff66c011dfdc1ad12bc7dd11c2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0c21ff66c011dfdc1ad12bc7dd11c2f">&#9670;&#160;</a></span>finishTransmit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t nRF24::finishTransmit </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clean up after transmission is done. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">PhysicalLayer</a>.</p>
 
 </div>
 </div>

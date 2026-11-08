@@ -13,7 +13,6 @@ var class_s_x128x =
     [ "clearTxBuffer", "class_s_x128x.html#ac3ac95c65e58180cb42bdc5b669163a7", null ],
     [ "explicitHeader", "class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d", null ],
     [ "finishReceive", "class_s_x128x.html#a64241c3e766c03b5b4008e6e0cdb5b48", null ],
-    [ "finishTransmit", "class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4", null ],
     [ "fixedPacketLengthMode", "class_s_x128x.html#a30ce92d381006888fc46c19553bd805c", null ],
     [ "getChannelScanResult", "class_s_x128x.html#ac39f77b77a2e4124cc30aeae08b4c653", null ],
     [ "getFrequencyError", "class_s_x128x.html#a2f36cd1c71b7463a3cb0993c523559f3", null ],

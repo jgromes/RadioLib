@@ -161,8 +161,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad5dde79f751bbd7ea277872e237f2a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="#a74c3f3f8409f1fd0f41347b7d3c7dc24" title="Sets the module to standby mode (overload for PhysicalLayer compatibility). Uses 13 MHz RC oscillator...">standby()</a>. Overload with warm start enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <br /></td></tr>
 <tr class="memitem:ad2786a2f17af5769c772ebc73df88e1f" id="r_ad2786a2f17af5769c772ebc73df88e1f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2786a2f17af5769c772ebc73df88e1f">sleep</a> (bool retainConfig, uint32_t sleepTime)</td></tr>
 <tr class="memdesc:ad2786a2f17af5769c772ebc73df88e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="#a74c3f3f8409f1fd0f41347b7d3c7dc24" title="Sets the module to standby mode (overload for PhysicalLayer compatibility). Uses 13 MHz RC oscillator...">standby()</a>.  <br /></td></tr>
-<tr class="memitem:aaff9a5b9b7636693c98bd1c93a5863e5" id="r_aaff9a5b9b7636693c98bd1c93a5863e5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaff9a5b9b7636693c98bd1c93a5863e5">finishTransmit</a> () override</td></tr>
-<tr class="memdesc:aaff9a5b9b7636693c98bd1c93a5863e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:aa6ce285cc1b76ce028db6442a421ed8d" id="r_aa6ce285cc1b76ce028db6442a421ed8d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6ce285cc1b76ce028db6442a421ed8d">startReceive</a> () override</td></tr>
 <tr class="memdesc:aa6ce285cc1b76ce028db6442a421ed8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
 <tr class="memitem:a00c93ca6a2e2b430aae60192c79873e2" id="r_a00c93ca6a2e2b430aae60192c79873e2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00c93ca6a2e2b430aae60192c79873e2">startReceiveDutyCycle</a> (uint32_t rxPeriod, uint32_t sleepPeriod, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK)</td></tr>
@@ -348,6 +346,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer" id="r_a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <br /></td></tr>
+<tr class="memitem:a1de26f68b939f5af79ec29cc34c7be18 inherit pub_methods_class_physical_layer" id="r_a1de26f68b939f5af79ec29cc34c7be18"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">finishTransmit</a> ()</td></tr>
+<tr class="memdesc:a1de26f68b939f5af79ec29cc34c7be18 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:accb7023250751f2a79f61ff0de5b40f8 inherit pub_methods_class_physical_layer" id="r_accb7023250751f2a79f61ff0de5b40f8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#accb7023250751f2a79f61ff0de5b40f8">setFrequency</a> (uint32_t freq)</td></tr>
 <tr class="memdesc:accb7023250751f2a79f61ff0de5b40f8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <br /></td></tr>
 <tr class="memitem:a9652a9962eccc4d7790dc1a79cf8f212 inherit pub_methods_class_physical_layer" id="r_a9652a9962eccc4d7790dc1a79cf8f212"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212">setOutputPowerOffset</a> (int8_t offset)</td></tr>
@@ -879,36 +879,6 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="aaff9a5b9b7636693c98bd1c93a5863e5" name="aaff9a5b9b7636693c98bd1c93a5863e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaff9a5b9b7636693c98bd1c93a5863e5">&#9670;&#160;</a></span>finishTransmit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LR11x0::finishTransmit </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Clean up after transmission is done. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">PhysicalLayer</a>.</p>
 
 </div>
 </div>

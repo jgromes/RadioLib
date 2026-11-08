@@ -16,7 +16,6 @@ var class_s_x126x =
     [ "clearTxBuffer", "class_s_x126x.html#a76c3408a048e64089dd1c07b3038c1b5", null ],
     [ "explicitHeader", "class_s_x126x.html#a3765f534418d4e0540c179621c019138", null ],
     [ "finishReceive", "class_s_x126x.html#a5a6a7ff321ddb64885380dc2e7208870", null ],
-    [ "finishTransmit", "class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e", null ],
     [ "fixedPacketLengthMode", "class_s_x126x.html#abc3a4f9213b2a7052e97c2e3a0bf45a5", null ],
     [ "forceLDRO", "class_s_x126x.html#a420c23bb1861646e29f44c0f4c646ee8", null ],
     [ "getChannelScanResult", "class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317", null ],

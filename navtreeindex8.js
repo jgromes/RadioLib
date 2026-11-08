@@ -1,12 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"struct_module_1_1_s_p_i_config__t.html#a8cd88af331563749f10ac69b63e1755a":[3,0,61,1,7],
-"struct_module_1_1_s_p_i_config__t.html#a9619dcb8b269bcbd125e5a05e6c0fc77":[3,0,61,1,3],
-"struct_module_1_1_s_p_i_config__t.html#ac1e7f50d134ec054ed2074b846f1124e":[3,0,61,1,0],
-"struct_module_1_1_s_p_i_config__t.html#ae11c030be96a72cd09fdfe9778ecdd51":[3,0,61,1,2],
-"struct_multicast_group__t.html":[3,0,63],
-"struct_multicast_group__t.html#a219a26cfe0b720d2c9d4d2583804bead":[3,0,63,3],
-"struct_multicast_group__t.html#a27a5c465366dfab179d300c504b9790e":[3,0,63,6],
 "struct_multicast_group__t.html#a549fb604c3594c9e8b166cf61738e2a6":[3,0,63,1],
 "struct_multicast_group__t.html#a5ca056ea4106e4223eb6a0137d6e5192":[3,0,63,0],
 "struct_multicast_group__t.html#a8e79fa4c7a4db734f1da3082313b229c":[3,0,63,5],
