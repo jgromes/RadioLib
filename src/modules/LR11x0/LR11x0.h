@@ -507,6 +507,18 @@ class LR11x0: public LRxxxx {
     float getSNR() override;
 
     /*!
+      \brief Read the supply voltage on the Vbat pin.
+      \returns \ref Supply voltage in volts.
+    */
+    float getVoltage();
+    
+    /*!
+      \brief Read the temperature.
+      \returns \ref Temperature in degrees Celsius.
+    */
+    float getTemperature();
+
+    /*!
       \brief Query modem for the packet length of received payload.
       \param update Update received packet length. Will return cached value when set to false.
       \returns Length of last received packet in bytes.

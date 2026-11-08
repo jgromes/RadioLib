@@ -1153,6 +1153,26 @@ float LR11x0::getSNR() {
   return(val);
 }
 
+float LR11x0::getVoltage() {
+  float val;
+  int16_t state = getVbat(&val);
+  if(state != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
+
+  return(val);
+}
+
+float LR11x0::getTemperature() {
+  float val;
+  int16_t state = getTemp(&val);
+  if(state != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
+
+  return(val);
+}
+
 size_t LR11x0::getPacketLength(bool update) {
   return(this->getPacketLength(update, NULL));
 }
