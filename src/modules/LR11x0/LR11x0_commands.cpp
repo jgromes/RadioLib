@@ -745,11 +745,6 @@ int16_t LR11x0::bootGetHash(uint8_t hash[RADIOLIB_LR11X0_HASH_LEN]) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_GET_HASH, false, hash, RADIOLIB_LR11X0_HASH_LEN));
 }
 
-int16_t LR11x0::bootReboot(bool stay) {
-  uint8_t buff[1] = { (uint8_t)stay };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_REBOOT, true, buff, sizeof(buff)));
-}
-
 int16_t LR11x0::bootGetPin(uint8_t* pin) {
   RADIOLIB_ASSERT_PTR(pin);
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_GET_PIN, false, pin, RADIOLIB_LR11X0_PIN_LEN));
