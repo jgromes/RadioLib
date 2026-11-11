@@ -1371,18 +1371,30 @@ int16_t LR11x0::getVersionInfo(LR11x0VersionInfo_t* info) {
 int16_t LR11x0::updateFirmware(const uint32_t* image, size_t size, bool nonvolatile) {
   RADIOLIB_ASSERT_PTR(image);
 
-  // put the device to bootloader mode
-  int16_t state = this->reboot(true);
-  RADIOLIB_ASSERT(state);
-  this->mod->hal->delay(500);
-
-  // check we're in bootloader
+  // a device left in bootloader mode (e.g. by an interrupted update) rejects the system reboot command,
+  // so check first; read twice, as the first read can return the error status of a previously rejected command
   uint8_t device = 0xFF;
-  state = this->getVersion(NULL, &device, NULL, NULL);
-  RADIOLIB_ASSERT(state);
-  if(device != RADIOLIB_LR11X0_DEVICE_BOOT) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to put device to bootloader mode, %02x != %02x", (unsigned int)device, (unsigned int)RADIOLIB_LR11X0_DEVICE_BOOT);
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  int16_t state = this->getVersion(NULL, &device, NULL, NULL);
+  if(state != RADIOLIB_ERR_NONE) {
+    state = this->getVersion(NULL, &device, NULL, NULL);
+  }
+
+  if((state != RADIOLIB_ERR_NONE) || (device != RADIOLIB_LR11X0_DEVICE_BOOT)) {
+    // put the device to bootloader mode
+    state = this->reboot(true);
+    RADIOLIB_ASSERT(state);
+    this->mod->hal->delay(500);
+
+    // check we're in bootloader
+    device = 0xFF;
+    state = this->getVersion(NULL, &device, NULL, NULL);
+    RADIOLIB_ASSERT(state);
+    if(device != RADIOLIB_LR11X0_DEVICE_BOOT) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to put device to bootloader mode, %02x != %02x", (unsigned int)device, (unsigned int)RADIOLIB_LR11X0_DEVICE_BOOT);
+      return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+    }
+  } else {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Device already in bootloader mode");
   }
 
   // erase the image
