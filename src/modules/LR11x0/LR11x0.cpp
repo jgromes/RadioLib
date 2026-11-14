@@ -1741,6 +1741,28 @@ int16_t LR11x0::modSetup(uint8_t modem) {
 
   // configure settings not accessible by API
   state = config(modem);
+
+  // if something failed, check the device errors
+  if(state != RADIOLIB_ERR_NONE) {
+    // unless mode is forced to standby, device errors will be 0
+    standby();
+    uint16_t errors = 0;
+    getErrors(&errors);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
+
+    // SPI command fail and oscillator start error flag indicate incorrectly set oscillator
+    if((state == RADIOLIB_ERR_SPI_CMD_FAILED) && (errors & RADIOLIB_LR11X0_ERROR_STAT_HF_XOSC_START_ERR)) {
+      // typically users with XTAL devices will try to call the default begin method
+      // disable TCXO and try to run config again
+      this->tcxoVoltage = RadioLibTCXOVoltage_t::VoltageNone;
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Bad oscillator selected, trying XTAL");
+
+      state = setTCXO(RadioLibTCXOVoltage_t::VoltageNone);
+      RADIOLIB_ASSERT(state);
+
+      state = config(modem);
+    }
+  }
   RADIOLIB_ASSERT(state);
 
   // restore RF switch configuration, if it exists
@@ -1805,37 +1827,7 @@ bool LR11x0::findChip(uint8_t ver) {
 
 int16_t LR11x0::config(uint8_t modem) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
-
-  // set Rx/Tx fallback mode
-  state = this->setRxTxFallbackMode(this->standbyXOSC ? RADIOLIB_LR11X0_FALLBACK_MODE_STBY_XOSC : RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC);
-  RADIOLIB_ASSERT(state);
-
-  // clear IRQ
-  state = this->clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
-  state |= this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_NONE);
-  RADIOLIB_ASSERT(state);
-
-  // calibrate all blocks
-  state = this->calibrate(RADIOLIB_LR11X0_CALIBRATE_ALL);
-
-  // wait for calibration completion
-  this->mod->hal->delay(5);
-  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
-    this->mod->hal->yield();
-  }
   
-  // if something failed, show the device errors
-  #if RADIOLIB_DEBUG_BASIC
-  if(state != RADIOLIB_ERR_NONE) {
-    // unless mode is forced to standby, device errors will be 0
-    standby();
-    uint16_t errors = 0;
-    getErrors(&errors);
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Calibration failed, device errors: 0x%X", errors);
-  }
-  #endif
-  RADIOLIB_ASSERT(state);
-
   // enable driving DIOs in sleep mode
   // this prevents IRQ going high when the device goes to sleep
   // especially when using Rx duty cycle, this would make it look like received packets
@@ -1848,7 +1840,28 @@ int16_t LR11x0::config(uint8_t modem) {
 
   // set modem
   state = this->setPacketType(modem);
-  return(state);
+  RADIOLIB_ASSERT(state);
+
+  // set Rx/Tx fallback mode
+  state = this->setRxTxFallbackMode(this->standbyXOSC ? RADIOLIB_LR11X0_FALLBACK_MODE_STBY_XOSC : RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC);
+  RADIOLIB_ASSERT(state);
+
+  // clear IRQ
+  state = this->clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
+  state |= this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_NONE);
+  RADIOLIB_ASSERT(state);
+
+  // calibrate all blocks
+  state = this->calibrate(RADIOLIB_LR11X0_CALIBRATE_ALL);
+  RADIOLIB_ASSERT(state);
+
+  // wait for calibration completion
+  this->mod->hal->delay(5);
+  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+    this->mod->hal->yield();
+  }
+  
+  return(this->mod->SPIcheckStream());
 }
 
 int16_t LR11x0::setPacketMode(uint8_t mode, uint8_t len) {
