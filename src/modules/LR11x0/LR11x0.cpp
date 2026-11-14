@@ -1172,17 +1172,23 @@ size_t LR11x0::getPacketLength(bool update) {
 size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   (void)update;
 
-  // in implicit mode, return the cached value if the offset was not requested
+  // in implicit or fixed packet length mode, return the cached value if the offset was not requested
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   (void)getPacketType(&type);
-  if((type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && (!offset)) {
+  if(((type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) && (!offset)) ||
+     ((type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) && (this->headerType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED) && (!offset))) {
     return(this->implicitLen);
   }
 
   // if offset was requested, or in explicit mode, we always have to perform the SPI transaction
   uint8_t len = 0;
-  int state = getRxBufferStatus(&len, offset);
-  (void)state;
+  (void)getRxBufferStatus(&len, offset);
+
+  // in GFSK fixed length mode, the returned value seems to always be 255
+  if((type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) && (this->headerType == RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED)) {
+    len = this->implicitLen;
+  }
+
   return((size_t)len);
 }
 
@@ -1866,6 +1872,7 @@ int16_t LR11x0::setPacketMode(uint8_t mode, uint8_t len) {
 
   // update cached value
   this->packetType = mode;
+  this->implicitLen = len;
   return(state);
 }
 

@@ -420,10 +420,11 @@ int16_t LR2021::sleep(bool retainConfig, uint32_t sleepTime) {
 size_t LR2021::getPacketLength(bool update) {
   (void)update;
 
-  // in implicit mode, return the cached value
+  // in implicit or fixed packet length mode, return the cached value
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   (void)getPacketType(&type);
-  if((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT)) {
+  if(((type == RADIOLIB_LR2021_PACKET_TYPE_LORA) && (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT)) ||
+     ((type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) && (this->headerType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED))) {
     return(this->implicitLen);
   }
 
