@@ -901,7 +901,7 @@ RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
       n_coded_bits = n_coded_bits_flt + 0.5f;
 
       // now calculate the real time on air
-      return((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate));
+      return(((float)(n_uncoded_bits + n_coded_bits) / (float)(this->bitRate)) * 1000000UL);
     } 
   }
 
