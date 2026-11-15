@@ -2200,6 +2200,11 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
       if(cid == RADIOLIB_LORAWAN_MAC_LINK_ADR) {
         // if there was any LinkAdr command before, set NACK and continue without processing
         if(mAdr) {
+          if(fOptsReLen + fLenRe > RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE) {
+            RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: MAC answers do not fit, skipping remaining MAC payload");
+            fOptsLen = procLen; // truncate to last processed MAC command
+            break;
+          }
           reply = true;
           fOptsRe[fOptsReLen + 1] = 0x00;
 
@@ -2213,6 +2218,13 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
           while(procLen + fLen + fAdrLen < fOptsLen + 1 && *(mPtr + fLen) == RADIOLIB_LORAWAN_MAC_LINK_ADR) {
             fLen += 5;    // ADR command is 5 bytes
             fLenRe += 2;  // ADR response is 2 bytes
+          }
+
+          // execMacCommand() and the v1.0 post-processing write fLenRe bytes of answers
+          if(fOptsReLen + fLenRe > RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE) {
+            RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: MAC answers do not fit, skipping remaining MAC payload");
+            fOptsLen = procLen; // truncate to last processed MAC command
+            break;
           }
 
           // pre-process them into a single complete channel mask (stored in mAdrOpt)
@@ -2233,6 +2245,12 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
 
       // MAC command other than LinkAdr, just process the payload
       } else {
+        // execMacCommand() writes the answer right away, so check that it fits first
+        if(fOptsReLen + fLenRe > RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE) {
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: MAC answers do not fit, skipping remaining MAC payload");
+          fOptsLen = procLen; // truncate to last processed MAC command
+          break;
+        }
         reply = this->execMacCommand(cid, mPtr + 1, fLen - 1, &fOptsRe[fOptsReLen + 1]);
       }
 
@@ -2250,9 +2268,24 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, uint8_t window, L
     // (which are LinkCheck and DeviceTime)  
     LoRaWANNode::clearMacCommands(fOptsPtr, &fOptsLen, RADIOLIB_LORAWAN_DOWNLINK);
 
-    // copy over the remaining FOpts from the downlink to an internal buffer
-    this->fOptsDownLen = fOptsLen;
-    memcpy(this->fOptsDown, fOptsPtr, this->fOptsDownLen);
+    // copy over the remaining FOpts from the downlink to an internal buffer;
+    // on FPort 0 they can be longer than the buffer, so keep the first copy of each
+    // command (the one getMacPayload() returns anyway) and only whole commands that fit
+    this->fOptsDownLen = 0;
+    uint8_t i = 0;
+    while(i < fOptsLen) {
+      uint8_t cmdLen = 0;
+      (void)this->getMacLen(fOptsPtr[i], &cmdLen, RADIOLIB_LORAWAN_DOWNLINK, true, &fOptsPtr[i + 1]);
+      if((cmdLen == 0) || (i + cmdLen > fOptsLen)) {
+        break;
+      }
+      bool seen = this->getMacPayload(fOptsPtr[i], this->fOptsDown, this->fOptsDownLen, NULL, RADIOLIB_LORAWAN_DOWNLINK) == RADIOLIB_ERR_NONE;
+      if(!seen && (this->fOptsDownLen + cmdLen <= RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN)) {
+        memcpy(&this->fOptsDown[this->fOptsDownLen], &fOptsPtr[i], cmdLen);
+        this->fOptsDownLen += cmdLen;
+      }
+      i += cmdLen;
+    }
 
     // if fOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
     if(fOptsReLen > RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN) {
@@ -2646,7 +2679,8 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       }
 
       // check if the outermost datarates are defined and if the device supports them
-      if(this->band->dataRates[macDrMin].modem != RADIOLIB_MODEM_NONE && this->band->dataRates[macDrMax].modem != RADIOLIB_MODEM_NONE) {
+      if(macDrMin < RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES && macDrMax < RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES &&
+         this->band->dataRates[macDrMin].modem != RADIOLIB_MODEM_NONE && this->band->dataRates[macDrMax].modem != RADIOLIB_MODEM_NONE) {
         if(this->phyLayer->checkDataRate(this->band->dataRates[macDrMin].dr, this->band->dataRates[macDrMin].modem) == RADIOLIB_ERR_NONE) {
           if(this->phyLayer->checkDataRate(this->band->dataRates[macDrMax].dr, this->band->dataRates[macDrMax].modem) == RADIOLIB_ERR_NONE) {
             drAck = 1;
