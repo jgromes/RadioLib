@@ -3647,7 +3647,7 @@ void LoRaWANNode::enableDefaultChannels(bool addDynamic) {
       }
     }
     if(addDynamic) {
-      for(; num < RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS; num++) {
+      for(num = 0; num < RADIOLIB_LORAWAN_MAX_NUM_DYNAMIC_CHANNELS; num++) {
         if(this->dynamicChannels[RADIOLIB_LORAWAN_UPLINK][num].freq) {
           this->channelMasks[num / 16] |= (0x0001 << (num % 16));
           this->channelFlags[num / 16] |= (0x0001 << (num % 16));
