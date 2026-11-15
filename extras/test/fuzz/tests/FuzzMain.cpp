@@ -8,6 +8,9 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   extern int FuzzLoRaWANPersistBuffer(const uint8_t* data, size_t size);
   FuzzLoRaWANPersistBuffer(data, size);
 
+  extern int FuzzLoRaWANMacCommands(const uint8_t* data, size_t size);
+  FuzzLoRaWANMacCommands(data, size);
+
   extern int FuzzPager(const uint8_t* data, size_t size);
   FuzzPager(data, size);
 

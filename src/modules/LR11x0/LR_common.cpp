@@ -93,6 +93,9 @@ int16_t LRxxxx::reset() {
 
   // the typical transition duration should be 273 ms
   this->mod->hal->delay(300);
+
+  // reset current frequency - this will force the next frequency configuration to redo calibration
+  this->freqHz = 0;
   
   // wait for BUSY to go low
   RadioLibTime_t start = this->mod->hal->millis();
