@@ -20,6 +20,7 @@ var class_l_r2021 =
     [ "clearIrqFlags", "class_l_r2021.html#a21cee48cac6a64d518353aa2389f8074", null ],
     [ "clearTxBuffer", "class_l_r2021.html#accb8d61618b3063edd8d678600492a10", null ],
     [ "disableAddressFiltering", "class_l_r2021.html#a2f586b966393cd54bdd885ea70dd1709", null ],
+    [ "enableRxFifoInterrupt", "class_l_r2021.html#a4c1663a640da3595b341e4259c2afcb0", null ],
     [ "explicitHeader", "class_l_r2021.html#a53cf216f8aee520a559b64cc03f61901", null ],
     [ "finishReceive", "class_l_r2021.html#aabaa4984504bdd10ae75e0163c0871db", null ],
     [ "fixedPacketLengthMode", "class_l_r2021.html#a934a871e6f92b290541fe975f6f32bae", null ],
