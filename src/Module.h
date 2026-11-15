@@ -435,6 +435,7 @@ class Module {
       Radiolib will automatically set the pin mode and value of these
       pins, so do not control them from the sketch.
 
+      NOTE: When used, this method MUST be called prior to calling begin()!
 
       \param pins A reference to an array of pins to control. This
       should always be an array of 5 elements. If you need less pins,
@@ -482,9 +483,10 @@ class Module {
 
       void setup() {
         ...
-        // Then somewhere in setup, pass them to radiolib
+        // Then somewhere in setup, pass them to RadioLib BEFORE calling radio.begin()
         radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
         ...
+        radio.begin();
       }
       \endcode
     */
