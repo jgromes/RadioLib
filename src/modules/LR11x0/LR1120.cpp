@@ -91,18 +91,48 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   int16_t state = this->applyOutputPowerOffset(this->highFreq ? RADIOLIB_LR112X_HF_POUT_MIN : RADIOLIB_LR112X_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-  // determine whether to use HP or LP PA
-  bool useHp = forceHighPower || (pwr > RADIOLIB_LR112X_LP_POUT_MAX);
+
+  // check the user did not request power output that is not possible
+  const Module* mod = this->getMod();
+  bool lp_supported = mod->findRfSwitchMode(LR11x0::MODE_TX);
+  bool hp_supported = mod->findRfSwitchMode(LR11x0::MODE_TX_HP);
+  
+  // check whether any RF switch configuration exists at all - if standby does not exist, then consider the module switchless
+  if(!mod->findRfSwitchMode(LR11x0::MODE_STBY)) {
+    lp_supported = true;
+    hp_supported = true;
+  }
+  
+  if(((!lp_supported && (pwr < RADIOLIB_LR112X_HP_POUT_MIN)) || (!hp_supported && (pwr > RADIOLIB_LR112X_LP_POUT_MAX)) ||
+    (!lp_supported && !hp_supported && !this->highFreq) || (forceHighPower && !hp_supported))) {
+    // LP not supported but requested power is below HP low bound or
+    // HP not supported but requested power is above LP high bound or
+    // neither is supported but we are below high frequency mode or
+    // user is forcing high power while it is not supported
+    // validity of high-frequency PA range has already been checked in applyOutputPowerOffset
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+
+  // determine which PA to use (the default is for LP)
   uint8_t paSel = 0;
   uint8_t paSupply = 0;
   this->txMode = LR11x0::MODE_TX;
   if(this->highFreq) {
+    // for high frequency range, there is only the HF PA
     paSel = 2;
     this->txMode = LR11x0::MODE_TX_HF;
-  } else if(useHp) {
-    paSel = 1;
-    paSupply = 1;
-    this->txMode = LR11x0::MODE_TX_HP;
+  
+  } else if(hp_supported) {
+    // if HP is supported, use it in the following cases:
+    // 1. user forces it
+    // 2. HP is the only option
+    // 3. but power requested exceeds the LP range
+    if(forceHighPower || (!lp_supported) || (pwr > RADIOLIB_LR112X_LP_POUT_MAX)) {
+      paSel = 1;
+      paSupply = 1;
+      this->txMode = LR11x0::MODE_TX_HP;
+    }
+  
   }
   
   //! \TODO: [LR1120] how and when to configure OCP?
