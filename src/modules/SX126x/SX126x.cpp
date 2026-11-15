@@ -182,6 +182,9 @@ int16_t SX126x::reset(bool verify) {
   this->mod->hal->delay(1);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelHigh);
 
+  // reset current frequency - this will force the next frequency configuration to redo calibration
+  this->freqHz = 0;
+
   // return immediately when verification is disabled
   if(!verify) {
     return(RADIOLIB_ERR_NONE);
