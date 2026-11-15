@@ -91,18 +91,17 @@ int16_t LR1120::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   int16_t state = this->applyOutputPowerOffset(this->highFreq ? RADIOLIB_LR112X_HF_POUT_MIN : RADIOLIB_LR112X_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
 
-
   // check the user did not request power output that is not possible
   const Module* mod = this->getMod();
   bool lp_supported = mod->findRfSwitchMode(LR11x0::MODE_TX);
   bool hp_supported = mod->findRfSwitchMode(LR11x0::MODE_TX_HP);
-  
+
   // check whether any RF switch configuration exists at all - if standby does not exist, then consider the module switchless
   if(!mod->findRfSwitchMode(LR11x0::MODE_STBY)) {
     lp_supported = true;
     hp_supported = true;
   }
-  
+
   if(((!lp_supported && (pwr < RADIOLIB_LR112X_HP_POUT_MIN)) || (!hp_supported && (pwr > RADIOLIB_LR112X_LP_POUT_MAX)) ||
     (!lp_supported && !hp_supported && !this->highFreq) || (forceHighPower && !hp_supported))) {
     // LP not supported but requested power is below HP low bound or
