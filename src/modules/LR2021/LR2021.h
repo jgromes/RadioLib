@@ -406,9 +406,6 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t setStandbyXOSC(bool enable);
-    
-    /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
       \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
@@ -1107,6 +1104,9 @@ class LR2021: public LRxxxx {
 
     // test commands
     int16_t setTxTestMode(uint8_t mode);
+
+    // applies RF switch configuration which was previously set via Module::setRfSwitchTable
+    int16_t applyRfSwitchTable(void);
 
     // port of semtech's workaround
     int16_t setDCDCworkaround();
