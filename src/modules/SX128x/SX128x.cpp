@@ -1371,14 +1371,6 @@ int16_t SX128x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
 }
 
-void SX128x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
-  this->mod->setRfSwitchPins(rxEn, txEn);
-}
-
-void SX128x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
-  this->mod->setRfSwitchTable(pins, table);
-}
-
 int16_t SX128x::setStandbyXOSC(bool enable) {
   // set the internal variable
   this->standbyXOSC = enable;

@@ -1161,12 +1161,6 @@ class SX127x: public PhysicalLayer {
     */
     int8_t getTempRaw();
 
-    /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
-
-    /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
-
     /*!
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.

@@ -776,6 +776,16 @@ int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, ui
   return(RADIOLIB_ERR_NONE);
 }
 
+void PhysicalLayer::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
+  Module* mod = getMod();
+  mod->setRfSwitchPins(rxEn, txEn);
+}
+
+void PhysicalLayer::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  Module* mod = getMod();
+  mod->setRfSwitchTable(pins, table);
+}
+
 int16_t PhysicalLayer::setOutputPowerOffset(int8_t offset) {
   memset(this->paOffsetLut, offset, sizeof(this->paOffsetLut));
   return(RADIOLIB_ERR_NONE);

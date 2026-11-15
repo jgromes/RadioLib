@@ -1443,14 +1443,6 @@ uint8_t SX127x::getModemStatus() {
   return(this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_MODEM_STAT));
 }
 
-void SX127x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
-  this->mod->setRfSwitchPins(rxEn, txEn);
-}
-
-void SX127x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
-  this->mod->setRfSwitchTable(pins, table);
-}
-
 uint8_t SX127x::randomByte() {
   // check active modem
   uint8_t rssiValueReg = RADIOLIB_SX127X_REG_RSSI_WIDEBAND;

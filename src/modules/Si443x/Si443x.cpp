@@ -514,14 +514,6 @@ int16_t Si443x::setDataShaping(uint8_t sh) {
   }
 }
 
-void Si443x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
-  this->mod->setRfSwitchPins(rxEn, txEn);
-}
-
-void Si443x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
-  this->mod->setRfSwitchTable(pins, table);
-}
-
 uint8_t Si443x::randomByte() {
   // set mode to Rx
   this->mod->SPIwriteRegister(RADIOLIB_SI443X_REG_OP_FUNC_CONTROL_1, RADIOLIB_SI443X_RX_ON | RADIOLIB_SI443X_XTAL_ON);

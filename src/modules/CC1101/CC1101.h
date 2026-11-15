@@ -936,12 +936,6 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setEncoding(uint8_t encoding) override;
 
-    /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
-
-    /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
-
     /*!
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.

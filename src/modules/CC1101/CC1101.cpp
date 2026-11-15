@@ -955,14 +955,6 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
   }
 }
 
-void CC1101::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
-  this->mod->setRfSwitchPins(rxEn, txEn);
-}
-
-void CC1101::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
-  this->mod->setRfSwitchTable(pins, table);
-}
-
 uint8_t CC1101::randomByte() {
   // set mode to Rx
   SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
