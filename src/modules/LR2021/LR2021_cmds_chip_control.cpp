@@ -444,4 +444,14 @@ int16_t LR2021::setIQStream(uint32_t rate, bool fifo) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_SOURCE2, true, buff, sizeof(buff)));
 }
 
+int16_t LR2021::enableRxFifoInterrupt(uint16_t level) {
+  // enable Rx FIFO interrupt on FIFO being nearly full
+  int16_t state = this->configFifoIrq(RADIOLIB_LR2021_FIFO_IRQ_HIGH, 0, level, 0, 0, 0);
+  RADIOLIB_ASSERT(state);
+
+  // route the interrupt source to the DIO pin
+  state = this->setDioIrqConfig(this->irqDioNum, RADIOLIB_LR2021_IRQ_RX_FIFO);
+  return(state);
+}
+
 #endif

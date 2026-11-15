@@ -946,6 +946,14 @@ class LR2021: public LRxxxx {
       \returns \ref status_codes
     */
     int16_t readRadioRxFifo(uint8_t* data, size_t len);
+    
+    /*!
+      \brief Enable Rx FIFO interrupt upon exceeding threshold.
+      When threshold is exceeded, the interrupt pin will be asserted.
+      \param level FIFO threshold in bytes.
+      \returns \ref status_codes
+    */
+    int16_t enableRxFifoInterrupt(uint16_t level);
 
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
