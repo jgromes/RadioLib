@@ -758,9 +758,9 @@ int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, ui
   // so we must be awake for at least that long before the sender stops transmitting.
   uint16_t sleepSymbols = senderPreambleLength - 2 * minSymbols;
 
-  uint32_t symbolLength = ((uint32_t)(10 * 1000) << dr->lora.spreadingFactor) / (10 * dr->lora.bandwidth);
-  *sleepPeriod = symbolLength * sleepSymbols;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Auto sleep period: %lu", (long unsigned int)*sleepPeriod);
+  uint32_t symbolLength_us = (RADIOLIB_UNIT_MEGA(1) << dr->lora.spreadingFactor) / dr->lora.bandwidth;
+  *sleepPeriod = symbolLength_us * sleepSymbols;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Auto sleep period: %lu us", (long unsigned int)*sleepPeriod);
 
   // when the unit detects a preamble, it starts a timer that will timeout if it doesn't receive a header in time.
   // the duration is sleepPeriod + 2 * wakePeriod.
@@ -769,9 +769,9 @@ int16_t PhysicalLayer::calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, ui
   // So we must satisfy: wakePeriod > (preamblePeriod - (sleepPeriod - 1000)) / 2. (A)
   // we also need to ensure the unit is awake to see at least minSymbols. (B)
   *wakePeriod = RADIOLIB_MAX(
-    (symbolLength * (senderPreambleLength + 1) - (*sleepPeriod - 1000)) / 2, // (A)
-    symbolLength * (minSymbols + 1)); //(B)
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Auto wake period: %lu", (long unsigned int)*wakePeriod);
+    (symbolLength_us * (senderPreambleLength + 1) - (*sleepPeriod - 1000)) / 2, // (A)
+    symbolLength_us * (minSymbols + 1)); //(B)
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Auto wake period: %lu us", (long unsigned int)*wakePeriod);
 
   return(RADIOLIB_ERR_NONE);
 }
