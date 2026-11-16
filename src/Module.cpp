@@ -51,7 +51,7 @@ int16_t Module::init() {
 
   this->hal->pinMode(csPin, this->hal->GpioModeOutput);
   this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
-  RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO);
+  RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO  " " RADIOLIB_VALUE(__DATE__) " " RADIOLIB_VALUE(__TIME__));
   RADIOLIB_VALUE_USED(rlb_info);
   return(state);
 }
