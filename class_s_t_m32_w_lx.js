@@ -10,6 +10,5 @@ var class_s_t_m32_w_lx =
     [ "STM32WLx", "class_s_t_m32_w_lx.html#ace55504c02a5b4d8ccf879f015f36daf", null ],
     [ "begin", "class_s_t_m32_w_lx.html#abb970198959a03b3e66f2e8398a8b5ca", null ],
     [ "beginFSK", "class_s_t_m32_w_lx.html#ab15b7a3bb0f9c7498395806c0f86cd6a", null ],
-    [ "setOutputPower", "class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b", null ],
-    [ "setRfSwitchTable", "class_s_t_m32_w_lx.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7", null ]
+    [ "setOutputPower", "class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b", null ]
 ];

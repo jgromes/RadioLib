@@ -65,8 +65,6 @@ var class_s_x126x =
     [ "setPreambleLength", "class_s_x126x.html#a8c6504b8a68b9b0e10c244ecd8382a43", null ],
     [ "setRegulatorDCDC", "class_s_x126x.html#a5ae69309ca0cf5f13c60f2d162916ff8", null ],
     [ "setRegulatorLDO", "class_s_x126x.html#a21c263ce1a339faa74c568d9afb81cd2", null ],
-    [ "setRfSwitchPins", "class_s_x126x.html#a0a0df468eacc71c1b2a093ac06bfff51", null ],
-    [ "setRfSwitchTable", "class_s_x126x.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7", null ],
     [ "setRxBandwidth", "class_s_x126x.html#a02979e5079747e8a35393aecceb305d3", null ],
     [ "setRxBoostedGainMode", "class_s_x126x.html#a920aa76ff5f0f579424ef6de92e588c8", null ],
     [ "setSpreadingFactor", "class_s_x126x.html#a153fc0685b205691a8ec3eaf6dd6dc2e", null ],

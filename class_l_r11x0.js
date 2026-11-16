@@ -74,7 +74,6 @@ var class_l_r11x0 =
     [ "setPreambleLength", "class_l_r11x0.html#ab9ff7b7afe9d34f2157aea4d50e0add8", null ],
     [ "setRegulatorDCDC", "class_l_r11x0.html#a1ad485f14a333f06b642f2d60aacf76c", null ],
     [ "setRegulatorLDO", "class_l_r11x0.html#a92ae10630cc327f441809ac1406737fd", null ],
-    [ "setRfSwitchTable", "class_l_r11x0.html#a1981f0dfceca2b6175a69530ea13d643", null ],
     [ "setRxBandwidth", "class_l_r11x0.html#a116950b645e04cc7caaf10d59838aa59", null ],
     [ "setRxBoostedGainMode", "class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a", null ],
     [ "setSpreadingFactor", "class_l_r11x0.html#ac18e97a3bfa0c1d127fd88c442965c3c", null ],

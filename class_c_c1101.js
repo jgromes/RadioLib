@@ -43,8 +43,6 @@ var class_c_c1101 =
     [ "setOutputPower", "class_c_c1101.html#a5d6dce30fc7da668975b6da663784cdf", null ],
     [ "setPreambleLength", "class_c_c1101.html#a8235fcabe305e3a2e92fc9a90886c4e0", null ],
     [ "setPromiscuousMode", "class_c_c1101.html#ac1155543b27e46fa27aa4c9180da18bb", null ],
-    [ "setRfSwitchPins", "class_c_c1101.html#a5ef45183690bb1879f106af079b01140", null ],
-    [ "setRfSwitchTable", "class_c_c1101.html#a7b401995be4bc136063a035ce1820634", null ],
     [ "setRxBandwidth", "class_c_c1101.html#a1725192aa9e68e9cc2f52feb144dbfa4", null ],
     [ "setSyncWord", "class_c_c1101.html#aa41a718b6165c6d3561ab0cd46bf17cc", null ],
     [ "setSyncWord", "class_c_c1101.html#ab299f0802f004c89ddab7c9192cd52ac", null ],

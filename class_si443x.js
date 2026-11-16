@@ -22,8 +22,6 @@ var class_si443x =
     [ "setEncoding", "class_si443x.html#a1382fc3b68f447e381613e6670747128", null ],
     [ "setFrequencyDeviation", "class_si443x.html#a8cfe8e70f1d675bf9ad8617769e05030", null ],
     [ "setPreambleLength", "class_si443x.html#a03912ba22a3fd8ee0db6cf15321edc67", null ],
-    [ "setRfSwitchPins", "class_si443x.html#a43e7ceeff9114b35ab89f1d69916b375", null ],
-    [ "setRfSwitchTable", "class_si443x.html#a8898f11cf9dabd9a5ad717376fdbffa6", null ],
     [ "setRxBandwidth", "class_si443x.html#ab8d517e3f768207dd87a925e3a2b5e1e", null ],
     [ "setSyncWord", "class_si443x.html#af257fb09afaa6162e1506cfe87b219b3", null ],
     [ "sleep", "class_si443x.html#ab0cc51d6b4264acf8e3e49a3a490dee9", null ],

@@ -57,6 +57,8 @@ var class_physical_layer =
     [ "setOutputPowerOffset", "class_physical_layer.html#a9fded145c4805d930fbf04624a48e9e7", null ],
     [ "setOutputPowerOffset", "class_physical_layer.html#a9652a9962eccc4d7790dc1a79cf8f212", null ],
     [ "setPreambleLength", "class_physical_layer.html#ac058431906047acdf2f4a00e991ec6de", null ],
+    [ "setRfSwitchPins", "class_physical_layer.html#a897cc3ecc125b0cb8203ed258a739d3f", null ],
+    [ "setRfSwitchTable", "class_physical_layer.html#a40c8a7c92cee0c991f70df91d9866e9d", null ],
     [ "setSpreadingFactor", "class_physical_layer.html#a907472cb180263007e080b1ae6c07e8c", null ],
     [ "setSyncWord", "class_physical_layer.html#a6c71cdc1238e1368274670758431a977", null ],
     [ "sleep", "class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e", null ],

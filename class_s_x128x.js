@@ -55,8 +55,6 @@ var class_s_x128x =
     [ "setModem", "class_s_x128x.html#a209d69e710a785da2c69474f94fdccf3", null ],
     [ "setOutputPower", "class_s_x128x.html#a205949b9cec981af3b1d6cc7cdfcb1be", null ],
     [ "setPreambleLength", "class_s_x128x.html#a6db3f186bffdc2ab3d7362740be4282b", null ],
-    [ "setRfSwitchPins", "class_s_x128x.html#a5ba683fbc4a46418ce3736f224fb55f2", null ],
-    [ "setRfSwitchTable", "class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958", null ],
     [ "setSpreadingFactor", "class_s_x128x.html#a6cef3c5f46b97c2ff2037dd6b92a0cf4", null ],
     [ "setStandbyXOSC", "class_s_x128x.html#a97a0a4580ecd0e58a468c765a1ac793d", null ],
     [ "setSyncWord", "class_s_x128x.html#a6eef935cc2170908aae1ec356d70dc5d", null ],

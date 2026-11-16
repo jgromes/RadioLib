@@ -263,10 +263,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearFifoFullAction</
 <tr class="memdesc:a2cf6a5bd8f3257f98ee4f250cbdf8bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads modem status. Only available in LoRa mode.  <br /></td></tr>
 <tr class="memitem:a95bc32a555675879ad9e2a9e399dc6c1" id="r_a95bc32a555675879ad9e2a9e399dc6c1"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95bc32a555675879ad9e2a9e399dc6c1">getTempRaw</a> ()</td></tr>
 <tr class="memdesc:a95bc32a555675879ad9e2a9e399dc6c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads uncalibrated temperature value. This function will change operating mode and should not be called during Tx, Rx or CAD.  <br /></td></tr>
-<tr class="memitem:a8ca9edcae05060cce3ff7ee58faeb4e2" id="r_a8ca9edcae05060cce3ff7ee58faeb4e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ca9edcae05060cce3ff7ee58faeb4e2">setRfSwitchPins</a> (uint32_t rxEn, uint32_t txEn)</td></tr>
-<tr class="memdesc:a8ca9edcae05060cce3ff7ee58faeb4e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <span class="tt">txEn</span> pin will be HIGH, during RX the <span class="tt">rxPin</span> will be HIGH.     <br /></td></tr>
-<tr class="memitem:ab9625a5246a45112267ce441ac2de254" id="r_ab9625a5246a45112267ce441ac2de254"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9625a5246a45112267ce441ac2de254">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
-<tr class="memdesc:ab9625a5246a45112267ce441ac2de254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.     <br /></td></tr>
 <tr class="memitem:a9877550ed7881be06d00ea190f230fb9" id="r_a9877550ed7881be06d00ea190f230fb9"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9877550ed7881be06d00ea190f230fb9">randomByte</a> () override</td></tr>
 <tr class="memdesc:a9877550ed7881be06d00ea190f230fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <br /></td></tr>
 <tr class="memitem:aee5324d7d854e7a2f6768221d4f362cd" id="r_aee5324d7d854e7a2f6768221d4f362cd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee5324d7d854e7a2f6768221d4f362cd">getChipVersion</a> ()</td></tr>
@@ -383,6 +379,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqActio
 <tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <br /></td></tr>
 <tr class="memitem:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer" id="r_a0d83458a1ead113b4c224ce8265ce8e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a0d83458a1ead113b4c224ce8265ce8e4">calculateRxDutyCycle</a> (size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, <a class="el" href="union_data_rate__t.html">DataRate_t</a> *dr, uint32_t *wakePeriod, uint32_t *sleepPeriod)</td></tr>
 <tr class="memdesc:a0d83458a1ead113b4c224ce8265ce8e4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates sleep and wake cycles for startReceiveDutyCycle methods so that the receiver should not miss any messages. Useful only for LoRa modems.  <br /></td></tr>
+<tr class="memitem:a897cc3ecc125b0cb8203ed258a739d3f inherit pub_methods_class_physical_layer" id="r_a897cc3ecc125b0cb8203ed258a739d3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a897cc3ecc125b0cb8203ed258a739d3f">setRfSwitchPins</a> (uint32_t rxEn, uint32_t txEn)</td></tr>
+<tr class="memdesc:a897cc3ecc125b0cb8203ed258a739d3f inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <span class="tt">txEn</span> pin will be HIGH, during RX the <span class="tt">rxPin</span> will be HIGH.     <br /></td></tr>
+<tr class="memitem:a40c8a7c92cee0c991f70df91d9866e9d inherit pub_methods_class_physical_layer" id="r_a40c8a7c92cee0c991f70df91d9866e9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a40c8a7c92cee0c991f70df91d9866e9d">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
+<tr class="memdesc:a40c8a7c92cee0c991f70df91d9866e9d inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.     <br /></td></tr>
 <tr class="memitem:af17bc2be109e9c7701110fc8e609bf6a inherit pub_methods_class_physical_layer" id="r_af17bc2be109e9c7701110fc8e609bf6a"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af17bc2be109e9c7701110fc8e609bf6a">getOutputPowerMin</a> () const</td></tr>
 <tr class="memdesc:af17bc2be109e9c7701110fc8e609bf6a inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the minimum output power supported by the radio. This includes any previously configured PA offset.  <br /></td></tr>
 <tr class="memitem:a32232696fb4db81d01d2c20f4bee19c5 inherit pub_methods_class_physical_layer" id="r_a32232696fb4db81d01d2c20f4bee19c5"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a32232696fb4db81d01d2c20f4bee19c5">getOutputPowerMax</a> () const</td></tr>
@@ -2507,95 +2507,6 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ac058431906047acdf2f4a00e991ec6de">PhysicalLayer</a>.</p>
 
-</div>
-</div>
-<a id="a8ca9edcae05060cce3ff7ee58faeb4e2" name="a8ca9edcae05060cce3ff7ee58faeb4e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ca9edcae05060cce3ff7ee58faeb4e2">&#9670;&#160;</a></span>setRfSwitchPins()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::setRfSwitchPins </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>rxEn</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>txEn</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <span class="tt">txEn</span> pin will be HIGH, during RX the <span class="tt">rxPin</span> will be HIGH.    </p>
-<p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
-<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="#ab9625a5246a45112267ce441ac2de254" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rxEn</td><td>RX enable pin. </td></tr>
-    <tr><td class="paramname">txEn</td><td>TX enable pin.    </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab9625a5246a45112267ce441ac2de254" name="ab9625a5246a45112267ce441ac2de254"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9625a5246a45112267ce441ac2de254">&#9670;&#160;</a></span>setRfSwitchTable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SX127x::setRfSwitchTable </td>
-          <td>(</td>
-          <td class="paramtype">const uint32_t(&amp;)</td>          <td class="paramname"><span class="paramname"><em>pins</em></span>[Module::RFSWITCH_MAX_PINS], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></td>          <td class="paramname"><span class="paramname"><em>table</em></span>[]&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.    </p>
-<p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pins</td><td>A reference to an array of pins to control. This should always be an array of 5 elements. If you need less pins, use RADIOLIB_NC for the unused elements.</td></tr>
-    <tr><td class="paramname">table</td><td>A reference to an array of pin values to use for each supported mode. Each element is an RfSwitchMode_T struct that lists the mode for which it applies and the values for each of the pins passed in the pins argument respectively.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>The <span class="tt">pins</span> array will be copied into the <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> object, so the original array can be deallocated after this call. However, a reference to the <span class="tt">table</span> array will be stored, so that array must remain valid as long RadioLib is being used.</p>
-<p>The <span class="tt">mode</span> field in each table row should normally use any of the <span class="tt">MODE_*</span> constants from the <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bf" title="Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios,...">Module::OpMode_t</a> enum. However, some radios support additional modes and will define their own OpMode_t enum.</p>
-<p>The length of the table is variable (to support radios that add additional modes), so the table must always be terminated with the special END_OF_MODE_TABLE value.</p>
-<p>Normally all modes should be listed in the table, but for some radios, modes can be omitted to indicate they are not supported (e.g. when a radio has a high power and low power TX mode but external circuitry only supports low power). If applicable, this is documented in the radio class itself.</p>
-<h4>Example</h4>
-<p>For example, on a board that has an RF switch with an enable pin connected to PA0 and a TX/RX select pin connected to PA1:</p>
-<div class="fragment"><div class="line"><span class="comment">// In global scope, define the pin array and mode table</span></div>
-<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint32_t rfswitch_pins[] =</div>
-<div class="line">                       {PA0,  PA1,  RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC};</div>
-<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> rfswitch_table[] = {</div>
-<div class="line">  {<a class="code hl_enumvalue" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a>,  {LOW,  LOW}},</div>
-<div class="line">  {<a class="code hl_enumvalue" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a>,    {HIGH, LOW}},</div>
-<div class="line">  {<a class="code hl_enumvalue" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a>,    {HIGH, HIGH}},</div>
-<div class="line">   Module::END_OF_MODE_TABLE,</div>
-<div class="line">};</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> setup() {</div>
-<div class="line">  ...</div>
-<div class="line">  <span class="comment">// Then somewhere in setup, pass them to radiolib</span></div>
-<div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
-<div class="line">  ...</div>
-<div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdoc">Transmission mode.</div><div class="ttdef"><b>Definition</b> Module.h:120</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdoc">Idle mode.</div><div class="ttdef"><b>Definition</b> Module.h:114</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdoc">Receive mode.</div><div class="ttdef"><b>Definition</b> Module.h:117</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdoc">Description of RF switch pin states for a single mode. See setRfSwitchTable for details.</div><div class="ttdef"><b>Definition</b> Module.h:90</div></div>
-</div><!-- fragment -->    
 </div>
 </div>
 <a id="ad3955f85f456edae772a51025a19029b" name="ad3955f85f456edae772a51025a19029b"></a>

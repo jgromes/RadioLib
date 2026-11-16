@@ -75,8 +75,6 @@ var class_s_x127x =
     [ "setOokPeakThresholdStep", "class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54", null ],
     [ "setOokThresholdType", "class_s_x127x.html#a8b93142202167270db109d18b743c744", null ],
     [ "setPreambleLength", "class_s_x127x.html#a48a90a96970586b592f630247cb9c99c", null ],
-    [ "setRfSwitchPins", "class_s_x127x.html#a8ca9edcae05060cce3ff7ee58faeb4e2", null ],
-    [ "setRfSwitchTable", "class_s_x127x.html#ab9625a5246a45112267ce441ac2de254", null ],
     [ "setRSSIConfig", "class_s_x127x.html#ad3955f85f456edae772a51025a19029b", null ],
     [ "setRSSIThreshold", "class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76", null ],
     [ "setRxBandwidth", "class_s_x127x.html#a0495bfa0db8d92535926cc0a388f6ad9", null ],

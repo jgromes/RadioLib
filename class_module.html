@@ -568,6 +568,7 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>RFSWIT
 
 <p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes. </p>
 <p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
+<p>NOTE: When used, this method MUST be called prior to calling begin()!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pins</td><td>A reference to an array of pins to control. This should always be an array of 5 elements. If you need less pins, use RADIOLIB_NC for the unused elements.</td></tr>
@@ -593,9 +594,10 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>RFSWIT
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> setup() {</div>
 <div class="line">  ...</div>
-<div class="line">  <span class="comment">// Then somewhere in setup, pass them to radiolib</span></div>
+<div class="line">  <span class="comment">// Then somewhere in setup, pass them to RadioLib BEFORE calling radio.begin()</span></div>
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
+<div class="line">  radio.begin();</div>
 <div class="line">}</div>
 <div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdoc">Transmission mode.</div><div class="ttdef"><b>Definition</b> Module.h:120</div></div>
 <div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdoc">Idle mode.</div><div class="ttdef"><b>Definition</b> Module.h:114</div></div>

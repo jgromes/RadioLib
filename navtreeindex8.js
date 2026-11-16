@@ -1,18 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"struct_module_1_1_s_p_i_config__t.html#ac1e7f50d134ec054ed2074b846f1124e":[3,0,62,1,0],
-"struct_module_1_1_s_p_i_config__t.html#ae11c030be96a72cd09fdfe9778ecdd51":[3,0,62,1,2],
-"struct_multicast_group__t.html":[3,0,64],
-"struct_multicast_group__t.html#a219a26cfe0b720d2c9d4d2583804bead":[3,0,64,3],
-"struct_multicast_group__t.html#a27a5c465366dfab179d300c504b9790e":[3,0,64,6],
-"struct_multicast_group__t.html#a549fb604c3594c9e8b166cf61738e2a6":[3,0,64,1],
-"struct_multicast_group__t.html#a5ca056ea4106e4223eb6a0137d6e5192":[3,0,64,0],
-"struct_multicast_group__t.html#a8e79fa4c7a4db734f1da3082313b229c":[3,0,64,5],
-"struct_multicast_group__t.html#a9f76eeb0e6e95777ff2f5f87c23a7e01":[3,0,64,8],
-"struct_multicast_group__t.html#ac54ad19d624a8e91e2c3b6eb18146d0c":[3,0,64,4],
-"struct_multicast_group__t.html#aedf821a5ddc1e3a584a6449af9a30f4f":[3,0,64,2],
-"struct_multicast_group__t.html#af968ab7abfabcb522304d05e4db3c52e":[3,0,64,7],
-"struct_r_s_s_i_scan_config__t.html":[3,0,88],
 "struct_r_s_s_i_scan_config__t.html#a8a9bf05648e82b49d43d6275ecf3cc3b":[3,0,88,0],
 "struct_radio_lib_cmac_state.html":[3,0,73],
 "struct_receive_config__t.html":[3,0,80],
