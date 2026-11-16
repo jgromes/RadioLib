@@ -92,7 +92,7 @@ int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
     hp_supported = true;
   }
 
-  if(((!lp_supported && (pwr < RADIOLIB_LR112X_HP_POUT_MIN)) || (!hp_supported && (pwr > RADIOLIB_LR112X_LP_POUT_MAX)) ||
+  if(((!lp_supported && (pwr < RADIOLIB_LR1110_HP_POUT_MIN)) || (!hp_supported && (pwr > RADIOLIB_LR1110_LP_POUT_MAX)) ||
     (!lp_supported && !hp_supported) || (forceHighPower && !hp_supported))) {
     // LP not supported but requested power is below HP low bound or
     // HP not supported but requested power is above LP high bound or
@@ -110,7 +110,7 @@ int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   // 1. user forces it
   // 2. HP is the only option
   // 3. but power requested exceeds the LP range
-  if(hp_supported && (forceHighPower || (!lp_supported) || (pwr > RADIOLIB_LR112X_LP_POUT_MAX))) {
+  if(hp_supported && (forceHighPower || (!lp_supported) || (pwr > RADIOLIB_LR1110_LP_POUT_MAX))) {
     paSel = 1;
     paSupply = 1;
     this->txMode = LR11x0::MODE_TX_HP;
