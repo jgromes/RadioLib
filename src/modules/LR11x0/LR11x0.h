@@ -265,10 +265,7 @@ class LR11x0: public LRxxxx {
     */
     int16_t readData(uint8_t* data, size_t len) override;
 
-    /*!
-      \brief Clean up after reception is done.
-      \returns \ref status_codes
-    */
+    /*! \copydoc PhysicalLayer::finishReceive */
     int16_t finishReceive() override;
     
     /*!
