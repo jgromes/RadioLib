@@ -440,10 +440,12 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 }
 
 int16_t CC1101::finishReceive() {
-  // go to standby and flush the FIFO
+  // go to standby
   int16_t state = standby();
-  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
   RADIOLIB_ASSERT(state);
+
+  // flush the FIFO
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
 
   // reset GDO0 back to high-Z
   return(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_HIGH_Z, 5, 0));

@@ -536,10 +536,6 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
   state = readRadioRxFifo(data, length);
   RADIOLIB_ASSERT(state);
 
-  // clear the Rx buffer
-  state = clearRxFifo();
-  RADIOLIB_ASSERT(state);
-
   // clear interrupt flags
   state = clearIrqState(RADIOLIB_LR2021_IRQ_ALL);
 
@@ -552,6 +548,10 @@ int16_t LR2021::readData(uint8_t* data, size_t len) {
 int16_t LR2021::finishReceive() {
   // set mode to standby to disable RF switch
   int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear the Rx buffer
+  state = clearRxFifo();
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags

@@ -507,10 +507,8 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
 
   // get packet length
   size_t length = getPacketLength();
-  size_t dumpLen = 0;
   if((len != 0) && (len < length)) {
     // user requested less data than we got, only return what was requested
-    dumpLen = length - len;
     length = len;
   }
 
@@ -544,11 +542,6 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   // read packet data
   this->mod->SPIreadRegisterBurst(RADIOLIB_SX127X_REG_FIFO, length, data);
 
-  // dump the bytes that weren't requested
-  if(dumpLen != 0) {
-    clearFIFO(dumpLen);
-  }
-
   // clear internal flag so getPacketLength can return the new packet length
   this->packetLengthQueried = false;
 
@@ -563,16 +556,12 @@ int16_t SX127x::finishReceive() {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
+  // dump the FIFO
+  state = clearTxBuffer();
+  RADIOLIB_ASSERT(state);
+
   // clear interrupt flags
-  uint32_t mask = RADIOLIB_SX127X_FLAGS_ALL;
-  if(getActiveModem() == RADIOLIB_SX127X_FSK_OOK) {
-    // in FSK mode, when the FIFO overrun flag is cleared, FIFO is dumped
-    // so only clear the flag if it is actually set
-    if(this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_IRQ_FLAGS_2, 4, 4) != RADIOLIB_SX127X_FLAG_FIFO_OVERRUN) {
-      mask &= ~(RADIOLIB_SX127X_FLAG_FIFO_OVERRUN << 8);
-    }
-  }
-  return(clearIrqFlags(mask));
+  return(clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL));
 }
 
 int16_t SX127x::startChannelScan() {
@@ -1650,13 +1639,6 @@ int16_t SX127x::setActiveModem(uint8_t modem) {
   return(state);
 }
 
-void SX127x::clearFIFO(size_t count) {
-  while(count) {
-    this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_FIFO);
-    count--;
-  }
-}
-
 int16_t SX127x::invertIQ(bool enable) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
@@ -1923,6 +1905,12 @@ int16_t SX127x::clearTxBuffer() {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_FSK_OOK) {
     this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2, RADIOLIB_SX127X_FLAG_FIFO_OVERRUN);
+  } else {
+    size_t count = getPacketLength();
+    while(count) {
+      this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_FIFO);
+      count--;
+    }
   }
   return(RADIOLIB_ERR_NONE);
 }

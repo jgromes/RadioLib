@@ -51,7 +51,7 @@ int16_t Module::init() {
 
   this->hal->pinMode(csPin, this->hal->GpioModeOutput);
   this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
-  RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO);
+  RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO  " " RADIOLIB_VALUE(__DATE__) " " RADIOLIB_VALUE(__TIME__));
   RADIOLIB_VALUE_USED(rlb_info);
   return(state);
 }
@@ -426,7 +426,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
   }
   
   // copy the data
-  if(!write) {
+  if(!write && dataIn) {
     // skip the status bytes if present
     memcpy(dataIn, &buffIn[cmdLen + (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8)], numBytes);
   }

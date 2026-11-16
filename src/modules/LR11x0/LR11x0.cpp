@@ -462,10 +462,6 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   state = readBuffer8(data, length, offset);
   RADIOLIB_ASSERT(state);
 
-  // clear the Rx buffer
-  state = clearRxBuffer();
-  RADIOLIB_ASSERT(state);
-
   // clear interrupt flags
   state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
 
@@ -478,6 +474,10 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
 int16_t LR11x0::finishReceive() {
   // set mode to standby to disable RF switch
   int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear the Rx buffer
+  state = clearRxBuffer();
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags

@@ -558,7 +558,8 @@ class PhysicalLayer {
     virtual int16_t finishTransmit();
 
     /*!
-      \brief Clean up after reception is done.
+      \brief Clean up after reception is done. Calling this method will clear all interrupts, 
+      dump any remaining packet data from FIFO and set radio mode to standby.
       \returns \ref status_codes
     */
     virtual int16_t finishReceive();

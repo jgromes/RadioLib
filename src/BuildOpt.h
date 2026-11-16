@@ -649,8 +649,7 @@
   RADIOLIB_VALUE(RADIOLIB_VERSION_MINOR) "." \
   RADIOLIB_VALUE(RADIOLIB_VERSION_PATCH) "." \
   RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) "\"\r\n" \
-  "Platform: " RADIOLIB_VALUE(RADIOLIB_PLATFORM) "\r\n" \
-  RADIOLIB_VALUE(__DATE__) " " RADIOLIB_VALUE(__TIME__)
+  "Platform: " RADIOLIB_VALUE(RADIOLIB_PLATFORM) "\r\n"
 
 /*!
   \brief A simple assert macro, will return on error.
