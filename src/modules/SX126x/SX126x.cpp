@@ -456,6 +456,12 @@ int16_t SX126x::finishReceive() {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
+  // clear the FIFO by reading out the remaining data and throwing it away
+  size_t count = this->getPacketLength(true);
+  if(count) {
+    readBuffer(NULL, count, 0);
+  }
+
   // try to fix timeout error in implicit header mode
   // check for modem type and header mode is done in fixImplicitTimeout()
   state = fixImplicitTimeout();
