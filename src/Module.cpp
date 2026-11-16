@@ -426,7 +426,7 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
   }
   
   // copy the data
-  if(!write) {
+  if(!write && dataIn) {
     // skip the status bytes if present
     memcpy(dataIn, &buffIn[cmdLen + (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8)], numBytes);
   }
