@@ -2,8 +2,22 @@
 
 #include <string.h>
 
+// first byte selects the variant: bit 0 = Rx2 instead of Rx1, bit 1 = LoRaWAN 1.1 instead of 1.0.x,
+// bits 2-7 = band; second byte: bits 0-6 = datarate of the receive window, bit 7 = fixed device address
+// instead of the one in the frame; the rest is the received frame
 extern "C" int FuzzLoRaWANDownlink(const uint8_t* data, size_t size) {
-  if(size < 10) { return(0); }
+  if(size < 3) { return(0); }
+  const uint8_t window = (data[0] & 0x01) ? RADIOLIB_LORAWAN_RX2 : RADIOLIB_LORAWAN_RX1;
+  const bool rev11 = data[0] & 0x02;
+  const LoRaWANBand_t* band = LoRaWANBands[(data[0] >> 2) % RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS];
+  const uint8_t rxDr = (data[1] & 0x7F) % RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES;
+
+  // the device address is sent in clear, so anyone in range knows it: use the one from the frame,
+  // a fuzzer without a corpus rarely finds a fixed 32-bit address
+  uint32_t addr = 0x12345678;
+  if(!(data[1] & 0x80) && (size >= 7)) {
+    addr = LoRaWANNode::ntoh<uint32_t>(&data[3]);
+  }
 
   // initialize default software AES-128
   FuzzHal hal;
@@ -16,23 +30,37 @@ extern "C" int FuzzLoRaWANDownlink(const uint8_t* data, size_t size) {
   phy.mod = &mod;
 
   // pass the input from the fuzzer
-  phy.currentPacketLength = size;
-  phy.currentPacketData = data;
+  phy.currentPacketLength = size - 2;
+  phy.currentPacketData = &data[2];
 
   // set some default AES keys
   uint8_t defaultKey[16] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
 
-  // instantiate EU868 band (or any other band)
-  LoRaWANNode node(&phy, &EU868);
+  // instantiate the selected band
+  LoRaWANNode node(&phy, band);
 
   // configure node with keys and addresses
-  node.beginABP(0x12345678, defaultKey, defaultKey, defaultKey, defaultKey);
+  if(rev11) {
+    node.beginABP(addr, defaultKey, defaultKey, defaultKey, defaultKey);
+  } else {
+    node.beginABP(addr, NULL, NULL, defaultKey, defaultKey);
+  }
+
+  // an active node has a valid uplink datarate, DR3 exists in all bands
+  // (active so that a reply to MAC commands is also attempted, like on a real node)
+  node.sessionStatus = RADIOLIB_LORAWAN_SESSION_ACTIVE;
+  node.channels[RADIOLIB_LORAWAN_UPLINK].dr = 3;
+
+  // read the frame from the radio and check it, like the node does after a reception
+  if(node.checkDownlink(window, rxDr) != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
 
   // try to parse the downlink
   size_t outLen = 0;
   uint8_t outBuffer[256] = {0};
   LoRaWANEvent_t event;
-  node.parseDownlink(outBuffer, &outLen, RADIOLIB_LORAWAN_RX1, &event);
+  node.parseDownlink(outBuffer, &outLen, window, &event);
 
   return(0);
 }
