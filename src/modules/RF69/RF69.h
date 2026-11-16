@@ -974,6 +974,9 @@ class RF69: public PhysicalLayer {
       \returns Version register contents or \ref status_codes
    */
     int16_t getChipVersion();
+    
+    /*! \copydoc PhysicalLayer::clearTxBuffer */
+    int16_t clearTxBuffer() override;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!

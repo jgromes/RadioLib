@@ -449,10 +449,8 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 
   // get packet length
   size_t length = getPacketLength();
-  size_t dumpLen = 0;
   if((len != 0) && (len < length)) {
     // user requested less data than we got, only return what was requested
-    dumpLen = length - len;
     length = len;
   }
 
@@ -465,11 +463,6 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   // read packet data
   this->mod->SPIreadRegisterBurst(RADIOLIB_RF69_REG_FIFO, length, data);
 
-  // dump the bytes that weren't requested
-  if(dumpLen != 0) {
-    clearFIFO(dumpLen);
-  }
-
   // clear internal flag so getPacketLength can return the new packet length
   this->packetLengthQueried = false;
 
@@ -481,6 +474,11 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 int16_t RF69::finishReceive() {
   // set mode to standby to disable RF switch
   int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // clear fifo
+  state = clearTxBuffer();
+  RADIOLIB_ASSERT(state);
   
   // clear interrupt flags
   clearIRQFlags();
@@ -1014,6 +1012,11 @@ int16_t RF69::getChipVersion() {
   return(this->mod->SPIgetRegValue(RADIOLIB_RF69_REG_VERSION));
 }
 
+int16_t RF69::clearTxBuffer() {
+  this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_IRQ_FLAGS_2, RADIOLIB_RF69_IRQ_FIFO_OVERRUN);
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t RF69::config() {
   int16_t state = RADIOLIB_ERR_NONE;
 
@@ -1096,13 +1099,6 @@ int16_t RF69::setMode(uint8_t mode) {
 void RF69::clearIRQFlags() {
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_IRQ_FLAGS_1, 0b11111111);
   this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_IRQ_FLAGS_2, 0b11111111);
-}
-
-void RF69::clearFIFO(size_t count) {
-  while(count) {
-    this->mod->SPIreadRegister(RADIOLIB_RF69_REG_FIFO);
-    count--;
-  }
 }
 
 #endif
