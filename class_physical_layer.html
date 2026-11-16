@@ -146,7 +146,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PhysicalLayer</b>
 <tr class="memitem:a1de26f68b939f5af79ec29cc34c7be18" id="r_a1de26f68b939f5af79ec29cc34c7be18"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1de26f68b939f5af79ec29cc34c7be18">finishTransmit</a> ()</td></tr>
 <tr class="memdesc:a1de26f68b939f5af79ec29cc34c7be18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="memitem:a8d8997a3fdeaede52d9354d3bf310bf4" id="r_a8d8997a3fdeaede52d9354d3bf310bf4"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d8997a3fdeaede52d9354d3bf310bf4">finishReceive</a> ()</td></tr>
-<tr class="memdesc:a8d8997a3fdeaede52d9354d3bf310bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done.  <br /></td></tr>
+<tr class="memdesc:a8d8997a3fdeaede52d9354d3bf310bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done. Calling this method will clear all interrupts, dump any remaining packet data from FIFO and set radio mode to standby.  <br /></td></tr>
 <tr class="memitem:a3563453988a83d22dd07d4691543a300" id="r_a3563453988a83d22dd07d4691543a300"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3563453988a83d22dd07d4691543a300">readData</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <br /></td></tr>
 <tr class="memitem:aa4c99ac794ee653c2061be4201724b65" id="r_aa4c99ac794ee653c2061be4201724b65"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4c99ac794ee653c2061be4201724b65">transmitDirect</a> (uint32_t frf=0)</td></tr>
@@ -636,7 +636,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <p>Discard a payload previously written by writeTxBuffer. On radios whose transmit buffer is simply overwritten by the next write there is nothing to discard, and this reports success without touching the radio. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_l_r11x0.html#a3ab6665411adac3bad0c58816f2dae3e">LR11x0</a>, <a class="el" href="class_l_r2021.html#accb8d61618b3063edd8d678600492a10">LR2021</a>, <a class="el" href="class_s_x126x.html#a76c3408a048e64089dd1c07b3038c1b5">SX126x</a>, <a class="el" href="class_s_x127x.html#a492649e7556e4aa79c230160beba7440">SX127x</a>, and <a class="el" href="class_s_x128x.html#ac3ac95c65e58180cb42bdc5b669163a7">SX128x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#a3ab6665411adac3bad0c58816f2dae3e">LR11x0</a>, <a class="el" href="class_l_r2021.html#accb8d61618b3063edd8d678600492a10">LR2021</a>, <a class="el" href="class_r_f69.html#adf600e7eaed42779a2d9661463539231">RF69</a>, <a class="el" href="class_s_x126x.html#a76c3408a048e64089dd1c07b3038c1b5">SX126x</a>, <a class="el" href="class_s_x127x.html#a492649e7556e4aa79c230160beba7440">SX127x</a>, and <a class="el" href="class_s_x128x.html#ac3ac95c65e58180cb42bdc5b669163a7">SX128x</a>.</p>
 
 </div>
 </div>
@@ -663,7 +663,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 </table>
 </div><div class="memdoc">
 
-<p>Clean up after reception is done. </p>
+<p>Clean up after reception is done. Calling this method will clear all interrupts, dump any remaining packet data from FIFO and set radio mode to standby. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_c_c1101.html#aebd7dac7d846ff25a86b5a3f6e196a6b">CC1101</a>, <a class="el" href="class_l_r11x0.html#a2c5ea392a6de9004238a739e8e8d8cf5">LR11x0</a>, <a class="el" href="class_l_r2021.html#aabaa4984504bdd10ae75e0163c0871db">LR2021</a>, <a class="el" href="classn_r_f24.html#a0862e860c08e41c7dadf8a6675711fb8">nRF24</a>, <a class="el" href="class_r_f69.html#a3682d05847394fe2a0758213ebb0347a">RF69</a>, <a class="el" href="class_si443x.html#a63e632595e968202190396e92cb70897">Si443x</a>, <a class="el" href="class_s_x126x.html#a5a6a7ff321ddb64885380dc2e7208870">SX126x</a>, <a class="el" href="class_s_x127x.html#acaec05c056dacb2c2171eaa8521be4bb">SX127x</a>, and <a class="el" href="class_s_x128x.html#a64241c3e766c03b5b4008e6e0cdb5b48">SX128x</a>.</p>

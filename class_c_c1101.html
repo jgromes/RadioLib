@@ -160,7 +160,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearGdo2Action</b> (
 <tr class="memitem:a8c79975a7bbe8a37f8214ecd1f69ba22" id="r_a8c79975a7bbe8a37f8214ecd1f69ba22"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c79975a7bbe8a37f8214ecd1f69ba22">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a8c79975a7bbe8a37f8214ecd1f69ba22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <br /></td></tr>
 <tr class="memitem:aebd7dac7d846ff25a86b5a3f6e196a6b" id="r_aebd7dac7d846ff25a86b5a3f6e196a6b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebd7dac7d846ff25a86b5a3f6e196a6b">finishReceive</a> () override</td></tr>
-<tr class="memdesc:aebd7dac7d846ff25a86b5a3f6e196a6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done.  <br /></td></tr>
+<tr class="memdesc:aebd7dac7d846ff25a86b5a3f6e196a6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done. Calling this method will clear all interrupts, dump any remaining packet data from FIFO and set radio mode to standby.     <br /></td></tr>
 <tr class="memitem:a363deb290570ce758908e60d9ad04b53" id="r_a363deb290570ce758908e60d9ad04b53"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a363deb290570ce758908e60d9ad04b53">setFrequency</a> (uint32_t freq) override</td></tr>
 <tr class="memdesc:a363deb290570ce758908e60d9ad04b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in bands 300 to 348 MHz, 387 to 464 MHz and 779 to 928 MHz.  <br /></td></tr>
 <tr class="memitem:a708cc0e9acbedc170f518a47382ddfdb" id="r_a708cc0e9acbedc170f518a47382ddfdb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a708cc0e9acbedc170f518a47382ddfdb">setBitRate</a> (uint32_t br) override</td></tr>
@@ -586,8 +586,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resetOnStartup</b> = 
 </table>
 </div><div class="memdoc">
 
-<p>Clean up after reception is done. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<p>Clean up after reception is done. Calling this method will clear all interrupts, dump any remaining packet data from FIFO and set radio mode to standby.    </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>    </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">PhysicalLayer</a>.</p>
 

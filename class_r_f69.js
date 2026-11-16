@@ -6,6 +6,7 @@ var class_r_f69 =
     [ "clearDio1Action", "class_r_f69.html#ade1f9a7a603d712c480ed5e9a8d1bf51", null ],
     [ "clearFifoEmptyAction", "class_r_f69.html#a0d7b67499462777f7909860405ca6b62", null ],
     [ "clearFifoFullAction", "class_r_f69.html#ae9accbe3e66f24d5158891a96fb582f3", null ],
+    [ "clearTxBuffer", "class_r_f69.html#adf600e7eaed42779a2d9661463539231", null ],
     [ "disableAddressFiltering", "class_r_f69.html#a5996fc1751e7542baafa0d6c0a6c78ee", null ],
     [ "disableAES", "class_r_f69.html#a15fafb6c24a8b5721623be447628bbaa", null ],
     [ "disableContinuousModeBitSync", "class_r_f69.html#a97d3570f4f898dde47e3daf8043e7bad", null ],

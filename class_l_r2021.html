@@ -165,7 +165,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d318b6eca634bccf74b99a493b32236" id="r_a0d318b6eca634bccf74b99a493b32236"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d318b6eca634bccf74b99a493b32236">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a0d318b6eca634bccf74b99a493b32236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <br /></td></tr>
 <tr class="memitem:aabaa4984504bdd10ae75e0163c0871db" id="r_aabaa4984504bdd10ae75e0163c0871db"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabaa4984504bdd10ae75e0163c0871db">finishReceive</a> () override</td></tr>
-<tr class="memdesc:aabaa4984504bdd10ae75e0163c0871db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done.  <br /></td></tr>
+<tr class="memdesc:aabaa4984504bdd10ae75e0163c0871db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after reception is done. Calling this method will clear all interrupts, dump any remaining packet data from FIFO and set radio mode to standby.     <br /></td></tr>
 <tr class="memitem:a669f66069b12d1363789b39af363c68c" id="r_a669f66069b12d1363789b39af363c68c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a669f66069b12d1363789b39af363c68c">startChannelScan</a> () override</td></tr>
 <tr class="memdesc:a669f66069b12d1363789b39af363c68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. IRQ1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.  <br /></td></tr>
 <tr class="memitem:aa8bc42e2ada54764ccd72d473ba1d08d" id="r_aa8bc42e2ada54764ccd72d473ba1d08d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8bc42e2ada54764ccd72d473ba1d08d">startChannelScan</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;cfg) override</td></tr>
@@ -868,8 +868,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Clean up after reception is done. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<p>Clean up after reception is done. Calling this method will clear all interrupts, dump any remaining packet data from FIFO and set radio mode to standby.    </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>    </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a8d8997a3fdeaede52d9354d3bf310bf4">PhysicalLayer</a>.</p>
 
