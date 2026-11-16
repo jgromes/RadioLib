@@ -844,12 +844,6 @@ class SX128x: public PhysicalLayer {
     */
     int16_t setEncoding(uint8_t encoding) override;
 
-    /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
-
-    /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
-
     /*!
       \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
       between Rx and Tx modes.

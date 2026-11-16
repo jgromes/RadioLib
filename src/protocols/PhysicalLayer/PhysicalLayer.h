@@ -1076,6 +1076,12 @@ class PhysicalLayer {
     */
     int16_t calculateRxDutyCycle(size_t txPreLen, size_t rxPreLen, uint16_t minSymbols, DataRate_t* dr, uint32_t* wakePeriod, uint32_t* sleepPeriod);
 
+    /*! \copydoc Module::setRfSwitchPins */
+    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
+
+    /*! \copydoc Module::setRfSwitchTable */
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+
     /*!
       \brief Get the minimum output power supported by the radio.
       This includes any previously configured PA offset.

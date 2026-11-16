@@ -65,48 +65,35 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   const Module* mod = this->getMod();
   bool hp_supported = mod->findRfSwitchMode(MODE_TX_HP);
   bool lp_supported = mod->findRfSwitchMode(MODE_TX_LP);
+
+  // check whether any RF switch configuration exists at all - if standby does not exist, then consider the module switchless
+  if(!mod->findRfSwitchMode(LR11x0::MODE_STBY)) {
+    lp_supported = true;
+    hp_supported = true;
+  }
+
   if((!lp_supported && (pwr < RADIOLIB_STM32WLX_HP_POUT_MIN)) || (!hp_supported && (pwr > RADIOLIB_STM32WLX_LP_POUT_MAX))) {
     // LP not supported but requested power is below HP low bound or
     // HP not supported but requested power is above LP high bound
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
-
-  // set PA config based on which PAs are supported
-  bool use_hp = false;
-  if(hp_supported && lp_supported) {
-    // both PAs supported, use HP when above 14 dBm
-    if(pwr > RADIOLIB_STM32WLX_LP_POUT_MAX) {
-      RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_STM32WLX_HP_POUT_MIN, RADIOLIB_STM32WLX_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-      state = SX126x::setPaConfig(0x04, 0x00, 0x07); // HP output up to 22dBm
-      this->txMode = MODE_TX_HP;
-      use_hp = true;
-    } else {
-      RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_STM32WLX_LP_POUT_MIN, RADIOLIB_STM32WLX_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-      state = SX126x::setPaConfig(0x04, 0x01, 0x00); // LP output up to 14dBm
-      this->txMode = MODE_TX_LP;
-    }
   
-  } else if(!hp_supported && lp_supported) {
-    // only LP supported
-    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_STM32WLX_LP_POUT_MIN, RADIOLIB_STM32WLX_LP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-    state = SX126x::setPaConfig(0x04, 0x01, 0x00);
-    this->txMode = MODE_TX_LP;
+  // determine which PA to use (the default is for LP)
+  bool use_hp = false;
+  this->txMode = MODE_TX_LP;
 
-  } else if(hp_supported && !lp_supported) {
-    // only HP supported
-    RADIOLIB_CHECK_RANGE(pwr, RADIOLIB_STM32WLX_HP_POUT_MIN, RADIOLIB_STM32WLX_HP_POUT_MAX, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-    state = SX126x::setPaConfig(0x04, 0x00, 0x07);
-    this->txMode = MODE_TX_HP;
+  // if HP is supported, use it in the following cases:
+  // 1. HP is the only option or
+  // 2. power requested exceeds the LP range
+  if(hp_supported && ((!lp_supported) || (pwr > RADIOLIB_LR112X_LP_POUT_MAX))) {
     use_hp = true;
-
-  } else {
-    // neither PA is supported
-    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-
+    this->txMode = LR11x0::MODE_TX_HP;
   }
+
+  state = SX126x::setPaConfig(0x04, !use_hp, use_hp ? 0x07 : 0x00);
   RADIOLIB_ASSERT(state);
 
-  // Apply workaround for HP only
+  // apply workaround for HP only
   state = SX126x::fixPaClamping(use_hp);
   RADIOLIB_ASSERT(state);
 

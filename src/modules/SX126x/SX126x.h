@@ -644,12 +644,6 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setEncoding(uint8_t encoding) override;
 
-    /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
-
-    /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
-
     /*!
       \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method,
       LDRO will always be set to the provided value, regardless of symbol length.

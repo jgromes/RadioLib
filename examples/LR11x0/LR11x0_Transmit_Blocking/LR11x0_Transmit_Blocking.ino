@@ -66,6 +66,10 @@ void setup() {
   // set to 0 if your radio has an XTAL
   radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
+  // set RF switch control configuration
+  // must be called prior to begin()!
+  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
+
   // initialize LR1110 at 434 MHz
   Serial.print(F("[LR1110] Initializing ... "));
   ConfigLoRa_t config;
@@ -79,9 +83,6 @@ void setup() {
     delay(1000);
     while (true) { delay(10); }
   }
-
-  // set RF switch control configuration
-  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
 }
 
 // counter to keep track of transmitted packets

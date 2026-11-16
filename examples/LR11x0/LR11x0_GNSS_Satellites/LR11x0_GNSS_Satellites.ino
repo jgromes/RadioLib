@@ -68,6 +68,10 @@ void setup() {
   // set to 0 if your radio has an XTAL
   radio.tcxoVoltage = RadioLibTCXOVoltage_t::Voltage1V6;
 
+  // set RF switch control configuration
+  // must be called prior to begin()!
+  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
+
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));
   int state = radio.beginGNSS(RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS);
@@ -78,9 +82,6 @@ void setup() {
     Serial.println(state);
     while (true) { delay(10); }
   }
-
-  // set RF switch control configuration
-  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
 
   // check the firmware version
   Serial.print(F("[LR1110] Checking firmware version ... "));

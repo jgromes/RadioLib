@@ -80,14 +80,47 @@ int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower, uint32_t rampT
   int8_t pwr = power;
   int16_t state = this->applyOutputPowerOffset(RADIOLIB_LR1110_LP_POUT_MIN, &power, &pwr);
   RADIOLIB_ASSERT(state);
+
+  // check the user did not request power output that is not possible
+  const Module* mod = this->getMod();
+  bool lp_supported = mod->findRfSwitchMode(LR11x0::MODE_TX);
+  bool hp_supported = mod->findRfSwitchMode(LR11x0::MODE_TX_HP);
+
+  // check whether any RF switch configuration exists at all - if standby does not exist, then consider the module switchless
+  if(!mod->findRfSwitchMode(LR11x0::MODE_STBY)) {
+    lp_supported = true;
+    hp_supported = true;
+  }
+
+  if(((!lp_supported && (pwr < RADIOLIB_LR1110_HP_POUT_MIN)) || (!hp_supported && (pwr > RADIOLIB_LR1110_LP_POUT_MAX)) ||
+    (!lp_supported && !hp_supported) || (forceHighPower && !hp_supported))) {
+    // LP not supported but requested power is below HP low bound or
+    // HP not supported but requested power is above LP high bound or
+    // neither is supported or
+    // user is forcing high power while it is not supported
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+
+  // determine which PA to use (the default is for LP)
+  uint8_t paSel = 0;
+  uint8_t paSupply = 0;
+  this->txMode = LR11x0::MODE_TX;
+
+  // if HP is supported, use it in the following cases:
+  // 1. user forces it
+  // 2. HP is the only option
+  // 3. but power requested exceeds the LP range
+  if(hp_supported && (forceHighPower || (!lp_supported) || (pwr > RADIOLIB_LR1110_LP_POUT_MAX))) {
+    paSel = 1;
+    paSupply = 1;
+    this->txMode = LR11x0::MODE_TX_HP;
+  }
   
   //! \TODO: [LR1110] how and when to configure OCP?
 
   // update PA config and set output power - always use VBAT for high-power PA
   // the value returned by LRxxxx class is offset by 3 for LR11x0
-  bool useHp = forceHighPower || (pwr > RADIOLIB_LR1110_LP_POUT_MAX);
-  this->txMode = useHp ? LR11x0::MODE_TX_HP : LR11x0::MODE_TX;
-  state = LR11x0::setOutputPower(pwr, (uint8_t)useHp, (uint8_t)useHp, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
+  state = LR11x0::setOutputPower(pwr, paSel, paSupply, 0x04, 0x07, roundRampTime(rampTimeUs) - 0x03);
   return(state);
 }
 

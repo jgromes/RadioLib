@@ -200,7 +200,18 @@ int16_t LR2021::setStandbyXOSC(bool enable) {
   return(setRxTxFallbackMode(mode));
 }
 
-void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+int16_t LR2021::applyRfSwitchTable(void) {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // try to load the RF switch table provided by user
+  uint32_t pins[Module::RFSWITCH_MAX_PINS];
+  const Module::RfSwitchMode_t* table = nullptr;
+  this->mod->getRfSwitchTable(pins, &table);
+  if(table == nullptr) {
+    // if no RF switch matrix exists, then there's nothing to do
+    return(state);
+  }
+
   // find which pins are used
   // on LR2021, modes are configured per DIO (exact opposite of LR11x0)
   uint8_t dioConfigs[7] = { 0 };
@@ -222,13 +233,14 @@ void LR2021::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
     // For DIO = 5, only DIO_SLEEP_PULL_UP is accepted. Otherwise the SetDioFunction returns FAIL.
     uint8_t pull = dioNum == 0 ? RADIOLIB_LR2021_DIO_SLEEP_PULL_UP : RADIOLIB_LR2021_DIO_SLEEP_PULL_AUTO;
     // enable RF control for this pin and set the modes in which it is active
-    (void)this->setDioFunction(dioNum + 5, RADIOLIB_LR2021_DIO_FUNCTION_RF_SWITCH, pull);
-    (void)this->setDioRfSwitchConfig(dioNum + 5, dioConfigs[dioNum]);
+    state = this->setDioFunction(dioNum + 5, RADIOLIB_LR2021_DIO_FUNCTION_RF_SWITCH, pull);
+    RADIOLIB_ASSERT(state);
+
+    state = this->setDioRfSwitchConfig(dioNum + 5, dioConfigs[dioNum]);
+    RADIOLIB_ASSERT(state);
   }
 
-  // also call the Module::setRfSwitchTable to cache the RF switch table
-  // we may need to re-apply it after modem switch
-  this->mod->setRfSwitchTable(pins, table);
+  return(state);
 }
 
 int16_t LR2021::forceLDRO(bool enable) {

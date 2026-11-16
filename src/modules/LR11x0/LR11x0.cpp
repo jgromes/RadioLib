@@ -1247,7 +1247,16 @@ int16_t LR11x0::setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply,
   return(state);
 }
 
-void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+int16_t LR11x0::applyRfSwitchTable(void) {
+  // try to load the RF switch table provided by user
+  uint32_t pins[Module::RFSWITCH_MAX_PINS];
+  const Module::RfSwitchMode_t* table = nullptr;
+  this->mod->getRfSwitchTable(pins, &table);
+  if(table == nullptr) {
+    // if no RF switch matrix exists, then there's nothing to do
+    return(RADIOLIB_ERR_NONE);
+  }
+
   // find which pins are used
   uint8_t enable = 0;
   for(size_t i = 0; i < Module::RFSWITCH_MAX_PINS; i++) {
@@ -1285,11 +1294,7 @@ void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
   }
 
   // set it
-  this->setDioAsRfSwitch(enable, modes[0], modes[1], modes[2], modes[3], modes[4], modes[5], modes[6]);
-
-  // also call the Module::setRfSwitchTable to cache the RF switch table
-  // we may need to re-apply it after modem switch
-  this->mod->setRfSwitchTable(pins, table);
+  return(this->setDioAsRfSwitch(enable, modes[0], modes[1], modes[2], modes[3], modes[4], modes[5], modes[6]));
 }
 
 int16_t LR11x0::setStandbyXOSC(bool enable) {
@@ -1749,14 +1754,8 @@ int16_t LR11x0::modSetup(uint8_t modem) {
   state = config(modem);
   RADIOLIB_ASSERT(state);
 
-  // restore RF switch configuration, if it exists
-  uint32_t pins[Module::RFSWITCH_MAX_PINS];
-  const Module::RfSwitchMode_t* table = nullptr;
-  this->mod->getRfSwitchTable(pins, &table);
-  if(table != nullptr) {
-    this->setRfSwitchTable(pins, table);
-  }
-
+  // restore RF switch configuration
+  state = applyRfSwitchTable();
   return(state);
 }
 

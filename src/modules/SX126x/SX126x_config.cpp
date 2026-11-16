@@ -517,14 +517,6 @@ int16_t SX126x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
 }
 
-void SX126x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
-  this->mod->setRfSwitchPins(rxEn, txEn);
-}
-
-void SX126x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
-  this->mod->setRfSwitchTable(pins, table);
-}
-
 int16_t SX126x::forceLDRO(bool enable) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {

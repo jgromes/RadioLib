@@ -955,14 +955,6 @@ int16_t RF69::setRSSIThreshold(float dbm) {
   return this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_RSSI_THRESH, (uint8_t)(-2.0f * dbm), 7, 0);
 }
 
-void RF69::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
-  this->mod->setRfSwitchPins(rxEn, txEn);
-}
-
-void RF69::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
-  this->mod->setRfSwitchTable(pins, table);
-}
-
 uint8_t RF69::randomByte() {
   // set mode to Rx
   setMode(RADIOLIB_RF69_RX);

@@ -616,8 +616,6 @@ class LR11x0: public LRxxxx {
     */
     int16_t setOutputPower(int8_t power, uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel, uint8_t rampTime);
 
-    /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
       \brief Set standby mode to be used. XOSC standby uses more power, but allows faster switching
@@ -1013,12 +1011,16 @@ class LR11x0: public LRxxxx {
     uint8_t wifiScanMode = 0;
     bool gnss = false;
     bool standbyXOSC = false;
+
     int16_t modSetup(uint8_t modem);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
+
+    // applies RF switch configuration which was previously set via Module::setRfSwitchTable
+    int16_t applyRfSwitchTable(void);
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, const uint8_t* payload, size_t len);
