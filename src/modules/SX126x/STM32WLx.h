@@ -117,12 +117,12 @@ class STM32WLx : public SX1262 {
       \brief Sets interrupt service routine to call when DIO1/2/3 activates.
       \param func ISR to call.
     */
-    void setDio1Action(void (*func)(void)) override;
+    void setIrqAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when DIO1/2/3 activates.
     */
-    void clearDio1Action() override;
+    void clearIrqAction() override;
   #endif  // ARDUINO_ARCH_STM32
 
 #if !RADIOLIB_GODMODE

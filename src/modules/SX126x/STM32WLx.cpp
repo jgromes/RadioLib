@@ -123,7 +123,7 @@ int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
 }
 
 #if defined(ARDUINO_ARCH_STM32)
-void STM32WLx::setDio1Action(void (*func)(void)) {
+void STM32WLx::setIrqAction(void (*func)(void)) {
   SubGhz.attachInterrupt([func]() {
     // Because the interrupt is level-triggered, we disable it in the
     // NVIC (otherwise we would need an SPI command to clear the IRQ in
@@ -133,7 +133,7 @@ void STM32WLx::setDio1Action(void (*func)(void)) {
   });
 }
 
-void STM32WLx::clearDio1Action() {
+void STM32WLx::clearIrqAction() {
   SubGhz.detachInterrupt();
 }
 #endif  // ARDUINO_ARCH_STM32
