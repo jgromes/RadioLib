@@ -281,55 +281,60 @@ int16_t LR2021::setBandwidth(uint32_t bw) {
 
   // check allowed bandwidth values
   switch(bw)  {
-    case(7800):
+    case(7800): // approximate
+    case(7812): // not exact, but the closest match for integer division
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_8;
       break;
-    case(10400):
+    case(10400): // approximate
+    case(10417): // not exact, but the closest match for integer division
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_10;
       break;
-    case(15600):
+    case(15600): // approximate
+    case(15625): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_16;
       break;
-    case(20800):
+    case(20800): // approximate
+    case(20835): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_21;
       break;
-    case(31250):
+    case(31250): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_31;
       break;
-    case(41670):
+    case(41670): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_41;
       break;
-    case(62500):
+    case(62500): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_62;
       break;
-    case(83340):
+    case(83340): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_83;
       break;
-    case(RADIOLIB_UNIT_KILO(101)):
+    case(101562): // not exact, but the closest match for integer division
+    case(RADIOLIB_UNIT_KILO(101)): // approximate
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_101;
       break;
-    case(203125):
-    case(RADIOLIB_UNIT_KILO(203)):
+    case(203125): // exact
+    case(RADIOLIB_UNIT_KILO(203)): // approximate
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_203;
       break;
-    case(RADIOLIB_UNIT_KILO(125)):
+    case(RADIOLIB_UNIT_KILO(125)): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_125;
       break;
-    case(RADIOLIB_UNIT_KILO(250)):
+    case(RADIOLIB_UNIT_KILO(250)): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_250;
       break;
-    case(406250):
-    case(RADIOLIB_UNIT_KILO(406)):
+    case(406250): // exact
+    case(RADIOLIB_UNIT_KILO(406)): // approximate
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_406;
       break;
-    case(RADIOLIB_UNIT_KILO(500)):
+    case(RADIOLIB_UNIT_KILO(500)): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_500;
       break;
-    case(812500):
-    case(RADIOLIB_UNIT_KILO(812)):
+    case(812500): // exact
+    case(RADIOLIB_UNIT_KILO(812)): // approximate
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_812;
       break;
-    case(RADIOLIB_UNIT_KILO(1000)):
+    case(RADIOLIB_UNIT_KILO(1000)): // exact
       this->bandwidth = RADIOLIB_LR2021_LORA_BW_1000;
       break;
     default:
