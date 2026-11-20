@@ -151,8 +151,10 @@ BOOST_FIXTURE_TEST_CASE(PhyComplete_AllRadios, ModuleFixture) {
     state = radio.phy->calculateTimeOnAir(RADIOLIB_MODEM_NONE, dr, pc, 0);
     BOOST_TEST(state != 0);
     
-    state = radio.phy->getTimeOnAir(100);
-    BOOST_TEST(state != 0);
+    // getTimeOnAir intentionally omitted, because its default implementation returns 0,
+    // same as failed SPI transactions in real implementations
+    // it does not really make sense to be returning some value other than 0 for missing implementation,
+    // because it could be getting accidentally called for a radio that does not have it
     
     state = radio.phy->calculateRxTimeout(100000);
     BOOST_TEST(state != 0);
