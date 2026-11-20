@@ -1352,8 +1352,11 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
     }
 
     return(calculateTimeOnAir(ModemType_t::RADIOLIB_MODEM_FSK, dr, pc, packetLen));
+  
   } else {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", type);
+    return(0);
+  
   }
 
 }

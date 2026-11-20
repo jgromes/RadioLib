@@ -809,7 +809,8 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
     packetConfig.fsk.crcLength = 0;
 
   } else {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", type);
+    return(0);
   
   }
 
