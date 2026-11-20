@@ -859,7 +859,9 @@ void LR2021::updatePowerLimits(bool highFreq) {
 RadioLibTime_t LR2021::getTimeOnAir(size_t len) {
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
-  RADIOLIB_ASSERT(state);
+  if(state != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
 
   switch(type) {
     // basic modems are supported by the LRxxxx base class

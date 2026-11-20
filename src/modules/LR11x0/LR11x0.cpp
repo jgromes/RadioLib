@@ -1194,7 +1194,10 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
 
 RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
   ModemType_t modem;
-  getModem(&modem);
+  int16_t state = getModem(&modem);
+  if(state != RADIOLIB_ERR_NONE) {
+    return(0);
+  }
   return(LRxxxx::getToA(len, modem));
 }
 
