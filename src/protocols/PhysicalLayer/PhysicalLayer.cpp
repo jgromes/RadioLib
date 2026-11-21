@@ -626,7 +626,11 @@ uint8_t PhysicalLayer::read(bool drop) {
   if(this->bufferWritePos > 0) {
     this->bufferWritePos--;
   }
-  return(this->buffer[this->bufferReadPos++]);
+  uint8_t byte = this->buffer[this->bufferReadPos];
+
+  // wrap the read index so it stays in bounds for any configured buffer size
+  this->bufferReadPos = (this->bufferReadPos + 1) % RADIOLIB_STATIC_ARRAY_SIZE;
+  return(byte);
 }
 
 int16_t PhysicalLayer::setDirectSyncWord(uint32_t syncWord, uint8_t len) {
@@ -674,7 +678,8 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
       this->buffer[this->bufferWritePos] = rlb_reflect(this->buffer[this->bufferWritePos], 8);
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("R\t%X", this->buffer[this->bufferWritePos]);
 
-      this->bufferWritePos++;
+      // wrap the write index so it stays in bounds for any configured buffer size
+      this->bufferWritePos = (this->bufferWritePos + 1) % RADIOLIB_STATIC_ARRAY_SIZE;
       this->bufferBitPos = 0;
     }
   }
