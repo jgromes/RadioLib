@@ -473,6 +473,12 @@ size_t Si443x::getPacketLength(bool update) {
     } else {
       this->packetLength = this->mod->SPIreadRegister(RADIOLIB_SI443X_REG_RECEIVED_PACKET_LENGTH);
     }
+
+    // clamp to the maximum allowed packet length
+    if(this->packetLength > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
+      this->packetLength = RADIOLIB_SI443X_MAX_PACKET_LENGTH;
+    }
+
     this->packetLengthQueried = true;
   }
 
