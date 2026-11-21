@@ -1304,13 +1304,17 @@ void SSDVClient::parseHeader(const uint8_t* packet, SSDVPacketInfo_t* info) {
   info->mcuOffset = packet[12];
   info->mcuId = ((uint16_t)packet[13] << 8) | packet[14];
 
-  // MCU is 16x16 px in mode 0, 16x8 or 8x16 px in modes 1 and 2, 8x8 px in mode 3
-  info->mcuCount = (uint16_t)packet[9] * packet[10];
+  // cast everything to 32 bits to prevent possible overflows
+  uint32_t mcuCount = (uint32_t)packet[9] * (uint32_t)packet[10];
   if(info->mcuMode == 1 || info->mcuMode == 2) {
-    info->mcuCount *= 2;
+    mcuCount *= 2;
   } else if(info->mcuMode == 3) {
-    info->mcuCount *= 4;
+    mcuCount *= 4;
   }
+  if(mcuCount > 0xFFFF) {
+    mcuCount = 0xFFFF;
+  }
+  info->mcuCount = (uint16_t)mcuCount;
 }
 
 int16_t SSDVClient::beginDecoder(uint8_t* jpegBuf, size_t jpegBufLen) {
