@@ -430,6 +430,12 @@ size_t LR2021::getPacketLength(bool update) {
 
   uint16_t len = 0;
   (void)getRxPktLength(&len);
+
+  // clamp length to the module maximum
+  if(len > RADIOLIB_LR2021_MAX_PACKET_LENGTH) {
+    len = RADIOLIB_LR2021_MAX_PACKET_LENGTH;
+  }
+
   return((size_t)len);
 }
 
