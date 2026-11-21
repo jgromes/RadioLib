@@ -109,7 +109,7 @@
 #define RADIOLIB_LR2021_CMD_GET_WISUN_RX_STATS                  (0x0272)
 #define RADIOLIB_LR2021_CMD_GET_WISUN_PACKET_STATUS             (0x0273)
 #define RADIOLIB_LR2021_CMD_SET_WISUN_PACKET_LEN                (0x0274)
-#define RADIOLIB_LR2021_CMD_SET_SOURCE2                         (0x0290)
+#define RADIOLIB_LR2021_CMD_SET_IQ_STREAM                       (0x0290)
 #define RADIOLIB_LR2021_CMD_SET_ZWAVE_PARAMS                    (0x0297)
 #define RADIOLIB_LR2021_CMD_SET_ZWAVE_HOME_ID_FILTERING         (0x0298)
 #define RADIOLIB_LR2021_CMD_GET_ZWAVE_RX_STATS                  (0x0299)
@@ -549,6 +549,20 @@
 
 // RADIOLIB_LR2021_CMD_SET_OOK_SYNCWORD
 #define RADIOLIB_LR2021_OOK_SYNC_WORD_LEN                       (4)
+
+// RADIOLIB_LR2021_CMD_SET_IQ_STREAM
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_TRIG_NONE                 (0xFFUL << 0)   //  7     0     trigger / input filter code: none, keep the default filtering
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_BANK_ADDR                 (0x04UL << 5)   //  7     5     one-shot RAM bank + size code: base 0x802000
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_MODE_STOP                 (0x00UL << 3)   //  4     3     DMA mode: stop, give the RAM bank back
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_MODE_FIFO                 (0x01UL << 3)   //  4     3               route samples to the Rx FIFO
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_MODE_RAM                  (0x02UL << 3)   //  4     3               one-shot capture into a RAM bank
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ8                   (0x00UL << 0)   //  2     0     capture source: int8 I/Q, after the channel filter, 250 kS/s
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ8_ALT               (0x01UL << 0)   //  2     0                     int8 I/Q, same filter, a different tap
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ16_POST_FILTER      (0x02UL << 0)   //  2     0                     int16 I/Q, after the channel filter (deep stopband), 250 kS/s
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ16_PRE_FILTER       (0x03UL << 0)   //  2     0                     int16 I/Q, before the final channel filter (flat to ~60 kHz), ~2x the level of source 2
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ11_WIDEBAND         (0x04UL << 0)   //  2     0                     11-bit I/Q, wideband complex baseband, ~8 MS/s
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ11_LOW_IF           (0x05UL << 0)   //  2     0                     11-bit I/Q, low IF before the final mixer, ~8 MS/s
+#define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ8_4X                (0x06UL << 0)   //  2     0                     int8 I/Q like source 0, 4x the amplitude
 
 // RADIOLIB_LR2021_CMD_SET_TX_TEST_MODE
 #define RADIOLIB_LR2021_TX_TEST_MODE_NORMAL_TX                  (0x00UL << 0)   //  7     0     Tx test mode: normal

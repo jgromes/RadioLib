@@ -423,7 +423,7 @@ int16_t LR2021::setFifoSize(bool rx, size_t size) {
   return(state);
 }
 
-int16_t LR2021::setIQStream(uint32_t rate, bool fifo) {
+int16_t LR2021::setIQStream(uint32_t rate, uint8_t source, bool fifo) {
   // rate is configured via LoRa bandwidth
   int16_t state = this->setBandwidth(rate/4);
   RADIOLIB_ASSERT(state);
@@ -434,14 +434,23 @@ int16_t LR2021::setIQStream(uint32_t rate, bool fifo) {
     RADIOLIB_ASSERT(state);
   }
 
-  // route source 2 using some magic numbers
-  uint8_t buff[] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x92, 0x00, 0x00, 0x00, 0xFF, 0x00 };
+  // setup config for the stream
+  uint8_t cfg = RADIOLIB_LR2021_CMD_IQ_STREAM_BANK_ADDR | RADIOLIB_LR2021_CMD_IQ_STREAM_MODE_RAM | source;
+  uint16_t len = 0xFF00; // magic number
   if(fifo) {
-    buff[5] = 0x0A;
-    buff[9] = 0x00;
-    buff[10] = 0x01;
+    cfg = RADIOLIB_LR2021_CMD_IQ_STREAM_MODE_FIFO | source;
+    len = 0;
   }
-  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_SOURCE2, true, buff, sizeof(buff)));
+
+  uint8_t buff[] = {
+    RADIOLIB_LR2021_CMD_IQ_STREAM_TRIG_NONE,
+    0x00, 0x00, 0x00, 0x00, // output rate, unused
+    cfg,
+    0x00, 0x00, // reserved
+    (uint8_t)(len & 0xFF), (uint8_t)(len >> 8),
+    (uint8_t)fifo,
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_IQ_STREAM, true, buff, sizeof(buff)));
 }
 
 int16_t LR2021::enableRxFifoInterrupt(uint16_t level) {

@@ -894,12 +894,13 @@ class LR2021: public LRxxxx {
       \brief Enable streaming of raw I/Q samples.
       After calling, the radio has to be reset in order to return to normal configuration.
       NOTE: This functionality is undocumented and experimental!
-      Credit to https://github.com/SAMS0N1TE/lr2021-sdr
+      Credit to https://github.com/SAMS0N1TE/lr2021-sdr and https://github.com/beala/lr2021-re
       \param rate Sampling rate in samples per second. Supported values are 125, 250, 500 and 1000 kSps.
+      \param source Source of the samples, one of RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_* macros.
       \param fifo Whether the IQ samples are to be stored in FIFO (true) or SRAM (false).
       \returns \ref status_codes
     */
-    int16_t setIQStream(uint32_t rate, bool fifo);
+    int16_t setIQStream(uint32_t rate, uint8_t source, bool fifo);
 
     /*!
       \brief Read tx FIFO level.
