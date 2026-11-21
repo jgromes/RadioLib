@@ -313,10 +313,11 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
   }
 
   // build a temporary buffer
+  // always kepe at least 7 bytes in case of tone-only message (which has 0 length) and a terminating NULL
   #if RADIOLIB_STATIC_ONLY
-    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
+    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 6 + 1];
   #else
-    uint8_t* data = new uint8_t[length + 1];
+    uint8_t* data = new uint8_t[length + 6 + 1];
     RADIOLIB_ASSERT_PTR(data);
   #endif
 
