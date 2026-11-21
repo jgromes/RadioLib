@@ -603,7 +603,9 @@ uint8_t PhysicalLayer::read(bool drop) {
   if(drop) {
     dropSync();
   }
-  this->bufferWritePos--;
+  if(this->bufferWritePos > 0) {
+    this->bufferWritePos--;
+  }
   return(this->buffer[this->bufferReadPos++]);
 }
 
