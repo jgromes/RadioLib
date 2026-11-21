@@ -16,13 +16,23 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
 
 AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control, uint8_t protocolID, const uint8_t* info, uint16_t infoLen) {
   // destination callsign/SSID
-  memcpy(this->destCallsign, destCallsign, strlen(destCallsign));
-  this->destCallsign[strlen(destCallsign)] = '\0';
+  // truncate callsigns longer than RADIOLIB_AX25_MAX_CALLSIGN_LEN to avoid overflowing
+  // the fixed-size callsign buffers - validation in AX25Client::sendFrame happens too late
+  size_t destCallsignLen = strlen(destCallsign);
+  if(destCallsignLen > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    destCallsignLen = RADIOLIB_AX25_MAX_CALLSIGN_LEN;
+  }
+  memcpy(this->destCallsign, destCallsign, destCallsignLen);
+  this->destCallsign[destCallsignLen] = '\0';
   this->destSSID = destSSID;
 
   // source callsign/SSID
-  memcpy(this->srcCallsign, srcCallsign, strlen(srcCallsign));
-  this->srcCallsign[strlen(srcCallsign)] = '\0';
+  size_t srcCallsignLen = strlen(srcCallsign);
+  if(srcCallsignLen > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    srcCallsignLen = RADIOLIB_AX25_MAX_CALLSIGN_LEN;
+  }
+  memcpy(this->srcCallsign, srcCallsign, srcCallsignLen);
+  this->srcCallsign[srcCallsignLen] = '\0';
   this->srcSSID = srcSSID;
 
   // set repeaters
@@ -129,13 +139,22 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
   }
 
   // destination callsign/SSID
-  memcpy(this->destCallsign, frame.destCallsign, strlen(frame.destCallsign));
-  this->destCallsign[strlen(frame.destCallsign)] = '\0';
+  // truncate to RADIOLIB_AX25_MAX_CALLSIGN_LEN, consistent with the constructor
+  size_t destCallsignLen = strlen(frame.destCallsign);
+  if(destCallsignLen > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    destCallsignLen = RADIOLIB_AX25_MAX_CALLSIGN_LEN;
+  }
+  memcpy(this->destCallsign, frame.destCallsign, destCallsignLen);
+  this->destCallsign[destCallsignLen] = '\0';
   this->destSSID = frame.destSSID;
 
   // source callsign/SSID
-  memcpy(this->srcCallsign, frame.srcCallsign, strlen(frame.srcCallsign));
-  this->srcCallsign[strlen(frame.srcCallsign)] = '\0';
+  size_t srcCallsignLen = strlen(frame.srcCallsign);
+  if(srcCallsignLen > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    srcCallsignLen = RADIOLIB_AX25_MAX_CALLSIGN_LEN;
+  }
+  memcpy(this->srcCallsign, frame.srcCallsign, srcCallsignLen);
+  this->srcCallsign[srcCallsignLen] = '\0';
   this->srcSSID = frame.srcSSID;
 
   // repeaters - free any buffers this frame already owns, then (re)allocate
