@@ -807,6 +807,12 @@ size_t RF69::getPacketLength(bool update) {
     } else {
       this->packetLength = this->mod->SPIreadRegister(RADIOLIB_RF69_REG_PAYLOAD_LENGTH);
     }
+
+    // clamp to the maximum allowed packet length
+    if(this->packetLength > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
+      this->packetLength = RADIOLIB_RF69_MAX_PACKET_LENGTH;
+    }
+
     this->packetLengthQueried = true;
   }
 
