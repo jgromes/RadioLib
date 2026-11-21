@@ -90,6 +90,16 @@ int16_t PhysicalLayer::receive(String& str, size_t len, RadioLibTime_t timeout) 
     // read the number of actually received bytes (for unknown packets)
     if(len == 0) {
       length = getPacketLength(false);
+
+      // check maximum allowed packet length
+      if(length > this->maxPacketLength) {
+        length = this->maxPacketLength;
+      }
+      #if RADIOLIB_STATIC_ONLY
+      if(length > RADIOLIB_STATIC_ARRAY_SIZE) {
+        length = RADIOLIB_STATIC_ARRAY_SIZE;
+      }
+      #endif
     }
 
     // add null terminator
@@ -195,6 +205,16 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
 
   // read the number of actually received bytes
   size_t length = getPacketLength();
+
+  // check maximum allowed packet length
+  if(length > this->maxPacketLength) {
+    length = this->maxPacketLength;
+  }
+  #if RADIOLIB_STATIC_ONLY
+  if(length > RADIOLIB_STATIC_ARRAY_SIZE) {
+    length = RADIOLIB_STATIC_ARRAY_SIZE;
+  }
+  #endif
 
   if((len < length) && (len != 0)) {
     // user requested less bytes than were received, this is allowed (but frowned upon)
