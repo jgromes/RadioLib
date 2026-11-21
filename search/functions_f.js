@@ -67,7 +67,7 @@ var searchData=
   ['sethighsensitivitymode_64',['setHighSensitivityMode',['../class_s_x128x.html#a6e45fbfaec7063e52e188f47a3a585a5',1,'SX128x']]],
   ['setimage_65',['setImage',['../class_s_s_d_v_client.html#abda0a20b64ef7b24b55abdd0bdc4e0b1',1,'SSDVClient']]],
   ['setinversion_66',['setInversion',['../class_hell_client.html#ae43025b9d55ee21a322bb5d7ee1065b0',1,'HellClient']]],
-  ['setiqstream_67',['setIQStream',['../class_l_r2021.html#afae506f53e0d7fcc54af88c7bb1edd36',1,'LR2021']]],
+  ['setiqstream_67',['setIQStream',['../class_l_r2021.html#acc0a19a30d968968a275f90673e8baa1',1,'LR2021']]],
   ['setirq_68',['setIrq',['../class_physical_layer.html#a8564f9834a0247e93e7620c23559ceb8',1,'PhysicalLayer']]],
   ['setirqaction_69',['setIrqAction',['../class_physical_layer.html#a31a4343a375a28f1da615435ba996adc',1,'PhysicalLayer']]],
   ['setirqflags_70',['setIrqFlags',['../class_l_r11x0.html#a62c715ab18ea8a2e08a2791d3e764ee9',1,'LR11x0::setIrqFlags()'],['../class_l_r2021.html#af2f977f788bc15e396dcb6025987c513',1,'LR2021::setIrqFlags()'],['../class_s_x126x.html#a50e757c2a63e5c7da5b0d0d6c00f91b5',1,'SX126x::setIrqFlags()'],['../class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666',1,'SX127x::setIrqFlags()'],['../class_s_x128x.html#a6a2ec5d316975f390f20b4e0a2e11e98',1,'SX128x::setIrqFlags()'],['../class_physical_layer.html#af88dcb54dc8e9a1edaf9f1c3e5ee2b74',1,'PhysicalLayer::setIrqFlags()']]],

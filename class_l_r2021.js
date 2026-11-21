@@ -72,7 +72,7 @@ var class_l_r2021 =
     [ "setFrequency", "class_l_r2021.html#a8dd16ba33b3aeddf36e3ba8901039d46", null ],
     [ "setFrequencyDeviation", "class_l_r2021.html#a18085cd4ab97627f99a4cb38d45faaaf", null ],
     [ "setGain", "class_l_r2021.html#a874b2522d4b296505278d943df308a99", null ],
-    [ "setIQStream", "class_l_r2021.html#afae506f53e0d7fcc54af88c7bb1edd36", null ],
+    [ "setIQStream", "class_l_r2021.html#acc0a19a30d968968a275f90673e8baa1", null ],
     [ "setIrqFlags", "class_l_r2021.html#af2f977f788bc15e396dcb6025987c513", null ],
     [ "setLrFhssConfig", "class_l_r2021.html#a18ed51836d9ee4ac10ad7944de6042d0", null ],
     [ "setModem", "class_l_r2021.html#ab8923a4d2a3cf8a7834ae6c53c6d3eb0", null ],
