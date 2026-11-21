@@ -105,12 +105,13 @@ void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) 
 bool RadioLibAES128::verifyCMAC(const uint8_t* in, size_t len, const uint8_t* cmac) {
   uint8_t cmacReal[RADIOLIB_AES128_BLOCK_SIZE];
   this->generateCMAC(in, len, cmacReal);
+
+  // check expected and reported CMAC via constant-time comparison
+  uint8_t diff = 0;
   for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
-    if((cmacReal[i] != cmac[i])) {
-      return(false);
-    }
+    diff |= cmacReal[i] ^ cmac[i];
   }
-  return(true);
+  return(diff == 0);
 }
 
 void RadioLibAES128::blockXor(uint8_t* dst, const uint8_t* a, const uint8_t* b) {
