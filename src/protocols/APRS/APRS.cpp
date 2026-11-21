@@ -102,15 +102,18 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   // prepare buffers
   char destCallsign[7];
   #if !RADIOLIB_STATIC_ONLY
-    size_t infoLen = 10;
+    size_t infoLen = 10 + 1;
     if(telemLen > 0) {
-      infoLen += 1 + telemLen;
+      // telemetry flag + 2 hex characters per telemetry byte, plus the NUL that
+      // the last sprintf writes into the buffer
+      infoLen += 1 + 2*(size_t)telemLen + 1;
     } else {
       if(grid != NULL) {
         infoLen += strlen(grid) + 2;
       }
       if(status != NULL) {
-        infoLen += strlen(status);
+        // space separator + status text
+        infoLen += 1 + strlen(status);
       }
       if(alt > RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED) {
         infoLen += 4;
