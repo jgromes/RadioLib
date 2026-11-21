@@ -1127,8 +1127,8 @@ class PhysicalLayer {
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     uint8_t bufferBitPos = 0;
-    uint8_t bufferWritePos = 0;
-    uint8_t bufferReadPos = 0;
+    size_t bufferWritePos = 0;
+    size_t bufferReadPos = 0;
     uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE] = { 0 };
     uint32_t syncBuffer = 0;
     uint32_t directSyncWord = 0;
