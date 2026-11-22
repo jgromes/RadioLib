@@ -58,7 +58,7 @@ var NAVTREEINDEX =
 "class_l_l_c_c68.html#afb9817ac3f8470dc2a5ac5a73b501392",
 "class_l_rxxxx.html#a7a11e112ff2749eeaa9d04294bc2c80c",
 "class_r_f69.html#a0a2c732108bf8d7e1728615ca12e8e5c",
-"class_s_x126x.html#a4e9abfc0187497ba4fe9a4b0765c41a4",
+"class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534",
 "class_s_x128x.html#a0759fb31b3ce5bf1c832259c9c2245ed",
 "functions_v.html",
 "lr1120__transceiver__0202_8h_source.html",

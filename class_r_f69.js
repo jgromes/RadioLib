@@ -55,7 +55,7 @@ var class_r_f69 =
     [ "setOokThresholdType", "class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a", null ],
     [ "setOutputPower", "class_r_f69.html#a44617b7d35451e082ba4d95e89b2061b", null ],
     [ "setOutputPower", "class_r_f69.html#a6007c61cf9e39a9340f05db7712a8036", null ],
-    [ "setPreambleLength", "class_r_f69.html#ad98f458907fa4690018460f0cb362780", null ],
+    [ "setPreambleLength", "class_r_f69.html#ad256af61cae368ee4b14265ebb1d14fa", null ],
     [ "setPromiscuousMode", "class_r_f69.html#ae004326d663a9d6a9c30e792aa368b49", null ],
     [ "setRSSIThreshold", "class_r_f69.html#afcb723ae58d6519e5b95d017d2beb78a", null ],
     [ "setRxBandwidth", "class_r_f69.html#ab1ab4bdb53396188bf93e889b3b6ddfd", null ],

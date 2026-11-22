@@ -62,7 +62,7 @@ var class_s_x126x =
     [ "setPaConfig", "class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208", null ],
     [ "setPaRampTime", "class_s_x126x.html#ad90a56cb55c5bb64037a0d412d84a80d", null ],
     [ "setPaTable", "class_s_x126x.html#aa3eea539b5df37b2cba4e31a329c31f7", null ],
-    [ "setPreambleLength", "class_s_x126x.html#a8c6504b8a68b9b0e10c244ecd8382a43", null ],
+    [ "setPreambleLength", "class_s_x126x.html#a0308ad2a1a25880f1734772222b2d4e4", null ],
     [ "setRegulatorDCDC", "class_s_x126x.html#a5ae69309ca0cf5f13c60f2d162916ff8", null ],
     [ "setRegulatorLDO", "class_s_x126x.html#a21c263ce1a339faa74c568d9afb81cd2", null ],
     [ "setRxBandwidth", "class_s_x126x.html#a02979e5079747e8a35393aecceb305d3", null ],

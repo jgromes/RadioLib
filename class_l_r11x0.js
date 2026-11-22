@@ -71,7 +71,7 @@ var class_l_r11x0 =
     [ "setNodeAddress", "class_l_r11x0.html#a605f5c74ce523abad256866abe133d2e", null ],
     [ "setOutputPower", "class_l_r11x0.html#ad2286dc78dbf8e3084f38e9159b99ae5", null ],
     [ "setOutputPower", "class_l_r11x0.html#a21649535f3ca50f7ebf9f37db961232c", null ],
-    [ "setPreambleLength", "class_l_r11x0.html#ab9ff7b7afe9d34f2157aea4d50e0add8", null ],
+    [ "setPreambleLength", "class_l_r11x0.html#a50cb36fdbde917f3f0bbba1dc5b7d142", null ],
     [ "setRegulatorDCDC", "class_l_r11x0.html#a1ad485f14a333f06b642f2d60aacf76c", null ],
     [ "setRegulatorLDO", "class_l_r11x0.html#a92ae10630cc327f441809ac1406737fd", null ],
     [ "setRxBandwidth", "class_l_r11x0.html#a116950b645e04cc7caaf10d59838aa59", null ],

@@ -74,7 +74,7 @@ var class_s_x127x =
     [ "setOokPeakThresholdDecrement", "class_s_x127x.html#aac2f43d70b5f94e49e09b4c9f082f46d", null ],
     [ "setOokPeakThresholdStep", "class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54", null ],
     [ "setOokThresholdType", "class_s_x127x.html#a8b93142202167270db109d18b743c744", null ],
-    [ "setPreambleLength", "class_s_x127x.html#a48a90a96970586b592f630247cb9c99c", null ],
+    [ "setPreambleLength", "class_s_x127x.html#ab38e11ca1003c81a4f765233e6634a1e", null ],
     [ "setRSSIConfig", "class_s_x127x.html#ad3955f85f456edae772a51025a19029b", null ],
     [ "setRSSIThreshold", "class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76", null ],
     [ "setRxBandwidth", "class_s_x127x.html#a0495bfa0db8d92535926cc0a388f6ad9", null ],
