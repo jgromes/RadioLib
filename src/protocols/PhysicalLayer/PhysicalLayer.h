@@ -386,6 +386,16 @@ struct ConfigBLE_t {
 };
 
 /*!
+  \struct RadioConfigMap_t
+  \brief A single entry of a configuration lookup table, which maps user-provided values
+  (e.g. bandwidth in Hz) to radio register/command values.
+*/
+struct RadioConfigMap_t {
+  uint32_t inputVal;
+  uint32_t rawVal;
+};
+
+/*!
   \defgroup module_config_vars Module Hardware Configuration Variables
   \brief A centralized list of all module configurations which are not part of the various Config_t structures.
   When changing these values it has to be done prior to radio initialization using the begin() method!
@@ -1116,6 +1126,17 @@ class PhysicalLayer {
     */
     int16_t applyOutputPowerOffset(int8_t base, const int8_t* pwrReq, int8_t* pwrRadio);
     int16_t findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const uint8_t* lut, size_t lutSize, uint32_t rxBwMax, uint8_t* val);
+
+    /*!
+      \brief Method to find the raw value which corresponds to a user-provided value
+      in a lookup table.
+      \param map Pointer to the lookup table.
+      \param len Number of entries in the lookup table.
+      \param inputVal User-provided value to find.
+      \param regVal Pointer where the matching register value will be stored.
+      \returns true if an exact match was found, false otherwise.
+    */
+    static bool findCfgMapValue(const RadioConfigMap_t* map, size_t len, uint32_t inputVal, uint32_t* regVal);
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);

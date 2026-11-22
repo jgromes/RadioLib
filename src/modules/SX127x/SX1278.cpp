@@ -98,52 +98,33 @@ int16_t SX1278::setFrequency(uint32_t freq) {
   return(state);
 }
 
+static const RadioConfigMap_t sx1278CfgMapBandwidths[] RADIOLIB_NONVOLATILE = {
+  { 7800,   RADIOLIB_SX1278_BW_7_80_KHZ },
+  { 10400,  RADIOLIB_SX1278_BW_10_40_KHZ },
+  { 15600,  RADIOLIB_SX1278_BW_15_60_KHZ },
+  { 20800,  RADIOLIB_SX1278_BW_20_80_KHZ },
+  { 31250,  RADIOLIB_SX1278_BW_31_25_KHZ },
+  { 41700,  RADIOLIB_SX1278_BW_41_70_KHZ },
+  { 62500,  RADIOLIB_SX1278_BW_62_50_KHZ },
+  { 125000, RADIOLIB_SX1278_BW_125_00_KHZ },
+  { 250000, RADIOLIB_SX1278_BW_250_00_KHZ },
+  { 500000, RADIOLIB_SX1278_BW_500_00_KHZ },
+};
+
 int16_t SX1278::setBandwidth(uint32_t bw) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  uint8_t newBandwidth;
-
   // check allowed bandwidth values
-  switch(bw) {
-    case(7800):
-      newBandwidth = RADIOLIB_SX1278_BW_7_80_KHZ;
-      break;
-    case(10400):
-      newBandwidth = RADIOLIB_SX1278_BW_10_40_KHZ;
-      break;
-    case(15600):
-      newBandwidth = RADIOLIB_SX1278_BW_15_60_KHZ;
-      break;
-    case(20800):
-      newBandwidth = RADIOLIB_SX1278_BW_20_80_KHZ;
-      break;
-    case(31250):
-      newBandwidth = RADIOLIB_SX1278_BW_31_25_KHZ;
-      break;
-    case(41700):
-      newBandwidth = RADIOLIB_SX1278_BW_41_70_KHZ;
-      break;
-    case(62500):
-      newBandwidth = RADIOLIB_SX1278_BW_62_50_KHZ;
-      break;
-    case(125000):
-      newBandwidth = RADIOLIB_SX1278_BW_125_00_KHZ;
-      break;
-    case(250000):
-      newBandwidth = RADIOLIB_SX1278_BW_250_00_KHZ;
-      break;
-    case(500000):
-      newBandwidth = RADIOLIB_SX1278_BW_500_00_KHZ;
-      break;
-    default:
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  uint32_t raw = 0;
+  if(!findCfgMapValue(sx1278CfgMapBandwidths, sizeof(sx1278CfgMapBandwidths)/sizeof(sx1278CfgMapBandwidths[0]), bw, &raw)) {
+    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
 
   // set bandwidth and if successful, save the new setting
-  int16_t state = SX1278::setBandwidthRaw(newBandwidth);
+  int16_t state = SX1278::setBandwidthRaw(raw);
   if(state == RADIOLIB_ERR_NONE) {
     SX127x::bandwidth = bw;
 

@@ -1,6 +1,7 @@
 #include "PhysicalLayer.h"
 
 #include <string.h>
+#include <stddef.h>
 
 PhysicalLayer::PhysicalLayer() {
   this->freqStep = 1;
@@ -877,4 +878,18 @@ int16_t PhysicalLayer::findRxBw(uint32_t rxBw, const uint32_t* rxBwAvg, const ui
   }
 
   return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+}
+
+bool PhysicalLayer::findCfgMapValue(const RadioConfigMap_t* map, size_t len, uint32_t inputVal, uint32_t* rawVal) {
+  // the table may be stored in non-volatile memory, so each field has to be read explicitly
+  const uint8_t* p = reinterpret_cast<const uint8_t*>(map);
+  for(size_t i = 0; i < len; i++) {
+    if(RADIOLIB_NONVOLATILE_READ_DWORD(const_cast<uint8_t*>(p)) == inputVal) {
+      *rawVal = RADIOLIB_NONVOLATILE_READ_DWORD(const_cast<uint8_t*>(p + offsetof(RadioConfigMap_t, rawVal)));
+      return(true);
+    }
+    p += sizeof(RadioConfigMap_t);
+  }
+
+  return(false);
 }

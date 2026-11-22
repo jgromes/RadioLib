@@ -17,6 +17,19 @@ void SX126x::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
+static const RadioConfigMap_t sx126xCfgMapBandwidth[] RADIOLIB_NONVOLATILE = {
+  { 7800,                     RADIOLIB_SX126X_LORA_BW_7_8 },
+  { 10400,                    RADIOLIB_SX126X_LORA_BW_10_4 },
+  { 15600,                    RADIOLIB_SX126X_LORA_BW_15_6 },
+  { 20800,                    RADIOLIB_SX126X_LORA_BW_20_8 },
+  { 31250,                    RADIOLIB_SX126X_LORA_BW_31_25 },
+  { 41700,                    RADIOLIB_SX126X_LORA_BW_41_7 },
+  { 62500,                    RADIOLIB_SX126X_LORA_BW_62_5 },
+  { RADIOLIB_UNIT_KILO(125),  RADIOLIB_SX126X_LORA_BW_125_0 },
+  { RADIOLIB_UNIT_KILO(250),  RADIOLIB_SX126X_LORA_BW_250_0 },
+  { RADIOLIB_UNIT_KILO(500),  RADIOLIB_SX126X_LORA_BW_500_0 },
+};
+
 int16_t SX126x::setBandwidth(uint32_t bw) {
   RADIOLIB_CHECK_RANGE(bw, 7800, RADIOLIB_UNIT_KILO(500), RADIOLIB_ERR_INVALID_BANDWIDTH);
 
@@ -25,40 +38,12 @@ int16_t SX126x::setBandwidth(uint32_t bw) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  switch(bw)  {
-    case(7800):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_7_8;
-      break;
-    case(10400):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_10_4;
-      break;
-    case(15600):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_15_6;
-      break;
-    case(20800):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_20_8;
-      break;
-    case(31250):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_31_25;
-      break;
-    case(41700):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_41_7;
-      break;
-    case(62500):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_62_5;
-      break;
-    case(RADIOLIB_UNIT_KILO(125)):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_125_0;
-      break;
-    case(RADIOLIB_UNIT_KILO(250)):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_250_0;
-      break;
-    case(RADIOLIB_UNIT_KILO(500)):
-      this->bandwidth = RADIOLIB_SX126X_LORA_BW_500_0;
-      break;
-    default:
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  // check allowed bandwidth values
+  uint32_t raw = 0;
+  if(!findCfgMapValue(sx126xCfgMapBandwidth, sizeof(sx126xCfgMapBandwidth)/sizeof(sx126xCfgMapBandwidth[0]), bw, &raw)) {
+    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
+  this->bandwidth = (uint8_t)raw;
 
   // update modulation parameters
   this->bandwidthHz = bw;

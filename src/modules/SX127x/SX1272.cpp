@@ -91,31 +91,26 @@ int16_t SX1272::setFrequency(uint32_t freq) {
   return(state);
 }
 
+static const RadioConfigMap_t sx1272CfgMapBandwidths[] RADIOLIB_NONVOLATILE = {
+  { 125000, RADIOLIB_SX1272_BW_125_00_KHZ },
+  { 250000, RADIOLIB_SX1272_BW_250_00_KHZ },
+  { 500000, RADIOLIB_SX1272_BW_500_00_KHZ },
+};
+
 int16_t SX1272::setBandwidth(uint32_t bw) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  uint8_t newBandwidth;
-
   // check allowed bandwidth values
-  switch(bw) {
-    case(125000):
-      newBandwidth = RADIOLIB_SX1272_BW_125_00_KHZ;
-      break;
-    case(250000):
-      newBandwidth = RADIOLIB_SX1272_BW_250_00_KHZ;
-      break;
-    case(500000):
-      newBandwidth = RADIOLIB_SX1272_BW_500_00_KHZ;
-      break;
-    default:
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  uint32_t raw = 0;
+  if(!findCfgMapValue(sx1272CfgMapBandwidths, sizeof(sx1272CfgMapBandwidths)/sizeof(sx1272CfgMapBandwidths[0]), bw, &raw)) {
+    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
 
   // set bandwidth and if successful, save the new setting
-  int16_t state = SX1272::setBandwidthRaw(newBandwidth);
+  int16_t state = SX1272::setBandwidthRaw(raw);
   if(state == RADIOLIB_ERR_NONE) {
     SX127x::bandwidth = bw;
 

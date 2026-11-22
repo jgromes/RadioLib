@@ -557,6 +557,17 @@ int16_t LR11x0::getChannelScanResult() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
+// LoRa bandwidth mappings, user value -> register value
+static const RadioConfigMap_t lr11x0CfgMapBandwidth[] RADIOLIB_NONVOLATILE = {
+  { 62500,                    RADIOLIB_LR11X0_LORA_BW_62_5 },
+  { RADIOLIB_UNIT_KILO(125),  RADIOLIB_LR11X0_LORA_BW_125_0 },
+  { RADIOLIB_UNIT_KILO(250),  RADIOLIB_LR11X0_LORA_BW_250_0 },
+  { RADIOLIB_UNIT_KILO(500),  RADIOLIB_LR11X0_LORA_BW_500_0 },
+  { 203125,                   RADIOLIB_LR11X0_LORA_BW_203_125 },
+  { 406250,                   RADIOLIB_LR11X0_LORA_BW_406_25 },
+  { 812500,                   RADIOLIB_LR11X0_LORA_BW_812_50 },
+};
+
 int16_t LR11x0::setBandwidth(uint32_t bw) {
   return(this->setBandwidth(bw, false));
 }
@@ -571,39 +582,11 @@ int16_t LR11x0::setBandwidth(uint32_t bw, bool high) {
   }
 
   // check allowed bandwidth values
-  if(high) {
-    switch(bw) {
-      case(203125):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
-        break;
-      case(406250):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
-        break;
-      case(812500):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
-        break;
-      default:
-        return(RADIOLIB_ERR_INVALID_BANDWIDTH);
-    }
-    
-  } else {
-    switch(bw)  {
-      case(62500):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
-        break;
-      case(RADIOLIB_UNIT_KILO(125)):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_125_0;
-        break;
-      case(RADIOLIB_UNIT_KILO(250)):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_250_0;
-        break;
-      case(RADIOLIB_UNIT_KILO(500)):
-        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_500_0;
-        break;
-      default:
-        return(RADIOLIB_ERR_INVALID_BANDWIDTH);
-    }
+  uint32_t raw = 0;
+  if(!findCfgMapValue(&lr11x0CfgMapBandwidth[high * 4], (high) ? 3 : 4, bw, &raw)) {
+    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
+  this->bandwidth = (uint8_t)raw;
 
   // update modulation parameters
   this->bandwidthHz = bw;

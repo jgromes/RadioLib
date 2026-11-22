@@ -560,6 +560,14 @@ int16_t SX128x::setFrequency(uint32_t freq) {
   return(setRfFrequency(frf));
 }
 
+// LoRa bandwidth mapping, user value -> register value
+static const RadioConfigMap_t sx128xCfgMapBandwidths[] RADIOLIB_NONVOLATILE = {
+  { 203125,  RADIOLIB_SX128X_LORA_BW_203_125 },
+  { 406250,  RADIOLIB_SX128X_LORA_BW_406_25 },
+  { 812500,  RADIOLIB_SX128X_LORA_BW_812_50 },
+  { 1625000, RADIOLIB_SX128X_LORA_BW_1625_00 },
+};
+
 int16_t SX128x::setBandwidth(uint32_t bw) {
   // check active modem
   uint8_t modem = getPacketType();
@@ -573,22 +581,12 @@ int16_t SX128x::setBandwidth(uint32_t bw) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  switch(bw) {
-    case(203125):
-      this->bandwidth = RADIOLIB_SX128X_LORA_BW_203_125;
-      break;
-    case(406250):
-      this->bandwidth = RADIOLIB_SX128X_LORA_BW_406_25;
-      break;
-    case(812500):
-      this->bandwidth = RADIOLIB_SX128X_LORA_BW_812_50;
-      break;
-    case(1625000):
-      this->bandwidth = RADIOLIB_SX128X_LORA_BW_1625_00;
-      break;
-    default:
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  // check allowed bandwidth values
+  uint32_t raw = 0;
+  if(!findCfgMapValue(sx128xCfgMapBandwidths, sizeof(sx128xCfgMapBandwidths)/sizeof(sx128xCfgMapBandwidths[0]), bw, &raw)) {
+    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
+  this->bandwidth = (uint8_t)raw;
 
   // update modulation parameters
   this->bandwidthHz = bw;

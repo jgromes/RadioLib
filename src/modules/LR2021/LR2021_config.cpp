@@ -270,6 +270,33 @@ int16_t LR2021::autoLDRO() {
   return(setLoRaModulationParams(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
+static const RadioConfigMap_t lr2021CfgMapBandwidth[] RADIOLIB_NONVOLATILE = {
+  { 7800,                     RADIOLIB_LR2021_LORA_BW_8 },    // approximate
+  { 7812,                     RADIOLIB_LR2021_LORA_BW_8 },    // not exact, but the closest match for integer division
+  { 10400,                    RADIOLIB_LR2021_LORA_BW_10 },   // approximate
+  { 10417,                    RADIOLIB_LR2021_LORA_BW_10 },   // not exact, but the closest match for integer division
+  { 15600,                    RADIOLIB_LR2021_LORA_BW_16 },   // approximate
+  { 15625,                    RADIOLIB_LR2021_LORA_BW_16 },   // exact
+  { 20800,                    RADIOLIB_LR2021_LORA_BW_21 },   // approximate
+  { 20835,                    RADIOLIB_LR2021_LORA_BW_21 },   // exact
+  { 31250,                    RADIOLIB_LR2021_LORA_BW_31 },   // exact
+  { 41670,                    RADIOLIB_LR2021_LORA_BW_41 },   // exact
+  { 62500,                    RADIOLIB_LR2021_LORA_BW_62 },   // exact
+  { 83340,                    RADIOLIB_LR2021_LORA_BW_83 },   // exact
+  { 101562,                   RADIOLIB_LR2021_LORA_BW_101 },  // not exact, but the closest match for integer division
+  { RADIOLIB_UNIT_KILO(101),  RADIOLIB_LR2021_LORA_BW_101 },  // approximate
+  { 203125,                   RADIOLIB_LR2021_LORA_BW_203 },  // exact
+  { RADIOLIB_UNIT_KILO(203),  RADIOLIB_LR2021_LORA_BW_203 },  // approximate
+  { RADIOLIB_UNIT_KILO(125),  RADIOLIB_LR2021_LORA_BW_125 },  // exact
+  { RADIOLIB_UNIT_KILO(250),  RADIOLIB_LR2021_LORA_BW_250 },  // exact
+  { 406250,                   RADIOLIB_LR2021_LORA_BW_406 },  // exact
+  { RADIOLIB_UNIT_KILO(406),  RADIOLIB_LR2021_LORA_BW_406 },  // approximate
+  { RADIOLIB_UNIT_KILO(500),  RADIOLIB_LR2021_LORA_BW_500 },  // exact
+  { 812500,                   RADIOLIB_LR2021_LORA_BW_812 },  // exact
+  { RADIOLIB_UNIT_KILO(812),  RADIOLIB_LR2021_LORA_BW_812 },  // approximate
+  { RADIOLIB_UNIT_KILO(1000), RADIOLIB_LR2021_LORA_BW_1000 }, // exact
+};
+
 int16_t LR2021::setBandwidth(uint32_t bw) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
@@ -280,66 +307,11 @@ int16_t LR2021::setBandwidth(uint32_t bw) {
   }
 
   // check allowed bandwidth values
-  switch(bw)  {
-    case(7800): // approximate
-    case(7812): // not exact, but the closest match for integer division
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_8;
-      break;
-    case(10400): // approximate
-    case(10417): // not exact, but the closest match for integer division
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_10;
-      break;
-    case(15600): // approximate
-    case(15625): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_16;
-      break;
-    case(20800): // approximate
-    case(20835): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_21;
-      break;
-    case(31250): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_31;
-      break;
-    case(41670): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_41;
-      break;
-    case(62500): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_62;
-      break;
-    case(83340): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_83;
-      break;
-    case(101562): // not exact, but the closest match for integer division
-    case(RADIOLIB_UNIT_KILO(101)): // approximate
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_101;
-      break;
-    case(203125): // exact
-    case(RADIOLIB_UNIT_KILO(203)): // approximate
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_203;
-      break;
-    case(RADIOLIB_UNIT_KILO(125)): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_125;
-      break;
-    case(RADIOLIB_UNIT_KILO(250)): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_250;
-      break;
-    case(406250): // exact
-    case(RADIOLIB_UNIT_KILO(406)): // approximate
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_406;
-      break;
-    case(RADIOLIB_UNIT_KILO(500)): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_500;
-      break;
-    case(812500): // exact
-    case(RADIOLIB_UNIT_KILO(812)): // approximate
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_812;
-      break;
-    case(RADIOLIB_UNIT_KILO(1000)): // exact
-      this->bandwidth = RADIOLIB_LR2021_LORA_BW_1000;
-      break;
-    default:
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  uint32_t raw = 0;
+  if(!findCfgMapValue(lr2021CfgMapBandwidth, sizeof(lr2021CfgMapBandwidth)/sizeof(lr2021CfgMapBandwidth[0]), bw, &raw)) {
+    return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
+  this->bandwidth = (uint8_t)raw;
 
   // update modulation parameters
   this->bandwidthHz = bw;
