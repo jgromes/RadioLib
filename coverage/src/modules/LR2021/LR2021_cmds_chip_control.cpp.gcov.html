@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">23</td>
-            <td class="headerCovTableEntry">264</td>
-            <td class="headerCovTableEntryLo">8.7 %</td>
+            <td class="headerCovTableEntry">327</td>
+            <td class="headerCovTableEntryLo">7.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-11-22 14:54:24</td>
+            <td class="headerValue">2026-11-22 16:20:30</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntry">52</td>
-            <td class="headerCovTableEntryLo">11.5 %</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntryLo">9.4 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -525,7 +525,126 @@
 <a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :   return(state);</span></a>
 <a name="464"><span class="lineNum">     464 </span>            : }</a>
 <a name="465"><span class="lineNum">     465 </span>            : </a>
-<a name="466"><span class="lineNum">     466 </span>            : #endif</a>
+<a name="466"><span class="lineNum">     466 </span>            : // undocumented commands below, credit to https://github.com/beala/lr2021-re</a>
+<a name="467"><span class="lineNum">     467 </span>            : </a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 : int16_t LR2021::writeAux(uint32_t aux, uint32_t value) {</span></a>
+<a name="469"><span class="lineNum">     469 </span>            :   uint8_t buff[] = {</a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :     (uint8_t)((aux &gt;&gt; 24) &amp; 0xFF), (uint8_t)((aux &gt;&gt; 16) &amp; 0xFF), (uint8_t)((aux &gt;&gt; 8) &amp; 0xFF), (uint8_t)(aux &amp; 0xFF),</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :     (uint8_t)((value &gt;&gt; 24) &amp; 0xFF), (uint8_t)((value &gt;&gt; 16) &amp; 0xFF), (uint8_t)((value &gt;&gt; 8) &amp; 0xFF), (uint8_t)(value &amp; 0xFF),</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_WRITE_AUX, true, buff, sizeof(buff)));</span></a>
+<a name="474"><span class="lineNum">     474 </span>            : }</a>
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 : int16_t LR2021::readAux(uint32_t aux, uint32_t* value) {</span></a>
+<a name="477"><span class="lineNum">     477 </span>            :   uint8_t reqBuff[] = {</a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :     (uint8_t)((aux &gt;&gt; 24) &amp; 0xFF), (uint8_t)((aux &gt;&gt; 16) &amp; 0xFF), (uint8_t)((aux &gt;&gt; 8) &amp; 0xFF), (uint8_t)(aux &amp; 0xFF),</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :   uint8_t rplBuff[4] = { 0 };</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_READ_AUX, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :   if(value &amp;&amp; (state == RADIOLIB_ERR_NONE)) {</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :     *value = ((uint32_t)rplBuff[0] &lt;&lt; 24) | ((uint32_t)rplBuff[1] &lt;&lt; 16) | ((uint32_t)rplBuff[2] &lt;&lt; 8) | (uint32_t)rplBuff[3];</span></a>
+<a name="484"><span class="lineNum">     484 </span>            :   }</a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="486"><span class="lineNum">     486 </span>            : }</a>
+<a name="487"><span class="lineNum">     487 </span>            : </a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineNoCov">          0 : int16_t LR2021::setTestMux(const uint8_t* params, size_t len) {</span></a>
+<a name="489"><span class="lineNum">     489 </span>            :   // the first byte selects one of 12 debug multiplexer cases, the ROM requires at least 12 bytes</a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 :   if(len &lt; 12) {</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_SPI_CMD_INVALID);</span></a>
+<a name="492"><span class="lineNum">     492 </span>            :   }</a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_TEST_MUX, true, const_cast&lt;uint8_t*&gt;(params), len));</span></a>
+<a name="494"><span class="lineNum">     494 </span>            : }</a>
+<a name="495"><span class="lineNum">     495 </span>            : </a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 : int16_t LR2021::setActionPoint(const uint8_t* params, size_t len) {</span></a>
+<a name="497"><span class="lineNum">     497 </span>            :   // programs one of the two hardware actionpoints (breakpoints), the ROM requires at least 9 bytes</a>
+<a name="498"><span class="lineNum">     498 </span>            :   // the exact parameter layout has not been decoded, see lr2021-re docs/commands.md</a>
+<a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :   if(len &lt; 9) {</span></a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_SPI_CMD_INVALID);</span></a>
+<a name="501"><span class="lineNum">     501 </span>            :   }</a>
+<a name="502"><span class="lineNum">     502 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_ACTION_POINT, true, const_cast&lt;uint8_t*&gt;(params), len));</span></a>
+<a name="503"><span class="lineNum">     503 </span>            : }</a>
+<a name="504"><span class="lineNum">     504 </span>            : </a>
+<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 : int16_t LR2021::setTestBus(uint8_t selector, uint16_t maskA, uint16_t maskB, uint16_t maskC) {</span></a>
+<a name="506"><span class="lineNum">     506 </span>            :   // route the internal test bus onto the pads: mask A = which pads (bit i = pad i = DIOi),</a>
+<a name="507"><span class="lineNum">     507 </span>            :   // mask B = output enable, mask C = input enable. The ROM's mask defaults include pads 0-4,</a>
+<a name="508"><span class="lineNum">     508 </span>            :   // which are SPI and BUSY - always pass explicit masks! selector 0xFF restores the pads.</a>
+<a name="509"><span class="lineNum">     509 </span>            :   uint8_t buff[] = {</a>
+<a name="510"><span class="lineNum">     510 </span>            :     selector,</a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineNoCov">          0 :     (uint8_t)((maskA &gt;&gt; 8) &amp; 0xFF), (uint8_t)(maskA &amp; 0xFF),</span></a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 :     (uint8_t)((maskB &gt;&gt; 8) &amp; 0xFF), (uint8_t)(maskB &amp; 0xFF),</span></a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineNoCov">          0 :     (uint8_t)((maskC &gt;&gt; 8) &amp; 0xFF), (uint8_t)(maskC &amp; 0xFF),</span></a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_TEST_BUS, true, buff, sizeof(buff)));</span></a>
+<a name="516"><span class="lineNum">     516 </span>            : }</a>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 : int16_t LR2021::calibrateFreqListA(const uint16_t freq[3]) {</span></a>
+<a name="519"><span class="lineNum">     519 </span>            :   // uses the same frequency list parser as calibrateFrontEnd, then a per-frequency calibration</a>
+<a name="520"><span class="lineNum">     520 </span>            :   // whose stored parameters have not been decoded</a>
+<a name="521"><span class="lineNum">     521 </span>            :   uint8_t buff[] = {</a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[0] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[0] &amp; 0xFF),</span></a>
+<a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[1] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[1] &amp; 0xFF),</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[2] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[2] &amp; 0xFF),</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="526"><span class="lineNum">     526 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_CALIBRATE_FREQ_LIST_A, true, buff, sizeof(buff)));</span></a>
+<a name="527"><span class="lineNum">     527 </span>            : }</a>
+<a name="528"><span class="lineNum">     528 </span>            : </a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineNoCov">          0 : int16_t LR2021::calibrateFreqListB(const uint16_t freq[3]) {</span></a>
+<a name="530"><span class="lineNum">     530 </span>            :   uint8_t buff[] = {</a>
+<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[0] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[0] &amp; 0xFF),</span></a>
+<a name="532"><span class="lineNum">     532 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[1] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[1] &amp; 0xFF),</span></a>
+<a name="533"><span class="lineNum">     533 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[2] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[2] &amp; 0xFF),</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_CALIBRATE_FREQ_LIST_B, true, buff, sizeof(buff)));</span></a>
+<a name="536"><span class="lineNum">     536 </span>            : }</a>
+<a name="537"><span class="lineNum">     537 </span>            : </a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 : int16_t LR2021::calibrateFrontEndMasked(uint8_t blockMask, const uint16_t freq[3]) {</span></a>
+<a name="539"><span class="lineNum">     539 </span>            :   // calibrateFrontEnd with a leading block mask, the ROM default is 0x3F (all blocks)</a>
+<a name="540"><span class="lineNum">     540 </span>            :   uint8_t buff[] = {</a>
+<a name="541"><span class="lineNum">     541 </span>            :     blockMask,</a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[0] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[0] &amp; 0xFF),</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[1] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[1] &amp; 0xFF),</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineNoCov">          0 :     (uint8_t)((freq[2] &gt;&gt; 8) &amp; 0xFF), (uint8_t)(freq[2] &amp; 0xFF),</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_CALIB_FRONT_END_MASKED, true, buff, sizeof(buff)));</span></a>
+<a name="547"><span class="lineNum">     547 </span>            : }</a>
+<a name="548"><span class="lineNum">     548 </span>            : </a>
+<a name="549"><span class="lineNum">     549 </span><span class="lineNoCov">          0 : int16_t LR2021::getCapturePointer(uint16_t* ptr) {</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineNoCov">          0 :   uint8_t rplBuff[2] = { 0 };</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineNoCov">          0 :   int16_t state = this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_GET_CAPTURE_POINTER, false, rplBuff, sizeof(rplBuff));</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineNoCov">          0 :   if(ptr &amp;&amp; (state == RADIOLIB_ERR_NONE)) {</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineNoCov">          0 :     *ptr = ((uint16_t)rplBuff[0] &lt;&lt; 8) | (uint16_t)rplBuff[1];</span></a>
+<a name="554"><span class="lineNum">     554 </span>            :   }</a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineNoCov">          0 :   return(state);</span></a>
+<a name="556"><span class="lineNum">     556 </span>            : }</a>
+<a name="557"><span class="lineNum">     557 </span>            : </a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 : int16_t LR2021::readCapture(uint16_t offset, uint8_t* data, size_t len) {</span></a>
+<a name="559"><span class="lineNum">     559 </span>            :   // reads back bytes written by the capture DMA, while the capture is not armed</a>
+<a name="560"><span class="lineNum">     560 </span>            :   // the length parameter is a single byte and the transfer is also SPI-length limited</a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :   if(len &gt; RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN) {</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineNoCov">          0 :     return(RADIOLIB_ERR_SPI_CMD_INVALID);</span></a>
+<a name="563"><span class="lineNum">     563 </span>            :   }</a>
+<a name="564"><span class="lineNum">     564 </span>            : </a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineNoCov">          0 :   uint8_t reqBuff[] = { (uint8_t)((offset &gt;&gt; 8) &amp; 0xFF), (uint8_t)(offset &amp; 0xFF), (uint8_t)len };</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_READ_CAPTURE, false, data, len, reqBuff, sizeof(reqBuff)));</span></a>
+<a name="567"><span class="lineNum">     567 </span>            : }</a>
+<a name="568"><span class="lineNum">     568 </span>            : </a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 : int16_t LR2021::setRawTx(uint16_t count, uint32_t rate, uint8_t mode) {</span></a>
+<a name="570"><span class="lineNum">     570 </span>            :   // raw transmit: count samples of the chosen format still have to be fed through the 1 KB Tx FIFO</a>
+<a name="571"><span class="lineNum">     571 </span>            :   uint8_t buff[] = {</a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineNoCov">          0 :     (uint8_t)((count &gt;&gt; 8) &amp; 0xFF), (uint8_t)(count &amp; 0xFF),</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineNoCov">          0 :     (uint8_t)((rate &gt;&gt; 24) &amp; 0xFF), (uint8_t)((rate &gt;&gt; 16) &amp; 0xFF), (uint8_t)((rate &gt;&gt; 8) &amp; 0xFF), (uint8_t)(rate &amp; 0xFF),</span></a>
+<a name="574"><span class="lineNum">     574 </span>            :     mode,</a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_RAW_TX, true, buff, sizeof(buff)));</span></a>
+<a name="577"><span class="lineNum">     577 </span>            : }</a>
+<a name="578"><span class="lineNum">     578 </span>            : </a>
+<a name="579"><span class="lineNum">     579 </span><span class="lineNoCov">          0 : int16_t LR2021::setRxFrontEndTrim(const uint8_t* params, size_t len) {</span></a>
+<a name="580"><span class="lineNum">     580 </span>            :   // writes 3-bit fields into 0xF30044/0xF30048 and two 9-bit values into 0xF30130,</a>
+<a name="581"><span class="lineNum">     581 </span>            :   // the exact parameter layout has not been decoded</a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_FRONT_END_TRIM, true, const_cast&lt;uint8_t*&gt;(params), len));</span></a>
+<a name="583"><span class="lineNum">     583 </span>            : }</a>
+<a name="584"><span class="lineNum">     584 </span>            : </a>
+<a name="585"><span class="lineNum">     585 </span>            : #endif</a>
 </pre>
       </td>
     </tr>

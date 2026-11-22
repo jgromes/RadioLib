@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntry">75</td>
-            <td class="headerCovTableEntryLo">10.7 %</td>
+            <td class="headerCovTableEntry">87</td>
+            <td class="headerCovTableEntryLo">9.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-11-22 14:54:24</td>
+            <td class="headerValue">2026-11-22 16:20:30</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">15</td>
-            <td class="headerCovTableEntryLo">13.3 %</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntryLo">9.5 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -185,7 +185,41 @@
 <a name="123"><span class="lineNum">     123 </span><span class="lineCov">         52 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_TYPE, false, packetType, sizeof(uint8_t)));</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : }</a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
-<a name="126"><span class="lineNum">     126 </span>            : #endif</a>
+<a name="126"><span class="lineNum">     126 </span>            : // undocumented commands below, credit to https://github.com/beala/lr2021-re</a>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 : int16_t LR2021::setInternalParam(const uint8_t* params, size_t len) {</span></a>
+<a name="129"><span class="lineNum">     129 </span>            :   // get/set of internal parameters at sub-indices 0x0B-0x15 of the struct at RAM 0x800438,</a>
+<a name="130"><span class="lineNum">     130 </span>            :   // the exact parameter layout has not been decoded</a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_INTERNAL_PARAM, true, const_cast&lt;uint8_t*&gt;(params), len));</span></a>
+<a name="132"><span class="lineNum">     132 </span>            : }</a>
+<a name="133"><span class="lineNum">     133 </span>            : </a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 : int16_t LR2021::setClockIrqConfig(uint8_t cfg) {</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_CLOCK_IRQ_CONFIG, true, &amp;cfg, sizeof(cfg)));</span></a>
+<a name="136"><span class="lineNum">     136 </span>            : }</a>
+<a name="137"><span class="lineNum">     137 </span>            : </a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 : int16_t LR2021::setAgcConfig(const uint8_t* params, size_t len) {</span></a>
+<a name="139"><span class="lineNum">     139 </span>            :   // AGC configuration, ends up in 0xF30C28[28:24], [22:21] and [20],</a>
+<a name="140"><span class="lineNum">     140 </span>            :   // the exact parameter layout has not been decoded</a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_AGC_CONFIG, true, const_cast&lt;uint8_t*&gt;(params), len));</span></a>
+<a name="142"><span class="lineNum">     142 </span>            : }</a>
+<a name="143"><span class="lineNum">     143 </span>            : </a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 : int16_t LR2021::setPacketEngineReg(uint16_t cmd, const uint8_t* buff, size_t len) {</span></a>
+<a name="145"><span class="lineNum">     145 </span>            :   // lower-level version of the documented FSK whitening/CRC/syncword/address commands,</a>
+<a name="146"><span class="lineNum">     146 </span>            :   // cmd is one of RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG00-13</a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(cmd, true, const_cast&lt;uint8_t*&gt;(buff), len));</span></a>
+<a name="148"><span class="lineNum">     148 </span>            : }</a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 : int16_t LR2021::getPacketEngineStatus(uint8_t* data) {</span></a>
+<a name="151"><span class="lineNum">     151 </span>            :   // undocumented getter, contents not decoded</a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_ENGINE_STATUS, false, data, 6));</span></a>
+<a name="153"><span class="lineNum">     153 </span>            : }</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 : int16_t LR2021::getPacketEngineStats(uint8_t* data) {</span></a>
+<a name="156"><span class="lineNum">     156 </span>            :   // undocumented getter, contents not decoded</a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_ENGINE_STATS, false, data, 18));</span></a>
+<a name="158"><span class="lineNum">     158 </span>            : }</a>
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<a name="160"><span class="lineNum">     160 </span>            : #endif</a>
 </pre>
       </td>
     </tr>

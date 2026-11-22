@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">105</td>
+            <td class="headerCovTableEntry">118</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-11-22 14:54:24</td>
+            <td class="headerValue">2026-11-22 16:20:30</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">18</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -223,7 +223,39 @@
 <a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CAD, true, buff, 2*numSideDets));</span></a>
 <a name="162"><span class="lineNum">     162 </span>            : }</a>
 <a name="163"><span class="lineNum">     163 </span>            : </a>
-<a name="164"><span class="lineNum">     164 </span>            : #endif</a>
+<a name="164"><span class="lineNum">     164 </span>            : // undocumented commands below, credit to https://github.com/beala/lr2021-re</a>
+<a name="165"><span class="lineNum">     165 </span>            : </a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaPayloadDemodParam(uint8_t p0, uint8_t p1) {</span></a>
+<a name="167"><span class="lineNum">     167 </span>            :   // the two bytes scatter into 0xF30A30[28:16]: p0[1:0]-&gt;[23:22], p0[7:6]-&gt;[21:20], p0[5:2]-&gt;[19:16],</a>
+<a name="168"><span class="lineNum">     168 </span>            :   // p1[3:0]-&gt;[27:24], p1[4]-&gt;[28]. [27:24] acts in the payload demodulator, 0 is as good as any value</a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :   uint8_t buff[] = { p0, p1 };</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_PAYLOAD_DEMOD_PARAM, true, buff, sizeof(buff)));</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : }</a>
+<a name="172"><span class="lineNum">     172 </span>            : </a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 : int16_t LR2021::setLoRaDemodConfig(uint8_t mode, uint16_t param, uint32_t timeout) {</span></a>
+<a name="174"><span class="lineNum">     174 </span>            :   // configuration block right after the LoRa CAD parameters, bit 7 of mode enables it via</a>
+<a name="175"><span class="lineNum">     175 </span>            :   // 0xF30A1C[17]. The ROM also accepts 8 or 10 bytes (four more small parameters), not covered here</a>
+<a name="176"><span class="lineNum">     176 </span>            :   uint8_t buff[] = {</a>
+<a name="177"><span class="lineNum">     177 </span>            :     mode,</a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :     (uint8_t)((param &gt;&gt; 8) &amp; 0xFF), (uint8_t)(param &amp; 0xFF),</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :     (uint8_t)((timeout &gt;&gt; 16) &amp; 0xFF), (uint8_t)((timeout &gt;&gt; 8) &amp; 0xFF), (uint8_t)(timeout &amp; 0xFF),</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :   };</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_DEMOD_CONFIG, true, buff, sizeof(buff)));</span></a>
+<a name="182"><span class="lineNum">     182 </span>            : }</a>
+<a name="183"><span class="lineNum">     183 </span>            : </a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 : int16_t LR2021::setRawLoRaSyncword(uint8_t sync1, uint8_t sync2) {</span></a>
+<a name="185"><span class="lineNum">     185 </span>            :   // two 5-bit sync symbol values into 0xF30A68[4:0] and [12:8] - the raw form of setLoRaSyncword,</a>
+<a name="186"><span class="lineNum">     186 </span>            :   // (2, 4) is the same as setLoRaSyncword(0x12) but odd values are allowed</a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :   uint8_t buff[] = { sync1, sync2 };</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_RAW_LORA_SYNCWORD, true, buff, sizeof(buff)));</span></a>
+<a name="189"><span class="lineNum">     189 </span>            : }</a>
+<a name="190"><span class="lineNum">     190 </span>            : </a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 : int16_t LR2021::setRawSideDetSyncword(const uint8_t* params, size_t len) {</span></a>
+<a name="192"><span class="lineNum">     192 </span>            :   // raw form of setLoRaSideDetSyncword, up to 3 symbol pairs into 0xF30B00/04/08</a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :   return(this-&gt;SPIcommand(RADIOLIB_LR2021_CMD_SET_RAW_SIDE_DET_SYNCWORD, true, const_cast&lt;uint8_t*&gt;(params), len));</span></a>
+<a name="194"><span class="lineNum">     194 </span>            : }</a>
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<a name="196"><span class="lineNum">     196 </span>            : #endif</a>
 </pre>
       </td>
     </tr>
