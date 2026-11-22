@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(Utils_Scrambler) {
 
 // capture everything written to stdout while run() executes
 static std::string captureStdout(const std::function<void()>& run) {
-  char path[] = "/tmp/opencode/radiolib-hexdump-XXXXXX";
+  char path[] = "radiolib-hexdump-XXXXXX";
   int fd = mkstemp(path);
   BOOST_REQUIRE(fd >= 0);
   close(fd);
