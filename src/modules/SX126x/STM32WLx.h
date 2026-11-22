@@ -116,8 +116,9 @@ class STM32WLx : public SX1262 {
     /*!
       \brief Sets interrupt service routine to call when DIO1/2/3 activates.
       \param func ISR to call.
+      \param rising Ignored on STM32WLx - interrupts are triggered on level, not on edge
     */
-    void setIrqAction(void (*func)(void)) override;
+    void setIrqAction(void (*func)(void), bool rising = true) override;
 
     /*!
       \brief Clears interrupt service routine to call when DIO1/2/3 activates.

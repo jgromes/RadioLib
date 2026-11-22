@@ -123,7 +123,8 @@ int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
 }
 
 #if defined(ARDUINO_ARCH_STM32)
-void STM32WLx::setIrqAction(void (*func)(void)) {
+void STM32WLx::setIrqAction(void (*func)(void), bool rising) {
+  (void)rising;
   SubGhz.attachInterrupt([func]() {
     // Because the interrupt is level-triggered, we disable it in the
     // NVIC (otherwise we would need an SPI command to clear the IRQ in
