@@ -16,12 +16,16 @@
 #define RADIOLIB_LR2021_CMD_SET_STANDBY                         (0x0128)
 #define RADIOLIB_LR2021_CMD_SET_FS                              (0x0129)
 #define RADIOLIB_LR2021_CMD_SET_ADDITIONAL_REG_TO_RETAIN        (0x012A)
+#define RADIOLIB_LR2021_CMD_SET_TEST_MUX                        (0x012B)
+#define RADIOLIB_LR2021_CMD_SET_ACTION_POINT                    (0x012C)
 #define RADIOLIB_LR2021_CMD_SET_RX                              (0x020C)
 #define RADIOLIB_LR2021_CMD_SET_TX                              (0x020D)
 #define RADIOLIB_LR2021_CMD_SET_RX_TX_FALLBACK_MODE             (0x0206)
 #define RADIOLIB_LR2021_CMD_SET_RX_DUTY_CYCLE                   (0x0210)
 #define RADIOLIB_LR2021_CMD_SET_AUTO_RX_TX                      (0x0211)
 #define RADIOLIB_LR2021_CMD_GET_RX_PKT_LENGTH                   (0x0212)
+#define RADIOLIB_LR2021_CMD_SET_INTERNAL_PARAM                  (0x0213)
+#define RADIOLIB_LR2021_CMD_SET_CLOCK_IRQ_CONFIG                (0x0214)
 #define RADIOLIB_LR2021_CMD_STOP_TIMEOUT_ON_PREAMBLE            (0x0209)
 #define RADIOLIB_LR2021_CMD_RESET_RX_STATS                      (0x020A)
 #define RADIOLIB_LR2021_CMD_SET_DEFAULT_RX_TX_TIMEOUT           (0x0215)
@@ -34,6 +38,8 @@
 #define RADIOLIB_LR2021_CMD_GET_RANDOM_NUMBER                   (0x0126)
 #define RADIOLIB_LR2021_CMD_GET_STATUS                          (0x0100)
 #define RADIOLIB_LR2021_CMD_GET_VERSION                         (0x0101)
+#define RADIOLIB_LR2021_CMD_WRITE_AUX                           (0x0102)
+#define RADIOLIB_LR2021_CMD_READ_AUX                            (0x0103)
 #define RADIOLIB_LR2021_CMD_CLEAR_ERRORS                        (0x0111)
 #define RADIOLIB_LR2021_CMD_GET_ERRORS                          (0x0110)
 #define RADIOLIB_LR2021_CMD_SET_DIO_FUNCTION                    (0x0112)
@@ -45,6 +51,7 @@
 #define RADIOLIB_LR2021_CMD_GET_FIFO_IRQ_FLAGS                  (0x011B)
 #define RADIOLIB_LR2021_CMD_CLEAR_FIFO_IRQ_FLAGS                (0x0114)
 #define RADIOLIB_LR2021_CMD_GET_AND_CLEAR_FIFO_IRQ_FLAGS        (0x012E)
+#define RADIOLIB_LR2021_CMD_SET_TEST_BUS                        (0x012F)
 #define RADIOLIB_LR2021_CMD_GET_RX_FIFO_LEVEL                   (0x011C)
 #define RADIOLIB_LR2021_CMD_GET_TX_FIFO_LEVEL                   (0x011D)
 #define RADIOLIB_LR2021_CMD_CLEAR_RX_FIFO                       (0x011E)
@@ -56,6 +63,9 @@
 #define RADIOLIB_LR2021_CMD_SET_XOSC_CP_TRIM                    (0x0131)
 #define RADIOLIB_LR2021_CMD_SET_TEMP_COMP_CFG                   (0x0132)
 #define RADIOLIB_LR2021_CMD_SET_NTC_PARAMS                      (0x0133)
+#define RADIOLIB_LR2021_CMD_CALIBRATE_FREQ_LIST_A               (0x0134)
+#define RADIOLIB_LR2021_CMD_CALIBRATE_FREQ_LIST_B               (0x0135)
+#define RADIOLIB_LR2021_CMD_CALIB_FRONT_END_MASKED              (0x0136)
 #define RADIOLIB_LR2021_CMD_SET_RF_FREQUENCY                    (0x0200)
 #define RADIOLIB_LR2021_CMD_SET_RX_PATH                         (0x0201)
 #define RADIOLIB_LR2021_CMD_GET_RSSI_INST                       (0x020B)
@@ -78,14 +88,39 @@
 #define RADIOLIB_LR2021_CMD_SET_LORA_SYNCWORD                   (0x0223)
 #define RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CONFIG            (0x0224)
 #define RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_SYNCWORD          (0x0225)
+#define RADIOLIB_LR2021_CMD_SET_LORA_DEMOD_CONFIG               (0x0226)
 #define RADIOLIB_LR2021_CMD_SET_LORA_CAD_PARAMS                 (0x0227)
 #define RADIOLIB_LR2021_CMD_SET_LORA_CAD                        (0x0228)
 #define RADIOLIB_LR2021_CMD_GET_LORA_RX_STATS                   (0x0229)
 #define RADIOLIB_LR2021_CMD_GET_LORA_PACKET_STATUS              (0x022A)
 #define RADIOLIB_LR2021_CMD_SET_LORA_ADDRESS                    (0x022B)
 #define RADIOLIB_LR2021_CMD_SET_LORA_HOPPING                    (0x022C)
+#define RADIOLIB_LR2021_CMD_SET_RAW_LORA_SYNCWORD               (0x022D)
+#define RADIOLIB_LR2021_CMD_SET_RAW_SIDE_DET_SYNCWORD           (0x022E)
+#define RADIOLIB_LR2021_CMD_SET_AGC_CONFIG                      (0x022F)
+// undocumented generic packet engine (FSK/OOK/BLE/Z-Wave) register writes:
+// 0 = 0xF30814, 1 = 0xF30818, 2 = 0xF30828, 3 = 0xF3081C, 4 = 0xF30830/34, 5 = 0xF30844,
+// 6 = 0xF30854, 7 = 0xF30838, 8 = 0xF30858, 9 = 0xF30864, 10 = 0xF3085C, 11 = 0xF30930,
+// 12 = 0xF30904/34, 13 = 0xF30800; mostly shadowed in RAM 0x800438-0x8004A8
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG00             (0x0230)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG01             (0x0231)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG02             (0x0232)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG03             (0x0233)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG04             (0x0234)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG05             (0x0235)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG06             (0x0236)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG07             (0x0237)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG08             (0x0238)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG09             (0x0239)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG10             (0x023A)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG11             (0x023B)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG12             (0x023C)
+#define RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG13             (0x023D)
+#define RADIOLIB_LR2021_CMD_GET_PACKET_ENGINE_STATUS            (0x023E)
+#define RADIOLIB_LR2021_CMD_GET_PACKET_ENGINE_STATS             (0x023F)
 #define RADIOLIB_LR2021_CMD_SET_LORA_TX_SYNC                    (0x021D)
 #define RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CAD               (0x021E)
+#define RADIOLIB_LR2021_CMD_SET_LORA_PAYLOAD_DEMOD_PARAM        (0x021F)
 #define RADIOLIB_LR2021_CMD_SET_RANGING_ADDR                    (0x0278)
 #define RADIOLIB_LR2021_CMD_SET_RANGING_REQ_ADDR                (0x0279)
 #define RADIOLIB_LR2021_CMD_GET_RANGING_RESULT                  (0x027A)
@@ -110,6 +145,10 @@
 #define RADIOLIB_LR2021_CMD_GET_WISUN_PACKET_STATUS             (0x0273)
 #define RADIOLIB_LR2021_CMD_SET_WISUN_PACKET_LEN                (0x0274)
 #define RADIOLIB_LR2021_CMD_SET_IQ_STREAM                       (0x0290)
+#define RADIOLIB_LR2021_CMD_GET_CAPTURE_POINTER                 (0x0291)
+#define RADIOLIB_LR2021_CMD_READ_CAPTURE                        (0x0292)
+#define RADIOLIB_LR2021_CMD_SET_RAW_TX                          (0x0293)
+#define RADIOLIB_LR2021_CMD_SET_RX_FRONT_END_TRIM               (0x0294)
 #define RADIOLIB_LR2021_CMD_SET_ZWAVE_PARAMS                    (0x0297)
 #define RADIOLIB_LR2021_CMD_SET_ZWAVE_HOME_ID_FILTERING         (0x0298)
 #define RADIOLIB_LR2021_CMD_GET_ZWAVE_RX_STATS                  (0x0299)
@@ -121,6 +160,7 @@
 #define RADIOLIB_LR2021_CMD_SET_BLE_CHANNEL_PARAMS              (0x0261)
 #define RADIOLIB_LR2021_CMD_SET_BLE_PDU_LEN                     (0x0266)
 #define RADIOLIB_LR2021_CMD_SET_BLE_TX                          (0x0262)
+#define RADIOLIB_LR2021_CMD_SET_BLE_UNUSED                      (0x0263)
 #define RADIOLIB_LR2021_CMD_GET_BLE_RX_STATS                    (0x0264)
 #define RADIOLIB_LR2021_CMD_GET_BLE_PACKET_STATUS               (0x0265)
 #define RADIOLIB_LR2021_CMD_SET_OQPSK_PARAMS                    (0x029F)
@@ -137,6 +177,8 @@
 #define RADIOLIB_LR2021_CMD_SET_FLRC_SYNCWORD                   (0x024C)
 #define RADIOLIB_LR2021_CMD_LR_FHSS_BUILD_FRAME                 (0x0256)
 #define RADIOLIB_LR2021_CMD_LR_FHSS_SET_SYNCWORD                (0x0257)
+#define RADIOLIB_LR2021_CMD_READ_LR_FHSS_HOPPING_TABLE          (0x0258)
+#define RADIOLIB_LR2021_CMD_WRITE_LR_FHSS_HOPPING_TABLE         (0x0259)
 #define RADIOLIB_LR2021_CMD_SET_OOK_MODULATION_PARAMS           (0x0281)
 #define RADIOLIB_LR2021_CMD_SET_OOK_PACKET_PARAMS               (0x0282)
 #define RADIOLIB_LR2021_CMD_SET_OOK_CRC_PARAMS                  (0x0283)
@@ -563,6 +605,11 @@
 #define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ11_WIDEBAND         (0x04UL << 0)   //  2     0                     11-bit I/Q, wideband complex baseband, ~8 MS/s
 #define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ11_LOW_IF           (0x05UL << 0)   //  2     0                     11-bit I/Q, low IF before the final mixer, ~8 MS/s
 #define RADIOLIB_LR2021_CMD_IQ_STREAM_SRC_IQ8_4X                (0x06UL << 0)   //  2     0                     int8 I/Q like source 0, 4x the amplitude
+
+// RADIOLIB_LR2021_CMD_SET_RAW_TX
+#define RADIOLIB_LR2021_CMD_RAW_TX_MODE_IQ8                     (0x00UL << 0)   //  2     0     raw Tx sample format: int8 I/Q sample pairs
+#define RADIOLIB_LR2021_CMD_RAW_TX_MODE_FREQ_LOW                (0x01UL << 0)   //  2     0                  int8 frequency samples, one step is rate/256
+#define RADIOLIB_LR2021_CMD_RAW_TX_MODE_FREQ_HIGH               (0x02UL << 0)   //  2     0                  int8 frequency samples, one step is rate/128
 
 // RADIOLIB_LR2021_CMD_SET_TX_TEST_MODE
 #define RADIOLIB_LR2021_TX_TEST_MODE_NORMAL_TX                  (0x00UL << 0)   //  7     0     Tx test mode: normal

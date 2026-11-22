@@ -463,4 +463,123 @@ int16_t LR2021::enableRxFifoInterrupt(uint16_t level) {
   return(state);
 }
 
+// undocumented commands below, credit to https://github.com/beala/lr2021-re
+
+int16_t LR2021::writeAux(uint32_t aux, uint32_t value) {
+  uint8_t buff[] = {
+    (uint8_t)((aux >> 24) & 0xFF), (uint8_t)((aux >> 16) & 0xFF), (uint8_t)((aux >> 8) & 0xFF), (uint8_t)(aux & 0xFF),
+    (uint8_t)((value >> 24) & 0xFF), (uint8_t)((value >> 16) & 0xFF), (uint8_t)((value >> 8) & 0xFF), (uint8_t)(value & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_WRITE_AUX, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::readAux(uint32_t aux, uint32_t* value) {
+  uint8_t reqBuff[] = {
+    (uint8_t)((aux >> 24) & 0xFF), (uint8_t)((aux >> 16) & 0xFF), (uint8_t)((aux >> 8) & 0xFF), (uint8_t)(aux & 0xFF),
+  };
+  uint8_t rplBuff[4] = { 0 };
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_READ_AUX, false, rplBuff, sizeof(rplBuff), reqBuff, sizeof(reqBuff));
+  if(value && (state == RADIOLIB_ERR_NONE)) {
+    *value = ((uint32_t)rplBuff[0] << 24) | ((uint32_t)rplBuff[1] << 16) | ((uint32_t)rplBuff[2] << 8) | (uint32_t)rplBuff[3];
+  }
+  return(state);
+}
+
+int16_t LR2021::setTestMux(const uint8_t* params, size_t len) {
+  // the first byte selects one of 12 debug multiplexer cases, the ROM requires at least 12 bytes
+  if(len < 12) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  }
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TEST_MUX, true, const_cast<uint8_t*>(params), len));
+}
+
+int16_t LR2021::setActionPoint(const uint8_t* params, size_t len) {
+  // programs one of the two hardware actionpoints (breakpoints), the ROM requires at least 9 bytes
+  // the exact parameter layout has not been decoded, see lr2021-re docs/commands.md
+  if(len < 9) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  }
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_ACTION_POINT, true, const_cast<uint8_t*>(params), len));
+}
+
+int16_t LR2021::setTestBus(uint8_t selector, uint16_t maskA, uint16_t maskB, uint16_t maskC) {
+  // route the internal test bus onto the pads: mask A = which pads (bit i = pad i = DIOi),
+  // mask B = output enable, mask C = input enable. The ROM's mask defaults include pads 0-4,
+  // which are SPI and BUSY - always pass explicit masks! selector 0xFF restores the pads.
+  uint8_t buff[] = {
+    selector,
+    (uint8_t)((maskA >> 8) & 0xFF), (uint8_t)(maskA & 0xFF),
+    (uint8_t)((maskB >> 8) & 0xFF), (uint8_t)(maskB & 0xFF),
+    (uint8_t)((maskC >> 8) & 0xFF), (uint8_t)(maskC & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TEST_BUS, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::calibrateFreqListA(const uint16_t freq[3]) {
+  // uses the same frequency list parser as calibrateFrontEnd, then a per-frequency calibration
+  // whose stored parameters have not been decoded
+  uint8_t buff[] = {
+    (uint8_t)((freq[0] >> 8) & 0xFF), (uint8_t)(freq[0] & 0xFF),
+    (uint8_t)((freq[1] >> 8) & 0xFF), (uint8_t)(freq[1] & 0xFF),
+    (uint8_t)((freq[2] >> 8) & 0xFF), (uint8_t)(freq[2] & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_CALIBRATE_FREQ_LIST_A, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::calibrateFreqListB(const uint16_t freq[3]) {
+  uint8_t buff[] = {
+    (uint8_t)((freq[0] >> 8) & 0xFF), (uint8_t)(freq[0] & 0xFF),
+    (uint8_t)((freq[1] >> 8) & 0xFF), (uint8_t)(freq[1] & 0xFF),
+    (uint8_t)((freq[2] >> 8) & 0xFF), (uint8_t)(freq[2] & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_CALIBRATE_FREQ_LIST_B, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::calibrateFrontEndMasked(uint8_t blockMask, const uint16_t freq[3]) {
+  // calibrateFrontEnd with a leading block mask, the ROM default is 0x3F (all blocks)
+  uint8_t buff[] = {
+    blockMask,
+    (uint8_t)((freq[0] >> 8) & 0xFF), (uint8_t)(freq[0] & 0xFF),
+    (uint8_t)((freq[1] >> 8) & 0xFF), (uint8_t)(freq[1] & 0xFF),
+    (uint8_t)((freq[2] >> 8) & 0xFF), (uint8_t)(freq[2] & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_CALIB_FRONT_END_MASKED, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::getCapturePointer(uint16_t* ptr) {
+  uint8_t rplBuff[2] = { 0 };
+  int16_t state = this->SPIcommand(RADIOLIB_LR2021_CMD_GET_CAPTURE_POINTER, false, rplBuff, sizeof(rplBuff));
+  if(ptr && (state == RADIOLIB_ERR_NONE)) {
+    *ptr = ((uint16_t)rplBuff[0] << 8) | (uint16_t)rplBuff[1];
+  }
+  return(state);
+}
+
+int16_t LR2021::readCapture(uint16_t offset, uint8_t* data, size_t len) {
+  // reads back bytes written by the capture DMA, while the capture is not armed
+  // the length parameter is a single byte and the transfer is also SPI-length limited
+  if(len > RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  }
+
+  uint8_t reqBuff[] = { (uint8_t)((offset >> 8) & 0xFF), (uint8_t)(offset & 0xFF), (uint8_t)len };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_READ_CAPTURE, false, data, len, reqBuff, sizeof(reqBuff)));
+}
+
+int16_t LR2021::setRawTx(uint16_t count, uint32_t rate, uint8_t mode) {
+  // raw transmit: count samples of the chosen format still have to be fed through the 1 KB Tx FIFO
+  uint8_t buff[] = {
+    (uint8_t)((count >> 8) & 0xFF), (uint8_t)(count & 0xFF),
+    (uint8_t)((rate >> 24) & 0xFF), (uint8_t)((rate >> 16) & 0xFF), (uint8_t)((rate >> 8) & 0xFF), (uint8_t)(rate & 0xFF),
+    mode,
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RAW_TX, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::setRxFrontEndTrim(const uint8_t* params, size_t len) {
+  // writes 3-bit fields into 0xF30044/0xF30048 and two 9-bit values into 0xF30130,
+  // the exact parameter layout has not been decoded
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RX_FRONT_END_TRIM, true, const_cast<uint8_t*>(params), len));
+}
+
 #endif

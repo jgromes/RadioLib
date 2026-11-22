@@ -123,4 +123,38 @@ int16_t LR2021::getPacketType(uint8_t* packetType) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_TYPE, false, packetType, sizeof(uint8_t)));
 }
 
+// undocumented commands below, credit to https://github.com/beala/lr2021-re
+
+int16_t LR2021::setInternalParam(const uint8_t* params, size_t len) {
+  // get/set of internal parameters at sub-indices 0x0B-0x15 of the struct at RAM 0x800438,
+  // the exact parameter layout has not been decoded
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_INTERNAL_PARAM, true, const_cast<uint8_t*>(params), len));
+}
+
+int16_t LR2021::setClockIrqConfig(uint8_t cfg) {
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_CLOCK_IRQ_CONFIG, true, &cfg, sizeof(cfg)));
+}
+
+int16_t LR2021::setAgcConfig(const uint8_t* params, size_t len) {
+  // AGC configuration, ends up in 0xF30C28[28:24], [22:21] and [20],
+  // the exact parameter layout has not been decoded
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_AGC_CONFIG, true, const_cast<uint8_t*>(params), len));
+}
+
+int16_t LR2021::setPacketEngineReg(uint16_t cmd, const uint8_t* buff, size_t len) {
+  // lower-level version of the documented FSK whitening/CRC/syncword/address commands,
+  // cmd is one of RADIOLIB_LR2021_CMD_SET_PACKET_ENGINE_REG00-13
+  return(this->SPIcommand(cmd, true, const_cast<uint8_t*>(buff), len));
+}
+
+int16_t LR2021::getPacketEngineStatus(uint8_t* data) {
+  // undocumented getter, contents not decoded
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_ENGINE_STATUS, false, data, 6));
+}
+
+int16_t LR2021::getPacketEngineStats(uint8_t* data) {
+  // undocumented getter, contents not decoded
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_GET_PACKET_ENGINE_STATS, false, data, 18));
+}
+
 #endif

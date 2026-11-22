@@ -1026,6 +1026,22 @@ class LR2021: public LRxxxx {
     int16_t checkPramLoaded(bool* loaded);
     int16_t getPramVersion(uint16_t* version);
 
+    // undocumented system commands (credit to https://github.com/beala/lr2021-re)
+    int16_t writeAux(uint32_t aux, uint32_t value);
+    int16_t readAux(uint32_t aux, uint32_t* value);
+    int16_t setTestMux(const uint8_t* params, size_t len);
+    int16_t setActionPoint(const uint8_t* params, size_t len);
+    int16_t setTestBus(uint8_t selector, uint16_t maskA, uint16_t maskB, uint16_t maskC);
+    int16_t calibrateFreqListA(const uint16_t freq[3]);
+    int16_t calibrateFreqListB(const uint16_t freq[3]);
+    int16_t calibrateFrontEndMasked(uint8_t blockMask, const uint16_t freq[3]);
+
+    // undocumented capture / raw data commands (credit to https://github.com/beala/lr2021-re)
+    int16_t getCapturePointer(uint16_t* ptr);
+    int16_t readCapture(uint16_t offset, uint8_t* data, size_t len);
+    int16_t setRawTx(uint16_t count, uint32_t rate, uint8_t mode);
+    int16_t setRxFrontEndTrim(const uint8_t* params, size_t len);
+
     // radio frequency front end commands
     int16_t setRfFrequency(uint32_t rfFreq);
     int16_t setRxPath(uint8_t rxPath, uint8_t rxBoost);
@@ -1045,6 +1061,14 @@ class LR2021: public LRxxxx {
     int16_t setPacketType(uint8_t packetType);
     int16_t getPacketType(uint8_t* packetType);
 
+    // undocumented modem configuration commands (credit to https://github.com/beala/lr2021-re)
+    int16_t setInternalParam(const uint8_t* params, size_t len);
+    int16_t setClockIrqConfig(uint8_t cfg);
+    int16_t setAgcConfig(const uint8_t* params, size_t len);
+    int16_t setPacketEngineReg(uint16_t cmd, const uint8_t* buff, size_t len);
+    int16_t getPacketEngineStatus(uint8_t* data);
+    int16_t getPacketEngineStats(uint8_t* data);
+
     // LoRa commands
     int16_t setLoRaModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setLoRaPacketParams(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t invertIQ);
@@ -1059,6 +1083,12 @@ class LR2021: public LRxxxx {
     int16_t setLoRaTxSync(uint8_t function, uint8_t dioNum);
     int16_t setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPeak, size_t numSideDets);
     int16_t setLoRaHeaderType(uint8_t hdrType, size_t len = RADIOLIB_LR2021_MAX_PACKET_LENGTH);
+
+    // undocumented LoRa commands (credit to https://github.com/beala/lr2021-re)
+    int16_t setLoRaPayloadDemodParam(uint8_t p0, uint8_t p1);
+    int16_t setLoRaDemodConfig(uint8_t mode, uint16_t param, uint32_t timeout);
+    int16_t setRawLoRaSyncword(uint8_t sync1, uint8_t sync2);
+    int16_t setRawSideDetSyncword(const uint8_t* params, size_t len);
 
     // ranging commands
     int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);
@@ -1094,9 +1124,9 @@ class LR2021: public LRxxxx {
 
     // LR-FHSS commands
     int16_t lrFhssSetSyncword(uint32_t syncWord);
-    //! \TODO: [LR2021] Implement reading/writing LR-FHSS hopping table 
-    //int16_t readLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t* hopTableLen);
-    //int16_t writeLrFhssHoppingTable(LR2021LrFhssHopTableEntry_t* hopTable[40], size_t hopTableLen);
+    // parameter layout of the hopping table is not covered by the lr2021-re analysis, bytes pass through unchanged
+    int16_t readLrFhssHoppingTable(uint8_t* hopTable, size_t hopTableLen);
+    int16_t writeLrFhssHoppingTable(const uint8_t* hopTable, size_t hopTableLen);
 
     // OOK commands
     int16_t setOokModulationParams(uint32_t bitRate, uint8_t pulseShape, uint8_t rxBw, uint8_t depth);

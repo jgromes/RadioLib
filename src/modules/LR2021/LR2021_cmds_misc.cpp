@@ -28,6 +28,22 @@ int16_t LR2021::lrFhssSetSyncword(uint32_t syncWord) {
   return(this->setU32(RADIOLIB_LR2021_CMD_LR_FHSS_SET_SYNCWORD, syncWord));
 }
 
+int16_t LR2021::readLrFhssHoppingTable(uint8_t* hopTable, size_t hopTableLen) {
+  // the entry layout of the hopping table has not been decoded
+  if(hopTableLen > RADIOLIB_LRXXXX_SPI_MAX_READ_WRITE_LEN) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  }
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_READ_LR_FHSS_HOPPING_TABLE, false, hopTable, hopTableLen));
+}
+
+int16_t LR2021::writeLrFhssHoppingTable(const uint8_t* hopTable, size_t hopTableLen) {
+  // the ROM requires at least 9 bytes, the entry layout has not been decoded
+  if(hopTableLen < 9) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  }
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_WRITE_LR_FHSS_HOPPING_TABLE, true, const_cast<uint8_t*>(hopTable), hopTableLen));
+}
+
 int16_t LR2021::setTxTestMode(uint8_t mode) {
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_TX_TEST_MODE, true, &mode, sizeof(mode)));
 }

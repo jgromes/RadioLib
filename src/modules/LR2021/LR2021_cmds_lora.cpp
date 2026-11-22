@@ -161,4 +161,36 @@ int16_t LR2021::setLoRaSideDetCad(const uint8_t* pnrDelta, const uint8_t* detPea
   return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_SIDE_DET_CAD, true, buff, 2*numSideDets));
 }
 
+// undocumented commands below, credit to https://github.com/beala/lr2021-re
+
+int16_t LR2021::setLoRaPayloadDemodParam(uint8_t p0, uint8_t p1) {
+  // the two bytes scatter into 0xF30A30[28:16]: p0[1:0]->[23:22], p0[7:6]->[21:20], p0[5:2]->[19:16],
+  // p1[3:0]->[27:24], p1[4]->[28]. [27:24] acts in the payload demodulator, 0 is as good as any value
+  uint8_t buff[] = { p0, p1 };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_PAYLOAD_DEMOD_PARAM, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::setLoRaDemodConfig(uint8_t mode, uint16_t param, uint32_t timeout) {
+  // configuration block right after the LoRa CAD parameters, bit 7 of mode enables it via
+  // 0xF30A1C[17]. The ROM also accepts 8 or 10 bytes (four more small parameters), not covered here
+  uint8_t buff[] = {
+    mode,
+    (uint8_t)((param >> 8) & 0xFF), (uint8_t)(param & 0xFF),
+    (uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF),
+  };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_LORA_DEMOD_CONFIG, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::setRawLoRaSyncword(uint8_t sync1, uint8_t sync2) {
+  // two 5-bit sync symbol values into 0xF30A68[4:0] and [12:8] - the raw form of setLoRaSyncword,
+  // (2, 4) is the same as setLoRaSyncword(0x12) but odd values are allowed
+  uint8_t buff[] = { sync1, sync2 };
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RAW_LORA_SYNCWORD, true, buff, sizeof(buff)));
+}
+
+int16_t LR2021::setRawSideDetSyncword(const uint8_t* params, size_t len) {
+  // raw form of setLoRaSideDetSyncword, up to 3 symbol pairs into 0xF30B00/04/08
+  return(this->SPIcommand(RADIOLIB_LR2021_CMD_SET_RAW_SIDE_DET_SYNCWORD, true, const_cast<uint8_t*>(params), len));
+}
+
 #endif
