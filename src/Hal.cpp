@@ -14,6 +14,13 @@ RadioLibHal::RadioLibHal(const uint32_t input, const uint32_t output, const uint
         }
       }
 
+RadioLibHal::~RadioLibHal() {
+  // clear the timestamp source
+  if(rlb_timestamp_hal == this) {
+    rlb_timestamp_hal = nullptr;
+  }
+}
+
 int16_t RadioLibHal::init() {
   // the default implementation has no failure mode
   return(RADIOLIB_ERR_NONE);

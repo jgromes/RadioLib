@@ -71,9 +71,9 @@ class RadioLibHal {
     RadioLibHal(const uint32_t input, const uint32_t output, const uint32_t low, const uint32_t high, const uint32_t rising, const uint32_t falling);
 
     /*!
-      \brief Default destructor.
+      \brief Destructor, unregisters this HAL as the timestamp source if it is the current one.
     */
-    virtual ~RadioLibHal() = default;
+    virtual ~RadioLibHal();
 
     // pure virtual methods - these must be implemented by the hardware abstraction for RadioLib to function
 
