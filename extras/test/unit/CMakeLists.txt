@@ -16,6 +16,15 @@ file(GLOB_RECURSE TEST_SOURCES
   "tests/TestPhyComplete.cpp"
   "tests/TestCrypto.cpp"
   "tests/TestReedSolomon.cpp"
+  "tests/TestCRC.cpp"
+  "tests/TestUtils.cpp"
+  "tests/TestConvCode.cpp"
+  "tests/TestBCH.cpp"
+  "tests/TestPrint.cpp"
+  "tests/TestMorse.cpp"
+  "tests/TestPager.cpp"
+  "tests/TestLoRaWANHelpers.cpp"
+  "tests/TestAX25Frame.cpp"
 )
 
 # create the executable
