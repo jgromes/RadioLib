@@ -650,7 +650,7 @@ class SX128x: public PhysicalLayer {
       \param detLen Not supported by SX128x.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen = 0xFFFFFFFF) override;
+    int16_t setPreambleLength(size_t len, uint32_t detLen = 0xFFFFFFFFUL) override;
 
     /*!
       \brief Check the data rate can be configured by this module.

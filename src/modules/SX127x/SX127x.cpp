@@ -641,8 +641,8 @@ int16_t SX127x::setCurrentLimit(uint8_t currentLimit) {
   return(state);
 }
 
-int16_t SX127x::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
-  (void)preambleDetLength;
+int16_t SX127x::setPreambleLength(size_t len, uint32_t detLen) {
+  (void)detLen;
   
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -652,18 +652,18 @@ int16_t SX127x::setPreambleLength(size_t preambleLength, size_t preambleDetLengt
   uint8_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
     // check allowed range
-    if(preambleLength < 6) {
+    if(len < 6) {
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
     }
 
     // set preamble length
-    state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB, (uint8_t)((preambleLength >> 8) & 0xFF));
-    state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB, (uint8_t)(preambleLength & 0xFF));
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB, (uint8_t)((len >> 8) & 0xFF));
+    state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB, (uint8_t)(len & 0xFF));
     return(state);
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // set preamble length (in bytes)
-    uint16_t numBytes = preambleLength / 8;
+    uint16_t numBytes = len / 8;
     state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK, (uint8_t)((numBytes >> 8) & 0xFF));
     state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK, (uint8_t)(numBytes & 0xFF));
     return(state);

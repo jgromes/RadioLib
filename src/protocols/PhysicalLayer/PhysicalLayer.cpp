@@ -333,7 +333,7 @@ int16_t PhysicalLayer::setSyncWord(uint8_t* sync, size_t len) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setPreambleLength(size_t len, size_t detLen) {
+int16_t PhysicalLayer::setPreambleLength(size_t len, uint32_t detLen) {
   (void)len;
   (void)detLen;
   return(RADIOLIB_ERR_UNSUPPORTED);

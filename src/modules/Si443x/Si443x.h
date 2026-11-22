@@ -730,7 +730,7 @@ class Si443x: public PhysicalLayer {
       Defaults to 5/8th of preambleLength.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen = 0xFFFFFFFF) override;
+    int16_t setPreambleLength(size_t len, uint32_t detLen = 0xFFFFFFFFUL) override;
 
      /*!
       \brief Query modem for the packet length of received payload.

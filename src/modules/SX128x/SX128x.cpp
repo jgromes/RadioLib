@@ -748,32 +748,32 @@ int16_t SX128x::getMode(RadioModeType_t* mode) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t SX128x::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
-  (void)preambleDetLength;
+int16_t SX128x::setPreambleLength(size_t len, uint32_t detLen) {
+  (void)detLen;
   
   uint8_t modem = getPacketType();
   if((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING)) {
     // LoRa or ranging
     // the actual limit is 491520, however, some platforms (notably AVR) limit size_t to 16 bits
-    RADIOLIB_CHECK_RANGE(preambleLength, 2, 65534, RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
+    RADIOLIB_CHECK_RANGE(len, 2, 65534, RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
 
     // check preamble length is even - no point even trying odd numbers
-    if(preambleLength % 2 != 0) {
+    if(len % 2 != 0) {
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
     }
 
     // calculate exponent and mantissa values (use the next longer preamble if there's no exact match)
     uint8_t e = 1;
     uint8_t m = 1;
-    uint32_t len = 0;
+    uint32_t tmpLen = 0;
     for(; e <= 15; e++) {
       for(m = 1; m <= 15; m++) {
         len = m * (uint32_t(1) << e);
-        if(len >= preambleLength) {
+        if(tmpLen >= len) {
           break;
         }
       }
-      if(len >= preambleLength) {
+      if(tmpLen >= len) {
         break;
       }
     }
@@ -784,15 +784,15 @@ int16_t SX128x::setPreambleLength(size_t preambleLength, size_t preambleDetLengt
 
   } else if((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC)) {
     // GFSK or FLRC
-    RADIOLIB_CHECK_RANGE(preambleLength, 4, 32, RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
+    RADIOLIB_CHECK_RANGE(len, 4, 32, RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
 
     // check preamble length is multiple of 4
-    if(preambleLength % 4 != 0) {
+    if(len % 4 != 0) {
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
     }
 
     // update packet parameters
-    this->preambleLengthGFSK = ((preambleLength / 4) - 1) << 4;
+    this->preambleLengthGFSK = ((len / 4) - 1) << 4;
     return(setPacketParamsGFSK(this->preambleLengthGFSK, this->syncWordLen, this->syncWordMatch, this->crcGFSK, this->whitening, this->packetType));
   }
 

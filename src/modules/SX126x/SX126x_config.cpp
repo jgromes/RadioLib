@@ -142,20 +142,20 @@ float SX126x::getCurrentLimit() {
   return((float)ocp * 2.5f);
 }
 
-int16_t SX126x::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
+int16_t SX126x::setPreambleLength(size_t len, uint32_t detLen) {
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    this->preambleLengthLoRa = preambleLength;
+    this->preambleLengthLoRa = len;
     return(setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled));
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    this->preambleLengthFSK = preambleLength;
+    this->preambleLengthFSK = len;
     // maximum preamble detector length is limited by sync word length
     // for details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45
     uint8_t maxDetLen = RADIOLIB_MIN(this->syncWordLength, this->preambleLengthFSK);
-    this->preambleDetLength = RADIOLIB_MIN(maxDetLen, preambleDetLength);
+    this->preambleDetLength = RADIOLIB_MIN(maxDetLen, detLen);
 
     // if no value is specified for preambleDetLength, use the value best corresponding to preambleLength
-    if(preambleDetLength == 0xFFFFFFFF) {
+    if(detLen == 0xFFFFFFFFUL) {
       this->preambleDetLength = maxDetLen >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
                                 maxDetLen >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
                                 maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
