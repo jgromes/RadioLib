@@ -193,4 +193,62 @@ BOOST_AUTO_TEST_CASE(CryptoECB_StreamingCMAC) {
   }
 }
 
+// verifyCMAC must accept the correct CMAC for RFC 4493 messages of all
+// block boundaries (empty / single block / partial last block / full blocks)
+// and reject any tampered message or MAC
+BOOST_AUTO_TEST_CASE(CryptoECB_VerifyCMAC) {
+  BOOST_TEST_MESSAGE("--- Test AES-128 CMAC verification ---");
+  RadioLibSoftwareAES128 aes;
+  uint8_t mac[RADIOLIB_AES128_BLOCK_SIZE];
+
+  const size_t lengths[] = { 0, 16, 40, 64 };
+  const unsigned char* const vectors[] = { testVectEx1, testVectEx2, testVectEx3, testVectEx4 };
+
+  for(size_t i = 0; i < sizeof(lengths) / sizeof(lengths[0]); i++) {
+    // the locally generated MAC verifies
+    aes.init(key);
+    aes.generateCMAC(msg, lengths[i], mac);
+    aes.init(key);
+    BOOST_CHECK(aes.verifyCMAC(msg, lengths[i], mac));
+
+    // so does the published RFC 4493 vector, and only for its own length
+    aes.init(key);
+    BOOST_CHECK(aes.verifyCMAC(msg, lengths[i], vectors[i]));
+  }
+
+  // every single-bit flip in the expected MAC must be rejected (len = 64, RFC 4493 example 4)
+  for(size_t bit = 0; bit < 8 * RADIOLIB_AES128_BLOCK_SIZE; bit++) {
+    uint8_t bad[RADIOLIB_AES128_BLOCK_SIZE];
+    memcpy(bad, testVectEx4, sizeof(bad));
+    bad[bit / 8] ^= (uint8_t)(1UL << (bit % 8));
+    aes.init(key);
+    BOOST_CHECK(!aes.verifyCMAC(msg, 64, bad));
+  }
+
+  // every single-bit flip in the message must be rejected
+  uint8_t tampered[64];
+  for(size_t bit = 0; bit < 8 * sizeof(tampered); bit++) {
+    memcpy(tampered, msg, sizeof(tampered));
+    tampered[bit / 8] ^= (uint8_t)(1UL << (bit % 8));
+    aes.init(key);
+    BOOST_CHECK(!aes.verifyCMAC(tampered, sizeof(tampered), testVectEx4));
+  }
+
+  // a MAC computed over a different length of the same message must not verify
+  aes.init(key);
+  BOOST_CHECK(!aes.verifyCMAC(msg, 48, testVectEx4));
+  aes.init(key);
+  BOOST_CHECK(!aes.verifyCMAC(msg, 64, testVectEx3));
+
+  // the correct MAC under the wrong key must not verify
+  static unsigned char otherKey[16] = {
+    0x0f, 0x0e, 0x0d, 0x0c, 0x0b, 0x0a, 0x09, 0x08,
+    0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00
+  };
+  aes.init(otherKey);
+  aes.generateCMAC(msg, 64, mac);
+  aes.init(key);
+  BOOST_CHECK(!aes.verifyCMAC(msg, 64, mac));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
