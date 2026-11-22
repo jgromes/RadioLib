@@ -14,5 +14,35 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   extern int FuzzPager(const uint8_t* data, size_t size);
   FuzzPager(data, size);
 
+  extern int FuzzCRC(const uint8_t* data, size_t size);
+  FuzzCRC(data, size);
+
+  extern int FuzzScrambler(const uint8_t* data, size_t size);
+  FuzzScrambler(data, size);
+
+  extern int FuzzAESECB(const uint8_t* data, size_t size);
+  FuzzAESECB(data, size);
+
+  extern int FuzzAESCMACStreaming(const uint8_t* data, size_t size);
+  FuzzAESCMACStreaming(data, size);
+
+  extern int FuzzConvCode(const uint8_t* data, size_t size);
+  FuzzConvCode(data, size);
+
+  extern int FuzzBCH(const uint8_t* data, size_t size);
+  FuzzBCH(data, size);
+
+  extern int FuzzReedSolomon(const uint8_t* data, size_t size);
+  FuzzReedSolomon(data, size);
+
+  extern int FuzzITA2(const uint8_t* data, size_t size);
+  FuzzITA2(data, size);
+
+  extern int FuzzMorseDecode(const uint8_t* data, size_t size);
+  FuzzMorseDecode(data, size);
+
+  extern int FuzzPagerBCD(const uint8_t* data, size_t size);
+  FuzzPagerBCD(data, size);
+
   return(0);
 }
