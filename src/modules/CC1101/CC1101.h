@@ -813,7 +813,7 @@ class CC1101: public PhysicalLayer {
       \param qualityThreshold Preamble quality threshold (PQT) to set. Defaults to preambleLength - 1.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t preambleLength, size_t qualityThreshold = 0xFFFFFFFF) override;
+    int16_t setPreambleLength(size_t preambleLength, uint32_t qualityThreshold = 0xFFFFFFFFUL) override;
 
     /*!
       \brief Enables/disables automatic switch to reception after transmission. Uses the TXOFF_RX mode of CC1101

@@ -406,7 +406,7 @@ class SX126x: public PhysicalLayer {
       For details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen = 0xFFFFFFFF) override;
+    int16_t setPreambleLength(size_t len, uint32_t detLen = 0xFFFFFFFFUL) override;
 
     /*!
       \brief Sets FSK frequency deviation. Allowed values range from 0 to 200 kHz.

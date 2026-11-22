@@ -682,7 +682,7 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bo
   return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense, repeatSync));
 }
 
-int16_t CC1101::setPreambleLength(size_t preambleLength, size_t qualityThreshold) {
+int16_t CC1101::setPreambleLength(size_t preambleLength, uint32_t qualityThreshold) {
   // check allowed values
   uint8_t value;
   switch(preambleLength) {

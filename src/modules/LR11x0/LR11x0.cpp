@@ -960,24 +960,24 @@ int16_t LR11x0::checkDataRate(DataRate_t dr, ModemType_t modem) {
   return(state);
 }
 
-int16_t LR11x0::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
+int16_t LR11x0::setPreambleLength(size_t len, uint32_t detLen) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    this->preambleLengthLoRa = preambleLength;
+    this->preambleLengthLoRa = len;
     return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType,  this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    this->preambleLengthGFSK = preambleLength;
-    this->preambleDetLength = preambleDetLength;
+    this->preambleLengthGFSK = len;
+    this->preambleDetLength = detLen;
 
     // if no value is specified for preambleDetLength, use the value best corresponding to preambleLength
-    if(preambleDetLength == 0xFFFFFFFF) {
-      this->preambleDetLength = preambleLength >= 32 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_32_BITS :
-                                preambleLength >= 24 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_24_BITS :
-                                preambleLength >= 16 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_16_BITS :
-                                preambleLength >   0 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_8_BITS :
+    if(detLen == 0xFFFFFFFFUL) {
+      this->preambleDetLength = len >= 32 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_32_BITS :
+                                len >= 24 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_24_BITS :
+                                len >= 16 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_16_BITS :
+                                len >   0 ? RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_8_BITS :
                                 RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_DISABLED;
     }
     return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, 

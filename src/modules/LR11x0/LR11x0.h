@@ -446,7 +446,7 @@ class LR11x0: public LRxxxx {
       Defaults to largest supported value corresponding to 'len'.
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(size_t len, size_t detLen = 0xFFFFFFFF) override;
+    int16_t setPreambleLength(size_t len, uint32_t detLen = 0xFFFFFFFFUL) override;
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.

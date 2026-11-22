@@ -405,39 +405,39 @@ int16_t LR2021::setSyncWord(uint8_t syncWord) {
   return(setLoRaSyncword(syncWord));
 }
 
-int16_t LR2021::setPreambleLength(size_t preambleLength, size_t preambleDetLength) {
+int16_t LR2021::setPreambleLength(size_t len, uint32_t detLen) {
   // check active modem
   uint8_t type = RADIOLIB_LR2021_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
   if(type == RADIOLIB_LR2021_PACKET_TYPE_LORA) {
-    this->preambleLengthLoRa = preambleLength;
+    this->preambleLengthLoRa = len;
     return(setLoRaPacketParams(this->preambleLengthLoRa, this->headerType, 
       (this->headerType == RADIOLIB_LRXXXX_LORA_HEADER_IMPLICIT) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_GFSK) {
-    this->preambleLengthGFSK = preambleLength;
-    this->preambleDetLength = preambleDetLength;
-    if(preambleDetLength == 0xFFFFFFFF) {
-      this->preambleDetLength = (preambleLength / 8) << 3;
+    this->preambleLengthGFSK = len;
+    this->preambleDetLength = detLen;
+    if(detLen == 0xFFFFFFFFUL) {
+      this->preambleDetLength = (len / 8) << 3;
     }
     return(setGfskPacketParams(this->preambleLengthGFSK, this->preambleDetLength, false, false, this->addrComp, this->packetType, 
       (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_OOK) {
-    this->preambleLengthGFSK = preambleLength;
-    this->preambleDetLength = preambleDetLength;
-    if(preambleDetLength == 0xFFFFFFFF) {
-      this->preambleDetLength = (preambleLength / 8) << 3;
+    this->preambleLengthGFSK = len;
+    this->preambleDetLength = detLen;
+    if(detLen == 0xFFFFFFFFUL) {
+      this->preambleDetLength = (len / 8) << 3;
     }
     return(setOokPacketParams(this->preambleLengthGFSK, this->addrComp, this->packetType, 
       (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
     
   } else if(type == RADIOLIB_LR2021_PACKET_TYPE_FLRC) {
-    if((preambleLength % 4) != 0) {
+    if((len % 4) != 0) {
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
     }
-    this->preambleLengthGFSK = (preambleLength / 4) - 1;
+    this->preambleLengthGFSK = (len / 4) - 1;
     return(setFlrcPacketParams(this->preambleLengthGFSK, this->syncWordLength, 1, 0x01, this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED, this->crcLenGFSK, 
       (this->packetType == RADIOLIB_LR2021_GFSK_OOK_PACKET_FORMAT_FIXED) ? this->implicitLen : RADIOLIB_LR2021_MAX_PACKET_LENGTH));
 
