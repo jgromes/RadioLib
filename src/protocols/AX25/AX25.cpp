@@ -382,8 +382,8 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
     }
   #endif
 
-  // calculate frame length without FCS (destination address, source address, repeater addresses, control, PID, info)
-  size_t frameBuffLen = ((2 + frame->numRepeaters)*(RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1)) + 1 + 1 + frame->infoLen;
+  // calculate frame length without FCS (destination address, source address, repeater addresses, control, PID if present, info)
+  size_t frameBuffLen = ((2 + frame->numRepeaters)*(RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1)) + 1 + ((frame->protocolID != 0x00) ? 1 : 0) + frame->infoLen;
   // create frame buffer without preamble, start or stop flags
   #if !RADIOLIB_STATIC_ONLY
     uint8_t* frameBuff = new uint8_t[frameBuffLen + 2];
