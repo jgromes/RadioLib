@@ -67,7 +67,7 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   bool lp_supported = mod->findRfSwitchMode(MODE_TX_LP);
 
   // check whether any RF switch configuration exists at all - if standby does not exist, then consider the module switchless
-  if(!mod->findRfSwitchMode(LR11x0::MODE_STBY)) {
+  if(!mod->findRfSwitchMode(MODE_IDLE)) {
     lp_supported = true;
     hp_supported = true;
   }
@@ -85,9 +85,9 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   // if HP is supported, use it in the following cases:
   // 1. HP is the only option or
   // 2. power requested exceeds the LP range
-  if(hp_supported && ((!lp_supported) || (pwr > RADIOLIB_LR112X_LP_POUT_MAX))) {
+  if(hp_supported && ((!lp_supported) || (pwr > RADIOLIB_STM32WLX_LP_POUT_MAX))) {
     use_hp = true;
-    this->txMode = LR11x0::MODE_TX_HP;
+    this->txMode = MODE_TX_HP;
   }
 
   state = SX126x::setPaConfig(0x04, !use_hp, use_hp ? 0x07 : 0x00);
