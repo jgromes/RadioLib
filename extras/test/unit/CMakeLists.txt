@@ -44,3 +44,6 @@ target_compile_options(RadioLib PRIVATE ${BUILD_FLAGS})
 
 # enable GodMode to access the private/protected members
 target_compile_definitions(RadioLib PUBLIC -DRADIOLIB_GODMODE=1)
+
+# enable basic debug, so that rlb_hexdump() and rlb_printf() are compiled in and can be unit tested
+target_compile_definitions(RadioLib PUBLIC -DRADIOLIB_DEBUG_BASIC=1)
