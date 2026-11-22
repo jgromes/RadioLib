@@ -25,6 +25,7 @@ file(GLOB_RECURSE TEST_SOURCES
   "tests/TestPager.cpp"
   "tests/TestLoRaWANHelpers.cpp"
   "tests/TestAX25Frame.cpp"
+  "tests/TestADSB.cpp"
 )
 
 # create the executable
