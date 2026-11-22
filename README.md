@@ -1,4 +1,6 @@
-# RadioLib ![Build Status](https://github.com/jgromes/RadioLib/workflows/CI/badge.svg) [![PlatformIO Registry](https://badges.registry.platformio.org/packages/jgromes/library/RadioLib.svg)](https://registry.platformio.org/libraries/jgromes/RadioLib) [![Component Registry](https://components.espressif.com/components/jgromes/radiolib/badge.svg)](https://components.espressif.com/components/jgromes/radiolib)
+# RadioLib [![PlatformIO Registry](https://badges.registry.platformio.org/packages/jgromes/library/RadioLib.svg)](https://registry.platformio.org/libraries/jgromes/RadioLib) [![Component Registry](https://components.espressif.com/components/jgromes/radiolib/badge.svg)](https://components.espressif.com/components/jgromes/radiolib)
+
+[![CI](https://github.com/jgromes/RadioLib/actions/workflows/main.yml/badge.svg)](https://github.com/jgromes/RadioLib/actions/workflows/main.yml) [![Cppcheck](https://github.com/jgromes/RadioLib/actions/workflows/cppcheck.yml/badge.svg)](https://github.com/jgromes/RadioLib/actions/workflows/cppcheck.yml) [![Unit test](https://github.com/jgromes/RadioLib/actions/workflows/unit-test.yml/badge.svg)](https://github.com/jgromes/RadioLib/actions/workflows/unit-test.yml) [![Fuzzing test](https://github.com/jgromes/RadioLib/actions/workflows/fuzz.yml/badge.svg)](https://github.com/jgromes/RadioLib/actions/workflows/fuzz.yml) 
 
 ### _One radio library to rule them all!_
 
