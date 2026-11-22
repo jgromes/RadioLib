@@ -2,21 +2,6 @@
 
 #if !RADIOLIB_EXCLUDE_LORAWAN
 
-// array of pointers to currently supported LoRaWAN bands
-const LoRaWANBand_t* LoRaWANBands[RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS] = {
-  &EU868,
-  &US915,
-  &EU433,
-  &AU915,
-  &CN470,
-  &AS923,
-  &AS923_2,
-  &AS923_3,
-  &AS923_4,
-  &KR920,
-  &IN865,
-};
-
 const LoRaWANBand_t EU868 = {
   .bandNum = BandEU868,
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,

@@ -489,9 +489,6 @@ enum LoRaWANBandNum_t {
 // provide easy access to the number of currently supported bands
 #define RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS      (BandLast - BandEU868)
 
-// array of currently supported bands
-extern const LoRaWANBand_t* LoRaWANBands[];
-
 /*!
   \struct LoRaWANJoinEvent_t
   \brief Structure to save extra information about activation event.

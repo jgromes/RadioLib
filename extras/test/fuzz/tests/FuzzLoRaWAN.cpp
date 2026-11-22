@@ -2,6 +2,11 @@
 
 #include <string.h>
 
+// local table of all supported bands
+static const LoRaWANBand_t* fuzzLoRaWANBands[RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS] = {
+  &EU868, &US915, &EU433, &AU915, &CN470, &AS923, &AS923_2, &AS923_3, &AS923_4, &KR920, &IN865,
+};
+
 // first byte selects the variant: bit 0 = Rx2 instead of Rx1, bit 1 = LoRaWAN 1.1 instead of 1.0.x,
 // bits 2-7 = band; second byte: bits 0-6 = datarate of the receive window, bit 7 = fixed device address
 // instead of the one in the frame; the rest is the received frame
@@ -9,7 +14,7 @@ extern "C" int FuzzLoRaWANDownlink(const uint8_t* data, size_t size) {
   if(size < 3) { return(0); }
   const uint8_t window = (data[0] & 0x01) ? RADIOLIB_LORAWAN_RX2 : RADIOLIB_LORAWAN_RX1;
   const bool rev11 = data[0] & 0x02;
-  const LoRaWANBand_t* band = LoRaWANBands[(data[0] >> 2) % RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS];
+  const LoRaWANBand_t* band = fuzzLoRaWANBands[(data[0] >> 2) % RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS];
   const uint8_t rxDr = (data[1] & 0x7F) % RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES;
 
   // the device address is sent in clear, so anyone in range knows it: use the one from the frame,
@@ -149,7 +154,7 @@ extern "C" int FuzzLoRaWANMacCommands(const uint8_t* data, size_t size) {
   if(size < 2) { return(0); }
   const bool fopts = data[0] & 0x01;
   const bool rev11 = data[0] & 0x02;
-  const LoRaWANBand_t* band = LoRaWANBands[(data[0] >> 2) % RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS];
+  const LoRaWANBand_t* band = fuzzLoRaWANBands[(data[0] >> 2) % RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS];
   const uint8_t* mac = &data[1];
   size_t macLen = size - 1;
   const size_t maxLen = fopts ? RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN : RADIOLIB_LORAWAN_MAX_PAYLOAD_SIZE;
