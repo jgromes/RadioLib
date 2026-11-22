@@ -1181,7 +1181,7 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
       return(calculateTimeOnAir((ModemType_t)RADIOLIB_MODEM_FSK, dr, pc, len));
     }
     default:
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", type);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", modem);
       return(0);
   }
 }

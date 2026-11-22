@@ -70,7 +70,7 @@ RadioLibTime_t LRxxxx::getToA(size_t len, ModemType_t modem) {
     }
 
     default:
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", type);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Called getTimeOnAir() for invalid modem (%02x)!", modem);
       return(0);
   }
 
