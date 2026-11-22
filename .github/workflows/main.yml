@@ -234,7 +234,7 @@ jobs:
           |
           ls -R aggregated-sizes
           mkdir -p $PWD/../artifacts/radiolib-ci/l0
-          cp aggregated-sizes/*/size_*.csv $PWD/../artifacts/radiolib-ci/l0/.
+          cp aggregated-sizes/size_*.csv $PWD/../artifacts/radiolib-ci/l0/.
           cd $PWD/../artifacts/radiolib-ci
           git add .
           COMMIT_URL="https://github.com/jgromes/RadioLib/commit/$GITHUB_SHA"
