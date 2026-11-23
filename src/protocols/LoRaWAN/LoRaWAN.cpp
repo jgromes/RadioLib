@@ -1034,11 +1034,11 @@ int16_t LoRaWANNode::activateOTAA(LoRaWANJoinEvent_t *joinEvent) {
   state = this->processJoinAccept(joinEvent);
   RADIOLIB_ASSERT(state);
 
+  this->sessionStatus = RADIOLIB_LORAWAN_SESSION_ACTIVE;
+
   // save both buffers after a successful join (new joinNonce + fresh session keys)
   this->savePersistenceBuffer();
   this->saveSessionBuffer();
-
-  this->sessionStatus = RADIOLIB_LORAWAN_SESSION_ACTIVE;
 
   // calculate channel flags after setting session to active
   (void)this->calculateChannelFlags();
