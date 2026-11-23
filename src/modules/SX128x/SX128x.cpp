@@ -766,7 +766,7 @@ int16_t SX128x::setPreambleLength(size_t len, uint32_t detLen) {
     uint32_t tmpLen = 0;
     for(; e <= 15; e++) {
       for(m = 1; m <= 15; m++) {
-        len = m * (uint32_t(1) << e);
+        tmpLen = m * (uint32_t(1) << e);
         if(tmpLen >= len) {
           break;
         }
