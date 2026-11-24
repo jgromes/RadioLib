@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - extras/test/unit/tests/TestCrypto.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">extras/test/unit/tests</a> - TestCrypto.cpp<span style="font-size: 80%;"> (source / <a href="TestCrypto.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">108</td>
+            <td class="headerCovTableEntry">108</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2026-11-24 20:07:09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // boost test header</a>
+<a name="2"><span class="lineNum">       2 </span>            : #include &lt;boost/test/unit_test.hpp&gt;</a>
+<a name="3"><span class="lineNum">       3 </span>            : </a>
+<a name="4"><span class="lineNum">       4 </span>            : // the crypto header</a>
+<a name="5"><span class="lineNum">       5 </span>            : #include &quot;utils/Cryptography.h&quot;</a>
+<a name="6"><span class="lineNum">       6 </span>            : </a>
+<a name="7"><span class="lineNum">       7 </span>            : // mock HAL</a>
+<a name="8"><span class="lineNum">       8 </span>            : #include &quot;ModuleFixture.hpp&quot;</a>
+<a name="9"><span class="lineNum">       9 </span>            : </a>
+<a name="10"><span class="lineNum">      10 </span>            : #include &lt;string.h&gt;</a>
+<a name="11"><span class="lineNum">      11 </span>            : </a>
+<a name="12"><span class="lineNum">      12 </span>            : // test message, key and vectors</a>
+<a name="13"><span class="lineNum">      13 </span>            : // from https://www.rfc-editor.org/rfc/rfc4493.html#section-4</a>
+<a name="14"><span class="lineNum">      14 </span>            : </a>
+<a name="15"><span class="lineNum">      15 </span>            : static const unsigned char msg[64] = {</a>
+<a name="16"><span class="lineNum">      16 </span>            :   0x6b, 0xc1, 0xbe, 0xe2, 0x2e, 0x40, 0x9f, 0x96,</a>
+<a name="17"><span class="lineNum">      17 </span>            :   0xe9, 0x3d, 0x7e, 0x11, 0x73, 0x93, 0x17, 0x2a,</a>
+<a name="18"><span class="lineNum">      18 </span>            :   0xae, 0x2d, 0x8a, 0x57, 0x1e, 0x03, 0xac, 0x9c,</a>
+<a name="19"><span class="lineNum">      19 </span>            :   0x9e, 0xb7, 0x6f, 0xac, 0x45, 0xaf, 0x8e, 0x51,</a>
+<a name="20"><span class="lineNum">      20 </span>            :   0x30, 0xc8, 0x1c, 0x46, 0xa3, 0x5c, 0xe4, 0x11,</a>
+<a name="21"><span class="lineNum">      21 </span>            :   0xe5, 0xfb, 0xc1, 0x19, 0x1a, 0x0a, 0x52, 0xef,</a>
+<a name="22"><span class="lineNum">      22 </span>            :   0xf6, 0x9f, 0x24, 0x45, 0xdf, 0x4f, 0x9b, 0x17,</a>
+<a name="23"><span class="lineNum">      23 </span>            :   0xad, 0x2b, 0x41, 0x7b, 0xe6, 0x6c, 0x37, 0x10</a>
+<a name="24"><span class="lineNum">      24 </span>            : };</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : static unsigned char key[16] = {</a>
+<a name="27"><span class="lineNum">      27 </span>            :   0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,</a>
+<a name="28"><span class="lineNum">      28 </span>            :   0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c</a>
+<a name="29"><span class="lineNum">      29 </span>            : };</a>
+<a name="30"><span class="lineNum">      30 </span>            : </a>
+<a name="31"><span class="lineNum">      31 </span>            : static const unsigned char testVectEx1[] = {</a>
+<a name="32"><span class="lineNum">      32 </span>            :   0xbb, 0x1d, 0x69, 0x29, 0xe9, 0x59, 0x37, 0x28,</a>
+<a name="33"><span class="lineNum">      33 </span>            :   0x7f, 0xa3, 0x7d, 0x12, 0x9b, 0x75, 0x67, 0x46</a>
+<a name="34"><span class="lineNum">      34 </span>            : };</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span>            : static const unsigned char testVectEx2[] = {</a>
+<a name="37"><span class="lineNum">      37 </span>            :   0x07, 0x0a, 0x16, 0xb4, 0x6b, 0x4d, 0x41, 0x44,</a>
+<a name="38"><span class="lineNum">      38 </span>            :   0xf7, 0x9b, 0xdd, 0x9d, 0xd0, 0x4a, 0x28, 0x7c</a>
+<a name="39"><span class="lineNum">      39 </span>            : };</a>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<a name="41"><span class="lineNum">      41 </span>            : static const unsigned char testVectEx3[] = {</a>
+<a name="42"><span class="lineNum">      42 </span>            :   0xdf, 0xa6, 0x67, 0x47, 0xde, 0x9a, 0xe6, 0x30,</a>
+<a name="43"><span class="lineNum">      43 </span>            :   0x30, 0xca, 0x32, 0x61, 0x14, 0x97, 0xc8, 0x27</a>
+<a name="44"><span class="lineNum">      44 </span>            : };</a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span>            : static const unsigned char testVectEx4[] = {</a>
+<a name="47"><span class="lineNum">      47 </span>            :   0x51, 0xf0, 0xbe, 0xbf, 0x7e, 0x3b, 0x9d, 0x92,</a>
+<a name="48"><span class="lineNum">      48 </span>            :   0xfc, 0x49, 0x74, 0x17, 0x79, 0x36, 0x3c, 0xfe</a>
+<a name="49"><span class="lineNum">      49 </span>            : };</a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : static RadioLibSoftwareAES128 RadioLibAES128Instance;</a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span>            : BOOST_FIXTURE_TEST_SUITE(suite_Crypto, ModuleFixture)</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          2 : BOOST_FIXTURE_TEST_CASE(Crypto_CMAC, ModuleFixture) {</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test Crypto::CMAC ---&quot;);</span></a>
+<a name="57"><span class="lineNum">      57 </span>            :   uint8_t cmac[RADIOLIB_AES128_BLOCK_SIZE];</a>
+<a name="58"><span class="lineNum">      58 </span>            :   size_t testLen;</a>
+<a name="59"><span class="lineNum">      59 </span>            : </a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test Crypto::CMAC RFC 4493 chapter 4 Example 1: len = 0 ---&quot;);</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          1 :   testLen = 0;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 :   hal-&gt;aes128 = &amp;RadioLibAES128Instance;</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;init(key);</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;generateCMAC(msg, testLen, cmac);</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 :   BOOST_TEST(memcmp(cmac, testVectEx1, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="66"><span class="lineNum">      66 </span>            : </a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test Crypto::CMAC RFC 4493 chapter 4 Example 2: len = 16 ---&quot;);</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          1 :   testLen = 16;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;init(key);</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;generateCMAC(msg, testLen, cmac);</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          1 :   BOOST_TEST(memcmp(cmac, testVectEx2, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="72"><span class="lineNum">      72 </span>            : </a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test Crypto::CMAC RFC 4493 chapter 4 Example 2: len = 40 ---&quot;);</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :   testLen = 40;</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;init(key);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;generateCMAC(msg, testLen, cmac);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          1 :   BOOST_TEST(memcmp(cmac, testVectEx3, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test Crypto::CMAC RFC 4493 chapter 4 Example 2: len = 64 ---&quot;);</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          1 :   testLen = 64;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;init(key);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">          1 :   hal-&gt;aes128-&gt;generateCMAC(msg, testLen, cmac);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          1 :   BOOST_TEST(memcmp(cmac, testVectEx4, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          1 : }</span></a>
+<a name="86"><span class="lineNum">      86 </span>            : </a>
+<a name="87"><span class="lineNum">      87 </span>            : BOOST_AUTO_TEST_SUITE_END()</a>
+<a name="88"><span class="lineNum">      88 </span>            : </a>
+<a name="89"><span class="lineNum">      89 </span>            : // FIPS-197 Appendix C AES-128 ECB test vectors</a>
+<a name="90"><span class="lineNum">      90 </span>            : static unsigned char ecbKey1[16] = {</a>
+<a name="91"><span class="lineNum">      91 </span>            :   0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,</a>
+<a name="92"><span class="lineNum">      92 </span>            :   0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f</a>
+<a name="93"><span class="lineNum">      93 </span>            : };</a>
+<a name="94"><span class="lineNum">      94 </span>            : </a>
+<a name="95"><span class="lineNum">      95 </span>            : static const unsigned char ecbPlain1[16] = {</a>
+<a name="96"><span class="lineNum">      96 </span>            :   0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,</a>
+<a name="97"><span class="lineNum">      97 </span>            :   0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff</a>
+<a name="98"><span class="lineNum">      98 </span>            : };</a>
+<a name="99"><span class="lineNum">      99 </span>            : </a>
+<a name="100"><span class="lineNum">     100 </span>            : static const unsigned char ecbCipher1[16] = {</a>
+<a name="101"><span class="lineNum">     101 </span>            :   0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b, 0x04, 0x30,</a>
+<a name="102"><span class="lineNum">     102 </span>            :   0xd8, 0xcd, 0xb7, 0x80, 0x70, 0xb4, 0xc5, 0x5a</a>
+<a name="103"><span class="lineNum">     103 </span>            : };</a>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<a name="105"><span class="lineNum">     105 </span>            : static const unsigned char ecbPlain2[16] = {</a>
+<a name="106"><span class="lineNum">     106 </span>            :   0x6b, 0xc1, 0xbe, 0xe2, 0x2e, 0x40, 0x9f, 0x96,</a>
+<a name="107"><span class="lineNum">     107 </span>            :   0xe9, 0x3d, 0x7e, 0x11, 0x73, 0x93, 0x17, 0x2a</a>
+<a name="108"><span class="lineNum">     108 </span>            : };</a>
+<a name="109"><span class="lineNum">     109 </span>            : </a>
+<a name="110"><span class="lineNum">     110 </span>            : static const unsigned char ecbCipher2[16] = {</a>
+<a name="111"><span class="lineNum">     111 </span>            :   0x3a, 0xd7, 0x7b, 0xb4, 0x0d, 0x7a, 0x36, 0x60,</a>
+<a name="112"><span class="lineNum">     112 </span>            :   0xa8, 0x9e, 0xca, 0xf3, 0x24, 0x66, 0xef, 0x97</a>
+<a name="113"><span class="lineNum">     113 </span>            : };</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span>            : BOOST_AUTO_TEST_SUITE(suite_CryptoECB)</a>
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          2 : BOOST_AUTO_TEST_CASE(CryptoECB_FIPS197) {</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test AES-128 ECB against FIPS-197 Appendix C vectors ---&quot;);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          1 :   RadioLibSoftwareAES128 aes;</span></a>
+<a name="120"><span class="lineNum">     120 </span>            :   uint8_t out[16];</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span>            :   // FIPS-197 C.1: key 000102...0f</a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Encrypt, FIPS-197 C.1 ---&quot;);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">          1 :   aes.init(ecbKey1);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">          1 :   BOOST_CHECK_EQUAL(aes.encryptECB(ecbPlain1, RADIOLIB_AES128_BLOCK_SIZE, out), (size_t)RADIOLIB_AES128_BLOCK_SIZE);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(out, ecbCipher1, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Decrypt, FIPS-197 C.1 ---&quot;);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          1 :   aes.init(ecbKey1);</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">          1 :   BOOST_CHECK_EQUAL(aes.decryptECB(ecbCipher1, RADIOLIB_AES128_BLOCK_SIZE, out), (size_t)RADIOLIB_AES128_BLOCK_SIZE);</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(out, ecbPlain1, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="132"><span class="lineNum">     132 </span>            : </a>
+<a name="133"><span class="lineNum">     133 </span>            :   // FIPS-197 C.2 first block: same key as the RFC 4493 CMAC vector</a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Encrypt, FIPS-197 C.2 ---&quot;);</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          1 :   BOOST_CHECK_EQUAL(aes.encryptECB(ecbPlain2, RADIOLIB_AES128_BLOCK_SIZE, out), (size_t)RADIOLIB_AES128_BLOCK_SIZE);</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(out, ecbCipher2, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="138"><span class="lineNum">     138 </span>            : </a>
+<a name="139"><span class="lineNum">     139 </span>            :   // multi-block encrypt/decrypt round trip</a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Multi-block round trip ---&quot;);</span></a>
+<a name="141"><span class="lineNum">     141 </span>            :   uint8_t plain[64], enc[64], dec[64];</a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">         65 :   for(size_t i = 0; i &lt; sizeof(plain); i++) {</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         64 :     plain[i] = (uint8_t)i;</span></a>
+<a name="144"><span class="lineNum">     144 </span>            :   }</a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          1 :   BOOST_CHECK_EQUAL(aes.encryptECB(plain, sizeof(plain), enc), sizeof(plain));</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          1 :   BOOST_CHECK_EQUAL(aes.decryptECB(enc, sizeof(enc), dec), sizeof(dec));</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(dec, plain, sizeof(plain)) == 0);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          1 : }</span></a>
+<a name="151"><span class="lineNum">     151 </span>            : </a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          2 : BOOST_AUTO_TEST_CASE(CryptoECB_StreamingCMAC) {</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test streaming CMAC against RFC 4493 vectors and one-shot ---&quot;);</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          1 :   RadioLibSoftwareAES128 aes;</span></a>
+<a name="155"><span class="lineNum">     155 </span>            :   uint8_t mac[RADIOLIB_AES128_BLOCK_SIZE];</a>
+<a name="156"><span class="lineNum">     156 </span>            :   RadioLibCmacState st;</a>
+<a name="157"><span class="lineNum">     157 </span>            : </a>
+<a name="158"><span class="lineNum">     158 </span>            :   // empty message streamed directly: RFC 4493 example 1</a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          1 :   aes.initCMAC(&amp;st);</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          1 :   aes.finishCMAC(&amp;st, mac);</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(mac, testVectEx1, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span>            :   // 40-byte message in 24 + 16 chunks: RFC 4493 example 3</a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">          1 :   aes.initCMAC(&amp;st);</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          1 :   aes.updateCMAC(&amp;st, msg, 24);</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">          1 :   aes.updateCMAC(&amp;st, &amp;msg[24], 16);</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          1 :   aes.finishCMAC(&amp;st, mac);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(mac, testVectEx3, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<a name="172"><span class="lineNum">     172 </span>            :   // 64-byte message in one update: RFC 4493 example 4</a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          1 :   aes.initCMAC(&amp;st);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          1 :   aes.updateCMAC(&amp;st, msg, 64);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          1 :   aes.finishCMAC(&amp;st, mac);</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          1 :   BOOST_CHECK(memcmp(mac, testVectEx4, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="178"><span class="lineNum">     178 </span>            : </a>
+<a name="179"><span class="lineNum">     179 </span>            :   // streaming in arbitrary chunks must match the one-shot generateCMAC</a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          1 :   const size_t lengths[] = { 1, 15, 16, 17, 31, 40, 48, 64 };</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          9 :   for(size_t len : lengths) {</span></a>
+<a name="182"><span class="lineNum">     182 </span>            :     uint8_t oneShot[RADIOLIB_AES128_BLOCK_SIZE];</a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          8 :     aes.init(key);</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          8 :     aes.generateCMAC(msg, len, oneShot);</span></a>
+<a name="185"><span class="lineNum">     185 </span>            : </a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          8 :     aes.init(key);</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          8 :     aes.initCMAC(&amp;st);</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">         46 :     for(size_t off = 0; off &lt; len; off += 7) {</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         38 :       aes.updateCMAC(&amp;st, &amp;msg[off], (len - off &lt; 7) ? len - off : 7);</span></a>
+<a name="190"><span class="lineNum">     190 </span>            :     }</a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          8 :     aes.finishCMAC(&amp;st, mac);</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          8 :     BOOST_CHECK(memcmp(mac, oneShot, RADIOLIB_AES128_BLOCK_SIZE) == 0);</span></a>
+<a name="193"><span class="lineNum">     193 </span>            :   }</a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          1 : }</span></a>
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<a name="196"><span class="lineNum">     196 </span>            : // verifyCMAC must accept the correct CMAC for RFC 4493 messages of all</a>
+<a name="197"><span class="lineNum">     197 </span>            : // block boundaries (empty / single block / partial last block / full blocks)</a>
+<a name="198"><span class="lineNum">     198 </span>            : // and reject any tampered message or MAC</a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          2 : BOOST_AUTO_TEST_CASE(CryptoECB_VerifyCMAC) {</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">          1 :   BOOST_TEST_MESSAGE(&quot;--- Test AES-128 CMAC verification ---&quot;);</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">          1 :   RadioLibSoftwareAES128 aes;</span></a>
+<a name="202"><span class="lineNum">     202 </span>            :   uint8_t mac[RADIOLIB_AES128_BLOCK_SIZE];</a>
+<a name="203"><span class="lineNum">     203 </span>            : </a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          1 :   const size_t lengths[] = { 0, 16, 40, 64 };</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          1 :   const unsigned char* const vectors[] = { testVectEx1, testVectEx2, testVectEx3, testVectEx4 };</span></a>
+<a name="206"><span class="lineNum">     206 </span>            : </a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">          5 :   for(size_t i = 0; i &lt; sizeof(lengths) / sizeof(lengths[0]); i++) {</span></a>
+<a name="208"><span class="lineNum">     208 </span>            :     // the locally generated MAC verifies</a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          4 :     aes.init(key);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          4 :     aes.generateCMAC(msg, lengths[i], mac);</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          4 :     aes.init(key);</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          4 :     BOOST_CHECK(aes.verifyCMAC(msg, lengths[i], mac));</span></a>
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<a name="214"><span class="lineNum">     214 </span>            :     // so does the published RFC 4493 vector, and only for its own length</a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          4 :     aes.init(key);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">          4 :     BOOST_CHECK(aes.verifyCMAC(msg, lengths[i], vectors[i]));</span></a>
+<a name="217"><span class="lineNum">     217 </span>            :   }</a>
+<a name="218"><span class="lineNum">     218 </span>            : </a>
+<a name="219"><span class="lineNum">     219 </span>            :   // every single-bit flip in the expected MAC must be rejected (len = 64, RFC 4493 example 4)</a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">        129 :   for(size_t bit = 0; bit &lt; 8 * RADIOLIB_AES128_BLOCK_SIZE; bit++) {</span></a>
+<a name="221"><span class="lineNum">     221 </span>            :     uint8_t bad[RADIOLIB_AES128_BLOCK_SIZE];</a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        128 :     memcpy(bad, testVectEx4, sizeof(bad));</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        128 :     bad[bit / 8] ^= (uint8_t)(1UL &lt;&lt; (bit % 8));</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        128 :     aes.init(key);</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        128 :     BOOST_CHECK(!aes.verifyCMAC(msg, 64, bad));</span></a>
+<a name="226"><span class="lineNum">     226 </span>            :   }</a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span>            :   // every single-bit flip in the message must be rejected</a>
+<a name="229"><span class="lineNum">     229 </span>            :   uint8_t tampered[64];</a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">        513 :   for(size_t bit = 0; bit &lt; 8 * sizeof(tampered); bit++) {</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        512 :     memcpy(tampered, msg, sizeof(tampered));</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        512 :     tampered[bit / 8] ^= (uint8_t)(1UL &lt;&lt; (bit % 8));</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        512 :     aes.init(key);</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        512 :     BOOST_CHECK(!aes.verifyCMAC(tampered, sizeof(tampered), testVectEx4));</span></a>
+<a name="235"><span class="lineNum">     235 </span>            :   }</a>
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<a name="237"><span class="lineNum">     237 </span>            :   // a MAC computed over a different length of the same message must not verify</a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          1 :   BOOST_CHECK(!aes.verifyCMAC(msg, 48, testVectEx4));</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          1 :   BOOST_CHECK(!aes.verifyCMAC(msg, 64, testVectEx3));</span></a>
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<a name="243"><span class="lineNum">     243 </span>            :   // the correct MAC under the wrong key must not verify</a>
+<a name="244"><span class="lineNum">     244 </span>            :   static unsigned char otherKey[16] = {</a>
+<a name="245"><span class="lineNum">     245 </span>            :     0x0f, 0x0e, 0x0d, 0x0c, 0x0b, 0x0a, 0x09, 0x08,</a>
+<a name="246"><span class="lineNum">     246 </span>            :     0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00</a>
+<a name="247"><span class="lineNum">     247 </span>            :   };</a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          1 :   aes.init(otherKey);</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">          1 :   aes.generateCMAC(msg, 64, mac);</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">          1 :   aes.init(key);</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          1 :   BOOST_CHECK(!aes.verifyCMAC(msg, 64, mac));</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          1 : }</span></a>
+<a name="253"><span class="lineNum">     253 </span>            : </a>
+<a name="254"><span class="lineNum">     254 </span>            : BOOST_AUTO_TEST_SUITE_END()</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
