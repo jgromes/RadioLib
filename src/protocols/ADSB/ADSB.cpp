@@ -194,9 +194,18 @@ int16_t ADSBClient::parseAirbornePosition(const ADSBFrame* in, int* alt, float* 
       // barometric altitude, get the raw value without the Q bit
       uint16_t altRaw = ((in->message[1] & 0xFE) << 3) | ((in->message[2] & 0xF0) >> 4);
 
-      // now get the step size based on the Q bit and calculate
-      int step = (in->message[1] & 0x01) ? 25 : 100;
-      *alt = step*(int)altRaw - 1000;
+      if(in->message[1] & 0x01) {
+        // Q = 1: 25 ft steps, binary encoded
+        *alt = 25*(int)altRaw - 1000;
+      } else {
+        // Q = 0: 100 ft steps, Gray code encoded - convert to binary first,
+        // otherwise the altitude decodes to nonsense values
+        uint16_t gray = altRaw, bin = 0;
+        for(uint16_t mask = gray; mask != 0; mask >>= 1) {
+          bin ^= mask;
+        }
+        *alt = 100*(int)bin - 1000;
+      }
 
     } else {
       // GNSS altitude, which is just meters
