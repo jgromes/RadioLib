@@ -19,6 +19,7 @@ file(GLOB_RECURSE TEST_SOURCES
   "tests/FuzzSSDV.cpp"
   "tests/FuzzADSB.cpp"
   "tests/FuzzAX25.cpp"
+  "tests/FuzzAPRS.cpp"
 )
 
 # create the executable

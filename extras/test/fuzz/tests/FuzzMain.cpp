@@ -53,5 +53,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   extern int FuzzAX25(const uint8_t* data, size_t size);
   FuzzAX25(data, size);
 
+  extern int FuzzAPRS(const uint8_t* data, size_t size);
+  FuzzAPRS(data, size);
+
   return(0);
 }
