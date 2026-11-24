@@ -2372,6 +2372,8 @@ int16_t LoRaWANNode::getDownlinkClassC(uint8_t* dataDown, size_t* lenDown, LoRaW
     
     state = this->checkDownlink(RADIOLIB_LORAWAN_RX_BC, this->channels[RADIOLIB_LORAWAN_RX_BC].dr);
     if(state == RADIOLIB_ERR_DOWNLINK_MALFORMED) {
+      // a frame dropped on its length was never read, so its flags are still set
+      (void)this->phyLayer->clearIrq((1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_HEADER_ERR) | (1UL << RADIOLIB_IRQ_TIMEOUT));
       return(RADIOLIB_ERR_NONE);  // silently drop any downlink that is not meant for this device
     }
     RADIOLIB_ASSERT(state);
