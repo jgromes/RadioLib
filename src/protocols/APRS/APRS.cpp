@@ -34,15 +34,17 @@ int16_t APRSClient::begin(char sym, const char* callsign, uint8_t ssid, bool alt
   }
   
   memcpy(this->src, callsign, strlen(callsign));
+  this->src[strlen(callsign)] = '\0';
   this->id = ssid;
 
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, const char* lat, const char* lon, const char* msg, const char* time) {
-  size_t len = 1 + strlen(lat) + 1 + strlen(lon);
+  // position data type identifier, latitude, symbol table, longitude and symbol
+  size_t len = 1 + strlen(lat) + 1 + strlen(lon) + 1;
   if(msg != NULL) {
-    len += 1 + strlen(msg);
+    len += strlen(msg);
   }
   if(time != NULL) {
     len += strlen(time);
