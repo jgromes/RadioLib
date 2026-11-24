@@ -89,11 +89,11 @@ int16_t LRxxxx::reset() {
   // run the reset sequence
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelLow);
-  this->mod->hal->delay(10);
+  this->mod->hal->delay(2);
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelHigh);
 
   // the typical transition duration should be 273 ms
-  this->mod->hal->delay(300);
+  this->mod->hal->delay(5);
 
   // reset current frequency - this will force the next frequency configuration to redo calibration
   this->freqHz = 0;
@@ -101,8 +101,8 @@ int16_t LRxxxx::reset() {
   // wait for BUSY to go low
   RadioLibTime_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getGpio())) {
-    this->mod->hal->yield();
-    if(this->mod->hal->millis() - start >= 3000) {
+    this->mod->hal->delay(3);
+    if(this->mod->hal->millis() - start >= 1000) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("BUSY pin timeout after reset!");
       return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
     }
